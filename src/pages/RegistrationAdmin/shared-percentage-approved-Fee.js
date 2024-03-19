@@ -335,7 +335,7 @@ class SharedPercentageLabHazirList extends Component {
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Pending Shared Percentage" breadcrumbItem="Lab Hazir" />
+            <Breadcrumbs title="Approved Shared Percentage" breadcrumbItem="Lab Hazir" />
             <Row>
               <Col lg="12">
                 <Card>

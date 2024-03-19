@@ -54,6 +54,7 @@ class TestAppointmentsList extends Component {
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
       patientTestAppointment: "",
       patientProfile: [],
+      PermissionModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -649,6 +650,7 @@ class TestAppointmentsList extends Component {
     this.togglecancelModal = this.togglecancelModal.bind(this);
     this.toggleReshedualModal = this.toggleReshedualModal.bind(this);
     this.toggleLabModal = this.toggleLabModal.bind(this);
+    this.togglePermissionModal = this.togglePermissionModal.bind(this);
 
     // this.handlePatientFeedbackClicks = this.handlePatientFeedbackClicks.bind(this);
   }
@@ -661,7 +663,23 @@ class TestAppointmentsList extends Component {
     
     // Set patientTestAppointments to state
     this.setState({ patientTestAppointments });
-}
+
+    const { onGetPatientProfile } = this.props;
+
+    // Assuming onGetPatientProfile is synchronous
+    console.log("this is patient profile",onGetPatientProfile(this.state.user_id));
+
+    // Now you can safely access patientProfile from props
+    const { patientProfile } = this.props;
+    
+    // Check if patientTestAppointments exists and has the required properties
+    if (this.props.patientProfile &&
+        this.props.patientProfile.is_assosiatewith_anycorporate &&
+        this.props.patientProfile.employee_id_card) {
+      this.setState({ PermissionModal: true }); // Show the modal for error
+    }
+    console.log("corporate info", this.props.patientProfile, this.props.patientProfile.is_assosiatewith_anycorporate, this.props.patientProfile.employee_id_card)
+  }
   
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { patientTestAppointments } = this.props;
@@ -852,6 +870,14 @@ class TestAppointmentsList extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
+  togglePermissionModal = () => {
+    this.setState(prevState => ({
+      PermissionModal: !prevState.PermissionModal,
+    }));
+    this.state.btnText === "Copy"
+      ? this.setState({ btnText: "Copied" })
+      : this.setState({ btnText: "Copy" });
+  };
 
   render() {
     const { SearchBar } = Search;
@@ -876,6 +902,31 @@ class TestAppointmentsList extends Component {
         order: "desc", // desc or asc
       },
     ];
+
+    const backdropStyle = {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      backgroundColor: 'rgba(0, 0, 0, 0.88)', // or any value between 0 and 1
+      zIndex: 9999,
+      display: this.state.PermissionModal ? 'block' : 'none',
+    };
+
+    const modalStyle = {
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: 'white',
+      padding: '20px',
+      width: '500px', // Increase width
+      height: '400px', // Increase height
+      zIndex: 10000,
+      display: this.state.PermissionModal ? 'block' : 'none',
+    };
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -886,6 +937,77 @@ class TestAppointmentsList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Test Appointments" breadcrumbItem="Test Appointments List" />
             <Row>
+            <div>
+                <div style={backdropStyle}></div>
+                <div style={modalStyle}>
+                  <Col className="col-12 text-center">
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "60px",
+                        // borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        // border: "2px solid green",
+                        margin: "0 auto", // Center the circle
+                        marginBottom: "4px",
+                      }}
+                    >
+                      <span
+                        style={{ color: "green", fontSize: "24px", fontWeight: "bold" }}
+                      >
+                        Welcome to the Labhazir!
+                      </span>
+                    </div>
+                    <strong className="font-size-15 font-weight-bold mb-3">
+                      We would like to inform you that,
+                    </strong><br></br>
+                    <p style={{ fontSize: "14px", color: "gray", margin: "0 auto", textAlign: "center", width: "90%", }}>
+                      since you are affiliated with a corporate entity, you will only be shown the specific tests offered by your corporation. If you wish to view different tests, you will need to create a separate regular account.</p><br></br>
+                    <span className="font-size-15 mb-3">
+                      Click on <strong>&lsquo;Use Another Account&lsquo;</strong> for that, or click <strong>&lsquo;Continue&lsquo;</strong> to proceed.
+                    </span><br></br>
+                    <strong className="font-size-15 font-weight-bold mb-3 text-danger">
+                      Thank You For Choosing Labhazir!
+                    </strong><br></br>
+                  </Col>
+
+                  <div className="d-flex justify-content-center mb-3">
+                    <Link
+                      to="/register"
+                      className="btn mt-2 me-1"
+                      onClick={() => this.setState({ PermissionModal: false })}
+                      style={{
+                        color: "black",
+                        border: "2px solid blue",
+                        // backgroundColor: "white",
+                      }}
+                    >
+                      Use another Account
+                    </Link>
+
+                    <Link
+                      to="#" // Use a dummy link or remove this prop, as it will be replaced by the onClick event
+                      className="btn mt-2 me-1"
+                      style={{
+                        color: "black",
+                        border: "2px solid blue",
+                        backgroundColor: "white",
+                      }}
+                      onClick={() => {
+                        this.setState({ PermissionModal: true });
+                        setTimeout(() => {
+                          this.props.history.push("/corporate-labs");
+                        }, 1000);
+                      }}
+                    >
+                      Continue
+                    </Link>
+
+                  </div>
+                </div>
+              </div>
               <div> <span className="text-danger font-size-12">
                 <strong>
                   Note: If you want to reschedule your appointment, please call the Lab.

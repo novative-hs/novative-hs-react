@@ -1,13 +1,14 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // LabMarket Redux States
-import { GET_NEARBY_LABS, GET_REGION_WISE_ADVERTISEMENT,
+import { GET_NEARBY_LABS, GET_CORPORATE_LABS, GET_REGION_WISE_ADVERTISEMENT,
   GET_ADV_LIVE , GET_PATIENT_PROFILE } from "./actionTypes";
-import { getNearbyLabsFail, getNearbyLabsSuccess, getRegionWiseAdvertisementFail, getRegionWiseAdvertisementSuccess, 
+
+import { getNearbyLabsFail, getCorporateLabsFail, getCorporateLabsSuccess, getNearbyLabsSuccess, getRegionWiseAdvertisementFail, getRegionWiseAdvertisementSuccess, 
   getAdvLiveFail, getAdvLiveSuccess , getPatientProfileSuccess, getPatientProfileFail} from "./actions";
 
 // Include Helper File with needed methods
-import { getNearbyLabs, getRegionWiseAdvertisement, getAdvLive, getPatientProfile } from "helpers/django_api_helper";
+import { getNearbyLabs, getCorporateLabs, getRegionWiseAdvertisement, getAdvLive, getPatientProfile } from "helpers/django_api_helper";
 
 function* fetchNearbyLabs(object) {
   try {
@@ -15,6 +16,15 @@ function* fetchNearbyLabs(object) {
     yield put(getNearbyLabsSuccess(response.data));
   } catch (error) {
     yield put(getNearbyLabsFail(error));
+  }
+}
+
+function* fetchCorporateLabs(object) {
+  try {
+    const response = yield call(getCorporateLabs, object.payload.locationDetails);
+    yield put(getCorporateLabsSuccess(response.data));
+  } catch (error) {
+    yield put(getCorporateLabsFail(error));
   }
 }
 
@@ -46,6 +56,7 @@ function* fetchAdvLive(object) {
 
 function* labMarketSaga() {
   yield takeEvery(GET_NEARBY_LABS, fetchNearbyLabs);
+  yield takeEvery(GET_CORPORATE_LABS, fetchCorporateLabs);
   yield takeEvery(GET_REGION_WISE_ADVERTISEMENT, fetchRegionWiseAdvertisement);
   yield takeEvery(GET_ADV_LIVE, fetchAdvLive);
   yield takeEvery(GET_PATIENT_PROFILE, fetchPatientProfile);

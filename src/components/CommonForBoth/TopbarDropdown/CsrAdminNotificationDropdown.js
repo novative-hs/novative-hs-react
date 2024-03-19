@@ -116,7 +116,7 @@ class CsrAdminNotificationDropdown extends Component {
 
             <SimpleBar style={{ height: "230px" }}>
               <Link
-                to="/csrAdmin-collector-in-process"
+                to="/pending-complaints-lab"
                 className="text-reset csrAdminNotification-item"
               >
             {!isEmpty(csrAdminNotification) &&

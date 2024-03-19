@@ -10,7 +10,6 @@ import {
   GET_FINANCE_OFFICER_LIST_FAIL,
   ADD_STAFF,
   ADD_STAFF_SUCCESS,
-  ADD_STAFF_FAIL,
   UPDATE_STAFF,
   UPDATE_STAFF_SUCCESS,
   UPDATE_STAFF_FAIL,
@@ -20,8 +19,8 @@ import {
   GET_TERRITORIES_LIST,
   GET_TERRITORIES_LIST_SUCCESS,
   GET_TERRITORIES_LIST_FAIL,
+  ADD_STAFF_FAIL,
 } from "./actionTypes";
-
 
 // Territories
 export const getTerritoriesList = () => ({

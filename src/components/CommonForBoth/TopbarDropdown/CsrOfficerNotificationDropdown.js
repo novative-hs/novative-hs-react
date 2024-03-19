@@ -115,7 +115,10 @@ class CsrOfficerNotificationDropdown extends Component {
             </div>
 
             <SimpleBar style={{ height: "230px" }}>
-            
+            <Link
+                to="/unhandled-complaints"
+                className="text-reset marketerNotification-item"
+              >
             {!isEmpty(csrOfficerNotification) &&
               csrOfficerNotification.map((notifications, key) => (
                 <Col key={"col" + key}>
@@ -135,7 +138,7 @@ class CsrOfficerNotificationDropdown extends Component {
                   </>
                 </Col>
               ))}
-       
+         </Link>
             </SimpleBar>
           </DropdownMenu>
         </Dropdown>

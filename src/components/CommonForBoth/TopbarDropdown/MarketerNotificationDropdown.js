@@ -116,7 +116,7 @@ class MarketerNotificationDropdown extends Component {
 
             <SimpleBar style={{ height: "230px" }}>
               <Link
-                to="/marketer-collector-in-process"
+                to="/pending-lab-advertisement-requests"
                 className="text-reset marketerNotification-item"
               >
             {!isEmpty(marketerNotification) &&

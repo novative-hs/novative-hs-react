@@ -65,6 +65,30 @@ class SampleCollectorRegister extends Component {
       });
     }
   }
+  togglePasswordVisibility = () => {
+    const passwordInput = document.querySelector('input[name="password"]');
+    const eyeIcon = document.getElementById('eye-icon');
+
+    if (passwordInput && passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon.className = 'mdi mdi-eye-off-outline';
+    } else if (passwordInput) {
+      passwordInput.type = 'password';
+      eyeIcon.className = 'mdi mdi-eye-outline';
+    }
+  };
+  togglePassword1Visibility = () => {
+    const passwordInput = document.querySelector('input[name="password2"]');
+    const eyeIcon2 = document.getElementById('eye-icon1');
+
+    if (passwordInput && passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      eyeIcon2.className = 'mdi mdi-eye-off-outline';
+    } else if (passwordInput) {
+      passwordInput.type = 'password';
+      eyeIcon2.className = 'mdi mdi-eye-outline';
+    }
+  };
 
   render() {
     if (this.props.userID) {
@@ -256,7 +280,7 @@ class SampleCollectorRegister extends Component {
                             {/* Password field */}
                             <div className="mb-3">
                               <Label className="form-label">Password</Label>
-                              <div>
+                              <div className="input-group">
                                 <Field
                                   name="password"
                                   type="password"
@@ -275,6 +299,19 @@ class SampleCollectorRegister extends Component {
                                       : "")
                                   }
                                 />
+                                 <div className="input-group-append">
+                            <button
+                              className="btn btn-light"
+                              type="button"
+                              id="password-addon"
+                              onClick={this.togglePasswordVisibility}
+                            >
+                              <i id="eye-icon" className="mdi mdi-eye-outline"></i>
+                            </button>
+                          </div>
+                          </div>
+                           
+                            
                                 <ErrorMessage
                                   name="password"
                                   component="div"
@@ -284,8 +321,8 @@ class SampleCollectorRegister extends Component {
                                 <div className="invalid-feedback">
                                   {this.state.passwordFieldError}
                                 </div>
-                              </div>
-                              <div className="mt-2">
+                              
+                                <div className="mt-2 input-group">
                                 <Field
                                   name="password2"
                                   type="password"
@@ -298,13 +335,26 @@ class SampleCollectorRegister extends Component {
                                       : "")
                                   }
                                 />
+                                 <div className="input-group-append">
+                            <button
+                              className="btn btn-light"
+                              type="button"
+                              id="password-addon"
+                              onClick={this.togglePassword1Visibility}
+                            >
+                              <i id="eye-icon1" className="mdi mdi-eye-outline"></i>
+                            </button>
+                          </div>
+                          </div>
+                              
+                            
                                 <ErrorMessage
                                   name="password2"
                                   component="div"
                                   className="invalid-feedback"
                                 />
                               </div>
-                            </div>
+                          
 
                             {/* Account type field */}
                             <Field

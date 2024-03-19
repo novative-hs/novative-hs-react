@@ -54,6 +54,7 @@ export const GET_CSR_ADMIN_NOTIFICATION = `${API_ENDPOINT}/api/csr-admin/csradmi
 export const GET_REG_ADMIN_NOTIFICATION = `${API_ENDPOINT}/api/registration-admin/regadmin-notification`;
 export const GET_CSR_OFFICER_NOTIFICATION = `${API_ENDPOINT}/api/complaint/csrofficer-notification`;
 export const GET_ACTIVITY_LOG_FINANCE = `${API_ENDPOINT}/api/finance-officer/activity-log-finance`;
+export const GET_CORPORATE_COMMIT = `${API_ENDPOINT}/api/corporate/corporate-commit`;
 export const GET_ACTIVITY_LOG_MARKETER = `${API_ENDPOINT}/api/marketer-admin/activity-log-marketer`;
 export const GET_PATHOLOGISTS = `${API_ENDPOINT}/api/lab/pathologist-list`;
 export const ADD_NEW_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
@@ -346,6 +347,9 @@ export const UPDATE_CORPORATE_PROFILE = `${API_ENDPOINT}/api/corporate/corporate
 
 // NEARBY LABS
 export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
+
+// Cororate LABS
+export const GET_CORPORATE_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
 
 // REGION WISE ADVERTISEMENT
 export const GET_REGION_WISE_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin/region-wise-advertisements`;

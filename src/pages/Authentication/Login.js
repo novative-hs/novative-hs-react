@@ -25,7 +25,7 @@ class Login extends Component {
       count: 0,
       guest_id: "",
       submittedMessage: null,
-
+      patientProfile: [],
     };
     this.togglePermissionModal = this.togglePermissionModal.bind(this);
 
@@ -69,8 +69,7 @@ class Login extends Component {
     while (elem.attributes.length > 0) {
       elem.removeAttribute(elem.attributes[0].name);
     }
-    // const guest_id = this.props.match.params.guest_id;
-    // console.log("dis mount",guest_id)
+
 
     if (localStorage.getItem("authUser")) {
       this.props.history.push("/logout");
@@ -85,8 +84,7 @@ class Login extends Component {
     this.setState({
       patientProfile
     });
-    console.log("patient state state", patientProfile);
-
+    console.log("patient state state", this.state.patientProfile, this.props.patientProfile);
   }
 
   removeAttributes(element, ...attrs) {
@@ -208,7 +206,7 @@ class Login extends Component {
                       onClick={() => {
                         this.setState({ PermissionModal: true });
                         setTimeout(() => {
-                          this.props.history.push("/labs");
+                          this.props.history.push("/test-appointments");
                         }, 1000);
                       }}
                     >
@@ -327,7 +325,7 @@ class Login extends Component {
                                       success.account_type === "patient" &&
                                       success.is_assosiatewith_anycorporate == false &&
                                       // success.corporate_id == null &&
-                                      success.employee_id_card != null &&
+                                      success.employee_id_card == null &&
                                       !this.state.finalUrl
                                     ) {
                                       this.props.history.push(
@@ -346,7 +344,7 @@ class Login extends Component {
                                     ) {
                                       console.log("Patient Profile:", success.is_assosiatewith_anycorporate);
                                       // this.props.history.push("/labs");
-                                      this.setState({ PermissionModal: true }); // Show the modal for error
+                                      this.props.history.push("/corporate-modal");
 
                                       //   setTimeout(() => {
                                       //     this.props.history.push("/labs");

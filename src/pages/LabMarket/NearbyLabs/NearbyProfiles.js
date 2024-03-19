@@ -2365,7 +2365,6 @@ shouldHighlightTestsLink() {
                   {({ errors, status, touched }) => (
                     <Form className="form-horizontal">
                       {/* Type field */}
-                      {/* Type field */}
                       <h4 style={{ background: "#3B71CA", color: "white", fontWeight: "bold" }}> Search Profiles for more result in Pakistan!</h4>
                       <Row className="g-0">
                         <Col>
@@ -2374,6 +2373,14 @@ shouldHighlightTestsLink() {
                                name="profile"
                                component="Select"
                                onChange={this.onchangename}
+                               styles={{
+                                control: (provided, state) => ({
+                                  ...provided,
+                                  border: '2px solid blue',
+                                  borderRadius: '5px',
+                                }),
+                                // Add more style overrides as needed
+                              }}
                                isSearchable={true}
                                 isClearable={true}
                                 components={{
@@ -2394,6 +2401,11 @@ shouldHighlightTestsLink() {
                               onChange={e => this.onChangeType(e)}
                               value={this.state.LabType}
                               className="form-select"
+                              style={{
+                                border: '2px solid blue',
+                                borderRadius: '5px',
+                                // Add more style overrides as needed
+                              }}
                             >
                               <option value="Main">Main Labs</option>
                               <option value="Collection">
@@ -2405,91 +2417,161 @@ shouldHighlightTestsLink() {
                         </Col>
                       </Row>
                       <Row className="g-0">
-                        <Col xs="6" sm="6" md="3" lg="3">
-                          <div className="mb-3">
-                            <Field
-                              name="search_type"
-                              component="select"
-                              onChange={e => this.onChangeSearchType(e)}
-                              value={this.state.search_type}
-                              className="form-select"
-                            >
-                              <option value="">Choose an option</option>
-                              <option value="Current Location">
-                                Current Location
-                              </option>
-                              <option value="City">By City</option>
-                              <option value="Custom Address">
-                                Custom Address
-                              </option>
-                            </Field>
-                          </div>
-                        </Col>
-
+                      {this.state.locationAccessAllowed === true ? (
+                         <Col xs="6" sm="6" md="3" lg="3">
+                           <div className="mb-3">
+                             {/* <Label
+                                 for="LabType2"
+                                 className="form-label"
+                                 style={{
+                                   fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                   color: 'black',
+                                   fontWeight: 'bold',
+                                 }}
+                               >
+                                 Search Types
+                               </Label> */}
+                             <Field
+                               name="search_type"
+                               component="select"
+                               onChange={e => this.onChangeSearchType(e)}
+                               value={search_type}
+                               className="form-select"
+                               style={{
+                                 border: borderColor,
+                                 borderRadius: '5px',
+                                 // Add more style overrides as needed
+                               }}
+                             >
+                               <option value="Current Location">Current Location</option>
+                               <option value="City">Search By City</option>
+                               <option value="Custom Address">Custom Address</option>
+                             </Field>
+                           </div>
+                         </Col>
+                       ) : (
+                         <Col xs="6" sm="6" md="3" lg="3">
+                           <div className="mb-3">
+                             {/* <Label
+                             for="LabType2"
+                             className="form-label"
+                             style={{
+                               fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                               color: 'black',
+                               fontWeight: "bold",
+                             }}
+                           >
+                             Search Types
+                           </Label> */}
+                             <Field
+                               name="search_type"
+                               component="select"
+                               onChange={e => this.onChangeSearchType(e)}
+                               value={search_type}
+                               className="form-select"
+                               style={{
+                                 border: borderColor,
+                                 borderRadius: '5px',
+                                 // Add more style overrides as needed
+                               }}
+                             >
+                               <option value="">Choose an option</option>
+                               <option value="Current Location">
+                                 Current Location
+                               </option>
+                               <option value="City">Search By City</option>
+                               <option value="Custom Address">Custom Address</option>
+                             </Field>
+                           </div>
+                         </Col>
+                       )}
                         {this.state.search_type === "Current Location" && (
-                          <Col xs="2" sm="2" md="2" lg="2">
-                            <div className="mb-3">
-                              <div className="input-group">
-                                <Input
-                                  defaultValue={this.state.km}
-                                  onChange={e => this.onChangeKm(e)}
-                                  id="pac-input"
-                                  type="number"  // Change "numbers" to "number"
-                                  className="form-control"
-                                  style={{ fontSize: "14px" }} // Set input font size to 14 pixels
-                                  placeholder="Search By Km..."
-                                />
-                              </div>
-                            </div>
-                          </Col>
-                        )}
-                        {this.state.search_type === "Custom Address" && (
-                          <Col xs="2" sm="2" md="2" lg="2">
-                            <div className="mb-3">
-                              <div className="input-group">
-                                <Input
-                                  defaultValue={this.state.km}
-                                  onChange={e => this.onChangeKm(e)}
-                                  id="pac-input"
-                                  type="number"  // Change "numbers" to "number"
-                                  className="form-control"
-                                  style={{ fontSize: "14px" }} // Set input font size to 14 pixels
-                                  placeholder="Search By Km..."
-                                />
-                              </div>
-                            </div>
-                          </Col>
-                        )}
-                        {/* City field */}
-                        {this.state.search_type === "City" && (
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Select
-                                name="city"
-                                component="Select"
-                                onChange={this.onChangeCity}
-                                className="defautSelectParent is-invalid"
-                                options={cityList}
-                                placeholder="City..."
-                              />
-                            </div>
-                          </Col>
-                        )}
-                        {/* Custom Address field */}
-                        {this.state.search_type === "Custom Address" && (
-                          <Col xs="4" sm="4" md="3" lg="3">
-                            <div className="mb-3">
-                              <Input
-                                defaultValue={this.state.address}
-                                onChange={e => this.onChangeAddress(e)}
-                                id="pac-input"
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Location..."
-                              />
-                            </div>
-                          </Col>
-                        )}
+                         <Col xs="2" sm="2" md="2" lg="2">
+                           <div className="mb-3">
+                             <div className="input-group">
+                               <Input
+                                 defaultValue={this.state.km}
+                                 onChange={e => this.onChangeKm(e)}
+                                 id="pac-input"
+                                 type="number"  // Change "numbers" to "number"
+                                 className="form-control"
+                                 placeholder="Search By Km..."
+                                 style={{
+                                   border: '2px solid red',
+                                   borderRadius: '5px',
+                                   fontSize: '14px'
+                                   // Add more style overrides as needed
+                                 }}
+                               />
+                             </div>
+                           </div>
+                         </Col>
+                       )}
+                       {this.state.search_type === "Custom Address" && (
+                         <Col xs="2" sm="2" md="2" lg="2">
+                           <div className="mb-3">
+                             <div className="input-group">
+                               <Input
+                                 defaultValue={this.state.km}
+                                 onChange={e => this.onChangeKm(e)}
+                                 id="pac-input"
+                                 type="number"  // Change "numbers" to "number"
+                                 className="form-control"
+                                 placeholder="Search By Km..."
+                                 style={{
+                                   border: '2px solid yellow',
+                                   borderRadius: '5px',
+                                   fontSize: '14px'
+                                   // Add more style overrides as needed
+                                 }}
+                               />
+                             </div>
+                           </div>
+                         </Col>
+                       )}
+                       {/* City field */}
+                       {this.state.search_type === "City" && (
+                         <Col xs="4" sm="4" md="3" lg="3">
+                           <div className="mb-3">
+                             <Select
+                               name="city"
+                               component="Select"
+                               onChange={this.onChangeCity}
+                               className="defautSelectParent is-invalid"
+                               options={cityList}
+                               placeholder="City..."
+                               styles={{
+                                 control: (provided, state) => ({
+                                   ...provided,
+                                   border: '2px solid green',
+                                   borderRadius: '5px',
+                                 }),
+                                 // Add more style overrides as needed
+                               }}
+                             />
+                           </div>
+                         </Col>
+                       )}
+                       {/* Custom Address field */}
+                       {this.state.search_type === "Custom Address" && (
+                         <Col xs="4" sm="4" md="3" lg="3">
+                           <div className="mb-3">
+                             <Input
+                               defaultValue={this.state.address}
+                               onChange={e => this.onChangeAddress(e)}
+                               id="pac-input"
+                               type="text"
+                               className="form-control"
+                               placeholder="Search Location..."
+                               style={{
+                                 border: '2px solid yellow',
+                                 borderRadius: '5px',
+                                 // Add more style overrides as needed
+                               }}
+                             />
+                           </div>
+                         </Col>
+                       )}
                       </Row>
                     </Form>
                   )}
@@ -2610,7 +2692,7 @@ shouldHighlightTestsLink() {
                               </span>
                             </div>) : null }
 
-                            <div className="my-0">
+                            <div className="my-0 text-truncate">
                             {!this.state.user_id ? (
                                 <Link
                                 to={
@@ -2678,6 +2760,7 @@ shouldHighlightTestsLink() {
                               
                             </div>
                             <div className="my-0 mt-2">
+                              <div>
                               <StarRatings
                                 rating={nearbyProfile.rating}
                                 starRatedColor="#F1B44C"
@@ -2688,6 +2771,9 @@ shouldHighlightTestsLink() {
                                 starSpacing="3px"
                               />
                             </div>
+                            {nearbyProfile && nearbyProfile.rating && (
+    <p> {nearbyProfile.rating.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+)}</div>
                             {/* <Button
   type="button"
   color={this.state.itemsInCart.includes(nearbyProfile) ? 'secondary' : 'primary'}

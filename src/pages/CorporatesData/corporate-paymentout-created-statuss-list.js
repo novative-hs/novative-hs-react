@@ -210,22 +210,22 @@ class PathologistsList extends Component {
     this.toggle();
   };
 
-  handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    // Perform navigation based on the selected value
-    if (selectedValue === 'Created') {
-      this.props.history.push('/payment-out-created-status');
-    }
-    if (selectedValue === 'Pending Clearence') {
-        this.props.history.push('/payment-out-pending-clearence-status');
-    }
-    if (selectedValue === 'Cleared') {
-    this.props.history.push('/payment-out-clear-status');
-    }
-    if (selectedValue === 'Bounced') {
-    this.props.history.push('/payment-out-bounced-status');
-    }
-  }
+  // handleSelectChange = (event) => {
+  //   const selectedValue = event.target.value;
+  //   // Perform navigation based on the selected value
+  //   if (selectedValue === 'Created') {
+  //     this.props.history.push('/payment-out-created-status');
+  //   }
+  //   if (selectedValue === 'Pending Clearence') {
+  //       this.props.history.push('/payment-out-pending-clearence-status');
+  //   }
+  //   if (selectedValue === 'Cleared') {
+  //   this.props.history.push('/payment-out-clear-status');
+  //   }
+  //   if (selectedValue === 'Bounced') {
+  //   this.props.history.push('/payment-out-bounced-status');
+  //   }
+  // }
 
   render() {
     const columns= [
@@ -236,7 +236,7 @@ class PathologistsList extends Component {
         hidden: false,
         formatter: (cellContent, paymentCreatedStatus) => (
         <>
-        11189
+          <span>{paymentCreatedStatus.order_id}</span>
         </>
         ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
@@ -268,18 +268,15 @@ class PathologistsList extends Component {
         dataField: "lab_name",
         text: "Lab Name",
         sort: true,
-      formatter: (cellContent, paymentCreatedStatus) => (
-        <>
+        formatter: (cellContent, paymentCreatedStatus) => (
           <span>
-            <span>
-              {paymentCreatedStatus.lab_name}{" "}
-              {paymentCreatedStatus.business_name}
-            </span>
+            {paymentCreatedStatus.lab_name != null ? paymentCreatedStatus.lab_name : "---"}
           </span>
-        </>
-      ),filter: textFilter(),
-      headerStyle: { backgroundColor: '#DCDCDC' },
+        ),
+        filter: textFilter(),
+        headerStyle: { backgroundColor: '#DCDCDC' }
       },
+      
       // {
       //   dataField: "b2b_id",
       //   text: "B2b Name",
@@ -400,12 +397,34 @@ class PathologistsList extends Component {
       //   ),
       // },
       {
+        dataField: "payment_status",
+        text: "Payment Status",
+        sort: true,
+        formatter: (cellContent, paymentCreatedStatus) => (
+          <>
+            <strong>{paymentCreatedStatus.payment_status}</strong>
+          </>
+        ),
+        filter: selectFilter({
+          options: {
+            '': 'All',
+            'Created': 'Created',
+            'Paid': 'Paid',
+          },
+          defaultValue: 'All',
+        }),
+        headerStyle: { backgroundColor: '#DCDCDC' },
+        style: { backgroundColor: '	#F0F0F0' },
+      },
+      {
         dataField: "menu",
         isDummyField: true,
         editable: false,
         text: "Action",
         formatter: (cellContent, paymentCreatedStatus) => (
-          <div className="d-flex gap-1">
+          <>
+          {paymentCreatedStatus.payment_status !== "Paid" ? ( 
+            <div className="d-flex gap-1">
             <button
               type="submit"
               className="btn btn-success save-user"
@@ -439,6 +458,12 @@ class PathologistsList extends Component {
               ></i>
             </Link> */}
           </div>
+          ) : (
+            "---"
+          )}
+          
+          </>
+          
         ),
         headerStyle: { backgroundColor: '#DCDCDC' },
       },
@@ -450,7 +475,7 @@ class PathologistsList extends Component {
         formatter: (cellContent, paymentCreatedStatus) => (
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/activity-log-finance/${paymentCreatedStatus.id}`}
+                  to={`/corporate-activity-log/${paymentCreatedStatus.id}`}
                   ></Link>
         ),
         headerStyle: { backgroundColor: '#DCDCDC' },
@@ -521,7 +546,7 @@ class PathologistsList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                <div className="ms-2 mb-4">
+                                {/* <div className="ms-2 mb-4">
         <div>
             <Label for="main_lab_appointments" className="form-label">
                 <strong>Money Out Form Statuses</strong>
@@ -533,12 +558,10 @@ class PathologistsList extends Component {
                 onChange={this.handleSelectChange}
             >
                 <option value="Created">Created</option>
-                {/* <option value="Pending Clearence">Pending Clearence</option> */}
-                <option value="Cleared">Cleared</option>
-                {/* <option value="Bounced">Bounced</option> */}
+                <option value="Paid">Paid</option>
             </select>
         </div>
-    </div>
+    </div> */}
                                 </Col>
 
                               </Row>
@@ -1148,7 +1171,7 @@ class PathologistsList extends Component {
                                                       for="cheque_image"
                                                       className="form-label"
                                                     >
-                                                      Cheque Copy
+                                                      Payment Copy
                                                       <span className="text-danger">
                                                         *
                                                       </span>

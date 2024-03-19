@@ -612,7 +612,7 @@ class SidebarContent extends Component {
                       <li>
                         <Link to={"/pending-b2b-clients"}>
                           {this.props.t("Pending")}
-                        </Link>h bu
+                        </Link>
                       </li>
                       <li>
                         <Link to={"/approved-b2b-clients"}>

@@ -2,6 +2,9 @@ import {
   GET_NEARBY_LABS,
   GET_NEARBY_LABS_FAIL,
   GET_NEARBY_LABS_SUCCESS,
+  GET_CORPORATE_LABS,
+  GET_CORPORATE_LABS_FAIL,
+  GET_CORPORATE_LABS_SUCCESS,
   GET_REGION_WISE_ADVERTISEMENT,
   GET_REGION_WISE_ADVERTISEMENT_FAIL,
   GET_REGION_WISE_ADVERTISEMENT_SUCCESS,
@@ -42,6 +45,20 @@ export const getNearbyLabsSuccess = nearbyLabs => ({
 
 export const getNearbyLabsFail = error => ({
   type: GET_NEARBY_LABS_FAIL,
+  payload: error,
+});
+export const getCorporateLabs = locationDetails => ({
+  type: GET_CORPORATE_LABS,
+  payload: { locationDetails },
+});
+
+export const getCorporateLabsSuccess = corporateLab => ({
+  type: GET_CORPORATE_LABS_SUCCESS,
+  payload: corporateLab,
+});
+
+export const getCorporateLabsFail = error => ({
+  type: GET_CORPORATE_LABS_FAIL,
   payload: error,
 });
 

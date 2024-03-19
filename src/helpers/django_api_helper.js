@@ -778,6 +778,13 @@ export const getActivityLogFinance = id =>
     headers: getHeader(authHeader()),
   });
 
+// ------------- Corporate START Activity Log-------------
+
+export const getCorporateCommit = id =>
+  get(`${url.GET_CORPORATE_COMMIT}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
 // ------------- Marketer Admin Activity Log -------------
 
 export const getActivityLogMarketer = id =>
@@ -1129,6 +1136,28 @@ export const getNearbyLabs = locationDetails => {
   });
 };
 
+// Get Corporate Nearby Labs
+export const getCorporateLabs = locationDetails => {
+  let formData = new FormData();
+  formData.append("latitude", locationDetails.latitude);
+  formData.append("longitude", locationDetails.longitude);
+  formData.append("search_type", locationDetails.search_type);
+  formData.append("km", locationDetails.km);
+  formData.append("name", locationDetails.name);
+  formData.append("LabType", locationDetails.LabType);
+  formData.append("address", locationDetails.address);
+  formData.append("city", locationDetails.city);
+  formData.append("guest_id", locationDetails.guest_id);
+  formData.append("locationAccessAllowed", locationDetails.locationAccessAllowed);
+  formData.append("corporatepatient", locationDetails.corporatepatient);
+  console.log("In near by lsbd: ", locationDetails)
+
+
+  return axios.post(`${url.GET_CORPORATE_LABS}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 // Get Nearby Tests
 export const getNearbyTests = data => {
   let formData = new FormData();
@@ -1285,8 +1314,6 @@ export const getCorporateProfileforpayment = id =>
 
 export const updateCorporateProfile = (corporateProfile, id) => {
   let formData = new FormData();
-  // formData.append("account_id", id);
-  // formData.append("unique_id", uid);
   formData.append("name", corporateProfile.name);
   formData.append("logo", corporateProfile.logo);
   formData.append("email", corporateProfile.email);
@@ -1296,6 +1323,7 @@ export const updateCorporateProfile = (corporateProfile, id) => {
   formData.append("city", corporateProfile.city);
   formData.append("payment_terms", corporateProfile.payment_terms);
   formData.append("national_taxation_no", corporateProfile.national_taxation_no);
+
   console.log("corporate profile update or not", corporateProfile, id);
 
   return axios.put(`${url.UPDATE_CORPORATE_PROFILE}/${id}`, formData, {

@@ -20,6 +20,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 //import Charts
+import StackedColumnChart from "./StackedColumnChart";
+
 // import StackedColumnChart from "./StackedColumnChart";
 
 //import action
@@ -163,7 +165,7 @@ class Dashboard extends Component {
                       </div>
                     </div>
                     <div className="clearfix" />
-                    {/* <StackedColumnChart chartSeries={this.state.chartSeries} /> */}
+                    <StackedColumnChart chartSeries={this.state.chartSeries} />
                   </CardBody>
                 </Card>
               </Col>

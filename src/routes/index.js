@@ -11,6 +11,7 @@ import StaffProfile from "../pages/Authentication/StaffProfile";
 import NearbyLabs from "../pages/LabMarket/NearbyLabs/index";
 import MedicalTestsList from "pages/LabMarket/NearbyLabs/MedicalTestsList";
 import NearbyLabDetail from "pages/LabMarket/NearbyLabs/NearbyLabDetail";
+import corporatelabs from "pages/LabMarket/NearbyLabs/CorporateLabs"
 // TestMarket Pages
 import labs from "pages/LabMarket/NearbyLabs/labs";
 import NearbyTests from "pages/LabMarket/NearbyLabs/NearbyTests";
@@ -61,7 +62,8 @@ import CorporateOfferedTestsList from "../pages/OfferedTests/corporate-offeredte
 import CorporateLabAppointmentsList from "../pages/CorporatesData/corporate-lab-appointments";
 import CorporateLabsList from "../pages/CorporatesData/corporate-labs-list";
 import CorporatePaymentForm from "../pages/CorporatesData/corporate-out-payment";
-import PaymentFormStatus from "../pages/CorporatesData/corporate-paymentout-created-statuss-list"
+import PaymentFormStatus from "../pages/CorporatesData/corporate-paymentout-created-statuss-list";
+import corporatecommit from "../pages/CorporatesData/commit-corporate";
 
 // Lab Components
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
@@ -114,6 +116,7 @@ import LabPathologists from "../pages/LabMarket/NearbyLabs/NearbyLabDetails/path
 
 // Patient Components
 import TestAppointmentsList from "../pages/PatientTestAppointments/test-appointments-list";
+import CorporateModalRoute from "../pages/PatientTestAppointments/corporate-model"
 import TestAppointmentsCSRList from "../pages/Dashboard-Csr/test-appointments-list";
 import TestsOfferedbyLab from "pages/LabMarket/NearbyLabs/TestsOfferedbyLab";
 import TestsOfferedbyLabCorporate from "pages/LabMarket/NearbyLabs/TestsOfferedbyLabCorporation"
@@ -760,6 +763,10 @@ const patientAuthProtectedRoutes = [
     component: TestAppointmentsList,
   },
   {
+    path: "/corporate-modal/:uuid?",
+    component: CorporateModalRoute,
+  },
+  {
     path: "/profile/:guest_id?",
     component: PatientProfile,
   },
@@ -812,6 +819,10 @@ const patientPublicRoutes = [
   {
     path: "/labs/:guest_id?/:uuid?",
     component: labs,
+  },
+  {
+    path: "/corporate-labs",
+    component: corporatelabs,
   },
   {
     path: "/nearby-test/:guest_id?/:uuid?",
@@ -882,10 +893,10 @@ const patientPublicRoutes = [
     component: LabPathologists,
   },
   { path: "/test-descriptions/:test_id/:uuid?", component: TestDescriptions },  
-  {
-    path: "/test-appointments/:uuid?",
-    component: TestAppointmentsList,
-  },
+  // {
+  //   path: "/test-appointments/:uuid?",
+  //   component: TestAppointmentsList,
+  // },
 ];
 
 const corporateAuthProtectedRoutes = [
@@ -928,7 +939,11 @@ const corporateAuthProtectedRoutes = [
   {
     path: "/corporate-payment-form-status",
     component: PaymentFormStatus,
-  }
+  },
+  {
+    path: "/corporate-activity-log/:id",
+    component: corporatecommit,
+  },
 ];
 
 const authProtectedRoutes = [

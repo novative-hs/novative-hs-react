@@ -1393,7 +1393,7 @@ class CartList extends Component {
                     <Row className="mt-4">
                       <Col sm="6">
                         <button
-                          to="/dashboard-patient/:id/nearby-labs"
+                          to="/dashboard-patient/:id/labs"
                           className="btn btn-danger"
                           onClick={this.handleEmptyCart}
                           disabled={this.state.carts.length == 0}

@@ -11,7 +11,7 @@ import {
   Label,
   Input,
 } from "reactstrap";
-
+import Select from "react-select";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -24,6 +24,7 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 
 // actions
 import {
+  getTerritoriesList,
   updateCorporateProfile,
   getCorporateProfile,
   getCorporateProfileSuccess,
@@ -40,7 +41,7 @@ class CorporateProfile extends Component {
       phone: "",
       landline: "",
       address: "",
-      // city: "",
+      city: "",
       payment_terms: "",
       isProfileUpdated: false,
       user_id: localStorage.getItem("authUser")
@@ -78,23 +79,57 @@ class CorporateProfile extends Component {
 
   componentDidMount() {
     this.props.getCorporateProfile(this.state.user_id);
-
-    setTimeout(() => {
-      this.setState({
-        name: this.props.success.name,
-        logo: process.env.REACT_APP_BACKENDURL + this.props.success.logo,
-        national_taxation_no: this.props.success.national_taxation_no,
-        email: this.props.success.email,
-        phone: this.props.success.phone,
-        landline: this.props.success.landline,
-        address: this.props.success.address,
-        // city: this.props.success.city,
-        payment_terms: this.props.success.payment_terms,
-      });
-    }, 1000);
+    this.props.getTerritoriesList();
   }
+  
+  componentDidUpdate(prevProps) {
+    if (prevProps.success !== this.props.success) {
+      const { success } = this.props;
+      if (success) {
+        this.setState({
+          name: success.name || "",
+          logo: success.logo ? process.env.REACT_APP_BACKENDURL + success.logo : "",
+          national_taxation_no: success.national_taxation_no || "",
+          email: success.email || "",
+          phone: success.phone || "",
+          landline: success.landline || "",
+          address: success.address || "",
+          city: success.city || "",
+          payment_terms: success.payment_terms || "",
+        });
+  
+        // Check if city and city_id are present and not empty
+        if (success.city && success.city_id) {
+          // Parse the cities and city_ids
+          const cities = success.city.split(", ");
+          const cityIds = success.city_id.split(",").map(id => parseInt(id));
+          
+          // Combine cities and cityIds into an array of objects compatible with react-select
+          const selectedCities = cities.map((city, index) => ({
+            label: city,
+            value: cityIds[index],
+          }));
+          
+          // Set the selected cities in the state
+          this.setState({ selectedCities });
+        } else {
+          console.error("Missing city or city_id in success object:", success);
+        }
+      }
+    }
+  }
+  
+  
 
   render() {
+    const cityList = [];
+    for (let i = 0; i < this.props.territoriesList.length; i++) {
+      cityList.push({
+        label: this.props.territoriesList[i].city,
+        value: this.props.territoriesList[i].id,
+      });
+    }
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -144,7 +179,7 @@ class CorporateProfile extends Component {
                     phone: (this.state && this.state.phone) || "",
                     landline: (this.state && this.state.landline) || "",
                     address: (this.state && this.state.address) || "",
-                    // city: (this.state && this.state.city) || "",
+                    city: (this.state && this.state.city) || "",
                     payment_terms: (this.state && this.state.payment_terms) || "",
                   }}
                   validationSchema={Yup.object().shape({
@@ -211,14 +246,14 @@ class CorporateProfile extends Component {
                         values.logo = fileData;
 
                         this.props.updateCorporateProfile(values, this.state.user_id);
-                        console.log("update howa yah nahi 11", this.props.updateCorporateProfile(values, this.state.user_id))
+                        // console.log("update howa yah nahi 11 if", this.props.updateCorporateProfile(values, this.state.user_id))
                       });
                     }
 
                     // Otherwise just call update method
                     else {
                       this.props.updateCorporateProfile(values, this.state.user_id);
-                      console.log("update howa yah nahi", this.props.updateCorporateProfile(values, this.state.user_id))
+                      // console.log("update howa yah nahi  else", this.props.updateCorporateProfile(values, this.state.user_id))
                     }
 
                     // To show success message of update
@@ -410,8 +445,55 @@ class CorporateProfile extends Component {
                           className="invalid-feedback"
                         />
                       </div>
+                       {/*City*/}
+                    
+                      <div>
 
+<Label for="city_id" className="form-label">
+  City
+</Label>
+<Select
+  name="city_id"
+  isMulti={true}
+  onChange={selectedGroups => {
+    // Update selectedCities state with the new selection
+    this.setState({
+      selectedCities: selectedGroups,
+      // Update city state with the names of the selected cities
+      city: selectedGroups ? selectedGroups.map(group => group.label).join(", ") : ""
+    });
+  }}
+  className={
+    "defautSelectParent" +
+    (errors.city_id && touched.city_id ? " is-invalid" : "")
+  }
+  styles={{
+    control: (base, state) => ({
+      ...base,
+      borderColor:
+        errors.city_id && touched.city_id ? "#f46a6a" : "#ced4da",
+    }),
+  }}
+  options={cityList} // Pass the cityList array as options
+  value={this.state.selectedCities} // Set the selected cities here
+  placeholder="Select City..."
+/>
+
+<ErrorMessage
+  name="city_id"
+  component="div"
+  className="invalid-feedback"
+/>
+
+
+<ErrorMessage
+  name="city_id"
+  component="div"
+  className="invalid-feedback"
+/>
+</div>
                       {/* Address field */}
+
                       <div className="mb-3">
                         <Label for="address" className="form-label">
                           Complete Address
@@ -516,15 +598,20 @@ CorporateProfile.propTypes = {
   success: PropTypes.any,
   getCorporateProfile: PropTypes.func,
   getCorporateProfileSuccess: PropTypes.func,
+  getTerritoriesList: PropTypes.func,
+  territoriesList: PropTypes.array,
 };
 
 const mapStateToProps = state => {
+  const { territoriesList } = state.CorporateInformation;
   const { error, success } = state.CorporateProfile;
-  return { error, success };
+
+  return { error, success, territoriesList };
 };
 
 export default withRouter(
   connect(mapStateToProps, {
+    getTerritoriesList,
     updateCorporateProfile,
     getCorporateProfile,
     getCorporateProfileSuccess,

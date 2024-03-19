@@ -628,7 +628,7 @@ class MedicalTestList extends Component {
     const isFilterApplied3 = this.state.test_id && this.state.search_type === "Custom Address" && this.state.address;
     const renderedRowKeys = []; // Array to store rendered row keys
     console.log("have data in the renderedRowKeys", renderedRowKeys)
-
+    const isSmallScreen = window.innerWidth < 490;
 
     return (
       <React.Fragment>
@@ -1299,6 +1299,7 @@ class MedicalTestList extends Component {
             {/* <title>Approved Donors | Lab Hazir</title> */}
           </MetaTags>
           <Container fluid>
+          {!isSmallScreen ? (
             <Row className="mb-3">
               <Formik
                 enableReinitialize={true}
@@ -1523,6 +1524,231 @@ class MedicalTestList extends Component {
                 )}
               </Formik>
             </Row>
+          ) : <Row className="mb-3">
+          <Formik
+            enableReinitialize={true}
+            initialValues={{
+              search_type:
+                (this.state && this.state.search_type) ||
+                "",
+              city_id: (this.state && this.state.city_id) || "",
+              test_id: (this.state && this.state.test_id) ||
+                "",
+              km: (this.state && this.state.km) || "30",
+            }}
+            validationSchema={Yup.object().shape({
+              // city: Yup.string().when("search_type", {
+              //   is: val => val === "Custom Address",
+              //   then: Yup.string().required("Please enter your City"),
+              // }),
+              // location: Yup.string().when("city", {
+              //   is: val => val != "",
+              //   then: Yup.string().required("Please enter your Location"),
+              // }),
+            })}
+          >
+            {({ errors, status, touched }) => (
+              <Form className="form-horizontal">
+                {/* Type field */}
+                <Row className="g-0">
+                    <Col Col xs="6" sm="6" md="3" lg="3">
+                      <div>
+                        <Label
+                          for="LabType2"
+                          className="form-label"
+                          style={{
+                            fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                            color: 'black',
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          Search Types
+                        </Label>
+                        <select
+                          name="search_type"
+                          component="select"
+                          onChange={(e) => this.onChangeSearchType(e)
+                          }
+                          value={search_type}
+                          className="form-select"
+                          style={{
+                            border: borderColor,
+                            borderRadius: '5px',
+                            // Add more style overrides as needed
+                          }}
+                        >
+                          <option value="">Choose an option</option>
+                          <option value="Current Location">Current Location</option>
+                          <option value="City">Search By City</option>
+                          <option value="Custom Address">Custom Address</option>
+
+                        </select>
+                      </div>
+                    </Col>
+                    {this.state.search_type === 'Custom Address' && (
+                          <Col xs="4" sm="4" md="2" lg="2">
+                            <div>
+                            <Label
+                              for="LabType2"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                color: 'black',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              Custom Address
+                            </Label>
+                              <Input
+                                defaultValue={this.state.address}
+                                onChange={(e) => this.onChangeAddress(e)}
+                                id="pac-input"
+                                type="text"
+                                className="form-control"
+                                placeholder="Address.."
+                                style={{
+                                  border: '2px solid yellow',
+                                  borderRadius: '5px',
+                                  // Add more style overrides as needed
+                                }}
+                              />
+                            </div>
+                          </Col>
+                    )}
+                    {this.state.search_type === 'Custom Address' && (
+                      <Col xs="2" sm="2" md="2" lg="2">
+                        <div>
+                        <Label
+                              for="LabType2"
+                              className="form-label"
+                              style={{
+                                fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                                color: 'black',
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Km
+                            </Label>
+                          <div className="input-group">
+                            <Input
+                              defaultValue={this.state.km}
+                              onChange={(e) => this.onChangeKm(e)}
+                              id="pac-input"
+                              type="number"
+                              className="form-control"
+                              placeholder="km.."
+                              style={{
+                                border: '2px solid yellow',
+                                borderRadius: '5px',
+                                fontSize: '14px'
+                                // Add more style overrides as needed
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </Col>
+                    )}
+                    {this.state.search_type === 'Current Location' && (
+                      <Col xs="3" sm="3" md="2" lg="2">
+                        <div>
+                          <Label
+                            for="LabType"
+                            className="form-label"
+                            style={{
+                              fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                              color: 'black',
+                              fontWeight: "bold",
+                            }}
+                          >
+                            <span style={{ fontSize: '12px' }}>Km </span>
+                          </Label>
+                          <div className="input-group">
+                            <Input
+                              defaultValue={this.state.km}
+                              onChange={(e) => this.onChangeKm(e)}
+                              id="pac-input"
+                              type="number"  // Change "numbers" to "number"
+                              className="form-control"
+                              placeholder=""
+                              style={{
+                                border: '2px solid red',
+                                borderRadius: '5px',
+                                fontSize: '14px'
+                                // Add more style overrides as needed
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </Col>
+                    )}
+                    {this.state.search_type === 'City' && (
+                      <Col xs="6" sm="6" md="6" lg="6">
+                        <div>
+                          <Label for="city" className="form-label" style={{
+                            fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                            color: 'black',
+                            fontWeight: 'bold',
+                          }}>
+                            Select City
+                          </Label>
+                          <Select
+                            name="city"
+                            component="Select"
+                            onChange={this.handleCityChange} // Call the separate function here
+                            className="defautSelectParent"
+                            options={cityList}
+                            defaultValue={{
+                              label: "Select City...",
+                              value: this.state.id,
+                            }}
+                            styles={{
+                              control: (provided, state) => ({
+                                ...provided,
+                                border: '2px solid green',
+                                borderRadius: '5px',
+                              }),
+                              // Add more style overrides as needed
+                            }}
+                          />
+                        </div>
+                      </Col>
+                    )}</Row>
+                    <Row className="g-0">
+                    <Col xs="6" sm="6" md="3" lg="3">
+                      <div className="mb-3">
+                        <Label for="test_id" className="form-label" style={{
+                          fontSize: window.innerWidth <= 576 ? '7px' : '12px',
+                          color: 'black',
+                          fontWeight: 'bold',
+                        }}>
+                          Select Test Names
+                        </Label>
+                        <Select
+                          name="test"
+                          component="Select"
+                          placeholder="Select Test..."
+                          onChange={this.handleTestsChange} // Call the separate function here
+                          isMulti={true}
+                          className="defautSelectParent"
+                          options={testList}
+                          styles={{
+                            control: (provided, state) => ({
+                              ...provided,
+                              border: '2px solid blue',
+                              borderRadius: '5px',
+                            }),
+                            // Add more style overrides as needed
+                          }}
+                        />
+                        <p className="text-danger font-size-10">You may Select Single or Multiple Tests to Book.</p>
+                      </div>
+
+                    </Col>
+                  </Row>
+              </Form>
+            )}
+          </Formik>
+        </Row>}
             <Row>
               <Card >
                 <CardBody>
@@ -1592,6 +1818,9 @@ class MedicalTestList extends Component {
                                                 starSpacing="3px"
                                               />
                                             </div>
+                                            {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                           </div>
                                         </React.Fragment>
                                       ) : null}
@@ -1627,6 +1856,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
 
@@ -1658,6 +1890,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
 
@@ -1689,6 +1924,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
                                 </td>
@@ -1919,6 +2157,9 @@ class MedicalTestList extends Component {
                                                 starSpacing="3px"
                                               />
                                             </div>
+                                            {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                           </div>
                                         </React.Fragment>
                                       ) : null}
@@ -1954,6 +2195,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
 
@@ -1985,6 +2229,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
 
@@ -2016,6 +2263,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
                                 </td>
@@ -2244,6 +2494,9 @@ class MedicalTestList extends Component {
                                                 starSpacing="3px"
                                               />
                                             </div>
+                                            {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                           </div>
                                         </React.Fragment>
                                       ) : null}
@@ -2279,6 +2532,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
 
@@ -2310,6 +2566,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
 
@@ -2341,6 +2600,9 @@ class MedicalTestList extends Component {
                                           starSpacing="3px"
                                         />
                                       </div>
+                                      {referrelFeeLab && referrelFeeLab.rating && (
+    <p> {referrelFeeLab.rating}</p>
+)}
                                     </div>
                                   )}
                                 </td>

@@ -48,6 +48,7 @@ import {
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
+// import { Tooltip } from "@material-ui/core";
 
 class OfferedTestsList extends Component {
   constructor(props) {
@@ -401,23 +402,9 @@ class OfferedTestsList extends Component {
                                               "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            employee_code: Yup.number(
-                                              "Please enter number only"
-                                            )
-                                              .required(
-                                                "Please enter your employee_code"
-                                              )
-                                              .positive()
-                                              .integer()
-                                              .min(
-                                                0,
-                                                "Please enter a number greater than or equal to 0"
-                                              )
-                                              .max(
-                                                50000,
-                                                "Please enter a number less than or equal to 50000"
-                                              ),
-
+                                            employee_code: Yup.string()
+                                              .required("Employee Code is required")
+                                              .matches(/^\d{13}$/, "Employee Code must be exactly 13 digits")
                                           })}
                                           onSubmit={(values, { setSubmitting }) => {
                                             console.log("Form submitted with values:", values);
@@ -490,42 +477,14 @@ class OfferedTestsList extends Component {
                                                  </div>
 
                                                  <div className="mb-3">
-                                                   <Label
-                                                     className="col-form-label"
-                                                   >
-                                                     Employee Code
-                                                     <span
-                                                       style={{ color: "#f46a6a" }}
-                                                       className="font-size-18"
-                                                     >
-                                                       *
-                                                     </span>
-                                                   </Label>
-                                                    <Input
-                                                      id="employee_code"
-                                                      name="employee_code"
-                                                      type="text"
-                                                      value={this.state.offeredTest.employee_code}  
-                                                      onChange={e => {
-                                                             this.setState({
-                                                               offeredTest: {
-                                                                 id: offeredTest.id,
-                                                                 name:
-                                                                   offeredTest.name,
-                                                                 employee_code:
-                                                                   e.target.value,
-                                                               },
-                                                             });
-                                                           }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.employee_code &&
-                                                        touched.employee_code
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      } 
-                                                    />
-                                                 </div>
+        <Label className="col-form-label">Employee Code</Label>
+        <Field
+          type="text"
+          name="employee_code"
+          className={"form-control" + (errors.employee_code && touched.employee_code ? " is-invalid" : "")}
+        />
+        <ErrorMessage name="employee_code" component="div" className="invalid-feedback" />
+      </div>
                                                </Col>
                                              </Row>
                                              <Row>

@@ -82,8 +82,7 @@ const staff = (state = INIT_STATE, action) => {
 
     case ADD_STAFF_FAIL:
       return {
-        ...state,
-        error: action.payload,
+        ...state, error: action.payload, loading: false
       };
 
     case UPDATE_STAFF_SUCCESS:

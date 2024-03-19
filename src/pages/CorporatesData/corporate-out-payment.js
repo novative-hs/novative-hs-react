@@ -136,10 +136,10 @@ class OutPaymentsForm extends Component {
       console.log(
         onAddNewCorporatePayment(this.state.outPayment, this.state.user_id)
       );
-    }, 2000);
-    // setTimeout(() => {
-    //   this.props.history.push("/payment-out-pending-clearence-status");
-    // }, 2000)
+    }, 1000);
+    setTimeout(() => {
+      this.props.history.push("/corporate-payment-form-status");
+    }, 2000)
   };
 
 

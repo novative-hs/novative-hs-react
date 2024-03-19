@@ -115,6 +115,10 @@ class RegAdminNotificationDropdown extends Component {
             </div>
 
             <SimpleBar style={{ height: "230px" }}>
+                     <Link
+                to="/labs-list-pending-fee"
+                className="text-reset sampleNotification-item"
+              >
             {!isEmpty(regAdminNotification) &&
               regAdminNotification.map((notifications, key) => (
                 <Col key={"col" + key}>
@@ -179,6 +183,7 @@ class RegAdminNotificationDropdown extends Component {
                   </>
                 </Col>
               ))}
+                </Link>
             </SimpleBar>
           </DropdownMenu>
         </Dropdown>
