@@ -102,18 +102,6 @@ class TestsList extends Component {
           ),
         },
         {
-          dataField: "status",
-          text: "Status",
-          sort: true,
-          formatter: (cellContent, offeredTest) => (
-            <>
-              <span>
-                {offeredTest.status}
-              </span>
-            </>
-          ),
-        },
-        {
           dataField: "menu",
           isDummyField: true,
           editable: false,
@@ -121,11 +109,11 @@ class TestsList extends Component {
           formatter: (cellContent, offeredTest) => (
             // <div className="d-flex gap-6">
               <div className="float-middle">
-                <Button
+               <Button
                   color="primary"
                   className="w-55  btn-block btn btn-primary"
                   // onClick={() => this.handleOfferedTestClicks(offeredTest.id)}
-                  onClick={e => this.handleOfferedTestClicks(e, offeredTest.id, offeredTest.name)}
+                  onClick={() => this.handleSaveButtonClick(offeredTest.id)}
 
                 // disabled={offeredTest.length == 0}
                 >
@@ -225,7 +213,7 @@ class TestsList extends Component {
 
     this.toggle();
   };
-  handleOfferedTestClicks = (e, arg1, arg2) => {
+  handleOfferedTestClicks = (e, arg1, arg2, arg3) => {
     this.setState({
       offeredTest: "",
       isEdit: false,
@@ -233,20 +221,21 @@ class TestsList extends Component {
         ...this.state.initialValues,
         corporate_id: arg1, // set the corporate_id value to arg
         name: arg2,
+        status: "Accept",
       },
       selectedTest: arg1, // store arg in component state
       selectedname: arg2, 
+      selectedstatus: "Accept", 
 
     });
-    this.toggle();
   };
-  handleSaveButtonClick = () => {
+  handleSaveButtonClick = (complaintId) => {
     // Your other logic...
     const { selectedTest } = this.state; // Use selectedTest from the component state
   
     const newOfferedTest = {
-      corporate_id: selectedTest, // Use selectedTest as the corporate_id value
-      status: this.state.status,
+      corporate_id: complaintId, // Use selectedTest as the corporate_id value
+      status: "Accept",
     };
   
     // Dispatch the action
@@ -261,7 +250,6 @@ class TestsList extends Component {
     }, 1000);
   
     // Close the modal or perform other actions as needed
-    this.toggle();
   };
   render() {
     const { SearchBar } = Search;
@@ -358,7 +346,7 @@ class TestsList extends Component {
                                       >
                                         {!!isEdit
                                           ? "Edit Offered Test"
-                                          : "Add Offered Test"}
+                                          : "Corporate Offer"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
@@ -471,13 +459,13 @@ class TestsList extends Component {
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">
-                                                  <button
+                                                  {/* <button
   type="button"
   className="btn btn-success save-user"
   onClick={() => this.handleSaveButtonClick()}
 >
   Save
-</button>     
+</button>      */}
                                                   </div>
                                                 </Col>
                                               </Row>

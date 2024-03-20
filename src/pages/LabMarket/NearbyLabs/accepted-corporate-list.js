@@ -122,18 +122,18 @@ class OfferedTestsList extends Component {
             </>
           ),
         },
-        {
-          dataField: "status",
-          text: "Status",
-          sort: true,
-          formatter: (cellContent, offeredTest) => (
-            <>
-              <span>
-                {offeredTest.status}
-              </span>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "status",
+        //   text: "Status",
+        //   sort: true,
+        //   formatter: (cellContent, offeredTest) => (
+        //     <>
+        //       <span>
+        //         {offeredTest.status}
+        //       </span>
+        //     </>
+        //   ),
+        // },
         {
           dataField: "menu",
           isDummyField: true,
@@ -141,15 +141,17 @@ class OfferedTestsList extends Component {
           text: "Action",
           formatter: (cellContent, offeredTest) => (
             <div className="d-flex gap-3" style={{ textAlign: "center", justifyContent: "center" }}>
-              {/* <Tooltip title="Update"> */}
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={e => this.handleOfferedTestClick(e, offeredTest)}
-                  ></i>
-                </Link>
-              {/* </Tooltip> */}
+              <Button
+                  color="primary"
+                  className="w-55  btn-block btn btn-primary"
+                  // onClick={() => this.handleOfferedTestClicks(offeredTest.id)}
+                  onClick={() => this.handleSaveButtonClick(offeredTest.id)}
+
+                // disabled={offeredTest.length == 0}
+                >
+                  <i className="mdi mdi-sticker-check-outline me-1" />
+                  Pending
+                </Button>
             </div>
           ),
         },
@@ -253,29 +255,38 @@ class OfferedTestsList extends Component {
 
     this.toggle();
   };
-  handleSaveButtonClick = () => {
-    // Your other logic...
+  // handleSaveButtonClick = (complaintId) => {
+  //   // Your other logic...
   
-    const { offeredTest } = this.state;
+  //   const { offeredTest } = this.state;
   
-    const updateCorporateStatus = {
-      id: offeredTest.id,
-      status: this.state.status,
-    };
+  //   const updateCorporateStatus = {
+  //     id: complaintId,
+  //     status: "Pending",
+  //     shared_percentage: this.state.shared_percentage
+  //   };
   
-    // Dispatch the action
-    this.props.onUpdateCorporateStatus(updateCorporateStatus);
+  //   // Dispatch the action
+  //   this.props.onUpdateCorporateStatus(updateCorporateStatus);
   
-    // Optionally, you can handle the asynchronous behavior here
-    // For example, use a promise or callback function
+  //   // Optionally, you can handle the asynchronous behavior here
+  //   // For example, use a promise or callback function
+  //   setTimeout(() => {
+  //     this.props.onGetALabCorporate(
+  //       this.state.user_id
+  //     );
+  //   }, 1000);
+  
+  //   // Close the modal or perform other actions as needed
+  // };
+  handleSaveButtonClick = (complaintId) => {
+    // Dispatch an action to update the status in Redux
+    const { onUpdateCorporateStatus, onGetALabCorporate} = this.props;
+    onUpdateCorporateStatus({ id: complaintId, status: "Pending", shared_percentage: 0 });
+
     setTimeout(() => {
-      this.props.onGetALabCorporate(
-        this.state.user_id
-      );
+      onGetALabCorporate(this.state.user_id);
     }, 1000);
-  
-    // Close the modal or perform other actions as needed
-    this.toggle();
   };
 
   render() {
