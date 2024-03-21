@@ -122,12 +122,12 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Dashboard")}</span>
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link to={"/b2b-account-statements"}>
                     <i className="bx bx-receipt" />
                     <span>{this.props.t("Statement")}</span>
                   </Link>
-                </li>
+                </li> */}
                 <li className="menu-title">{this.props.t("B2B")}</li>
                 {/* B2b referred Patient List */}
                 <li>
@@ -137,10 +137,16 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
                 {/* B2B Shares List */}
-                <li>
+                {/* <li>
                   <Link to={"/b2b-shares"}>
                     <i className="fas fa-user" />
                     <span>{this.props.t("B2B Shares")}</span>
+                  </Link>
+                </li> */}
+                 <li>
+                  <Link to={"/b2b-shares"}>
+                    <i className="fas fa-user" />
+                    <span>{this.props.t("Labs List")}</span>
                   </Link>
                 </li>
                 {/* <li>
