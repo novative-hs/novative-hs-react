@@ -78,7 +78,7 @@ class Checkout extends Component {
       appointment_requested_at: "",
       is_home_sampling_availed: "",
       is_state_sampling_availed: "",
-      payment_method: "",
+      payment_method: "Cash",
       card_number: "",
       donation: "",
       name_on_card: "",
@@ -92,11 +92,12 @@ class Checkout extends Component {
       selectedGroup: null,
       checkoutSuccess: "",
       ageFormat: 'years', // default to years
-
     };
+
     this.toggleTab = this.toggleTab.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
     this.handleSelectGroup = this.handleSelectGroup.bind(this);
+
     console.log("guest_id", this.props.match.params.guest_id);
     console.log("uuid", this.props.match.params.uuid);
     console.log("id", this.props.match.params.id);
@@ -204,25 +205,30 @@ class Checkout extends Component {
   handleFullProceedClick = () => {
     const canProceed = this.checkForFullValidations();
     if (canProceed) {
+      let paymentMethod;
+      if (this.state.user_id && this.state.user_type !== "CSR") {
+        paymentMethod =
+          this.props.patientProfile.corporate_payment === "Payment by Coorporate to LH"
+            ? "Corporate to Lab"
+            : this.state.payment_method;
+      } else {
+        paymentMethod = this.state.payment_method;
+      }
+  
       if (this.state.user_id && this.state.user_type !== "CSR") {
         this.setState({
           checkoutData: {
-            uuid: this.props.match.params.uuid
-              ? this.props.match.params.uuid
-              : "",
+            uuid: this.props.match.params.uuid ? this.props.match.params.uuid : "",
             patient_name: this.state.patient_name,
             patient_age: this.state.patient_age,
             ageFormat: this.state.ageFormat,
             patient_gender: this.state.patient_gender,
             patient_phone: this.state.patient_phone,
-            // relationsip_with_patient: this.state.relationsip_with_patient,
             patient_address: this.state.patient_address,
-            // city_id: this.state.city_id,
-            // patient_district: this.state.patient_district,
             appointment_requested_at: this.state.appointment_requested_at,
             is_home_sampling_availed: this.state.is_home_sampling_availed,
             is_state_sampling_availed: this.state.is_state_sampling_availed,
-            payment_method: this.state.payment_method,
+            payment_method: paymentMethod,
             card_number: this.state.card_number,
             donation: this.state.donation,
             name_on_card: this.state.name_on_card,
@@ -233,9 +239,7 @@ class Checkout extends Component {
       } else if (this.state.user_id && this.state.user_type === "CSR") {
         this.setState({
           checkoutData: {
-            uuid: this.props.match.params.uuid
-              ? this.props.match.params.uuid
-              : "",
+            uuid: this.props.match.params.uuid ? this.props.match.params.uuid : "",
             csr_id: this.state.user_id,
             booked_by: "CSR",
             patient_name: this.state.patient_name,
@@ -243,10 +247,7 @@ class Checkout extends Component {
             ageFormat: this.state.ageFormat,
             patient_gender: this.state.patient_gender,
             patient_phone: this.state.patient_phone,
-            // relationsip_with_patient: this.state.relationsip_with_patient,
             patient_address: this.state.patient_address,
-            // city_id: this.state.city_id,
-            // patient_district: this.state.patient_district,
             appointment_requested_at: this.state.appointment_requested_at,
             is_home_sampling_availed: this.state.is_home_sampling_availed,
             is_state_sampling_availed: this.state.is_state_sampling_availed,
@@ -259,53 +260,44 @@ class Checkout extends Component {
           },
         });
       }
-
-      // API call to get the checkout items
+  
+      // API call to add checkout data
       const { onAddCheckoutData } = this.props;
-      if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-        setTimeout(() => {
-          onAddCheckoutData(this.state.checkoutData, this.state.user_id);
-        }, 2000);
-      } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-        setTimeout(() => {
-          onAddCheckoutData(
-            this.state.checkoutData,
-            this.props.match.params.id
-          );
-        }, 2000);
-      } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
-        setTimeout(() => {
-          onAddCheckoutData(
-            this.state.checkoutData,
-            this.props.match.params.guest_id
-          );
-        }, 2000);
-      }
-
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      // setTimeout(() => {
+      const userId = this.state.user_id;
+      const guestId = this.props.match.params.guest_id;
+      const csrId = this.props.match.params.id;
+  
+      setTimeout(() => {
+        if (userId && this.state.user_type !== "CSR") {
+          onAddCheckoutData(this.state.checkoutData, userId);
+        } else if (userId && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
+          onAddCheckoutData(this.state.checkoutData, csrId);
+        } else if (userId && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
+          onAddCheckoutData(this.state.checkoutData, guestId);
+        }
+      }, 2000);
+  
+      // Set state to show checkout success modal
       if (this.props.checkedoutData) {
         this.setState({
-          checkoutSuccess:
-            this.setState({ PatientModal: true })
+          checkoutSuccess: true,
+          PatientModal: true,
         });
       }
-      // }, 3000);
-      if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
-        // setTimeout(() => {
-        //   this.props.history.push("/labs");
-        // }, 7000)
-      } else if (this.state.user_id && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
-        setTimeout(() => {
+  
+      // Redirect to respective dashboard after timeout
+      setTimeout(() => {
+        if (userId && this.state.user_type !== "CSR" && this.state.user_type !== "b2bclient") {
+          this.props.history.push("/labs");
+        } else if (userId && this.state.user_type === "CSR" && this.state.user_type !== "b2bclient") {
           this.props.history.push("/dashboard-csr");
-        }, 7000)
-      } else if (this.state.user_id && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
-        setTimeout(() => {
+        } else if (userId && this.state.user_type !== "CSR" && this.state.user_type === "b2bclient") {
           this.props.history.push("/dashboard-b2bclient");
-        }, 7000)
-      }
+        }
+      }, 7000);
     }
   };
+  
 
   checkForFullValidations = () => {
     // Check if patient's name, age and appointment Booked for is filled
@@ -457,6 +449,16 @@ class Checkout extends Component {
 
     // Now you can safely access patientProfile from props
     const { patientProfile } = this.props;
+    // if (console.log("patient in the if",patientProfile && patientProfile.corporate_payment)) {
+    //   let paymentMethod = "";
+    //   if (patientProfile.corporate_payment === "Payment by Patient to Lab") {
+    //     paymentMethod = "Cash";
+    //   } else if (patientProfile.corporate_payment === "Payment by Coorporate to LH") {
+    //     paymentMethod = "Corporate to Lab";
+    //   }
+    //   this.setState({ payment_method: paymentMethod });
+    // }    console.log("patient info",this.state.payment_method)
+
 
     // Update the state with the fetched patientProfile
     if (this.state.user_id && this.state.user_type !== "CSR") {
@@ -845,8 +847,9 @@ class Checkout extends Component {
                       Thank You For Choosing Labhazir!
                     </strong>
                   </Col>
-
-                  <div className="d-flex justify-content-center mb-3">
+                  {this.props.patientProfile.corporate_id = "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
+<>
+<div className="d-flex justify-content-center mb-3">
                     <Link
                       to="/nearby-test"
                       // onClick={this.printInvoice}
@@ -871,12 +874,39 @@ class Checkout extends Component {
                       Track Appointments
                     </Link>
                   </div>
-
                   <div className="text-center mb-3">
                     <Link to="/labs" className="btn btn-primary" onClick={this.closeModal}>
                       <i className="bx bxs-home" /> Go Back To Home Page
                     </Link>
                   </div>
+</>
+                  ): <>
+                  <div className="d-flex justify-content-center mb-3">
+                    <Link
+                      to="/labs"
+                      // onClick={this.printInvoice}
+                      className="btn btn-primary mt-2 me-1"
+                      // style={{
+                      //   color: "black",
+                      //   border: "2px solid blue",
+                      //   // backgroundColor: "white",
+                      // }}
+                    >
+                      Go Back To Home Page
+                    </Link>
+                    <Link
+                      to="/test-appointments"
+                      className="btn mt-2 me-1"
+                      style={{
+                        color: "black",
+                        border: "2px solid blue",
+                        backgroundColor: "white",
+                      }}
+                    >
+                      Track Appointments
+                    </Link>
+                  </div>
+                 </>}
                 </div>
               </div>
               <div className="checkout-tabs">
@@ -2145,12 +2175,11 @@ class Checkout extends Component {
                                   </div>
                                 ) : null}
                               </div>
-                              ) : (
-<div className="form-check form-check-inline font-size-16">
+                              ) : this.props.patientProfile.corporate_payment == "Payment by Patient to Lab" ? (
+                                  <div className="form-check form-check-inline font-size-16">
                                   <Input
                                     type="radio"
                                     value="Cash"
-                                    // defaultChecked
                                     name="payment_method"
                                     id="customRadioInline1"
                                     className="form-check-input"
@@ -2167,7 +2196,28 @@ class Checkout extends Component {
                                     Cash on Spot
                                   </Label>
                                 </div>
-                              )}
+                              ) : this.props.patientProfile.corporate_payment == "Payment by Coorporate to LH" ? (
+                                <div className="form-check form-check-inline font-size-16">
+                                  <Input
+                                    type="radio"
+                                    value="Cash"
+                                    defaultChecked
+                                    name="payment_method"
+                                    id="customRadioInline1"
+                                    className="form-check-input"
+                                    onChange={this.handlePaymentMethodChange}
+                                  />
+                                  <Label
+                                    className="form-check-label font-size-13"
+                                    htmlFor="customRadioInline1"
+                                  >
+                                    {/* <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "} */}
+                                    <i className="fas fa-money-bill-alt me-1 font-size-18 align-top" style={{ color: 'green' }} />
+                                    Corporate to Lab
+                                  </Label>
+                                </div>
+
+                              ) : null}
                               
                             </div>
                             {/* <Row className="mt-4">
@@ -2358,56 +2408,61 @@ class Checkout extends Component {
                                 </div>
 
                               </CardBody>
+
                               {!isEmpty(this.state.payment_method) && (
-                                <Card className="shadow-none border mb-0">
-                                  <CardBody className="text-center">
-                                    <CardTitle className="mb-1">
-                                      <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
-                                      Payment Method
-                                    </CardTitle>
+  <Card className="shadow-none border mb-0">
+    <CardBody className="text-center">
+      <CardTitle className="mb-1">
+        <i className="mdi mdi-wallet me-1 font-size-18 align-middle" style={{ color: 'red' }} />
+        Payment Method
+      </CardTitle>
 
-                                    {this.state.payment_method !== "card" && (
-                                      <div>
-                                        <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                          <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
-                                        </p>
-                                      </div>
-                                    )}
+      {this.state.payment_method !== "Card" && (
+        <div>
+          <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+            {this.props.patientProfile.corporate_payment === "Payment by Coorporate to LH" && this.state.payment_method === "Cash" ? (
+              // this.setState({ payment_method: "Corporate to Lab" }), // Setting the state directly
+              <span style={{ color: 'red', marginLeft: '10px' }}>Corporate to Lab</span>
+            ) : (
+              <span style={{ color: 'red', marginLeft: '10px' }}>{this.state.payment_method}</span>
+            )}
+          </p>
+        </div>
+      )}
 
-                                    {this.state.payment_method === "Card" && (
-                                      <div>
-                                        <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-                                          <span style={{ marginLeft: '10px' }}>{this.state.card_number}</span>
-                                        </p>
-                                      </div>
-                                    )}
+      {this.state.payment_method === "Card" && (
+        <div>
+          <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
+            <span style={{ marginLeft: '10px' }}>Card Number: {this.state.card_number}</span>
+          </p>
+        </div>
+      )}
 
-                                    {this.state.payment_method === "Donation" && (
-                                      <div>
-                                        <p style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '10px', color: 'red', backgroundColor: 'grey' }}>
-                                          Sub Total After Donation= Rs. 0
-                                        </p>
-                                      </div>
-                                    )}
+      {this.state.payment_method === "Donation" && (
+        <div>
+          <p style={{ fontWeight: 'bold', fontSize: '20px', marginTop: '10px', color: 'red', backgroundColor: 'grey' }}>
+            Sub Total After Donation = Rs. 0
+          </p>
+        </div>
+      )}
 
-
-                                    <div>
-                                      <div className="table-responsive">
-                                        <a
-                                          href="#"
-                                          onClick={this.handleClickAddPayment}
-                                          style={{ textDecoration: 'none', color: 'inherit' }}
-                                        >
-                                          <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red', fontWeight: "bold" }} />
-                                          <strong>Change Your Payment Method</strong>
-                                        </a>
-                                      </div>
-
-                                      {/* Rest of your component code */}
-                                    </div>
-                                  </CardBody>
-                                </Card>
-                              )}
+      {this.props.patientProfile.corporate_payment !== "Payment by Coorporate to LH" && this.props.patientProfile.corporate_payment !== "Payment by Patient to Lab" && (
+        <div>
+          <div className="table-responsive">
+            <a
+              href="#"
+              onClick={this.handleClickAddPayment}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <i className="mdi mdi-pencil me-1 font-size-18 align-middle" style={{ color: 'red', fontWeight: "bold" }} />
+              <strong>Change Your Payment Method</strong>
+            </a>
+          </div>
+        </div>
+      )}
+    </CardBody>
+  </Card>
+)}
 
                               {isEmpty(this.state.payment_method) && (
                                 <Card className="shadow-none border mb-0">

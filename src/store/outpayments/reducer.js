@@ -5,6 +5,8 @@ import {
   GET_LABS_C_FAIL,
   GET_LIST_DONATIONAPPOINTMENT_SUCCESS,
   GET_LIST_DONATIONAPPOINTMENT_FAIL,
+  GET_LIST_CLABS_SUCCESS,
+  GET_LIST_CLABS_FAIL,
   GET_LIST_INVOICE_SUCCESS,
   GET_LIST_INVOICE_FAIL,
   GET_BANKS_SUCCESS,
@@ -28,6 +30,7 @@ import {
 } from "./actionTypes";
 
 const INIT_STATE = {
+  listCLabs: [],
   corporateProfiles: [],
   staffProfiles: [],
   outPayments: [],
@@ -105,6 +108,17 @@ const outPayments = (state = INIT_STATE, action) => {
       };
 
     case GET_LIST_DONATIONAPPOINTMENT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_LIST_CLABS_SUCCESS:
+      return {
+        ...state,
+        listCLabs: action.payload.data,
+      };
+
+    case GET_LIST_CLABS_FAIL:
       return {
         ...state,
         error: action.payload,

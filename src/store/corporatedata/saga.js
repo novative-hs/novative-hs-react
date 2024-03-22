@@ -9,6 +9,7 @@ import {
   GET_EMPLOYEECORPORATE,
   GET_LABSCORPORATE,
   ADD_NEW_CEMPLOYEE_DATA,
+  ADD_NEW_CEMPLOYEE_FILE,
   UPDATE_CEMPLOYEE,
 } from "./actionTypes";
 
@@ -27,6 +28,8 @@ import {
   getLabsCorporateFail,
   addCemployeeDataFail,
   addCemployeeDataSuccess,
+  addCemployeefileFail,
+  addCemployeefileSuccess,
   updateCemployeeSuccess,
   updateCemployeeFail,
 } from "./actions";
@@ -40,6 +43,7 @@ import {
   getEmployeeCorporate,
   getLabsCorporate,
   addNewCemployeeData,
+  addNewCemployeefile,
   updateCemployee,
 } from "../../helpers/django_api_helper";
 
@@ -105,6 +109,19 @@ function* onAddNewCemployeeData(object) {
     yield put(addCemployeeDataFail(error));
   }
 }
+function* onAddNewCemployeefile(object) {
+  console.log("saga responce", object)
+
+  try {
+    const response = yield call(
+      addNewCemployeefile,
+      object.payload.cemployeeData,
+    );
+    yield put(addCemployeefileSuccess(response));
+  } catch (error) {
+    yield put(addCemployeefileFail(error));
+  }
+}
 function* onUpdateCemployee({ payload: cemployee }) {
   try {
     const response = yield call(updateCemployee, cemployee);
@@ -122,6 +139,7 @@ function* cemployeeDataSaga() {
   yield takeEvery(GET_EMPLOYEECORPORATE, fetchEmployeeCorporate);
   yield takeEvery(GET_LABSCORPORATE, fetchLabsCorporate);
   yield takeEvery(ADD_NEW_CEMPLOYEE_DATA, onAddNewCemployeeData);
+  yield takeEvery(ADD_NEW_CEMPLOYEE_FILE, onAddNewCemployeefile);
   yield takeEvery(UPDATE_CEMPLOYEE, onUpdateCemployee);
 
 }

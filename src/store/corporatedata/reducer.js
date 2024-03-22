@@ -13,6 +13,8 @@ import {
   GET_LABSCORPORATE_FAIL,
   ADD_CEMPLOYEE_DATA_SUCCESS,
   ADD_CEMPLOYEE_DATA_FAIL,
+  ADD_CEMPLOYEE_FILE_SUCCESS,
+  ADD_CEMPLOYEE_FILE_FAIL,
   UPDATE_CEMPLOYEE_SUCCESS,
   UPDATE_CEMPLOYEE_FAIL,
 } from "./actionTypes";
@@ -100,6 +102,18 @@ const cemployeeDatas = (state = INIT_STATE, action) => {
       };
 
     case ADD_CEMPLOYEE_DATA_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case ADD_CEMPLOYEE_FILE_SUCCESS:
+      return {
+        ...state,
+        cemployeeDatas: [...state.cemployeeDatas, action.payload.data],
+      };
+
+    case ADD_CEMPLOYEE_FILE_FAIL:
       return {
         ...state,
         error: action.payload,

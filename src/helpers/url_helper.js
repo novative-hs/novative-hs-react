@@ -5,7 +5,6 @@ const API_ENDPOINT = process.env.REACT_APP_BACKENDURL;
 // -------------- MY URLS --------------
 export const POST_LOGIN = `${API_ENDPOINT}/api/account/login/`;
 export const POST_REGISTER = `${API_ENDPOINT}/api/account/register/`;
-
 // PASSWORD RESET
 export const POST_FORGET_PASSWORD = `${API_ENDPOINT}/api/account/password_reset/`;
 export const POST_CONFIRM_PASSWORD = `${API_ENDPOINT}/api/account/password_reset/confirm/`;
@@ -275,6 +274,7 @@ export const GET_CORPORATE_TESTS = `${API_ENDPOINT}/api/corporate/corporate-test
 export const UPDATE_CORPORATE_TEST = `${API_ENDPOINT}/api/corporate/corporate-offered-test`;
 export const UPDATE_CORPORATE_STATUS = `${API_ENDPOINT}/api/lab/accepted-corporates-list`;
 export const ADD_NEW_CORPORATE = `${API_ENDPOINT}/api/lab/corporatelist`;
+export const ADD_NEW_CEMPLOYEE_FILE = `${API_ENDPOINT}/api/corporate/employee-data-file`;
 
 
 // About All Finance
@@ -290,6 +290,8 @@ export const ADD_NEW_CORPORATE_PAYMENT = `${API_ENDPOINT}/api/corporate/corporat
 export const GET_OUT_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 export const DELETE_PAYMENTOUT = `${API_ENDPOINT}/api/finance-officer/payment-out`;
 export const GET_LIST_DONATIONAPPOINTMENT = `${API_ENDPOINT}/api/finance-officer/alldonation-Appointments`;
+export const GET_LIST_CLABS = `${API_ENDPOINT}/api/finance-officer/all-lab-c-list`;
+
 
 export const ADD_NEW_INVOICE_ADJUSTMENT = `${API_ENDPOINT}/api/finance-officer/invoice-adjustment-detail`;
 
@@ -349,7 +351,7 @@ export const UPDATE_CORPORATE_PROFILE = `${API_ENDPOINT}/api/corporate/corporate
 export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
 
 // Cororate LABS
-export const GET_CORPORATE_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
+export const GET_CORPORATE_LABS = `${API_ENDPOINT}/api/patient/corporate-labs`;
 
 // REGION WISE ADVERTISEMENT
 export const GET_REGION_WISE_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin/region-wise-advertisements`;

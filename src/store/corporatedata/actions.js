@@ -2,6 +2,9 @@ import {
   ADD_NEW_CEMPLOYEE_DATA,
   ADD_CEMPLOYEE_DATA_SUCCESS,
   ADD_CEMPLOYEE_DATA_FAIL,
+  ADD_NEW_CEMPLOYEE_FILE,
+  ADD_CEMPLOYEE_FILE_SUCCESS,
+  ADD_CEMPLOYEE_FILE_FAIL,
   GET_LABCORPORATE,
   GET_LABCORPORATE_SUCCESS,
   GET_LABCORPORATE_FAIL,
@@ -123,6 +126,24 @@ export const addCemployeeDataSuccess = cemployeeData => ({
 
 export const addCemployeeDataFail = error => ({
   type: ADD_CEMPLOYEE_DATA_FAIL,
+  payload: error,
+});
+export const addNewCemployeefile = (cemployeeData) => (
+  console.log("data file", cemployeeData),
+  {
+  type: ADD_NEW_CEMPLOYEE_FILE,
+  payload: { cemployeeData},
+});
+
+export const addCemployeefileSuccess = cemployeeData => ({
+  type: ADD_CEMPLOYEE_FILE_SUCCESS,
+  payload: cemployeeData,
+});
+
+export const addCemployeefileFail = error => (
+  console.log("data file error", cemployeeData),
+  {
+  type: ADD_CEMPLOYEE_FILE_FAIL,
   payload: error,
 });
 export const updateCemployee = cemployee => ({

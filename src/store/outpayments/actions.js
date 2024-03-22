@@ -8,6 +8,9 @@ import {
   GET_LIST_DONATIONAPPOINTMENT,
   GET_LIST_DONATIONAPPOINTMENT_SUCCESS,
   GET_LIST_DONATIONAPPOINTMENT_FAIL,
+  GET_LIST_CLABS,
+  GET_LIST_CLABS_SUCCESS,
+  GET_LIST_CLABS_FAIL,
   GET_LIST_INVOICE,
   GET_LIST_INVOICE_SUCCESS,
   GET_LIST_INVOICE_FAIL,
@@ -154,6 +157,20 @@ export const getListDonationAppointmentSuccess = listDonation => ({
 
 export const getListDonationAppointmentFail = error => ({
   type: GET_LIST_DONATIONAPPOINTMENT_FAIL,
+  payload: error,
+});
+
+export const getListCLabs = () => ({
+  type: GET_LIST_CLABS,
+});
+
+export const getListCLabsSuccess = listCLabs => ({
+  type: GET_LIST_CLABS_SUCCESS,
+  payload: listCLabs,
+});
+
+export const getListCLabsFail = error => ({
+  type: GET_LIST_CLABS_FAIL,
   payload: error,
 });
 

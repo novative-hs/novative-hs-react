@@ -1859,6 +1859,20 @@ export const getDonorAccountStatements = id =>
       headers: getHeader(authHeader()),
     });
   };
+
+  export const addNewCemployeefile = (cemployeeData) => {
+    let formData = new FormData();
+    formData.append("excel_file", cemployeeData.excel_file);
+
+    console.log("django api helper", cemployeeData)
+  
+    return axios.post(`${url.ADD_NEW_CEMPLOYEE_FILE}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+
+  
+
   export const updateCemployee = cemployeeData => {
     let formData = new FormData();
     formData.append("name", cemployeeData.name);
@@ -2730,6 +2744,11 @@ export const getLabsc = id =>
 
 export const getListDonationAppointment = ()=>
 get(`${url.GET_LIST_DONATIONAPPOINTMENT}`, {
+  headers: getHeader(authHeader()),
+});
+
+export const getListCLabs = ()=>
+get(`${url.GET_LIST_CLABS}`, {
   headers: getHeader(authHeader()),
 });
 

@@ -378,7 +378,7 @@ class OutPaymentsForm extends Component {
         // donation.payment_method === "Donation" &&
         // donation.payment_status === "Allocate" &&
         donation.plateform_fees > 0 &&
-        console.log("yaha pechy say corporate kya a raha h",donation.corporation) === console.log("yaha corporate id a rahi h yah nahi",this.props.corporateProfiles.id) &&
+        console.log("corporate donation",donation.corporation) === console.log("corporate hhh",this.props.corporateProfiles.id) &&
         donation.plateform_fees !== undefined 
         // donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
 

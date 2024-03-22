@@ -1734,14 +1734,11 @@ class TestAppointmentsInProcessList extends Component {
                                                           </option>
                                                         )}
 
-                                                      {testAppointment.payment_status !=
-                                                        "Not Paid" &&
-                                                        testAppointment.status !==
-                                                        "Rescheduled" && (
-                                                          <option value="Result Uploaded">
-                                                            To Upload Result
-                                                          </option>
-                                                        )}
+                                                      {testAppointment.payment_status !== "Not Paid" && testAppointment.status !== "Rescheduled" && (
+                                                      <option value="Result Uploaded">
+                                                          To Upload Result
+                                                      </option> )}
+
                                                     </Field>
                                                   </div>
 

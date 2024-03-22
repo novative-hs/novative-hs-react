@@ -235,8 +235,8 @@ class AccountStatements extends Component {
 
                                   <td>
                                     {b2baccountStatement.receivable == 0 ? (
-                                      <p className="d-none">
-                                        {b2baccountStatement.receivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                     <p className="float-end">
+                                      ---
                                       </p>
 
                                     ) : (
@@ -248,8 +248,8 @@ class AccountStatements extends Component {
                                   </td>
                                   <td>
                                     {b2baccountStatement.payable == 0 ? (
-                                      <p className="d-none">
-                                        {b2baccountStatement.payable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                      <p className="float-end">
+                                      ---
                                       </p>
 
                                     ) : (
