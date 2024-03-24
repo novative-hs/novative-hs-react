@@ -1820,12 +1820,11 @@ class Checkout extends Component {
 
                                               <Td>
                                                 <h5 className="font-size-14 float-start">
-                                                  <a
-                                                    href="/ecommerce-product-details/1"
+                                                  <p
                                                     className="text-dark"
                                                   >
                                                     {homeSampledTest.test_name}{" "}
-                                                  </a>
+                                                  </p>
                                                 </h5>
                                               </Td>
                                               <p className="font-size-14 float-start">

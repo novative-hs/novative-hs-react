@@ -223,7 +223,7 @@ class UnhandledComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
             <div className="d-flex align-items-center">
-  <Tooltip title="Update">
+  <Tooltip title="Click here to update status">
     <Button
       color="success"
       className="mdi mdi-pencil font-size-14"

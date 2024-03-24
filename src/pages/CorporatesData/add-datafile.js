@@ -138,6 +138,21 @@ class DonorPayment extends Component {
                         {this.state.complaintSuccess}
                       </Alert>
                     )}
+                    <div className="mb-3" style={{marginLeft: "80%"}}>
+                      <Link
+                          className="btn btn-primary"
+                          to={{
+                            pathname:
+                              process.env.REACT_APP_BACKENDURL +
+                              "/media/public/employee-data-list.xlsx",
+                          }}
+                          target="_blank"
+                        >
+                          <i className="mdi mdi-download me-1" />
+                          Download File Format
+                        </Link>{" "}
+                    </div>
+                     
                     <Card>
                       <CardBody>
                       <div className="w-100">
@@ -206,6 +221,7 @@ class DonorPayment extends Component {
                         </Col></div>
                       </CardBody>
                     </Card>
+                   
                     <Row className="mt-4">
                       <Col sm="6">
                       </Col>

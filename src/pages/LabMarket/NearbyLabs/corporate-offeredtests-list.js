@@ -194,7 +194,7 @@ class OfferedTestsList extends Component {
 
     const pageOptions = {
       sizePerPage: 10000,
-      totalSize: offeredTests.length, // replace later with size(offeredTests),
+      totalSize: offeredTests ? offeredTests.length : 0, // replace later with size(offeredTests),
       custom: true,
     };
 

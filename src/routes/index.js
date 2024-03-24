@@ -79,6 +79,7 @@ import TestAppointmentsInProcessList from "../pages/TestAppointments/test-appoin
 import TestAppointmentsCompletedList from "../pages/TestAppointments/test-appointments-completed-list";
 import FeedbacksList from "../pages/Feedbacks/feedbacks-list";
 import LabInvoiceDetail from "pages/Checkouts/invoice-detail";
+import CorporateInvoiceDetail from "pages/Checkouts/invoice-detail";
 import LabAppointmentDetail from "pages/Checkouts/appointment-detail"
 import AppointmentDetail from "pages/Checkouts/appointment-detail";
 import PatientAppointmentDetail from "pages/Checkouts/appointment-detail";
@@ -948,6 +949,10 @@ const corporateAuthProtectedRoutes = [
   {
     path: "/corporate-activity-log/:id",
     component: corporatecommit,
+  },
+  {
+    path: "/cor-invoice-detail/:id",
+    component: CorporateInvoiceDetail,
   },
 ];
 

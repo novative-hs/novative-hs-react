@@ -39,7 +39,7 @@ import { updateTestAppointment } from "store/test-appointments/actions";
 import { getPatientProfile } from "store/labmarket/actions";
 import DeleteModal from "components/Common/DeleteModal";
 
-
+import { getNotes } from "store/csr-comments/actions";
 import "assets/scss/table.scss";
 
 class TestAppointmentsList extends Component {
@@ -235,7 +235,6 @@ class TestAppointmentsList extends Component {
         //     </>
         //   ),
         // },
-
         {
           dataField: "collection_status",
           text: "Sampling Status",
@@ -249,12 +248,30 @@ class TestAppointmentsList extends Component {
 
                   </span>
                 ) : (
-                  <span>{testAppointment.collector_name}</span>
+                  <span></span>
+                )}
+                 {testAppointment.is_home_sampling_availed &&
+                !testAppointment.collector_name && (
+                  <span>
+                    --
+                  </span>
+                )}
+
+              {testAppointment.is_home_sampling_availed &&
+                testAppointment.collector_name && (
+                  <Tooltip title="Sample Collector Details">
+
+                    <Link
+                      to="#"
+                      onClick={e => this.openCollectorModal(e, testAppointment)}
+                    >
+                      {testAppointment.collector_name}
+                    </Link>
+                  </Tooltip>
                 )}
                 {(testAppointment.is_home_sampling_availed || testAppointment.is_state_sampling_availed) &&
                   !testAppointment.collection_status ? (
                   <span>
-                    --
                   </span>
                 ) : testAppointment.collection_status == "Assigned" ? (
                   <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-primary font-size-12 badge-soft-primary">
@@ -527,40 +544,40 @@ class TestAppointmentsList extends Component {
           ),
         },
 
-        {
-          dataField: "collector_name",
-          text: "Collector Detail",
-          sort: true,
-          formatter: (cellContent, testAppointment, patientTestAppointment) => (
-            <>
-              {testAppointment.is_home_sampling_availed &&
-                !testAppointment.collector_name && (
-                  <span>
-                    --
-                  </span>
-                )}
+        // {
+        //   dataField: "collector_name",
+        //   text: "Collector Detail",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment, patientTestAppointment) => (
+        //     <>
+        //       {testAppointment.is_home_sampling_availed &&
+        //         !testAppointment.collector_name && (
+        //           <span>
+        //             --
+        //           </span>
+        //         )}
 
-              {testAppointment.is_home_sampling_availed &&
-                testAppointment.collector_name && (
-                  <Tooltip title="Sample Collector Details">
+        //       {testAppointment.is_home_sampling_availed &&
+        //         testAppointment.collector_name && (
+        //           <Tooltip title="Sample Collector Details">
 
-                    <Link
-                      to="#"
-                      onClick={e => this.openCollectorModal(e, testAppointment)}
-                    >
-                      <i className="mdi mdi-eye font-size-14"></i> View
-                    </Link>
-                  </Tooltip>
-                )}
+        //             <Link
+        //               to="#"
+        //               onClick={e => this.openCollectorModal(e, testAppointment)}
+        //             >
+        //               <i className="mdi mdi-eye font-size-14"></i> View
+        //             </Link>
+        //           </Tooltip>
+        //         )}
 
-              {!testAppointment.is_home_sampling_availed && (
-                <span>
-                  --
-                </span>
-              )}
-            </>
-          ),
-        },
+        //       {!testAppointment.is_home_sampling_availed && (
+        //         <span>
+        //           --
+        //         </span>
+        //       )}
+        //     </>
+        //   ),
+        // },
         {
           dataField: "invoice",
           text: "Actions",
@@ -625,12 +642,15 @@ class TestAppointmentsList extends Component {
                     ></Link>
                   </Tooltip>
                 )}
-                <Tooltip title="Add Comment">
-                  <Link
-                    className="fas fa-comment font-size-18"
-                    to={`/csr-patient-notes-list/${patientTestAppointment.id}`}
-                  ></Link>
-                </Tooltip>
+             <Tooltip title={`Add Comment (${patientTestAppointment.commentsCount})`}>
+  <div className="comment-icon-wrapper">
+    <span className="comment-count">{patientTestAppointment.commentsCount}</span>
+    <Link
+      className="fas fa-comment font-size-18"
+      to={`/csr-patient-notes-list/${patientTestAppointment.id}`}
+    />
+  </div>
+</Tooltip>
 
 
               </div>
@@ -654,15 +674,17 @@ class TestAppointmentsList extends Component {
   }
 
   componentDidMount() {
-    const { patientTestAppointments, onGetPatientTestAppointmentsList } = this.props;
-    
-    // Fetch patient test appointments
+    const { patientTestAppointments, onGetPatientTestAppointmentsList ,onGetNotes} =
+      this.props;
     onGetPatientTestAppointmentsList(this.state.user_id);
     
     // Set patientTestAppointments to state
     this.setState({ patientTestAppointments });
-}
-  
+     // Fetch comments count for each appointment
+  this.props.patientTestAppointments.forEach(appointment => {
+    onGetNotes(appointment.id);
+  });
+  }
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { patientTestAppointments } = this.props;
     if (
@@ -1897,10 +1919,8 @@ TestAppointmentsList.propTypes = {
   onGetPatientTestAppointmentsList: PropTypes.func,
   onAddNewPatientFeedback: PropTypes.func,
   onUpdateTestAppointment: PropTypes.func,
-  history: PropTypes.object,
-  onGetPatientProfile: PropTypes.func,
+  onGetNotes: PropTypes.func,
   patientProfile: PropTypes.array,
-
 };
 const mapStateToProps = state  => ({
   patientTestAppointments: state.patientTestAppointments.patientTestAppointmentsList,
@@ -1909,6 +1929,7 @@ const mapStateToProps = state  => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  onGetNotes: id => dispatch(getNotes(id)),
   onAddNewPatientFeedback: feedback =>
     dispatch(addNewPatientFeedback(feedback)),
   onGetPatientTestAppointmentsList: id =>

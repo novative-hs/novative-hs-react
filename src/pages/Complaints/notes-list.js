@@ -126,7 +126,9 @@ class NotesList extends Component {
       totalSize: notes.length, // replace later with size(notes),
       custom: true,
     };
-
+    const sortedNotes = this.props.notes.sort((a, b) => {
+      return new Date(a.added_at) - new Date(b.added_at);
+    });
     const defaultSorted = [
       {
         dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
@@ -151,8 +153,7 @@ class NotesList extends Component {
                 <Card>
                   <CardBody>
 
-                    {!isEmpty(this.props.notes) &&
-                      this.props.notes.map((note, key) => (
+                  {!isEmpty(sortedNotes) && sortedNotes.map((note, key) => (
                         <Col xl="3" md="3" sm="6" key={"_col_" + key}>
                           <Card className="mb-2" style={{ backgroundColor: "#f2f2f2" }}>
                             <CardBody className="p-3">

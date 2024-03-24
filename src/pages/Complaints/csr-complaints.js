@@ -330,7 +330,7 @@ class csrComplaints extends Component {
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: 100, // replace later with size(csrComplaints),
+      totalSize: csrComplaints.length, // replace later with size(csrComplaints),
       custom: true,
     };
 

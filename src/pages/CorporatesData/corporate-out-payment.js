@@ -137,9 +137,9 @@ class OutPaymentsForm extends Component {
         onAddNewCorporatePayment(this.state.outPayment, this.state.user_id)
       );
     }, 1000);
-    setTimeout(() => {
-      this.props.history.push("/corporate-payment-form-status");
-    }, 2000)
+    // setTimeout(() => {
+    //   this.props.history.push("/corporate-payment-form-status");
+    // }, 2000)
   };
 
 
@@ -345,22 +345,30 @@ class OutPaymentsForm extends Component {
     //     });
     //   }
     // }
-    const DonationAppointmentList = listDonation
+    let DonationAppointmentList = listDonation
     .filter(
       donation =>
-        // donation.payment_method === "Donation" &&
-        donation.payment_status === "Not Paid" &&
+        donation.payment_status === "Allocate" &&
         donation.corporation != null &&
         donation.dues !== undefined &&
-        donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
-
+        donation.lab_name === (selectedLab ? selectedLab.label1 : null)
     )
     .map(donation => ({
       label: `(Appointment ID: ${donation.order_id}) - (Amount: ${donation.dues})`,
       value: donation.id,
-      data: { dues: donation.dues }, // Include the 'dues' property in the data field
+      data: { dues: donation.dues },
     }));
-
+  
+  // Add "All" option if there are appointments available
+  if (DonationAppointmentList.length > 0) {
+    DonationAppointmentList.unshift({ label: "All Appointments", value: "all" });
+  }
+  
+  // Filter out "All Appointments" from the labels
+  const labelsToShow = DonationAppointmentList
+    .filter(option => option.value !== "all")
+    .map(option => option.label);
+  
     // const DonationAppointmentList = [];
     // for (let i = 0; i < listDonation.length; i++) {
     //   if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Donation" && listDonation[i].payment_status === "Allocate") {
@@ -585,62 +593,82 @@ class OutPaymentsForm extends Component {
                              </div>
                            </div>
                           ) : null}
+{this.state.payment_for === "Lab" && (
+  <div className="mb-3 select2-container">
+    <Label className="fw-bolder">Test Appointments</Label>
+    <Select
+      name="test_appointment_id"
+      component="Select"
+      isMulti={true}
+      onChange={selectedGroup => {
+        const selectedValues = selectedGroup.map(option => option.value);
+        if (selectedValues.includes("all")) {
+          // If "All Appointments" option is selected, select all appointments
+          const allAppointmentIds = DonationAppointmentList
+            .filter(option => option.value !== "all")
+            .map(option => option.value);
+          this.setState({ test_appointment_id: allAppointmentIds });
 
-{this.state.payment_for == "Lab"  ? (
+          const selectedData = DonationAppointmentList
+            .filter(option => option.value !== "all")
+            .map(option => option.data || {});
+          const totalAmount = selectedData.reduce(
+            (total, appointment) => total + (parseFloat(appointment.dues) || 0),
+            0
+          );
+          this.setState({
+            selectedAmount: totalAmount,
+            amountExceedsLimit: false,
+          });
 
-                          <div className="mb-3 select2-container">
-                            <Label className="fw-bolder">Test Appointments</Label>
-                            <Select
-                              name="test_appointment_id"
-                              component="Select"
-                              isMulti={true} // Uncomment this line
-                              onChange={selectedGroup => {
-                                this.setState({
-                                  test_appointment_id: selectedGroup.map(option => option.value),
-                                });
-                                
-                            
-                                const selectedData = selectedGroup.map(option => option.data || {});
-                                const totalAmount = selectedData.reduce(
-                                  (total, appointment) => total + (parseFloat(appointment.dues) || 0),
-                                  0
-                                );
-                                this.setState({
-                                  selectedAmount: totalAmount,
-                                  amountExceedsLimit: false, // Reset the flag when a new lab is selected
-                                });
-                            
-                                // Auto-set the amount field
-                                this.setState({ amount: totalAmount || '0' });
-                                console.log("amount arahi h yah nahi", selectedData, totalAmount);
-                              }}
-                              className={
-                                "defautSelectParent" +
-                                (!this.state.test_appointment_id
-                                  ? " is-invalid"
-                                  : "")
-                              }
-                              styles={{
-                                control: (
-                                  base,
-                                  state
-                                ) => ({
-                                  ...base,
-                                  borderColor: !this
-                                    .state.test_appointment_id
-                                    ? "#f46a6a"
-                                    : "#ced4da",
-                                }),
-                              }}
-                              options={DonationAppointmentList}
-                              placeholder="Select Appointment..."
-                            />
+          // Auto-set the amount field
+          this.setState({ amount: totalAmount || '0' });
+          console.log("amount arahi h yah nahi", selectedData, totalAmount);
+        } else {
+          this.setState({ test_appointment_id: selectedValues });
 
-                            <div className="invalid-feedback">
-                              Please select Appointment
-                            </div>
-                          </div>    
-                                                ) : null}
+          const selectedData = selectedGroup.map(option => option.data || {});
+          const totalAmount = selectedData.reduce(
+            (total, appointment) => total + (parseFloat(appointment.dues) || 0),
+            0
+          );
+          this.setState({
+            selectedAmount: totalAmount,
+            amountExceedsLimit: false,
+          });
+
+          // Auto-set the amount field
+          this.setState({ amount: totalAmount || '0' });
+          console.log("amount arahi h yah nahi", selectedData, totalAmount);
+        }
+      }}
+      className={
+        "defautSelectParent" +
+        (!this.state.test_appointment_id
+          ? " is-invalid"
+          : "")
+      }
+      styles={{
+        control: (
+          base,
+          state
+        ) => ({
+          ...base,
+          borderColor: !this
+            .state.test_appointment_id
+            ? "#f46a6a"
+            : "#ced4da",
+        }),
+      }}
+      options={DonationAppointmentList}
+      placeholder="Select Appointment..."
+    />
+
+    <div className="invalid-feedback">
+      Please select Appointment
+    </div>
+  </div>
+)}
 
 
 <FormGroup className="mb-0">

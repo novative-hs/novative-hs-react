@@ -127,7 +127,7 @@ class OfferedTestsList extends Component {
           text: "Action",
           formatter: (cellContent, offeredTest) => (
             <div className="d-flex gap-3" style={{ textAlign: "center", justifyContent: "center" }}>
-              {/* <Tooltip title="Update"> */}
+         <Tooltip title="Update"> 
                 <Link className="text-success" to="#">
                   <i
                     className="mdi mdi-pencil font-size-18"
@@ -135,7 +135,7 @@ class OfferedTestsList extends Component {
                     onClick={e => this.handleOfferedTestClick(e, offeredTest)}
                   ></i>
                 </Link>
-              {/* </Tooltip> */}
+            </Tooltip> 
             </div>
           ),
         },

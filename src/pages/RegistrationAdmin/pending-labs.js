@@ -264,8 +264,8 @@ class PendingLabs extends Component {
   openLabModal = (e, arg) => {
     this.setState({
       LabModal: true,
-      lab_phone: arg.lab_phone,
-      lab_email: arg.lab_email,
+      landline: arg.landline,
+      email: arg.email,
     });
   };
   handleMouseExit = () => {
@@ -457,7 +457,7 @@ class PendingLabs extends Component {
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.lab_email
+                                                        this.state.email
                                                       }
                                                       className="form-control"
                                                       readOnly={true}
@@ -474,7 +474,7 @@ class PendingLabs extends Component {
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.lab_phone
+                                                        this.state.landline
                                                       }
                                                       className="form-control"
                                                       readOnly={true}

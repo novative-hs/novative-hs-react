@@ -355,9 +355,17 @@ class Header extends Component {
                       className="dropdown-content me-2 text-light"
                     >
                       <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
-                      <span className="pt-4 font-size-12">
-                        {this.state.patient_name.split(" ")[0]}
+                      {this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                        <span className="pt-4 font-size-12">
+                        {this.props.patientProfile.corporate_name}-{this.state.patient_name.split(" ")[0]}
                       </span>
+                      ) : (
+                        <span className="pt-4 font-size-12">
+                        {this.state.patient_name.split(" ")[0]}
+                        </span>
+                      )
+                     }  
+                                        
                     </Link>
                   </Tooltip>{" "}
                   <Tooltip title="Cart">
