@@ -408,7 +408,7 @@ class ReferredPatientsList extends Component {
     const { onGetB2bReferredPatientsList } = this.props;
 
     const pageOptions = {
-      sizePerPage: b2bReferredPatients.length,
+      sizePerPage: 40,
       totalSize: b2bReferredPatients.length, // replace later with size(b2bReferredPatients),
       custom: true,
     };
