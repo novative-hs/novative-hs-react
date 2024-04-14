@@ -6,7 +6,7 @@ import {
 } from "./actionTypes";
 
 const INIT_STATE = {
-  corporateProfile: [],
+  CorporateProfile: [],
   error: "",
   success: "",
 };
@@ -26,16 +26,18 @@ const corporateProfile = (state = INIT_STATE, action) => {
       };
 
     case UPDATE_CORPORATE_PROFILE_SUCCESS:
+      console.log('Updating corporate profile:', action.payload);
       return {
         ...state,
-        corporateProfile: state.corporateProfile.map(corporateProfile =>
-          corporateProfile.id.toString() === action.payload.id.toString()
-            ? { corporateProfile, ...action.payload }
-            : corporateProfile
+        CorporateProfile: state.CorporateProfile.map(CorporateProfile =>
+          CorporateProfile.id.toString() === action.payload.id.toString()
+            ? { CorporateProfile, ...action.payload }
+            : CorporateProfile
         ),
       };
 
     case UPDATE_CORPORATE_PROFILE_FAIL:
+      console.log('Updating corporate profile:', action.payload);
       return {
         ...state,
         error: action.payload,

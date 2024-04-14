@@ -7,6 +7,8 @@ import axios from "axios";
 import { useParams } from 'react-router-dom'
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import moment from 'moment';
+
 // import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import {
   Card,
@@ -83,14 +85,61 @@ class OfferedTestsList extends Component {
           formatter: (cellContent, offeredTest) => (
             <>
               <span>
-              {offeredTest.test_name}
+                {offeredTest.test_name}
               </span>
             </>
-          ), 
+          ),
         },
         {
           dataField: "type",
           text: "Type",
+          sort: true,
+        },
+        // {
+        //   dataField: "start_date",
+        //   text: "Start Date",
+        //   sort: true,
+        // },
+        {
+          dataField: "start_date",
+          text: "Start Date",
+          sort: true,
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span>
+                {offeredTest.start_date ? (
+                  moment(offeredTest.start_date).format("DD MMM YYYY, h:mm A")
+                ) : (
+                  "--"
+                )}
+              </span>
+            </>
+          ),
+        },
+        // {
+        //   dataField: "end_date",
+        //   text: "End Date",
+        //   sort: true,
+        // },
+        {
+          dataField: "end_date",
+          text: "End Date",
+          sort: true,
+          formatter: (cellContent, offeredTest) => (
+            <>
+              <span>
+                {offeredTest.end_date ? (
+                  moment(offeredTest.end_date).format("DD MMM YYYY, h:mm A")
+                ) : (
+                  "--"
+                )}
+              </span>
+            </>
+          ),
+        },
+        {
+          dataField: "test_status",
+          text: "Status",
           sort: true,
         },
         {
@@ -113,15 +162,17 @@ class OfferedTestsList extends Component {
           text: "Action",
           formatter: (cellContent, offeredTest) => (
             <div className="d-flex gap-3" style={{ textAlign: "center", justifyContent: "center" }}>
-              <Tooltip title="Update">
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={() => this.handleOfferedTestClick(offeredTest)}
-                  ></i>
-                </Link>
-              </Tooltip>
+              {offeredTest.test_status == "Expire" ? (
+                <Tooltip title="Update">
+                  <Link className="text-success" to="#">
+                    <i
+                      className="mdi mdi-pencil font-size-18"
+                      id="edittooltip"
+                      onClick={() => this.handleOfferedTestClick(offeredTest)}
+                    ></i>
+                  </Link>
+                </Tooltip>
+              ) : null}
             </div>
           ),
         },
@@ -135,10 +186,10 @@ class OfferedTestsList extends Component {
 
   componentDidMount() {
 
-    const { offeredTests, onGetCorporateTests,  } = this.props;
+    const { offeredTests, onGetCorporateTests, } = this.props;
     onGetCorporateTests(this.state.user_id);
     this.setState({ offeredTests });
-    console.log("state",offeredTests)
+    console.log("state", offeredTests)
 
   }
 
@@ -162,7 +213,7 @@ class OfferedTestsList extends Component {
   //   this.setState({
   //     PatientModal: false,
   //     isHovered: false,
-    
+
   //   });
   // };
   togglePatientModal = () => {
@@ -236,6 +287,8 @@ class OfferedTestsList extends Component {
         test_name: offeredTest.test_name,
         test_id: offeredTest.test_id,
         price: offeredTest.price,
+        start_date: offeredTest.start_date,
+        end_date: offeredTest.end_date,
         // is_active:'Yes',
       },
       isEdit: true,
@@ -249,12 +302,12 @@ class OfferedTestsList extends Component {
 
     const { offeredTests } = this.props;
     const { tests } = this.props;
-    const {labProfiles} = this.props;
+    const { labProfiles } = this.props;
     // const { units } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onUpdateCorporateTest, onGetCorporateTests,} =
+    const { onUpdateCorporateTest, onGetCorporateTests, } =
       this.props;
     const offeredTest = this.state.offeredTest;
 
@@ -306,7 +359,7 @@ class OfferedTestsList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Corporate Offered Tests" breadcrumbItem="Tests List" />
             <Row>
-            {/* <div> <span className="text-danger font-size-12">
+              {/* <div> <span className="text-danger font-size-12">
                                     <strong> 
                                     Note: If referral fee of any offered test is not entered by Labhazir, all such tests will not be online.
                                     </strong>
@@ -341,40 +394,9 @@ class OfferedTestsList extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                                
-                                {/* <Col sm="2" lg="2">
-                                  <div>
-                                  {this.props.labProfiles.type == "Main Lab" && (
-                                    <Link
-                                      to={"/medical-test-sheet"}
-                                      className="w-100 font-16 btn btn-secondary"
-                                    >
-                                      {" "}
-                                      <i className="mdi mdi-microsoft-excel me-1" />
-                                      Tests Sheet{" "}
-                                    </Link>
-                                  )}
-                                  </div>
-                                </Col> */}
 
-                                {/* <Col sm="2" lg="2">
-                                  <div className="text-sm-end">
-                                  {this.props.labProfiles.type == "Main Lab" && (
-                                    <Button
-                                      color="primary"
-                                      className="w-100 font-16 btn-block btn btn-primary"
-                                      onClick={this.handleOfferedTestClicks}
-                                      disabled={testList.length == 0}
-                                    >
-                                      <i className="mdi mdi-plus-circle-outline me-1" />
-                                      Add New Test
-                                    </Button>
-                                  )}
-                                  </div>
-                                </Col> */}
-                              
                               </Row>
-                             
+
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -392,7 +414,7 @@ class OfferedTestsList extends Component {
                                     <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}
-                                      // onPointerLeave={this.handleMouseExit}
+                                    // onPointerLeave={this.handleMouseExit}
                                     >
                                       <ModalHeader
                                         toggle={this.togglePatientModal}
@@ -412,15 +434,15 @@ class OfferedTestsList extends Component {
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
-                                                  <textarea
-                                  name="test_details"
-                                  id="test_details"
-                                  rows="10"
-                                  cols="10"
-                                  value={this.state.test_details}
-                                  className="form-control"
-                                  readOnly={true}
-                                />
+                                                    <textarea
+                                                      name="test_details"
+                                                      id="test_details"
+                                                      rows="10"
+                                                      cols="10"
+                                                      value={this.state.test_details}
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
                                                   </div>
                                                 </div>
 
@@ -455,11 +477,8 @@ class OfferedTestsList extends Component {
                                               (offeredTest &&
                                                 offeredTest.price) ||
                                               "",
-                                           
-                                            // is_active:
-                                            //   (offeredTest &&
-                                            //     offeredTest.is_active) ||
-                                            //   "Yes",
+                                            start_date: (offeredTest && offeredTest.start_date) || "",
+                                            end_date: (offeredTest && offeredTest.end_date) || "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             price: Yup.number(
@@ -478,7 +497,15 @@ class OfferedTestsList extends Component {
                                                 50000,
                                                 "Please enter a number less than or equal to 50000"
                                               ),
-                                            
+
+                                            start_date: Yup.date().nullable().required("Please select a start date"),
+                                            end_date: Yup.date()
+                                              .nullable()
+                                              .min(
+                                                Yup.ref("start_date"),
+                                                "End date must be after or equal to the start date"
+                                              )
+                                              .required("Please select an end date"),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -488,7 +515,9 @@ class OfferedTestsList extends Component {
                                                   values.test_id
                                                 ),
                                                 price: values.price,
-                                                
+                                                start_date: values.start_date,
+                                                end_date: values.end_date,
+
                                                 // is_active:
                                                 //   values.is_active,
                                               };
@@ -516,7 +545,9 @@ class OfferedTestsList extends Component {
                                                   ) + 20,
                                                 test_id: this.state.test_id,
                                                 price: values.price,
-                                                
+                                                start_date: values.start_date,
+                                                end_date: values.end_date,
+
                                                 // is_active:
                                                 //   values.is_active,
                                               };
@@ -539,13 +570,13 @@ class OfferedTestsList extends Component {
                                             this.toggle();
                                           }}
                                         >
-                                          {({ errors, status, touched }) => (
+                                          {({ errors, status, values, touched }) => (
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
                                                   {/* Make field readonly in case of edit form */}
                                                   {offeredTest.test_id &&
-                                                  offeredTest.test_id ? (
+                                                    offeredTest.test_id ? (
                                                     <div className="mb-3">
                                                       <Label className="form-label">
                                                         Test name
@@ -626,7 +657,46 @@ class OfferedTestsList extends Component {
                                                       </div>
                                                     </div>
                                                   )}
-
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Start Date
+                                                      <span className="text-danger font-size-12">*</span>
+                                                    </Label>
+                                                    <Field
+                                                      name="start_date"
+                                                      type="datetime-local"
+                                                      min={new Date().toISOString().slice(0, -8)}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.start_date && touched.start_date ? " is-invalid" : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="start_date"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      End Date
+                                                      <span className="text-danger font-size-12">*</span>
+                                                    </Label>
+                                                    <Field
+                                                      name="end_date"
+                                                      type="datetime-local"
+                                                      min={values.start_date || new Date().toISOString().slice(0, -8)}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.end_date && touched.end_date ? " is-invalid" : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="end_date"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Price
@@ -640,7 +710,7 @@ class OfferedTestsList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.price &&
-                                                        touched.price
+                                                          touched.price
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -651,10 +721,10 @@ class OfferedTestsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                                 
+
                                                 </Col>
                                               </Row>
-                     
+
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">

@@ -235,7 +235,7 @@ class csrComplaints extends Component {
       PatientModal: true,
 
       patient_phone: arg.patient_phone,
-      patient_city: arg.patient_city,
+      patient_city: arg.City,
     });
   };
   togglePatientModal = () => {

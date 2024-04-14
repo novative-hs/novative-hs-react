@@ -23,15 +23,19 @@ export const getLabProfileFail = error => ({
   payload: error,
 });
 
-export const updateLabProfile = (labProfile, id) => ({
+export const updateLabProfile = (labProfile, id) => {
+  console.log('Dispatching CorporateProfile action:', labProfile);
+  return{
   type: UPDATE_LAB_PROFILE,
   payload: { labProfile, id },
-});
+}};
 
-export const updateLabProfileSuccess = labProfile => ({
+export const updateLabProfileSuccess = (labProfile) => {
+  console.log('Dispatching suceesssupdateCorporateProfile action:', labProfile);
+  return{
   type: UPDATE_LAB_PROFILE_SUCCESS,
   payload: labProfile,
-});
+}};
 
 export const updateLabProfileFail = error => ({
   type: UPDATE_LAB_PROFILE_FAIL,

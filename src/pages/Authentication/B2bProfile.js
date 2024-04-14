@@ -78,7 +78,7 @@ class B2bProfile extends Component {
     setTimeout(() => {
       this.setState({
         business_name: this.props.success.business_name,
-        business_logo: this.props.success.business_logo,
+        business_logo: process.env.REACT_APP_BACKENDURL + this.props.success.business_logo,
         email: this.props.success.email,
         landline: this.props.success.landline,
         website_url: this.props.success.website_url,

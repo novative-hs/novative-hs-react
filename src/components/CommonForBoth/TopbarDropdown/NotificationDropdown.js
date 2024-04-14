@@ -136,18 +136,58 @@ class NotificationDropdown extends Component {
                                               (item, key) => (
                      
                       <div key={"item" + key} className="d-flex mt-0">
-                        {item.actions == "Added" && (
-                          <div>
-                            <i className="fas fa-plus-square font-size-18"></i>{" "}
-                            You have a new Appointment with order id{" "}
-                            <b>{item.order_id}</b> booked at{" "}
-                            {new Date(
-                              item.booked_at
-                            ).toLocaleTimeString("en-US")}
-                            .
-                          </div>
-                        )}
-                        {item.actions == "Updated" && (
+                       {item.order_id ? (
+  item.actions === "Added" && (
+    <div>
+      <i className="fas fa-plus-square font-size-18"></i>{" "}
+      You have a new Appointment with order id{" "}
+      <b>{item.order_id}</b> booked at{" "}
+      {new Date(item.booked_at).toLocaleTimeString("en-US")}
+      .
+    </div>
+  )
+) : (
+  item.actions === "Added" && (
+    <div>
+      <i className="fas fa-plus-square font-size-18"></i>{" "}
+      Your <b>{item.corporate_name}</b> Corporation has conducted a new test add on{" "}
+      {new Date(item.created_at).toLocaleTimeString("en-US")}
+      .
+    </div>
+  )
+)}
+{item.order_id ? (
+  item.actions === "Updated" && (
+    <div>
+    <i className="fas fa-exchange-alt font-size-18"></i>{" "}
+    {item.lab_name} Changed{" "}
+    <b>{item.test_name} </b>{" "}
+    {item.field_name} from{" "}
+    {item.old_value} to {item.new_value}{" "}
+    on{" "}
+    {new Date(
+      notification.created_at
+    ).toLocaleDateString("en-US")}{" "}
+    at{" "}
+    {new Date(
+      notification.created_at
+    ).toLocaleTimeString("en-US")}
+    .
+  </div>
+  )
+) : (
+  item.actions === "Updated" && (
+    <div>
+      <i className="fas fa-plus-square font-size-18"></i>{" "}
+      Your <b>{item.corporate_name}</b> Corporation Changed test price on {" "}
+      {new Date(item.created_at).toLocaleTimeString("en-US")}
+      .
+    </div>
+  )
+)}
+
+                        
+                        {/* {item.actions == "Updated" && (
                           <div>
                             <i className="fas fa-exchange-alt font-size-18"></i>{" "}
                             {item.lab_name} Changed{" "}
@@ -164,7 +204,7 @@ class NotificationDropdown extends Component {
                             ).toLocaleTimeString("en-US")}
                             .
                           </div>
-                        )}
+                        )} */}
                         {item.actions == "Cancelled" && (
                           <div>
                             <i className="fas fa-sync-alt font-size-18"></i>{" "}

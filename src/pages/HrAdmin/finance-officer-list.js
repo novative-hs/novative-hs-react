@@ -100,24 +100,24 @@ class FinanceOfficerList extends Component {
           text: "Territory Office",
           sort: true,
         },
-        {
-          dataField: "photo",
-          text: "Photo",
-          sort: true,
-          formatter: (cellContent, FinanceOfficer) => (
-            <>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + FinanceOfficer.photo,
-                }}
-                target="_blank"
-              >
-                View
-              </Link>
-            </>
-          ),
-        },
+        // {
+        //   dataField: "photo",
+        //   text: "Photo",
+        //   sort: true,
+        //   formatter: (cellContent, FinanceOfficer) => (
+        //     <>
+        //       <Link
+        //         to={{
+        //           pathname:
+        //             process.env.REACT_APP_BACKENDURL + FinanceOfficer.photo,
+        //         }}
+        //         target="_blank"
+        //       >
+        //         View
+        //       </Link>
+        //     </>
+        //   ),
+        // },
 
         {
           dataField: "roles",

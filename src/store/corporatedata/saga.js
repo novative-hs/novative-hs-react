@@ -11,6 +11,8 @@ import {
   ADD_NEW_CEMPLOYEE_DATA,
   ADD_NEW_CEMPLOYEE_FILE,
   UPDATE_CEMPLOYEE,
+  DELETE_CEDATA,
+
 } from "./actionTypes";
 
 import {
@@ -32,6 +34,8 @@ import {
   addCemployeefileSuccess,
   updateCemployeeSuccess,
   updateCemployeeFail,
+  deletecedataSuccess,
+  deletecedataFail,
 } from "./actions";
 
 //Include Both Helper File with needed methods
@@ -45,6 +49,7 @@ import {
   addNewCemployeeData,
   addNewCemployeefile,
   updateCemployee,
+  deletecedata,
 } from "../../helpers/django_api_helper";
 
 function* fetchLabCorporate(object) {
@@ -130,7 +135,14 @@ function* onUpdateCemployee({ payload: cemployee }) {
     yield put(updateCemployeeFail(error));
   }
 }
-
+function* onDeleteCedata({ payload: cemployee }) {
+  try {
+    const response = yield call(deletecedata, cemployee);
+    yield put(deletecedataSuccess(response));
+  } catch (error) {
+    yield put(deletecedataFail(error));
+  }
+}
 function* cemployeeDataSaga() {
   yield takeEvery(GET_LABCORPORATE, fetchLabCorporate);
   yield takeEvery(GET_ALABCORPORATE, fetchALabCorporate);
@@ -141,6 +153,8 @@ function* cemployeeDataSaga() {
   yield takeEvery(ADD_NEW_CEMPLOYEE_DATA, onAddNewCemployeeData);
   yield takeEvery(ADD_NEW_CEMPLOYEE_FILE, onAddNewCemployeefile);
   yield takeEvery(UPDATE_CEMPLOYEE, onUpdateCemployee);
+  yield takeEvery(DELETE_CEDATA, onDeleteCedata);
+
 
 }
 

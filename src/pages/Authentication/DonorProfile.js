@@ -113,7 +113,12 @@ class DonorProfile extends Component {
                         "Please enter a valid Pakistani phone number"
                       ),
                   })}
+                  
                   onSubmit={values => {
+                    this.props.updateDonorProfile(
+                      values,
+                      this.state.user_id
+                    );
                     // To show success message of update
                     this.setState({ isProfileUpdated: true });
                     window.scrollTo({top: 0, left: 0, behavior: 'smooth'});

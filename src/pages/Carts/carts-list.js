@@ -1391,7 +1391,9 @@ class CartList extends Component {
                     </PaginationProvider>
 
                     <Row className="mt-4">
-                      <Col sm="6">
+                    <Col sm="6">
+
+                      {this.state.user_type !== "CSR" ? (
                         <button
                           to="/dashboard-patient/:id/labs"
                           className="btn btn-danger"
@@ -1401,7 +1403,9 @@ class CartList extends Component {
                           <i className="mdi mdi-delete-empty me-1" />
                           Empty Cart
                         </button>
-                      </Col>
+                      ) : null}                      </Col>
+
+                      
                       <Col sm="6">
                         <div className="text-sm-end mt-2 mt-sm-0">
                           <button

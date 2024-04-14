@@ -43,7 +43,7 @@ export const GET_COFFEREDTEST_REFERRELFEE = `${API_ENDPOINT}/api/lab/corporate-o
 export const GET_COFFEREDPROFILE_REFERRELFEE = `${API_ENDPOINT}/api/lab/corporate-offered-profile-share-list`;
 export const GET_COFFEREDPACKAGE_REFERRELFEE = `${API_ENDPOINT}/api/lab/corporate-offered-packages-share-list`;
 export const GET_COFFEREDRADIOLOGY_REFERRELFEE = `${API_ENDPOINT}/api/lab/corporate-offered-radiology-share-list`;
-
+export const GET_CORPORATE_LIST = `${API_ENDPOINT}/api/corporate/list-corporate`;
 // PATHOLOGIST
 export const GET_ACTIVITY_LOG = `${API_ENDPOINT}/api/lab/activity-log`;
 export const GET_NOTIFICATION = `${API_ENDPOINT}/api/lab/notifications`;
@@ -275,7 +275,7 @@ export const UPDATE_CORPORATE_TEST = `${API_ENDPOINT}/api/corporate/corporate-of
 export const UPDATE_CORPORATE_STATUS = `${API_ENDPOINT}/api/lab/accepted-corporates-list`;
 export const ADD_NEW_CORPORATE = `${API_ENDPOINT}/api/lab/corporatelist`;
 export const ADD_NEW_CEMPLOYEE_FILE = `${API_ENDPOINT}/api/corporate/employee-data-file`;
-
+export const DELETE_CEDATA = `${API_ENDPOINT}/api/corporate/employee-data`;
 
 // About All Finance
 export const GET_BANK_ACCOUNTS = `${API_ENDPOINT}/api/finance-admin/bankaccount-list`;
@@ -440,7 +440,7 @@ export const GET_CLEARED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/cleare
 export const GET_APPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/cleared-out-payments`;
 export const GET_UNAPPROVED_IN_PAYMENTS = `${API_ENDPOINT}/api/finance-admin/unapproved-in-payments`;
 export const UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT = `${API_ENDPOINT}/api/finance-admin/approve-unapprove-in-payment`;
-
+export const GET_LC_LIST = `${API_ENDPOINT}/api/accountstatement/corporate-account-statements-list`;
 
 
 

@@ -232,7 +232,18 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                 </span>
               )}
             </>
-          ),filter: textFilter(),
+          ),filter: selectFilter({
+            options: {
+              '': 'All',
+              'Assigned': 'Assigned',
+              'On way': 'On way',
+              'Reached': 'Reached',
+              'Patient Unavailable': 'Patient Unavailable',
+              'Sample+Payment Collected': 'Sample+Payment Collected',
+              'Sample+Payment Delivered': 'Sample+Payment Delivered',
+            },
+            defaultValue: 'All',
+          }),
         },
         // {
         //   dataField: "dues",
@@ -510,14 +521,14 @@ class SampleCollectorTestAppointmentsInProcessList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
+                                  {/* <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
-                                  </div>
+                                  </div> */}
                                 </Col>
                               </Row>
                               <Row className="mb-4">

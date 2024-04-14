@@ -163,12 +163,11 @@ class DonorPayment extends Component {
                               Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
                             </li>
                             <li>
-                              There should be a file of 3 columns, in while corporate_id, name, employee_code (13 digits National ID Card Number)
+                              There should be a file of 4 columns, in while corporate_id, name, employee_code (13 digits National ID Card Number), type
                             </li>
-                            {/* <li>
-                              If you are offering a test that is not in the list,
-                              add the test at the end.
-                            </li> */}
+                            <li>
+                              This is your corporate_id <strong>{this.state.user_id}</strong>, Please use it everytime. 
+                            </li>
                             <li>
                               Please use <strong>Unique</strong> employee_code (13 digits National ID Card Number)
                             </li>

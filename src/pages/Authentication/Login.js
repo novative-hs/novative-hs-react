@@ -280,7 +280,7 @@ class Login extends Component {
                                 setTimeout(() => {
                                   const success = this.props.success;
                                   const error = this.props.error;
-                                  console.log("total array length", success.is_assosiatewith_anycorporate)
+                                  console.log("total array length", success.is_associate_with_any_corporate)
 
                                   if (error) {
                                     // Handle the error without triggering redirection
@@ -297,20 +297,15 @@ class Login extends Component {
 
                                     if (!isLargeScreen && this.state.finalUrl) {
                                       console.log("finalUrl in mobile app else case", this.state.finalUrl);
-                                      if (success.account_type === "patient") {
-                                        this.props.history.push(
-                                          this.state.finalUrl
-                                            ? `/nearby-labs/${this.state.finalUrl}`
-                                            : `/nearby-labs/${this.state.finalUrl}`
-                                        );
-                                      } else if (success.account_type === "samplecollector") {
+                                      if (success.account_type === "samplecollector") {
                                         this.props.history.push("/dashboard-samplecollector");
                                       }
                                     }
                                     else if (
                                       isLargeScreen &&
                                       success.account_type === "patient" &&
-                                      (success.is_assosiatewith_anycorporate == undefined || success.is_assosiatewith_anycorporate == false) &&
+                                      (success.is_associate_with_any_corporate == undefined || success.is_associate_with_any_corporate == false) &&
+                                      !success.employee_id_card &&
                                       !this.state.finalUrl
                                     ) {
                                       this.props.history.push(
@@ -323,9 +318,9 @@ class Login extends Component {
                                     else if (
                                       !isLargeScreen &&
                                       success.account_type === "patient" &&
-                                      success.is_assosiatewith_anycorporate == false &&
-                                      // success.corporate_id == null &&
-                                      success.employee_id_card == null &&
+                                      // success.is_associate_with_any_corporate == false &&
+                                      // // success.corporate_id == null &&
+                                      // success.employee_id_card == null &&
                                       !this.state.finalUrl
                                     ) {
                                       this.props.history.push(
@@ -337,12 +332,12 @@ class Login extends Component {
                                     } else if (
                                       isLargeScreen &&
                                       success.account_type === "patient" &&
-                                      success.is_assosiatewith_anycorporate == true &&
+                                      success.is_associate_with_any_corporate == true &&
                                       // success.corporate_id != null &&
-                                      success.employee_id_card != null &&
+                                      success.employee_id_card &&
                                       !this.state.finalUrl
                                     ) {
-                                      console.log("Patient Profile:", success.is_assosiatewith_anycorporate);
+                                      console.log("Patient Profile:", success.is_associate_with_any_corporate);
                                       // this.props.history.push("/labs");
                                       this.props.history.push("/corporate-modal");
 

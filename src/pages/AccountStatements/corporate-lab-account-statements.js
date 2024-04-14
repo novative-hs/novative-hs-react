@@ -113,8 +113,8 @@ class AccountStatements extends Component {
                               <th scope="col">Order ID</th>
                               <th scope="col">Payment Status/ Method</th>
                               <th scope="col">Invoice Value</th>
-                              <th scope="col">Corporate Pay to Lab</th>
-                              <th scope="col">Labhazir Referral Fee</th>
+                              <th scope="col">Lab Payable</th>
+                              <th scope="col">Labhazir Payable</th>
                               <th scope="col">Is Settled</th>
 
                               {/* <th scope="col">Is Settled</th> */}
@@ -177,8 +177,8 @@ class AccountStatements extends Component {
                               <th scope="col">Order ID</th>
                               <th scope="col">Payment Status/ Method</th>
                               <th scope="col">Invoice Value</th>
-                              <th scope="col">Corporate Pay to Lab</th>
-                              <th scope="col">Labhazir Referral Fee</th>
+                              <th scope="col">Lab Payable</th>
+                              <th scope="col">Labhazir Payable</th>
                               <th scope="col">Is Settled</th>
 
                               {/* <th scope="col">Is Settled</th> */}

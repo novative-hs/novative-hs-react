@@ -481,6 +481,8 @@ export const addNewCorporateTest = (offeredTest, id) => {
   let formData = new FormData();
   formData.append("test_id", offeredTest.test_id);
   formData.append("price", offeredTest.price);
+  formData.append("start_date", offeredTest.start_date);
+  formData.append("end_date", offeredTest.end_date);
   console.log("api helper",offeredTest, id)
   return axios.post(`${url.ADD_NEW_CORPORATE_TEST}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -490,6 +492,7 @@ export const addNewCorporate = (offeredTest, id) => {
   let formData = new FormData();
   formData.append("corporate_id", offeredTest.corporate_id);
   formData.append("status", offeredTest.status);
+  formData.append("allow_all", offeredTest.allow_all);
   console.log("api helper",offeredTest, id)
   return axios.post(`${url.ADD_NEW_CORPORATE}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -531,6 +534,8 @@ export const updateCorporateTest = offeredTest => {
   formData.append("id", offeredTest.id);
   formData.append("test_id", offeredTest.test_id);
   formData.append("price", offeredTest.price);
+  formData.append("start_date", offeredTest.start_date);
+  formData.append("end_date", offeredTest.end_date);
   // formData.append("is_active", offeredTest.is_active);
 
   return axios.put(`${url.UPDATE_CORPORATE_TEST}/${offeredTest.id}`, formData, {
@@ -778,6 +783,14 @@ export const getActivityLogFinance = id =>
     headers: getHeader(authHeader()),
   });
 
+export const getLcList = ()=>
+  get(`${url.GET_LC_LIST}`, {
+    headers: getHeader(authHeader()),
+  })
+  export const getCorporateList = ()=>
+get( `${url.GET_CORPORATE_LIST}`, {
+  headers: getHeader(authHeader()),
+});
 // ------------- Corporate START Activity Log-------------
 
 export const getCorporateCommit = id =>
@@ -1312,24 +1325,25 @@ export const getCorporateProfileforpayment = id =>
     headers: getHeader(authHeader()),
   });
 
-export const updateCorporateProfile = (corporateProfile, id) => {
-  let formData = new FormData();
-  formData.append("name", corporateProfile.name);
-  formData.append("logo", corporateProfile.logo);
-  formData.append("email", corporateProfile.email);
-  formData.append("phone", corporateProfile.phone);
-  formData.append("landline", corporateProfile.landline);
-  formData.append("address", corporateProfile.address);
-  formData.append("city", corporateProfile.city);
-  formData.append("payment_terms", corporateProfile.payment_terms);
-  formData.append("national_taxation_no", corporateProfile.national_taxation_no);
-
-  console.log("corporate profile update or not", corporateProfile, id);
-
-  return axios.put(`${url.UPDATE_CORPORATE_PROFILE}/${id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
-};
+  export const updateCorporateProfile = (CorporateProfile, id) => {
+    console.log('Updating corporate profile:', CorporateProfile, id);
+    
+    let formData = new FormData();
+    formData.append("name", CorporateProfile.name);
+    formData.append("logo", CorporateProfile.logo);
+    formData.append("email", CorporateProfile.email);
+    formData.append("phone", CorporateProfile.phone);
+    formData.append("landline", CorporateProfile.landline);
+    formData.append("address", CorporateProfile.address);
+    formData.append("city", CorporateProfile.city);
+    formData.append("payment_terms", CorporateProfile.payment_terms);
+    formData.append("national_taxation_no", CorporateProfile.national_taxation_no);
+  
+    return axios.put(`${url.UPDATE_CORPORATE_PROFILE}/${id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+  
 
 // export const updateB2bProfile = (b2bProfile, id) => {
 //   let formData = new FormData();
@@ -1854,11 +1868,16 @@ export const getDonorAccountStatements = id =>
     let formData = new FormData();
     formData.append("name", cemployeeData.name);
     formData.append("employee_code", cemployeeData.employee_code);
+    formData.append("type", cemployeeData.type);
 
     return axios.post(`${url.ADD_NEW_CEMPLOYEE_DATA}/${id}`, formData, {
       headers: getHeader(authHeader()),
     });
   };
+  export const deletecedata = cemployee =>
+    del(`${url.DELETE_CEDATA}/${cemployee.id}`, {
+      headers: getHeader(authHeader()),
+    });
 
   export const addNewCemployeefile = (cemployeeData) => {
     let formData = new FormData();
@@ -1877,6 +1896,7 @@ export const getDonorAccountStatements = id =>
     let formData = new FormData();
     formData.append("name", cemployeeData.name);
     formData.append("employee_code", cemployeeData.employee_code);
+    formData.append("status", cemployeeData.status);
   
     return axios.put(
       `${url.UPDATE_CEMPLOYEE}/${cemployeeData.id}`,
@@ -2918,9 +2938,21 @@ export const getBouncedInStatuss = id =>
   });
 
 // corporate out payment 
+// export const getCCreatedOutStatuss = id =>
+//   get(`${url.GET_CCREATEDOUT_STATUSS}/${id}`, {
+//     headers: getHeader(authHeader()),
+//   });
 export const getCCreatedOutStatuss = id =>
   get(`${url.GET_CCREATEDOUT_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
+  })
+  .then(response => {
+    console.log("api response is :" ,response); // Log the response to the console
+    return response; // Optionally return the response if needed
+  })
+  .catch(error => {
+    console.error('Error fetching API:', error); // Log any errors to the console
+    throw error; // Optionally rethrow the error if needed
   });
 
 export const getCreatedOutStatuss = id =>

@@ -38,6 +38,9 @@ import {
   // getUnits,
   addNewCorporate,
 } from "store/offered-tests/actions";
+import {
+  getLabProfile
+} from "store/test-appointments/actions";
 
 class TestsList extends Component {
   constructor(props) {
@@ -45,12 +48,14 @@ class TestsList extends Component {
     this.node = React.createRef();
     this.state = {
       cemployeeDatas: [],
+      labProfiles: [],
       offeredTests: [],
       offeredTest: "",
       corporate_id: "",
       assignedTo: "",
       TestsList: "",
       btnText: "Copy",
+      selectedallow: "No", // Set the default value of selectedallow to "No"
       cemployeeDatas: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -112,10 +117,7 @@ class TestsList extends Component {
                <Button
                   color="primary"
                   className="w-55  btn-block btn btn-primary"
-                  // onClick={() => this.handleOfferedTestClicks(offeredTest.id)}
-                  onClick={() => this.handleSaveButtonClick(offeredTest.id)}
-
-                // disabled={offeredTest.length == 0}
+                  onClick={e => this.handleOfferedTestClicks(e, offeredTest.id, offeredTest.allow_all)}
                 >
                   <i className="mdi mdi-sticker-check-outline me-1" />
                   Accept
@@ -129,13 +131,18 @@ class TestsList extends Component {
     this.toggle = this.toggle.bind(this);
     this.toggleMessageModal.bind(this);
     this.handleOfferedTestClicks = this.handleOfferedTestClicks.bind(this);
-    // this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
   }
 
   componentDidMount() {
     const { cemployeeDatas, onGetLabCorporate } = this.props;
     console.log(onGetLabCorporate(this.state.user_id));
     this.setState({ cemployeeDatas });
+
+    const { labProfiles, onGetLabProfile } = this.props;
+    onGetLabProfile(this.state.user_id);
+    this.setState({
+      labProfiles
+    });
   }
   openPatientModal = (e, arg) => {
     this.setState({
@@ -213,52 +220,50 @@ class TestsList extends Component {
 
     this.toggle();
   };
-  handleOfferedTestClicks = (e, arg1, arg2, arg3) => {
+  handleOfferedTestClicks = (e, arg1, arg2) => {
     this.setState({
       offeredTest: "",
       isEdit: false,
       initialValues: {
         ...this.state.initialValues,
         corporate_id: arg1, // set the corporate_id value to arg
-        name: arg2,
-        status: "Accept",
+        allow_all: arg2,
+        // status: arg3,
       },
-      selectedTest: arg1, // store arg in component state
-      selectedname: arg2, 
-      selectedstatus: "Accept", 
+      selectedcor: arg1,
+      selectedallow: arg2 === "Yes" ? "Yes" : "No", // Set selectedallow based on arg2 value
+      // selectedstatus: arg3, 
 
     });
+    this.toggle();
   };
-  handleSaveButtonClick = (complaintId) => {
+  handleSaveButtonClick = () => {
     // Your other logic...
-    const { selectedTest } = this.state; // Use selectedTest from the component state
-  
+    // Your other logic...
+    const { selectedcor, selectedallow } = this.state; // Use selectedTest from the component state
+
+    // If selectedallow is undefined, set it to "No"
+    const { offeredTest } = this.state;
     const newOfferedTest = {
-      corporate_id: complaintId, // Use selectedTest as the corporate_id value
+
+      corporate_id: selectedcor, // Use selectedTest as the corporate_id value
       status: "Accept",
+      allow_all: selectedallow
+     
     };
-  
-    // Dispatch the action
+
     this.props.onAddNewCorporate(newOfferedTest,this.state.user_id);
-  
-    // Optionally, you can handle the asynchronous behavior here
-    // For example, use a promise or callback function
-    setTimeout(() => {
-      this.props.onGetLabCorporate(
-        this.state.user_id
-      );
-    }, 1000);
-  
-    // Close the modal or perform other actions as needed
+    this.toggle();
   };
   render() {
     const { SearchBar } = Search;
     const { isEdit, deleteModal } = this.state;
     const { offeredTests } = this.props;
+    const { labProfiles } = this.props;
     const offeredTest = this.state.offeredTest;
     const { cemployeeDatas } = this.props;
     const data = this.state.data;
-    const { onAddNewCorporate, onGetLabCorporate } = this.props;
+    const { onGetLabProfile, onAddNewCorporate, onGetLabCorporate } = this.props;
 
     const pageOptions = {
       sizePerPage: cemployeeDatas.length,
@@ -303,7 +308,15 @@ class TestsList extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                              <div> 
+                              {/* <div> 
+                              {this.props.labProfiles.type === "Main Lab" && (
+                              <span className="text-danger font-size-12">
+                              <strong>
+                                Note: Here only the list of Corporations that match your Territorie will be shown.
+                              </strong>
+                              </span>
+                              )}</div> */}
+                              <div>
                                   <span className="text-danger font-size-12">
                   <strong>
                     Note: Here only the list of Corporations that match your Territorie will be shown.
@@ -352,10 +365,14 @@ class TestsList extends Component {
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            status:
-                                              (offeredTest &&
-                                                offeredTest.status) ||
-                                              "",
+                                            // status:
+                                            //   (offeredTest &&
+                                            //     offeredTest.status) ||
+                                            //   "Accept",
+                                            allow_all: 
+                                            (offeredTest &&
+                                              offeredTest.allow_all) ||
+                                            "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             status: Yup.number(
@@ -377,10 +394,12 @@ class TestsList extends Component {
                                           })}
                                           // in onSubmit function
                                           onSubmit={values => {
+                                            const { isEdit, selectedallow , selectedcor} = this.state; // get isEdit and selectedTest from component state
                                             {
                                               const newOfferedTest = {
-                                                corporate_id: offeredTest.id,
-                                                status: values.status,
+                                                corporate_id: selectedcor,
+                                                // status: selectedstatus,
+                                                allow_all: selectedallow,
                                               };
                                               onAddNewCorporate(newOfferedTest, this.state.user_id);
                                               setTimeout(() => {
@@ -407,7 +426,7 @@ class TestsList extends Component {
                                                       name="corporate_id"
                                                       type="text"
                                                       readOnly={true}
-                                                      value= {this.state.selectedname}
+                                                      value= {this.state.selectedcor}
                                                       className={
                                                         "form-control" +
                                                         (errors.corporate_id &&
@@ -422,14 +441,15 @@ class TestsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+                                                {this.props.labProfiles.type === "Main Lab" && (
+
                                                 <Col className="col-12">
                                                   <div className="mb-3">
                                                   <Label
                                                     htmlFor="name"
-                                                    md="2"
                                                     className="col-form-label"
                                                   >
-                                                    Status
+                                                    Collaction Points are allowed to handel this corporate patients.
                                                     <span
                                                       style={{ color: "#f46a6a" }}
                                                       className="font-size-18"
@@ -438,34 +458,33 @@ class TestsList extends Component {
                                                     </span>
                                                   </Label>
                                                   <Col md="10">
-                                                    <select
-                                                      name="status"
-                                                      component="select"
-                                                      onChange={e => this.setState({ status: e.target.value })}
-                                                      defaultValue={this.state.status}
-                                                      className="form-select"
-                                                    >
-                                                      {/* options */}
-                                                      <option value=" ">Choose a Option</option>
-                                                      <option value="Pending">Pending</option>
-                                                      <option value="Accept">Accept</option>
-                                                    </select>
+                                                  <select
+                                                    name="allow_all"
+                                                    value={this.state.selectedallow}
+                                                    className="form-select"
+                                                    onChange={(e) => this.setState({ selectedallow: e.target.value })}
+                                                  >
+                                                    {/* options */}
+                                                    <option value="No">No</option>
+                                                    <option value="Yes">Yes</option>
+                                                  </select>
+
                                                   </Col>
                                                   </div>
 
-                                                </Col>
+                                                </Col>)}
                                               </Row>
 
                                               <Row>
-                                                <Col>
+                                              <Col>
                                                   <div className="text-end">
-                                                  {/* <button
+                                                    <button
   type="button"
   className="btn btn-success save-user"
   onClick={() => this.handleSaveButtonClick()}
 >
   Save
-</button>      */}
+</button>     
                                                   </div>
                                                 </Col>
                                               </Row>
@@ -496,18 +515,24 @@ class TestsList extends Component {
 TestsList.propTypes = {
   match: PropTypes.object,
   cemployeeDatas: PropTypes.array,
+  labProfiles: PropTypes.array,
   className: PropTypes.any,
   onGetLabCorporate: PropTypes.func,
   onAddNewCorporate: PropTypes.func,
   offeredTests: PropTypes.array,
   onAssignAudit: PropTypes.func,
+  onGetLabProfile: PropTypes.func,
+
 };
-const mapStateToProps = ({ cemployeeData }) => ({
+const mapStateToProps = ({ cemployeeData, testAppointments }) => ({
   cemployeeDatas: cemployeeData.cemployeeDatas,
+  labProfiles: testAppointments.labProfiles,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetLabCorporate: id => dispatch(getLabCorporate(id)),
+  onGetLabProfile: id => dispatch(getLabProfile(id)),
   onAddNewCorporate: (offeredTest, id) =>
     dispatch(addNewCorporate(offeredTest, id)),
 });

@@ -20,6 +20,8 @@ class AuditorSummary extends Component {
       photo:"",
       approvedLabs: "",
       pendingLabs: "",
+      completedAudits: "",
+      inProcessAudits: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -34,6 +36,8 @@ class AuditorSummary extends Component {
         name: this.props.success.name,
         email: this.props.success.email,
         photo: process.env.REACT_APP_BACKENDURL + this.props.success.photo,
+        completedAudits: this.props.success.completed_audits,
+        inProcessAudits: this.props.success.inprocess_audits,
         approvedLabs: this.props.success.approved_labs,
         pendingLabs: this.props.success.pending_labs,
       });
@@ -107,7 +111,7 @@ class AuditorSummary extends Component {
                   <div className="d-flex">
                     <div className="flex-grow-1">
                       <p className="text-muted fw-medium">Assigned Audits</p>
-                      <h4 className="mb-0">0</h4>
+                      <h4 className="mb-0">{this.state.inProcessAudits}</h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">
@@ -125,7 +129,7 @@ class AuditorSummary extends Component {
                   <div className="d-flex">
                     <div className="flex-grow-1">
                       <p className="text-muted fw-medium">Completed Audits</p>
-                      <h4 className="mb-0">0</h4>
+                      <h4 className="mb-0">{this.state.completedAudits}</h4>
                     </div>
                     <div className="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
                       <span className="avatar-title">

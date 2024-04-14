@@ -35,7 +35,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 
 import {
-  getCreatedOutStatuss,
+  getCCreatedOutStatuss,
   updatePaymentOutCreatedStatuss,
   deletePaymentout,
 } from "store/payment-statuss/actions";
@@ -77,8 +77,8 @@ class PathologistsList extends Component {
   };
 
   componentDidMount() {
-    const { paymentCreatedStatuss, onGetCreatedOutStatuss } = this.props;
-    onGetCreatedOutStatuss(this.state.user_id);
+    const { paymentCreatedStatuss, onGetCCreatedOutStatuss } = this.props;
+    onGetCCreatedOutStatuss(this.state.user_id);
     this.setState({ paymentCreatedStatuss });
   }
 
@@ -152,12 +152,12 @@ class PathologistsList extends Component {
   };
 
   handleDeletePathologist = () => {
-    const { onDeletePaymentout, onGetCreatedOutStatuss } = this.props;
+    const { onDeletePaymentout, onGetCCreatedOutStatuss } = this.props;
     const { paymentCreatedStatuss } = this.state;
     if (paymentCreatedStatuss.id !== undefined) {
       onDeletePaymentout(paymentCreatedStatuss);
       setTimeout(() => {
-        onGetCreatedOutStatuss(this.state.user_id);
+        onGetCCreatedOutStatuss(this.state.user_id);
       }, 1000);
       this.setState({ deleteModal: false });
     }
@@ -231,12 +231,12 @@ class PathologistsList extends Component {
     const columns= [
       {
         text: "MOF ID",
-        dataField: "id",
+        dataField: "order_id",
         sort: true,
         hidden: false,
         formatter: (cellContent, paymentCreatedStatus) => (
         <>
-        <span>{paymentCreatedStatus.id}</span>
+        <span>{paymentCreatedStatus.order_id}</span>
         </>
         ),filter: textFilter(),
         headerStyle: { backgroundColor: '#DCDCDC' },
@@ -445,7 +445,7 @@ class PathologistsList extends Component {
     const { isEdit, deleteModal, status } = this.state;
 
 
-    const { onUpdatePaymentOutCreatedStatuss, onGetCreatedOutStatuss } =
+    const { onUpdatePaymentOutCreatedStatuss, onGetCCreatedOutStatuss } =
       this.props;
     const paymentCreatedStatus = this.state.paymentCreatedStatus;
 
@@ -724,7 +724,7 @@ class PathologistsList extends Component {
                                                     updatePaymentOutCreatedStatuss
                                                   );
                                                   setTimeout(() => {
-                                                    onGetCreatedOutStatuss(
+                                                    onGetCCreatedOutStatuss(
                                                       this.state.user_id
                                                     );
                                                   }, 1000);
@@ -758,7 +758,7 @@ class PathologistsList extends Component {
                                                   updatePaymentOutCreatedStatuss
                                                 );
                                                 setTimeout(() => {
-                                                  onGetCreatedOutStatuss(
+                                                  onGetCCreatedOutStatuss(
                                                     this.state.user_id
                                                   );
                                                 }, 1000);
@@ -1291,7 +1291,7 @@ class PathologistsList extends Component {
 PathologistsList.propTypes = {
   match: PropTypes.object,
   className: PropTypes.any,
-  onGetCreatedOutStatuss: PropTypes.func,
+  onGetCCreatedOutStatuss: PropTypes.func,
   paymentCreatedStatuss: PropTypes.array,
   onDeletePaymentout: PropTypes.func,
   onUpdatePaymentOutCreatedStatuss: PropTypes.func,
@@ -1304,7 +1304,7 @@ const mapStateToProps = ({ paymentStatuss }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetCreatedOutStatuss: id => dispatch(getCreatedOutStatuss(id)),
+  onGetCCreatedOutStatuss: id => dispatch(getCCreatedOutStatuss(id)),
   onUpdatePaymentOutCreatedStatuss: paymentCreatedStatus => dispatch(updatePaymentOutCreatedStatuss(paymentCreatedStatus)),
   onDeletePaymentout: paymentCreatedStatus => dispatch(deletePaymentout(paymentCreatedStatus)),
 });

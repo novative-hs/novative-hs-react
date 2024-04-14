@@ -681,9 +681,9 @@ class TestAppointmentsList extends Component {
     // Set patientTestAppointments to state
     this.setState({ patientTestAppointments });
      // Fetch comments count for each appointment
-  this.props.patientTestAppointments.forEach(appointment => {
-    onGetNotes(appointment.id);
-  });
+     this.props.patientTestAppointments.forEach(appointment => {
+      onGetNotes(appointment.id);
+    });
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { patientTestAppointments } = this.props;
@@ -879,8 +879,9 @@ class TestAppointmentsList extends Component {
     const { SearchBar } = Search;
     const { isEdit, deleteModal } = this.state;
 
-    const { patientProfile } = this.props;
-
+    const {
+      onGetNotes,
+    } = this.props;
     const { patientTestAppointments } = this.props;
     const feedback = this.state.feedback;
     const { onAddNewPatientFeedback, onGetPatientTestAppointmentsList } =

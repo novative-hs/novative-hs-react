@@ -65,7 +65,8 @@ import CorporateLabsList from "../pages/CorporatesData/corporate-labs-list";
 import CorporatePaymentForm from "../pages/CorporatesData/corporate-out-payment";
 import PaymentFormStatus from "../pages/CorporatesData/corporate-paymentout-created-statuss-list";
 import corporatecommit from "../pages/CorporatesData/commit-corporate";
-
+import AccountStatementsCorporate from "../pages/CorporatesData/corporate-lab-appointmentsfa";
+import corporateList from "pages/FinanceAdmin/corporate-list";
 // Lab Components
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
 import TestsList from "../pages/OfferedTests/medical-tests";
@@ -263,7 +264,7 @@ import activityLog from "pages/Dashboard-Lab/activity-log";
 import activityLogFinance from "pages/PaymentStatuss/activity-log-finance";
 import activityLogMarketer from "pages/Dashboard-MarketerAdmin/activity-log-marketer";
 import activityLogFinanceAdmin from "pages/PaymentStatuss/activity-log-finance";
-
+import corporatestatusCancel from "pages/LabMarket/NearbyLabs/accepted-corporate-list";
 import AuditorCompletedAudits from "pages/Auditor/completed-audits";
 import AuditorProfile from "../pages/Authentication/StaffProfile";
 
@@ -289,6 +290,8 @@ import BankAccountsList from "pages/BankAccounts/bankaccounts-list";
 import Payments from "pages/Authentication/Payments"
 import CorporatesList from "pages/LabMarket/NearbyLabs/corporate-list"
 import AcceptedCorporatesList from "pages/LabMarket/NearbyLabs/accepted-corporate-list"
+import AcceptedCorporatesLists from "pages/LabMarket/NearbyLabs/accepted-corporate-list"
+
 import csrsList from "pages/CSRAdmin/csrs-list";
 import pendingComplaintslabhazir from "pages/CSRAdmin/pending-complaintslabhazir";
 import { invoiceList } from "common/data";
@@ -301,7 +304,7 @@ import PackagesOfferedbyLab from "pages/LabMarket/NearbyLabs/PackagesOfferedbyLa
 import RadiologyOfferedbyLab from "pages/LabMarket/NearbyLabs/RadiologyOfferedbyLab"
 import advLabChatBox from "pages/LabAdvertisements/adv-lab-chat-box";
 import advmadminChatBox from "pages/LabAdvertisements/adv-lab-chat-box";
-
+import labCorporateStatement from "pages/FinanceAdmin/lab-corporate-statement";
 // All general public routes will be listed here
 const publicRoutes = [
   { path: "/register/:guest_id?/:uuid?", component: Register },
@@ -545,16 +548,24 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/dashboard-financeadmin", component: DashboardFinanceAdmin },
   { path: "/account-statements-lab/:id", component: AccountStatementsLab },
   { path: "/account-statement-donor/:id", component: AccountStatementDonor },
+  {
+    path: "/corporate-lab-appointments/:id",
+    component: CorporateLabAppointmentsList,
+  },
   { path: "/account-statement-b2b/:id", component: AccountStatementsB2B },
   { path: "/cleared-in-payments", component: ClearedInPayments },
   { path: "/approved-in-payments", component: ApprovedInPayments },
   { path: "/unapproved-in-payments", component: UnapprovedInPayments },
   { path: "/activity-log-finance-admin", component: activityLogFinanceAdmin },
+  { path: "/corporate-status", component: corporatestatusCancel },
   {
     path: "/activity-log-financeadmin/:id",
     component: activityLogFinance,
   },
-
+  {
+    path: "/corporate-lab-appointments/:id",
+    component: AccountStatementsCorporate,
+  },
   {path: "/create-bank", component: CreateBanks},
   {path: "/bank-account", component: BankAccounts},
   {path: "/banks-list", component: BanksList},
@@ -566,9 +577,13 @@ const financeAdminAuthProtectedRoutes = [
   {path: "/bank-account-statements/:id", component: BankAccountStatements},
   { path: "/accepted-lab-advertisements", component: LabAdvertisementRequestsAcceptedMA},
   { path: "/adv-fadmin-chat-box/:id", component: advmadminChatBox },
+  { path: "/lab-corporate-statement", component: labCorporateStatement},
+  { path: "/corporate-details", component: corporateList},
 
-
-
+  {
+    path: "/accepted-corporates-List",
+    component: AcceptedCorporatesLists,
+  },
 
 
 

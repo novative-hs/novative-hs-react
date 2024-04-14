@@ -52,7 +52,6 @@ class OfferedTestsList extends Component {
     this.state = {
       offeredTests: [],
       tests: [],
-      // units: [],
       offeredTest: "",
       type: "",
       modal: false,
@@ -60,6 +59,7 @@ class OfferedTestsList extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+      newEntries: [], // Store new entries here
       offeredTestListColumns: [
         {
           text: "id",
@@ -79,16 +79,19 @@ class OfferedTestsList extends Component {
           text: "Test Name",
           sort: true,
           formatter: (cellContent, offeredTest) => (
-            <>
-              <span>
+            <span style={{ color: this.state.newEntries.includes(offeredTest.id) && existingEntriesCount > 0 ? 'red' : 'inherit' }}>
               {offeredTest.test_name}
-              </span>
-            </>
-          ), 
+            </span>
+          ),
         },
         {
           dataField: "type",
           text: "Type",
+          sort: true,
+        },
+        {
+          dataField: "test_status",
+          text: "Activity Status",
           sort: true,
         },
         {
@@ -102,37 +105,39 @@ class OfferedTestsList extends Component {
               )}
             </>
           ),
-
         },
-        
       ],
     };
     this.toggle = this.toggle.bind(this);
   }
-
-  // componentDidMount() {
-
-  //   const { offeredTests, onGetCorporateTests,  } = this.props;
-  //   onGetCorporateTests(userId);
-  //   this.setState({ offeredTests });
-  //   console.log("state",offeredTests)
-
-  // }
   componentDidMount() {
-    const { onGetCorporateTests } = this.props;
+    const { onGetCorporateTests, offeredTests } = this.props;
     const { id } = this.props.match.params;
-  
-    // Check if id exists in the route params
-    const userId = id
-      ? id
-      : this.state.user_id; // Use the existing state value if id doesn't exist
-  
-    // Fetch corporate tests using the determined user_id
+    const userId = id ? id : this.state.user_id;
     onGetCorporateTests(userId);
-  
-    // Set user_id in the state
     this.setState({ user_id: userId });
-  }
+  
+    // Fetch the current timestamp
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+  
+    // Filter new entries based on timestamp comparison
+    const newEntries = offeredTests.filter(test => {
+      const timestampDifference = currentTimestamp - test.timestamp;
+      return timestampDifference < 24 * 60 * 60; // Entries within 24 hours
+    });
+    console.log("new entries", newEntries)
+    // Store the IDs of new entries
+    const newEntryIds = newEntries.map(entry => entry.id);
+  
+    // Update state with new entries and existing entries count
+    this.setState({
+      newEntries: newEntryIds,
+      existingEntriesCount: offeredTests.length
+    }, () => {
+      console.log("exist entries", this.state.existingEntriesCount);
+    });
+  }    
+  
 
   toggle() {
     this.setState(prevState => ({
@@ -188,7 +193,25 @@ class OfferedTestsList extends Component {
   render() {
     const { SearchBar } = Search;
 
+    const { existingEntriesCount } = this.state;
+
     const { offeredTests } = this.props;
+    console.log("All offered tests:", offeredTests); // Log all offered tests
+
+    const defaultSorted = [
+      {
+        dataField: "test_status",
+        order: "asc", // Sort in ascending order to bring "Active" tests to the top
+      },
+      {
+        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
+        order: "desc", // desc or asc
+      },
+    ];
+    const filteredTests = offeredTests.filter(test => test.test_status === "Active");
+
+    console.log("filter list", filteredTests)
+
     // const { units } = this.props;
     const offeredTest = this.state.offeredTest;
 
@@ -198,12 +221,12 @@ class OfferedTestsList extends Component {
       custom: true,
     };
 
-    const defaultSorted = [
-      {
-        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
-        order: "desc", // desc or asc
-      },
-    ];
+    // const defaultSorted = [
+    //   {
+    //     dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
+    //     order: "desc", // desc or asc
+    //   },
+    // ];
 
     return (
       <React.Fragment>
@@ -267,6 +290,8 @@ class OfferedTestsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      data={filteredTests} // Passing filtered data to BootstrapTable
+
                                     />
                                   </div>
                                 </Col>

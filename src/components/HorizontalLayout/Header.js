@@ -355,16 +355,15 @@ class Header extends Component {
                       className="dropdown-content me-2 text-light"
                     >
                       <i className="mdi mdi-account-box align-middle font-size-20" />{" "}
-                      {this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
+                      {this.props.patientProfile && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card ? (
                         <span className="pt-4 font-size-12">
-                        {this.props.patientProfile.corporate_name}-{this.state.patient_name.split(" ")[0]}
-                      </span>
+                          {this.props.patientProfile.corporate_name}-{this.state.patient_name.split(" ")[0]}
+                        </span>
                       ) : (
                         <span className="pt-4 font-size-12">
-                        {this.state.patient_name.split(" ")[0]}
+                          {this.state.patient_name.split(" ")[0]}
                         </span>
-                      )
-                     }  
+                      )}
                                         
                     </Link>
                   </Tooltip>{" "}
@@ -690,7 +689,7 @@ class Header extends Component {
 <Link
   to="/dashboard-csr"
   className="btn btn-sm header-items noti-icon right-bar-toggle rounded-pill"
-  style={{ backgroundColor: 'red', color: 'white', textDecoration: 'none', width: '160px', height: '30px', fontWeight: 'bold', fontSize: '10px' , marginTop: '-27px'}}
+  style={{ backgroundColor: 'red', color: 'white', textDecoration: 'none', width: '160px', height: '30px', fontWeight: 'bold', fontSize: '10px' , marginTop: '-27px', alignContent: "center"}}
 >
   {/* <i className="mdi mdi-home me-1 font-size-24" />{" "} */}
   Go back to CSR Dashboard

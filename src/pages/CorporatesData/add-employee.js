@@ -42,12 +42,13 @@ class DonorPayment extends Component {
     super(props);
     this.state = {
       cemployeeDatas: [],
-      complaintSuccess:"",
+      complaintSuccess: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       name: "",
       employee_code: "",
+      type: "Employee",
       isDisabled: true,
       isRequiredFilled: true,
       cemployeeData: "",
@@ -66,36 +67,38 @@ class DonorPayment extends Component {
       cemployeeData: {
         name: this.state.name,
         employee_code: this.state.employee_code,
+        type: this.state.type,
       },
     });
 
     // API call to get the checkout items
-    const { onAddcemployeeData } = this.props;setTimeout(() => {
+    const { onAddcemployeeData } = this.props; setTimeout(() => {
       console.log(
         onAddcemployeeData(this.state.cemployeeData, this.state.user_id)
       );
     }, 1000);
-        // If no error messages then show wait message
-        setTimeout(() => {
-          if (this.state.cemployeeData) {
-            this.setState({
-              complaintSuccess:
-                "Employee Added Successfully",
-            });
-          }
-        }, 1000);
-        setTimeout(() => {
-          this.setState({
-            complaintSuccess: "",
-            employee_code: "",
-            name: "",
-          });
-        }, 5000);
-        setTimeout(() => {
-          if (this.state.cemployeeData) {
-            this.props.history.push("/employee-list");
-          }
-        }, 3000)
+    // If no error messages then show wait message
+    setTimeout(() => {
+      if (this.state.cemployeeData) {
+        this.setState({
+          complaintSuccess:
+            "Employee Added Successfully",
+        });
+      }
+    }, 1000);
+    setTimeout(() => {
+      this.setState({
+        complaintSuccess: "",
+        employee_code: "",
+        type: "",
+        name: "",
+      });
+    }, 5000);
+    setTimeout(() => {
+      if (this.state.cemployeeData) {
+        this.props.history.push("/employee-list");
+      }
+    }, 3000)
   };
 
 
@@ -124,18 +127,18 @@ class DonorPayment extends Component {
           <Container fluid>
             {/* Render Breadcrumb */}
             <Breadcrumbs title="Add" breadcrumbItem="Employee Data" />
-            <Col sm="2" lg="2" style={{marginLeft: "80%", marginBottom: "10px"}}>
-                                  <div>
-                                    <Link
-                                      to={"/employee-file"}
-                                      className="w-70 font-10 btn btn-secondary"
-                                    >
-                                      {" "}
-                                      <i className="mdi mdi-upload me-1" />
-                                      Upload File{" "}
-                                    </Link>
-                                  </div>
-                                </Col>
+            <Col sm="2" lg="2" style={{ marginLeft: "80%", marginBottom: "10px" }}>
+              <div>
+                <Link
+                  to={"/employee-file"}
+                  className="w-70 font-10 btn btn-secondary"
+                >
+                  {" "}
+                  <i className="mdi mdi-upload me-1" />
+                  Upload File{" "}
+                </Link>
+              </div>
+            </Col>
             <Formik>
               <div className="checkout-tabs">
                 <Row>
@@ -148,10 +151,10 @@ class DonorPayment extends Component {
                       </Alert>
                     ) : null}
                     {this.state.complaintSuccess && (
-              <Alert color="success" className="col-md-8">
-                {this.state.complaintSuccess}
-              </Alert>
-                )}
+                      <Alert color="success" className="col-md-8">
+                        {this.state.complaintSuccess}
+                      </Alert>
+                    )}
 
                     <Card>
                       <CardBody>
@@ -220,6 +223,36 @@ class DonorPayment extends Component {
                               />
                             </Col>
                           </FormGroup>
+                          <FormGroup className="mb-4" row>
+                            <Label htmlFor="employee_code"
+                              md="2"
+                              className="col-form-label">
+                              Type
+                            </Label>
+                            <Col md="10">
+
+                              <Field
+                                name="payment_method"
+                                as="select"
+                                className="form-control"
+                                multiple={false}
+                                value={
+                                  this.state.type
+                                }
+                                onChange={e =>
+                                  this.setState({
+                                    type: e.target.value,
+                                  })
+                                }
+                              >
+                                <option value="Employee">
+                                  Employee
+                                </option>
+                                <option value="Family">
+                                  Family and Friends
+                                </option>
+                              </Field></Col>
+                          </FormGroup>
                         </div>
                       </CardBody>
                     </Card>
@@ -242,7 +275,7 @@ class DonorPayment extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  
+
                 </Row>
               </div>
             </Formik>

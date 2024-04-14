@@ -358,6 +358,14 @@ class TestsList extends Component {
                                               (offeredTest &&
                                                 offeredTest.price) ||
                                               "",
+                                            start_date:
+                                              (offeredTest &&
+                                                offeredTest.start_date) ||
+                                              "",
+                                            end_date:
+                                              (offeredTest &&
+                                                offeredTest.end_date) ||
+                                              "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             // duration_required: Yup.number(
@@ -392,28 +400,22 @@ class TestsList extends Component {
                                                 50000,
                                                 "Please enter a number less than or equal to 50000"
                                               ),
-                                            // duration_type: Yup.string()
-                                            //   .trim()
-                                            //   .required(
-                                            //     "Please select duration type"
-                                            //   ),
-                                            // is_eqa_participation: Yup.string()
-                                            //   .trim()
-                                            //   .required(
-                                            //     "Please select one option from dropdown"
-                                            //   ),
-                                            // is_home_sampling_available:
-                                            //   Yup.string()
-                                            //     .trim()
-                                            //     .required(
-                                            //       "Please select one option from dropdown"
-                                            //     ),
-                                            // is_active:
-                                            //     Yup.string()
-                                            //       .trim()
-                                            //       .required(
-                                            //         "Please select one option from dropdown"
-                                            //       ),
+                                            start_date: Yup.string(
+                                                Yup.number()
+                                              ).when("discount", {
+                                                is: discount => discount > 0,
+                                                then: Yup.string().required(
+                                                  "Please select start date"
+                                                ),
+                                              }),
+                                            end_date: Yup.string(
+                                                Yup.number()
+                                              ).when("discount", {
+                                                is: discount => discount > 0,
+                                                then: Yup.string().required(
+                                                  "Please select end date"
+                                                ),
+                                              }),
                                           })}
                                           // in onSubmit function
                                           onSubmit={values => {
@@ -424,12 +426,17 @@ class TestsList extends Component {
                                                 test_id: selectedTest, // use selectedTest as the test_id value
                                                 test_name: selectedname,
                                                 price: values.price,
+                                                start_date: values.start_date,
+                                                end_date: values.end_date,
+
                                               };
                                             } else {
                                               const newOfferedTest = {
                                                 test_id: selectedTest, // use selectedTest as the test_id value
                                                 test_name: selectedname,
                                                 price: values.price,
+                                                start_date: values.start_date,
+                                                end_date: values.end_date,
                                               };
                                               onAddNewCorporateTest(newOfferedTest, this.state.user_id);
                                               setTimeout(() => {
@@ -472,6 +479,59 @@ class TestsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+                                                  
+      <div className="mb-3">
+        <Label className="form-label">
+          Start Date
+          <span className="text-danger font-size-12">*</span>
+        </Label>
+        <Field
+          name="start_date"
+          type="datetime-local" min={new Date(
+            new Date().toString().split("GMT")[0] +
+            " UTC"
+          )
+            .toISOString()
+            .slice(0, -8)}
+          className={
+            "form-control" +
+            (errors.start_date && touched.start_date
+              ? " is-invalid"
+              : "")
+          }
+        />
+        <ErrorMessage
+          name="start_date"
+          component="div"
+          className="invalid-feedback"
+        />
+      </div>
+      <div className="mb-3">
+        <Label className="form-label">
+          End Date
+          <span className="text-danger font-size-12">*</span>
+        </Label>
+        <Field
+          name="end_date"
+          type="datetime-local" min={new Date(
+            new Date().toString().split("GMT")[0] +
+            " UTC"
+          )
+            .toISOString()
+            .slice(0, -8)}
+          className={
+            "form-control" +
+            (errors.end_date && touched.end_date
+              ? " is-invalid"
+              : "")
+          }
+        />
+        <ErrorMessage
+          name="end_date"
+          component="div"
+          className="invalid-feedback"
+        />
+      </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Price

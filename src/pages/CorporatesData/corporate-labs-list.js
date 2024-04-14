@@ -139,9 +139,10 @@ class OfferedTestsList extends Component {
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
-              <span className="font-size-14 text-truncate float-start">
+             <Tooltip title={offeredTest.lab_address}>
+              <span className="font-size-14 float-start" style={{ whiteSpace: 'nowrap', width: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {offeredTest.lab_address}
-              </span>
+              </span></Tooltip>
             </>
           ), filter: textFilter(),
         },

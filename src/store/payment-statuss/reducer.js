@@ -47,10 +47,12 @@ const INIT_STATE = {
   paymentStatuss: [],
   paymentBouncedStatuss: [],
   paymentBouncedInStatuss: [],
+  corporatePaymentStatuss: [],
   // outPayment: [],
   paymentCreatedStatuss: [],
   paymentOutCreatedStatuss: [],
   paymentOutStatuss: [],
+  corporatepaymentOutStatuss:[],
   paymentInStatuss: [],
   bankAccounts: [],
   paymentInBouncedStatuss: [],
@@ -144,6 +146,7 @@ const paymentStatuss = (state = INIT_STATE, action) => {
           error: action.payload,
         };
     case GET_CREATEDOUT_STATUSS_SUCCESS:
+    
         return {
           ...state,
           paymentCreatedStatuss: action.payload.data,
@@ -155,9 +158,10 @@ const paymentStatuss = (state = INIT_STATE, action) => {
           error: action.payload,
         };
     case GET_CCREATEDOUT_STATUSS_SUCCESS:
+      console.log('Action payload in reducer:',action.payload);
         return {
           ...state,
-          paymentCreatedStatuss: action.payload.data,
+          paymentStatuss: action.payload.data,
         };
     
     case GET_CCREATEDOUT_STATUSS_FAIL:
@@ -261,7 +265,7 @@ const paymentStatuss = (state = INIT_STATE, action) => {
     case UPDATE_PAYMENTOUTCREATED_STATUS_SUCCESS:
       return {
         ...state,
-        paymentOutCreatedStatus: state.paymentOutCreatedStatus.map(paymentOutCreatedStatus =>
+        paymentOutCreatedStatus: state.paymentInStatuss.map(paymentOutCreatedStatus =>
           paymentOutCreatedStatus.id.toString() === action.payload.id.toString()
             ? { paymentOutCreatedStatus, ...action.payload }
             : paymentOutCreatedStatus
@@ -277,7 +281,7 @@ const paymentStatuss = (state = INIT_STATE, action) => {
     case UPDATE_PAYMENTOUTCCREATED_STATUS_SUCCESS:
       return {
         ...state,
-        paymentOutCreatedStatus: state.paymentOutCreatedStatus.map(paymentOutCreatedStatus =>
+        paymentOutCreatedStatus: state.paymentInStatuss.map(paymentOutCreatedStatus =>
           paymentOutCreatedStatus.id.toString() === action.payload.id.toString()
             ? { paymentOutCreatedStatus, ...action.payload }
             : paymentOutCreatedStatus

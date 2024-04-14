@@ -171,20 +171,22 @@ export const getBouncedInStatussFail = error => ({
 
 // corporate payment out
 
-export const getCCreatedOutStatussSuccess = paymentCreatedStatuss => ({
+export const getCCreatedOutStatussSuccess = paymentStatuss => ({
   type: GET_CCREATEDOUT_STATUSS_SUCCESS,
-  payload: paymentCreatedStatuss,
+  payload: paymentStatuss,
 });
 
 export const getCCreatedOutStatussFail = error => ({
   type: GET_CCREATEDOUT_STATUSS_FAIL,
   payload: error,
 });
-export const getCCreatedOutStatuss = id => ({
-  type: GET_CCREATEDOUT_STATUSS,
-  payload: id,
-});
-
+export const getCCreatedOutStatuss = id => {
+  console.log('ID passed to action:', id); // Log the ID passed to the action
+  return {
+    type: GET_CCREATEDOUT_STATUSS,
+    payload: id,
+  };
+};
 export const getCreatedOutStatussSuccess = paymentCreatedStatuss => ({
   type: GET_CREATEDOUT_STATUSS_SUCCESS,
   payload: paymentCreatedStatuss,

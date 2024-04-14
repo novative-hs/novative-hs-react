@@ -3,11 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import {
-  Card, CardBody, Col, Button, Table, Container, Label, Row, Modal,
+import { Card, CardBody, Col, Button, Table, Container, Label, Row,   Modal,
   ModalHeader,
-  ModalBody,
-} from "reactstrap";
+  ModalBody, } from "reactstrap";
 import { isEmpty, map } from "lodash";
 import paginationFactory, {
   PaginationProvider,
@@ -36,14 +34,9 @@ class AccountStatements extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).account_type
         : "",
       selectedCorporate: "", // Added state for selected corporate name
-      isSettledFilter: "",
     };
     this.toggle = this.toggle.bind(this);
     this.toggleLabModal = this.toggleLabModal.bind(this);
-  }
-
-  handleFilterChange = (isSettledFilter) => {
-    this.setState({ isSettledFilter });
   }
 
   componentDidMount() {
@@ -102,7 +95,7 @@ class AccountStatements extends Component {
     const { b2baccountStatements } = this.props;
     const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
-
+  
     // Define fields to export
     const fieldsToExport = [
       "lab_name",
@@ -117,7 +110,7 @@ class AccountStatements extends Component {
       "plateform_fees",
       "is_settled",
     ];
-
+  
     // Map each row to an object with only the desired fields
     const dataToExport = b2baccountStatements.map(statement => {
       const rowData = {};
@@ -126,7 +119,7 @@ class AccountStatements extends Component {
       });
       return rowData;
     });
-
+  
     // Convert data to Excel format and save as file
     const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
@@ -153,9 +146,8 @@ class AccountStatements extends Component {
       ? this.setState({ btnText: "Copied" })
       : this.setState({ btnText: "Copy" });
   };
-
+  
   render() {
-    const { isSettledFilter } = this.state;
     const { SearchBar } = Search;
 
     const { b2baccountStatements } = this.props;
@@ -167,16 +159,9 @@ class AccountStatements extends Component {
     };
     const uniqueLabNames = [...new Set(b2baccountStatements.map((statement) => statement.lab_name))];
 
-    // const filteredData = b2baccountStatements.filter(
-    //   (statement) =>
-    //     !this.state.selectedCorporate || statement.lab_name === this.state.selectedCorporate
-    // );
-
     const filteredData = b2baccountStatements.filter(
       (statement) =>
-        (!this.state.selectedCorporate || statement.lab_name === this.state.selectedCorporate) &&
-        (!this.state.isSettledFilter ||
-          (this.state.isSettledFilter === "true" ? statement.is_settled === true : statement.is_settled === false))
+        !this.state.selectedCorporate || statement.lab_name === this.state.selectedCorporate
     );
 
     const filteredTotal = this.getFilteredTotal(filteredData);
@@ -190,7 +175,7 @@ class AccountStatements extends Component {
           <Container fluid>
             <Breadcrumbs title="Statements" breadcrumbItem="Lab Corporate Statements" />
             <Row>
-              <Col lg="12" style={{ marginLeft: "87%" }}>
+              <Col lg="12" style={{marginLeft: "87%"}}>
                 <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
               </Col>
             </Row>
@@ -232,42 +217,24 @@ class AccountStatements extends Component {
                     <CardBody>
                       <div className="table-responsive">
                         {/* Add filter field */}
-                        <Row>
-                          <Col md="3" className="mb-3">
-                            <strong htmlFor="corporateFilter" className="form-label">
-                              Filter by Lab Name:
-                            </strong>
-                            <select
-                              id="corporateFilter"
-                              className="form-select"
-                              onChange={(e) => this.handleCorporateSelect(e.target.value)}
-                              value={this.state.selectedCorporate}
-                            >
-                              <option value="">All</option>
-                              {uniqueLabNames.map((labName, i) => (
-                                <option key={i} value={labName}>
-                                  {labName}
-                                </option>
-                              ))}
-                            </select>
-                          </Col>
-
-                          <Col md="3" className="mb-3">
-                            <strong htmlFor="corporateFilter" className="form-label">
-                              Filter by Is Settled:
-                            </strong>
-                            <select
-                              id="corporateFilter"
-                              className="form-select"
-                              onChange={(e) => this.handleFilterChange(e.target.value)}
-                              value={this.state.isSettledFilter}
-                            >
-                              <option value="">All</option>
-                              <option value="true">True</option>
-                              <option value="false">False</option>
-                            </select>
-                          </Col>
-                        </Row>
+                        <Col md="3" className="mb-3">
+                          <strong htmlFor="corporateFilter" className="form-label">
+                            Filter by Lab Name:
+                          </strong>
+                          <select
+                            id="corporateFilter"
+                            className="form-select"
+                            onChange={(e) => this.handleCorporateSelect(e.target.value)}
+                            value={this.state.selectedCorporate}
+                          >
+                            <option value="">All</option>
+                            {uniqueLabNames.map((labName, i) => (
+                              <option key={i} value={labName}>
+                                {labName}
+                              </option>
+                            ))}
+                          </select>
+                        </Col>
                         <Table>
                           <thead className="table-light">
                             <tr>
@@ -290,11 +257,9 @@ class AccountStatements extends Component {
                             {b2baccountStatements
                               .filter(
                                 (statement) =>
-                                  (!this.state.selectedCorporate || statement.lab_name === this.state.selectedCorporate) &&
-                                  (!this.state.isSettledFilter ||
-                                    (this.state.isSettledFilter === "true" ? statement.is_settled === true : statement.is_settled === false))
+                                  !this.state.selectedCorporate ||
+                                  statement.lab_name === this.state.selectedCorporate
                               )
-
                               .map((b2baccountStatement, i) => (
                                 <>
                                   <tr key={i}>
@@ -302,11 +267,11 @@ class AccountStatements extends Component {
                                       <h5 className="font-size-14 text-truncate float-start">
                                         {/* <span>{b2baccountStatement.lab_name}</span> */}
                                         <Link to="#"
-                                          //  onClick={e => this.openLabModal(e, b2baccountStatement)}
-                                          onMouseEnter={e => this.openLabModal(e, b2baccountStatement)}
-                                        >
-                                          {b2baccountStatement.lab_name}
-                                        </Link>
+                  //  onClick={e => this.openLabModal(e, b2baccountStatement)}
+                  onMouseEnter={e => this.openLabModal(e, b2baccountStatement)}
+                >
+                  {b2baccountStatement.lab_name}
+                </Link>
                                       </h5>
                                     </td>
                                     <td>
@@ -314,17 +279,10 @@ class AccountStatements extends Component {
                                         <span>{b2baccountStatement.lab_type}</span>
                                       </h5>
                                     </td>
+                                   
                                     <td>
                                       <h5 className="font-size-14 text-truncate">
-                                        <strong>
-                                          {b2baccountStatement.order_id && (
-                                            <Link
-                                              to={`/cor-invoice-detail/${b2baccountStatement.test_appointment_id}`}
-                                            >
-                                              {b2baccountStatement.order_id}
-                                            </Link>
-                                          )}
-                                        </strong>
+                                        <span> {b2baccountStatement.order_id}</span>
                                       </h5>
                                     </td>
                                     <td>
@@ -420,26 +378,6 @@ class AccountStatements extends Component {
                                       )}
 
                                     </td>
-
-                                    {/* <td>
-                                      {b2baccountStatement.map((statement, index) => (
-                                        (isSettledFilter === '' || String(statement.is_settled) === isSettledFilter) && (
-                                          <div key={index}>
-                                            {statement.is_settled ? (
-                                              <div className="text-success">
-                                                <i className="mdi mdi-check-circle font-size-18"></i>
-                                              </div>
-                                            ) : (
-                                              <div className="text-danger">
-                                                <i className="mdi mdi-close-circle font-size-18"></i>
-                                              </div>
-                                            )}
-                                            
-                                          </div>
-                                        )
-                                      ))}
-                                    </td> */}
-
                                   </tr>
                                 </>
                               ))}
@@ -482,17 +420,17 @@ class AccountStatements extends Component {
                               </td>
                               <td className="border-10">
                                 <p className="float-end">
-                                  {filteredTotal.totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  {filteredTotal.totalAmount.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 </p>
                               </td>
                               <td className="border-10">
                                 <p className="float-end">
-                                  {filteredTotal.totalReceivable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  {filteredTotal.totalReceivable.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 </p>
                               </td>
                               <td className="border-10">
                                 <p className="float-end">
-                                  {filteredTotal.totalPayable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                  {filteredTotal.totalPayable.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                                 </p>
                               </td>
                               <td className="border-10"></td>
@@ -500,73 +438,73 @@ class AccountStatements extends Component {
                           </tbody>
                         </Table>
                         <Modal
-                          isOpen={this.state.LabModal}
-                          className={this.props.className}
-                        >
-                          <ModalHeader
-                            toggle={this.toggleLabModal}
-                            tag="h4"
-                          >
-                            <span>Lab Details: </span>
-                          </ModalHeader>
-                          <ModalBody>
-                            <Formik>
-                              <Form>
-                                <Row>
-                                  <Col className="col-12">
-                                    <div className="mb-3 row">
-                                      <div className="col-md-3">
-                                        <Label className="form-label">
-                                          City
-                                        </Label>
-                                      </div>
-                                      <div className="col-md-9">
-                                        <input
-                                          type="text"
-                                          value={
-                                            this.state.lab_city
-                                          }
-                                          className="form-control"
-                                          readOnly={true}
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="mb-3 row">
-                                      <div className="col-md-3">
-                                        <Label className="form-label">
-                                          Address
-                                        </Label>
-                                      </div>
-                                      <div className="col-md-9">
-                                        <input
-                                          type="text"
-                                          value={
-                                            this.state.lab_address
-                                          }
-                                          className="form-control"
-                                          readOnly={true}
-                                        />
-                                      </div>
-                                    </div>
+                                      isOpen={this.state.LabModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleLabModal}
+                                        tag="h4"
+                                      >
+                                        <span>Lab Details: </span>
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik>
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_address
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
 
-                                    <div className="mb-3 row">
-                                      <div className="col-md-3">
-                                        <Label className="form-label">
-                                          Mobile No.
-                                        </Label>
-                                      </div>
-                                      <div className="col-md-9">
-                                        <input
-                                          type="text"
-                                          value={
-                                            this.state.lab_phone
-                                          }
-                                          className="form-control"
-                                          readOnly={true}
-                                        />
-                                      </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Mobile No.
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.lab_phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
 
-                                      {/* <div className="col-md-3">
+                                                  {/* <div className="col-md-3">
                                                     <button
                                                       type="button"
                                                       className="btn btn-secondary"
@@ -582,13 +520,13 @@ class AccountStatements extends Component {
                                                       {this.state.btnText}
                                                     </button>
                                                   </div> */}
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </Form>
-                            </Formik>
-                          </ModalBody>
-                        </Modal>
+                                                </div>
+                                              </Col>
+                                            </Row>
+                                          </Form>
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
                       </div>
                     </CardBody>
                   </Card>

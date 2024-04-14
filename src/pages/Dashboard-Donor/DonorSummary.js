@@ -63,6 +63,8 @@ class DonorProfile extends Component {
                   <div className="text-primary p-3">
                     <h5 className="text-primary">Welcome Back !</h5>
                     <p>Your Dashboard</p>
+                    
+              
                   </div>
                 </Col>
                 <Col xs="5" className="align-self-end">
@@ -85,8 +87,8 @@ class DonorProfile extends Component {
                       </Col>
                       <Col xs="6">
                         <div className="mt-2">
-                          <Link
-                            to={"/staff-profile"}
+                        <Link
+                            to={"/donor-profile"}
                             className="btn btn-primary btn-sm"
                           >
                             View Profile{" "}

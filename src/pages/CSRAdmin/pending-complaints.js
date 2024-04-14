@@ -88,7 +88,7 @@ class PendingComplaints extends Component {
               </span>
             </>
           ),
-          filter: textFilter(),
+          filter: textFilter() // Apply text filter here
         },
         {
           dataField: "complaint_id",
@@ -164,12 +164,12 @@ class PendingComplaints extends Component {
           formatter: (cellContent, complaint) => (
             <>
               <span>
-              {new Date().getDate() - new Date(complaint.registered_at).getDate()} days
-
+                {new Date().getDate() - new Date(complaint.registered_at).getDate()} days
               </span>
             </>
-          ),filter: textFilter(),
-        },
+          ),
+          filter: textFilter() // Apply text filter here
+        },        
         // {
         //   dataField: "email",
         //   text: "Email",
@@ -455,50 +455,51 @@ class PendingComplaints extends Component {
                                     </div>
                                   </div>
                                   <Modal
-                                      isOpen={this.state.mModal}
-                                      role="dialog"
-                                      autoFocus={true}
-                                      data-toggle="modal"
-                                      centered
-                                      toggle={this.toggleMModal}
-                                      onPointerLeave={this.handleMouseExit}
-                                    >
-                                      <div className="modal-content">
-                                        <div className="modal-header border-bottom-0">
-                                          <button
-                                            type="button"
-                                            className="btn-close"
-                                            onClick={() =>
-                                              this.setState({
-                                                mModal: false,
-                                              })
-                                            }
-                                            data-bs-dismiss="modal"
-                                            aria-label="Close"
-                                          ></button>
-                                        </div>
-                                        <div className="modal-body">
-                                          <div className="text-center mb-4">
-                                            <div className="avatar-md mx-auto mb-4">
-                                              <div className="avatar-title bg-light rounded-circle text-primary h3">
-                                                <i className="mdi mdi-email-open"></i>
-                                              </div>
-                                            </div>
+  isOpen={this.state.mModal}
+  role="dialog"
+  autoFocus={true}
+  data-toggle="modal"
+  centered
+  toggle={this.toggleMModal}
+  onPointerLeave={this.handleMouseExit}
+>
+  <div className="modal-content">
+    <div className="modal-header border-bottom-0">
+      <button
+        type="button"
+        className="btn-close"
+        onClick={() =>
+          this.setState({
+            mModal: false,
+          })
+        }
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div className="modal-body d-flex align-items-center justify-content-center">
+      <div className="text-center mb-4">
+        <div className="avatar-md mx-auto mb-4">
+          <div className="avatar-title bg-light rounded-circle text-primary h3">
+            <i className="mdi mdi-email-open"></i>
+          </div>
+        </div>
 
-                                            <div className="row justify-content-center" style={{width: "20px"}}>
-                                              <div className="col-xl-10">
-                                                <h4 className="text-primary">
-                                                {this.state.subject}
-                                                </h4>
-                                                <p className="text-muted font-size-14 mb-4">
-                                                  {this.state.message}
-                                                </p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </Modal>
+        <div className="row justify-content-center">
+          <div className="col-xl-10 px-3"> {/* Added px-3 for left and right padding */}
+            <h4 className="text-primary">
+              {this.state.subject}
+            </h4>
+            <p className="text-muted font-size-14 mb-4">
+              {this.state.message}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Modal>
+
                                   <Modal
                                       isOpen={this.state.PatientModal}
                                       className={this.props.className}

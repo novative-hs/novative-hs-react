@@ -241,7 +241,7 @@ class csrAppointments extends Component {
     this.setState({
       PatientModal: true,
       patient_phone: arg.patient_phone,
-      patient_city: arg.patient_city,
+      patient_city: arg.City,
     });
   };
   handleMouseExit = () => {

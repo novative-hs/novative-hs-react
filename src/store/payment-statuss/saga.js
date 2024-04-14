@@ -157,9 +157,19 @@ function* fetchCreatedOutStatuss(object) {
     yield put(getCreatedOutStatussFail(error));
   }
 }
+// function* fetchCCreatedOutStatuss(object) {
+//   try {
+//     const response = yield call(getCCreatedOutStatuss, object.payload);
+//     yield put(getCCreatedOutStatussSuccess(response));
+//   } catch (error) {
+//     yield put(getCCreatedOutStatussFail(error));
+//   }
+// }
 function* fetchCCreatedOutStatuss(object) {
   try {
+    console.log('Payload passed to fetchCCreatedOutStatuss:', object.payload); // Log the payload passed to the saga
     const response = yield call(getCCreatedOutStatuss, object.payload);
+    console.log('Response from API:', response); // Log the response from the API
     yield put(getCCreatedOutStatussSuccess(response));
   } catch (error) {
     yield put(getCCreatedOutStatussFail(error));

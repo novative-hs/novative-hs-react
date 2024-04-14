@@ -61,18 +61,37 @@ class TestAppointmentsCompletedList extends Component {
           formatter: (cellContent, testAppointment) => (
             <>
               <span>
-                  <Link
-                    to="#"
-                    onClick={e => this.openPatientModal(e, testAppointment)}
-                    // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
-                    // onPointerLeave={this.handleMouseExit()}
-                  >
-                   {testAppointment.patient_name}
-                  </Link>
+                <Link
+                  to="#"
+                  onClick={e => this.openPatientModal(e, testAppointment)}
+                  // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
+                  // onPointerLeave={this.handleMouseExit()}
+                >
+                  {testAppointment.patient_name}
+                </Link>
               </span>
             </>
           ),filter: textFilter(),
         },
+        // {
+        //   dataField: "name",
+        //   text: "Patient name",
+        //   sort: true,
+        //   formatter: (cellContent, testAppointment) => (
+        //     <>
+        //       <span>
+        //           <Link
+        //             to="#"
+        //             onClick={e => this.openPatientModal(e, testAppointment)}
+        //             // onMouseEnter={e => this.openPatientModal(e, testAppointment)}
+        //             // onPointerLeave={this.handleMouseExit()}
+        //           >
+        //            {testAppointment.patient_name}
+        //           </Link>
+        //       </span>
+        //     </>
+        //   ),filter: textFilter(),
+        // },
         // {
         //   dataField: "booked_at",
         //   text: "Booked at",
@@ -331,14 +350,14 @@ class TestAppointmentsCompletedList extends Component {
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
+                                  {/* <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
                                         {...toolkitprops.searchProps}
                                       />
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
-                                  </div>
+                                  </div> */}
                                 </Col>
                               </Row>
                               <Row className="mb-4">

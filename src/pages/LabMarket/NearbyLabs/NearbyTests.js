@@ -1243,7 +1243,7 @@ class NearbyTests extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      <li className="nav-item">\
+                      <li className="nav-item">
                         <Link
                           to={
                             this.props.match.params.guest_id

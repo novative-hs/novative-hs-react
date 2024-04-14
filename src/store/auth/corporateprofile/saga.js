@@ -25,9 +25,11 @@ function* fetchCorporateProfile(object) {
   }
 }
 
-function* onUpdateCorporateProfile({ payload: { corporateProfile, id } }) {
+function* onUpdateCorporateProfile({ payload: { CorporateProfile, id } }) {
   try {
-    const response = yield call(updateCorporateProfile, corporateProfile, id);
+    console.log('Updating corporate profile with id:', id);
+    console.log('Corporate profile data:', CorporateProfile);
+    const response = yield call(updateCorporateProfile, CorporateProfile, id);
     yield put(updateCorporateProfileSuccess(response));
   } catch (error) {
     yield put(updateCorporateProfileFail(error));

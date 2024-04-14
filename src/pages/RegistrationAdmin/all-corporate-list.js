@@ -56,6 +56,7 @@ class OfferedTestsList extends Component {
       cemployeeDatas: [],
       tests: [],
       labProfiles: [],
+      selectedcorporate: null,
       // units: [],
       offeredTest: "",
       type: "",
@@ -78,10 +79,18 @@ class OfferedTestsList extends Component {
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
-              <span className="float-start">
+              {/* <span className="float-start">
                 {offeredTest.name}
-              </span>
+              </span> */}
+              <Link
+                to="#"
+                onMouseEnter={e => this.openPatientModal(e, offeredTest)}
+                onPointerLeave={this.handleMouseExit()}
+              >
+                <span className="float-start">{offeredTest.name}</span>
+              </Link>
             </>
+
           ),
         },
         {
@@ -128,9 +137,9 @@ class OfferedTestsList extends Component {
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
-              <span>
-                {offeredTest.plateform_charges}
-              </span>
+
+              <span>{(offeredTest.plateform_charges * 100).toFixed(0)}%</span>
+
             </>
           ),
         },
@@ -141,7 +150,7 @@ class OfferedTestsList extends Component {
           text: "Action",
           formatter: (cellContent, offeredTest) => (
             <div className="d-flex gap-3" style={{ textAlign: "center", justifyContent: "center" }}>
-             <Tooltip title="Update"> 
+              <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
                     className="mdi mdi-pencil font-size-18"
@@ -149,7 +158,7 @@ class OfferedTestsList extends Component {
                     onClick={e => this.handleOfferedTestClick(e, offeredTest)}
                   ></i>
                 </Link>
-              </Tooltip> 
+              </Tooltip>
             </div>
           ),
         },
@@ -160,15 +169,20 @@ class OfferedTestsList extends Component {
     this.handleOfferedTestClicks = this.handleOfferedTestClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
-
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      isHovered: false,
+    });
+  };
   componentDidMount() {
     const { cemployeeDatas, onGetACorporate } = this.props;
     console.log(onGetACorporate(this.state.user_id));
     this.setState({ cemployeeDatas });
   }
-  
-  
-  
+
+
+
 
   toggle() {
     this.setState(prevState => ({
@@ -183,7 +197,10 @@ class OfferedTestsList extends Component {
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
-      test_details: arg.test_details,
+      phone: arg.phone,
+      city: arg.city,
+      address: arg.location,
+
     });
   };
   // handleMouseExit = () => {
@@ -255,17 +272,17 @@ class OfferedTestsList extends Component {
   };
   handleSaveButtonClick = () => {
     // Your other logic...
-  
+
     const { offeredTest } = this.state;
-  
+
     const updateACorporateStatus = {
       id: offeredTest.id,
       plateform_charges: this.state.plateform_charges,
     };
-  
+
     // Dispatch the action
     this.props.onUpdateACorporateStatus(updateACorporateStatus);
-  
+
     // Optionally, you can handle the asynchronous behavior here
     // For example, use a promise or callback function
     setTimeout(() => {
@@ -273,9 +290,12 @@ class OfferedTestsList extends Component {
         this.state.user_id
       );
     }, 1000);
-  
+
     // Close the modal or perform other actions as needed
     this.toggle();
+  };
+  handleSelectCorporate = (selectedOption) => {
+    this.setState({ selectedcorporate: selectedOption });
   };
 
   render() {
@@ -287,6 +307,21 @@ class OfferedTestsList extends Component {
 
     const { onUpdateACorporateStatus, onGetACorporate, } =
       this.props;
+    const uniqueCorporateNames = [...new Set(cemployeeDatas.map(data => data.name))];
+
+    // Generate labOptions for the <select> dropdown
+    const corporateOptions = uniqueCorporateNames.map((corporateName, index) => (
+      <option key={index} value={corporateName}>
+        {corporateName}
+      </option>
+    ));
+
+    const filteredStatements = cemployeeDatas.filter((statement) => {
+      const { selectedcorporate } = this.state;
+      const labFilter =
+        !selectedcorporate || statement.name === selectedcorporate;
+      return labFilter;
+    });
     const offeredTest = this.state.offeredTest;
 
     const pageOptions = {
@@ -321,6 +356,19 @@ class OfferedTestsList extends Component {
               <Col lg="12">
                 <Card>
                   <CardBody>
+                    <Col lg="3">
+                      <div className="mb-3">
+                        <label className="form-label">Corpotate List</label>
+                        <select
+                          value={this.state.selectedcorporate}
+                          onChange={(e) => this.setState({ selectedcorporate: e.target.value })}
+                          className="form-control"
+                        >
+                          <option value="">Select Corporate</option>
+                          {corporateOptions}
+                        </select>
+                      </div>
+                    </Col>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -349,6 +397,7 @@ class OfferedTestsList extends Component {
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      data={filteredStatements}
                                     />
                                     <Modal
                                       isOpen={this.state.PatientModal}
@@ -369,16 +418,49 @@ class OfferedTestsList extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      Included Tests
+                                                      phone
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
-                                                    <textarea
-                                                      name="test_details"
-                                                      id="test_details"
-                                                      rows="10"
-                                                      cols="10"
-                                                      value={this.state.test_details}
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.phone
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      City
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.city
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
+                                                </div>
+                                                <div className="mb-3 row">
+                                                  <div className="col-md-3">
+                                                    <Label className="form-label">
+                                                      Address
+                                                    </Label>
+                                                  </div>
+                                                  <div className="col-md-9">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state.address
+                                                      }
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
@@ -449,8 +531,8 @@ class OfferedTestsList extends Component {
                                                 <FormGroup className="mb-4" row>
                                                   <Label
                                                     htmlFor="name"
-                                                    // md="2"
-                                                    // className="col-form-label"
+                                                  // md="2"
+                                                  // className="col-form-label"
                                                   >
                                                     PlateForm Charges
                                                     <span
@@ -460,40 +542,40 @@ class OfferedTestsList extends Component {
                                                       *
                                                     </span>
                                                   </Label>
-                                                    <Field
-                                                      name="plateform_charges"
-                                                      type="number"
-                                                      step="0.01"
-                                                      min="0.00"
-                                                      max="1.00"
-                                                      value={this.state.plateform_charges}
-                                                      onChange={e => this.setState({ plateform_charges: e.target.value })}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.plateform_charges &&
+                                                  <Field
+                                                    name="plateform_charges"
+                                                    type="number"
+                                                    step="0.01"
+                                                    min="0.00"
+                                                    max="1.00"
+                                                    value={this.state.plateform_charges}
+                                                    onChange={e => this.setState({ plateform_charges: e.target.value })}
+                                                    className={
+                                                      "form-control" +
+                                                      (errors.plateform_charges &&
                                                         touched.plateform_charges
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="plateform_charges"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />                                                   
+                                                        ? " is-invalid"
+                                                        : "")
+                                                    }
+                                                  />
+                                                  <ErrorMessage
+                                                    name="plateform_charges"
+                                                    component="div"
+                                                    className="invalid-feedback"
+                                                  />
                                                 </FormGroup>
                                               </Row>
 
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">
-                                                  <button
-  type="button"
-  className="btn btn-success save-user"
-  onClick={() => this.handleSaveButtonClick()}
->
-  Save
-</button>                                            </div>
+                                                    <button
+                                                      type="button"
+                                                      className="btn btn-success save-user"
+                                                      onClick={() => this.handleSaveButtonClick()}
+                                                    >
+                                                      Save
+                                                    </button>                                            </div>
                                                 </Col>
                                               </Row>
                                             </Form>

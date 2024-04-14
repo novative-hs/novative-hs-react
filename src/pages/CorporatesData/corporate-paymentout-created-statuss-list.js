@@ -1,588 +1,601 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { connect, createDispatchHook } from "react-redux";
+import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
+import Select from "react-select";
 import { withRouter, Link } from "react-router-dom";
 import {
-  Card,
-  CardBody,
-  CardImg,
-  Col,
-  Container,
-  Row,
-  Modal,
-  Button,
-  ModalHeader,
-  ModalBody,
-  Label,
-  Input,
+    Card,
+    CardBody,
+    CardImg,
+    Col,
+    Container,
+    Row,
+    Modal,
+    Button,
+    ModalHeader,
+    ModalBody,
+    Label,
+    Input,
 } from "reactstrap";
 
 import paginationFactory, {
-  PaginationProvider,
-  PaginationListStandalone,
+    PaginationProvider,
+    PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+import images from "assets/images";
+
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
-
 import {
   getCCreatedOutStatuss,
+  updatePaymentInBouncedStatus,
   updatePaymentOutCCreatedStatuss,
+  getBankAccounts,
   deletePaymentout,
+
 } from "store/payment-statuss/actions";
+
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
 
-class PathologistsList extends Component {
-  constructor(props) {
-    super(props);
-    this.node = React.createRef();
-    this.state = {
-      paymentCreatedStatuss: [],
-      paymentCreatedStatus: "",
-      modal: false,
-      deleteModal: false,
-      user_id: localStorage.getItem("authUser")
-        ? JSON.parse(localStorage.getItem("authUser")).user_id
-        : "",
+class PaymentStatussList extends Component {
+    constructor(props) {
+        super(props);
+        this.node = React.createRef();
+        this.state = {
+            paymentStatuss: [],
+            paymentCreatedStatus: "",
+            modal: false,
+            payment_status: "",
+            deleteModal: false,
+            user_id: localStorage.getItem("authUser")
+                ? JSON.parse(localStorage.getItem("authUser")).user_id
+                : "",
 
+        };
+        this.handleCreateClick = this.handleCreateClick.bind(this);
+        this.handleSubmitClick = this.handleSubmitClick.bind(this);
+        this.toggle = this.toggle.bind(this);
+        this.onClickDelete = this.onClickDelete.bind(this);
+
+    }
+    // The code for converting "image source" (url) to "Base64"
+    toDataURL = url =>
+        fetch(url)
+            .then(response => response.blob())
+            .then(
+                blob =>
+                    new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(blob);
+                    })
+            );
+
+    // The code for converting "Base64" to javascript "File Object"
+    dataURLtoFile = (dataurl, filename) => {
+        var arr = dataurl.split(","),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
     };
-    this.handleCreateClick = this.handleCreateClick.bind(this);
-    this.handleSubmitClick = this.handleSubmitClick.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.onClickDelete = this.onClickDelete.bind(this);
-  }
 
-  // The code for converting "Base64" to javascript "File Object"
-  dataURLtoFile = (dataurl, filename) => {
-    var arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  };
+    componentDidMount() {
 
-  componentDidMount() {
-    const { paymentCreatedStatuss, onGetCCreatedOutStatuss } = this.props;
-    onGetCCreatedOutStatuss(this.state.user_id);
-    this.setState({ paymentCreatedStatuss });
-  }
+        const { bankAccounts, onGetbankAccounts } = this.props;
+        if (bankAccounts && !bankAccounts.length) {
+            onGetbankAccounts();
+        }
+        this.setState({ bankAccounts });
 
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-    }));
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { paymentCreatedStatuss } = this.props;
-    if (
-      !isEmpty(paymentCreatedStatuss) &&
-      size(prevProps.paymentCreatedStatuss) !== size(paymentCreatedStatuss)
-    ) {
-      this.setState({ paymentCreatedStatuss: {}, isEdit: false });
-    }
-  }
-
-  onPaginationPageChange = page => {
-    if (
-      this.node &&
-      this.node.current &&
-      this.node.current.props &&
-      this.node.current.props.pagination &&
-      this.node.current.props.pagination.options
-    ) {
-      this.node.current.props.pagination.options.onPageChange(page);
-    }
-  };
-
-  /* Insert,Update Delete data */
-
-  toggleDeleteModal = () => {
-    this.setState(prevState => ({
-      deleteModal: !prevState.deleteModal,
-    }));
-  };
-
-  onClickDelete = paymentCreatedStatuss => {
-    this.setState({ paymentCreatedStatuss: paymentCreatedStatuss });
-    this.setState({ deleteModal: true });
-  };
-
-  // The code for converting "image source" (url) to "Base64"
-  toDataURL = url =>
-    fetch(url)
-      .then(response => response.blob())
-      .then(
-        blob =>
-          new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          })
-      );
-
-  // The code for converting "Base64" to javascript "File Object"
-  dataURLtoFile = (dataurl, filename) => {
-    var arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  };
-
-  handleDeletePathologist = () => {
-    const { onDeletePaymentout, onGetCCreatedOutStatuss } = this.props;
-    const { paymentCreatedStatuss } = this.state;
-    if (paymentCreatedStatuss.id !== undefined) {
-      onDeletePaymentout(paymentCreatedStatuss);
-      setTimeout(() => {
+        const { paymentStatuss, onGetCCreatedOutStatuss } = this.props;
         onGetCCreatedOutStatuss(this.state.user_id);
-      }, 1000);
-      this.setState({ deleteModal: false });
+        this.setState({ paymentStatuss });
     }
-  };
-  handleSubmitClick = (e, arg) => {
-    const paymentCreatedStatus = arg;
-    this.setState({
-      paymentCreatedStatus: {
-        id: paymentCreatedStatus.id,
-        cheque_image: process.env.REACT_APP_BACKENDURL + paymentCreatedStatus.cheque_image,
-        payment_for: paymentCreatedStatus.payment_for,
-        test_appointment_id: paymentCreatedStatus.test_appointment_id,
-        tax: paymentCreatedStatus.tax,
-        lab_id: paymentCreatedStatus.lab_id,
-        amount: paymentCreatedStatus.amount,
-        payment_at: paymentCreatedStatus.payment_at,
-        payment_method: paymentCreatedStatus.payment_method,
-        cheque_no: paymentCreatedStatus.cheque_no,
-        payment_status: "Paid",
-        comments: paymentCreatedStatus.comments,
-      },
-      cheque_image: "",
-      isEdit: true,
-    });
 
-    this.toggle();
-  };
+    toggle() {
+        this.setState(prevState => ({
+            modal: !prevState.modal,
+        }));
+    }
 
-  handleCreateClick = (e, arg) => {
-    const paymentCreatedStatus = arg;
-    this.setState({
-      paymentCreatedStatus: {
-        id: paymentCreatedStatus.id,
-        cheque_image: process.env.REACT_APP_BACKENDURL + paymentCreatedStatus.cheque_image,
-        payment_for: paymentCreatedStatus.payment_for,
-        test_appointment_id: paymentCreatedStatus.test_appointment_id,
-        tax: paymentCreatedStatus.tax,
-        lab_id: paymentCreatedStatus.lab_id,
-        amount: paymentCreatedStatus.amount,
-        payment_at: paymentCreatedStatus.payment_at,
-        payment_method: paymentCreatedStatus.payment_method,
-        cheque_no: paymentCreatedStatus.cheque_no,
-        payment_status: "Created",
-        comments: paymentCreatedStatus.comments,
-      },
-      cheque_image: "",
-      isEdit: true,
-    });
+    handlePaymentStatusClicks = () => {
+        this.setState({
+          paymentCreatedStatus: "",
+            deposit_slip: "",
+            isEdit: false,
+        });
+        this.toggle();
+    };
 
-    this.toggle();
-  };
+    // eslint-disable-next-line no-unused-vars
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const { paymentStatuss } = this.props;
+        if (
+            !isEmpty(paymentStatuss) &&
+            size(prevProps.paymentStatuss) !== size(paymentStatuss)
+        ) {
+            this.setState({ paymentStatuss: {}, isEdit: false });
+        }
+    }
 
-  // handleSelectChange = (event) => {
-  //   const selectedValue = event.target.value;
-  //   // Perform navigation based on the selected value
-  //   if (selectedValue === 'Created') {
-  //     this.props.history.push('/payment-out-created-status');
-  //   }
-  //   if (selectedValue === 'Pending Clearence') {
-  //       this.props.history.push('/payment-out-pending-clearence-status');
-  //   }
-  //   if (selectedValue === 'Cleared') {
-  //   this.props.history.push('/payment-out-clear-status');
-  //   }
-  //   if (selectedValue === 'Bounced') {
-  //   this.props.history.push('/payment-out-bounced-status');
-  //   }
-  // }
+    onPaginationPageChange = page => {
+        if (
+            this.node &&
+            this.node.current &&
+            this.node.current.props &&
+            this.node.current.props.pagination &&
+            this.node.current.props.pagination.options
+        ) {
+            this.node.current.props.pagination.options.onPageChange(page);
+        }
+    };
 
-  render() {
-    const columns= [
-      {
-        text: "Order ID",
-        dataField: "order_id",
-        sort: true,
-        hidden: false,
-        formatter: (cellContent, paymentCreatedStatus) => (
-        <>
-          <span>{paymentCreatedStatus.order_id}</span>
-        </>
-        ),filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-      {
-        dataField: "payment_for",
-        text: "Payment To",
-        sort: true,
-        formatter: (cellContent, paymentCreatedStatus) => (
-          <>
-          <span>{paymentCreatedStatus.payment_for}</span>
-          </>
-        ),filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-      {
-        dataField: "test_appointment_id",
-        text: "Test Appointments ID's",
-        sort: true,
-        formatter: (cellContent, paymentCreatedStatus) => (
-          <>
-          <span>{paymentCreatedStatus.test_appointment_id}</span>
-          </>
-        ),filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-   
-      {
-        dataField: "lab_name",
-        text: "Lab Name",
-        sort: true,
-        formatter: (cellContent, paymentCreatedStatus) => (
-          <span>
-            {paymentCreatedStatus.lab_name != null ? paymentCreatedStatus.lab_name : "---"}
-          </span>
-        ),
-        filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' }
-      },
-      
-      // {
-      //   dataField: "b2b_id",
-      //   text: "B2b Name",
-      //   sort: true,
-      // },
-      {
-        dataField: "payment_method",
-        text: "Payment Type.",
-        sort: true,
-        formatter: (cellContent, paymentCreatedStatus) => (
-          <>
-          <span>{paymentCreatedStatus.payment_method}</span>
-          </>
-          ),filter: textFilter(),
-          headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-      {
-        dataField: "cheque_no",
-        text: "Cheque/Online Ref#",
-        sort: true,
-        formatter: (cellContent, paymentOutStatus) => (
-          <>
-            <span>
-              <Link
-                to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + paymentOutStatus.cheque_image,
-                }}
-                target="_blank"
-              >
-                              <strong>{paymentOutStatus.cheque_no}</strong>
+    /* Insert,Update Delete data */
 
-              </Link>
+    toggleDeleteModal = () => {
+        this.setState(prevState => ({
+          deleteModal: !prevState.deleteModal,
+        }));
+      };
+    
+      onClickDelete = paymentStatuss => {
+        this.setState({ paymentStatuss: paymentStatuss });
+        this.setState({ deleteModal: true });
+      };
+      handleDeletePathologist = () => {
+        const { onDeletePaymentout, onGetCCreatedOutStatuss} = this.props;
+        const { paymentStatuss } = this.state;
+        if (paymentStatuss.id !== undefined) {
+          onDeletePaymentout(paymentStatuss);
+          setTimeout(() => {
+            onGetCCreatedOutStatuss(this.state.user_id);
+          }, 1000);
+          this.setState({ deleteModal: false });
+        }
+      };
 
-            </span>
+    handlePaymentStatusClick = (e, arg) => {
+        this.setState({
+          paymentCreatedStatus: {
+                id: arg.id,
+                verified_by: arg.verified_by,
+                bankaccount_id: arg.bankaccount_id,
+                deposit_slip: arg.deposit_slip,
+                payment_for: arg.payment_for,
+                payment_status: "Pending Clearance",
+            },
+            isEdit: true,
+        });
 
-          </>
-        ),filter: textFilter(),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-      {
-        dataField: "payment_at",
-        text: "Payment Date",
-        sort: true,
-        formatter: (cellContent, paymentCreatedStatus) => {
-          const date = new Date(paymentCreatedStatus.payment_at);
-          const day = date.getDate();
-          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-          const month = monthNames[date.getMonth()];
-          const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
-      
-          return (
-              <p className="text-muted mb-0">
-                  {`${day}-${month}-${year}`}
-              </p>
-          );
-      },
-      filter: textFilter(),
-      headerStyle: { backgroundColor: '#DCDCDC' },
-      style: { backgroundColor: '	#F0F0F0' },
-      },
-      {
-        dataField: "amount",
-        text: "Amount",
-        sort: true,
-        formatter: (cellContent, paymentCreatedStatus) => (
-          <>
-            <div className="text-end">
-              {paymentCreatedStatus && typeof paymentCreatedStatus.amount !== 'undefined' ? (
-                <strong>{Math.abs(paymentCreatedStatus.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
-              ) : (
-                <span>N/A</span> // or any default value you want to display when amount is undefined
-              )}
-            </div>
-          </>
-        ),filter: textFilter(),
+        this.toggle();
+    };
+    handleSubmitClick = (e, arg) => {
+      const paymentCreatedStatus = arg;
+      this.setState({
+        paymentCreatedStatus: {
+          id: paymentCreatedStatus.id,
+          cheque_image: process.env.REACT_APP_BACKENDURL + paymentCreatedStatus.cheque_image,
+          payment_for: paymentCreatedStatus.payment_for,
+          test_appointment_id: paymentCreatedStatus.test_appointment_id,
+          tax: paymentCreatedStatus.tax,
+          lab_id: paymentCreatedStatus.lab_id,
+          amount: paymentCreatedStatus.amount,
+          payment_at: paymentCreatedStatus.payment_at,
+          payment_method: paymentCreatedStatus.payment_method,
+          cheque_no: paymentCreatedStatus.cheque_no,
+          payment_status: "Paid",
+          comments: paymentCreatedStatus.comments,
+        },
+        cheque_image: "",
+        isEdit: true,
+      });
+  
+      this.toggle();
+    };
+    handleSelectChange = (event) => {
+        const selectedValue = event.target.value;
+        // Perform navigation based on the selected value
+        if (selectedValue === 'Created') {
+            this.props.history.push('/payment-status');
+        }
+        if (selectedValue === 'Pending Clearence') {
+            this.props.history.push('/payment-in-pending-clearence-status');
+        }
+        if (selectedValue === 'Cleared') {
+            this.props.history.push('/clear-status');
+        }
+        if (selectedValue === 'Bounced') {
+            this.props.history.push('/bounced-status');
+        }
+    }
+    handleCreateClick = (e, arg) => {
+      const paymentCreatedStatus = arg;
+      this.setState({
+        paymentCreatedStatus: {
+          id: paymentCreatedStatus.id,
+          cheque_image: process.env.REACT_APP_BACKENDURL + paymentCreatedStatus.cheque_image,
+          payment_for: paymentCreatedStatus.payment_for,
+          test_appointment_id: paymentCreatedStatus.test_appointment_id,
+          tax: paymentCreatedStatus.tax,
+          lab_id: paymentCreatedStatus.lab_id,
+          amount: paymentCreatedStatus.amount,
+          payment_at: paymentCreatedStatus.payment_at,
+          payment_method: paymentCreatedStatus.payment_method,
+          cheque_no: paymentCreatedStatus.cheque_no,
+          payment_status: "Created",
+          comments: paymentCreatedStatus.comments,
+        },
+        cheque_image: "",
+        isEdit: true,
+      });
+  
+      this.toggle();
+    };
+    render() {
+        const columns= [
+          {
+            text: "Payment ID",
+            dataField: "id",
+            sort: true,
+            hidden: false,
+            formatter: (cellContent, paymentCreatedStatus) => (
+            <>
+              <span>{paymentCreatedStatus.id}</span>
+            </>
+            ),filter: textFilter(),
+            headerStyle: { backgroundColor: '#DCDCDC' },
+          },
+          {
+            dataField: "payment_for",
+            text: "Payment To",
+            sort: true,
+            formatter: (cellContent, paymentCreatedStatus) => (
+              <>
+              <span>{paymentCreatedStatus.payment_for}</span>
+              </>
+            ),filter: textFilter(),
+            headerStyle: { backgroundColor: '#DCDCDC' },
+          },
+          {
+            dataField: "test_appointment_id",
+            text: "Test Appointments ID's",
+            sort: true,
+            formatter: (cellContent, paymentCreatedStatus) => (
+              <>
+              <span>{paymentCreatedStatus.test_appointment_id}</span>
+              </>
+            ),filter: textFilter(),
+            headerStyle: { backgroundColor: '#DCDCDC' },
+          },
+          {
+            dataField: "lab_name",
+            text: "Lab Name",
+            sort: true,
+            formatter: (cellContent, paymentCreatedStatus) => (
+              <span>
+                {paymentCreatedStatus.lab_name != null ? paymentCreatedStatus.lab_name : "---"}
+              </span>
+            ),
+            filter: textFilter(),
+            headerStyle: { backgroundColor: '#DCDCDC' }
+          }, 
+           {
+            dataField: "payment_method",
+            text: "Payment Type.",
+            sort: true,
+            formatter: (cellContent, paymentCreatedStatus) => (
+              <>
+              <span>{paymentCreatedStatus.payment_method}</span>
+              </>
+              ),filter: textFilter(),
+              headerStyle: { backgroundColor: '#DCDCDC' },
+          },
+       
+          
+          {
+            dataField: "cheque_no",
+            text: "Cheque/Online Ref#",
+            sort: true,
+            formatter: (cellContent, paymentOutStatus) => (
+              <>
+                <span>
+                  <Link
+                    to={{
+                      pathname:
+                        process.env.REACT_APP_BACKENDURL + paymentOutStatus.cheque_image,
+                    }}
+                    target="_blank"
+                  >
+                                  <strong>{paymentOutStatus.cheque_no}</strong>
+    
+                  </Link>
+    
+                </span>
+    
+              </>
+            ),filter: textFilter(),
+            headerStyle: { backgroundColor: '#DCDCDC' },
+          },
+          {
+            dataField: "payment_at",
+            text: "Payment Date",
+            sort: true,
+            formatter: (cellContent, paymentCreatedStatus) => {
+              const date = new Date(paymentCreatedStatus.payment_at);
+              const day = date.getDate();
+              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              const month = monthNames[date.getMonth()];
+              const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year
+          
+              return (
+                  <p className="text-muted mb-0">
+                      {`${day}-${month}-${year}`}
+                  </p>
+              );
+          },
+          filter: textFilter(),
           headerStyle: { backgroundColor: '#DCDCDC' },
           style: { backgroundColor: '	#F0F0F0' },
-      },
-      // {
-      //   dataField: "bank",
-      //   text: "Bank/Account#",
-      //   sort: true,
-      //   formatter: (cellContent, paymentCreatedStatus) => (
-      //     <>
-      //       <span>
-      //         <span>
-      //           {paymentCreatedStatus.bank_name},{" "}
-      //           {paymentCreatedStatus.bank_account_no}
-      //         </span>
-      //       </span>
-      //     </>
-      //   ),filter: textFilter(),
-      //   headerStyle: { backgroundColor: '#DCDCDC' },
-      // },
-     
-      // {
-      //   dataField: "status",
-      //   text: "Status",
-      //   sort: true,
-      // },
-      // {
-      //   dataField: "cheque_image",
-      //   text: "Deposite Copy",
-      //   sort: true,
-      //   formatter: (cellContent, paymentCreatedStatus) => (
-      //     <>
-      //       <Link
-      //         to={{
-      //           pathname:
-      //             process.env.REACT_APP_BACKENDURL + paymentCreatedStatus.cheque_image,
-      //         }}
-      //         target="_blank"
-      //       >
-      //         View
-      //       </Link>
-      //     </>
-      //   ),
-      // },
-      {
-        dataField: "payment_status",
-        text: "Payment Status",
-        sort: true,
-        formatter: (cellContent, paymentCreatedStatus) => (
-          <>
-            <strong>{paymentCreatedStatus.payment_status}</strong>
-          </>
-        ),
-        filter: selectFilter({
-          options: {
-            '': 'All',
-            'Created': 'Created',
-            'Paid': 'Paid',
           },
-          defaultValue: 'All',
-        }),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-        style: { backgroundColor: '	#F0F0F0' },
-      },
-      {
-        dataField: "menu",
-        isDummyField: true,
-        editable: false,
-        text: "Action",
-        formatter: (cellContent, paymentCreatedStatus) => (
-          <>
-          {paymentCreatedStatus.payment_status !== "Paid" ? ( 
-            <div className="d-flex gap-1">
-            <button
-              type="submit"
-              className="btn btn-success save-user"
-              onClick={e => this.handleCreateClick(e, paymentCreatedStatus)}
-
-            >
-              Edit
-            </button>
-
-            <button
-              type="submit"
-              className="btn btn-success save-user"
-              onClick={e => this.handleSubmitClick(e, paymentCreatedStatus)}
-
-            >
-              Update
-            </button>
-            {/* <button
-              type="submit"
-              className="btn btn-danger save-user"
-              onClick={() => this.onClickDelete(paymentCreatedStatus)}
-
-            >
-              Delete
-            </button> */}
-            {/* <Link className="text-danger" to="#">
-              <i
-                className="mdi mdi-delete font-size-18"
-                id="deletetooltip"
-                onClick={() => this.onClickDelete(paymentCreatedStatus)}
-              ></i>
-            </Link> */}
-          </div>
-          ) : (
-            "---"
-          )}
-          
-          </>
-          
-        ),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-      {
-        dataField: "menu",
-        isDummyField: true,
-        editable: false,
-        text: "Comments",
-        formatter: (cellContent, paymentCreatedStatus) => (
-                <Link
-                  className="fas fa-comment font-size-18"
-                  to={`/corporate-activity-log/${paymentCreatedStatus.id}`}
-                  ></Link>
-        ),
-        headerStyle: { backgroundColor: '#DCDCDC' },
-      },
-    ];
-    const { SearchBar } = Search;
-
-    const { paymentCreatedStatuss } = this.props;
-
-    const { isEdit, deleteModal, status } = this.state;
-
-
-    const { onUpdatePaymentOutCCreatedStatuss, onGetCCreatedOutStatuss } =
-      this.props;
-    const paymentCreatedStatus = this.state.paymentCreatedStatus;
-
-    const pageOptions = {
-      sizePerPage: 10,
-      totalSize: this.props.paymentCreatedStatuss.length, // Replace with the actual data length
-      custom: true,
-    };
+          {
+            dataField: "amount",
+            text: "Amount",
+            sort: true,
+            formatter: (cellContent, paymentCreatedStatus) => (
+              <>
+                <div className="text-end">
+                  {paymentCreatedStatus && typeof paymentCreatedStatus.amount !== 'undefined' ? (
+                    <strong>{Math.abs(paymentCreatedStatus.amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</strong>
+                  ) : (
+                    <span>N/A</span> // or any default value you want to display when amount is undefined
+                  )}
+                </div>
+              </>
+            ),filter: textFilter(),
+              headerStyle: { backgroundColor: '#DCDCDC' },
+              style: { backgroundColor: '	#F0F0F0' },
+          },
+          {
+            dataField: "payment_status",
+            text: "Payment Status",
+            sort: true,
+            formatter: (cellContent, paymentCreatedStatus) => (
+              <>
+                <strong>{paymentCreatedStatus.payment_status}</strong>
+              </>
+            ),
+            filter: selectFilter({
+              options: {
+                '': 'All',
+                'Created': 'Created',
+                'Paid': 'Paid',
+              },
+              defaultValue: 'All',
+            }),
+            headerStyle: { backgroundColor: '#DCDCDC' },
+            style: { backgroundColor: '	#F0F0F0' },
+          },
+          {
+            dataField: "menu",
+            isDummyField: true,
+            editable: false,
+            text: "Action",
+            formatter: (cellContent, paymentCreatedStatus) => (
+              <>
+              {paymentCreatedStatus.payment_status !== "Paid" ? ( 
+                <div className="d-flex gap-1">
+                <button
+                  type="submit"
+                  className="btn btn-success save-user"
+                  onClick={e => this.handleCreateClick(e, paymentCreatedStatus)}
     
-    // Check if there are items in the paymentCreatedStatuss array
-    const hasData = paymentCreatedStatuss && paymentCreatedStatuss.length > 0;
+                >
+                  Edit
+                </button>
+    
+                <button
+                  type="submit"
+                  className="btn btn-success save-user"
+                  onClick={e => this.handleSubmitClick(e, paymentCreatedStatus)}
+    
+                >
+                  Update
+                </button>
+                {/* <button
+                  type="submit"
+                  className="btn btn-danger save-user"
+                  onClick={() => this.onClickDelete(paymentCreatedStatus)}
+    
+                >
+                  Delete
+                </button> */}
+                {/* <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-delete font-size-18"
+                    id="deletetooltip"
+                    onClick={() => this.onClickDelete(paymentCreatedStatus)}
+                  ></i>
+                </Link> */}
+              </div>
+              ) : (
+                "---"
+              )}
+              
+              </>
+              
+            ),
+            headerStyle: { backgroundColor: '#DCDCDC' },
+          },
+          {
+            dataField: "menu",
+            isDummyField: true,
+            editable: false,
+            text: "Comments",
+            formatter: (cellContent, paymentCreatedStatus) => (
+                    <Link
+                      className="fas fa-comment font-size-18"
+                      to={`/corporate-activity-log/${paymentCreatedStatus.id}`}
+                      ></Link>
+            ),
+            headerStyle: { backgroundColor: '#DCDCDC' },
+          },
+           
+          
+        ];
+        const { SearchBar } = Search;
+        const isDonation = this.state.paymentCreatedStatus.payment_for === "Donor";
 
-    const defaultSorted = [
-      {
-        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
-        order: "desc", // desc or asc
-      },
-    ];
+        console.log("what payment type", isDonation)
 
-    return (
-      <React.Fragment>
-        <DeleteModal
+        const { paymentStatuss } = this.props;
+
+        const { isEdit, deleteModal } = this.state;
+
+        const {
+          onUpdatePaymentOutCCreatedStatuss,
+          onGetCCreatedOutStatuss,
+        } = this.props;
+        const paymentCreatedStatus = this.state.paymentCreatedStatus;
+
+        const pageOptions = {
+            sizePerPage: 10,
+            totalSize: this.props.paymentStatuss.length, // Replace with the actual data length
+            custom: true,
+          };
+          
+          // Check if there are items in the paymentStatuss array
+          const hasData = paymentStatuss && paymentStatuss.length > 0;
+
+        const defaultSorted = [
+            {
+                dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
+                order: "desc", // desc or asc
+            },
+        ];
+
+        const { bankAccounts } = this.props;
+        const bankaccountList = [];
+        // for (let i = 0; i < bankAccounts.length; i++) {
+        //     let flag = 0;
+        //     if (!flag) {
+        //         bankaccountList.push({
+        //             label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no}`,
+        //             value: `${bankAccounts[i].id}`,
+        //         });
+        //     }
+        // }
+        for (let i = 0; i < bankAccounts.length; i++) {
+            if (isDonation) {
+              if (bankAccounts[i].account_type === "DONATION") {
+                bankaccountList.push({
+                  label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no} - ${bankAccounts[i].account_type}`,
+                  value: `${bankAccounts[i].id}`,
+                });
+              }
+            } else {
+              if (bankAccounts[i].account_type != "DONATION") {
+                bankaccountList.push({
+                  label: `${bankAccounts[i].bank_name} - ${bankAccounts[i].account_no} - ${bankAccounts[i].account_type}`,
+                  value: `${bankAccounts[i].id}`,
+                });
+              }
+            }
+      
+          }
+
+        return (
+            <React.Fragment>
+                <DeleteModal
           show={deleteModal}
           onDeleteClick={this.handleDeletePathologist}
           onCloseClick={() => this.setState({ deleteModal: false })}
         />
-        <div className="page-content">
-          <MetaTags>
-            <title>Payments List | Lab Hazir</title>
-          </MetaTags>
-          <Container fluid>
-            {/* Render Breadcrumbs */}
-            <Breadcrumbs
+                <div className="page-content">
+                    <MetaTags>
+                    <title>Payments List | Lab Hazir</title>
+                    </MetaTags>
+                    <Container fluid>
+                        {/* Render Breadcrumbs */}
+                        <Breadcrumbs
               title="List"
               breadcrumbItem="Payments"
             />
-            <Row>
-              <Col lg="12">
-                <Card>
-                  <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
-                      keyField="id"
-                      columns={this.state.paymentCreatedStatusListColumns}
-                      data={paymentCreatedStatuss}
-                    >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.paymentCreatedStatusListColumns}
-                          data={paymentCreatedStatuss}
-                          search
-                        >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-2">
-                                <Col sm="4">
-                                {/* <div className="ms-2 mb-4">
-        <div>
-            <Label for="main_lab_appointments" className="form-label">
-                <strong>Money Out Form Statuses</strong>
-            </Label>
-            <select
-                className="form-control select2"
-                title="main_lab_appointments"
-                name="main_lab_appointments"
-                onChange={this.handleSelectChange}
-            >
-                <option value="Created">Created</option>
-                <option value="Paid">Paid</option>
-            </select>
-        </div>
-    </div> */}
-                                </Col>
+                        <Row>
+                            <Col lg="12">
+                                <Card>
+                                    <CardBody>
+                                        <PaginationProvider
+                                            pagination={paginationFactory(pageOptions)}
+                                            keyField="id"
+                                            columns={this.state.paymentStatusListColumns}
+                                            data={paymentStatuss}
+                                        >
+                                            {({ paginationProps, paginationTableProps }) => (
+                                                <ToolkitProvider
+                                                    keyField="id"
+                                                    columns={this.state.paymentStatusListColumns}
+                                                    data={paymentStatuss}
+                                                    search
+                                                >
+                                                    {toolkitprops => (
+                                                        <React.Fragment>
+                                                            <Row className="mb-2">
+                                                                <Col sm="4">
+                                                                    {/* <div className="ms-2 mb-4">
+                                                                        <div>
+                                                                            <Label for="main_lab_appointments" className="form-label">
+                                                                                <strong>Payment Statuses</strong>
+                                                                            </Label>
+                                                                            <select
+                                                                                className="form-control select2"
+                                                                                title="main_lab_appointments"
+                                                                                name="main_lab_appointments"
+                                                                                onChange={this.handleSelectChange}
+                                                                            >
+                                                                                <option value="Created">Created</option>
+                                                                                <option value="Pending Clearence">Pending Clearence</option>
+                                                                                <option value="Cleared">Cleared</option>
+                                                                                <option value="Bounced">Bounced</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div> */}
+                                                                </Col>
 
-                              </Row>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={"table align-middle"}
-                                      bordered={false}
-                                      // striped={true}
-                                      columns={columns}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      ref={this.node}
-                                      filter={ filterFactory()}
-                                    />
-
-                                    <Modal
+                                                            </Row>
+                                                            <Row className="mb-4">
+                                                                <Col xl="12">
+                                                                    <div className="table-responsive">
+                                                                        <BootstrapTable
+                                                                            {...toolkitprops.baseProps}
+                                                                            {...paginationTableProps}
+                                                                            defaultSorted={defaultSorted}
+                                                                            classes={"table align-middle"}
+                                                                            bordered={false}
+                                                                            columns={columns}
+                                                                            headerWrapperClasses={"table-light"}
+                                                                            responsive
+                                                                            ref={this.node}
+                                                                            filter={filterFactory()}
+                                                                        />
+    <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
                                     >
@@ -1348,10 +1361,10 @@ class PathologistsList extends Component {
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
-                                  </div>
-                                </Col>
-                              </Row>
-                              {hasData && (
+                                                                    </div>
+                                                                </Col>
+                                                            </Row>
+                                                            {hasData && (
                                 <Row className="align-items-md-center mt-30">
                                   <Col className="pagination pagination-rounded justify-content-end mb-2">
                                     <PaginationListStandalone
@@ -1360,43 +1373,54 @@ class PathologistsList extends Component {
                                   </Col>
                                 </Row>
                               )}
-                            </React.Fragment>
-                          )}
-                        </ToolkitProvider>
-                      )}
-                    </PaginationProvider>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      </React.Fragment>
-    );
-  }
+                                                        </React.Fragment>
+                                                    )}
+                                                </ToolkitProvider>
+                                            )}
+                                        </PaginationProvider>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Container>
+                </div>
+            </React.Fragment>
+        );
+    }
 }
 
-PathologistsList.propTypes = {
-  match: PropTypes.object,
-  className: PropTypes.any,
-  onGetCCreatedOutStatuss: PropTypes.func,
-  paymentCreatedStatuss: PropTypes.array,
-  onDeletePaymentout: PropTypes.func,
-  onUpdatePaymentOutCCreatedStatuss: PropTypes.func,
-  history: PropTypes.any,
+PaymentStatussList.propTypes = {
+    match: PropTypes.object,
+    paymentStatuss: PropTypes.array,
+    bankAccounts: PropTypes.array,
+    className: PropTypes.any,
+    onGetCCreatedOutStatuss: PropTypes.func,
+    onUpdatePaymentOutCCreatedStatuss: PropTypes.func,
+    onGetbankAccounts: PropTypes.func,
+    history: PropTypes.any,
+    paymentStatuss: PropTypes.array,
+    onDeletePaymentout: PropTypes.func,
 };
 
 const mapStateToProps = ({ paymentStatuss }) => ({
-  paymentCreatedStatuss: paymentStatuss.paymentCreatedStatuss,
+    paymentStatuss: paymentStatuss.paymentStatuss,
+    bankAccounts: paymentStatuss.bankAccounts,
+    paymentStatuss: paymentStatuss.paymentStatuss,
+
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetCCreatedOutStatuss: id => dispatch(getCCreatedOutStatuss(id)),
-  onUpdatePaymentOutCCreatedStatuss: paymentCreatedStatus => dispatch(updatePaymentOutCCreatedStatuss(paymentCreatedStatus)),
-  onDeletePaymentout: paymentCreatedStatus => dispatch(deletePaymentout(paymentCreatedStatus)),
+    onGetbankAccounts: () => dispatch(getBankAccounts()),
+
+    onGetCCreatedOutStatuss: id => dispatch(getCCreatedOutStatuss(id)),
+    onUpdatePaymentOutCCreatedStatuss: paymentCreatedStatus =>
+        dispatch(updatePaymentOutCCreatedStatuss(paymentCreatedStatus)),
+    onDeletePaymentout: paymentCreatedStatus => dispatch(deletePaymentout(paymentCreatedStatus)),
+
 });
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(PathologistsList));
+    mapStateToProps,
+    mapDispatchToProps
+)(withRouter(PaymentStatussList));

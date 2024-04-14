@@ -428,10 +428,18 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Bank Accounts List")}</span>
                   </Link>
                 </li>
+                
+                
                 <li>
                   <Link to="/bank-account-statements/:id">
                     <i className="bx bx-receipt" />
                     <span>{this.props.t("Bank Statements")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/lab-corporate-statement">
+                    <i className="bx bx-receipt" />
+                    <span>{this.props.t("Lab Corporate Statement")}</span>
                   </Link>
                 </li>
                 <li>
@@ -441,6 +449,18 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
                 <li>
+                <li>
+                  <Link to="/corporate-details">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("Corporate List")}</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/accepted-corporates-List">
+                    <i className="bx bx-home-circle" />
+                    <span>{this.props.t("Corporate statuses List")}</span>
+                  </Link>
+                </li>
                   <Link to="/donor-details">
                     <i className="bx bx-home-circle" />
                     <span>{this.props.t("Donors List")}</span>
@@ -1027,7 +1047,7 @@ class SidebarContent extends Component {
                     </li>
                     <li>
                       <Link to={"/clab-account-statements"}>
-                        {this.props.t("Lab Corporates Statements")}
+                        {this.props.t("Statements")}
                       </Link>
                     </li>
                    

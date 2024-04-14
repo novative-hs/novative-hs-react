@@ -26,6 +26,9 @@ import {
   UPDATE_CEMPLOYEE,
   UPDATE_CEMPLOYEE_SUCCESS,
   UPDATE_CEMPLOYEE_FAIL,
+  DELETE_CEDATA,
+  DELETE_CEDATA_SUCCESS,
+  DELETE_CEDATA_FAIL,
 } from "./actionTypes";
 
 export const getALabCorporate = id => ({
@@ -158,5 +161,19 @@ export const updateCemployeeSuccess = cemployee => ({
 
 export const updateCemployeeFail = error => ({
   type: UPDATE_CEMPLOYEE_FAIL,
+  payload: error,
+});
+export const deletecedata = cemployee => ({
+  type: DELETE_CEDATA,
+  payload: cemployee,
+});
+
+export const deletecedataSuccess = cemployee => ({
+  type: DELETE_CEDATA_SUCCESS,
+  payload: cemployee,
+});
+
+export const deletecedataFail = error => ({
+  type: DELETE_CEDATA_FAIL,
   payload: error,
 });

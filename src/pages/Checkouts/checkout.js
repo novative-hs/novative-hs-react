@@ -847,7 +847,7 @@ class Checkout extends Component {
                       Thank You For Choosing Labhazir!
                     </strong>
                   </Col>
-                  {this.props.patientProfile.corporate_id = "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
+                  {this.props.patientProfile && this.props.patientProfile.corporate_id == "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
 <>
 <div className="d-flex justify-content-center mb-3">
                     <Link
@@ -1913,7 +1913,7 @@ class Checkout extends Component {
                                 Fill the card payment only if your payment
                                 method is card
                               </p>
-                              {this.props.patientProfile.corporate_id = "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
+                              {this.props.patientProfile && this.props.patientProfile.corporate_id == "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
                                 <div>
                                 <div className="form-check form-check-inline font-size-16">
                                   <Input
@@ -2174,7 +2174,7 @@ class Checkout extends Component {
                                   </div>
                                 ) : null}
                               </div>
-                              ) : this.props.patientProfile.corporate_payment == "Payment by Patient to Lab" ? (
+                              ) : this.props.patientProfile && this.props.patientProfile.corporate_payment == "Payment by Patient to Lab" ? (
                                   <div className="form-check form-check-inline font-size-16">
                                   <Input
                                     type="radio"
@@ -2195,7 +2195,7 @@ class Checkout extends Component {
                                     Cash on Spot
                                   </Label>
                                 </div>
-                              ) : this.props.patientProfile.corporate_payment == "Payment by Coorporate to LH" ? (
+                              ) : this.props.patientProfile && this.props.patientProfile.corporate_payment == "Payment by Coorporate to LH" ? (
                                 <div className="form-check form-check-inline font-size-16">
                                   <Input
                                     type="radio"
@@ -2377,13 +2377,34 @@ class Checkout extends Component {
                                                   </tr>
                                                 )}
 
-                                              {checkoutItem.total_test_cost && (
+                                              {checkoutItem.plateformcharges_roundoff ? (
                                                 <Tr>
                                                   <Td colSpan="4">
                                                     <div className="bg-success bg-soft p-3 rounded">
                                                       <h5 className="font-size-14 text-success mb-0">
                                                         <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
-                                                        Sub Total{" "}
+                                                        Plateform Charges{" "}
+                                                        <span className="float-end">
+                                                          Rs.{" "}
+                                                          {checkoutItem.plateformcharges_roundoff
+                                                            .toString()
+                                                            .replace(
+                                                              /\B(?=(\d{3})+(?!\d))/g,
+                                                              ","
+                                                            )}
+                                                        </span>
+                                                      </h5>
+                                                    </div>
+                                                  </Td>
+                                                </Tr>
+                                              ) : null}
+                                              
+                                                <Tr>
+                                                  <Td colSpan="4">
+                                                    <div className="bg-success bg-soft p-3 rounded">
+                                                      <h5 className="font-size-14 text-success mb-0">
+                                                        <i className="mdi mdi-cash-multiple me-2 font-size-22" />{" "}
+                                                        Sub Total
                                                         <span className="float-end">
                                                           Rs.{" "}
                                                           {checkoutItem.total_test_cost
@@ -2397,7 +2418,7 @@ class Checkout extends Component {
                                                     </div>
                                                   </Td>
                                                 </Tr>
-                                              )}
+                                              
                                             </>
                                           )
                                         )}
@@ -2419,7 +2440,7 @@ class Checkout extends Component {
       {this.state.payment_method !== "Card" && (
         <div>
           <p style={{ fontWeight: 'bold', marginTop: '10px' }}>
-            {this.props.patientProfile.corporate_payment === "Payment by Coorporate to LH" && this.state.payment_method === "Cash" ? (
+            {this.props.patientProfile && this.props.patientProfile.corporate_payment === "Payment by Coorporate to LH" && this.state.payment_method === "Cash" ? (
               // this.setState({ payment_method: "Corporate to Lab" }), // Setting the state directly
               <span style={{ color: 'red', marginLeft: '10px' }}>Corporate to Lab</span>
             ) : (
@@ -2445,7 +2466,7 @@ class Checkout extends Component {
         </div>
       )}
 
-      {this.props.patientProfile.corporate_payment !== "Payment by Coorporate to LH" && this.props.patientProfile.corporate_payment !== "Payment by Patient to Lab" && (
+      {this.props.patientProfile && this.props.patientProfile.corporate_payment !== "Payment by Coorporate to LH" && this.props.patientProfile.corporate_payment !== "Payment by Patient to Lab" && (
         <div>
           <div className="table-responsive">
             <a

@@ -215,7 +215,7 @@ class NearbyLabs extends Component {
         //   LabType: this.state.LabType,
         //   name: this.state.name,
         //   locationAccessAllowed: this.state.locationAccessAllowed,
-        //   corporatepatient: this.props.patientProfile.corporate_id,
+        //   corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
         // };
         // // Call onGetNearbyLabs before prompting for geolocation
         // onGetNearbyLabs(nearbyLabsLocationDetails);
@@ -246,7 +246,7 @@ class NearbyLabs extends Component {
               LabType: this.state.LabType,
               name: this.state.name,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
             };
             console.log(window.location.href);
@@ -271,7 +271,7 @@ class NearbyLabs extends Component {
               LabType: this.state.LabType,
               name: this.state.name,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
             };
             if (latitude && longitude) {
@@ -295,7 +295,7 @@ class NearbyLabs extends Component {
               LabType: this.state.LabType,
               name: this.state.name,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
             };
             console.log(window.location.href);
@@ -308,7 +308,7 @@ class NearbyLabs extends Component {
               }, 500);
             }
           }
-          if ((this.state.user_id) && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card) {
+          if ((this.state.user_id) && this.props.patientProfile && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card) {
             const nearbyLabsLocationDetails = {
               latitude,
               longitude,
@@ -318,7 +318,7 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
               name: this.state.name,
             };
             if (latitude && longitude) {
@@ -330,7 +330,7 @@ class NearbyLabs extends Component {
               }, 500);
             }
           }
-          if ((this.state.user_id) && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) {
+          if (this.state.user_id && this.props.patientProfile && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card) {
             const nearbyLabsLocationDetails = {
               latitude,
               longitude,
@@ -340,18 +340,18 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
               name: this.state.name,
             };
             if (latitude && longitude) {
               onGetNearbyLabs(nearbyLabsLocationDetails);
               this.setState({ nearbyLabs: [] });
-
+          
               setTimeout(() => {
                 this.setState({ nearbyLabs: this.props.nearbyLabs });
               }, 500);
             }
-          }
+          }          
         }, () => {
           this.setState({ latitude: null, longitude: null });
           // near by labs
@@ -366,7 +366,7 @@ class NearbyLabs extends Component {
               LabType: this.state.LabType,
               name: this.state.name,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
             };
             console.log(window.location.href);
             if (latitude && longitude) {
@@ -390,7 +390,7 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
               name: this.state.name,
             };
             if (latitude && longitude) {
@@ -415,7 +415,7 @@ class NearbyLabs extends Component {
               LabType: this.state.LabType,
               name: this.state.name,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
             };
             console.log(window.location.href);
             onGetNearbyLabs(nearbyLabsLocationDetails);
@@ -435,7 +435,7 @@ class NearbyLabs extends Component {
               km: this.state.km,
               LabType: this.state.LabType,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
               name: this.state.name,
             };
             onGetNearbyLabs(nearbyLabsLocationDetails);
@@ -484,7 +484,7 @@ class NearbyLabs extends Component {
         LabType: this.state.LabType,
         name: this.state.name,
         locationAccessAllowed: this.state.locationAccessAllowed,
-        corporatepatient: this.props.patientProfile.corporate_id,
+        corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
       };
       if (this.state.currentLatitude && this.state.currentLongitude) {
@@ -670,7 +670,7 @@ class NearbyLabs extends Component {
             km: this.state.km,
             name: this.state.name,
             locationAccessAllowed: this.state.locationAccessAllowed,
-            corporatepatient: this.props.patientProfile.corporate_id,
+            corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
           };
   
@@ -728,7 +728,7 @@ class NearbyLabs extends Component {
               page: this.state.page,
               name: this.state.name,
               locationAccessAllowed: this.state.locationAccessAllowed,
-              corporatepatient: this.props.patientProfile.corporate_id,
+              corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
             };
   
@@ -770,7 +770,7 @@ class NearbyLabs extends Component {
       city: this.state.city,
       name: this.state.name,
       locationAccessAllowed: this.state.locationAccessAllowed,
-      corporatepatient: this.props.patientProfile.corporate_id,
+      corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
     };
     // region wise advertisement
@@ -815,7 +815,7 @@ class NearbyLabs extends Component {
       address: this.state.address,
       city: this.state.city,
       locationAccessAllowed: this.state.locationAccessAllowed,
-      corporatepatient: this.props.patientProfile.corporate_id,
+      corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
     };
     // region wise advertisement
@@ -847,7 +847,7 @@ class NearbyLabs extends Component {
       city: this.state.city,
       name: this.state.name,
       locationAccessAllowed: this.state.locationAccessAllowed,
-      corporatepatient: this.props.patientProfile.corporate_id,
+      corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
     };
     // region wise advertisement
@@ -877,7 +877,7 @@ class NearbyLabs extends Component {
       km: this.state.km,
       name: this.state.name,
       locationAccessAllowed: this.state.locationAccessAllowed,
-      corporatepatient: this.props.patientProfile.corporate_id,
+      corporatepatient: this.props.patientProfile ? this.props.patientProfile.corporate_id : undefined,
 
     };
 
@@ -952,7 +952,7 @@ class NearbyLabs extends Component {
   render() {
     const isSmallScreen = window.innerWidth < 490;
     const { patientProfile } = this.props;
-    console.log("there is patient profile and yes and not", this.props.patientProfile, this.props.patientProfile.corporate_id)
+    console.log("there is patient profile and yes and not", this.props.patientProfile)
 
     const { search_type } = this.state;
     let borderColor = '2px solid blue'; // Default border color
@@ -1016,7 +1016,7 @@ class NearbyLabs extends Component {
 
     return (
       <React.Fragment>
-        {this.props.patientProfile.corporate_id == "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
+        {this.props.patientProfile && !this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
           <div className="topnav">
           <div className="container-fluid left-space">
             <nav

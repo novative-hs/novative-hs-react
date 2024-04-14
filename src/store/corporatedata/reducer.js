@@ -17,6 +17,8 @@ import {
   ADD_CEMPLOYEE_FILE_FAIL,
   UPDATE_CEMPLOYEE_SUCCESS,
   UPDATE_CEMPLOYEE_FAIL,
+  DELETE_CEDATA_SUCCESS,
+  DELETE_CEDATA_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -130,6 +132,20 @@ const cemployeeDatas = (state = INIT_STATE, action) => {
       };
 
     case UPDATE_CEMPLOYEE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case DELETE_CEDATA_SUCCESS:
+      return {
+        ...state,
+        cemployees: state.cemployees.filter(
+          cemployee =>
+            cemployee.id.toString() !== action.payload.id.toString()
+        ),
+      };
+
+    case DELETE_CEDATA_FAIL:
       return {
         ...state,
         error: action.payload,

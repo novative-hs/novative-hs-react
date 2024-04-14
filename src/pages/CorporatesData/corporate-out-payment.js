@@ -75,6 +75,8 @@ class OutPaymentsForm extends Component {
       // invoice_id: "",
       // bankaccount_id: "",
       // bank_id: "",
+      originalAmount: 0, // Initialize originalAmount
+
       amount: "",
       tax: "",
       payment_at: "",
@@ -173,7 +175,7 @@ class OutPaymentsForm extends Component {
 
     // setTimeout(() => {
     //   this.props.history.push("/corporate-payment-form-status");
-    //   window.location.reload()
+    //   // window.location.reload()
 
     // }, 2000)
   };
@@ -191,7 +193,7 @@ class OutPaymentsForm extends Component {
     //   onGetLabsc(this.state.user_id);
     // }
     // this.setState({ labsMof });
-    
+
     const { labsMof, onGetLabsc, } = this.props;
     onGetLabsc(this.state.user_id);
     this.setState({ labsMof });
@@ -247,10 +249,10 @@ class OutPaymentsForm extends Component {
   };
   handleAmountChange = e => {
     const enteredAmount = parseFloat(e.target.value);
-  
+
     if (!isNaN(enteredAmount)) {
       const absoluteSelectedAmount = Math.abs(this.state.selectedAmount);
-  
+
       if (enteredAmount <= absoluteSelectedAmount && enteredAmount >= -absoluteSelectedAmount) {
         // If the entered amount is within the limit, update the state with the absolute value
         this.setState({
@@ -271,8 +273,42 @@ class OutPaymentsForm extends Component {
       });
     }
   };
-  
-  
+
+  handleTaxChange = e => {
+    const enteredTax = parseFloat(e.target.value);
+    const totalAmount = parseFloat(this.state.selectedAmount); // Get the total amount from state
+
+    if (!isNaN(enteredTax)) {
+      if (enteredTax <= totalAmount) {
+        // Calculate the new amount by subtracting the tax from the total amount
+        const newAmount = totalAmount - enteredTax;
+
+        // Update the state with the new calculated value, and ensure it's rounded to two decimal places
+        this.setState({
+          tax: enteredTax,
+          amount: Math.round(newAmount * 100) / 100, // Round to two decimal places
+          amountExceedsLimit: false, // Reset the flag
+          taxInputError: false, // Reset the tax input error flag
+        });
+      } else {
+        // If the entered tax exceeds the total amount, set the tax input error flag
+        this.setState({
+          taxInputError: true,
+        });
+      }
+    } else {
+      // If the entered tax is not a valid number or is cleared, set the amount to the total amount
+      this.setState({
+        tax: '',
+        amount: totalAmount, // Set the amount to the total amount without subtracting tax
+        amountExceedsLimit: false, // Reset the flag
+        taxInputError: false, // Reset the tax input error flag
+      });
+    }
+  };
+
+
+
 
   render() {
     const { SearchBar } = Search;
@@ -314,19 +350,29 @@ class OutPaymentsForm extends Component {
     //     });
     //   // }
     // }
-    
-    const donationlabList = [];
-    for (let i = 0; i < labsMof.length; i++) {
-      // if ((labsMof[i].office === this.props.corporateProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
-        donationlabList.push({
-          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
-          label1: `${labsMof[i].name}`,
-          value: labsMof[i].lab_id,
-          // data: { dues: labsMof[i].donation_amount }, // Include the 'dues' property in the data field
-        });
-      // }
-    }
-    
+
+    const donationlabList = labsMof
+    // for (let i = 0; i < labsMof.length; i++) {
+    //   // if ((labsMof[i].office === this.props.corporateProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
+    //   donationlabList.push({
+    //     label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
+    //     label1: `${labsMof[i].account_id}`,
+    //     value: labsMof[i].lab_id,
+    //     // data: { dues: labsMof[i].donation_amount }, // Include the 'dues' property in the data field
+    //   });
+    //   // }
+    // }
+    .filter(
+      labslist =>
+        labslist.type == "Main Lab"
+        )
+    .map(labslist => ({
+      label: `(Lab Name: ${labslist.name}) - (Type: ${labslist.type}) - (City: ${labslist.city})`,
+      label1: `${labslist.name}`,
+      value: labslist.lab_id,
+      // data: { dues: labslist.dues },
+    }));
+
     // Assuming you have a state variable to store the selected lab id (this.state.selectedLabId)
     const selectedLab = donationlabList.find(lab => lab.value === this.state.lab_id);
 
@@ -346,29 +392,29 @@ class OutPaymentsForm extends Component {
     //   }
     // }
     let DonationAppointmentList = listDonation
-    .filter(
-      donation =>
-        donation.payment_status === "Allocate" &&
-        donation.corporation != null &&
-        donation.dues !== undefined &&
-        donation.lab_name === (selectedLab ? selectedLab.label1 : null)
-    )
-    .map(donation => ({
-      label: `(Appointment ID: ${donation.order_id}) - (Amount: ${donation.dues})`,
-      value: donation.id,
-      data: { dues: donation.dues },
-    }));
-  
-  // Add "All" option if there are appointments available
-  if (DonationAppointmentList.length > 0) {
-    DonationAppointmentList.unshift({ label: "All Appointments", value: "all" });
-  }
-  
-  // Filter out "All Appointments" from the labels
-  const labelsToShow = DonationAppointmentList
-    .filter(option => option.value !== "all")
-    .map(option => option.label);
-  
+      .filter(
+        donation =>
+          donation.payment_status === "Allocate" &&
+          donation.corporation != null &&
+          donation.dues !== undefined &&
+          donation.lab_name === (selectedLab ? selectedLab.label1 : null) || donation.mainbranch === (selectedLab ? selectedLab.label1 : null)
+      )
+      .map(donation => ({
+        label: `(Appointment ID: ${donation.order_id}) - (Amount: ${donation.dues})`,
+        value: donation.id,
+        data: { dues: donation.dues },
+      }));
+
+    // Add "All" option if there are appointments available
+    if (DonationAppointmentList.length > 0) {
+      DonationAppointmentList.unshift({ label: "All Appointments", value: "all" });
+    }
+
+    // Filter out "All Appointments" from the labels
+    const labelsToShow = DonationAppointmentList
+      .filter(option => option.value !== "all")
+      .map(option => option.label);
+
     // const DonationAppointmentList = [];
     // for (let i = 0; i < listDonation.length; i++) {
     //   if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Donation" && listDonation[i].payment_status === "Allocate") {
@@ -381,21 +427,26 @@ class OutPaymentsForm extends Component {
     //  }
     // }
     const CardAppointmentList = listDonation
-    .filter(
-      donation =>
-        // donation.payment_method === "Donation" &&
-        // donation.payment_status === "Allocate" &&
-        donation.plateform_fees > 0 &&
-        console.log("corporate donation",donation.corporation) === console.log("corporate hhh",this.props.corporateProfiles.id) &&
-        donation.plateform_fees !== undefined 
+      .filter(
+        donation =>
+          // donation.payment_method === "Donation" &&
+          // donation.payment_status === "Allocate" &&
+          donation.plateform_fees > 0 &&
+          console.log("corporate donation", donation.corporation) === console.log("corporate hhh", this.props.corporateProfiles.id) &&
+          donation.plateform_fees !== undefined
         // donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
 
-    )
-    .map(donation => ({
-      label: `(Appointment ID: ${donation.order_id}) - (Plateform charges: ${donation.plateform_fees})`,
-      value: donation.id,
-      data: { plateform_fees: donation.plateform_fees }, // Include the 'dues' property in the data field
-    }));
+      )
+      .map(donation => ({
+        label: `(Appointment ID: ${donation.order_id}) - (Plateform charges: ${donation.plateform_fees})`,
+        value: donation.id,
+        data: { plateform_fees: donation.plateform_fees }, // Include the 'dues' property in the data field
+      }));
+    
+    if (CardAppointmentList.length > 0) {
+        CardAppointmentList.unshift({ label: "All Appointments", value: "all" });
+      }
+
     // const CardAppointmentList = [];
     // for (let i = 0; i < listDonation.length; i++) {
     //   if (listDonation[i].status === "Result Uploaded" && listDonation[i].payment_method === "Card" && listDonation[i].payment_status === "Paid" && listDonation[i].is_settled == false) {
@@ -423,14 +474,14 @@ class OutPaymentsForm extends Component {
               <div className="checkout-tabs">
                 {this.state.successMessage && <div>{this.state.successMessage}</div>}
                 <div> <span className="text-danger font-size-12">
-                    <strong>
-                      Note: Make Payment for Lab or Labhazir.
-                    </strong>
-                  </span>
+                  <strong>
+                    Note: Make Payment for Lab or Labhazir.
+                  </strong>
+                </span>
                   <br></br>
-                  </div>
+                </div>
                 <Row>
-                  
+
                   <Col lg="1" sm="1">
                   </Col>
                   <Col lg="10" sm="9">
@@ -470,7 +521,7 @@ class OutPaymentsForm extends Component {
 
                           </FormGroup>
 
-                           {this.state.payment_for == "Lab"  ? (
+                          {this.state.payment_for == "Lab" ? (
                             outPayment.lab_id ? (
                               <div className="mb-3">
                                 <Label className="form-label">
@@ -539,188 +590,231 @@ class OutPaymentsForm extends Component {
                                 </div>
                               </div>)
                           ) : null}
- {this.state.payment_for == "Labhazir"  ? (
-                             <div className="mb-3 select2-container">
-                             <Label className="fw-bolder">Test Appointments</Label>
-                             <Select
-                               name="test_appointment_id"
-                               component="Select"
-                               isMulti={true} // Uncomment this line
-                               onChange={selectedGroup => {
-                                 this.setState({
-                                   test_appointment_id: selectedGroup.map(option => option.value),
-                                 });
-                                 
-                             
-                                 const selectedData = selectedGroup.map(option => option.data || {});
-                                 const totalAmount = selectedData.reduce(
-                                   (total, appointment) => total + (parseFloat(appointment.plateform_fees) || 0),
-                                   0
-                                 );
-                                 this.setState({
-                                   selectedAmount: totalAmount,
-                                   amountExceedsLimit: false, // Reset the flag when a new lab is selected
-                                 });
-                             
-                                 // Auto-set the amount field
-                                 this.setState({ amount: totalAmount || '0' });
-                                 console.log("amount arahi h yah nahi", selectedData, totalAmount);
-                               }}
-                               className={
-                                 "defautSelectParent" +
-                                 (!this.state.test_appointment_id
-                                   ? " is-invalid"
-                                   : "")
-                               }
-                               styles={{
-                                 control: (
-                                   base,
-                                   state
-                                 ) => ({
-                                   ...base,
-                                   borderColor: !this
-                                     .state.test_appointment_id
-                                     ? "#f46a6a"
-                                     : "#ced4da",
-                                 }),
-                               }}
-                               options={CardAppointmentList}
-                               placeholder="Select Appointment..."
-                             />
- 
-                             <div className="invalid-feedback">
-                               Please select Appointment
-                             </div>
-                           </div>
+                          {this.state.payment_for == "Labhazir" ? (
+                            <div className="mb-3 select2-container">
+                              <Label className="fw-bolder">Test Appointments</Label>
+                              <Select
+                                name="test_appointment_id"
+                                component="Select"
+                                isMulti={true} // Uncomment this line
+                                // onChange={selectedGroup => {
+                                //   this.setState({
+                                //     test_appointment_id: selectedGroup.map(option => option.value),
+                                //   });
+
+
+                                //   const selectedData = selectedGroup.map(option => option.data || {});
+                                //   const totalAmount = selectedData.reduce(
+                                //     (total, appointment) => total + (parseFloat(appointment.plateform_fees) || 0),
+                                //     0
+                                //   );
+                                //   this.setState({
+                                //     selectedAmount: totalAmount,
+                                //     amountExceedsLimit: false, // Reset the flag when a new lab is selected
+                                //   });
+
+                                //   // Auto-set the amount field
+                                //   this.setState({ amount: totalAmount || '0' });
+                                //   console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                // }}
+                                onChange={selectedGroup => {
+                                  const selectedValues = selectedGroup.map(option => option.value);
+                                  if (selectedValues.includes("all")) {
+                                    // If "All Appointments" option is selected, select all appointments
+                                    const allAppointmentIds = DonationAppointmentList
+                                      .filter(option => option.value !== "all")
+                                      .map(option => option.value);
+                                    this.setState({ test_appointment_id: allAppointmentIds });
+
+                                    const selectedData = DonationAppointmentList
+                                      .filter(option => option.value !== "all")
+                                      .map(option => option.data || {});
+                                    const totalAmount = selectedData.reduce(
+                                      (total, appointment) => total + (parseFloat(appointment.plateform_fees) || 0),
+                                      0
+                                    );
+                                    this.setState({
+                                      selectedAmount: totalAmount,
+                                      amountExceedsLimit: false,
+                                    });
+
+                                    // Auto-set the amount field
+                                    this.setState({ amount: totalAmount || '0' });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  } else {
+                                    this.setState({ test_appointment_id: selectedValues });
+
+                                    const selectedData = selectedGroup.map(option => option.data || {});
+                                    const totalAmount = selectedData.reduce(
+                                      (total, appointment) => total + (parseFloat(appointment.plateform_fees) || 0),
+                                      0
+                                    );
+                                    this.setState({
+                                      selectedAmount: totalAmount,
+                                      amountExceedsLimit: false,
+                                    });
+
+                                    // Auto-set the amount field
+                                    this.setState({ amount: totalAmount || '0' });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  }
+                                }}
+                                className={
+                                  "defautSelectParent" +
+                                  (!this.state.test_appointment_id
+                                    ? " is-invalid"
+                                    : "")
+                                }
+                                styles={{
+                                  control: (
+                                    base,
+                                    state
+                                  ) => ({
+                                    ...base,
+                                    borderColor: !this
+                                      .state.test_appointment_id
+                                      ? "#f46a6a"
+                                      : "#ced4da",
+                                  }),
+                                }}
+                                options={CardAppointmentList}
+                                placeholder="Select Appointment..."
+                              />
+
+                              <div className="invalid-feedback">
+                                Please select Appointment
+                              </div>
+                            </div>
                           ) : null}
-{this.state.payment_for === "Lab" && (
-  <div className="mb-3 select2-container">
-    <Label className="fw-bolder">Test Appointments</Label>
-    <Select
-      name="test_appointment_id"
-      component="Select"
-      isMulti={true}
-      onChange={selectedGroup => {
-        const selectedValues = selectedGroup.map(option => option.value);
-        if (selectedValues.includes("all")) {
-          // If "All Appointments" option is selected, select all appointments
-          const allAppointmentIds = DonationAppointmentList
-            .filter(option => option.value !== "all")
-            .map(option => option.value);
-          this.setState({ test_appointment_id: allAppointmentIds });
+                          {this.state.payment_for === "Lab" && (
+                            <div className="mb-3 select2-container">
+                              <Label className="fw-bolder">Test Appointments</Label>
+                              <Select
+                                name="test_appointment_id"
+                                component="Select"
+                                isMulti={true}
+                                onChange={selectedGroup => {
+                                  const selectedValues = selectedGroup.map(option => option.value);
+                                  if (selectedValues.includes("all")) {
+                                    // If "All Appointments" option is selected, select all appointments
+                                    const allAppointmentIds = DonationAppointmentList
+                                      .filter(option => option.value !== "all")
+                                      .map(option => option.value);
+                                    this.setState({ test_appointment_id: allAppointmentIds });
 
-          const selectedData = DonationAppointmentList
-            .filter(option => option.value !== "all")
-            .map(option => option.data || {});
-          const totalAmount = selectedData.reduce(
-            (total, appointment) => total + (parseFloat(appointment.dues) || 0),
-            0
-          );
-          this.setState({
-            selectedAmount: totalAmount,
-            amountExceedsLimit: false,
-          });
+                                    const selectedData = DonationAppointmentList
+                                      .filter(option => option.value !== "all")
+                                      .map(option => option.data || {});
+                                    const totalAmount = selectedData.reduce(
+                                      (total, appointment) => total + (parseFloat(appointment.dues) || 0),
+                                      0
+                                    );
+                                    this.setState({
+                                      selectedAmount: totalAmount,
+                                      amountExceedsLimit: false,
+                                    });
 
-          // Auto-set the amount field
-          this.setState({ amount: totalAmount || '0' });
-          console.log("amount arahi h yah nahi", selectedData, totalAmount);
-        } else {
-          this.setState({ test_appointment_id: selectedValues });
+                                    // Auto-set the amount field
+                                    this.setState({ amount: totalAmount || '0' });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  } else {
+                                    this.setState({ test_appointment_id: selectedValues });
 
-          const selectedData = selectedGroup.map(option => option.data || {});
-          const totalAmount = selectedData.reduce(
-            (total, appointment) => total + (parseFloat(appointment.dues) || 0),
-            0
-          );
-          this.setState({
-            selectedAmount: totalAmount,
-            amountExceedsLimit: false,
-          });
+                                    const selectedData = selectedGroup.map(option => option.data || {});
+                                    const totalAmount = selectedData.reduce(
+                                      (total, appointment) => total + (parseFloat(appointment.dues) || 0),
+                                      0
+                                    );
+                                    this.setState({
+                                      selectedAmount: totalAmount,
+                                      amountExceedsLimit: false,
+                                    });
 
-          // Auto-set the amount field
-          this.setState({ amount: totalAmount || '0' });
-          console.log("amount arahi h yah nahi", selectedData, totalAmount);
-        }
-      }}
-      className={
-        "defautSelectParent" +
-        (!this.state.test_appointment_id
-          ? " is-invalid"
-          : "")
-      }
-      styles={{
-        control: (
-          base,
-          state
-        ) => ({
-          ...base,
-          borderColor: !this
-            .state.test_appointment_id
-            ? "#f46a6a"
-            : "#ced4da",
-        }),
-      }}
-      options={DonationAppointmentList}
-      placeholder="Select Appointment..."
-    />
+                                    // Auto-set the amount field
+                                    this.setState({ amount: totalAmount || '0' });
+                                    console.log("amount arahi h yah nahi", selectedData, totalAmount);
+                                  }
+                                }}
+                                className={
+                                  "defautSelectParent" +
+                                  (!this.state.test_appointment_id
+                                    ? " is-invalid"
+                                    : "")
+                                }
+                                styles={{
+                                  control: (
+                                    base,
+                                    state
+                                  ) => ({
+                                    ...base,
+                                    borderColor: !this
+                                      .state.test_appointment_id
+                                      ? "#f46a6a"
+                                      : "#ced4da",
+                                  }),
+                                }}
+                                options={DonationAppointmentList}
+                                placeholder="Select Appointment..."
+                              />
 
+                              <div className="invalid-feedback">
+                                Please select Appointment
+                              </div>
+                            </div>
+                          )}
+
+
+                          <FormGroup className="mb-0">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
+                              Amount
+                              <span style={{ color: "#f46a6a" }} className="font-size-18">
+                                *
+                              </span>
+                            </Label>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              id="cardnumberInput"
+                              required={true}
+                              placeholder="Enter Amount"
+                              name="amount"
+                              value={Math.abs(this.state.amount)} // Display the absolute (positive) value
+                              onChange={e => this.handleAmountChange(e)}
+                            />
+                            {this.state.amountExceedsLimit && (
+                              <span style={{ color: "#f46a6a", fontSize: "14px" }}>
+                                Warning: The entered amount cannot exceed the Lab Payable Amount.
+                              </span>
+                            )}
+                          </FormGroup>
+
+
+                          <FormGroup className="mb-0">
+                            <Label htmlFor="cardnumberInput" className="fw-bolder">
+                              Tax
+                              <span
+                                style={{ color: "#f46a6a" }}
+                                className="font-size-18"
+                              >
+
+                              </span>
+                            </Label>
+                            <Input
+                              type="text"
+                              className={`form-control ${this.state.taxInputError ? 'is-invalid' : ''}`}
+                              id="taxInput"
+                              placeholder="Enter Tax"
+                              name="tax"
+                              value={this.state.tax}
+                              onChange={this.handleTaxChange}
+                            />
+                            {this.state.taxInputError && (
     <div className="invalid-feedback">
-      Please select Appointment
+      Tax amount cannot exceed the total amount.
     </div>
-  </div>
-)}
-
-
-<FormGroup className="mb-0">
-  <Label htmlFor="cardnumberInput" className="fw-bolder">
-    Amount
-    <span style={{ color: "#f46a6a" }} className="font-size-18">
-      *
-    </span>
-  </Label>
-  <Input
-    type="text"
-    className="form-control"
-    id="cardnumberInput"
-    required={true}
-    placeholder="Enter Amount"
-    name="amount"
-    value={Math.abs(this.state.amount)} // Display the absolute (positive) value
-    onChange={e => this.handleAmountChange(e)}
-  />
-  {this.state.amountExceedsLimit && (
-    <span style={{ color: "#f46a6a", fontSize: "14px" }}>
-      Warning: The entered amount cannot exceed the Lab Payable Amount.
-    </span>
   )}
-</FormGroup>
+                          </FormGroup>
 
-
-<FormGroup className="mb-0">
-  <Label htmlFor="cardnumberInput" className="fw-bolder">
-  Tax
-    <span
-      style={{ color: "#f46a6a" }}
-      className="font-size-18"
-    >
-      
-    </span>
-  </Label>
-  <Input
-    type="text"
-    className="form-control"
-    id="cardnumberInput"
-    placeholder="Enter Tax"
-    name="tax"
-    value={this.state.tax}
-    onChange={e =>
-      this.setState({
-        tax: e.target.value,
-      })
-    }
-  />
-</FormGroup>
-             
 
                           <FormGroup className="mb-0">
                             <Label htmlFor="cardnumberInput" className="fw-bolder">
@@ -864,7 +958,7 @@ class OutPaymentsForm extends Component {
                           </FormGroup>
 
                           <Row className="mt-4">
-                          <Col md="2">
+                            <Col md="2">
                             </Col>
                             <Col md="4">
                               <div className="text-end">

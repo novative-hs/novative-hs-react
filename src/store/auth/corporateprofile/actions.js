@@ -23,15 +23,22 @@ export const getCorporateProfileFail = error => ({
   payload: error,
 });
 
-export const updateCorporateProfile = (CorporateProfile, id) => ({
-  type: UPDATE_CORPORATE_PROFILE,
-  payload: { CorporateProfile, id },
-});
+export const updateCorporateProfile = (CorporateProfile, id) => {
+  console.log('Dispatching updateCorporateProfile action:', CorporateProfile, id);
+  return {
+    type: UPDATE_CORPORATE_PROFILE,
+    payload: { CorporateProfile, id },
+  };
+};
 
-export const updateCorporateProfileSuccess = CorporateProfile => ({
+export const updateCorporateProfileSuccess = (CorporateProfile) => {
+  console.log('Dispatching suceesssupdateCorporateProfile action:', CorporateProfile);
+  return{
   type: UPDATE_CORPORATE_PROFILE_SUCCESS,
   payload: CorporateProfile,
-});
+}
+};
+
 
 export const updateCorporateProfileFail = error => ({
   type: UPDATE_CORPORATE_PROFILE_FAIL,
