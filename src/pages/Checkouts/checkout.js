@@ -1913,268 +1913,7 @@ class Checkout extends Component {
                                 Fill the card payment only if your payment
                                 method is card
                               </p>
-                              {this.props.patientProfile && this.props.patientProfile.corporate_id == "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
-                                <div>
-                                <div className="form-check form-check-inline font-size-16">
-                                  <Input
-                                    type="radio"
-                                    value="Cash"
-                                    // defaultChecked
-                                    name="payment_method"
-                                    id="customRadioInline1"
-                                    className="form-check-input"
-                                    onChange={this.handlePaymentMethodChange}
-
-                                  />
-                                  <Label
-                                    className="form-check-label font-size-13"
-                                    htmlFor="customRadioInline1"
-                                  >
-                                    {/* <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "} */}
-                                    <i className="fas fa-money-bill-alt me-1 font-size-18 align-top" style={{ color: 'green' }} />
-
-                                    Cash on Spot
-                                  </Label>
-                                </div>
-                                <div className="form-check form-check-inline font-size-16">
-                                  <Input
-                                    type="radio"
-                                    value="Card"
-                                    // defaultChecked
-                                    id="customRadioInline2"
-                                    name="payment_method"
-                                    className="form-check-input"
-                                    onChange={this.handlePaymentMethodChange}
-
-                                  />
-                                  <Label
-                                    className="form-check-label font-size-13"
-                                    htmlFor="customRadioInline2"
-                                  >
-                                    <i
-                                      className="fab fa-cc-mastercard me-1 font-size-20 align-top"
-                                      style={{
-                                        color: 'white', // Set the yellow color for the circles
-                                        background: '#FFA800', // Set the red color for the background
-                                      }}
-                                    />
-                                    Credit / Debit Card
-                                  </Label>
-                                </div>
-                                <div className="form-check form-check-inline font-size-16">
-                                  {!isEmpty(this.props.donationCheck) &&
-                                    this.props.donationCheck.map(
-                                      (donationcheck, key) => {
-                                        return (
-                                          <div key={"_donationcheck_" + key}>
-                                            {donationcheck.bankaccount ===
-                                              true ? (
-                                              <div>
-                                                <Input
-                                                  type="radio"
-                                                  value="Donation"
-                                                  name="payment_method"
-                                                  id="customRadioInline1"
-                                                  className="form-check-input"
-                                                  onChange={this.handlePaymentMethodChange}
-
-                                                />
-                                                <Label
-                                                  className="form-check-label font-size-13"
-                                                  htmlFor="customRadioInline1"
-                                                >
-                                                  <i className="fas fa-hand-holding-heart me-1 font-size-20 align-top" style={{ color: 'red' }} />
-                                                  Avail Donation
-                                                </Label>
-                                              </div>
-                                            ) : donationcheck.bankaccount ===
-                                              false ? (
-                                              <div style={{ display: 'none' }}></div>
-                                            ) : null}
-                                          </div>
-                                        );
-                                      }
-                                    )}
-                                </div>
-                                <div className="form-check form-check-inline font-size-16">
-                                  {this.props.donationCheck.map(
-                                    (donationcheck, key) => {
-                                      return (
-                                        <div key={"_donationcheck_" + key}>
-                                          {donationcheck.available_credit >= donationcheck.grand_total_test_cost ? (
-                                            <div>
-                                              <Input
-                                                type="radio"
-                                                value="My Wallet"
-                                                name="payment_method"
-                                                id="customRadioInline1"
-                                                className="form-check-input"
-                                                onChange={this.handlePaymentMethodChange}
-
-                                              />
-                                              <Label
-                                                className="form-check-label font-size-13"
-                                                htmlFor="customRadioInline1"
-                                              >
-                                                <i className="mdi mdi-wallet align-middle me-1 font-size-20" style={{ color: '#0000FF' }} />
-                                                My Wallet
-                                              </Label>
-                                            </div>
-                                          ) : null}
-                                        </div>
-                                      );
-                                    }
-                                  )}
-                                </div>
-
-                                <div className="d-flex justify-content-center">
-                                  {this.state.payment_method === "My Wallet" && (
-                                    this.props.donationCheck.map((donationcheck, key) => (
-                                      <div key={key} className="card" style={{ background: '#ADD8E6', width: '300px', height: '200px' }}>
-                                        <div className="card-body d-flex flex-column justify-content-center">
-                                          <h5 className="card-title text-center font-weight-bold">Available Credit in your Wallet</h5>
-                                          <div className="card-text text-center" style={{ fontSize: '30px' }}>
-                                            Rs. {donationcheck.available_credit}
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))
-                                  )}
-                                </div>
-
-
-
-
-                                {this.state.payment_method == "Donation" ? (
-                                  <div>
-                                    <h5 className="mt-5 mb-3 font-size-15">
-                                      For Donation
-                                    </h5>
-                                    <div className="p-4 border">
-                                      <Form>
-                                        <FormGroup className="mb-0">
-                                          <input
-                                            name="donation"
-                                            type="checkbox"
-                                            required={true}
-                                            // checked={false}
-                                            onChange={this.handlePaymentMethodChange}
-                                            checked={this.state.isChecked}
-                                          />
-                                          <b>
-                                            {" "}
-                                            I hereby confirm that I am deserving
-                                            individual who fall into eligible
-                                            category to avail obligatory charity
-                                            / donation money.
-                                          </b>
-                                        </FormGroup>
-                                      </Form>
-                                    </div>
-                                  </div>
-                                ) : null}
-
-                                {this.state.payment_method == "Card" ? (
-                                  <div>
-                                    <h5 className="mt-5 mb-3 font-size-15">
-                                      For card Payment
-                                    </h5>
-                                    <div className="p-4 border">
-                                      <Form>
-                                        <FormGroup className="mb-0">
-                                          <Label htmlFor="cardnumberInput">
-                                            Card number
-                                            <span
-                                              style={{ color: "#f46a6a" }}
-                                              className="font-size-18"
-                                            >
-                                              *
-                                            </span>
-                                          </Label>
-                                          <Input
-                                            type="text"
-                                            className="form-control"
-                                            id="cardnumberInput"
-                                            placeholder="0000 0000 0000 0000"
-                                            name="card_number"
-                                            onChange={this.handlePaymentMethodChange}
-
-                                          />
-                                        </FormGroup>
-                                        <Row>
-                                          <Col lg="6">
-                                            <FormGroup className="mt-4 mb-0">
-                                              <Label htmlFor="cardnameInput">
-                                                Name on card
-                                                <span
-                                                  style={{ color: "#f46a6a" }}
-                                                  className="font-size-18"
-                                                >
-                                                  *
-                                                </span>
-                                              </Label>
-                                              <Input
-                                                type="text"
-                                                className="form-control"
-                                                id="cardnameInput"
-                                                placeholder="Name on Card"
-                                                name="name_on_card"
-                                                onChange={this.handlePaymentMethodChange}
-
-                                              />
-                                            </FormGroup>
-                                          </Col>
-                                          <Col lg="3">
-                                            <FormGroup className=" mt-4 mb-0">
-                                              <Label htmlFor="expirydateInput">
-                                                Expiry date
-                                                <span
-                                                  style={{ color: "#f46a6a" }}
-                                                  className="font-size-18"
-                                                >
-                                                  *
-                                                </span>
-                                              </Label>
-                                              <Input
-                                                type="text"
-                                                className="form-control"
-                                                id="expirydateInput"
-                                                placeholder="MM/YY"
-                                                name="expiry_date"
-                                                onChange={this.handlePaymentMethodChange}
-
-                                              />
-                                            </FormGroup>
-                                          </Col>
-                                          <Col lg="3">
-                                            <FormGroup className="mt-4 mb-0">
-                                              <Label htmlFor="cvvcodeInput">
-                                                CVV code
-                                                <span
-                                                  style={{ color: "#f46a6a" }}
-                                                  className="font-size-18"
-                                                >
-                                                  *
-                                                </span>
-                                              </Label>
-                                              <Input
-                                                type="text"
-                                                className="form-control"
-                                                id="cvvcodeInput"
-                                                placeholder="Enter CVV Code"
-                                                name="cvv_code"
-                                                onChange={this.handlePaymentMethodChange}
-
-                                              />
-                                            </FormGroup>
-                                          </Col>
-                                        </Row>
-                                      </Form>
-                                    </div>
-                                  </div>
-                                ) : null}
-                              </div>
-                              ) : this.props.patientProfile && this.props.patientProfile.corporate_payment == "Payment by Patient to Lab" ? (
+                              {this.props.patientProfile && this.props.patientProfile.corporate_id == "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false && this.props.patientProfile.corporate_payment == "Payment by Patient to Lab" ? (
                                   <div className="form-check form-check-inline font-size-16">
                                   <Input
                                     type="radio"
@@ -2216,7 +1955,266 @@ class Checkout extends Component {
                                   </Label>
                                 </div>
 
+                              ) :  <div>
+                              <div className="form-check form-check-inline font-size-16">
+                                <Input
+                                  type="radio"
+                                  value="Cash"
+                                  // defaultChecked
+                                  name="payment_method"
+                                  id="customRadioInline1"
+                                  className="form-check-input"
+                                  onChange={this.handlePaymentMethodChange}
+
+                                />
+                                <Label
+                                  className="form-check-label font-size-13"
+                                  htmlFor="customRadioInline1"
+                                >
+                                  {/* <i className="far fa-money-bill-alt me-1 font-size-20 align-top" />{" "} */}
+                                  <i className="fas fa-money-bill-alt me-1 font-size-18 align-top" style={{ color: 'green' }} />
+
+                                  Cash on Spot
+                                </Label>
+                              </div>
+                              <div className="form-check form-check-inline font-size-16">
+                                <Input
+                                  type="radio"
+                                  value="Card"
+                                  // defaultChecked
+                                  id="customRadioInline2"
+                                  name="payment_method"
+                                  className="form-check-input"
+                                  onChange={this.handlePaymentMethodChange}
+
+                                />
+                                <Label
+                                  className="form-check-label font-size-13"
+                                  htmlFor="customRadioInline2"
+                                >
+                                  <i
+                                    className="fab fa-cc-mastercard me-1 font-size-20 align-top"
+                                    style={{
+                                      color: 'white', // Set the yellow color for the circles
+                                      background: '#FFA800', // Set the red color for the background
+                                    }}
+                                  />
+                                  Credit / Debit Card
+                                </Label>
+                              </div>
+                              <div className="form-check form-check-inline font-size-16">
+                                {!isEmpty(this.props.donationCheck) &&
+                                  this.props.donationCheck.map(
+                                    (donationcheck, key) => {
+                                      return (
+                                        <div key={"_donationcheck_" + key}>
+                                          {donationcheck.bankaccount ===
+                                            true ? (
+                                            <div>
+                                              <Input
+                                                type="radio"
+                                                value="Donation"
+                                                name="payment_method"
+                                                id="customRadioInline1"
+                                                className="form-check-input"
+                                                onChange={this.handlePaymentMethodChange}
+
+                                              />
+                                              <Label
+                                                className="form-check-label font-size-13"
+                                                htmlFor="customRadioInline1"
+                                              >
+                                                <i className="fas fa-hand-holding-heart me-1 font-size-20 align-top" style={{ color: 'red' }} />
+                                                Avail Donation
+                                              </Label>
+                                            </div>
+                                          ) : donationcheck.bankaccount ===
+                                            false ? (
+                                            <div style={{ display: 'none' }}></div>
+                                          ) : null}
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                              </div>
+                              <div className="form-check form-check-inline font-size-16">
+                                {this.props.donationCheck.map(
+                                  (donationcheck, key) => {
+                                    return (
+                                      <div key={"_donationcheck_" + key}>
+                                        {donationcheck.available_credit >= donationcheck.grand_total_test_cost ? (
+                                          <div>
+                                            <Input
+                                              type="radio"
+                                              value="My Wallet"
+                                              name="payment_method"
+                                              id="customRadioInline1"
+                                              className="form-check-input"
+                                              onChange={this.handlePaymentMethodChange}
+
+                                            />
+                                            <Label
+                                              className="form-check-label font-size-13"
+                                              htmlFor="customRadioInline1"
+                                            >
+                                              <i className="mdi mdi-wallet align-middle me-1 font-size-20" style={{ color: '#0000FF' }} />
+                                              My Wallet
+                                            </Label>
+                                          </div>
+                                        ) : null}
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </div>
+
+                              <div className="d-flex justify-content-center">
+                                {this.state.payment_method === "My Wallet" && (
+                                  this.props.donationCheck.map((donationcheck, key) => (
+                                    <div key={key} className="card" style={{ background: '#ADD8E6', width: '300px', height: '200px' }}>
+                                      <div className="card-body d-flex flex-column justify-content-center">
+                                        <h5 className="card-title text-center font-weight-bold">Available Credit in your Wallet</h5>
+                                        <div className="card-text text-center" style={{ fontSize: '30px' }}>
+                                          Rs. {donationcheck.available_credit}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))
+                                )}
+                              </div>
+
+
+
+
+                              {this.state.payment_method == "Donation" ? (
+                                <div>
+                                  <h5 className="mt-5 mb-3 font-size-15">
+                                    For Donation
+                                  </h5>
+                                  <div className="p-4 border">
+                                    <Form>
+                                      <FormGroup className="mb-0">
+                                        <input
+                                          name="donation"
+                                          type="checkbox"
+                                          required={true}
+                                          // checked={false}
+                                          onChange={this.handlePaymentMethodChange}
+                                          checked={this.state.isChecked}
+                                        />
+                                        <b>
+                                          {" "}
+                                          I hereby confirm that I am deserving
+                                          individual who fall into eligible
+                                          category to avail obligatory charity
+                                          / donation money.
+                                        </b>
+                                      </FormGroup>
+                                    </Form>
+                                  </div>
+                                </div>
                               ) : null}
+
+                              {this.state.payment_method == "Card" ? (
+                                <div>
+                                  <h5 className="mt-5 mb-3 font-size-15">
+                                    For card Payment
+                                  </h5>
+                                  <div className="p-4 border">
+                                    <Form>
+                                      <FormGroup className="mb-0">
+                                        <Label htmlFor="cardnumberInput">
+                                          Card number
+                                          <span
+                                            style={{ color: "#f46a6a" }}
+                                            className="font-size-18"
+                                          >
+                                            *
+                                          </span>
+                                        </Label>
+                                        <Input
+                                          type="text"
+                                          className="form-control"
+                                          id="cardnumberInput"
+                                          placeholder="0000 0000 0000 0000"
+                                          name="card_number"
+                                          onChange={this.handlePaymentMethodChange}
+
+                                        />
+                                      </FormGroup>
+                                      <Row>
+                                        <Col lg="6">
+                                          <FormGroup className="mt-4 mb-0">
+                                            <Label htmlFor="cardnameInput">
+                                              Name on card
+                                              <span
+                                                style={{ color: "#f46a6a" }}
+                                                className="font-size-18"
+                                              >
+                                                *
+                                              </span>
+                                            </Label>
+                                            <Input
+                                              type="text"
+                                              className="form-control"
+                                              id="cardnameInput"
+                                              placeholder="Name on Card"
+                                              name="name_on_card"
+                                              onChange={this.handlePaymentMethodChange}
+
+                                            />
+                                          </FormGroup>
+                                        </Col>
+                                        <Col lg="3">
+                                          <FormGroup className=" mt-4 mb-0">
+                                            <Label htmlFor="expirydateInput">
+                                              Expiry date
+                                              <span
+                                                style={{ color: "#f46a6a" }}
+                                                className="font-size-18"
+                                              >
+                                                *
+                                              </span>
+                                            </Label>
+                                            <Input
+                                              type="text"
+                                              className="form-control"
+                                              id="expirydateInput"
+                                              placeholder="MM/YY"
+                                              name="expiry_date"
+                                              onChange={this.handlePaymentMethodChange}
+
+                                            />
+                                          </FormGroup>
+                                        </Col>
+                                        <Col lg="3">
+                                          <FormGroup className="mt-4 mb-0">
+                                            <Label htmlFor="cvvcodeInput">
+                                              CVV code
+                                              <span
+                                                style={{ color: "#f46a6a" }}
+                                                className="font-size-18"
+                                              >
+                                                *
+                                              </span>
+                                            </Label>
+                                            <Input
+                                              type="text"
+                                              className="form-control"
+                                              id="cvvcodeInput"
+                                              placeholder="Enter CVV Code"
+                                              name="cvv_code"
+                                              onChange={this.handlePaymentMethodChange}
+
+                                            />
+                                          </FormGroup>
+                                        </Col>
+                                      </Row>
+                                    </Form>
+                                  </div>
+                                </div>
+                              ) : null}
+                            </div>}
                               
                             </div>
                             {/* <Row className="mt-4">
