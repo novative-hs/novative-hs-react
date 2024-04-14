@@ -398,7 +398,7 @@ class AccountStatements extends Component {
 
                                       ) : (
                                         <p className="float-end">
-                                          {b2baccountStatement.plateform_fees.toFixed(1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                          {parseInt(b2baccountStatement.plateform_fees).toString()}
                                         </p>
                                       )}
 
@@ -492,7 +492,7 @@ class AccountStatements extends Component {
                               </td>
                               <td className="border-10">
                                 <p className="float-end">
-                                  {filteredTotal.totalPayable.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                                {parseInt(filteredTotal.totalPayable).toString()}
                                 </p>
                               </td>
                               <td className="border-10"></td>
