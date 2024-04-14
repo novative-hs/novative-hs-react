@@ -352,26 +352,27 @@ class OutPaymentsForm extends Component {
     // }
 
     const donationlabList = labsMof
-    // for (let i = 0; i < labsMof.length; i++) {
-    //   // if ((labsMof[i].office === this.props.corporateProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
-    //   donationlabList.push({
-    //     label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
-    //     label1: `${labsMof[i].account_id}`,
-    //     value: labsMof[i].lab_id,
-    //     // data: { dues: labsMof[i].donation_amount }, // Include the 'dues' property in the data field
-    //   });
-    //   // }
-    // }
-    .filter(
-      labslist =>
-        labslist.type == "Main Lab"
-        )
-    .map(labslist => ({
-      label: `(Lab Name: ${labslist.name}) - (Type: ${labslist.type}) - (City: ${labslist.city})`,
-      label1: `${labslist.name}`,
-      value: labslist.lab_id,
-      // data: { dues: labslist.dues },
-    }));
+      // for (let i = 0; i < labsMof.length; i++) {
+      //   // if ((labsMof[i].office === this.props.corporateProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
+      //   donationlabList.push({
+      //     label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
+      //     label1: `${labsMof[i].account_id}`,
+      //     value: labsMof[i].lab_id,
+      //     // data: { dues: labsMof[i].donation_amount }, // Include the 'dues' property in the data field
+      //   });
+      //   // }
+      // }
+      .filter(
+        labslist =>
+          labslist.type == "Main Lab"
+      )
+      .map(labslist => ({
+        label: `(Lab Name: ${labslist.name}) - (Type: ${labslist.type}) - (City: ${labslist.city})`,
+        label1: `${labslist.name}`,
+        label2: `${labslist.account_id}`,
+        value: labslist.lab_id,
+        // data: { dues: labslist.dues },
+      }));
 
     // Assuming you have a state variable to store the selected lab id (this.state.selectedLabId)
     const selectedLab = donationlabList.find(lab => lab.value === this.state.lab_id);
@@ -397,7 +398,7 @@ class OutPaymentsForm extends Component {
           donation.payment_status === "Allocate" &&
           donation.corporation != null &&
           donation.dues !== undefined &&
-          donation.lab_name === (selectedLab ? selectedLab.label1 : null) || donation.mainbranch === (selectedLab ? selectedLab.label1 : null)
+          donation.lab_name === (selectedLab ? selectedLab.label1 : null) || donation.mainbranch === (selectedLab ? selectedLab.label2 : null)
       )
       .map(donation => ({
         label: `(Appointment ID: ${donation.order_id}) - (Amount: ${donation.dues})`,
@@ -442,10 +443,14 @@ class OutPaymentsForm extends Component {
         value: donation.id,
         data: { plateform_fees: donation.plateform_fees }, // Include the 'dues' property in the data field
       }));
-    
+
     if (CardAppointmentList.length > 0) {
-        CardAppointmentList.unshift({ label: "All Appointments", value: "all" });
-      }
+      CardAppointmentList.unshift({ label: "All Appointments", value: "all" });
+    }
+    // Filter out "All Appointments" from the labels
+    const labelsToShow2 = CardAppointmentList
+      .filter(option => option.value !== "all")
+      .map(option => option.label);
 
     // const CardAppointmentList = [];
     // for (let i = 0; i < listDonation.length; i++) {
@@ -596,37 +601,17 @@ class OutPaymentsForm extends Component {
                               <Select
                                 name="test_appointment_id"
                                 component="Select"
-                                isMulti={true} // Uncomment this line
-                                // onChange={selectedGroup => {
-                                //   this.setState({
-                                //     test_appointment_id: selectedGroup.map(option => option.value),
-                                //   });
-
-
-                                //   const selectedData = selectedGroup.map(option => option.data || {});
-                                //   const totalAmount = selectedData.reduce(
-                                //     (total, appointment) => total + (parseFloat(appointment.plateform_fees) || 0),
-                                //     0
-                                //   );
-                                //   this.setState({
-                                //     selectedAmount: totalAmount,
-                                //     amountExceedsLimit: false, // Reset the flag when a new lab is selected
-                                //   });
-
-                                //   // Auto-set the amount field
-                                //   this.setState({ amount: totalAmount || '0' });
-                                //   console.log("amount arahi h yah nahi", selectedData, totalAmount);
-                                // }}
+                                isMulti={true}
                                 onChange={selectedGroup => {
                                   const selectedValues = selectedGroup.map(option => option.value);
                                   if (selectedValues.includes("all")) {
                                     // If "All Appointments" option is selected, select all appointments
-                                    const allAppointmentIds = DonationAppointmentList
+                                    const allAppointmentIds = CardAppointmentList
                                       .filter(option => option.value !== "all")
                                       .map(option => option.value);
                                     this.setState({ test_appointment_id: allAppointmentIds });
 
-                                    const selectedData = DonationAppointmentList
+                                    const selectedData = CardAppointmentList
                                       .filter(option => option.value !== "all")
                                       .map(option => option.data || {});
                                     const totalAmount = selectedData.reduce(
@@ -809,10 +794,10 @@ class OutPaymentsForm extends Component {
                               onChange={this.handleTaxChange}
                             />
                             {this.state.taxInputError && (
-    <div className="invalid-feedback">
-      Tax amount cannot exceed the total amount.
-    </div>
-  )}
+                              <div className="invalid-feedback">
+                                Tax amount cannot exceed the total amount.
+                              </div>
+                            )}
                           </FormGroup>
 
 

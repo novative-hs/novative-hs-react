@@ -492,7 +492,7 @@ class AccountStatements extends Component {
                               </td>
                               <td className="border-10">
                                 <p className="float-end">
-                                {parseInt(filteredTotal.totalPayable).toString()}
+                                  {parseInt(filteredTotal.totalPayable).toString()}
                                 </p>
                               </td>
                               <td className="border-10"></td>
