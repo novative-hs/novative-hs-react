@@ -266,7 +266,7 @@ class TestsList extends Component {
     const { onGetLabProfile, onAddNewCorporate, onGetLabCorporate } = this.props;
 
     const pageOptions = {
-      sizePerPage: cemployeeDatas.length,
+      sizePerPage: 10,
       totalSize: cemployeeDatas.length, // replace later with size(cemployeeDatas),
       custom: true,
     };
