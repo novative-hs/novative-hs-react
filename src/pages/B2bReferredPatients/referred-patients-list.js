@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import moment from 'moment';
 
 import {
   Card,
@@ -526,43 +527,6 @@ class ReferredPatientsList extends Component {
                                                     />
                                                   </div>
                                                 </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state
-                                                          .patient_address
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
-
-                                                <div className="mb-3 row">
-                                                  <div className="col-md-3">
-                                                    <Label className="form-label">
-                                                      City
-                                                    </Label>
-                                                  </div>
-                                                  <div className="col-md-9">
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        this.state.patient_city
-                                                      }
-                                                      className="form-control"
-                                                      readOnly={true}
-                                                    />
-                                                  </div>
-                                                </div>
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
@@ -572,9 +536,12 @@ class ReferredPatientsList extends Component {
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={
-                                                        this.state.appointment_requested_at
-                                                      }
+                                                      // value={
+                                                      //   this.state.appointment_requested_at
+                                                      // }
+                                                      value={this.state.appointment_requested_at
+                                                        ? moment(this.state.appointment_requested_at).format("DD MMM YYYY, h:mm A")
+                                                        : "--"}
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
@@ -589,9 +556,12 @@ class ReferredPatientsList extends Component {
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={
-                                                        this.state.booked_at
-                                                      }
+                                                      // value={
+                                                      //   this.state.booked_at
+                                                      // }
+                                                      value={this.state.booked_at
+                                                        ? moment(this.state.booked_at).format("DD MMM YYYY, h:mm A")
+                                                        : "--"}
                                                       className="form-control"
                                                       readOnly={true}
                                                     />
@@ -725,9 +695,12 @@ class ReferredPatientsList extends Component {
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
-                                                      value={
-                                                        this.state.booked_at
-                                                      }
+                                                      // value={
+                                                      //   this.state.booked_at
+                                                      // }
+                                                      value={this.state.booked_at
+                                                        ? moment(this.state.booked_at).format("DD MMM YYYY, h:mm A")
+                                                        : "--"}
                                                       className="form-control"
                                                       readOnly={true}
                                                     />

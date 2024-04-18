@@ -57,7 +57,7 @@ class PaymentStatussList extends Component {
       paymentBouncedInStatuss: [],
       paymentBouncedInStatus: "",
       modal: false,
-      status: "Created",
+      payment_status: "Created",
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -181,7 +181,7 @@ class PaymentStatussList extends Component {
         cheque_no: paymentBouncedInStatus.cheque_no,
         refered_no: paymentBouncedInStatus.refered_no,
         cheque_image: paymentBouncedInStatus.cheque_image,
-        status: "Created",
+        payment_status: "Created",
       },
       isEdit: true,
     });
@@ -624,10 +624,10 @@ class PaymentStatussList extends Component {
                                                 this.state.paymentBouncedInStatus
                                                   .donor_id) ||
                                               "",
-                                            status:
+                                            payment_status:
                                               (this.state.paymentBouncedInStatus &&
                                                 this.state.paymentBouncedInStatus
-                                                  .status) ||
+                                                  .payment_status) ||
                                               "",
                                             recieved_by:
                                               (this.state.paymentBouncedInStatus &&
@@ -726,8 +726,8 @@ class PaymentStatussList extends Component {
                                                       values.donor_id,
                                                     recieved_by:
                                                       values.recieved_by,
-                                                    status:
-                                                      values.status,
+                                                    payment_status:
+                                                      values.payment_status,
                                                     payment_method:
                                                       values.payment_method,
                                                     refered_no:
@@ -759,8 +759,8 @@ class PaymentStatussList extends Component {
                                                     values.donor_id,
                                                   recieved_by:
                                                     values.recieved_by,
-                                                  status:
-                                                    values.status,
+                                                  payment_status:
+                                                    values.payment_status,
                                                   payment_method:
                                                     values.payment_method,
                                                   refered_no:
@@ -1634,7 +1634,7 @@ class PaymentStatussList extends Component {
                                                               cleared_at: paymentBouncedInStatus.cleared_at,
                                                               recieved_by:
                                                                 paymentBouncedInStatus.recieved_by,
-                                                              status: paymentBouncedInStatus.status,
+                                                              payment_status: paymentBouncedInStatus.payment_status,
                                                               handover_to:
                                                                 paymentBouncedInStatus.handover_to,
 
@@ -1817,7 +1817,7 @@ class PaymentStatussList extends Component {
                                                                         cleared_at: paymentBouncedInStatus.cleared_at,
                                                                         recieved_by:
                                                                           paymentBouncedInStatus.recieved_by,
-                                                                        status: paymentBouncedInStatus.status,
+                                                                        payment_status: paymentBouncedInStatus.payment_status,
                                                                         amount:
                                                                           paymentBouncedInStatus.amount,
 
@@ -1881,7 +1881,7 @@ class PaymentStatussList extends Component {
                                                                         cleared_at: paymentBouncedInStatus.cleared_at,
                                                                         handover_to:
                                                                           paymentBouncedInStatus.handover_to,
-                                                                        status: paymentBouncedInStatus.status,
+                                                                        payment_status: paymentBouncedInStatus.payment_status,
                                                                         amount:
                                                                           paymentBouncedInStatus.amount,
 
@@ -1982,7 +1982,7 @@ class PaymentStatussList extends Component {
                                                                         cleared_at: paymentBouncedInStatus.cleared_at,
                                                                         recieved_by:
                                                                           paymentBouncedInStatus.recieved_by,
-                                                                        status: paymentBouncedInStatus.status,
+                                                                        payment_status: paymentBouncedInStatus.payment_status,
                                                                         amount:
                                                                           paymentBouncedInStatus.amount,
 
@@ -2110,7 +2110,7 @@ class PaymentStatussList extends Component {
                                                                         cleared_at: paymentBouncedInStatus.cleared_at,
                                                                         recieved_by:
                                                                           paymentBouncedInStatus.recieved_by,
-                                                                        status: paymentBouncedInStatus.status,
+                                                                        payment_status: paymentBouncedInStatus.payment_status,
                                                                         amount:
                                                                           paymentBouncedInStatus.amount,
 

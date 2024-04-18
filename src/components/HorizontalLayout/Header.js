@@ -198,43 +198,61 @@ class Header extends Component {
         <header id="page-topbaar">
           <div className="navbar-header">
             <div className="d-flex">
-              {!isSmallScreen ? (
-                <div className="navbar-brand-box">
-                  <Link
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-labs/${this.props.match.params.uuid}`
-                        : `/nearby-labs/`
-                    }
-                    className="logo logo-dark"
-                  >
-                    <span className="logo-sm">
-                      <img src={logo} alt="" height="40" />
-                    </span>
-                    <span className="logo-lg">
-                      <img src={logoLight} alt="" height="60" />
-                    </span>
-                  </Link>
+            {!isSmallScreen ? (
+  this.props.patientProfile && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card ? (
+    <div className="navbar-brand-box">
+      <Link
+        to={this.props.match.params.uuid ? `/nearby-labs/${this.props.match.params.uuid}` : `/nearby-labs/`}
+        className="logo logo-dark"
+      >
+        <span className="logo-sm">
+          <img src={logo} alt="" height="40" />
+        </span>
+        <span className="logo-lg">
+          <img src={logoLight} alt="" height="60" />
+        </span>
+      </Link>
 
-                  <Link
-                    to={
-                      this.props.match.params.uuid
-                        ? `/nearby-labs/${this.props.match.params.uuid}`
-                        : `/nearby-labs/`
-                    }
-                    className="logo logo-light"
-                  >
-                    <span className="logo-sm">
-                      <img src={logoLightSvg} alt="" height="40" />
-                    </span>
-                    <span className="logo-lg">
-                      <img src={logoLight} alt="" height="60" />
-                    </span>
-                  </Link>
-                </div>
+      <Link
+        to={this.props.match.params.uuid ? `/nearby-labs/${this.props.match.params.uuid}` : `/nearby-labs/`}
+        className="logo logo-light"
+      >
+        <span className="logo-sm">
+          <img src={logoLightSvg} alt="" height="40" />
+        </span>
+        <span className="logo-lg">
+          <img src={logoLight} alt="" height="60" />
+        </span>
+      </Link>
+    </div>
+  ) : (
+    <div className="navbar-brand-box">
+      <Link
+        to={this.props.match.params.uuid ? `/corporate-labs/${this.props.match.params.uuid}` : `/corporate-labs/`}
+        className="logo logo-dark"
+      >
+        <span className="logo-sm">
+          <img src={logo} alt="" height="40" />
+        </span>
+        <span className="logo-lg">
+          <img src={logoLight} alt="" height="60" />
+        </span>
+      </Link>
 
-
-              ) : null}
+      <Link
+        to={this.props.match.params.uuid ? `/corporate-labs/${this.props.match.params.uuid}` : `/corporate-labs/`}
+        className="logo logo-light"
+      >
+        <span className="logo-sm">
+          <img src={logoLightSvg} alt="" height="40" />
+        </span>
+        <span className="logo-lg">
+          <img src={logoLight} alt="" height="60" />
+        </span>
+      </Link>
+    </div>
+  )
+) : null}
 
               {isSmallScreen && this.state.user_type == "patient" && window.location.pathname == "/nearby-labs" ? (
                 <button

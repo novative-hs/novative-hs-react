@@ -57,11 +57,15 @@ class LabsLists extends Component {
           sort: true,
           formatter: (cellContent, labsList) => (
             <>
-              <strong>{labsList.id}</strong>
+              {/* <strong>{labsList.id}</strong> */}
+              <Link
+                to={`/finance-invoice-detail/${labsList.test_appointment_id}`}
+              >
+                {labsList.id}
+              </Link>
             </>
           ),filter: textFilter(), // Add a text filter for this column
         },
-        
         {
           dataField: "city",
           text: "City",

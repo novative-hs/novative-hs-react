@@ -542,7 +542,6 @@ const financeOfficerAuthProtectedRoutes = [
   {path : "/inter-bank-details-list", component: interBankDetailsList},
   { path: "/All-Donation-Appointments/:id", component: allDonationAppointments }
 
-
 ];
 const financeAdminAuthProtectedRoutes = [
   { path: "/dashboard-financeadmin", component: DashboardFinanceAdmin },
@@ -579,6 +578,10 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/adv-fadmin-chat-box/:id", component: advmadminChatBox },
   { path: "/lab-corporate-statement", component: labCorporateStatement},
   { path: "/corporate-details", component: corporateList},
+  {
+    path: "/finance-invoice-detail/:id",
+    component: CollectorInvoiceDetail,
+  },
 
   {
     path: "/accepted-corporates-List",

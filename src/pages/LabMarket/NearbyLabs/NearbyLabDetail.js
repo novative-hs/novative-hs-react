@@ -1939,12 +1939,30 @@ class NearbyLabDetail extends Component {
                                 )}
                                 {this.state.user_id &&
                                   this.state.user_type !== "CSR" &&
-                                  this.state.user_type !== "b2bclient" && (
+                                  this.state.user_type !== "b2bclient" && 
+                                  !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card && (
+
                                     <Link
                                       to={
                                         this.props.match.params.guest_id
                                           ? `/nearby-labs/${this.props.match.params.guest_id}`
                                           : `/nearby-labs/`
+                                      }
+                                      className="btn btn-secondary mt-2 me-1"
+                                    >
+                                      <i className="bx bxs-shopping-bags" />{" "}
+                                      Continue Browsing{" "}
+                                    </Link>
+                                  )}
+                                {this.state.user_id &&
+                                  this.state.user_type !== "CSR" &&
+                                  this.state.user_type !== "b2bclient" && 
+                                  this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card && (
+                                    <Link
+                                      to={
+                                        this.props.match.params.guest_id
+                                          ? `/corporate-labs/${this.props.match.params.guest_id}`
+                                          : `/corporate-labs/`
                                       }
                                       className="btn btn-secondary mt-2 me-1"
                                     >
@@ -2133,7 +2151,9 @@ class NearbyLabDetail extends Component {
                                 )}
                                 {this.state.user_id &&
                                   this.state.user_type !== "CSR" &&
-                                  this.state.user_type !== "b2bclient" && (
+                                  this.state.user_type !== "b2bclient" && 
+                                  !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card && (
+
                                     <Link
                                       to={
                                         this.props.match.params.guest_id
@@ -2146,6 +2166,22 @@ class NearbyLabDetail extends Component {
                                     >
                                       <i className="bx bxs-shopping-bags" />{" "}
                                       <span className="font-size-12">Continue Browsing{" "}</span>
+                                    </Link>
+                                  )}
+                                {this.state.user_id &&
+                                  this.state.user_type !== "CSR" &&
+                                  this.state.user_type !== "b2bclient" && 
+                                  this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card && (
+                                    <Link
+                                      to={
+                                        this.props.match.params.guest_id
+                                          ? `/corporate-labs/${this.props.match.params.guest_id}`
+                                          : `/corporate-labs/`
+                                      }
+                                      className="btn btn-secondary mt-2 me-1"
+                                    >
+                                      <i className="bx bxs-shopping-bags" />{" "}
+                                      Continue Browsing{" "}
                                     </Link>
                                   )}
                                 {this.state.user_id &&
