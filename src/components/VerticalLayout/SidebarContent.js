@@ -143,7 +143,7 @@ class SidebarContent extends Component {
                     <span>{this.props.t("B2B Shares")}</span>
                   </Link>
                 </li> */}
-                 <li>
+                <li>
                   <Link to={"/b2b-shares"}>
                     <i className="fas fa-user" />
                     <span>{this.props.t("Labs List")}</span>
@@ -248,12 +248,12 @@ class SidebarContent extends Component {
             <SimpleBar style={{ maxHeight: 500 }}>
               <div id="sidebar-menu">
                 <ul className="metismenu list-unstyled" id="side-menu">
-                <li>
-                  <Link to="/dashboard-finance">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("Dashboard")}</span>
-                  </Link>
-                </li>
+                  <li>
+                    <Link to="/dashboard-finance">
+                      <i className="bx bx-home-circle" />
+                      <span>{this.props.t("Dashboard")}</span>
+                    </Link>
+                  </li>
 
                   <li className="menu-title">
                     {this.props.t("Finance Officer")}
@@ -271,14 +271,14 @@ class SidebarContent extends Component {
                         <Link to={"/out-payment"}>{this.props.t("MOF")}</Link>
                       </li>
                       <li>
-                  <Link to="/bank-transfer">{this.props.t("Bank Transfer Details")}
-                  </Link>
-                </li>
-                <li>
-                  <Link to={"/invoice-adjustment"}>{this.props.t("Invoice Adjustment Form")}</Link>
-                </li>
-                </ul>
-                </li>
+                        <Link to="/bank-transfer">{this.props.t("Bank Transfer Details")}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to={"/invoice-adjustment"}>{this.props.t("Invoice Adjustment Form")}</Link>
+                      </li>
+                    </ul>
+                  </li>
                   {/* Payments Status Links */}
                   <li>
                     <Link to="/#" className="has-arrow">
@@ -343,24 +343,24 @@ class SidebarContent extends Component {
                       <span>{this.props.t("BTD Statuses")}</span>
                     </Link>
                     <ul className="sub-menu" aria-expanded="false">
-                    <li><Link to="/inter-bank-details-list">{this.props.t("Bank Transfer Details List")}
-                  </Link></li>
-                  </ul>
-                </li>
-                <li>
-                <Link to="/#" className="has-arrow">
-                    <i className="fas fa-hand-holding-heart"/>
-                    <span>{this.props.t("Donation Payment")}</span>
-                  </Link>
-                  <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                      <Link to="/all-labs-list">
-                        <span>{this.props.t("Labs Payable List")}</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-                
+                      <li><Link to="/inter-bank-details-list">{this.props.t("Bank Transfer Details List")}
+                      </Link></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <Link to="/#" className="has-arrow">
+                      <i className="fas fa-hand-holding-heart" />
+                      <span>{this.props.t("Donation Payment")}</span>
+                    </Link>
+                    <ul className="sub-menu" aria-expanded="false">
+                      <li>
+                        <Link to="/all-labs-list">
+                          <span>{this.props.t("Labs Payable List")}</span>
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+
                 </ul>
               </div>
             </SimpleBar>
@@ -396,14 +396,14 @@ class SidebarContent extends Component {
                         {this.props.t("Unapproved")}
                       </Link>
                     </li> */}
-                  {/* </ul>
+                {/* </ul>
                 </li>  */}
-                 <li>
-                    <Link to={"/cleared-in-payments"}>
+                <li>
+                  <Link to={"/cleared-in-payments"}>
                     <i className="mdi mdi-office-building" />
-                      {this.props.t("MIF/ MOF")}
-                    </Link>
-                  </li>
+                    {this.props.t("MIF/ MOF")}
+                  </Link>
+                </li>
                 <li>
                   <Link to="/create-bank">
                     <i className="bx bx-home-circle" />
@@ -428,8 +428,8 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Bank Accounts List")}</span>
                   </Link>
                 </li>
-                
-                
+
+
                 <li>
                   <Link to="/bank-account-statements/:id">
                     <i className="bx bx-receipt" />
@@ -479,13 +479,13 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
                 <li>
-                  <Link to= "/accepted-lab-advertisements"
+                  <Link to="/accepted-lab-advertisements"
                   >
-                    <i className="bx bx-image-add"/>
+                    <i className="bx bx-image-add" />
                     <span>{this.props.t("Advertisement List")}</span>
                   </Link>
                 </li>
-                
+
               </ul>
             </div>
           </SimpleBar>
@@ -604,6 +604,7 @@ class SidebarContent extends Component {
                       </li>
                     </ul>
                   </li>
+                  
                   <li>
                     <Link to="/#" className="has-arrow">
                       <i className="mdi mdi-hospital-building" />
@@ -627,7 +628,30 @@ class SidebarContent extends Component {
                       </li>
                     </ul>
                   </li>
-
+                  {/* Corporate Approval Routes */}
+                  <li>
+                    <Link to="/#" className="has-arrow">
+                      <i className="mdi mdi-hospital-building" />
+                      <span>{this.props.t("Corporate")}</span>
+                    </Link>
+                    <ul className="sub-menu" aria-expanded="false">
+                      <li>
+                        <Link to={"/pending-Corporate"}>
+                          {this.props.t("Pending")}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to={"/approved-corporate"}>
+                          {this.props.t("Approved/ Active")}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to={"/unapproved-corporate"}>
+                          {this.props.t("Unapproved/ Inactive")}
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
                   {/* B2b Clients Approval Routes */}
                   <li>
                     <Link to="/#" className="has-arrow">
@@ -679,7 +703,7 @@ class SidebarContent extends Component {
                   </li>
                   <li>
                     <Link to={"/labs-rating"}>
-                    <i className="mdi mdi-hospital-building" />
+                      <i className="mdi mdi-hospital-building" />
                       {this.props.t("Labs Rating")}
                     </Link>
                   </li>
@@ -701,10 +725,10 @@ class SidebarContent extends Component {
                           {this.props.t("Corporates Reffrel Fee")}
                         </Link>
                       </li>
-                     
+
                     </ul>
                   </li>
-                  
+
                 </ul>
               </div>
             </SimpleBar>
@@ -719,11 +743,11 @@ class SidebarContent extends Component {
                     {this.props.t("Marketer Admin")}
                   </li>
                   <li>
-                  <Link to="/dashboard-marketeradmin">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("Dashboard")}</span>
-                  </Link>
-                </li>
+                    <Link to="/dashboard-marketeradmin">
+                      <i className="bx bx-home-circle" />
+                      <span>{this.props.t("Dashboard")}</span>
+                    </Link>
+                  </li>
                   {/* Advertisement*/}
                   <li>
                     <Link to="/#" className="has-arrow">
@@ -761,25 +785,25 @@ class SidebarContent extends Component {
                     </ul>
                   </li>
                   {/* Discounts*/}
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    <i className="bx bx-test-tube" />
-                    <span>{this.props.t("LabHazir Discounts")}</span>
-                  </Link>
-                  <ul className="sub-menu" aria-expanded="false">
-                    <li>
-                    <Link to={"/discount-labhazir"}>
-                      {this.props.t("For Test")}
+                  <li>
+                    <Link to="/#" className="has-arrow">
+                      <i className="bx bx-test-tube" />
+                      <span>{this.props.t("LabHazir Discounts")}</span>
                     </Link>
-                  </li>
+                    <ul className="sub-menu" aria-expanded="false">
+                      <li>
+                        <Link to={"/discount-labhazir"}>
+                          {this.props.t("For Test")}
+                        </Link>
+                      </li>
 
-                    <li>
-                      <Link to={"/labs-list"}>
-                        {this.props.t("For Lab")}
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
+                      <li>
+                        <Link to={"/labs-list"}>
+                          {this.props.t("For Lab")}
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
             </SimpleBar>
@@ -867,7 +891,7 @@ class SidebarContent extends Component {
                     <i className="mdi mdi-account-tie-voice" />
                     <span>{this.props.t("CSR")}</span>
                   </Link>
-                </li> 
+                </li>
                 <li>
                   <Link to="/pending-csr-appointments">
                     <i className="mdi mdi-account-tie-voice" />
@@ -999,8 +1023,8 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
 
-                 {/* Test Appointment Links */}
-                 <li>
+                {/* Test Appointment Links */}
+                <li>
                   <Link to="/#" className="has-arrow">
                     <i className="bx bx-test-tube" />
                     <span>{this.props.t("Test Appointments")}</span>
@@ -1026,10 +1050,10 @@ class SidebarContent extends Component {
 
                 <li className="menu-title">{this.props.t("Lab")}</li>
 
-                
-                 {/* Corporate List Links */}
-                 {/* Test Appointment Links */}
-                 <li>
+
+                {/* Corporate List Links */}
+                {/* Test Appointment Links */}
+                <li>
                   <Link to="/#" className="has-arrow">
                     <i className="mdi mdi-office-building" />
                     <span>{this.props.t("Corporates")}</span>
@@ -1050,10 +1074,10 @@ class SidebarContent extends Component {
                         {this.props.t("Statements")}
                       </Link>
                     </li>
-                   
+
                   </ul>
                 </li>
-                 {/* <li>
+                {/* <li>
                   <Link to={"/corporates-List"}>
                     <i className="fas fa-hand-holding-medical" />
                     <span>{this.props.t("Corporates List")}</span>
@@ -1067,8 +1091,8 @@ class SidebarContent extends Component {
                     <span>{this.props.t("Offered Tests")}</span>
                   </Link>
                 </li>
-  {/* Offered Test Links */}
-  <li>
+                {/* Offered Test Links */}
+                <li>
                   <Link to={"/medical-tests"}>
                     <i className="fas fa-briefcase-medical" />
                     <span>{this.props.t("Medical Tests")}</span>
@@ -1098,7 +1122,7 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
 
-               
+
                 {/* Feedbacks Links */}
                 <li>
                   <Link to="feedbacks">

@@ -106,20 +106,22 @@ class OutPaymentsForm extends Component {
         status: "Approved",
         comments: this.state.comments,
       },
+      successMessage: 'Invoice adjustment added successfully!',
     });
-
+  
     // API call to create a new outPayment record
     const { onAddNewInvoiceAdjustment } = this.props;
     setTimeout(() => {
       console.log(
         onAddNewInvoiceAdjustment(this.state.outPayment, this.state.user_id)
       );
-    }, 2000);
-    // setTimeout(() => {
-    //   this.props.history.push("/payment-out-pending-clearence-status");
-    // }, 2000)
+  
+      // After 2 seconds, reload the window
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }, 1000);
   };
-
 
   componentDidMount() {
     const { staffProfiles, onGetStaffProfile } = this.props;
@@ -255,6 +257,11 @@ class OutPaymentsForm extends Component {
                   </Col>
                   <Col lg="10" sm="9">
                     <Card>
+                    {this.state.successMessage && (
+          <div className="alert alert-success mt-3 w-50 ml-3" style={{marginLeft:"30px"}} role="alert">
+            {this.state.successMessage}
+          </div>
+        )}
                       <CardBody>
                         <div>
                           {

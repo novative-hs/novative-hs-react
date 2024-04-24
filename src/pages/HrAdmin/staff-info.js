@@ -15,7 +15,7 @@ import {
   getTerritoriesList
   } from "store/territories-list/actions";
   
-import { addStaff } from "store/staff/actions";
+import { addStaff, addStaffFail } from "store/staff/actions";
 
 class StaffInfo extends Component {
   constructor(props) {
@@ -27,15 +27,17 @@ class StaffInfo extends Component {
       collectorImg: "",
       territoriesList: [],
       complaintSuccess: "",
+      successMessage: "", 
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
     };
-    console.log(this.props.staff.staff_type)
+
   }
 
   componentDidMount() {
-    const { territoriesList, onGetTerritoriesList } = this.props;
+    const { territoriesList, onGetTerritoriesList, addStaffFail } = this.props;
+    addStaffFail(""); 
     if (territoriesList && !territoriesList.length) {
       console.log(onGetTerritoriesList(this.state.user_id));
     }
@@ -61,15 +63,29 @@ class StaffInfo extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Staff" breadcrumbItem="Register - Step 2" />
-            {this.state.complaintSuccess && (
-              <Alert color="success" className="col-md-8">
-                {this.state.complaintSuccess}
-              </Alert>
-            )}
             <Row>
               <Col lg="12">
                 <Card>
                   <CardBody>
+          {/* Render error message */}
+          {this.props.addStaffError &&
+                            this.props.addStaffError ? (
+                            <Alert color="danger" style={{ marginTop: "13px" }}>
+                              {this.props.addStaffError}
+                            </Alert>
+                          ) : null}
+{this.props.addStaffSuccess && (
+  <React.Fragment>
+    <Alert color="success" style={{ marginTop: "13px" }}>
+      {this.props.addStaffSuccess.message}
+    </Alert>
+    {setTimeout(() => {
+      this.props.history.push("/csr-list");
+    }, 2000)} 
+  </React.Fragment>
+)}
+
+
                     <Formik
                       enableReinitialize={true}
                       initialValues={{
@@ -119,28 +135,7 @@ class StaffInfo extends Component {
 
                         // save new Staff
                         onAddStaff(newStaff, this.props.match.params.id);
-
-                        // if (this.props.staff.length != 0) {
-                        //   this.props.history.push("/add-")
-                        // }
-
-                          window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-
-                          // If no error messages then show wait message
-                          setTimeout(() => {
-                            if (this.props.staff) {
-                              this.setState({
-                                complaintSuccess:
-                                  "Staff Added Succesfully",
-                              });
-                              setTimeout(() => {
-                                this.props.history.push("/csr-list");
-                            }, 2000)
-                            }
-                          }, 1000);
-                          
-                      }
-                    }
+                      }}
                     >
                       {({ errors, status, touched }) => (
                         <Form>
@@ -431,16 +426,24 @@ StaffInfo.propTypes = {
   onAddStaff: PropTypes.func,
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
+  addStaffFail: PropTypes.func,
+  addStaffError: PropTypes.any,
+  addStaffSuccess: PropTypes.any,
+
 };
 
-const mapStateToProps = ({ staff , territoriesList}) => ({
+const mapStateToProps = ({ staff , territoriesList }) => ({
   staff: staff.staff,
   territoriesList:territoriesList.territoriesList,
+  addStaffError: staff.addStaffError,
+  addStaffSuccess: staff.addStaffSuccess,
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddStaff: (staff, id) => dispatch(addStaff(staff, id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList()),
+  addStaffFail: (message) => dispatch(addStaffFail(message)),
 });
 
 export default connect(

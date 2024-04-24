@@ -1924,7 +1924,7 @@ shouldHighlightTestsLink() {
                 </ModalBody>
               </Modal>
 
-              <Modal
+              {/* <Modal
               isOpen={this.state.PatientModal}
               className={this.props.className}
             >
@@ -1959,7 +1959,7 @@ shouldHighlightTestsLink() {
                   </Form>
                 </Formik>
               </ModalBody>
-            </Modal>
+            </Modal> */}
               {/* <Col lg="3">
                 <Card>
                   <CardBody>

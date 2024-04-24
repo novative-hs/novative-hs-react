@@ -5,6 +5,7 @@ import discountLabHazirs from "store/discount-labhazir/reducer";
 import { del, get, post, put } from "./api_helper";
 import authHeader from "./django-token-access/auth-token-header";
 import * as url from "./url_helper";
+import { message } from "antd";
 
 function getHeader(token) {
   // If there is some token then return the header with token
@@ -1964,7 +1965,7 @@ export const updateStaffProfile = (labProfile, id) => {
   });
 };
 
-export const addStaff = (staff, id) => {
+export const addStaff = (id, staff) => {
   let formData = new FormData();
   formData.append("name", staff.name);
   formData.append("email", staff.email);
@@ -1976,20 +1977,46 @@ export const addStaff = (staff, id) => {
   console.log("data",staff, id);
   return axios.post(`${url.ADD_STAFF}/${id}`, formData, {
     headers: getHeader(authHeader()),
-    
-  }
-  );
+    })
+    .then(response => {
+      if (response.status >= 200 || response.status <= 299)
+        return response.data;
+      throw response.data;
+    }) 
+    .catch(err => {
+      let message;
+      if (console.log("django staffffffffffff",err.response && err.response.status)) {
+        switch (err.response.status) {
+          case 400:
+            message = err.response.data;
+            break;
+          case 404:
+            message = "Sorry! the page you are looking for could not be found";
+            break;
+          case 500:
+            message =
+              "Sorry! something went wrong, please contact our support team";
+            break;
+          case 401:
+            message = "Invalid credentials";
+            break;
+          default:
+            message = err[1];
+            break;
+        }
+      }
+      throw message;
+    }, console.log("staff messga e", message));
 };
-
 export const updateStaff = staff => {
   let formData = new FormData();
   formData.append("name", staff.name);
-  formData.append("email", staff.email);
+  // formData.append("email", staff.email);
   formData.append("cnic", staff.cnic);
   formData.append("phone", staff.phone);
   formData.append("roles", staff.roles);
-  formData.append("city", staff.city);
-  formData.append("territory_office", staff.territory_office);
+  // formData.append("city", staff.city);
+  // formData.append("territory_office", staff.territory_office);
 
   return axios.put(`${url.UPDATE_STAFF}/${staff.id}`, formData, {
     headers: getHeader(authHeader()),
@@ -2064,6 +2091,19 @@ export const getFinanceOfficerList = () =>
   });
 
 // ------------- Registration Admin requests START -------------
+
+export const getPendingCorporate = () =>
+  get(`${url.GET_PENDING_CORPORATE}`, {
+    headers: getHeader(authHeader()),
+  });
+  export const getApprovedCorporate = () =>
+  get(`${url.GET_APPROVED_CORPORATE}`, {
+    headers: getHeader(authHeader()),
+  });
+  export const getUnapprovedCorporate = () =>
+  get(`${url.GET_UNAPPROVED_CORPORATE}`, {
+    headers: getHeader(authHeader()),
+  });
 export const getPendingLabs = () =>
   get(`${url.GET_PENDING_LABS}`, {
     headers: getHeader(authHeader()),
@@ -2079,6 +2119,15 @@ export const getUnapprovedLabs = () =>
     headers: getHeader(authHeader()),
   });
 
+  export const approveUnapproveCorporate = data => {
+    let formData = new FormData();
+    formData.append("corporate_id", data.corporate_id);
+    formData.append("is_approved", data.isApproved);
+  
+    return axios.put(`${url.APPROVE_UNAPPROVE_CORPORATE}/${data.id}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
 export const approveUnapproveLab = data => {
   let formData = new FormData();
   formData.append("lab_id", data.labId);
@@ -2358,6 +2407,19 @@ get(`${url.GET_DONORS_LIST}`, {
   headers: getHeader(authHeader()),
 });
 
+export const getClList = () =>
+  get(`${url.GET_CL_LIST}`, {
+    headers: getHeader(authHeader()),
+  })
+    .then(response => {
+      console.log("Dataaaaaaaaaaaa in helper:", response); // Logging the response data
+      return response;
+    })
+    .catch(error => {
+      console.error("Error:", error); // Logging the error
+      throw error; // Re-throwing the error for the caller to handle
+    });
+    
 export const getDiscountLabHazirToLabs = id =>
   get(`${url.GET_DISCOUNT_LABHAZIRTOLABS}/${id}`, {
     headers: getHeader(authHeader()),

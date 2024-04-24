@@ -69,6 +69,7 @@ export * from "./quality-certificates/actions";
 
 export * from "./payment-statuss/actions";
 
+
 // Advertisements
 export * from "./advertisements/actions";
 export * from "./adv-invoice/actions";
@@ -90,6 +91,7 @@ export * from "./referrel-fee-to-lab/actions";
 // Discount Labhazir
 export * from "./discount-labhazir/actions";
 export * from "./labs-list/actions";
+export * from "./labs-listttt/actions";
 export * from "./discount-labhazir-to-lab/actions";
 export * from "./discount-lab/actions"
 // Discount Labhazir to Labs

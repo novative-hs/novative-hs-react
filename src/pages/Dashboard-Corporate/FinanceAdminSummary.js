@@ -33,15 +33,15 @@ class FinanceAdminSummary extends Component {
 
     setTimeout(() => {
       this.setState({
-        name: this.props.success.name,
-        logo: process.env.REACT_APP_BACKENDURL + this.props.success.logo,
-        completedAppointments: this.props.success.completed_appointments,
-        inProcessAppointments: this.props.success.inprocess_appointments,
-        // national_taxation_no: this.props.success.national_taxation_no,
-        // email: this.props.success.email,
-        // phone: this.props.success.phone,
-        // landline: this.props.success.landline,
-        address: this.props.success.address,
+        // name: this.props.success.name,
+        // logo: process.env.REACT_APP_BACKENDURL + this.props.success.logo,
+        // completedAppointments: this.props.success.completed_appointments,
+        // inProcessAppointments: this.props.success.inprocess_appointments,
+        // // national_taxation_no: this.props.success.national_taxation_no,
+        // // email: this.props.success.email,
+        // // phone: this.props.success.phone,
+        // // landline: this.props.success.landline,
+        // address: this.props.success.address,
         // city: this.props.success.city,
         // payment_terms: this.props.success.payment_terms,
       });

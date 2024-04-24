@@ -1,4 +1,17 @@
 import {
+  GET_PENDING_CORPORATE,
+  GET_PENDING_CORPORATE_SUCCESS,
+  GET_PENDING_CORPORATE_FAIL,
+  GET_APPROVED_CORPORATE,
+  GET_APPROVED_CORPORATE_SUCCESS,
+  GET_APPROVED_CORPORATE_FAIL,
+  GET_UNAPPROVED_CORPORATE,
+  GET_UNAPPROVED_CORPORATE_SUCCESS,
+  GET_UNAPPROVED_CORPORATE_FAIL,
+  APPROVE_UNAPPROVE_CORPORATE,
+  APPROVE_UNAPPROVE_CORPORATE_SUCCESS,
+  APPROVE_UNAPPROVE_CORPORATE_FAIL,
+
   GET_PENDING_LABS,
   GET_PENDING_LABS_SUCCESS,
   GET_PENDING_LABS_FAIL,
@@ -36,6 +49,64 @@ import {
   APPROVE_UNAPPROVE_DONOR_SUCCESS,
   APPROVE_UNAPPROVE_DONOR_FAIL,
 } from "./actionTypes";
+
+export const getApprovedCorporate = () => ({
+  type: GET_APPROVED_CORPORATE,
+  payload: {},
+});
+
+export const getApprovedCorporateSuccess = approvedCorporate => ({
+  type: GET_APPROVED_CORPORATE_SUCCESS,
+  payload: approvedCorporate,
+});
+
+export const getApprovedCorporateFail = error => ({
+  type: GET_APPROVED_CORPORATE_FAIL,
+  payload: error,
+});
+export const getUnapprovedCorporate = () => ({
+  type: GET_UNAPPROVED_CORPORATE,
+  payload: {},
+});
+
+export const getUnapprovedCorporateSuccess = UnapprovedCorporate => ({
+  type: GET_UNAPPROVED_CORPORATE_SUCCESS,
+  payload: UnapprovedCorporate,
+});
+
+export const getUnapprovedCorporateFail = error => ({
+  type: GET_UNAPPROVED_CORPORATE_FAIL,
+  payload: error,
+});
+export const getPendingCorporate = () => ({
+  type: GET_PENDING_CORPORATE,
+  payload: {},
+});
+
+export const getPendingCorporateSuccess = pendingCorporate => ({
+  type: GET_PENDING_CORPORATE_SUCCESS,
+  payload: pendingCorporate,
+});
+
+export const getPendingCorporateFail = error => ({
+  type: GET_PENDING_CORPORATE_FAIL,
+  payload: error,
+});
+
+export const approveUnapproveCorporate = data => ({
+  type: APPROVE_UNAPPROVE_CORPORATE,
+  payload: { data },
+});
+
+export const approveUnapproveCorporateSuccess = success => ({
+  type: APPROVE_UNAPPROVE_CORPORATE_SUCCESS,
+  payload: success,
+});
+
+export const approveUnapproveCorporateFail = error => ({
+  type: APPROVE_UNAPPROVE_CORPORATE_FAIL,
+  payload: error,
+});
 
 // -------------------- LAB ACTIONS --------------------
 export const getPendingLabs = () => ({

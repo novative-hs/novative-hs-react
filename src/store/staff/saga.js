@@ -74,18 +74,31 @@ function* fetchFinanceOfficerList() {
   }
 }
 
-function* onAddStaff(object) {
+// function* onAddStaff(object) {
+//   try {
+//     const response = yield call(
+//       addStaff,
+//       object.payload.staff,
+//       object.payload.id
+//     );
+//     yield put(addStaffSuccess(response.data));
+//   } catch (error) {
+//     yield put(addStaffFail(error));
+//   }
+// }
+function* onAddStaff({ payload: { staff, id } }) {
   try {
-    const response = yield call(
-      addStaff,
-      object.payload.staff,
-      object.payload.id
-    );
-    yield put(addStaffSuccess(response.data));
+    const response = yield call(addStaff, id, staff);
+    if (response.status == 400) {
+      yield put(addStaffFail(response.message));
+    } else {
+      yield put(addStaffSuccess(response));
+    }
   } catch (error) {
     yield put(addStaffFail(error));
   }
 }
+
 
 function* onUpdateStaff({ payload: staff }) {
   try {

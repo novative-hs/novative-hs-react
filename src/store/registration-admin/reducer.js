@@ -1,4 +1,13 @@
 import {
+  GET_PENDING_CORPORATE_SUCCESS,
+  GET_PENDING_CORPORATE_FAIL,
+  GET_APPROVED_CORPORATE_SUCCESS,
+  GET_APPROVED_CORPORATE_FAIL,
+  GET_UNAPPROVED_CORPORATE_SUCCESS,
+  GET_UNAPPROVED_CORPORATE_FAIL,
+  APPROVE_UNAPPROVE_CORPORATE_SUCCESS,
+  APPROVE_UNAPPROVE_CORPORATE_FAIL,
+
   GET_PENDING_LABS_SUCCESS,
   GET_PENDING_LABS_FAIL,
   GET_APPROVED_LABS_SUCCESS,
@@ -26,6 +35,10 @@ import {
 } from "./actionTypes";
 
 const INIT_STATE = {
+  pendingCorporate: [],
+  approvedCorporate: [],
+  UnapprovedCorporate: [],
+
   pendingLabs: [],
   approvedLabs: [],
   unapprovedLabs: [],
@@ -41,6 +54,53 @@ const INIT_STATE = {
 
 const registrationAdmin = (state = INIT_STATE, action) => {
   switch (action.type) {
+
+    case GET_PENDING_CORPORATE_SUCCESS:
+      return {
+        ...state,
+        pendingCorporate: action.payload.data,
+      };
+
+    case GET_PENDING_CORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_APPROVED_CORPORATE_SUCCESS:
+      return {
+        ...state,
+        approvedCorporate: action.payload.data,
+      };
+
+    case GET_APPROVED_CORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_UNAPPROVED_CORPORATE_SUCCESS:
+      return {
+        ...state,
+        UnapprovedCorporate: action.payload.data,
+      };
+
+    case GET_UNAPPROVED_CORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case APPROVE_UNAPPROVE_CORPORATE_SUCCESS:
+      return {
+        ...state,
+        success: [...state.success, action.payload],
+      };
+
+    case APPROVE_UNAPPROVE_CORPORATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
     case GET_PENDING_LABS_SUCCESS:
       return {
         ...state,

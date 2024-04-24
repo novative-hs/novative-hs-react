@@ -290,7 +290,8 @@ class InPaymentsForm extends Component {
     ];
     const labList = [];
     for (let i = 0; i < labs.length; i++) {
-      if (labs[i].office === this.props.staffProfiles.territory_office) {
+      if (console.log( "dfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdf", labs[i].office )=== console.log("fdfdfdfdfdfdfdfdf", this.props.staffProfiles.territory_office)) {
+        
         labList.push({
           label: `${labs[i].name} - ${labs[i].type} - ${labs[i].city}`,
           label1: `${labs[i].name}`,
@@ -305,6 +306,7 @@ class InPaymentsForm extends Component {
         listCorporateLabs.push({
           label: `${listCLabs[i].name} - ${listCLabs[i].corporate_name} - ${listCLabs[i].status}`,
           label1: `${listCLabs[i].name}`,
+          label2: `${listCLabs[i].account_id}`,
           value: listCLabs[i].lab_id,
         });
       }
@@ -336,8 +338,8 @@ class InPaymentsForm extends Component {
           donation.refrell_fees > 0 &&
           donation.corporation != null &&
           donation.refrell_fees !== undefined &&
-          donation.lab_name === (selectedLab ? selectedLab.label1 : null) // Compare with the selected lab's lab_name
-  
+          donation.lab_name === (selectedLab ? selectedLab.label1 : null) || donation.mainbranch === (selectedLab ? selectedLab.label2 : null)
+
       )
       .map(donation => ({
         label: `(Appointment ID: ${donation.order_id}) - (Amount: ${donation.refrell_fees})`,

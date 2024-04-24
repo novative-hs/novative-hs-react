@@ -485,7 +485,7 @@ class csrComplaints extends Component {
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.patient_city
+                                                        this.state.city
                                                       }
                                                       className="form-control"
                                                       readOnly={true}

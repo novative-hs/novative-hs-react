@@ -89,14 +89,14 @@ export const addStaff = (staff, id) => ({
   payload: { staff, id },
 });
 
-export const addStaffSuccess = staff => ({
+export const addStaffSuccess = (staff, id) => ({
   type: ADD_STAFF_SUCCESS,
-  payload: staff,
+  payload: { staff, id },
 });
 
-export const addStaffFail = error => ({
+export const addStaffFail = (staff, id) => ({
   type: ADD_STAFF_FAIL,
-  payload: error,
+  payload: { staff, id },
 });
 
 export const updateStaff = staff => ({

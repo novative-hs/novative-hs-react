@@ -67,10 +67,9 @@ class OfferedTestsList extends Component {
       offeredTestListColumns: [
         {
           text: "id",
-          dataField: "id",
+          dataField: "corporate_id",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, offeredTest) => <>{offeredTest.id}</>,
+          formatter: (cellContent, offeredTest) => <>{offeredTest.corporate_id}</>,
         },
         {
           dataField: "name",
@@ -90,10 +89,7 @@ class OfferedTestsList extends Component {
           sort: true,
           formatter: (cellContent, offeredTest) => (
             <>
-              {/* <span>
-              {offeredTest.offered_tests}
-              </span> */}
-              <Link to={`/corporate-offered-tests/${offeredTest.account_id}`}>{offeredTest.offered_tests}</Link>
+              <Link to={`/corporate-offered-tests/${offeredTest.corporate_account_id}`}>{offeredTest.offered_tests}</Link>
 
             </>
           ),

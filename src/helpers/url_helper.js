@@ -359,7 +359,8 @@ export const GET_REGION_WISE_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin
 export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
 export const GET_DONORSA = `${API_ENDPOINT}/api/finance-admin/donationappointment-list`;
 export const GET_DONORS_LIST = `${API_ENDPOINT}/api/donor/list-donor`;
-
+// export const GET_CL_LIST = `${API_ENDPOINT}/api/accountstatement/corporate-account-statements-list`;
+export const GET_CL_LIST = `${API_ENDPOINT}/api/accountstatement/corporate-statements-list`;
 
 // NEARBY TESTS
 export const GET_NEARBY_TESTS = `${API_ENDPOINT}/api/patient/tests-offered`;
@@ -417,6 +418,12 @@ export const GET_SAMPLE_COLLECTION_COMPLETED_LIST = `${API_ENDPOINT}/api/samplec
 export const UPDATE_SAMPLE_COLLECTION_STATUS = `${API_ENDPOINT}/api/samplecollector/sample-collector-in-process`;
 
 // REGISTRATION ADMIN
+export const GET_PENDING_CORPORATE = `${API_ENDPOINT}/api/registration-admin/pending-corporate`;
+export const GET_APPROVED_CORPORATE = `${API_ENDPOINT}/api/registration-admin/approved-corporate`;
+export const GET_UNAPPROVED_CORPORATE = `${API_ENDPOINT}/api/registration-admin/unapproved-corporate`;
+export const APPROVE_UNAPPROVE_CORPORATE = `${API_ENDPOINT}/api/registration-admin/approve-unapprove-corporate`;
+
+
 export const GET_PENDING_LABS = `${API_ENDPOINT}/api/registration-admin/pending-labs`;
 export const GET_APPROVED_LABS = `${API_ENDPOINT}/api/registration-admin/approved-labs`;
 export const GET_UNAPPROVED_LABS = `${API_ENDPOINT}/api/registration-admin/unapproved-labs`;

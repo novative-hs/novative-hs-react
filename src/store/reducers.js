@@ -86,6 +86,7 @@ import labAdvertisementRequests from "./lab-advertisement-requests/reducer";
 
 //lab list Pending
 import labsListPendingFee from "./labs-list-pending/reducer";
+import labslisttt from "./labs-listttt/reducer";
 
 //shared-percentage-pending-fee
 import sharedPercentagePendingFeeTests from "./shared-percentage-pending-fee/reducer";
@@ -265,6 +266,7 @@ const rootReducer = combineReducers({
   b2bPayments,
   discountLabHazirs,
   labsList,
+  labslisttt,
   territoriesList,
   labNamesList,
   onlyMedicalTestList,

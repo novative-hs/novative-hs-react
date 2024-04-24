@@ -576,11 +576,10 @@ class BanksList extends Component {
                                                       <Input
                                                         name="email"
                                                         type="text"
-                                                        // value={
-                                                        //   this.state
-                                                        //     .bank
-                                                        //     .email} 
-
+                                                        value={
+                                                          this.state
+                                                            .bank
+                                                            .email}  
                                                             onChange={e => {
                                                               this.setState({
                                                                 bank: {
@@ -604,7 +603,7 @@ class BanksList extends Component {
                                                       />
                                                   </div>
                                                   
-                                                  <div className="mb-3">
+                                                  {/* <div className="mb-3">
                                                     <Label
                                                       className="col-form-label"
                                                     >
@@ -645,7 +644,7 @@ class BanksList extends Component {
                                                                 : "")
                                                             }                                                             
                                                       />
-                                                  </div>
+                                                  </div> */}
                                                    {/* Certificate Expiry date field */}
 
                                                    {/* <div className="mb-3">

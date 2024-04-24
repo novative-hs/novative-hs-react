@@ -65,7 +65,7 @@ import CorporateLabsList from "../pages/CorporatesData/corporate-labs-list";
 import CorporatePaymentForm from "../pages/CorporatesData/corporate-out-payment";
 import PaymentFormStatus from "../pages/CorporatesData/corporate-paymentout-created-statuss-list";
 import corporatecommit from "../pages/CorporatesData/commit-corporate";
-import AccountStatementsCorporate from "../pages/CorporatesData/corporate-lab-appointmentsfa";
+import AccountStatementsCorporate from "pages/CorporatesData/corporate-lab-appointments";
 import corporateList from "pages/FinanceAdmin/corporate-list";
 // Lab Components
 import OfferedTestsList from "../pages/OfferedTests/offered-tests-list";
@@ -190,6 +190,10 @@ import DashboardAuditor from "pages/Dashboard-Auditor";
 import DashboardSampleCollector from "pages/Dashboard-SampleCollector";
 
 // registration admin
+import PendingCorporate from "pages/RegistrationAdmin/pending-corporate";
+import ApprovedCorporate from "pages/RegistrationAdmin/approved-corporate";
+import UnapprovedCorporate from "pages/RegistrationAdmin/unapproved-corporate";
+
 import PendingLabs from "pages/RegistrationAdmin/pending-labs";
 import labsListApprovedFeeOffered from "pages/RegistrationAdmin/labs-list-approved-fee";
 import labsListPendingFeeOffered from "pages/RegistrationAdmin/labs-list-pending-fee";
@@ -547,10 +551,10 @@ const financeAdminAuthProtectedRoutes = [
   { path: "/dashboard-financeadmin", component: DashboardFinanceAdmin },
   { path: "/account-statements-lab/:id", component: AccountStatementsLab },
   { path: "/account-statement-donor/:id", component: AccountStatementDonor },
-  {
-    path: "/corporate-lab-appointments/:id",
-    component: CorporateLabAppointmentsList,
-  },
+  // {
+  //   path: "/corporate-lab-appointments/:id",
+  //   component: CorporateLabAppointmentsList,
+  // },
   { path: "/account-statement-b2b/:id", component: AccountStatementsB2B },
   { path: "/cleared-in-payments", component: ClearedInPayments },
   { path: "/approved-in-payments", component: ApprovedInPayments },
@@ -652,6 +656,9 @@ const auditorAuthProtectedRoutes = [
 ];
 
 const registrationAdminAuthProtectedRoutes = [
+  { path: "/pending-corporate", component: PendingCorporate },
+  { path: "/approved-corporate", component: ApprovedCorporate },
+  { path: "/unapproved-corporate", component: UnapprovedCorporate },
   { path: "/pending-labs", component: PendingLabs },
   { path: "/labs-list-approved-fee", component: labsListApprovedFeeOffered },
   { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },

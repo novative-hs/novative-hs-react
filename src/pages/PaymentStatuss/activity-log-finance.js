@@ -159,8 +159,8 @@ class MsgsList extends Component {
                               with ID{" "}
                               <b>
                                 {activitylogfinance.payment_in_id ||
-                                  activitylogfinance.payment_out_id ||
-                                  activitylogfinance.btd_id}
+                                  activitylogfinance.payment_out_id}
+                                  {/* // activitylogfinance.btd_id */}
                               </b>
                               .
                             </div>
@@ -186,8 +186,7 @@ class MsgsList extends Component {
                               <b>{`${activitylogfinance.name}`}</b> Changed Status of{" "}
                               <b>{activitylogfinance.type}</b> with ID{" "}
                               <b>{activitylogfinance.payment_in_id ||
-                                activitylogfinance.payment_out_id ||
-                                activitylogfinance.btd_id}</b>{" "}
+                                activitylogfinance.payment_out_id}</b>{" "}
                               for <b>{activitylogfinance.payment_for}</b>{" "}
                               <b>
                                 {" "}

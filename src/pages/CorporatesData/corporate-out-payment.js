@@ -139,9 +139,9 @@ class OutPaymentsForm extends Component {
         onAddNewCorporatePayment(this.state.outPayment, this.state.user_id)
       );
     }, 1000);
-    // setTimeout(() => {
-    //   this.props.history.push("/corporate-payment-form-status");
-    // }, 2000)
+    setTimeout(() => {
+      this.props.history.push("/corporate-payment-form-status");
+    }, 2000)
   };
 
 
@@ -351,28 +351,29 @@ class OutPaymentsForm extends Component {
     //   // }
     // }
 
-    const donationlabList = labsMof
-      // for (let i = 0; i < labsMof.length; i++) {
-      //   // if ((labsMof[i].office === this.props.corporateProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
-      //   donationlabList.push({
-      //     label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
-      //     label1: `${labsMof[i].account_id}`,
-      //     value: labsMof[i].lab_id,
-      //     // data: { dues: labsMof[i].donation_amount }, // Include the 'dues' property in the data field
-      //   });
-      //   // }
-      // }
-      .filter(
-        labslist =>
-          labslist.type == "Main Lab"
-      )
-      .map(labslist => ({
-        label: `(Lab Name: ${labslist.name}) - (Type: ${labslist.type}) - (City: ${labslist.city})`,
-        label1: `${labslist.name}`,
-        label2: `${labslist.account_id}`,
-        value: labslist.lab_id,
-        // data: { dues: labslist.dues },
-      }));
+    const donationlabList = [];
+      for (let i = 0; i < labsMof.length; i++) {
+        // if ((labsMof[i].office === this.props.corporateProfiles.territory_office) && (labsMof[i].donation_amount > 0)) {
+        donationlabList.push({
+          label: `${labsMof[i].name} - ${labsMof[i].type} - ${labsMof[i].city}`,
+          label1: `${labsMof[i].name}`,
+          label2: `${labsMof[i].account_id}`,
+          value: labsMof[i].lab_id,
+          // data: { dues: labsMof[i].donation_amount }, // Include the 'dues' property in the data field
+        });
+        // }
+      }
+      // .filter(
+      //   labslist =>
+      //     labslist.type == "Main Lab"
+      // )
+      // .map(labslist => ({
+      //   label: `(Lab Name: ${labslist.name}) - (Type: ${labslist.type}) - (City: ${labslist.city})`,
+      //   label1: `${labslist.name}`,
+      //   label2: `${labslist.account_id}`,
+      //   value: labslist.lab_id,
+      //   // data: { dues: labslist.dues },
+      // }));
 
     // Assuming you have a state variable to store the selected lab id (this.state.selectedLabId)
     const selectedLab = donationlabList.find(lab => lab.value === this.state.lab_id);

@@ -139,6 +139,8 @@ class PendingB2BClients extends Component {
     };
 
   render() {
+    const { clearedInPayments } = this.props;
+
     const columns= [
       {
         text: "id",
@@ -185,19 +187,26 @@ class PendingB2BClients extends Component {
         dataField: "lab_name",
         text: "Client Name",
         sort: true,
-      formatter: (cellContent, paymentStatus) => (
-        <>
-          <span>
+        formatter: (cellContent, paymentStatus) => (
+          <>
             <span>
-              {paymentStatus.lab_name}{" "}
-              {paymentStatus.donor_name}
-              {paymentStatus.advertisement_title}
-
+              <span>
+                {paymentStatus.lab_name} {paymentStatus.donor_name} {paymentStatus.advertisement_title}
+              </span>
             </span>
-          </span>
-        </>
-      ),filter: textFilter(),
-      headerStyle: { backgroundColor: '#DCDCDC' },
+          </>
+        ),
+        filter: textFilter({
+          placeholder: "Search",
+          getFilter: (filter) => {
+            return {
+              lab_name: filter,
+              donor_name: filter,
+              advertisement_title: filter
+            };
+          },
+        }),
+        headerStyle: { backgroundColor: '#DCDCDC' },
       },
       {
         dataField: "payment_method",
@@ -392,10 +401,6 @@ class PendingB2BClients extends Component {
     const { isEdit, deleteModal } = this.state;
 
     const clearedInPayment = this.state.clearedInPayment;
-
-
-    const { clearedInPayments } = this.props;
-
     const pageOptions = {
       sizePerPage: 10,
       totalSize: 100, // replace later with size(clearedInPayments),

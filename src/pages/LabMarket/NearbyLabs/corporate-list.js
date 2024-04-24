@@ -90,7 +90,6 @@ class TestsList extends Component {
               {offeredTest.offered_tests}
               </span> */}
               <Link to={`/corporate-offered-tests/${offeredTest.account_id}`}>{offeredTest.offered_tests}</Link>
-
             </>
           ),
         },
@@ -117,7 +116,7 @@ class TestsList extends Component {
                <Button
                   color="primary"
                   className="w-55  btn-block btn btn-primary"
-                  onClick={e => this.handleOfferedTestClicks(e, offeredTest.id, offeredTest.allow_all)}
+                  onClick={e => this.handleOfferedTestClicks(e, offeredTest.id, offeredTest.allow_all, offeredTest.name)}
                 >
                   <i className="mdi mdi-sticker-check-outline me-1" />
                   Accept
@@ -220,7 +219,7 @@ class TestsList extends Component {
 
     this.toggle();
   };
-  handleOfferedTestClicks = (e, arg1, arg2) => {
+  handleOfferedTestClicks = (e, arg1, arg2, arg3) => {
     this.setState({
       offeredTest: "",
       isEdit: false,
@@ -228,10 +227,12 @@ class TestsList extends Component {
         ...this.state.initialValues,
         corporate_id: arg1, // set the corporate_id value to arg
         allow_all: arg2,
+        corporate_name: arg3, // set the corporate_id value to arg
         // status: arg3,
       },
       selectedcor: arg1,
       selectedallow: arg2 === "Yes" ? "Yes" : "No", // Set selectedallow based on arg2 value
+      corporatename: arg3,
       // selectedstatus: arg3, 
 
     });
@@ -394,11 +395,11 @@ class TestsList extends Component {
                                           })}
                                           // in onSubmit function
                                           onSubmit={values => {
-                                            const { isEdit, selectedallow , selectedcor} = this.state; // get isEdit and selectedTest from component state
+                                            const { isEdit, selectedallow , selectedcor, corporatename} = this.state; // get isEdit and selectedTest from component state
                                             {
                                               const newOfferedTest = {
                                                 corporate_id: selectedcor,
-                                                // status: selectedstatus,
+                                                name: corporatename,
                                                 allow_all: selectedallow,
                                               };
                                               onAddNewCorporate(newOfferedTest, this.state.user_id);
@@ -417,7 +418,7 @@ class TestsList extends Component {
                                               <Row>
                                               <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Corporate id
+                                                      Corporate Name
                                                       <span className="text-danger font-size-12">
                                                         *
                                                       </span>
@@ -426,7 +427,7 @@ class TestsList extends Component {
                                                       name="corporate_id"
                                                       type="text"
                                                       readOnly={true}
-                                                      value= {this.state.selectedcor}
+                                                      value= {this.state.corporatename}
                                                       className={
                                                         "form-control" +
                                                         (errors.corporate_id &&

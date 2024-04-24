@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -63,6 +64,7 @@ class CSRsList extends Component {
           sort: true,
           formatter: (cellContent, CSR) => (
             <>
+            <Tooltip title="View Image">
               <Link
                 to={{
                   pathname: process.env.REACT_APP_BACKENDURL + CSR.photo,
@@ -71,6 +73,7 @@ class CSRsList extends Component {
               >
                 {CSR.name}
               </Link>
+              </Tooltip>
             </>
           ),
           filter: textFilter() // Apply text filter here

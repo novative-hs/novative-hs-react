@@ -7,6 +7,7 @@ import {
   GET_TERRITORIES_LIST_FAIL,
   GET_FINANCE_OFFICER_LIST_SUCCESS,
   GET_FINANCE_OFFICER_LIST_FAIL,
+  ADD_STAFF,
   ADD_STAFF_SUCCESS,
   ADD_STAFF_FAIL,
   UPDATE_STAFF_SUCCESS,
@@ -22,6 +23,10 @@ const INIT_STATE = {
   territoriesList: [],
   financeOfficerList: [],
   error: {},
+  addStaffError: null,
+  addStaffSuccess: null,
+  loading: false,
+  message: null,
 };
 
 const staff = (state = INIT_STATE, action) => {
@@ -73,18 +78,30 @@ const staff = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-
+      case ADD_STAFF:
+        return {
+          ...state,
+          staff: null,
+          loading: true,
+          addStaffError: null,
+          addStaffSuccess: null,
+        };
     case ADD_STAFF_SUCCESS:
       return {
         ...state,
-        staff: [...state.staff, action.payload.data],
+        loading: false,
+        staff: action.payload,
+        addStaffError: null,
+        addStaffSuccess: action.payload.staff
       };
-
-    case ADD_STAFF_FAIL:
-      return {
-        ...state, error: action.payload, loading: false
-      };
-
+      case ADD_STAFF_FAIL:
+        return {
+          ...state,
+          staff: null,
+          loading: false,
+          addStaffError: action.payload.staff,
+          addStaffSuccess: null,
+        };
     case UPDATE_STAFF_SUCCESS:
       return {
         ...state,

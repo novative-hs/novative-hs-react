@@ -215,6 +215,7 @@ class FeedbacksList extends Component {
                                 </Col> */}
                                 <Col sm="10" lg="10">
                                   <div className="text-center">
+                                    <strong>Total Rating of the Lab:</strong>
                             <StarRatings
                               rating={labProfile.rating}
                               // rating={5}
