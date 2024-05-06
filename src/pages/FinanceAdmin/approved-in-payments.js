@@ -398,7 +398,6 @@ class PaymentStatussList extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Payments" breadcrumbItem="MIF and MOF with status is equal to Cleared." />
-            <p>hufjdjjdjfd jdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff</p>
             <Row>
               <Col lg="12">
                 <Card>
