@@ -439,7 +439,7 @@ class AdvertisementsList extends Component {
                                 <Col sm="8">
                                   <div className="text-sm-end">
                                     <Button
-                                      color="primary"
+                                      color="success"
                                       className="font-16 btn-block btn btn-primary"
                                       onClick={this.handleAdvertisementClicks}
                                     >
