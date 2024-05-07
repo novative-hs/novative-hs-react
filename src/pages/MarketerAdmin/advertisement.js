@@ -403,7 +403,7 @@ class AdvertisementsList extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Advertisement List New words added"
+              title="Advertisement List"
               breadcrumbItem="Advertisement List"
             />
             <Row>
