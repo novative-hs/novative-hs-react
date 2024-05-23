@@ -119,7 +119,9 @@ class InProcessAudits extends Component {
           sort: true,
           formatter: (cellContent, audit) => (
             <>
-              <span>{new Date(audit.assigned_at).toLocaleString("en-US")}</span>
+              <span>
+              {moment(audit.assigned_at).format("DD MMM YYYY, h:mm A")}
+              </span>
             </>
           ),filter: textFilter(),
         },
