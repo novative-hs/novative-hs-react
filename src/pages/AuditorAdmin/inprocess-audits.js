@@ -131,18 +131,35 @@ class InProcessAudits extends Component {
           sort: true,
           filter: textFilter(),
         },
+        // {
+        //   dataField: "assigned_at",
+        //   text: "Pending Since",
+        //   sort: true,
+        //   formatter: (cellContent, audit) => (
+        //     <>
+        //       <span>
+
+        //       {new Date().getDate() - new Date(audit.assigned_at).getDate()} days
+        //       </span>
+        //     </>
+        //   ),filter: textFilter(),
+        // },
         {
           dataField: "assigned_at",
           text: "Pending Since",
           sort: true,
-          formatter: (cellContent, audit) => (
-            <>
-              <span>
-
-              {new Date().getDate() - new Date(audit.assigned_at).getDate()} days
-              </span>
-            </>
-          ),filter: textFilter(),
+          formatter: (cellContent, audit) => {
+            const assignedDate = new Date(audit.assigned_at);
+            const currentDate = new Date();
+            const timeDifference = currentDate - assignedDate;
+            const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            return (
+              <>
+                <span>{daysDifference} days</span>
+              </>
+            );
+          },
+          filter: textFilter(),
         },
 
         {
