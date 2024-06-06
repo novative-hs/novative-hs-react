@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import { Tooltip } from "@material-ui/core";
 import {
   Card,
   CardBody,
@@ -38,17 +39,25 @@ import { getCSRList, updateStaff, deleteStaff } from "store/staff/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
-import { Tooltip } from "@material-ui/core";
+
 
 class CSRList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
+      nameFilter: '',
+      emailFilter: '',
+      cnicFilter: '',
+      phoneFilter: '',
       csrList: [],
       staff: "",
       collectorImg: "",
       modal: false,
+      nameSort: 'asc', 
+      emailSort: 'asc',
+      cnicSort: 'asc', 
+      phoneSort: 'asc',
       deleteModal: false,
       csrListColumns: [
         {
@@ -62,52 +71,132 @@ class CSRList extends Component {
           dataField: "photo",
           text: "Name",
           sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+                
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  className="form-control"
+                />
+                
+              </div>
+              <div>{column.text}   {column.sort ? (
+            <i className={this.state.nameSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('name')}></i>
+          ) : null}</div>
+              </>
+            );
+            
+          },
           formatter: (cellContent, CSR) => (
-            <>
+            <div className="text-start">
               <Link
                 to={{
-                  pathname:
-                    process.env.REACT_APP_BACKENDURL + CSR.photo,
+                  pathname: process.env.REACT_APP_BACKENDURL + CSR.photo,
                 }}
                 target="_blank"
               >
                 {CSR.name}
               </Link>
-            </>
+            </div>
           ),
         },
         {
           dataField: "email",
           text: "Email",
           sort: true,
+          headerFormatter: (column, colIndex) => { // Add iconStyle as a parameter
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.emailFilter}
+                    onChange={e => this.handleFilterChange('emailFilter', e)}
+                    className="form-control"
+                  />
+                  <div>{column.text}       {column.sort ? (
+            <i className={this.state.emailSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('email')}></i>
+          ) : null} </div>
+                </div>
+          
+              </>
+            );
+          },
+          formatter: (cellContent, CSR) => (
+            <div className="text-start"> {/* Apply Bootstrap text-start class here */}
+              {CSR.email}
+            </div>
+          ),
         },
         {
           dataField: "cnic",
           text: "CNIC",
-          sort: true,
+          sort: true, 
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+                
+                <input
+                  type="text"
+                  value={this.state.cnicFilter}
+                  onChange={e => this.handleFilterChange('cnicFilter', e)}
+                  className="form-control"
+                />
+               
+              </div>
+              <div>{column.text}  {column.sort ? (
+            <i className={this.state.cnicSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('cnic')}></i>
+          ) : null}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "phone",
           text: "Mobile No.",
           sort: true,
-        },
-        {
-          dataField: "territory_office",
-          text: "Territory Office",
-          sort: true,
-        },
-      
-
-        {
-          dataField: "roles",
-          text: "Roles",
-          sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div className="d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    value={this.state.phoneFilter}
+                    onChange={e => this.handleFilterChange('phoneFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div className="d-flex justify-content-center align-items-center">
+                  {column.text}
+                  {column.sort ? (
+                    <i
+                      className={this.state.phoneSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'}
+                      style={{ marginLeft: '5px', cursor: 'pointer', color: "red" }}
+                      onClick={() => this.handleSort('phone')}
+                    />
+                  ) : null}
+                </div>
+              </>
+            );
+          },
         },
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
+          headerFormatter: (column, colIndex) => {
+            return (
+              <div style={{ marginTop: '45px' }}>
+                {column.text}
+              </div>
+            );
+          },
           formatter: (cellContent, CSR) => (
             <div>
               <Tooltip title="Update">
@@ -141,6 +230,37 @@ class CSRList extends Component {
     this.handleCSRClicks = this.handleCSRClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
+  handleSort = (field) => {
+    const newSortOrder = this.state[field + 'Sort'] === 'asc' ? 'desc' : 'asc';
+    this.setState({ [field + 'Sort']: newSortOrder }, () => {
+      this.sortData(field, newSortOrder);
+    });
+  };
+  
+  sortData = (field, order) => {
+    const { CSRList } = this.state;
+    if (!Array.isArray(CSRList)) {
+  
+      return;
+    }
+  
+    const sortedData = [...CSRList].sort((a, b) => {
+      let aValue = a[field];
+      let bValue = b[field];
+  
+      // Ensure both values are strings for case-insensitive comparison
+      aValue = aValue.toString().toLowerCase();
+      bValue = bValue.toString().toLowerCase();
+  
+      if (order === 'asc') {
+        return aValue.localeCompare(bValue);
+      } else {
+        return bValue.localeCompare(aValue);
+      }
+    });
+  
+    this.setState({ CSRList: sortedData });
+  };
 
   componentDidMount() {
     const { onGetCSRList } = this.props;
@@ -153,6 +273,22 @@ class CSRList extends Component {
       modal: !prevState.modal,
     }));
   }
+
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+    // Filter data based on filter values
+    filterData = () => {
+      const { csrList } = this.props;
+      const { nameFilter, emailFilter, cnicFilter, phoneFilter } = this.state;
+      const filteredData = csrList.filter(entry =>
+        entry.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
+        entry.email.toLowerCase().includes(emailFilter.toLowerCase()) &&
+        entry.cnic.includes(cnicFilter) &&
+        entry.phone.includes(phoneFilter)
+      );
+      return filteredData;
+    };
 
   handleCSRClicks = () => {
     this.setState({ CSR: "", collectorImg: "", isEdit: false });
@@ -213,7 +349,6 @@ class CSRList extends Component {
         name: arg.name,
         cnic: arg.cnic,
         phone: arg.phone,
-        roles: arg.roles,
       },
       isEdit: true,
     });
@@ -222,7 +357,7 @@ class CSRList extends Component {
   };
 
   render() {
-    const { SearchBar } = Search;
+    const { nameFilter, emailFilter, cnicFilter, phoneFilter } = this.state;
 
     const { csrList } = this.props;
 
@@ -237,12 +372,13 @@ class CSRList extends Component {
       custom: true,
     };
 
-    const defaultSorted = [
-      {
-        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
-        order: "desc", // desc or asc
-      },
-    ];
+    // const defaultSorted = [
+    //   { 
+    //     dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
+    //     order: "desc", // desc or asc
+    //   },
+    // ];
+    // const iconStyle = { color: 'red' }; // Customize the color here
 
     return (
       <React.Fragment>
@@ -258,8 +394,8 @@ class CSRList extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Staff" breadcrumbItem="CSR List" />
-            <Row>
-              <Col lg="12">
+            <Row className="justify-content-center">
+              <Col lg="10">
                 <Card>
                   <CardBody>
                     <PaginationProvider
@@ -277,7 +413,7 @@ class CSRList extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              <Row className="mb-2">
+                              {/* <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
@@ -288,22 +424,25 @@ class CSRList extends Component {
                                     </div>
                                   </div>
                                 </Col>
-                              </Row>
-                              <Row className="mb-4">
+                              </Row> */}
+                              <Row className="mb-2">
+                              </Row >
+                              <Row className=" mb-4 navbar-nav">
                                 <Col xl="12">
                                   <div className="table-responsive">
                                     <BootstrapTable
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
+                                      // defaultSorted={defaultSorted}
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
                                       headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
+                                      data={this.filterData()}
+                                      headerFormatter={(column, colIndex) => column.headerFormatter(column, colIndex)}
                                     />
-
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
@@ -322,7 +461,6 @@ class CSRList extends Component {
                                             name: (staff && staff.name) || "",
                                             cnic: (staff && staff.cnic) || "",
                                             phone: (staff && staff.phone) || "",
-                                            roles: (staff && staff.roles) || "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
@@ -343,9 +481,7 @@ class CSRList extends Component {
                                                 /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                                                 "Please enter a valid Pakistani phone number e.g. 03123456789"
                                               ),
-                                            roles: Yup.string()
-                                              .trim()
-                                              .required("Please enter roles"),
+                                            
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -354,16 +490,10 @@ class CSRList extends Component {
                                                 name: values.name,
                                                 cnic: values.cnic,
                                                 phone: values.phone,
-                                                roles: values.roles,
                                               };
 
                                               // save new Staff
                                               onUpdateStaff(staffData);
-
-                                              // if (this.props.staff.length != 0) {
-                                              //   this.props.history.push("/add-")
-                                              // }
-
                                               setTimeout(() => {
                                                 onGetCSRList();
                                               }, 1000);
@@ -381,7 +511,6 @@ class CSRList extends Component {
                                                     name="hiddenEditFlag"
                                                     value={isEdit}
                                                   />
-
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Name
@@ -400,7 +529,6 @@ class CSRList extends Component {
                                                               .value,
                                                             cnic: staff.cnic,
                                                             phone: staff.phone,
-                                                            roles: staff.roles,
                                                           },
                                                         });
                                                       }}
@@ -418,7 +546,6 @@ class CSRList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       CNIC
@@ -439,8 +566,6 @@ class CSRList extends Component {
                                                                 .value,
                                                               phone:
                                                                 staff.phone,
-                                                              roles:
-                                                                staff.roles,
                                                             },
                                                           });
                                                         }
@@ -459,7 +584,6 @@ class CSRList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Mobile No
@@ -478,7 +602,6 @@ class CSRList extends Component {
                                                             cnic: staff.cnic,
                                                             phone:
                                                               e.target.value,
-                                                            roles: staff.roles,
                                                           },
                                                         });
                                                       }}
@@ -492,43 +615,6 @@ class CSRList extends Component {
                                                     />
                                                     <ErrorMessage
                                                       name="phone"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Roles
-                                                    </Label>
-                                                    <Field
-                                                      name="roles"
-                                                      type="text"
-                                                      value={
-                                                        this.state.staff.roles
-                                                      }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          staff: {
-                                                            id: staff.id,
-                                                            name: staff.name,
-                                                            cnic: staff.cnic,
-                                                            phone: staff.phone,
-                                                            roles:
-                                                              e.target.value,
-                                                          },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.roles &&
-                                                        touched.roles
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="roles"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />

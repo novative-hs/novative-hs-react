@@ -31,7 +31,7 @@ import * as Yup from "yup";
 //Import Breadcrumb
 import "assets/scss/table.scss";
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getLabAudits, addNewAudit } from "store/auditor/actions";
+
 
 class LabAudits extends Component {
   constructor(props) {
@@ -94,11 +94,7 @@ class LabAudits extends Component {
             </>
           ),
         },
-        // {
-        //   dataField: "auditor_name",
-        //   text: "Audited by",
-        //   sort: true,
-        // },
+       
         {
           dataField: "Report",
           text: "Report",

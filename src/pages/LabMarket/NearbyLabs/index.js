@@ -11,15 +11,15 @@ import { Redirect, Link, withRouter } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { Button, Collapse } from "reactstrap";
 import classname from "classnames";
-import logo from "../../../assets/images/logo.svg";
+import logo from "../../../assets/images/neqas-logo.jpeg";
 import mtest from "../../../assets/images/m.test.png";
 import mprofile from "../../../assets/images/m.profile1.jpeg";
 import mpackages from "../../../assets/images/m.package.jpeg";
 import mradiology from "../../../assets/images/m.radiology.jpeg";
 import mappointment from "../../../assets/images/m.appointment.png";
 import discount from "../../../assets/images/discount.png";
-import logoLight from "../../../assets/images/logo-light.png";
-import logoLightSvg from "../../../assets/images/logo-light.svg";
+import logoLight from "../../../assets/images/neqas-logo.jpeg";
+import logoLightSvg from "../../../assets/images/neqas-logo.jpeg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -63,7 +63,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import { productsData } from "common/data";
 
 //Import actions
-import { getNearbyLabs, getAdvLive, getRegionWiseAdvertisement, getPatientProfile } from "store/labmarket/actions";
+import { getNearbyLabs, getAdvLive, getRegionWiseAdvertisementget} from "store/labmarket/actions";
 import { getLabNamesList } from "store/lab-names/actions";
 
 import { any } from "prop-types";
@@ -73,7 +73,7 @@ import { getTerritoriesList } from "store/territories-list/actions";
 import { getCarts, deleteCart, emptyCart } from "store/carts/actions";
 
 import { CITIES } from "helpers/global_variables_helper";
-import offeredTestsList from "pages/OfferedTests/offered-tests-list";
+
 import ScrollButton from "components/Common/Scrollbutton";
 
 function formatTime(timeString) {
@@ -112,7 +112,7 @@ class NearbyLabs extends Component {
       nearbyLabs: [],
       territoriesList: [],
       advLives: [],
-      patientProfile: [],
+   
       labNamesList: [],
       selectedLabName: "", // State to store the selected lab name
       filteredLabs: [], // State to store the filtered labs
@@ -185,13 +185,6 @@ class NearbyLabs extends Component {
     if (labNamesList && !labNamesList.length) {
       console.log(onGetLabNamesList(this.state.user_id));
     }
-
-    const { patientProfile, onGetPatientProfile } = this.props;
-    onGetPatientProfile(this.state.user_id);
-    this.setState({
-      patientProfile,
-    });
-    console.log("state", patientProfile);
 
 
     let latitude;
@@ -438,13 +431,6 @@ class NearbyLabs extends Component {
             city: this.state.city,
 
           };
-          if (latitude && longitude) {
-            onGetRegionWiseAdvertisement(regionWiseAdvLocationDetails);
-            setTimeout(() => {
-              this.setState({ regionWiseAdvertisement: this.props.regionWiseAdvertisement },
-                console.log("lab advertisement have or not", this.props.regionWiseAdvertisement, this.state.regionWiseAdvertisement));
-            }, 500);
-          }
 
           // near by labs
           if ((!this.state.user_id || this.state.user_type === "CSR") && !this.props.match.params.guest_id) {
@@ -1365,7 +1351,7 @@ class NearbyLabs extends Component {
     );
 
     const { history } = this.props;
-    const { patientProfile } = this.props;
+    
     const {
       discountData,
       nearbyLabs,
@@ -1373,7 +1359,7 @@ class NearbyLabs extends Component {
       totalPage,
       regionWiseAdvertisement,
     } = this.state;
-    const { onGetPatientProfile } = this.props;
+
     const cityList = [];
     for (let i = 0; i < this.props.territoriesList.length; i++) {
       cityList.push({
@@ -2022,9 +2008,10 @@ class NearbyLabs extends Component {
                           : `/login/${this.state.guest_id}`
                       }
                       className="btn header-items noti-icon right-bar-toggle"
+                      style={{ color: 'blue' }}
                     >
                       <i className="mdi mdi-account-arrow-right align-middle me-1 font-size-20" />{" "}
-                      <span className="pt-4 font-size-12">Login</span>
+                      <span className="pt-4 font-size-12" style={{ color: 'blue' }}>Login</span>
                     </Link>
                   </Tooltip>
                   <Tooltip title="Sign up">
@@ -2037,7 +2024,7 @@ class NearbyLabs extends Component {
                       className="btn header-items noti-icon right-bar-toggle"
                     >
                       <i className="mdi mdi-account-plus align-middle me-1 font-size-20" />{" "}
-                      <span className="pt-4 font-size-12">Sign up</span>
+                      <span className="pt-4 font-size-12"  style={{ color: 'blue' }}>Sign up</span>
                     </Link>
                   </Tooltip>
                   <Tooltip title="Help and Support">
@@ -8801,8 +8788,7 @@ NearbyLabs.propTypes = {
   t: PropTypes.any,
   onGetTerritoriesList: PropTypes.func,
   territoriesList: PropTypes.array,
-  onGetPatientProfile: PropTypes.func,
-  patientProfile: PropTypes.array,
+
   onGetLabNamesList: PropTypes.func,
   labNamesList: PropTypes.array,
   className: PropTypes.any,
@@ -8814,7 +8800,7 @@ const mapStateToProps = state => ({
   regionWiseAdvertisement: state.LabMarket.regionWiseAdvertisement,
   advLives: state.LabMarket.advLives,
   territoriesList: state.territoriesList.territoriesList,
-  patientProfile: state.LabMarket.patientProfile,
+
   onGetLabNamesList: PropTypes.func,
   labNamesList: PropTypes.array,
   labNamesList: state.labNamesList.labNamesList,
@@ -8826,9 +8812,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetRegionWiseAdvertisement: locationDetails =>
     dispatch(getRegionWiseAdvertisement(locationDetails)),
   onGetAdvLive: locationDetails => dispatch(getAdvLive(locationDetails)),
-  offeredTestsList: guest_id => dispatch(offeredTestsList(guest_id)),
+
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
-  onGetPatientProfile: id => dispatch(getPatientProfile(id)),
+
   onGetLabNamesList: id => dispatch(getLabNamesList(id)),
 
 });

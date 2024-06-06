@@ -16,11 +16,10 @@ import { connect } from "react-redux";
 // actions
 import { getLabProfile } from "store/auth/labprofile/actions";
 
-// actions
-import { getB2bProfile } from "store/auth/b2bprofile/actions";
+
 
 // actions
-import { getPatientProfile } from "store/auth/patientprofile/actions";
+
 import Tooltip from "@material-ui/core/Tooltip";
 
 class ProfileMenu extends Component {
@@ -71,12 +70,7 @@ class ProfileMenu extends Component {
                 {this.props.t("Lab Profile")}
               </DropdownItem>
             )}
-            {this.state.account_type && this.state.account_type == "b2bclient" && (
-              <DropdownItem tag="a" href={"/b2b-profile"}>
-                <i className="mdi mdi-account font-size-16 align-middle ms-1" />{" "}
-                {this.props.t("B2B Profile")}
-              </DropdownItem>
-            )}
+           
              {this.state.account_type && this.state.account_type == "donor" && (
               <DropdownItem tag="a" href={"/donor-profile"}>
                 <i className="mdi mdi-account font-size-16 align-middle ms-1" />{" "}
@@ -122,25 +116,20 @@ ProfileMenu.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   getLabProfile: PropTypes.func,
-  getB2bProfile: PropTypes.func,
-  getPatientProfile: PropTypes.func,
+ 
+
 };
 
 const mapStateToProps = (state, ownProps) => {
-  if (ownProps.location.pathname.includes("dashboard-patient")) {
-    const { error, success } = state.PatientProfile;
-    return { error, success };
-  } else if (ownProps.location.pathname.includes("dashboard-lab")) {
+  if (ownProps.location.pathname.includes("dashboard-lab")) {
     const { error, success } = state.LabProfile;
     return { error, success };
-  } else if (ownProps.location.pathname.includes("dashboard-b2b")) {
-    const { error, success } = state.B2bProfile;
-    return { error, success };
-  }
+  } 
+  
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getLabProfile, getB2bProfile, getPatientProfile })(
+  connect(mapStateToProps, { getLabProfile })(
     withTranslation()(ProfileMenu)
   )
 );

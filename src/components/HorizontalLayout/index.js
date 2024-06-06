@@ -23,9 +23,11 @@ class HorizontalLayout extends Component {
     super(props);
     this.state = {
       isMenuOpened: false,
+      screenWidth: window.innerWidth,
     };
     this.toggleRightSidebar = this.toggleRightSidebar.bind(this);
     this.hideRightbar = this.hideRightbar.bind(this);
+    this.updateScreenWidth = this.updateScreenWidth.bind(this);
   }
 
   /**
@@ -37,7 +39,7 @@ class HorizontalLayout extends Component {
 
   componentDidMount() {
     document.body.addEventListener("click", this.hideRightbar, true);
-
+    window.addEventListener("resize", this.updateScreenWidth);
     if (this.props.isPreloader === true) {
       document.getElementById("preloader").style.display = "block";
       document.getElementById("status").style.display = "block";
@@ -68,6 +70,10 @@ class HorizontalLayout extends Component {
       this.props.changeLayoutWidth(this.props.layoutWidth);
     }
   }
+  componentWillUnmount() {
+    // Remove event listener when component unmounts
+    window.removeEventListener("resize", this.updateScreenWidth);
+  }
 
   /**
    * Opens the menu - mobile
@@ -88,7 +94,10 @@ class HorizontalLayout extends Component {
       }
     }
   };
-
+  updateScreenWidth() {
+    // Update state with current screen width
+    this.setState({ screenWidth: window.innerWidth });
+  }
   render() {
     return (
       <React.Fragment>
@@ -106,14 +115,18 @@ class HorizontalLayout extends Component {
             </div>
           </div>
           <div id="layout-wrapper">
-            <Header
-              theme={this.props.topbarTheme}
-              isMenuOpened={this.state.isMenuOpened}
-              toggleRightSidebar={this.toggleRightSidebar}
-              openLeftMenuCallBack={this.openMenu}
-            />
-            <Navbar menuOpen={this.state.isMenuOpened} />
-            <div className="main-content">{this.props.children}</div>
+          <Header
+  theme={this.props.topbarTheme}
+  isMenuOpened={this.state.isMenuOpened}
+  toggleRightSidebar={this.toggleRightSidebar}
+  openLeftMenuCallBack={this.openMenu}
+  toggleNavbarDropdown={this.toggleNavbarDropdown} // Pass the callback function
+/>
+             {/* <Navbar
+              menuOpen={this.state.isMenuOpened}
+              screenWidth={this.state.screenWidth} // Pass screenWidth here
+            />*/}
+            <div className="main-content">{this.props.children}</div> 
             <Footer />
           </div>
           {this.props.showRightSidebar ? <RightSidebar /> : null}
@@ -134,6 +147,7 @@ HorizontalLayout.propTypes = {
   showRightSidebar: PropTypes.any,
   toggleRightSidebar: PropTypes.func,
   topbarTheme: PropTypes.any,
+  
 };
 
 const mapStateToProps = state => {

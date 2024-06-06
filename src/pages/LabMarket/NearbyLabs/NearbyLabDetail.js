@@ -25,7 +25,7 @@ import { Link } from "react-router-dom";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 import { getLabProfile } from "store/auth/labprofile/actions";
-import { getPatientProfile } from "store/labmarket/actions";
+
 
 class NearbyLabDetail extends Component {
   constructor(props) {
@@ -64,8 +64,7 @@ class NearbyLabDetail extends Component {
     console.log("hehe gid", this.props.match.params.guest_id);
     console.log("hehe uid", this.props.match.params.uuid);
     console.log("hehe fid", this.props.match.params.filnalurl);
-    const { patientProfile, getPatientProfile } = this.props;
-    getPatientProfile(this.state.user_id);
+
     this.setState({
       patientProfile
     });
@@ -74,8 +73,6 @@ class NearbyLabDetail extends Component {
 
   render() {
     const isSmallScreen = window.innerWidth < 490;
-    const { getPatientProfile } = this.props;
-    const { patientProfile } = this.props;
     return (
       <React.Fragment>
       {this.props.patientProfile.corporate_id == "undefined" && this.props.patientProfile.is_assosiatewith_anycorporate == false ? (
@@ -1939,30 +1936,12 @@ class NearbyLabDetail extends Component {
                                 )}
                                 {this.state.user_id &&
                                   this.state.user_type !== "CSR" &&
-                                  this.state.user_type !== "b2bclient" && 
-                                  !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card && (
-
+                                  this.state.user_type !== "b2bclient" && (
                                     <Link
                                       to={
                                         this.props.match.params.guest_id
                                           ? `/nearby-labs/${this.props.match.params.guest_id}`
                                           : `/nearby-labs/`
-                                      }
-                                      className="btn btn-secondary mt-2 me-1"
-                                    >
-                                      <i className="bx bxs-shopping-bags" />{" "}
-                                      Continue Browsing{" "}
-                                    </Link>
-                                  )}
-                                {this.state.user_id &&
-                                  this.state.user_type !== "CSR" &&
-                                  this.state.user_type !== "b2bclient" && 
-                                  this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card && (
-                                    <Link
-                                      to={
-                                        this.props.match.params.guest_id
-                                          ? `/corporate-labs/${this.props.match.params.guest_id}`
-                                          : `/corporate-labs/`
                                       }
                                       className="btn btn-secondary mt-2 me-1"
                                     >
@@ -2151,9 +2130,7 @@ class NearbyLabDetail extends Component {
                                 )}
                                 {this.state.user_id &&
                                   this.state.user_type !== "CSR" &&
-                                  this.state.user_type !== "b2bclient" && 
-                                  !this.props.patientProfile.corporate_id && !this.props.patientProfile.is_assosiatewith_anycorporate && !this.props.patientProfile.employee_id_card && (
-
+                                  this.state.user_type !== "b2bclient" && (
                                     <Link
                                       to={
                                         this.props.match.params.guest_id
@@ -2166,22 +2143,6 @@ class NearbyLabDetail extends Component {
                                     >
                                       <i className="bx bxs-shopping-bags" />{" "}
                                       <span className="font-size-12">Continue Browsing{" "}</span>
-                                    </Link>
-                                  )}
-                                {this.state.user_id &&
-                                  this.state.user_type !== "CSR" &&
-                                  this.state.user_type !== "b2bclient" && 
-                                  this.props.patientProfile.corporate_id && this.props.patientProfile.is_assosiatewith_anycorporate && this.props.patientProfile.employee_id_card && (
-                                    <Link
-                                      to={
-                                        this.props.match.params.guest_id
-                                          ? `/corporate-labs/${this.props.match.params.guest_id}`
-                                          : `/corporate-labs/`
-                                      }
-                                      className="btn btn-secondary mt-2 me-1"
-                                    >
-                                      <i className="bx bxs-shopping-bags" />{" "}
-                                      Continue Browsing{" "}
                                     </Link>
                                   )}
                                 {this.state.user_id &&
@@ -2638,7 +2599,7 @@ NearbyLabDetail.propTypes = {
   t: PropTypes.any,
   history: PropTypes.any,
   patientProfile: PropTypes.array,
-  getPatientProfile: PropTypes.func,
+
 };
 
 const mapStateToProps = state => {
@@ -2648,7 +2609,7 @@ const mapStateToProps = state => {
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getLabProfile, getPatientProfile, })(
+  connect(mapStateToProps, { getLabProfile })(
     withTranslation()(NearbyLabDetail)
   )
 );

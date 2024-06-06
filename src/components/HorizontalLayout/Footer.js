@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "reactstrap";
-
+import logo from "../../assets/images/neqas-logo.jpeg";
 const Footer = () => {
   // Media query checks for responsiveness
   const isLargeScreen = window.innerWidth > 768;
@@ -42,7 +42,7 @@ const Footer = () => {
                   }
                 >
                   <span>
-                    <img src="/logo-dark.png" alt="" height="60" />
+                  <img src={logo} alt="" height="60" />
                   </span>
                 </Link>
               </div>
@@ -94,24 +94,6 @@ const Footer = () => {
                     `/contact-us/`
                   }
                 >
-                  Contact Us
-                </Link>
-              </div>
-              <div className="mb-2">
-                <a
-                  href="https://careers.pmahealthcare.com/apply_online/?position=12"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Careers
-                </a>
-              </div>
-              <div className="mb-2">
-                <Link
-                  to={
-                    `/contact-us/`
-                  }
-                >
                   Help & Support
                 </Link>
               </div>
@@ -121,41 +103,13 @@ const Footer = () => {
             <Col md={3}>
               <h4>Quick Links</h4>
               <div className="mb-2">
-                {/* Add your quick links here */}
-                <Link
-                  to={
-                    `/register/`
-                  }
-                >
-                  Register Your Lab
-                </Link>
-              </div>
-              <div className="mb-2">
-                <Link
-                  to={
-                    `/pages-comingsoon/`
-                  }
-                >
-                  How to API&apos;s Integrations?
-                </Link>
-              </div>
-              <div className="mb-2">
-                <Link
-                  to={
-                    `/pages-comingsoon/`
-                  }
-                >
-                  Corporate Customer
-                </Link>
-              </div>
-              <div className="mb-2">
                 <Link
                   to={
                     `/b2b-affiliate/`
                   }
 
                 >
-                  Become an affiliate
+                  Become a participate
                 </Link>
               </div>
             </Col>
@@ -167,12 +121,12 @@ const Footer = () => {
                 {/* Add your contact information here */}
                 <span>
                   <i className="mdi mdi-email align-middle me-2 font-size-40 text-primary" />{" "}
-                  info@labhazir.com{" "}
+                  info@nhsneqas.com{" "}
                 </span>
               </div>
               <div className="mb-2">
                 <i className="mdi mdi-phone align-middle me-2 font-size-40 text-primary" />{" "}
-                0300-LABHAZIR{" "}
+                0300-NHSNEQAS{" "}
               </div>
               <div className="mb-2">
                 {/* Add your social media links here */}
@@ -206,9 +160,9 @@ const Footer = () => {
                 </a>
               </div>
             </Col>
-            <div style={{ background: "#3B71CA", height: "30px", fontWeight: "bold" }}>
+            <div style={{ background: "#0000CD", height: "30px", fontWeight: "bold" }}>
               <Col className="text-white text-center fonr-size-12 mt-1">
-                {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
+                {new Date().getFullYear()} © NHS NEQAS . All Rights Reserved
               </Col>
             </div>
           </Row>
@@ -220,7 +174,7 @@ const Footer = () => {
             {/* Add your small screen footer content here */}
             <Col xs="auto" sm="auto" md="auto" lg="auto">
               <div className="text-sm-start" style={{ fontWeight: "bold" }}>
-                {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
+                {new Date().getFullYear()} © NHS NEQAS . All Rights Reserved
               </div>
             </Col>
             <Col xs="auto" sm="auto" md="auto" lg="auto">
@@ -301,7 +255,7 @@ const Footer = () => {
             {/* Add your small screen footer content here */}
             <Col xs="auto" sm="auto" md="auto" lg="auto">
               <div className="text-sm-start" style={{ fontWeight: "bold" }}>
-                {new Date().getFullYear()} © Lab Hazir (Private) Limited. All Rights Reserved
+                {new Date().getFullYear()} © NHS NEQAS . All Rights Reserved
               </div>
             </Col>
             <Col xs="auto" sm="auto" md="auto" lg="auto">

@@ -19,12 +19,14 @@ const forgetPassword = (state = initialState, action) => {
       };
       break;
     case FORGET_PASSWORD_SUCCESS:
+      console.log("success")
       state = {
         ...state,
         forgetSuccessMsg: action.payload,
       };
       break;
     case FORGET_PASSWORD_ERROR:
+      console.log("error")
       state = { ...state, forgetError: action.payload };
       break;
     default:

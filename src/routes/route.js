@@ -9,15 +9,15 @@ const AppRoute = ({
   layout: Layout,
   isAuthProtected,
   isLabAuthProtected,
-  isPatientAuthProtected,
   isCorporateAuthProtected,
-  isB2BClientAuthProtected,
+ 
   isDonorAuthProtected,
   isSampleCollectorAuthProtected,
-  isB2BAdminAuthProtected,
+  
   isAuditorAuthProtected,
   isfinanceOfficerAuthProtected,
-  isfinanceAdminAuthProtected,
+  isdatabaseAdminAuthProtected,
+  isParticipantAuthProtected,
   isRegistrationAdminAuthProtected,
   isMarketerAdminAuthProtected,
   isCSRAdminAuthProtected,
@@ -51,48 +51,23 @@ const AppRoute = ({
           <Redirect
             // to={{ pathname: "/nearby-labs/"+ guest_id, state: { from: props.location } }}
             to={
-              { pathname: "/nearby-labs", state: { from: props.location } }
+              { pathname: "/login", state: { from: props.location } }
        
             }
           />
         );
       }
 
-      // Auth protection logics for the patient
-      else if (
-        isAuthProtected &&
-        (isLabAuthProtected ||
-          isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isDonorAuthProtected ||
-          isAuditorAuthProtected ||
-          isSampleCollectorAuthProtected ||
-          isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
-          isB2BAdminAuthProtected ||
-          isRegistrationAdminAuthProtected ||
-          isMarketerAdminAuthProtected ||
-          isCSRAdminAuthProtected ||
-          isCSRAuthProtected ||
-          isAuditorAdminAuthProtected ||
-          isHRAdminAuthProtected) &&
-        JSON.parse(localStorage.getItem("authUser")).account_type == "patient"
-      ) {
-        return <Redirect to="/nearby-labs" />;
-      }
-
       // Auth protection logics for the lab
       else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
           isDonorAuthProtected ||
           isAuditorAuthProtected ||
           isSampleCollectorAuthProtected ||
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
-          isB2BAdminAuthProtected ||
+          isdatabaseAdminAuthProtected||
           isRegistrationAdminAuthProtected ||
           isMarketerAdminAuthProtected ||
           isCSRAdminAuthProtected ||
@@ -111,79 +86,17 @@ const AppRoute = ({
         );
       }
 
-      // Auth protection logics for the corporate
       else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
-          isLabAuthProtected ||
-          isB2BClientAuthProtected ||
-          isDonorAuthProtected ||
-          isAuditorAuthProtected ||
-          isSampleCollectorAuthProtected ||
-          isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
-          isB2BAdminAuthProtected ||
-          isRegistrationAdminAuthProtected ||
-          isMarketerAdminAuthProtected ||
-          isCSRAdminAuthProtected ||
-          isCSRAuthProtected ||
-          isAuditorAdminAuthProtected ||
-          isHRAdminAuthProtected) &&
-        JSON.parse(localStorage.getItem("authUser")).account_type == "corporate"
-      ) {
-        return (
-          <Redirect
-            to={{
-              pathname:
-                "/dashboard-corporate" ,
-                state: { from: props.location },
-            }}
-          />
-        );
-      }
-
-      // Auth protection logics for the b2bclient
-      else if (
-        isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isDonorAuthProtected ||
+          
           isAuditorAuthProtected ||
           isSampleCollectorAuthProtected ||
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
-          isB2BAdminAuthProtected ||
-          isRegistrationAdminAuthProtected ||
-          isMarketerAdminAuthProtected ||
-          isCSRAdminAuthProtected ||
-          isCSRAuthProtected ||
-          isAuditorAdminAuthProtected ||
-          isHRAdminAuthProtected) &&
-        JSON.parse(localStorage.getItem("authUser")).account_type == "b2bclient"
-      ) {
-        return (
-          <Redirect
-            to={{
-              pathname: "/dashboard-b2bclient",
-              state: { from: props.location },
-            }}
-          />
-        );
-      }
-
-      // Auth protection logics for the b2bclient
-      else if (
-        isAuthProtected &&
-        (isPatientAuthProtected ||
-          isLabAuthProtected ||
-          isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isAuditorAuthProtected ||
-          isSampleCollectorAuthProtected ||
-          isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
-          isB2BAdminAuthProtected ||
+          isdatabaseAdminAuthProtected ||
+          isParticipantAuthProtected ||
           isRegistrationAdminAuthProtected ||
           isCSRAdminAuthProtected ||
           isCSRAuthProtected ||
@@ -202,48 +115,20 @@ const AppRoute = ({
         );
       }
 
-      // Auth protection logics for the b2badmin
-      else if (
-        isAuthProtected &&
-        (isPatientAuthProtected ||
-          isLabAuthProtected ||
-          isCorporateAuthProtected ||
-          isDonorAuthProtected ||
-          isB2BClientAuthProtected ||
-          isAuditorAuthProtected ||
-          isSampleCollectorAuthProtected ||
-          isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
-          isRegistrationAdminAuthProtected ||
-          isMarketerAdminAuthProtected ||
-          isCSRAdminAuthProtected ||
-          isCSRAuthProtected ||
-          isAuditorAdminAuthProtected ||
-          isHRAdminAuthProtected) &&
-        JSON.parse(localStorage.getItem("authUser")).account_type == "b2b-admin"
-      ) {
-        return (
-          <Redirect
-            to={{
-              pathname: "/b2b-clients-list",
-              state: { from: props.location },
-            }}
-          />
-        );
-      }
+      
 
       // Auth protection logics for the auditor
       else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
+          
           isDonorAuthProtected ||
           isSampleCollectorAuthProtected ||
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
-          isB2BAdminAuthProtected ||
+          isdatabaseAdminAuthProtected ||
+          isParticipantAuthProtected ||
           isRegistrationAdminAuthProtected ||
           isMarketerAdminAuthProtected ||
           isCSRAdminAuthProtected ||
@@ -265,15 +150,16 @@ const AppRoute = ({
       // Auth protection logics for the sample collector
       else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
+          
           isDonorAuthProtected ||
           isAuditorAuthProtected ||
-          isB2BAdminAuthProtected ||
+          
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
+          isdatabaseAdminAuthProtected ||
+          isParticipantAuthProtected ||
           isRegistrationAdminAuthProtected ||
           isMarketerAdminAuthProtected ||
           isCSRAdminAuthProtected ||
@@ -296,15 +182,15 @@ const AppRoute = ({
       // Auth protection logics for the registration admin
       else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isB2BAdminAuthProtected ||
+          
           isDonorAuthProtected ||
           isSampleCollectorAuthProtected ||
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
+          isdatabaseAdminAuthProtected ||
+          isParticipantAuthProtected ||
           isAuditorAuthProtected ||
           isMarketerAdminAuthProtected ||
           isCSRAdminAuthProtected ||
@@ -327,15 +213,14 @@ const AppRoute = ({
       // Auth protection logics for the marketer admin
       else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isDonorAuthProtected ||
-          isB2BAdminAuthProtected ||
+               isDonorAuthProtected ||
+          
           isSampleCollectorAuthProtected ||
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
+          isdatabaseAdminAuthProtected ||
           isAuditorAuthProtected ||
           isCSRAuthProtected ||
           isMarketerAdminAuthProtected ||
@@ -355,14 +240,14 @@ const AppRoute = ({
         );
       } else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isB2BAdminAuthProtected ||
+      
           isSampleCollectorAuthProtected ||
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
+          isdatabaseAdminAuthProtected ||
+          isParticipantAuthProtected ||
           isAuditorAuthProtected ||
           isCSRAdminAuthProtected ||
           isRegistrationAdminAuthProtected ||
@@ -385,14 +270,13 @@ const AppRoute = ({
       // Auth protection logics for the auditor admin
       else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isB2BAdminAuthProtected ||
+         
           isSampleCollectorAuthProtected ||
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
+          isdatabaseAdminAuthProtected ||
           isAuditorAuthProtected ||
           isCSRAdminAuthProtected ||
           isDonorAuthProtected ||
@@ -416,14 +300,14 @@ const AppRoute = ({
       // Auth protection logics for the hr admin
       else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isB2BAdminAuthProtected ||
+        
           isSampleCollectorAuthProtected ||
           isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
+          isdatabaseAdminAuthProtected ||
+          isParticipantAuthProtected ||
           isAuditorAuthProtected ||
           isCSRAdminAuthProtected ||
           isCSRAuthProtected ||
@@ -444,44 +328,15 @@ const AppRoute = ({
       }
 
       // Auth protection logics for the marketer admin
-      else if (
-        isAuthProtected &&
-        (isPatientAuthProtected ||
-          isLabAuthProtected ||
-          isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isB2BAdminAuthProtected ||
-          isSampleCollectorAuthProtected ||
-          isfinanceOfficerAuthProtected ||
-          isfinanceAdminAuthProtected ||
-          isAuditorAuthProtected ||
-          isCSRAdminAuthProtected ||
-          isCSRAuthProtected ||
-          isAuditorAdminAuthProtected ||
-          isDonorAuthProtected ||
-          isRegistrationAdminAuthProtected ||
-          isHRAdminAuthProtected) &&
-        JSON.parse(localStorage.getItem("authUser")).account_type ==
-          "marketer-admin"
-      ) {
-        return (
-          <Redirect
-            to={{
-              pathname: "/advertisements",
-              state: { from: props.location },
-            }}
-          />
-        );
-      }
+      
        // Auth protection logics for the finance officer
        else if (
         isAuthProtected &&
-        (isPatientAuthProtected ||
+        (
           isLabAuthProtected ||
           isCorporateAuthProtected ||
-          isB2BClientAuthProtected ||
-          isB2BAdminAuthProtected ||
-          isfinanceAdminAuthProtected ||
+         
+          isdatabaseAdminAuthProtected ||
           isSampleCollectorAuthProtected ||
           isAuditorAuthProtected ||
           isCSRAdminAuthProtected ||
@@ -506,11 +361,10 @@ const AppRoute = ({
              // Auth protection logics for the finance Admin
              else if (
               isAuthProtected &&
-              (isPatientAuthProtected ||
+              (
                 isLabAuthProtected ||
                 isCorporateAuthProtected ||
-                isB2BClientAuthProtected ||
-                isB2BAdminAuthProtected ||
+               
                 isfinanceOfficerAuthProtected ||
                 isSampleCollectorAuthProtected ||
                 isAuditorAuthProtected ||
@@ -522,12 +376,12 @@ const AppRoute = ({
                 isMarketerAdminAuthProtected ||
                 isHRAdminAuthProtected) &&
               JSON.parse(localStorage.getItem("authUser")).account_type ==
-                "finance-admin"
+                "admin"
             ) {
               return (
                 <Redirect
                   to={{
-                    pathname: "/dashboard-financeadmin",
+                    pathname: "/dashboard-databaseadmin",
                     state: { from: props.location },
                   }}
                 />
@@ -546,12 +400,12 @@ const AppRoute = ({
 AppRoute.propTypes = {
   isAuthProtected: PropTypes.bool,
   isLabAuthProtected: PropTypes.bool,
-  isB2BClientAuthProtected: PropTypes.bool,
+  
   isDonorAuthProtected: PropTypes.bool,
   isSampleCollectorAuthProtected: PropTypes.bool,
   isfinanceOfficerAuthProtected: PropTypes.bool,
-  isfinanceAdminAuthProtected: PropTypes.bool,
-  isB2BAdminAuthProtected: PropTypes.bool,
+  isdatabaseAdminAuthProtected: PropTypes.bool,
+  isParticipantAuthProtected: PropTypes.bool,
   isAuditorAuthProtected: PropTypes.bool,
   isRegistrationAdminAuthProtected: PropTypes.bool,
   isMarketerAdminAuthProtected: PropTypes.bool,
@@ -559,7 +413,7 @@ AppRoute.propTypes = {
   isCSRAuthProtected: PropTypes.bool,
   isAuditorAdminAuthProtected: PropTypes.bool,
   isHRAdminAuthProtected: PropTypes.bool,
-  isPatientAuthProtected: PropTypes.bool,
+
   isCorporateAuthProtected: PropTypes.bool,
   component: PropTypes.any,
   location: PropTypes.object,

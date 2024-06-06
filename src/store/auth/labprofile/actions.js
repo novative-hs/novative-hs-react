@@ -37,7 +37,10 @@ export const updateLabProfileSuccess = (labProfile) => {
   payload: labProfile,
 }};
 
-export const updateLabProfileFail = error => ({
-  type: UPDATE_LAB_PROFILE_FAIL,
-  payload: error,
-});
+export const updateLabProfileFail = error => {
+  console.error("Error occurred during lab profile update:", error);
+  return {
+    type: UPDATE_LAB_PROFILE_FAIL,
+    payload: error,
+  };
+};

@@ -8,10 +8,9 @@ import { Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
-import logo from "../../assets/images/logo.svg";
-import logoLightPng from "../../assets/images/logo-light.png";
-import logoLightSvg from "../../assets/images/logo-light.svg";
-import logoDark from "../../assets/images/logo-dark.png";
+import logo from "../../assets/images/neqas-logo.jpeg";
+import logoLight from "../../assets/images/neqas-logo.jpeg";
+import logoLightSvg from "../../assets/images/neqas-logo.jpeg";
 
 //i18n
 import { withTranslation } from "react-i18next";
@@ -19,10 +18,9 @@ import { withTranslation } from "react-i18next";
 // Redux Store
 import { toggleRightSidebar } from "../../store/actions";
 import NotificationDropdown from "components/CommonForBoth/TopbarDropdown/NotificationDropdown";
-import SampleNotificationDropdown from "components/CommonForBoth/TopbarDropdown/SampleNotificationDropdown";
-import MarketerNotificationDropdown from "components/CommonForBoth/TopbarDropdown/MarketerNotificationDropdown";
-import CsrAdminNotificationDropdown from "components/CommonForBoth/TopbarDropdown/CsrAdminNotificationDropdown";
-import CsrOfficerNotificationDropdown from "components/CommonForBoth/TopbarDropdown/CsrOfficerNotificationDropdown";
+
+
+
 import RegAdminNotificationDropdown from "components/CommonForBoth/TopbarDropdown/RegAdminNotificationDropdown";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -84,66 +82,45 @@ class Header extends Component {
   render() {
     return (
       <React.Fragment>
-        <header id="page-topbar">
+        <header  >
           <div className="navbar-header">
             <div className="d-flex">
-              <Tooltip title="Menu">
-              <button
-                type="button"
-                onClick={this.toggleMenu}
-                className="btn btn-sm px-3 font-size-16 header-item"
-                id="vertical-menu-btn"
-              >
-                <i className="fa fa-fw fa-bars"></i>
-              </button>
-              </Tooltip>
+              <div className="navbar-brand-box" style={{ background: "white" }}>
+
+                <span className="logo-sm">
+                  <img src={logo} alt="" height="60" />
+                </span>
+              </div>
             </div>
             <div className="d-flex">
               <div className="dropdown d-none d-lg-inline-block ms-1">
                 <Tooltip title="Full Screen">
-                <button
-                  type="button"
-                  onClick={this.toggleFullscreen}
-                  className="btn header-item noti-icon"
-                  data-toggle="fullscreen"
-                >
-                  <i className="bx bx-fullscreen"></i>
-                </button>
+                  <button
+                    type="button"
+                    onClick={this.toggleFullscreen}
+                    className="btn header-item noti-icon"
+                    data-toggle="fullscreen"
+                  >
+                    <i className="bx bx-fullscreen"></i>
+                  </button>
                 </Tooltip>
               </div>
-              {this.state.account_type && this.state.account_type == "labowner" &&  (
+              {/* {this.state.account_type && this.state.account_type == "labowner" && (
                 <Tooltip title="Notifications">
-              <NotificationDropdown />
-              </Tooltip>
-              )}
-              {this.state.account_type && this.state.account_type == "samplecollector" &&  (
+                  <NotificationDropdown />
+                </Tooltip>
+              )} */}
+
+
+
+              {/* {this.state.account_type && this.state.account_type == "registration-admin" && (
                 <Tooltip title="Notifications">
-              <SampleNotificationDropdown />
-              </Tooltip>
-              )}
-               {this.state.account_type && this.state.account_type == "marketer-admin" &&  (
-                <Tooltip title="Notifications">
-              <MarketerNotificationDropdown />
-              </Tooltip>
-              )}
-               {this.state.account_type && this.state.account_type == "csr-admin" &&  (
-                <Tooltip title="Notifications">
-              <CsrAdminNotificationDropdown />
-              </Tooltip>
-              )}
-              {this.state.account_type && this.state.account_type == "CSR" &&  (
-                <Tooltip title="Notifications">
-              <CsrOfficerNotificationDropdown />
-              </Tooltip>
-              )}
-               {this.state.account_type && this.state.account_type == "registration-admin" &&  (
-                <Tooltip title="Notifications">
-              <RegAdminNotificationDropdown />
-              </Tooltip>
-              )}
+                  <RegAdminNotificationDropdown />
+                </Tooltip>
+              )} */}
               <ProfileMenu />
             </div>
-           
+
           </div>
         </header>
       </React.Fragment>

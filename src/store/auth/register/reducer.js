@@ -40,6 +40,7 @@ const account = (state = initialState, action) => {
       });
       break;
     case REGISTER_USER_FAILED:
+      
       state = {
         ...state,
         userID: null,
@@ -50,6 +51,7 @@ const account = (state = initialState, action) => {
         passwordError: action.payload.password,
         incompleteRegistrationError: action.payload.error,
       };
+      console.log("Username Errorrrr:", action.payload.username); 
       break;
     default:
       state = { ...state };

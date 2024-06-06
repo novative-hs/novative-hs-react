@@ -54,50 +54,54 @@ export const getCSRListFail = error => ({
   payload: error,
 });
 
-export const getAuditorList = () => ({
+export const getDatabaseadminList = () => ({
   type: GET_AUDITOR_LIST,
   payload: {},
 });
 
-export const getAuditorListSuccess = auditorList => ({
+export const getDatabaseadminListSuccess = databaseadminList => ({
   type: GET_AUDITOR_LIST_SUCCESS,
-  payload: auditorList,
+  payload: databaseadminList,
 });
 
-export const getAuditorListFail = error => ({
+export const getDatabaseadminListFail = error => ({
   type: GET_AUDITOR_LIST_FAIL,
   payload: error,
 });
 
-export const getFinanceOfficerList = () => ({
+export const getRegistrationAdminList = () => ({
   type: GET_FINANCE_OFFICER_LIST,
   payload: {},
 });
 
-export const getFinanceOfficerListSuccess = financeOfficerList => ({
+export const getRegistrationAdminListSuccess = financeOfficerList => ({
   type: GET_FINANCE_OFFICER_LIST_SUCCESS,
   payload: financeOfficerList,
 });
 
-export const getFinanceOfficerListFail = error => ({
+export const getRegistrationAdminListFail = error => ({
   type: GET_FINANCE_OFFICER_LIST_FAIL,
   payload: error,
 });
-
-export const addStaff = (staff, id) => ({
+export const addStaff = (staff, userID) => ({
   type: ADD_STAFF,
-  payload: { staff, id },
+  payload: { staff, userID },
 });
 
-export const addStaffSuccess = (staff, id) => ({
-  type: ADD_STAFF_SUCCESS,
-  payload: { staff, id },
-});
 
-export const addStaffFail = (staff, id) => ({
-  type: ADD_STAFF_FAIL,
-  payload: { staff, id },
-});
+export const addStaffSuccess = (staff, userID) => {
+  return {
+    type: ADD_STAFF_SUCCESS,
+    payload: { staff, userID },
+  };
+};
+
+export const addStaffFail = (error) => {
+  return {
+    type: ADD_STAFF_FAIL,
+    payload: error,
+  };
+};
 
 export const updateStaff = staff => ({
   type: UPDATE_STAFF,

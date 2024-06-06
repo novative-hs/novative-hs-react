@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
-import { saveAs } from "file-saver";
-import * as XLSX from "xlsx";
 import {
   Card,
   CardBody,
@@ -16,7 +14,6 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  Button,
 
 } from "reactstrap";
 
@@ -332,39 +329,6 @@ class ApprovedLabs extends Component {
     }
   };
 
-  exportToExcel = () => {
-    const { approvedLabs } = this.props;
-    const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-
-    // Define fields to export
-    const fieldsToExport = [
-      "lab_name",
-      "lab_address",
-      "lab_city",
-      "email",
-      "lab_phone",
-      "type",
-    ];
-
-    // Map each row to an object with only the desired fields
-    const dataToExport = approvedLabs.map(statement => {
-      const rowData = {};
-      fieldsToExport.forEach(field => {
-        rowData[field] = statement[field];
-      });
-      return rowData;
-    });
-
-    // Convert data to Excel format and save as file
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: fileType });
-    const fileName = "approved_labs" + fileExtension;
-    saveAs(data, fileName);
-  };
-
   render() {
     const { SearchBar } = Search;
     const { approvedLabs } = this.props;
@@ -395,21 +359,10 @@ class ApprovedLabs extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Labs" breadcrumbItem="Approved" />
             <Row>
-              <Col lg="12" style={{ marginLeft: "87%" }}>
-                <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
-              </Col>
-            </Row>
-            <Row>
-            <div> <span className="text-danger font-size-12">
-                  <strong>
-                    Note:</strong> When lab is approved audit for the lab is auto generated. 
-When lab is approved b2b shares for all the existing b2b clients is automatically added (Share is predefined by Labhazir).
-                  
-                  </span>
-                </div>
                 <div> <span className="text-danger font-size-12">
                   <strong>
-                    Note:</strong> There will be Approved and Active Labs Shown on it.
+                    Note: There will be Approved and Active Labs Shown on it.
+                  </strong>
                   </span>
                 </div>
               <Col lg="12">

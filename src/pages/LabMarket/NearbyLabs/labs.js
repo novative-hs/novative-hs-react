@@ -51,7 +51,6 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 
 //Import data
 import { productsData } from "common/data";
-import { getPatientProfile } from "store/labmarket/actions";
 
 //Import actions
 import { getNearbyLabs, getAdvLive } from "store/labmarket/actions";
@@ -62,7 +61,6 @@ import { CITIES } from "helpers/global_variables_helper";
 import { getTerritoriesList } from "store/territories-list/actions";
 import { getLabNamesList } from "store/lab-names/actions";
 
-import offeredTestsList from "pages/OfferedTests/offered-tests-list";
 
 function formatTime(timeString) {
   const [hours, minutes] = timeString.split(':');
@@ -146,11 +144,6 @@ class NearbyLabs extends Component {
     window.addEventListener('beforeunload', () => {
       localStorage.setItem('nearbyLabs', JSON.stringify(this.state.nearbyLabs));
     });
-
-    const { onGetPatientProfile } = this.props;
-
-    // Assuming onGetPatientProfile is synchronous
-    console.log("this is patient profile",onGetPatientProfile(this.state.user_id));
 
     // Now you can safely access patientProfile from props
     const { patientProfile } = this.props;
@@ -3162,7 +3155,7 @@ NearbyLabs.propTypes = {
   onGetLabNamesList: PropTypes.func,
   labNamesList: PropTypes.array,
   className: PropTypes.any,
-  onGetPatientProfile: PropTypes.func,
+
   patientProfile: PropTypes.array,
   error: PropTypes.any,
   success: PropTypes.any,
@@ -3187,7 +3180,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAdvLive: id => dispatch(getAdvLive(id)),
   onGetTerritoriesList: id => dispatch(getTerritoriesList(id)),
   onGetLabNamesList: id => dispatch(getLabNamesList(id)),
-  onGetPatientProfile: id => dispatch(getPatientProfile(id)),
+
 
 });
 

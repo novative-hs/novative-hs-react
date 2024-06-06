@@ -21,6 +21,7 @@ function* fetchLabProfile(object) {
     const response = yield call(getLabProfile, object.payload);
     yield put(getLabProfileSuccess(response));
   } catch (error) {
+    console.error("Error occurred during lab profile update:", error);
     yield put(getLabProfileFail(error));
   }
 }
@@ -29,6 +30,11 @@ function* onUpdateLabProfile({ payload: { labProfile, id } }) {
   try {
     const response = yield call(updateLabProfile, labProfile, id);
     yield put(updateLabProfileSuccess(response));
+    if (response.error) {
+      yield put(updateLabProfileFail(response));
+    } else if (response.status === 400) {
+      yield put(updateLabProfileFail(response.message));
+    }
   } catch (error) {
     yield put(updateLabProfileFail(error));
   }

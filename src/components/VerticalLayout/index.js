@@ -13,7 +13,8 @@ import {
 } from "../../store/actions";
 
 // Layout Related Components
-import Header from "./Header";
+import Header from "../HorizontalLayout/Header";
+import Navbar from "../HorizontalLayout/Navbar";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import RightSidebar from "../CommonForBoth/RightSidebar";
@@ -117,21 +118,22 @@ class Layout extends Component {
               <div className="chase-dot"></div>
               <div className="chase-dot"></div>
               <div className="chase-dot"></div>
-            </div>
-          </div>
+            </div> 
+        </div> 
         </div>
 
-        <div id="layout-wrapper">
-          <Header toggleMenuCallback={this.toggleMenuCallback} />
-          <Sidebar
-            theme={this.props.leftSideBarTheme}
-            type={this.props.leftSideBarType}
-            isMobile={this.state.isMobile}
-          />
-          <div className="main-content">{this.props.children}</div>
+        {/* <div id="layout-wrapper"> */}
+        <Header
+              theme={this.props.topbarTheme}
+              isMenuOpened={this.state.isMenuOpened}
+              toggleRightSidebar={this.toggleRightSidebar}
+              openLeftMenuCallBack={this.openMenu}
+            />
+          <Navbar menuOpen={this.state.isMenuOpened} />
+            <div className="main-content">{this.props.children}</div>
           <Footer />
-        </div>
-        {this.props.showRightSidebar ? <RightSidebar /> : null}
+        {/* </div> */}
+        {/* {this.props.showRightSidebar ? <RightSidebar /> : null} */}
       </React.Fragment>
     );
   }

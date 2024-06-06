@@ -200,11 +200,6 @@ class AccountStatements extends Component {
                   <strong className="text-primary">Credit:</strong> Amount that Lab has to pay LabHazir. <br></br>
                   <strong className="text-primary">Debit: </strong>  Amount that Lab will receive from LabHazir.
                 </div> */}
-                <div>
-                  <span className="font-size-12">
-                    <strong><span className="text-danger">NOte: </span></strong> <span>Auto Email will be send to Lab of monthly statement.</span>
-                  </span>
-                </div>
                 <div> <span className="font-size-12">
                   <strong className="text-danger ">
                     Note:</strong> If Balance is positive value that means Lab will pay the same amount to LabHazir and if Balance is negative that means Lab will receive the same amount from LabHazir.

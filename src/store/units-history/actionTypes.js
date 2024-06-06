@@ -1,0 +1,4 @@
+//Get the Hiistory of Units
+export const GET_HISTORY_LIST = "GET_HISTORY_LIST";
+export const GET_HISTORY_LIST_SUCCESS = "GET_HISTORY_LIST_SUCCESS";
+export const GET_HISTORY_LIST_FAIL = "GET_HISTORY_LIST_FAIL";

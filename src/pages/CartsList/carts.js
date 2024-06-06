@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link, Redirect } from "react-router-dom";
-import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import { Card, CardBody, Col, Container, Row, Button } from "reactstrap";
 
 import paginationFactory, {
   PaginationProvider,
@@ -281,7 +281,7 @@ class CartList extends Component {
                     </PaginationProvider>
                     <Row className="mt-4">
                       <Col sm="6">
-                        <button
+                        <Button
                           to="/dashboard-patient/:id/nearby-labs"
                           className="btn btn-danger"
                           onClick={this.handleEmptyCart}
@@ -289,11 +289,11 @@ class CartList extends Component {
                         >
                           <i className="mdi mdi-delete-empty me-1" />
                           Empty Cart
-                        </button>
+                        </Button>
                       </Col>
                       <Col sm="6">
                         <div className="text-sm-end mt-2 mt-sm-0">
-                          <button
+                          <Button
                             component={Link}
                             onClick={() => {
                               this.props.history.push(
@@ -307,7 +307,7 @@ class CartList extends Component {
                           >
                             <i className="mdi mdi-cart-arrow-right me-1" />{" "}
                             Checkout{" "}
-                          </button>
+                          </Button>
                         </div>
                       </Col>
                     </Row>

@@ -42,7 +42,7 @@ $footer-bg: #f2f2f5;
 $footer-color: #74788d;
 
 // Horizontal nav
-$topnav-bg: #3B71CA;
+$topnav-bg: #0000CD;
 
 $menu-item-color: #fff;
 $menu-item-active-color: #0000CD;
@@ -69,7 +69,7 @@ $font-weight-semibold: 600;
 $apex-grid-color: #f8f9fa;
 
 // table
-$table-head-bg: $gray-100;
+$table-head-bg: #f8f9fa;
 $table-dark-border-color: tint-color($gray-800, 7.5%);
 
 // Variables
@@ -612,7 +612,7 @@ $box-shadow-inset: inset 0 1px 2px rgba($black, 0.075);
 // scss-docs-end box-shadow-variables
 
 $component-active-color: $white;
-$component-active-bg: $primary;
+$component-active-bg: #0000CD;
 
 // scss-docs-start caret-variables
 $caret-width: 0.3em;

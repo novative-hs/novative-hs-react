@@ -449,18 +449,12 @@ class SidebarContent extends Component {
                   </Link>
                 </li>
                 <li>
-                <li>
-                  <Link to="/corporate-details">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("Corporate List")}</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/accepted-corporates-List">
-                    <i className="bx bx-home-circle" />
-                    <span>{this.props.t("Corporate statuses List")}</span>
-                  </Link>
-                </li>
+                  <li>
+                    <Link to="/corporate-details">
+                      <i className="bx bx-home-circle" />
+                      <span>{this.props.t("Corporate List")}</span>
+                    </Link>
+                  </li>
                   <Link to="/donor-details">
                     <i className="bx bx-home-circle" />
                     <span>{this.props.t("Donors List")}</span>

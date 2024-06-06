@@ -26,6 +26,7 @@ const changePassword = (state = initialState, action) => {
       };
       break;
     case CHANGE_PASSWORD_ERROR:
+      console.log("Change Error:", action.payload.old_password); 
       state = { ...state, changeError: action.payload.old_password };
       break;
     default:

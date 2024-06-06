@@ -14,10 +14,14 @@ import {
 import {
   getCSRListSuccess,
   getCSRListFail,
-  getAuditorListSuccess,
-  getAuditorListFail,
+  getDatabaseadminListSuccess,
+  getDatabaseadminListFail,
   getFinanceOfficerListSuccess,
   getFinanceOfficerListFail,
+  getAuditorListSuccess,
+  getAuditorListFail,
+  getRegistrationAdminListSuccess,
+  getRegistrationAdminListFail,
   addStaffSuccess,
   addStaffFail,
   getTerritoriesListSuccess,
@@ -32,7 +36,7 @@ import {
 import {
   getCSRList,
   getAuditorList,
-  getFinanceOfficerList,
+  getRegistrationAdminList,
   addStaff,
   updateStaff,
   deleteStaff,
@@ -59,36 +63,23 @@ function* fetchTerritoriesList(object) {
 function* fetchAuditorList() {
   try {
     const response = yield call(getAuditorList);
-    yield put(getAuditorListSuccess(response));
+    yield put(getDatabaseadminListSuccess(response));
   } catch (error) {
-    yield put(getAuditorListFail(error));
+    yield put(getDatabaseadminListFail(error));
   }
 }
 
 function* fetchFinanceOfficerList() {
   try {
-    const response = yield call(getFinanceOfficerList);
-    yield put(getFinanceOfficerListSuccess(response));
+    const response = yield call(getRegistrationAdminList);
+    yield put(getRegistrationAdminListSuccess(response));
   } catch (error) {
-    yield put(getFinanceOfficerListFail(error));
+    yield put(getRegistrationAdminListFail(error));
   }
 }
-
-// function* onAddStaff(object) {
-//   try {
-//     const response = yield call(
-//       addStaff,
-//       object.payload.staff,
-//       object.payload.id
-//     );
-//     yield put(addStaffSuccess(response.data));
-//   } catch (error) {
-//     yield put(addStaffFail(error));
-//   }
-// }
-function* onAddStaff({ payload: { staff, id } }) {
+function* onAddStaff({ payload: { staff, userID } }) {
   try {
-    const response = yield call(addStaff, id, staff);
+    const response = yield call(addStaff, userID, staff);
     if (response.status == 400) {
       yield put(addStaffFail(response.message));
     } else {

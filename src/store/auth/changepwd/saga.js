@@ -19,6 +19,7 @@ function* changeUser({ payload: { user } }) {
       );
     }
   } catch (error) {
+    // console.error("Change Password Error:", error);
     if (error.response.status == 400) {
       yield put(userChangePasswordError(error.response.data));
     } else {

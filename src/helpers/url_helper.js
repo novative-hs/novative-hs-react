@@ -10,11 +10,46 @@ export const POST_FORGET_PASSWORD = `${API_ENDPOINT}/api/account/password_reset/
 export const POST_CONFIRM_PASSWORD = `${API_ENDPOINT}/api/account/password_reset/confirm/`;
 export const POST_CHANGE_PASSWORD = `${API_ENDPOINT}/api/account/change-password/`;
 
-export const POST_PATIENT_INFORMATION = `${API_ENDPOINT}/api/patient/patient-information`;
-export const POST_B2BCLIENT_INFORMATION = `${API_ENDPOINT}/api/b2bclient/register-b2bclient`;
-export const POST_DONOR_INFORMATION = `${API_ENDPOINT}/api/donor/register-donor`;
+
+
 export const POST_LAB_INFORMATION = `${API_ENDPOINT}/api/lab/lab-information`;
 export const POST_CORPORATE_INFORMATION = `${API_ENDPOINT}/api/corporate/corporate-information`;
+// database admin
+export const GET_UNITS_LIST = `${API_ENDPOINT}/api/database-admin/units_list`;
+export const ADD_NEW_UNITS = `${API_ENDPOINT}/api/database-admin/units_create`;
+export const UPDATE_UNITS = `${API_ENDPOINT}/api/database-admin/units_update`;
+export const GET_HISTORY_LIST = `${API_ENDPOINT}/api/database-admin/history_list`;
+
+export const GET_REAGENTS_LIST = `${API_ENDPOINT}/api/database-admin/reagent_list`;
+export const ADD_NEW_REAGENTS = `${API_ENDPOINT}/api/database-admin/reagent_create`;
+export const UPDATE_REAGENTS = `${API_ENDPOINT}/api/database-admin/reagent_update`;
+
+export const GET_MANUFACTURAL_LIST = `${API_ENDPOINT}/api/database-admin/manufactural_list`;
+export const ADD_NEW_MANUFACTURAL = `${API_ENDPOINT}/api/database-admin/manufactural_create`;
+export const UPDATE_MANUFACTURAL = `${API_ENDPOINT}/api/database-admin/manufactural_update`;
+
+export const GET_INSTRUMENT_TYPE_LIST = `${API_ENDPOINT}/api/database-admin/instrument-type-list`;
+export const ADD_NEW_INSTRUMENT_TYPE = `${API_ENDPOINT}/api/database-admin/instrument-type-list`;
+export const UPDATE_NEW_INSTRUMENT_TYPE = `${API_ENDPOINT}/api/database-admin/update-instrument-type-list`;
+
+export const GET_METHOD_LIST = `${API_ENDPOINT}/api/database-admin/methods-list`;
+export const ADD_NEW_METHOD = `${API_ENDPOINT}/api/database-admin/methods-list`;
+export const UPDATE_METHOD = `${API_ENDPOINT}/api/database-admin/update-method-list`;
+
+export const GET_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/analyte-list`;
+export const ADD_NEW_ANALYTE = `${API_ENDPOINT}/api/database-admin/analyte-list`;
+export const UPDATE_ANALYTE = `${API_ENDPOINT}/api/database-admin/update-analyte`;
+
+
+////////////news
+
+export const GET_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
+export const ADD_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
+
+
+export const GET_INSTRUMENT_LIST = `${API_ENDPOINT}/api/database-admin/instrument-list`;
+export const ADD_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/instrument-list`;
+export const UPDATE_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/update-instrument-list`;
 
 // LAB LIST
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
@@ -60,10 +95,6 @@ export const ADD_NEW_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
 export const UPDATE_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
 export const DELETE_PATHOLOGIST = `${API_ENDPOINT}/api/lab/pathologist`;
 
-// PATHOLOGIST
-export const GET_BANKACCOUNTS = `${API_ENDPOINT}/api/finance-admin/bank-account`;
-export const UPDATE_BANKACCOUNT = `${API_ENDPOINT}/api/finance-admin/bank-account`;
-// export const DELETE_BANKACCOUNT = `${API_ENDPOINT}/api/lab/pathologist`;
 
 // CART
 export const GET_CARTS = `${API_ENDPOINT}/api/patient/cart-list`;
@@ -186,36 +217,7 @@ export const GET_PAYMENT_IN_STATUS_DEPOSITED_LIST = `${API_ENDPOINT}/api/finance
 export const GET_LABS_MOF = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_LABS_C = `${API_ENDPOINT}/api/finance-officer/lab-c-list`;
 
-// PATIENT TEST APPOINTMENT
-export const GET_PATIENT_TEST_APPOINTMENTS_LIST = `${API_ENDPOINT}/api/patient/test-appointment-list`;
 
-// B2B Client
-export const GET_B2B_REFERRED_PATIENTS_LIST = `${API_ENDPOINT}/api/b2bclient/b2breferred-patient`;
-export const GET_B2B_LAB_SHARES_LIST = `${API_ENDPOINT}/api/b2bclient/list-b2bShare`;
-export const UPDATE_LAB_SHARE = `${API_ENDPOINT}/api/b2bclient/list-b2bShare`;
-export const UPDATE_ALL_LAB_SHARE = `${API_ENDPOINT}/api/b2bclient/b2bshare-update`;
-
-export const GET_B2B_SHARES_LAB_LIST = `${API_ENDPOINT}/api/b2bclient/b2b-Share`;
-
-
-// Donor SETTINGS
-export const ADD_NEW_B2B_PAYMENT = `${API_ENDPOINT}/api/b2bclient/b2b-payment`;
-
-
-// // B2B List 
-// export const GET_B2B_ALL_CLIENTS_LIST = `${API_ENDPOINT}/api/labhaziradmin/list-b2b`;
-
-//Donor
-export const GET_DONOR_REFERRED_APPOINTMENTS_LIST = `${API_ENDPOINT}/api/donor/appointment-donor`;
-
-// B2B List
-export const GET_B2B_ALL_CLIENTS_LIST = `${API_ENDPOINT}/api/b2b-admin/b2b-clients-list`;
-export const GET_PATIENTS_LIST = `${API_ENDPOINT}/api/patient/patient-list`;
-
-
-export const ADD_NEW_LAB_SHARE = `${API_ENDPOINT}/api/b2bclient/list-b2bShare`;
-
-export const GET_B2B_CLIENTS = `${API_ENDPOINT}/api/b2b-admin/b2b-clients-list`;
 
 // CSR (COMPLAINTS)
 export const GET_UNHANDLED_COMPLAINTS = `${API_ENDPOINT}/api/complaint/unhandled-complaints`;
@@ -239,24 +241,6 @@ export const GET_TEST_DESCRIPTIONS = `${API_ENDPOINT}/api/medicaltest/test`;
 export const GET_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 export const UPDATE_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 
-// B2b PROFILES
-export const GET_B2B_PROFILE = `${API_ENDPOINT}/api/b2bclient/b2b-profile`;
-export const UPDATE_B2B_PROFILE = `${API_ENDPOINT}/api/b2bclient/b2b-profile`;
-
-// Donor PROFILES
-export const GET_DONOR_PROFILE = `${API_ENDPOINT}/api/donor/profile-donor`;
-export const UPDATE_DONOR_PROFILE = `${API_ENDPOINT}/api/donor/profile-donor`;
-
-// Donor SETTINGS
-export const GET_DONOR_SETTINGS = `${API_ENDPOINT}/api/lab/lab-settings`;
-export const UPDATE_DONOR_SETTINGS = `${API_ENDPOINT}/api/lab/lab-settings`;
-
-// Donor SETTINGS
-export const ADD_NEW_DONOR_PAYMENT = `${API_ENDPOINT}/api/donor/donor-payment`;
-
-// ADD ACCOUNT
-export const ADD_NEW_CREATE_BANK = `${API_ENDPOINT}/api/finance-admin/bank`;
-export const ADD_NEW_BANK_ACCOUNT = `${API_ENDPOINT}/api/finance-admin/bank-account`;
 
 // ADD CORPORATE EMPLOYEE DATA
 export const ADD_NEW_CEMPLOYEE_DATA = `${API_ENDPOINT}/api/corporate/employee-data`;
@@ -278,9 +262,6 @@ export const ADD_NEW_CEMPLOYEE_FILE = `${API_ENDPOINT}/api/corporate/employee-da
 export const DELETE_CEDATA = `${API_ENDPOINT}/api/corporate/employee-data`;
 
 // About All Finance
-export const GET_BANK_ACCOUNTS = `${API_ENDPOINT}/api/finance-admin/bankaccount-list`;
-export const GET_BANKS = `${API_ENDPOINT}/api/finance-admin/bank-list`;
-export const UPDATE_BANK = `${API_ENDPOINT}/api/finance-admin/bank`;
 
 export const ADD_NEW_IN_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-in`;
 export const GET_IN_PAYMENT = `${API_ENDPOINT}/api/finance-officer/payment-in`;
@@ -301,10 +282,6 @@ export const GET_LIST_INVOICE = `${API_ENDPOINT}/api/finance-officer/all-invoice
 // Get DONATION Appointments
 export const GET_ALL_DONATION_APPOINTMENTS = `${API_ENDPOINT}/api/finance-officer/donation-Appointments`;
 
-// Bank Transfer Details
-export const ADD_NEW_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-officer/bank-transfer-detail`;
-export const UPDATE_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-officer/bank-transfer-detail`;
-export const GET_BANK_TRANSFER = `${API_ENDPOINT}/api/finance-officer/bank-transfer-detail`;
 
 export const GET_PAYMENT_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-created`;
 export const GET_DEPOSIT_STATUSS = `${API_ENDPOINT}/api/finance-officer/get-payment-in-deposited`;
@@ -334,12 +311,7 @@ export const UPDATE_PAYMENTOUTCCREATED_STATUS = `${API_ENDPOINT}/api/corporate/c
 export const GET_LAB_SETTINGS = `${API_ENDPOINT}/api/lab/lab-settings`;
 export const UPDATE_LAB_SETTINGS = `${API_ENDPOINT}/api/lab/lab-settings`;
 
-// PATIENT PROFILES
-export const GET_PATIENT_PROFILE = `${API_ENDPOINT}/api/patient/patient-profile`;
-export const UPDATE_PATIENT_PROFILE = `${API_ENDPOINT}/api/patient/patient-profile`;
 
-// PATIENT FEEDBACK
-export const ADD_NEW_PATIENT_FEEDBACK = `${API_ENDPOINT}/api/patient/feedback`;
 // COMPLAINT
 export const ADD_NEW_COMPLAINT = `${API_ENDPOINT}/api/complaint/register-complaint`;
 
@@ -347,39 +319,24 @@ export const ADD_NEW_COMPLAINT = `${API_ENDPOINT}/api/complaint/register-complai
 export const GET_CORPORATE_PROFILE = `${API_ENDPOINT}/api/corporate/corporate-profile`;
 export const UPDATE_CORPORATE_PROFILE = `${API_ENDPOINT}/api/corporate/corporate-profile`;
 
-// NEARBY LABS
-export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
-
-// Cororate LABS
-export const GET_CORPORATE_LABS = `${API_ENDPOINT}/api/patient/corporate-labs`;
 
 // REGION WISE ADVERTISEMENT
 export const GET_REGION_WISE_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin/region-wise-advertisements`;
 
-export const GET_DONORS = `${API_ENDPOINT}/api/donor/list-donor`;
-export const GET_DONORSA = `${API_ENDPOINT}/api/finance-admin/donationappointment-list`;
-export const GET_DONORS_LIST = `${API_ENDPOINT}/api/donor/list-donor`;
 // export const GET_CL_LIST = `${API_ENDPOINT}/api/accountstatement/corporate-account-statements-list`;
 export const GET_CL_LIST = `${API_ENDPOINT}/api/accountstatement/corporate-statements-list`;
 
 // NEARBY TESTS
-export const GET_NEARBY_TESTS = `${API_ENDPOINT}/api/patient/tests-offered`;
-export const GET_NEARBY_TESTS_DISCOUNTEDLH = `${API_ENDPOINT}/api/patient/LHDiscount-offeredTest`;
-export const GET_NEARBY_PROFILES = `${API_ENDPOINT}/api/patient/profiles-offered`;
+
 export const GET_PROFILES = `${API_ENDPOINT}/api/medicaltest/profile-list`;
 export const GET_TESTSS = `${API_ENDPOINT}/api/medicaltest/tests-list`;
 export const GET_PACKAGES = `${API_ENDPOINT}/api/medicaltest/package-list`;
-export const GET_NEARBY_PACKAGES = `${API_ENDPOINT}/api/patient/packages-offered`;
+
 export const GET_RADIOLOGY = `${API_ENDPOINT}/api/medicaltest/radiology-list`;
 export const GET_TESTS_LIST = `${API_ENDPOINT}/api/medicaltest/test-list`;
 export const GET_CORPORATE_TESTS_LIST = `${API_ENDPOINT}/api/medicaltest/corporate-test-list`;
-export const GET_NEARBY_RADIOLOGY = `${API_ENDPOINT}/api/patient/radiology-tests-offered`;
 
-// CHECKOUT
-export const GET_HOME_SAMPLED_TESTS = `${API_ENDPOINT}/api/patient/home-sampled-tests`;
-export const GET_DONATION_CHECK = `${API_ENDPOINT}/api/patient/donation-check`;
-export const GET_CHECKOUT_ITEMS = `${API_ENDPOINT}/api/patient/checkout-items`;
-export const ADD_CHECKOUT_DATA = `${API_ENDPOINT}/api/patient/checkout`;
+
 
 // INVOICES
 export const GET_INVOICE_DETAIL = `${API_ENDPOINT}/api/patient/invoice-detail`;
@@ -394,20 +351,13 @@ export const GET_LAB_PAYMENTS = `${API_ENDPOINT}/api/patient/payment-info`;
 // ACCOUNT STATEMENTS
 export const GET_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/lab-account-statements`;
 
-// Bank Statements
-export const GET_BANK_STATEMENTS = `${API_ENDPOINT}/api/finance-officer/bank-transfer-statement`;
 
-// DONOR STATEMENYTS
-export const GET_DONOR_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/donor-account-statements`;
-
-// DONOR STATEMENYTS
-export const GET_B2B_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/b2b-account-statements`;
-export const GET_CLAB_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/corporate-lab-account-statements`;
 
 // STAFF PROFILES
 export const GET_STAFF_PROFILE = `${API_ENDPOINT}/api/staff/staff-profile`;
 export const UPDATE_STAFF_PROFILE = `${API_ENDPOINT}/api/staff/staff-profile`;
-
+// NEARBY LABS
+export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;
 // SAMPLE COLLECTOR PROFILES
 export const GET_SAMPLE_COLLECTOR_PROFILE = `${API_ENDPOINT}/api/samplecollector/sample-collector-profile`;
 export const UPDATE_SAMPLE_COLLECTOR_PROFILE = `${API_ENDPOINT}/api/samplecollector/sample-collector-profile`;
@@ -422,6 +372,8 @@ export const GET_PENDING_CORPORATE = `${API_ENDPOINT}/api/registration-admin/pen
 export const GET_APPROVED_CORPORATE = `${API_ENDPOINT}/api/registration-admin/approved-corporate`;
 export const GET_UNAPPROVED_CORPORATE = `${API_ENDPOINT}/api/registration-admin/unapproved-corporate`;
 export const APPROVE_UNAPPROVE_CORPORATE = `${API_ENDPOINT}/api/registration-admin/approve-unapprove-corporate`;
+export const ADD_CHECKOUT_DATA = `${API_ENDPOINT}/api/patient/checkout`;
+export const GET_CHECKOUT_ITEMS = `${API_ENDPOINT}/api/patient/checkout-items`;
 
 
 export const GET_PENDING_LABS = `${API_ENDPOINT}/api/registration-admin/pending-labs`;
@@ -429,15 +381,6 @@ export const GET_APPROVED_LABS = `${API_ENDPOINT}/api/registration-admin/approve
 export const GET_UNAPPROVED_LABS = `${API_ENDPOINT}/api/registration-admin/unapproved-labs`;
 export const APPROVE_UNAPPROVE_LAB = `${API_ENDPOINT}/api/registration-admin/approve-unapprove-lab`;
 
-export const GET_PENDING_B2B_CLIENTS = `${API_ENDPOINT}/api/registration-admin/pending-b2b-clients`;
-export const GET_APPROVED_B2B_CLIENTS = `${API_ENDPOINT}/api/registration-admin/approved-b2b-clients`;
-export const GET_UNAPPROVED_B2B_CLIENTS = `${API_ENDPOINT}/api/registration-admin/unapproved-b2b-clients`;
-export const APPROVE_UNAPPROVE_B2B_CLIENT = `${API_ENDPOINT}/api/registration-admin/approve-unapprove-b2b-client`;
-
-export const GET_PENDING_DONORS = `${API_ENDPOINT}/api/registration-admin/pending-donors`;
-export const GET_APPROVED_DONORS = `${API_ENDPOINT}/api/registration-admin/approved-donors`;
-export const GET_UNAPPROVED_DONORS = `${API_ENDPOINT}/api/registration-admin/unapproved-donors`;
-export const APPROVE_UNAPPROVE_DONOR = `${API_ENDPOINT}/api/registration-admin/approve-unapprove-donor`;
 export const GET_LABS_RATING = `${API_ENDPOINT}/api/registration-admin/labs-rating`;
 
 // FINANCE ADMIN
@@ -587,3 +530,5 @@ export const GET_MONTHLY_DATA = "/monthly-data";
 export const TOP_SELLING_DATA = "/top-selling-data";
 
 export const GET_EARNING_DATA = "/earning-charts-data";
+
+// export const GET_MANUFACTURAL_LIST1 = `${API_ENDPOINT}/api/lab/manufactural-list`;

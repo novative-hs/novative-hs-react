@@ -19,7 +19,7 @@ import {
 const INIT_STATE = {
   staff: [],
   csrList: [],
-  auditorList: [],
+  databaseadminList: [],
   territoriesList: [],
   financeOfficerList: [],
   error: {},
@@ -58,7 +58,7 @@ const staff = (state = INIT_STATE, action) => {
     case GET_AUDITOR_LIST_SUCCESS:
       return {
         ...state,
-        auditorList: action.payload.data,
+        databaseadminList: action.payload.data,
       };
 
     case GET_AUDITOR_LIST_FAIL:
@@ -86,22 +86,24 @@ const staff = (state = INIT_STATE, action) => {
           addStaffError: null,
           addStaffSuccess: null,
         };
-    case ADD_STAFF_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        staff: action.payload,
-        addStaffError: null,
-        addStaffSuccess: action.payload.staff
-      };
+      case ADD_STAFF_SUCCESS:
+          return {
+          ...state,
+          loading: false,
+          staff: action.payload,
+          addStaffError: null,
+          addStaffSuccess: action.payload.staff,
+        };
       case ADD_STAFF_FAIL:
+
         return {
           ...state,
           staff: null,
           loading: false,
-          addStaffError: action.payload.staff,
+          addStaffError: action.payload,
           addStaffSuccess: null,
         };
+
     case UPDATE_STAFF_SUCCESS:
       return {
         ...state,

@@ -10,6 +10,7 @@
   z-index: 1002;
   background-color: $header-bg;
   box-shadow: $box-shadow;
+  max-width: 100%;
   @media (max-width: 991.98px) {
     left: 0;
   }
@@ -20,7 +21,7 @@
   right: 0;
   left: 0;
   z-index: 1002;
-  background-color: #2a3042;
+  background-color: #FFFFFF;
   box-shadow: $box-shadow;
   @media (max-width: 991.98px) {
     left: 0;
@@ -34,6 +35,7 @@
   align-items: center;
   margin: 0 auto;
   height: $header-height;
+  background-color: #FFFFFF;
   padding: 0 calc(#{$grid-gutter-width} / 2) 0 0
     /*rtl: 0 0 0 calc(#{$grid-gutter-width} / 2) */;
 
@@ -224,6 +226,7 @@
   [data-toggle="fullscreen"] {
     .bx-fullscreen::before {
       content: "\ea3f";
+      
     }
   }
 }

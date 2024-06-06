@@ -3,25 +3,20 @@ import PropTypes from "prop-types";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
+
+
 // Import Routes
 import {
   authProtectedRoutes,
   labAuthProtectedRoutes,
-  patientAuthProtectedRoutes,
-  patientPublicRoutes,
-  corporateAuthProtectedRoutes,
-  b2bclientAuthProtectedRoutes,
-  donorAuthProtectedRoutes,
-  sampleCollectorAuthProtectedRoutes,
+  
+
   financeOfficerAuthProtectedRoutes,
-  financeAdminAuthProtectedRoutes,
-  b2badminAuthProtectedRoutes,
-  auditorAuthProtectedRoutes,
+  databaseAdminAuthProtectedRoutes,
+  participantsAuthProtectedRoutes,
+ 
   registrationAdminAuthProtectedRoutes,
-  marketerAdminAuthProtectedRoutes,
-  csrAdminAuthProtectedRoutes,
-  csrAuthProtectedRoutes,
-  auditorAdminAuthProtectedRoutes,
+
   hrAdminAuthProtectedRoutes,
   publicRoutes,
 } from "./routes/";
@@ -46,30 +41,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.getLayout = this.getLayout.bind(this);
+    // this.getLayout = this.getLayout.bind(this);
   }
 
-  /**
-   * Returns the layout
-   */
-  getLayout = () => {
-    let layoutCls = VerticalLayout;
-
-    // For patient protected routes
-    if (patientAuthProtectedRoutes) {
-      layoutCls = HorizontalLayout;
-    } else {
-      switch (this.props.layout.layoutType) {
-        default:
-          layoutCls = VerticalLayout;
-          break;
-      }
-    }
-    return layoutCls;
-  };
 
   render() {
-    const Layout = this.getLayout();
+    // const Layout = this.getLayout();
 
     return (
       <React.Fragment>
@@ -83,19 +60,15 @@ class App extends Component {
                 key={idx}
                 isAuthProtected={false}
                 isLabAuthProtected={false}
-                isPatientAuthProtected={false}
                 isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
+                isdatabaseAdminAuthProtected={false}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
+                isParticipantAuthProtected= {false}
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
               />
@@ -109,19 +82,16 @@ class App extends Component {
                 key={idx}
                 isAuthProtected={true}
                 isLabAuthProtected={false}
-                isPatientAuthProtected={false}
                 isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
+                isParticipantAuthProtected= {false}
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
+                isdatabaseAdminAuthProtected={false}
+                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
+               
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
@@ -131,165 +101,29 @@ class App extends Component {
             {labAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
-                layout={VerticalLayout}
+                layout={HorizontalLayout}
                 component={route.component}
                 key={idx}
                 isAuthProtected={true}
                 isLabAuthProtected={true}
-                isPatientAuthProtected={false}
                 isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
+                
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
+                isdatabaseAdminAuthProtected={false}
+                isParticipantAuthProtected= {true}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
+                
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
 
-            {b2bclientAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={true}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
-            {donorAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={true}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
-            {b2badminAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={true}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
-            {auditorAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={true}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
-            {csrAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={true}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
+            
             {registrationAdminAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
@@ -298,159 +132,53 @@ class App extends Component {
                 key={idx}
                 isAuthProtected={true}
                 isLabAuthProtected={false}
-                isPatientAuthProtected={false}
                 isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
+               
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
+                isdatabaseAdminAuthProtected={false}
+                
+                isParticipantAuthProtected= {false}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={true}
                 isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
+              
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
 
-            {csrAdminAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={true}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
-            {marketerAdminAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={true}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
-            {auditorAdminAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={true}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
+          
 
             {hrAdminAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
-                layout={VerticalLayout}
+                layout={HorizontalLayout}
                 component={route.component}
                 key={idx}
                 isAuthProtected={true}
                 isLabAuthProtected={false}
-                isPatientAuthProtected={false}
                 isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
+            
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
+                isdatabaseAdminAuthProtected={false}
+                isParticipantAuthProtected= {false}
+              
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
+             
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={true}
                 exact
               />
             ))}
 
-            {sampleCollectorAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={true}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
+          
              {financeOfficerAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
@@ -459,52 +187,22 @@ class App extends Component {
                 key={idx}
                 isAuthProtected={true}
                 isLabAuthProtected={false}
-                isPatientAuthProtected={false}
                 isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={true}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
+                isdatabaseAdminAuthProtected={false}
+                isParticipantAuthProtected= {false}
                 isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
+               
                 isRegistrationAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
+            
+                
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
-{financeAdminAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
-                isAuthProtected={true}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={true}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
-            {patientAuthProtectedRoutes.map((route, idx) => (
+{databaseAdminAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
                 layout={HorizontalLayout}
@@ -512,79 +210,47 @@ class App extends Component {
                 key={idx}
                 isAuthProtected={true}
                 isLabAuthProtected={false}
-                isPatientAuthProtected={true}
                 isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
+                isdatabaseAdminAuthProtected={true}
+                isParticipantAuthProtected= {false}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
+              
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
+          
 
-            {patientPublicRoutes.map((route, idx) => (
+          {  participantsAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
                 layout={HorizontalLayout}
                 component={route.component}
                 key={idx}
-                isAuthProtected={false}
-                isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={false}
-                isB2BClientAuthProtected={false}
-                isSampleCollectorAuthProtected={false}
-                isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
-                isAuditorAuthProtected={false}
-                isDonorAuthProtected={false}
-                isRegistrationAdminAuthProtected={false}
-                isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
-                isAuditorAdminAuthProtected={false}
-                isHRAdminAuthProtected={false}
-                exact
-              />
-            ))}
-
-            {corporateAuthProtectedRoutes.map((route, idx) => (
-              <AppRoute
-                path={route.path}
-                layout={VerticalLayout}
-                component={route.component}
-                key={idx}
                 isAuthProtected={true}
                 isLabAuthProtected={false}
-                isPatientAuthProtected={false}
-                isCorporateAuthProtected={true}
-                isB2BClientAuthProtected={false}
+                isCorporateAuthProtected={false}
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
-                isfinanceAdminAuthProtected={false}
-                isB2BAdminAuthProtected={false}
+                isdatabaseAdminAuthProtected={false}
+                isParticipantAuthProtected= {true}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                isCSRAdminAuthProtected={false}
-                isCSRAuthProtected={false}
+              
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
-
+       
             <Route path="*" component={Pages404} />
           </Switch>
         </Router>

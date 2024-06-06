@@ -1,4 +1,4 @@
-import allDonationAppointments from "pages/FinanceAdmin/all-donation-appointments";
+import allDonationAppointments from "pages/Admin/all-donation-appointments";
 import {
   // GET_CLEARED_LABS,
   // GET_CLEARED_LABS_SUCCESS,

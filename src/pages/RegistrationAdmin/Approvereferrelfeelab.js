@@ -29,7 +29,7 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
-import { onlyMedicalTestList } from "store/only-medical-tests-list/actions";
+
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -54,7 +54,7 @@ class ReferrelLabFee extends Component {
     this.state = {
       referrelFeeLabs: [],
       referrelFeeLab: "",
-      onlyMedicalTestList: [],
+      
       selectedTest: null,
       modal: false,
       confirmModal: false,
@@ -71,11 +71,8 @@ class ReferrelLabFee extends Component {
   }
 
   componentDidMount() {
-    const { onlyMedicalTestList, ononlyMedicalTestList } = this.props;
-
-    if (onlyMedicalTestList && !onlyMedicalTestList.length) {
-      console.log(ononlyMedicalTestList(this.state.user_id));
-    }
+    
+    
     console.log("uuuuuuid", this.props.match.params.uuid)
     const { referrelFeeLabs, ongetPutReferrelFeeLabs } = this.props;
     ongetPutReferrelFeeLabs(this.state.user_id);
@@ -320,11 +317,7 @@ class ReferrelLabFee extends Component {
         ), filter: textFilter(),
       },
     ];
-    const testList = this.props.onlyMedicalTestList.map((test) => ({
-      label: test.name,
-      value: test.name,
-      // isDisabled: this.state.selectedTest && test.name !== this.state.selectedTest.value,
-    }));
+    
 
     const {
       ongetPutReferrelFeeLabs,
@@ -432,13 +425,12 @@ ReferrelLabFee.propTypes = {
   ongetPutReferrelFeeLabs: PropTypes.func,
   onupdateReferrelFeeLab: PropTypes.func,
   onupdateReferrelAllFeeLab: PropTypes.func,
-  ononlyMedicalTestList: PropTypes.func,
-  onlyMedicalTestList: PropTypes.array,
+  
 };
 
-const mapStateToProps = ({ referrelFeeLabs, onlyMedicalTestList }) => ({
+const mapStateToProps = ({ referrelFeeLabs }) => ({
   referrelFeeLabs: referrelFeeLabs.referrelFeeLabs,
-  onlyMedicalTestList: onlyMedicalTestList.onlyMedicalTestList,
+
 
 });
 
@@ -449,8 +441,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onupdateReferrelAllFeeLab: referrelFeeLab =>
     dispatch(updateReferrelAllFeeLab(referrelFeeLab)),
 
-  ononlyMedicalTestList: id => dispatch(onlyMedicalTestList(id)),
-});
+
+});  
 
 export default connect(
   mapStateToProps,
