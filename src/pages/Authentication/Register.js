@@ -432,6 +432,8 @@ class Register extends Component {
                                   <div className="invalid-feedback">
                                     Password must contain at least 8 characters
                                     and one numeric digit.
+                                    Password must contain at least 8 characters
+                                    and one numeric digit.
                                   </div>
                                 )}
                               </div>
