@@ -120,7 +120,7 @@ class RegistrationAdminList extends Component {
               </Link>
             </div>
           ),
-
+          headerAlign: 'center',
         },
 
         {
@@ -150,6 +150,7 @@ class RegistrationAdminList extends Component {
               {RegistrationAdmin.email}
             </div>
           ),
+          headerAlign: 'center',
         },
 
         {
@@ -313,7 +314,7 @@ class RegistrationAdminList extends Component {
   };
   componentDidMount() {
     const { onGetRegistrationAdminListt } = this.props;
-    onGetRegistrationAdminListt();
+    onGetRegistrationAdminListt(this.state.user_id);
     this.setState({ financeOfficerList: this.props.financeOfficerList });
   }
 
@@ -370,7 +371,7 @@ class RegistrationAdminList extends Component {
     if (financeOfficerList.id !== undefined) {
       onDeleteStaff(financeOfficerList);
       setTimeout(() => {
-        onGetRegistrationAdminListt();
+        onGetRegistrationAdminListt(this.state.user_id);
       }, 1000);
       this.setState({ deleteModal: false });
     }
@@ -485,7 +486,7 @@ class RegistrationAdminList extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses={"table-dark  text-center"}
+                                      headerWrapperClasses={"table-header-sky-blue"}
                                       responsive
                                       ref={this.node}
                                       data={this.filterData()}
@@ -554,7 +555,7 @@ class RegistrationAdminList extends Component {
                                               // }
 
                                               setTimeout(() => {
-                                                onGetRegistrationAdminListt();
+                                                onGetRegistrationAdminListt(this.state.user_id);
                                               }, 1000);
                                             }
                                             this.toggle();
@@ -780,7 +781,7 @@ const mapStateToProps = ({ staff }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetRegistrationAdminListt: () => dispatch(getRegistrationAdminList()),
+  onGetRegistrationAdminListt: (id) => dispatch(getRegistrationAdminList(id)),
   onUpdateStaff: RegistrationAdmin => dispatch(updateStaff(RegistrationAdmin)),
   onDeleteStaff: RegistrationAdmin => dispatch(deleteStaff(RegistrationAdmin)),
 });

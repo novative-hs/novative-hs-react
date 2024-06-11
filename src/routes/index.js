@@ -56,7 +56,7 @@ import Performance from "pages/Participant/performance";
 import NewsPage from "pages/Participant/news-paritcipant";
 import Email from "pages/Participant/email";
 
-// Lab Components
+// Lab Componentsss
 
 
 import QualityCertificatesList from "../pages/QualityCertificates/quality-certificates-list";
@@ -97,7 +97,7 @@ import sharedPercentagePendingFeeTests from "pages/RegistrationAdmin/shared-perc
 import sharedPercentageApprovedFeeTests from "pages/RegistrationAdmin/shared-percentage-approved-Fee";
 import ApprovedLabs from "pages/RegistrationAdmin/approved-labs";
 import UnapprovedLabs from "pages/RegistrationAdmin/unapproved-labs";
-
+import RegisterParticipant from "pages/Authentication/RegisterParticipant";
 import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 
@@ -130,6 +130,7 @@ import Pages404 from "pages/Utility/pages-404";
 import Pages500 from "pages/Utility/pages-500";
 
 import StaffRegister from "pages/HrAdmin/staff-register";
+import OrganizationRegister  from "pages/HrAdmin/organization-register";
 import StaffInfo from "pages/HrAdmin/staff-info";
 
 
@@ -144,6 +145,8 @@ import msgBox from "pages/Complaints/msg-box";
 import msgBoxFo from "pages/Complaints/msg-box";
 
 import RegistrationAdminList from "pages/HrAdmin/registration-admin-list";
+import csrList from "pages/HrAdmin/csr-list";
+import organizationList from "pages/HrAdmin/organizationList";
 
 // All general public routes will be listed here
 const publicRoutes = [
@@ -276,9 +279,12 @@ const registrationAdminAuthProtectedRoutes = [
 
 const hrAdminAuthProtectedRoutes = [
   { path: "/add-staff", component: StaffRegister },
+  { path: "/add-organization", component: OrganizationRegister },
   { path: "/staff-info/:id", component: StaffInfo },
   { path: "/databaseadmin-list", component: DatabaseadminList },
-  //{ path: "/finance-officer-list", component: FinanceOfficerList },
+  { path: "/csr-list", component: csrList},
+  { path: "/organization-list", component: organizationList},
+  { path: "/Register-Participant", component: RegisterParticipant },
 
   { path: "/registration-admin-list", component: RegistrationAdminList },
 ];
@@ -296,9 +302,6 @@ export {
   financeOfficerAuthProtectedRoutes,
   databaseAdminAuthProtectedRoutes,
   registrationAdminAuthProtectedRoutes,
-
-
-
   hrAdminAuthProtectedRoutes,
   publicRoutes,
 };

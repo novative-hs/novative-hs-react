@@ -24,7 +24,7 @@ import paginationFactory, {
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
 
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 
 //Import Breadcrumb
@@ -34,122 +34,186 @@ import DeleteModal from "components/Common/DeleteModal";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-// import { getFinanceOfficer, updateStaff, deleteStaff } from "store/sample-collectors/actions";
-import {
-  getFinanceOfficerList,
-  updateStaff,
-  deleteStaff,
-} from "store/staff/actions";
+import { getOrganizationList, updateStaff, deleteStaff } from "store/staff/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
 
-class FinanceOfficerList extends Component {
+class DatabaseAdminList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      financeOfficerList: [],
+      nameFilter: '',
+      emailFilter: '',
+      cnicFilter: '',
+      phoneFilter: '',
+
+      databaseadminList: [],
       staff: "",
       collectorImg: "",
       modal: false,
+      nameSort: 'asc', 
+      emailSort: 'asc',
+      cnicSort: 'asc', 
+      phoneSort: 'asc',
       deleteModal: false,
-      financeOfficerListColumns: [
+      auditorListColumns: [
         {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-          formatter: (cellContent, FinanceOfficer) => <>{FinanceOfficer.id}</>,
+          formatter: (cellContent, DatabaseAdmin) => <>{DatabaseAdmin.id}</>,
         },
         {
-          dataField: "photo",
+          dataField: "name",
           text: "Name",
           sort: true,
-          formatter: (cellContent, FinanceOfficer) => (
+          headerFormatter: (column, colIndex) => {
+        
+            return (
+              <>
+              <div>
+                
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  className="form-control"
+                />
+                
+              </div>
+              <div>{column.text}   {column.sort ? (
+            <i className={this.state.nameSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('name')}></i>
+          ) : null}</div>
+              </>
+            );
+            
+          },
+          formatter: (cellContent, DatabaseAdmin) => (
             <>
               <Link
                 to={{
                   pathname:
-                    process.env.REACT_APP_BACKENDURL + FinanceOfficer.photo,
+                    process.env.REACT_APP_BACKENDURL + DatabaseAdmin.photo,
                 }}
                 target="_blank"
+             
               >
-                {FinanceOfficer.name}
+                {DatabaseAdmin.name}
               </Link>
             </>
           ),
+        headerAlign: 'center', // Align header text to center
+        align: 'left',
+        
         },
         {
           dataField: "email",
           text: "Email",
           sort: true,
+          headerFormatter: (column, colIndex) => { // Add iconStyle as a parameter
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.emailFilter}
+                    onChange={e => this.handleFilterChange('emailFilter', e)}
+                    className="form-control"
+                  />
+                  <div>{column.text}       {column.sort ? (
+            <i className={this.state.emailSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('email')}></i>
+          ) : null} </div>
+                </div>
+          
+              </>
+            );
+          },
+          headerAlign: 'center',
+          align: 'left',
         },
         {
           dataField: "cnic",
           text: "CNIC",
           sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+                
+                <input
+                  type="text"
+                  value={this.state.cnicFilter}
+                  onChange={e => this.handleFilterChange('cnicFilter', e)}
+                  className="form-control"
+                />
+               
+              </div>
+              <div>{column.text}  {column.sort ? (
+            <i className={this.state.cnicSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('cnic')}></i>
+          ) : null}</div>
+              </>
+            );
+          },
+        headerAlign: 'center', // Align header text to center
+       
         },
-        {
-          dataField: "phone",
-          text: "Mobile No.",
-          sort: true,
-        },
-        {
-          dataField: "territory_office",
-          text: "Territory Office",
-          sort: true,
-        },
-        // {
-        //   dataField: "photo",
-        //   text: "Photo",
-        //   sort: true,
-        //   formatter: (cellContent, FinanceOfficer) => (
-        //     <>
-        //       <Link
-        //         to={{
-        //           pathname:
-        //             process.env.REACT_APP_BACKENDURL + FinanceOfficer.photo,
-        //         }}
-        //         target="_blank"
-        //       >
-        //         View
-        //       </Link>
-        //     </>
-        //   ),
-        // },
-
-        {
-          dataField: "roles",
-          text: "Roles",
-          sort: true,
-        },
+{
+  dataField: "phone",
+  text: "Mobile No.",
+  sort: true,
+  headerFormatter: (column, colIndex) => {
+    return (
+      <>
+        <div className="d-flex justify-content-between align-items-center">
+          <input
+            type="text"
+            value={this.state.phoneFilter}
+            onChange={e => this.handleFilterChange('phoneFilter', e)}
+            className="form-control"
+          />
+        </div>
+        <div className="d-flex justify-content-center align-items-center">
+          {column.text}
+          {column.sort ? (
+            <i
+              className={this.state.phoneSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'}
+              style={{ marginLeft: '5px', cursor: 'pointer', color: "red" }}
+              onClick={() => this.handleSort('phone')}
+            />
+          ) : null}
+        </div>
+      </>
+    );
+  },
+  headerAlign: 'center', // Align header text to center
+},
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, FinanceOfficer) => (
+          formatter: (cellContent, DatabaseAdmin) => (
             <div>
               <Tooltip title="Update">
-              <Link className="text-success" to="#">
-                <i
-                  className="mdi mdi-pencil font-size-18"
-                  id="edittooltip"
-                  onClick={e =>
-                    this.handleFinanceOfficerClick(e, FinanceOfficer)
-                  }
-                ></i>
-              </Link>
+                <Link className="text-success" to="#">
+                  <i
+                    className="mdi mdi-pencil font-size-18"
+                    id="edittooltip"
+                    onClick={e => this.handleDatabaseAdminClick(e, DatabaseAdmin)}
+                  ></i>
+                </Link>
               </Tooltip>
               <Tooltip title="Delete">
-              <Link className="text-danger" to="#">
-                <i
-                  className="mdi mdi-delete font-size-18"
-                  id="deletetooltip"
-                  onClick={() => this.onClickDelete(FinanceOfficer)}
-                ></i>
-              </Link>
+                <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-delete font-size-18"
+                    id="deletetooltip"
+                    onClick={() => this.onClickDelete(DatabaseAdmin)}
+                  ></i>
+                </Link>
               </Tooltip>
             </div>
           ),
@@ -159,17 +223,50 @@ class FinanceOfficerList extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
     };
-    this.handleFinanceOfficerClick = this.handleFinanceOfficerClick.bind(this);
+    this.handleDatabaseAdminClick = this.handleDatabaseAdminClick.bind(this);
     this.toggle = this.toggle.bind(this);
-    this.handleFinanceOfficerClicks =
-      this.handleFinanceOfficerClicks.bind(this);
+    this.handleAuditorClicks = this.handleAuditorClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
+handleSort = (field) => {
+  const newSortOrder = this.state[field + 'Sort'] === 'asc' ? 'desc' : 'asc';
+  this.setState({ [field + 'Sort']: newSortOrder }, () => {
+    this.sortData(field, newSortOrder);
+  });
+};
+
+sortData = (field, order) => {
+  const { databaseadminList } = this.state;
+  if (!Array.isArray(databaseadminList)) {
+
+    return;
+  }
+
+  const sortedData = [...databaseadminList].sort((a, b) => {
+    let aValue = a[field];
+    let bValue = b[field];
+
+    // Ensure both values are strings for case-insensitive comparison
+    aValue = aValue.toString().toLowerCase();
+    bValue = bValue.toString().toLowerCase();
+
+    if (order === 'asc') {
+      return aValue.localeCompare(bValue);
+    } else {
+      return bValue.localeCompare(aValue);
+    }
+  });
+
+  this.setState({ databaseadminList: sortedData });
+};
   componentDidMount() {
-    const { onGetFinanceOfficerList } = this.props;
-    onGetFinanceOfficerList();
-    this.setState({ financeOfficerList: this.props.financeOfficerList });
+    const { onGetDatabaseAdminList } = this.props;
+    onGetDatabaseAdminList();
+
+    
+    this.setState({ databaseadminList: this.props.databaseadminList });
+    console.log("the data received on the page is:", this.props.databaseadminList)
   }
 
   toggle() {
@@ -177,20 +274,35 @@ class FinanceOfficerList extends Component {
       modal: !prevState.modal,
     }));
   }
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+    // Filter data based on filter values
+    filterData = () => {
+      const { databaseadminList } = this.props;
+      const { nameFilter, emailFilter, cnicFilter, phoneFilter } = this.state;
+      const filteredData = databaseadminList.filter(entry =>
+        entry.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
+        entry.email.toLowerCase().includes(emailFilter.toLowerCase()) &&
+        entry.cnic.includes(cnicFilter) &&
+        entry.phone.includes(phoneFilter)
+      );
+      return filteredData;
+    };
 
-  handleFinanceOfficerClicks = () => {
-    this.setState({ FinanceOfficer: "", collectorImg: "", isEdit: false });
+  handleAuditorClicks = () => {
+    this.setState({ DatabaseAdmin: "", collectorImg: "", isEdit: false });
     this.toggle();
   };
 
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { financeOfficerList } = this.props;
+    const { databaseadminList } = this.props;
     if (
-      !isEmpty(financeOfficerList) &&
-      size(prevProps.financeOfficerList) !== size(financeOfficerList)
+      !isEmpty(databaseadminList) &&
+      size(prevProps.databaseadminList) !== size(databaseadminList)
     ) {
-      this.setState({ financeOfficerList: {}, isEdit: false });
+      this.setState({ databaseadminList: {}, isEdit: false });
     }
   }
 
@@ -214,31 +326,30 @@ class FinanceOfficerList extends Component {
     }));
   };
 
-  onClickDelete = financeOfficerList => {
-    this.setState({ financeOfficerList: financeOfficerList });
+  onClickDelete = databaseadminList => {
+    this.setState({ databaseadminList: databaseadminList });
     this.setState({ deleteModal: true });
   };
 
-  handleDeleteFinanceOfficer = () => {
-    const { onDeleteStaff, onGetFinanceOfficerList } = this.props;
-    const { financeOfficerList } = this.state;
-    if (financeOfficerList.id !== undefined) {
-      onDeleteStaff(financeOfficerList);
+  handleDeleteDatabaseadmin = () => {
+    const { onDeleteStaff, onGetDatabaseAdminList } = this.props;
+    const { databaseadminList } = this.state;
+    if (databaseadminList.id !== undefined) {
+      onDeleteStaff(databaseadminList);
       setTimeout(() => {
-        onGetFinanceOfficerList();
+        onGetDatabaseAdminList();
       }, 1000);
       this.setState({ deleteModal: false });
     }
   };
 
-  handleFinanceOfficerClick = (e, arg) => {
+  handleDatabaseAdminClick = (e, arg) => {
     this.setState({
       staff: {
         id: arg.id,
         name: arg.name,
         cnic: arg.cnic,
         phone: arg.phone,
-        roles: arg.roles,
       },
       isEdit: true,
     });
@@ -247,87 +358,82 @@ class FinanceOfficerList extends Component {
   };
 
   render() {
-    const { SearchBar } = Search;
+    const { nameFilter, emailFilter, cnicFilter, phoneFilter } = this.state;
 
-    const { financeOfficerList } = this.props;
+    const { databaseadminList } = this.props;
 
     const { isEdit, deleteModal } = this.state;
 
-    const { onUpdateStaff, onGetFinanceOfficerList } = this.props;
+    const { onUpdateStaff, onGetDatabaseAdminList } = this.props;
     const staff = this.state.staff;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: financeOfficerList.length, // replace later with size(FinanceOfficerList),
+      totalSize: databaseadminList.length, // replace later with size(DatabaseAdminList),
       custom: true,
     };
 
-    const defaultSorted = [
-      {
-        dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
-        order: "desc", // desc or asc
-      },
-    ];
+    // const defaultSorted = [
+    //   {
+    //     dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
+    //     order: "desc", // desc or asc
+    //   },
+    // ];
 
     return (
       <React.Fragment>
         <DeleteModal
           show={deleteModal}
-          onDeleteClick={this.handleDeleteFinanceOfficer}
+          onDeleteClick={this.handleDeleteDatabaseadmin}
           onCloseClick={() => this.setState({ deleteModal: false })}
         />
         <div className="page-content">
           <MetaTags>
-            <title>Finance Officer List | Lab Hazir</title>
+            <title>Organization List | NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Staff" breadcrumbItem="Finance Officer List" />
-            <Row>
-              <Col lg="12">
+            <Breadcrumbs title="Organization" breadcrumbItem="Organization List" />
+            <Row className="justify-content-center">
+              <Col lg="10">
                 <Card>
                   <CardBody>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
-                      columns={this.state.financeOfficerListColumns}
-                      data={financeOfficerList}
+                      columns={this.state.auditorListColumns}
+                      data={databaseadminList}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.financeOfficerListColumns}
-                          data={financeOfficerList}
+                          columns={this.state.auditorListColumns}
+                          data={databaseadminList}
                           search
                         >
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                                <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row className="mb-4">
+                              
+                              </Row >
+                              <Row className=" mb-4 navbar-nav">
                                 <Col xl="12">
                                   <div className="table-responsive">
-                                    <BootstrapTable
+
+                    <BootstrapTable
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
+                                      // defaultSorted={defaultSorted}
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses={"table-light"}
+                                      headerWrapperClasses={"table-header-sky-blue"}
                                       responsive
                                       ref={this.node}
+                                      data={this.filterData()}                                  
+                                      headerFormatter={(column, colIndex) => column.headerFormatter(column, colIndex)} 
                                     />
+                                 
 
                                     <Modal
                                       isOpen={this.state.modal}
@@ -337,7 +443,7 @@ class FinanceOfficerList extends Component {
                                         toggle={this.toggle}
                                         tag="h4"
                                       >
-                                        Edit FinanceOfficer
+                                        Edit Database Admin
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
@@ -347,7 +453,7 @@ class FinanceOfficerList extends Component {
                                             name: (staff && staff.name) || "",
                                             cnic: (staff && staff.cnic) || "",
                                             phone: (staff && staff.phone) || "",
-                                            roles: (staff && staff.roles) || "",
+                                         
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
@@ -368,9 +474,7 @@ class FinanceOfficerList extends Component {
                                                 /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                                                 "Please enter a valid Pakistani phone number e.g. 03123456789"
                                               ),
-                                            roles: Yup.string()
-                                              .trim()
-                                              .required("Please enter roles"),
+                                        
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -379,18 +483,13 @@ class FinanceOfficerList extends Component {
                                                 name: values.name,
                                                 cnic: values.cnic,
                                                 phone: values.phone,
-                                                roles: values.roles,
+                                           
                                               };
 
                                               // save new Staff
                                               onUpdateStaff(staffData);
-
-                                              // if (this.props.staff.length != 0) {
-                                              //   this.props.history.push("/add-")
-                                              // }
-
                                               setTimeout(() => {
-                                                onGetFinanceOfficerList();
+                                                onGetDatabaseAdminList();
                                               }, 1000);
                                             }
                                             this.toggle();
@@ -522,42 +621,7 @@ class FinanceOfficerList extends Component {
                                                     />
                                                   </div>
 
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Roles
-                                                    </Label>
-                                                    <Field
-                                                      name="roles"
-                                                      type="text"
-                                                      value={
-                                                        this.state.staff.roles
-                                                      }
-                                                      onChange={e => {
-                                                        this.setState({
-                                                          staff: {
-                                                            id: staff.id,
-                                                            name: staff.name,
-                                                            cnic: staff.cnic,
-                                                            phone: staff.phone,
-                                                            roles:
-                                                              e.target.value,
-                                                          },
-                                                        });
-                                                      }}
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.roles &&
-                                                        touched.roles
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="roles"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
+                                             
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -603,26 +667,26 @@ class FinanceOfficerList extends Component {
   }
 }
 
-FinanceOfficerList.propTypes = {
+DatabaseAdminList.propTypes = {
   match: PropTypes.object,
-  financeOfficerList: PropTypes.array,
+  databaseadminList: PropTypes.array,
   className: PropTypes.any,
-  onGetFinanceOfficerList: PropTypes.func,
+  onGetDatabaseAdminList: PropTypes.func,
   onDeleteStaff: PropTypes.func,
   onUpdateStaff: PropTypes.func,
 };
 
 const mapStateToProps = ({ staff }) => ({
-  financeOfficerList: staff.financeOfficerList,
+  databaseadminList: staff.databaseadminList,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetFinanceOfficerList: () => dispatch(getFinanceOfficerList()),
-  onUpdateStaff: FinanceOfficer => dispatch(updateStaff(FinanceOfficer)),
-  onDeleteStaff: FinanceOfficer => dispatch(deleteStaff(FinanceOfficer)),
+  onGetDatabaseAdminList: () => dispatch(getOrganizationList()),
+  onUpdateStaff: DatabaseAdmin => dispatch(updateStaff(DatabaseAdmin)),
+  onDeleteStaff: DatabaseAdmin => dispatch(deleteStaff(DatabaseAdmin)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(FinanceOfficerList));
+)(withRouter(DatabaseAdminList));

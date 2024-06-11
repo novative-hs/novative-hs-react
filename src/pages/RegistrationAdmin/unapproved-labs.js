@@ -58,7 +58,7 @@ class UnapprovedLabs extends Component {
         },
         {
           dataField: "city",
-          text: "Lab City",
+          text: "Participant City",
           sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
@@ -68,7 +68,7 @@ class UnapprovedLabs extends Component {
         },
         {
           dataField: "name",
-          text: "Lab Name",
+          text: "Participant Name",
           // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
@@ -93,30 +93,7 @@ class UnapprovedLabs extends Component {
           ),
           filter: textFilter(),
         },
-        {
-          dataField: "type",
-          text: "Lab Type",
-          // sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span className="float-end">
-                {approvedLab.type == "Main Lab" ? (
-                  <span>Main</span>
-                ) : (
-                  <span>Collection</span>
-                )}
-              </span>
-            </>
-          ),
-          filter: selectFilter({
-            options: {
-              // '': 'All',
-              'Main Lab': 'Main',
-              'Collection Point': 'Collection',
-            },
-            // defaultValue: 'Main Lab',
-          }),
-        },
+
         {
           dataField: "email",
           text: "Email",
@@ -270,14 +247,14 @@ class UnapprovedLabs extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Labs" breadcrumbItem="Unapproved" />
-            <Row>
+            <Row className="justify-content-center align-item-center">
             <div> <span className="text-danger font-size-12">
                   <strong>
                     Note: There will be UnapprovedApproved and Inactive Labs Shown on it.
                   </strong>
                   </span>
                 </div>
-              <Col lg="12">
+              <Col lg="10">
                 <Card>
                   <CardBody>
                     <PaginationProvider

@@ -1,33 +1,33 @@
 import {
-  REGISTER_USER,
-  REGISTER_USER_SUCCESSFUL,
-  REGISTER_USER_FAILED,
+  REGISTER_ORGANIZATION,
+  REGISTER_ORGANIZATION_SUCCESSFUL,
+  REGISTER_ORGANIZATION_FAILED,
 } from "./actionTypes";
 
 const initialState = {
+  emailError: null,
   usernameError: null,
   passwordError: null,
   incompleteRegistrationError: null,
   message: null,
   loading: false,
-  emailError: null,
 };
 
-const account = (state = initialState, action) => {
+const organizationaccount = (state = initialState, action) => {
   switch (action.type) {
-    case REGISTER_USER:
+    case REGISTER_ORGANIZATION:
       state = {
         ...state,
         userID: null,
         userAccountType: null,
         loading: true,
-        usernameError: null,
         emailError: null,
+        usernameError: null,
         passwordError: null,
         incompleteRegistrationError: null,
       };
       break;
-    case REGISTER_USER_SUCCESSFUL:
+    case REGISTER_ORGANIZATION_SUCCESSFUL:
       console.log(state = {
         ...state,
         loading: false,
@@ -39,8 +39,9 @@ const account = (state = initialState, action) => {
         incompleteRegistrationError: null,
       });
       break;
-    case REGISTER_USER_FAILED:
-      console.error("Error occurred during registration:", action.payload);
+      
+    case REGISTER_ORGANIZATION_FAILED:
+      
       state = {
         ...state,
         userID: null,
@@ -51,6 +52,7 @@ const account = (state = initialState, action) => {
         passwordError: action.payload.password,
         incompleteRegistrationError: action.payload.error,
       };
+      console.log("Username Errorrrr:", action.payload.username,); 
       break;
     default:
       state = { ...state };
@@ -59,4 +61,4 @@ const account = (state = initialState, action) => {
   return state;
 };
 
-export default account;
+export default organizationaccount;

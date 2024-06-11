@@ -21,19 +21,45 @@ function getHeader(token) {
     };
   }
 }
-
-// Post Register Information to create account
 export const postRegister = user => {
-  console.log("django user", user)
+  let formData = new FormData();
+  formData.append("username", user.username);
+  formData.append("password2", user.password2);
+  formData.append("password", user.password);
+  formData.append("account_type", user.account_type);
+
+  formData.append("name", user.name);
+  formData.append("cnic", user.cnic);
+  formData.append("email", user.email);
+  formData.append("phone", user.phone);
+  formData.append("photo", user.photo);
+  formData.append("city", user.city);
+
+  formData.append("department", user.department);
+  formData.append("organization", user.organization);
+  formData.append("country", user.country);
+  formData.append("landline", user.landline);
+  formData.append("address", user.address);
+
+  formData.append("lab_staff_name", user.lab_staff_name);
+  formData.append("lab_staff_designation", user.lab_staff_designation);
+  formData.append("Select_schemes", user.Select_schemes);
+  formData.append("website", user.website);
+  formData.append("district", user.district);
+  formData.append("landline_registered_by", user.landline_registered_by);
+  formData.append("added_by", user.added_by);
+
+  console.log("data", user);
 
   return axios
-    .post(url.POST_REGISTER, user)
+    .post(`${url.POST_REGISTER}`, formData, {
+      headers: getHeader(authHeader()),
+    })
     .then(response => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
-    }
-    )
+    })
 
     .catch(err => {
       let message;
@@ -58,11 +84,140 @@ export const postRegister = user => {
         }
       }
       throw message;
+    });
+};
+// Post Register Information to create account
+// export const postRegister = user => {
+//   console.log("django user", user)
 
+//   return axios
+//     .post(url.POST_REGISTER, user)
+//     .then(response => {
+//       if (response.status >= 200 || response.status <= 299)
+//         return response.data;
+//       throw response.data;
+//     }
+//     )
+
+//     .catch(err => {
+//       let message;
+//       if (err.response && err.response.status) {
+//         switch (err.response.status) {
+//           case 400:
+//             message = err.response.data;
+//             break;
+//           case 404:
+//             message = "Sorry! the page you are looking for could not be found";
+//             break;
+//           case 500:
+//             message =
+//               "Sorry! something went wrong, please contact our support team";
+//             break;
+//           case 401:
+//             message = "Invalid credentials";
+//             break;
+//           default:
+//             message = err[1];
+//             break;
+//         }
+//       }
+//       throw message;
+
+//     }
+//     );
+// };
+
+export const organizationRegister = user => {
+  let formData = new FormData();
+  formData.append("username", user.username);
+  formData.append("password2", user.password2);
+  formData.append("password", user.password);
+  formData.append("country", user.country);
+  formData.append("account_type", user.account_type);
+  formData.append("name", user.name);
+  formData.append("email", user.email);
+  formData.append("website", user.website);
+
+  console.log("data", user);
+
+  return axios.post(`${url.ORGANIZATION_REGISTER}`, formData, {
+    headers: getHeader(authHeader()),
+  })
+  .then(response => {
+    if (response.status >= 200 || response.status <= 299)
+      return response.data;
+    throw response.data;
+  }
+  )
+
+  .catch(err => {
+    let message;
+    if (err.response && err.response.status) {
+      switch (err.response.status) {
+        case 400:
+          message = err.response.data;
+          break;
+        case 404:
+          message = "Sorry! the page you are looking for could not be found";
+          break;
+        case 500:
+          message =
+            "Sorry! something went wrong, please contact our support team";
+          break;
+        case 401:
+          message = "Invalid credentials";
+          break;
+        default:
+          message = err[1];
+          break;
+      }
     }
-    );
+    throw message;
+
+  }
+  );
 };
 
+// Post Register Information to create account
+// export const organizationRegister = user => {
+//   console.log("django OOOOOOOOOOOOOOOOOOO", user)
+
+//   return axios
+//     .post(url.ORGANIZATION_REGISTER, user)
+//     .then(response => {
+//       if (response.status >= 200 || response.status <= 299)
+//         return response.data;
+//       throw response.data;
+//     }
+//     )
+
+//     .catch(err => {
+//       let message;
+//       if (err.response && err.response.status) {
+//         switch (err.response.status) {
+//           case 400:
+//             message = err.response.data;
+//             break;
+//           case 404:
+//             message = "Sorry! the page you are looking for could not be found";
+//             break;
+//           case 500:
+//             message =
+//               "Sorry! something went wrong, please contact our support team";
+//             break;
+//           case 401:
+//             message = "Invalid credentials";
+//             break;
+//           default:
+//             message = err[1];
+//             break;
+//         }
+//       }
+//       throw message;
+
+//     }
+//     );
+// };
 
 // Post Lab Information
 export const postLabInformation = (id, lab) => {
@@ -1551,18 +1706,23 @@ export const updateSampleCollectionStatus = data => {
 };
 
 // ------------- STAFF Requests START -------------
-export const getCSRList = () =>
-  get(`${url.GET_CSR_LIST}`, {
+export const getCSRList = id =>
+  get(`${url.GET_CSR_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getAuditorList = () =>
-  get(`${url.GET_AUDITOR_LIST}`, {
+export const getAuditorList = id =>
+  get(`${url.GET_AUDITOR_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+  
+export const getOrganizationList = () =>
+  get(`${url.GET_ORGANIZATION_LIST}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getRegistrationAdminList = () =>
-  get(`${url.GET_FINANCE_OFFICER_LIST}`, {
+export const getRegistrationAdminList = id =>
+  get(`${url.GET_FINANCE_OFFICER_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 

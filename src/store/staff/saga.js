@@ -5,6 +5,7 @@ import {
   GET_CSR_LIST,
   GET_TERRITORIES_LIST,
   GET_AUDITOR_LIST,
+  GET_ORGANIZATION_LIST,
   GET_FINANCE_OFFICER_LIST,
   ADD_STAFF,
   UPDATE_STAFF,
@@ -16,6 +17,8 @@ import {
   getCSRListFail,
   getDatabaseadminListSuccess,
   getDatabaseadminListFail,
+  getOrganizationListSuccess,
+  getOrganizationListFail,
   getFinanceOfficerListSuccess,
   getFinanceOfficerListFail,
   getAuditorListSuccess,
@@ -35,6 +38,7 @@ import {
 //Include Both Helper File with needed methods
 import {
   getCSRList,
+  getOrganizationList,
   getAuditorList,
   getRegistrationAdminList,
   addStaff,
@@ -43,9 +47,9 @@ import {
   getTerritoriesList,
 } from "../../helpers/django_api_helper";
 
-function* fetchCSRList() {
+function* fetchCSRList(object) {
   try {
-    const response = yield call(getCSRList);
+    const response = yield call(getCSRList, object.payload);
     yield put(getCSRListSuccess(response));
   } catch (error) {
     yield put(getCSRListFail(error));
@@ -60,18 +64,28 @@ function* fetchTerritoriesList(object) {
     yield put(getTerritoriesListFail(error));
   }
 }
-function* fetchAuditorList() {
+function* fetchAuditorList(action) {
   try {
-    const response = yield call(getAuditorList);
+    const response = yield call(getAuditorList, action.payload);
     yield put(getDatabaseadminListSuccess(response));
   } catch (error) {
     yield put(getDatabaseadminListFail(error));
   }
 }
 
-function* fetchFinanceOfficerList() {
+
+function* fetchOrganizationList() {
   try {
-    const response = yield call(getRegistrationAdminList);
+    const response = yield call(getOrganizationList);
+    yield put(getOrganizationListSuccess(response));
+  } catch (error) {
+    yield put(getOrganizationListFail(error));
+  }
+}
+
+function* fetchFinanceOfficerList(action) {
+  try {
+    const response = yield call(getRegistrationAdminList, action.payload);
     yield put(getRegistrationAdminListSuccess(response));
   } catch (error) {
     yield put(getRegistrationAdminListFail(error));
@@ -112,6 +126,7 @@ function* onDeleteStaff({ payload: staff }) {
 function* staffSaga() {
   yield takeEvery(GET_CSR_LIST, fetchCSRList);
   yield takeEvery(GET_AUDITOR_LIST, fetchAuditorList);
+  yield takeEvery(GET_ORGANIZATION_LIST, fetchOrganizationList);
   yield takeEvery(GET_FINANCE_OFFICER_LIST, fetchFinanceOfficerList);
   yield takeEvery(ADD_STAFF, onAddStaff);
   yield takeEvery(UPDATE_STAFF, onUpdateStaff);

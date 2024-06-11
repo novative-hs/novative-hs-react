@@ -62,7 +62,7 @@ class PendingLabs extends Component {
         },
         {
           dataField: "city",
-          text: "Lab City",
+          text: "Participant City",
           sort: true,
           formatter: (cellContent, pendingLab) => (
             <>
@@ -83,7 +83,7 @@ class PendingLabs extends Component {
         },
         {
           dataField: "name",
-          text: "Lab name",
+          text: "Participant name",
           sort: true,
           formatter: (cellContent, pendingLab) => (
             <>
@@ -108,17 +108,17 @@ class PendingLabs extends Component {
             </>
           ),filter: textFilter(),
         },
-        {
-          dataField: "type",
-          text: "Lab Type",
-          sort: true,
-          formatter: (cellContent, pendingLab) => (
-            <>
-                   {pendingLab.type}
+        // {
+        //   dataField: "type",
+        //   text: "Lab Type",
+        //   sort: true,
+        //   formatter: (cellContent, pendingLab) => (
+        //     <>
+        //            {pendingLab.type}
                   
-            </>
-          ),filter: textFilter(),  
-        },
+        //     </>
+        //   ),filter: textFilter(),  
+        // },
         {
           dataField: "address",
           text: "Address",
@@ -146,7 +146,7 @@ class PendingLabs extends Component {
         // },
         {
           dataField: "landline",
-          text: "Lab Phone No",
+          text: "Prticipant Phone No",
           sort: true,
           formatter: (cellContent, pendingLab) => (
             <>
@@ -384,8 +384,8 @@ class PendingLabs extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Labs" breadcrumbItem="Pending" />
-            <Row>
-              <Col lg="12">
+            <Row className="justify-content-center align-item-center">
+              <Col lg="10">
                 <Card>
                   <CardBody>
                     <PaginationProvider

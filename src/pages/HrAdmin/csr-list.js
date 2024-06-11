@@ -103,7 +103,9 @@ class CSRList extends Component {
               </Link>
             </div>
           ),
+          headerAlign: 'center',
         },
+       
         {
           dataField: "email",
           text: "Email",
@@ -131,6 +133,7 @@ class CSRList extends Component {
               {CSR.email}
             </div>
           ),
+          headerAlign: 'center',
         },
         {
           dataField: "cnic",
@@ -155,6 +158,7 @@ class CSRList extends Component {
               </>
             );
           },
+          headerAlign: 'center',
         },
         {
           dataField: "phone",
@@ -184,6 +188,7 @@ class CSRList extends Component {
               </>
             );
           },
+          headerAlign: 'center',
         },
         {
           dataField: "menu",
@@ -264,7 +269,7 @@ class CSRList extends Component {
 
   componentDidMount() {
     const { onGetCSRList } = this.props;
-    onGetCSRList();
+    onGetCSRList(this.state.user_id);
     this.setState({ csrList: this.props.csrList });
   }
 
@@ -334,7 +339,7 @@ class CSRList extends Component {
     if (csrList.id !== undefined) {
       onDeleteStaff(csrList);
       setTimeout(() => {
-        onGetCSRList();
+        onGetCSRList(this.state.user_id);
       }, 1000);
       this.setState({ deleteModal: false });
     }
@@ -437,7 +442,7 @@ class CSRList extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses={"table-light"}
+                                      headerWrapperClasses={"table-header-sky-blue"}
                                       responsive
                                       ref={this.node}
                                       data={this.filterData()}
@@ -495,7 +500,7 @@ class CSRList extends Component {
                                               // save new Staff
                                               onUpdateStaff(staffData);
                                               setTimeout(() => {
-                                                onGetCSRList();
+                                                onGetCSRList(this.state.user_id);
                                               }, 1000);
                                             }
                                             this.toggle();
@@ -678,7 +683,7 @@ const mapStateToProps = ({ staff }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetCSRList: () => dispatch(getCSRList()),
+  onGetCSRList: (id) => dispatch(getCSRList(id)),
   onUpdateStaff: CSR => dispatch(updateStaff(CSR)),
   onDeleteStaff: CSR => dispatch(deleteStaff(CSR)),
 });

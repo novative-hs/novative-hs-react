@@ -64,7 +64,7 @@ class ApprovedLabs extends Component {
         },
         {
           dataField: "city",
-          text: "Lab City",
+          text: "Participant City",
           // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
@@ -88,7 +88,7 @@ class ApprovedLabs extends Component {
         },
         {
           dataField: "name",
-          text: "Lab Name",
+          text: "Participant Name",
           // sort: true,
           formatter: (cellContent, approvedLab) => (
             <>
@@ -113,30 +113,7 @@ class ApprovedLabs extends Component {
           ),
           filter: textFilter(),
         },
-        {
-          dataField: "type",
-          text: "Lab Type",
-          // sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span className="float-end">
-                {approvedLab.type == "Main Lab" ? (
-                  <span>Main</span>
-                ) : (
-                  <span>Collection</span>
-                )}
-              </span>
-            </>
-          ),
-          filter: selectFilter({
-            options: {
-              // '': 'All',
-              'Main Lab': 'Main',
-              'Collection Point': 'Collection',
-            },
-            // defaultValue: 'Main Lab',
-          }),
-        },
+    
         {
           dataField: "email",
           text: "Email",
@@ -163,108 +140,6 @@ class ApprovedLabs extends Component {
           ),
           filter: textFilter(),
         },
-        {
-          dataField: "offered_tests",
-          text: "Offered Tests",
-          sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span className="float-end">
-                {approvedLab.offered_tests}
-              </span>
-            </>
-          ),
-          filter: textFilter(),
-        },
-        {
-          dataField: "pathologists",
-          text: "Pathologist",
-          sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span className="float-end">
-                {approvedLab.pathologists}
-              </span>
-            </>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "sample_collectors",
-          text: "Sample Collector",
-          sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span className="float-end">
-                {approvedLab.sample_collectors}
-              </span>
-            </>
-          ), filter: textFilter(),
-        },
-        {
-          dataField: "quality_certificates",
-          text: "Quality Certificate",
-          sort: true,
-          formatter: (cellContent, approvedLab) => (
-            <>
-              <span className="float-end">
-                {approvedLab.quality_certificates}
-              </span>
-            </>
-          ), filter: textFilter(),
-        },
-
-        // {
-        //   dataField: "registered_at",
-        //   text: "Registeration",
-        //   // sort: true,
-        //   formatter: (cellContent, approvedLab) => (
-        //     <>
-        //       <span>
-        //         {new Date(approvedLab.registered_at).toLocaleDateString("en-US", {
-        //           year: "numeric",
-        //           month: "2-digit",
-        //           day: "2-digit",
-        //         }).replace(/\//g, '-')}
-        //       </span>
-        //     </>
-        //   ), filter: textFilter(),
-        // },
-        // {
-        //   dataField: "done_at",
-        //   text: "Approvel",
-        //   // sort: true,
-        //   formatter: (cellContent, approvedLab) => (
-        //     <>
-        //       <span>
-        //         {new Date(approvedLab.done_at).toLocaleDateString("en-US", {
-        //           year: "numeric",
-        //           month: "2-digit",
-        //           day: "2-digit",
-        //         }).replace(/\//g, '-')}
-        //       </span>
-        //     </>
-        //   ),
-        //   filter: textFilter(),
-        // },
-
-        // {
-        //   dataField: "is_blocked",
-        //   text: "Blocked",
-        //   sort: true,
-        //   formatter: (cellContent, donor) => (
-        //     <>
-        //       {donor.is_blocked == true ? (
-        //         <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-danger font-size-12 badge-soft-danger">
-        //           Yes
-        //         </span>
-        //       ) : (
-        //         <span className="w-100 pr-4 pl-4 badge rounded-pill badge-soft-success font-size-12 badge-soft-success">
-        //           No
-        //         </span>
-        //       )}
-        //     </>
-        //   ),
-        // },
       ],
     };
     this.toggle = this.toggle.bind(this);
@@ -358,14 +233,14 @@ class ApprovedLabs extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Labs" breadcrumbItem="Approved" />
-            <Row>
+            <Row className="justify-content-center align-item-center">
                 <div> <span className="text-danger font-size-12">
                   <strong>
                     Note: There will be Approved and Active Labs Shown on it.
                   </strong>
                   </span>
                 </div>
-              <Col lg="12">
+              <Col lg="10">
                 <Card>
                   <CardBody>
                     <PaginationProvider

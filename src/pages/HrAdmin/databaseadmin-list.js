@@ -262,7 +262,8 @@ sortData = (field, order) => {
 };
   componentDidMount() {
     const { onGetDatabaseAdminList } = this.props;
-    onGetDatabaseAdminList();
+    const { user_id } = this.state;
+    onGetDatabaseAdminList(user_id);
 
     
     this.setState({ databaseadminList: this.props.databaseadminList });
@@ -337,7 +338,7 @@ sortData = (field, order) => {
     if (databaseadminList.id !== undefined) {
       onDeleteStaff(databaseadminList);
       setTimeout(() => {
-        onGetDatabaseAdminList();
+        onGetDatabaseAdminList(this.state.user_id);
       }, 1000);
       this.setState({ deleteModal: false });
     }
@@ -489,7 +490,7 @@ sortData = (field, order) => {
                                               // save new Staff
                                               onUpdateStaff(staffData);
                                               setTimeout(() => {
-                                                onGetDatabaseAdminList();
+                                                onGetDatabaseAdminList( this.state.user_id);
                                               }, 1000);
                                             }
                                             this.toggle();
@@ -681,7 +682,7 @@ const mapStateToProps = ({ staff }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetDatabaseAdminList: () => dispatch(getDatabaseadminList()),
+  onGetDatabaseAdminList: (id) => dispatch(getDatabaseadminList(id)),
   onUpdateStaff: DatabaseAdmin => dispatch(updateStaff(DatabaseAdmin)),
   onDeleteStaff: DatabaseAdmin => dispatch(deleteStaff(DatabaseAdmin)),
 });

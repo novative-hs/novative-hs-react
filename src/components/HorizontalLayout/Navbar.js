@@ -249,7 +249,7 @@ class Navbar extends Component {
                   </nav>
                 )}
               {this.state.account_type &&
-                this.state.account_type === "hr-admin" && (
+                this.state.account_type === "superadmin" && (
                   <nav
                     className="navbar navbar-light navbar-expand-lg"
                     id="navigation"
@@ -260,22 +260,183 @@ class Navbar extends Component {
                       id="topnav-menu-content"
                     >
                       <ul className="navbar-nav">
-                        <li className="nav-item">
-                          <Link to="/add-staff" className="dropdown-item">
-                            <span className="pt-4 font-size-12">Staff</span>
-                          </Link>
-                        </li>
-                        <li className="nav-item">
+                      <li className="nav-item">
+
+<Link
+  to="/add-organization"
+  className="dropdown-item"
+>
+  <span className="pt-4 font-size-12">Add Organization</span>
+
+
+</Link>
+</li>
+ 
+<li className="nav-item">
                           <Link
-                            to={`/databaseadmin-list`}
+                            to={"/organization-list"}
                             className="dropdown-item"
                           >
-                            <span className="pt-4 font-size-12">
-                              Database Admin
-                            </span>
-                            {/* {this.props.t("Profiles")} */}
+                            <span className="pt-4 font-size-12">Organization List</span>
+                            {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>
+ 
+
+                     
+                    </ul>
+                  </Collapse>
+
+                </nav>
+              )}
+              {this.state.account_type && this.state.account_type === "organization" && (
+                <nav className="navbar navbar-light navbar-expand-lg" id="navigation">
+
+                  <Collapse isOpen={isOpen} className="navbar-collapse" id="topnav-menu-content">
+                    <ul className="navbar-nav">
+
+
+                      <li className="nav-item">
+
+                        <Link
+                          to="/add-staff"
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Add Staff(Registration, DatabaseAdmin, CSR)</span>
+
+                        
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+
+<Link
+  to="/Register-Participant"
+  className="dropdown-item"
+>
+  <span className="pt-4 font-size-12">Add Participant</span>
+
+
+</Link>
+</li>
+ 
+<li className="nav-item">
+                          <Link
+                            to={"/organization-list"}
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Participant List</span>
+                            {/* {this.props.t("Packages")} */}
+                          </Link>
+                        </li>
+                      <li className="nav-item">
+                        <Link
+                          to={`/databaseadmin-list`}
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Database Admin list</span>
+                          {/* {this.props.t("Profiles")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={"/registration-admin-list"
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Registrationn Admin list</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={"/csr-list"
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">CSR list</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                    
+                     
+                    </ul>
+                  </Collapse>
+
+                </nav>
+              )}
+
+              {this.state.account_type && this.state.account_type === "registration-admin" && (
+                <nav className="navbar navbar-light navbar-expand-lg" id="navigation">
+
+                  <Collapse isOpen={isOpen} className="navbar-collapse" id="topnav-menu-content">
+                    <ul className="navbar-nav">
+
+
+                    <li className="nav-item">
+                        <span
+                          className="dropdown-item"
+                          onMouseEnter={this.toggleDropdown}
+                        // onMouseLeave={this.toggleDropdown}
+                        >
+                          <span className="pt-4 font-size-12">Participant</span>
+                        </span>
+                        <ul className={dropdownOpen ? "dropdown-menu show" : "dropdown-menu"} style={{ backgroundColor: '#0000CD' }}>
+                          <li>
+                            <Link
+                              to="/pending-labs"
+                              className="dropdown-item"
+                            >
+                              Pending
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              to="/approved-labs"
+                              className="dropdown-item"
+                            >
+                              Approved
+                            </Link>
+                          </li>
+                          <li>
+                            <Link to="/unapproved-labs"
+                              className="dropdown-item">
+                             Unapproved
+                            </Link>
+                          </li>
+                         
+
+                        </ul>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={`/databaseadmin-list`}
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Database Admin</span>
+                          {/* {this.props.t("Profiles")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={"/databaseadmin-list"
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Registrationn Admin</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link
+                          to={"/csr-list"
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">CSR</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                    
                         <li className="nav-item">
                           <Link
                             to={"/databaseadmin-list"}

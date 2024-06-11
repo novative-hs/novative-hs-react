@@ -19,10 +19,11 @@ export const registerUserSuccessful = user => {
   }
 }
 
-export const registerUserFailed = user => {
-  console.error("Error occurred during lab profile update:", user);
+export const registerUserFailed = error => {
+  console.error("Error occurred during registration:", error);
   return {
     type: REGISTER_USER_FAILED,
-    payload: user,
+    payload: error,
+    
   }
 }

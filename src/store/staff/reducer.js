@@ -14,6 +14,8 @@ import {
   UPDATE_STAFF_FAIL,
   DELETE_STAFF_SUCCESS,
   DELETE_STAFF_FAIL,
+  GET_ORGANIZATION_LIST_SUCCESS,
+  GET_ORGANIZATION_LIST_FAIL
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -62,6 +64,17 @@ const staff = (state = INIT_STATE, action) => {
       };
 
     case GET_AUDITOR_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case  GET_ORGANIZATION_LIST_SUCCESS:
+      return {
+        ...state,
+        databaseadminList: action.payload.data,
+      };
+
+    case  GET_ORGANIZATION_LIST_FAIL:
       return {
         ...state,
         error: action.payload,

@@ -20,6 +20,9 @@ import {
   GET_TERRITORIES_LIST_SUCCESS,
   GET_TERRITORIES_LIST_FAIL,
   ADD_STAFF_FAIL,
+  GET_ORGANIZATION_LIST,
+  GET_ORGANIZATION_LIST_SUCCESS,
+  GET_ORGANIZATION_LIST_FAIL
 } from "./actionTypes";
 
 // Territories
@@ -39,9 +42,9 @@ export const getTerritoriesListFail = error => ({
   type: GET_TERRITORIES_LIST_FAIL,
   payload: error,
 });
-export const getCSRList = () => ({
+export const getCSRList = id => ({
   type: GET_CSR_LIST,
-  payload: {},
+  payload: id,
 });
 
 export const getCSRListSuccess = csrList => ({
@@ -54,11 +57,10 @@ export const getCSRListFail = error => ({
   payload: error,
 });
 
-export const getDatabaseadminList = () => ({
+export const getDatabaseadminList = id => ({
   type: GET_AUDITOR_LIST,
-  payload: {},
+  payload: id,
 });
-
 export const getDatabaseadminListSuccess = databaseadminList => ({
   type: GET_AUDITOR_LIST_SUCCESS,
   payload: databaseadminList,
@@ -69,9 +71,25 @@ export const getDatabaseadminListFail = error => ({
   payload: error,
 });
 
-export const getRegistrationAdminList = () => ({
-  type: GET_FINANCE_OFFICER_LIST,
+export const getOrganizationList = () => ({
+  type: GET_ORGANIZATION_LIST,
   payload: {},
+});
+
+export const getOrganizationListSuccess = databaseadminList => ({
+  type: GET_ORGANIZATION_LIST_SUCCESS,
+  payload: databaseadminList,
+});
+
+export const getOrganizationListFail = error => ({
+  type: GET_ORGANIZATION_LIST_FAIL,
+  payload: error,
+});
+
+
+export const getRegistrationAdminList = id => ({
+  type: GET_FINANCE_OFFICER_LIST,
+  payload: id,
 });
 
 export const getRegistrationAdminListSuccess = financeOfficerList => ({
