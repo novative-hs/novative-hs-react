@@ -5,6 +5,7 @@ export * from "./dashboard/actions";
 
 // Authentication module
 export * from "./auth/register/actions";
+
 export * from "./auth/labinformation/actions";
 export * from "./auth/login/actions";
 export * from "./auth/forgetpwd/actions";
@@ -31,7 +32,8 @@ export * from "./carts/actions";
 export * from "./quotes/actions";
 // lab market
 export * from "./labmarket/actions";
-
+// organization
+export * from "./organization/actions";
 
 
 // quality certificates

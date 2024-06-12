@@ -32,7 +32,8 @@ import UnitsListSaga from "./units/sagas";
 import UnitsHistorySaga from "./databaseadmin-history/sagas";
 import ReagentsListSaga from "./reagents/sagas";
 import ManufacturalListSaga from "./manufactural/sagas";
-
+// organization
+import organizationaccountSaga from "./organization/saga";
 
 import msgsSaga from "./chat-box/saga";
 
@@ -74,6 +75,7 @@ import NewsSaga from "./news/saga";
 export  default function* rootSaga() {
   yield all([
     //public
+    fork(organizationaccountSaga),
     fork(NewsSaga),
     fork(InstrumentListSaga),
     fork(ReagentsListSaga),

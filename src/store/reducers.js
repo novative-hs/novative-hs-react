@@ -30,6 +30,9 @@ import ReagentList from "./reagents/reducers";
 import activitylogUnits from "./databaseadmin-history/reducers";
 import ManufacturalList from "./manufactural/reducers";
 import Instrument from "./instrument/reducer"
+
+// organization
+import organizationaccount from "./organization/reducer"
 //LabMarket
 import LabMarket from "./labmarket/reducer";
 import activitylog from "./activtylog/reducer";
@@ -101,7 +104,7 @@ const rootReducer = combineReducers({
   ReagentList,
   ListUnits,
   news,
-  
+  organizationaccount,
   Dashboard,
   referrelFeeLabs,
   Layout,
