@@ -127,7 +127,7 @@ class App extends Component {
             {registrationAdminAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
-                layout={VerticalLayout}
+                layout={HorizontalLayout}
                 component={route.component}
                 key={idx}
                 isAuthProtected={true}
