@@ -282,14 +282,18 @@ class Login extends Component {
                                 this.props.history.push(
                                   "/dashboard-partcipant"
                                 );
-                              } else if (
+                              } else if (success.account_type === "registration-admin") {
+                                this.props.history.push("/pending-labs");}
+                                else if (success.account_type === "superadmin") {
+                                  this.props.history.push("/add-organization");}
+                              else if (
                                 success.account_type === "database-admin"
                               ) {
                                 this.props.history.push(
                                   "/dashboard-databaseadmin"
                                 );
                               }else if (
-                                success.account_type === "hr-admin"
+                                success.account_type === "organization"
                               ) {
                                 this.props.history.push(
                                   "/add-staff"
