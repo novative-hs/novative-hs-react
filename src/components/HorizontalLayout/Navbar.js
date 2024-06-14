@@ -321,10 +321,11 @@ class Navbar extends Component {
 
                       <li className="nav-item">
                         <Link
-                          to={"/organization-list"}
+                          to={"/all-participant"
+                          }
                           className="dropdown-item"
                         >
-                          <span className="pt-4 font-size-12">Participant List</span>
+                          <span className="pt-4 font-size-12">Participants List</span>
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
@@ -357,16 +358,7 @@ class Navbar extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                      <li className="nav-item">
-                        <Link
-                          to={"/all-participant"
-                          }
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">Participants List</span>
-                          {/* {this.props.t("Packages")} */}
-                        </Link>
-                      </li>
+                      
 
 
                     </ul>
