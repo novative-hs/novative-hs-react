@@ -55,6 +55,7 @@ import Rounds from "pages/Participant/rounds";
 import Performance from "pages/Participant/performance";
 import NewsPage from "pages/Participant/news-paritcipant";
 import Email from "pages/Participant/email";
+import AllParticipant from "pages/Participant/all-participants";
 
 // Lab Componentsss
 
@@ -284,8 +285,8 @@ const hrAdminAuthProtectedRoutes = [
   { path: "/databaseadmin-list", component: DatabaseadminList },
   { path: "/csr-list", component: csrList},
   { path: "/organization-list", component: organizationList},
-  { path: "/Register-Participant", component: RegisterParticipant },
-
+  { path: "/register-participant", component: RegisterParticipant },
+  { path: "/all-participant", component: AllParticipant},
   { path: "/registration-admin-list", component: RegistrationAdminList },
 ];
 
