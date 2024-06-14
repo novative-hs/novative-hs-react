@@ -1272,7 +1272,7 @@ class CartList extends Component {
 
                   {this.state.user_type == "registration-admin" && (
                     <Link
-                      to={"/pending-labs"}
+                      to={"/pending-participant"}
                       className="btn header-items noti-icon right-bar-toggle"
                     >
                       <i className="mdi mdi-home me-1 font-size-24" />{" "}
@@ -1297,7 +1297,7 @@ class CartList extends Component {
                     </Link>
                   )}
 
-                  {this.state.user_type == "hr-admin" && (
+                  {this.state.user_type == "organization" && (
                     <Link
                       to={"/add-staff"}
                       className="btn header-items noti-icon right-bar-toggle"

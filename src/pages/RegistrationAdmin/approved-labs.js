@@ -228,18 +228,18 @@ class ApprovedLabs extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Approved Labs | Lab Hazir</title>
+            <title>Approved Participant | NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Labs" breadcrumbItem="Approved" />
+            <Breadcrumbs title="Participant " breadcrumbItem="Approved" />
             <Row className="justify-content-center align-item-center">
-                <div> <span className="text-danger font-size-12">
+                {/* <div> <span className="text-danger font-size-12">
                   <strong>
                     Note: There will be Approved and Active Labs Shown on it.
                   </strong>
                   </span>
-                </div>
+                </div> */}
               <Col lg="10">
                 <Card>
                   <CardBody>
@@ -259,7 +259,7 @@ class ApprovedLabs extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                                <Col sm="4">
+                                {/* <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
@@ -268,7 +268,7 @@ class ApprovedLabs extends Component {
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
                                   </div>
-                                </Col>
+                                </Col> */}
                               </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -280,7 +280,7 @@ class ApprovedLabs extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses={"table-light"}
+                                      headerWrapperClasses={"table-header-sky-blue"}
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}

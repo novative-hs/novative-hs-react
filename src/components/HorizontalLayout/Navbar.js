@@ -123,7 +123,7 @@ class Navbar extends Component {
                           <span
                             className="dropdown-item"
                             onMouseEnter={this.toggleDropdown}
-                            // onMouseLeave={this.toggleDropdown}
+                          // onMouseLeave={this.toggleDropdown}
                           >
                             <span className="pt-4 font-size-12">Database</span>
                           </span>
@@ -194,12 +194,12 @@ class Navbar extends Component {
                           </ul>
                         </li>
                         <li className="nav-item">
-                        <Link
-                                to="/news"
-                                className="dropdown-item"
-                              >
-                                News
-                              </Link>
+                          <Link
+                            to="/news"
+                            className="dropdown-item"
+                          >
+                            News
+                          </Link>
                         </li>
                         <li className="nav-item">
                           <Link
@@ -260,19 +260,19 @@ class Navbar extends Component {
                       id="topnav-menu-content"
                     >
                       <ul className="navbar-nav">
-                      <li className="nav-item">
+                        <li className="nav-item">
 
-<Link
-  to="/add-organization"
-  className="dropdown-item"
->
-  <span className="pt-4 font-size-12">Add Organization</span>
+                          <Link
+                            to="/add-organization"
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">Add Organization</span>
 
 
-</Link>
-</li>
- 
-<li className="nav-item">
+                          </Link>
+                        </li>
+
+                        <li className="nav-item">
                           <Link
                             to={"/organization-list"}
                             className="dropdown-item"
@@ -281,14 +281,14 @@ class Navbar extends Component {
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>
- 
 
-                     
-                    </ul>
-                  </Collapse>
 
-                </nav>
-              )}
+
+                      </ul>
+                    </Collapse>
+
+                  </nav>
+                )}
               {this.state.account_type && this.state.account_type === "organization" && (
                 <nav className="navbar navbar-light navbar-expand-lg" id="navigation">
 
@@ -304,30 +304,30 @@ class Navbar extends Component {
                         >
                           <span className="pt-4 font-size-12">Add Staff(Registration, DatabaseAdmin, CSR)</span>
 
-                        
+
                         </Link>
                       </li>
                       <li className="nav-item">
 
-<Link
-  to="/Register-Participant"
-  className="dropdown-item"
->
-  <span className="pt-4 font-size-12">Add Participant</span>
+                        <Link
+                          to="/Register-Participant"
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Add Participant</span>
 
 
-</Link>
-</li>
- 
-<li className="nav-item">
-                          <Link
-                            to={"/organization-list"}
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">Participant List</span>
-                            {/* {this.props.t("Packages")} */}
-                          </Link>
-                        </li>
+                        </Link>
+                      </li>
+
+                      <li className="nav-item">
+                        <Link
+                          to={"/organization-list"}
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Participant List</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
                       <li className="nav-item">
                         <Link
                           to={`/databaseadmin-list`}
@@ -357,8 +357,18 @@ class Navbar extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                    
-                     
+                      <li className="nav-item">
+                        <Link
+                          to={"/all-participant"
+                          }
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">Participants List</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+
+
                     </ul>
                   </Collapse>
 
@@ -372,7 +382,7 @@ class Navbar extends Component {
                     <ul className="navbar-nav">
 
 
-                    <li className="nav-item">
+                      <li className="nav-item">
                         <span
                           className="dropdown-item"
                           onMouseEnter={this.toggleDropdown}
@@ -383,7 +393,7 @@ class Navbar extends Component {
                         <ul className={dropdownOpen ? "dropdown-menu show" : "dropdown-menu"} style={{ backgroundColor: '#0000CD' }}>
                           <li>
                             <Link
-                              to="/pending-labs"
+                              to="/pending-participant"
                               className="dropdown-item"
                             >
                               Pending
@@ -391,19 +401,19 @@ class Navbar extends Component {
                           </li>
                           <li>
                             <Link
-                              to="/approved-labs"
+                              to="/approved-participant"
                               className="dropdown-item"
                             >
                               Approved
                             </Link>
                           </li>
                           <li>
-                            <Link to="/unapproved-labs"
+                            <Link to="/unapproved-participant"
                               className="dropdown-item">
-                             Unapproved
+                              Unapproved
                             </Link>
                           </li>
-                         
+
 
                         </ul>
                       </li>
@@ -436,28 +446,28 @@ class Navbar extends Component {
                           {/* {this.props.t("Packages")} */}
                         </Link>
                       </li>
-                    
-                        <li className="nav-item">
-                          <Link
-                            to={"/databaseadmin-list"}
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">
-                              Registrationn Admin
-                            </span>
-                            {/* {this.props.t("Packages")} */}
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link to={"/csr-list"} className="dropdown-item">
-                            <span className="pt-4 font-size-12">CSR</span>
-                            {/* {this.props.t("Packages")} */}
-                          </Link>
-                        </li>
-                      </ul>
-                    </Collapse>
-                  </nav>
-                )}
+
+                      <li className="nav-item">
+                        <Link
+                          to={"/databaseadmin-list"}
+                          className="dropdown-item"
+                        >
+                          <span className="pt-4 font-size-12">
+                            Registrationn Admin
+                          </span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to={"/csr-list"} className="dropdown-item">
+                          <span className="pt-4 font-size-12">CSR</span>
+                          {/* {this.props.t("Packages")} */}
+                        </Link>
+                      </li>
+                    </ul>
+                  </Collapse>
+                </nav>
+              )}
 
               {this.state.account_type &&
                 this.state.account_type === "labowner" && (

@@ -582,7 +582,7 @@ class SidebarContent extends Component {
                     </Link>
                     <ul className="sub-menu" aria-expanded="false">
                       <li>
-                        <Link to={"/pending-labs"}>
+                        <Link to={"/pending-participant"}>
                           {this.props.t("Pending")}
                         </Link>
                       </li>
@@ -951,7 +951,7 @@ class SidebarContent extends Component {
         )}
 
         {/* HR Admin */}
-        {this.state.account_type && this.state.account_type == "hr-admin" && (
+        {this.state.account_type && this.state.account_type == "organization" && (
           <SimpleBar className="h-100" ref={this.refDiv}>
             <div id="sidebar-menu">
               <ul className="metismenu list-unstyled" id="side-menu">

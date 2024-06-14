@@ -11,14 +11,12 @@ const initialState = {
   incompleteRegistrationError: null,
   message: null,
   loading: false,
-  userID: null,
-  userAccountType: null,
 };
 
 const organizationaccount = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER_ORGANIZATION:
-      return {
+      state = {
         ...state,
         userID: null,
         userAccountType: null,
@@ -28,9 +26,9 @@ const organizationaccount = (state = initialState, action) => {
         passwordError: null,
         incompleteRegistrationError: null,
       };
-      
+      break;
     case REGISTER_ORGANIZATION_SUCCESSFUL:
-      console.log({
+      console.log(state = {
         ...state,
         loading: false,
         userID: action.payload.id,
@@ -40,20 +38,11 @@ const organizationaccount = (state = initialState, action) => {
         passwordError: null,
         incompleteRegistrationError: null,
       });
-      return {
-        ...state,
-        loading: false,
-        userID: action.payload.id,
-        userAccountType: action.payload.account_type,
-        emailError: null,
-        usernameError: null,
-        passwordError: null,
-        incompleteRegistrationError: null,
-      };
+      break;
       
     case REGISTER_ORGANIZATION_FAILED:
-      console.log("Username Error:", action.payload.username); 
-      return {
+      
+      state = {
         ...state,
         userID: null,
         userAccountType: null,
@@ -63,10 +52,13 @@ const organizationaccount = (state = initialState, action) => {
         passwordError: action.payload.password,
         incompleteRegistrationError: action.payload.error,
       };
-
+      console.log("Username Errorrrr:", action.payload.username,); 
+      break;
     default:
-      return state;
+      state = { ...state };
+      break;
   }
+  return state;
 };
 
 export default organizationaccount;

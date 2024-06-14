@@ -9,7 +9,7 @@ export const POST_REGISTER = `${API_ENDPOINT}/api/account/register/`;
 export const POST_FORGET_PASSWORD = `${API_ENDPOINT}/api/account/password_reset/`;
 export const POST_CONFIRM_PASSWORD = `${API_ENDPOINT}/api/account/password_reset/confirm/`;
 export const POST_CHANGE_PASSWORD = `${API_ENDPOINT}/api/account/change-password/`;
-export const ORGANIZATION_REGISTER = `${API_ENDPOINT}/api/account/register/`;
+
 
 
 export const POST_LAB_INFORMATION = `${API_ENDPOINT}/api/lab/lab-information`;
@@ -41,6 +41,9 @@ export const ADD_NEW_ANALYTE = `${API_ENDPOINT}/api/database-admin/analyte-list`
 export const UPDATE_ANALYTE = `${API_ENDPOINT}/api/database-admin/update-analyte`;
 
 
+//Participant
+export const GET_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/participant-information`;
+
 ////////////news
 
 export const GET_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
@@ -50,13 +53,14 @@ export const ADD_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
 export const GET_INSTRUMENT_LIST = `${API_ENDPOINT}/api/database-admin/instrument-list`;
 export const ADD_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/instrument-list`;
 export const UPDATE_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/update-instrument-list`;
-
+/// ORGANIZATION REGISTER
+export const ORGANIZATION_REGISTER = `${API_ENDPOINT}/api/account/register/`;
 // LAB LIST
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;
 export const GET_MAIN_LABS = `${API_ENDPOINT}/api/lab/lab-list`;
 
-//ORGANIZATION REGISTER
+
 
 // TEST
 export const GET_TESTS = `${API_ENDPOINT}/api/medicaltest/test-list`;
@@ -398,7 +402,6 @@ export const GET_LC_LIST = `${API_ENDPOINT}/api/accountstatement/corporate-accou
 export const GET_CSR_LIST = `${API_ENDPOINT}/api/staff/csr-list`;
 export const GET_AUDITOR_LIST = `${API_ENDPOINT}/api/staff/auditor-list`;
 export const GET_ORGANIZATION_LIST = `${API_ENDPOINT}/api/staff/organization-list`;
-
 export const GET_FINANCE_OFFICER_LIST = `${API_ENDPOINT}/api/staff/finance-officer-list`;
 export const ADD_STAFF = `${API_ENDPOINT}/api/staff/register-staff`;
 export const UPDATE_STAFF = `${API_ENDPOINT}/api/staff/register-staff`;

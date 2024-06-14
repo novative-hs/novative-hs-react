@@ -403,8 +403,8 @@ class PendingLabs extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              <Row className="mb-2">
-                                <Col sm="4">
+                              <Row className="mb-2 mt-3">
+                                {/* <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
                                     <div className="position-relative">
                                       <SearchBar
@@ -413,7 +413,7 @@ class PendingLabs extends Component {
                                       <i className="bx bx-search-alt search-icon" />
                                     </div>
                                   </div>
-                                </Col>
+                                </Col> */}
                               </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -425,7 +425,7 @@ class PendingLabs extends Component {
                                       classes={"table align-middle table-condensed table-hover"}
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses={"table-light"}
+                                      headerWrapperClasses={"table-header-sky-blue"}
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}

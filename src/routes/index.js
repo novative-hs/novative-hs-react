@@ -190,7 +190,7 @@ const publicRoutes = [
 ];
 
 const labAuthProtectedRoutes = [
-  // { path: "/change-password", component: ChangePassword },
+  { path: "/change-password", component: ChangePassword },
   { path: "/dashboard-lab", component: DashboardLab },
 
 
@@ -254,7 +254,7 @@ const participantsAuthProtectedRoutes = [
 
 
 const registrationAdminAuthProtectedRoutes = [
-  { path: "/pending-labs", component: PendingLabs },
+  { path: "/pending-participant", component: PendingLabs },
   { path: "/labs-list-approved-fee", component: labsListApprovedFeeOffered },
   { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },
   {
@@ -263,8 +263,8 @@ const registrationAdminAuthProtectedRoutes = [
   {
     path: "/shared-percentage-approved-Fee/:id", component: sharedPercentageApprovedFeeTests,
   },
-  { path: "/approved-labs", component: ApprovedLabs },
-  { path: "/unapproved-labs", component: UnapprovedLabs },
+  { path: "/approved-participant", component: ApprovedLabs },
+  { path: "/unapproved-participant", component: UnapprovedLabs },
 
   {
     path: "/referrellab", component: ReferrelLab,
@@ -276,7 +276,7 @@ const registrationAdminAuthProtectedRoutes = [
 
 ];
 
-
+//organization 
 const hrAdminAuthProtectedRoutes = [
   { path: "/add-staff", component: StaffRegister },
   { path: "/add-organization", component: OrganizationRegister },

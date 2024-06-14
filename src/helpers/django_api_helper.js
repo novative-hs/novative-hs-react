@@ -31,6 +31,7 @@ export const postRegister = user => {
   formData.append("name", user.name);
   formData.append("cnic", user.cnic);
   formData.append("email", user.email);
+  formData.append("email_participant", user.email_participant);
   formData.append("phone", user.phone);
   formData.append("photo", user.photo);
   formData.append("city", user.city);
@@ -48,6 +49,9 @@ export const postRegister = user => {
   formData.append("district", user.district);
   formData.append("landline_registered_by", user.landline_registered_by);
   formData.append("added_by", user.added_by);
+  formData.append("billing_address", user.billing_address);
+  formData.append("shipping_address", user.shipping_address);
+  formData.append("state", user.state);
 
   console.log("data", user);
 
@@ -522,6 +526,11 @@ export const updateManufactural = manufactural => {
     }
   );
 };
+// GET Paricipant 
+export const getParticipantList = id =>
+  get(`${url.GET_PARTICIPANT_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 export const getInstrumenttypelist = () =>
   get(`${url.GET_INSTRUMENT_TYPE_LIST}`, {

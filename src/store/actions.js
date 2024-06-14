@@ -1,3 +1,5 @@
+import ParticipantList from "./participant-list/reducers";
+
 export * from "./layout/actions";
 
 //dashboard
@@ -24,7 +26,10 @@ export * from "./reagents/actions";
 export * from "./databaseadmin-history/actions";
 export * from "./manufactural/actions";
 export * from "./databaseofunits/actions";
-export * from "./instrument/actions"
+export * from "./instrument/actions";
+
+//Partcipant
+export * from "./participant-list/actions";
 // carts
 export * from "./carts/actions";
 

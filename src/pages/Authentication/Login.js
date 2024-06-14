@@ -200,12 +200,12 @@ class Login extends Component {
                 </div>
               </Col>
               <Col className="bg-light " md={6} lg={6} xl={6}>
-                <div className="d-flex flex-column justify-content-center h-100 px-5">
-                  <h2 className="text-center mt-3 mb-5 text-dark">
+                <div className="d-flex flex-column justify-content-center h-100 px-5 py-5">
+                  <h2 className="text-center mt-3 mb-2 text-dark">
                     Login Form
                   </h2>
 
-                  <div className="d-flex justify-content-between mb-3">
+                  {/* <div className="d-flex justify-content-between mb-3">
                     <div className="flex-fill me-2">
                       <Button
                         className="w-100 "
@@ -224,7 +224,7 @@ class Login extends Component {
                         </Button>
                       </Link>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="mt-4">
                     {this.props.error && this.props.error && (
                       <Alert color="danger">{this.props.error}</Alert>
@@ -283,7 +283,7 @@ class Login extends Component {
                                   "/dashboard-partcipant"
                                 );
                               } else if (success.account_type === "registration-admin") {
-                                this.props.history.push("/pending-labs");}
+                                this.props.history.push("/pending-participant");}
                                 else if (success.account_type === "superadmin") {
                                   this.props.history.push("/add-organization");}
                               else if (
@@ -316,7 +316,7 @@ class Login extends Component {
                         }
                       }}
                     >
-                      {({ errors, status, touched }) => (
+                    {({ errors, status, touched }) => (
                         <Form className="form-horizontal">
                           <div className="mb-3">
                             <Label for="username" className="form-label">
@@ -398,7 +398,7 @@ class Login extends Component {
                             Login
                           </Button>
 
-                          <div className="mt-3 text-center">
+                          {/* <div className="mt-3 text-center">
                             {!isLargeScreen && this.state.finalUrl ? (
                               <p>
                                 Do not have an account?{" "}
@@ -428,107 +428,13 @@ class Login extends Component {
                                 </Link>{" "}
                               </p>
                             )}
-                          </div>
+                          </div> */}
                         </Form>
                       )}
                     </Formik>
-                    
-                    {/* <div className="mb-3 text-center">
-                      <button
-                        onClick={this.toggleForgotPasswordModal}
-                        className="btn btn-link text-primary"
-                      >
-                        <i className="mdi mdi-lock me-1" /> Forgot your
-                        password?
-                      </button>
-                    </div> */}
                   </div>
 
-                  {/* <Modal
-                    isOpen={this.state.isForgotPasswordModalOpen}
-                    toggle={this.toggleForgotPasswordModal}
-                  >
-                    <ModalHeader toggle={this.toggleForgotPasswordModal}>
-                      Forgot Password
-                    </ModalHeader>
-                    <ModalBody>
-                      <div className="">
-                       
-                        <div className="p-2">
-                          <Formik
-                            enableReinitialize={true}
-                            initialValues={{
-                              email: (this.state && this.state.email) || "",
-                            }}
-                            validationSchema={Yup.object().shape({
-                              email: Yup.string().required(
-                                "Please enter your email"
-                              ),
-                            })}
-                            onSubmit={values => {
-                              console.log("error", )
-                              this.props.userForgetPassword(
-                                values,
-                                this.props.history
-                              );
-                              window.scrollTo({
-                                top: 0,
-                                left: 0,
-                                behavior: "smooth",
-                              });
-                            }}
-                          >
-                            {({ errors, status, touched }) => (
-                              <Form className="form-horizontal">
-                                <div className="mb-3">
-                                  <Label for="email" className="form-label">
-                                    Email
-                                  </Label>
-                                  <Field
-                                    name="email"
-                                    type="text"
-                                    onChange={(e) => this.setState({ email: e.target.value })}
-
-                                    className={
-                                      "form-control" +
-                                      (errors.email && touched.email
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="email"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                                <div className="text-end">
-                                  <button
-                                    className="btn btn-primary w-md"
-                                    type="submit"
-                                    disabled={this.props.forgetSuccessMsg}
-                                    onClick={this.handleResetButtonClick}
-                                  >
-                                    Reset
-                                  </button>
-                                </div>
-                              </Form>
-                            )}
-                          </Formik>
-                        </div>
-                        
-                        {this.props.forgetError && this.props.forgetError &&(
-                          <Alert color="danger">{this.props.forgetError}</Alert>
-                        )}
-                     
-                        {this.props.forgetSuccessMsg && this.props.forgetSuccessMsg && (
-                          <Alert color="success">
-                            {this.props.forgetSuccessMsg}
-                          </Alert>
-                        )}
-                      </div>
-                    </ModalBody>
-                  </Modal> */}
+                 
                 </div>
               </Col>
             </Row>

@@ -112,16 +112,16 @@ class StaffRegister extends Component {
                         initialValues={{
                           username: (this.state && this.state.username) || "",
                           email: (this.state && this.state.email) || "",
+                          email_participant: (this.state && this.state.email_participant) || "",
                           password: (this.state && this.state.password) || "",
                           password2: (this.state && this.state.password2) || "",
                           account_type:
-                            (this.state && this.state.account_type) || "labowner",
+                            (this.state && this.state.account_type) ||
+                            "labowner",
                           name: (this.state && this.state.name) || "",
                           cnic: (this.state && this.state.cnic) || "",
                           phone: (this.state && this.state.phone) || "",
                           city: (this.state && this.state.city) || "",
-
-                          landline: (this.state && this.state.landline) || "",
                           postalcode:
                             (this.state && this.state.postalcode) || "",
 
@@ -129,8 +129,11 @@ class StaffRegister extends Component {
                           organization:
                             (this.state && this.state.organization) || "",
                           country: (this.state && this.state.country) || "",
-
-                          address: (this.state && this.state.address) || "",
+                          billing_address:
+                            (this.state && this.state.billing_address) || "",
+                          shipping_address:
+                            (this.state && this.state.shipping_address) || "",
+                          state: (this.state && this.state.state) || "",
                           Select_schemes:
                             (this.state && this.state.Select_schemes) || "No",
                           department:
@@ -146,127 +149,154 @@ class StaffRegister extends Component {
                             (this.state && this.state.landline_registered_by) ||
                             "",
                           website: (this.state && this.state.website) || "",
-                          
-                          added_by: localStorage.getItem(
-                            "authUser"
-                          )
-                            ? JSON.parse(
-                                localStorage.getItem(
-                                  "authUser"
-                                )
-                              ).user_id
+
+                          added_by: localStorage.getItem("authUser")
+                            ? JSON.parse(localStorage.getItem("authUser"))
+                                .user_id
                             : "",
                         }}
-                        // validationSchema={Yup.object().shape({
-                        //   username: Yup.string()
-                        //     .required("Username is required")
-                        //     .min(3, "Username must be at least 3 characters")
-                        //     .max(
-                        //       50,
-                        //       "Username can't be longer than 50 characters"
-                        //     ),
-                        //   password: Yup.string().required(
-                        //     "Please enter your password"
-                        //   ),
-                        //   name: Yup.string()
-                        //     .trim()
-                        //     .required("Please enter name")
-                        //     .min(3, "Name must be at least 3 characters")
-                        //     .max(50, "Name can't be longer than 50 characters"),
+                        validationSchema={Yup.object().shape({
+                          username: Yup.string()
+                            .required("Username is required")
+                            .min(3, "Username must be at least 3 characters")
+                            .max(
+                              50,
+                              "Username can't be longer than 50 characters"
+                            ),
+                          password: Yup.string().required(
+                            "Please enter your password"
+                          ),
+                          name: Yup.string()
+                            .trim()
+                            .required("Please enter name")
+                            .min(3, "Name must be at least 3 characters")
+                            .max(50, "Name can't be longer than 50 characters"),
 
-                        //   email: Yup.string()
-                        //     .required("Please enter your email")
-                        //     .email("Please enter valid email"),
+                          email: Yup.string()
+                            .required("Please enter your email")
+                            .email("Please enter valid email"),
 
-                        //   password2: Yup.string()
-                        //     .required("Please re-enter your password")
-                        //     .when("password", {
-                        //       is: val => (val && val.length > 0 ? true : false),
-                        //       then: Yup.string().oneOf(
-                        //         [Yup.ref("password")],
-                        //         "Both password need to be the same"
-                        //       ),
-                        //     }),
-                        //   city: Yup.string()
-                        //     .trim()
-                        //     .required("Please enter city"),
+                          email_participant: Yup.string()
+                            .required("Please enter  email")
+                            .email("Please enter valid email"),
 
-                        //   landline: Yup.string()
-                        //     .required("Telephone number is required")
-                        //     .matches(
-                        //       /^\d{7,15}$/,
-                        //       "Telephone number must be between 7 and 15 digits"
-                        //     ),
+                          password2: Yup.string()
+                            .required("Please re-enter your password")
+                            .when("password", {
+                              is: val => (val && val.length > 0 ? true : false),
+                              then: Yup.string().oneOf(
+                                [Yup.ref("password")],
+                                "Both password need to be the same"
+                              ),
+                            }),
+                          city: Yup.string()
+                            .trim()
+                            .required("Please enter city"),
 
-                        //   postalcode: Yup.string()
-                        //     .trim()
-                        //     .required("Please enter postalcode"),
+                          // landline: Yup.string()
+                          //   .required("Telephone number is required")
+                          //   .matches(
+                          //     /^\d{7,15}$/,
+                          //     "Telephone number must be between 7 and 15 digits"
+                          //   ),
 
-                        //   organization: Yup.string()
-                        //     .required("Organization name is required")
-                        //     .max(
-                        //       100,
-                        //       "Organization name can't be longer than 100 characters"
-                        //     ),
+                          organization: Yup.string()
+                            .required("Organization name is required")
+                            .max(
+                              100,
+                              "Organization name can't be longer than 100 characters"
+                            ),
 
-                        //   country: Yup.string()
-                        //     .required("Country is required")
-                        //     .max(
-                        //       50,
-                        //       "Country can't be longer than 50 characters"
-                        //     ),
+                          country: Yup.string()
+                            .required("Country is required")
+                            .max(
+                              50,
+                              "Country can't be longer than 50 characters"
+                            ),
 
-                        //   address: Yup.string()
-                        //     .required("Address is required")
-                        //     .max(
-                        //       200,
-                        //       "Address can't be longer than 200 characters"
-                        //     ),
+                          // address: Yup.string()
+                          //   .required("Address is required")
+                          //   .max(
+                          //     500,
+                          //     "Address can't be longer than 500 characters"
+                          //   ),
+                          state: Yup.string()
+                            .required("State is required")
+                            .max(
+                              200,
+                              "State can't be longer than 200 characters"
+                            ),
+                          billing_address: Yup.string()
+                            .required("billing_address is required")
+                            .max(
+                              500,
+                              "Address can't be longer than 500 characters"
+                            ),
+                          shipping_address: Yup.string()
+                            .required("shipping_address is required")
+                            .max(
+                              500,
+                              "Address can't be longer than 500 characters"
+                            ),
 
-                        //   Select_schemes:
-                        //     Yup.string().required("Scheme is required"),
+                          Select_schemes:
+                            Yup.string().required("Scheme is required"),
 
-                        //   department: Yup.string()
-                        //     .required("Department is required")
-                        //     .max(
-                        //       100,
-                        //       "Department can't be longer than 100 characters"
-                        //     ),
+                          department: Yup.string()
+                            .required("Department is required")
+                            .max(
+                              100,
+                              "Department can't be longer than 100 characters"
+                            ),
 
-                        //   district: Yup.string()
-                        //     .required("District is required")
-                        //     .max(
-                        //       50,
-                        //       "District can't be longer than 50 characters"
-                        //     ),
-                        //   lab_staff_name: Yup.string()
-                        //     .required("Lab staff name is required")
-                        //     .max(
-                        //       50,
-                        //       "Lab staff name can't be longer than 50 characters"
-                        //     ),
-                        //   lab_staff_designation: Yup.string()
-                        //     .required("Lab staff designation is required")
-                        //     .max(
-                        //       50,
-                        //       "Lab staff designation can't be longer than 50 characters"
-                        //     ),
+                          district: Yup.string()
+                            .required("District is required")
+                            .max(
+                              50,
+                              "District can't be longer than 50 characters"
+                            ),
+                          lab_staff_name: Yup.string()
+                            .required("Lab staff name is required")
+                            .max(
+                              50,
+                              "Lab staff name can't be longer than 50 characters"
+                            ),
+                          lab_staff_designation: Yup.string()
+                            .required("Lab staff designation is required")
+                            .max(
+                              50,
+                              "Lab staff designation can't be longer than 50 characters"
+                            ),
 
-                        //   landline_registered_by: Yup.string()
-                        //     .required("Landline number is required")
-                        //     .matches(
-                        //       /^\d{7,15}$/,
-                        //       "Landline number must be between 7 and 15 digits"
-                        //     ),
-                        //   website: Yup.string()
-                        //     .url("Invalid URL")
-                        //     .required("Website is required"),
-                        // })}
-                        onSubmit={values => {
+                          landline_registered_by: Yup.string()
+                            .required("Landline number is required")
+                            .matches(
+                              /^\d{7,15}$/,
+                              "Landline number must be between 7 and 15 digits"
+                            ),
+                          website: Yup.string().url("Invalid URL"),
+                          // .required("Website is required"),
+                        })}
+                        // onSubmit={values => {
+                        //   this.props.registerUser(values);
+                        //   // console.log("valuessss",  this.props.registerUser(values))
+
+                        //   // Check for errors and set the success message
+                        //   setTimeout(() => {
+                        //     if (
+                        //       !this.state.usernameFieldError &&
+                        //       !this.state.passwordFieldError &&
+                        //       !this.state.incompleteRegistrationError
+                        //     ) {
+                        //       this.setState({
+                        //         submittedMessage: "Participant added  successfully.",
+                        //       });
+                        //     }
+                        //   }, 1000); // Initial 1 second delay
+                        // }}
+                        onSubmit={(values, { setSubmitting }) => {
                           this.props.registerUser(values);
-                          // console.log("valuessss",  this.props.registerUser(values))
-
-                          // Check for errors and set the success message
+                          setSubmitting(false); // Ensures form is not submitting
                           setTimeout(() => {
                             if (
                               !this.state.usernameFieldError &&
@@ -274,13 +304,14 @@ class StaffRegister extends Component {
                               !this.state.incompleteRegistrationError
                             ) {
                               this.setState({
-                                submittedMessage: "Participant added  successfully.",
+                                submittedMessage:
+                                  "Participant added successfully.",
                               });
                             }
                           }, 1000); // Initial 1 second delay
                         }}
                       >
-                        {({ errors, touched }) => (
+                        {({ errors, touched, isSubmitting }) => (
                           <Form className="form-horizontal">
                             {/* Name field */}
                             <Row>
@@ -308,58 +339,56 @@ class StaffRegister extends Component {
                                 </div>
                               </Col>
                               <Col sm={6} md={6} xl={6}>
-                                {/* Address field */}
+                                {/* Organization email */}
                                 <div className="mb-3">
-                                  <Label for="address" className="form-label">
-                                    Address
+                                  <Label
+                                    for="email"
+                                    className="form-label"
+                                  >
+                                    Email
                                   </Label>
                                   <Field
-                                    id="address"
-                                    name="address"
+                                    id="email"
+                                    name="email"
                                     type="text"
-                                    placeholder="Please enter your complete address"
+                                    placeholder="Please enter your email"
                                     className={
                                       "form-control" +
-                                      (errors.address && touched.address
+                                      (errors.email &&
+                                      touched.email
                                         ? " is-invalid"
                                         : "")
                                     }
                                   />
                                   <ErrorMessage
-                                    name="address"
+                                    name="email"
                                     component="div"
                                     className="invalid-feedback"
                                   />
-                                  {/* <span className="text-primary font-size-12">
-                                    <strong>
-                                      Note: Please add the complete valid
-                                      address searchable on google maps.
-                                    </strong>
-                                  </span> */}
                                 </div>
                               </Col>
                             </Row>
                             <Row>
                               <Col sm={6} md={6} xl={6}>
-                                {/* Landline field */}
+                                {/* website */}
                                 <div className="mb-3">
-                                  <Label for="landline" className="form-label">
-                                    Telephone No
+                                  <Label for="website" className="form-label">
+                                    Website
                                   </Label>
                                   <Field
-                                    id="landline"
-                                    name="landline"
+                                    id="website"
+                                    name="website"
                                     type="text"
-                                    placeholder="Please enter your landline no."
+                                    placeholder="Please enter your website_URL"
                                     className={
                                       "form-control" +
-                                      (errors.landline && touched.landline
+                                      (errors.website && touched.website
                                         ? " is-invalid"
                                         : "")
                                     }
                                   />
                                   <ErrorMessage
-                                    name="landline"
+                                    name="website"
                                     component="div"
                                     className="invalid-feedback"
                                   />
@@ -420,28 +449,85 @@ class StaffRegister extends Component {
                                 </div>
                               </Col>
                               <Col sm={6} md={6} xl={6}>
+                                {/* State field */}
                                 <div className="mb-3">
-                                  <Label
-                                    for="organization"
-                                    className="form-label"
-                                  >
-                                    Organization Name
+                                  <Label for="state" className="form-label">
+                                    State
                                   </Label>
                                   <Field
-                                    id="organization"
-                                    name="organization"
+                                    id="state"
+                                    name="state"
                                     type="text"
-                                    placeholder="Please enter your organization"
+                                    placeholder="Please enter your state"
                                     className={
                                       "form-control" +
-                                      (errors.organization &&
-                                      touched.organization
+                                      (errors.state && touched.state
                                         ? " is-invalid"
                                         : "")
                                     }
                                   />
                                   <ErrorMessage
-                                    name="organization"
+                                    name="state"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col sm={6} md={6} xl={6}>
+                                {/* Shipping Address */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="shipping_address"
+                                    className="form-label"
+                                  >
+                                    Shipping Address
+                                  </Label>
+                                  <Field
+                                    id="shipping_address"
+                                    name="shipping_address"
+                                    type="text"
+                                    placeholder="Please enter your Shipping address"
+                                    className={
+                                      "form-control" +
+                                      (errors.shipping_address &&
+                                      touched.shipping_address
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="shipping_address"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                              <Col sm={6} md={6} xl={6}>
+                                {/* Billing Address */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="billing_address"
+                                    className="form-label"
+                                  >
+                                    Billing Address
+                                  </Label>
+                                  <Field
+                                    id="billing_address"
+                                    name="billing_address"
+                                    type="text"
+                                    placeholder="Please enter your Billing address"
+                                    className={
+                                      "form-control" +
+                                      (errors.billing_address &&
+                                      touched.billing_address
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="billing_address"
                                     component="div"
                                     className="invalid-feedback"
                                   />
@@ -462,7 +548,7 @@ class StaffRegister extends Component {
                                     id="department"
                                     name="department"
                                     type="text"
-                                    placeholder="Please enter your complete department"
+                                    placeholder="Please enter your department"
                                     className={
                                       "form-control" +
                                       (errors.department && touched.department
@@ -475,12 +561,6 @@ class StaffRegister extends Component {
                                     component="div"
                                     className="invalid-feedback"
                                   />
-                                  {/* <span className="text-primary font-size-12">
-                                    <strong>
-                                      Note: Please add the complete valid
-                                      address searchable on google maps.
-                                    </strong>
-                                  </span> */}
                                 </div>
                               </Col>
                               {/* District */}
@@ -521,55 +601,62 @@ class StaffRegister extends Component {
                               {/* Participant Type */}
                               <Col sm={6} md={6} xl={6}></Col>
                             </Row>
-                            {/* Schemes */}
-                            <div className="mb-3">
-                              <Label
-                                for="Select_schemes"
-                                className="form-label"
-                              >
-                                Select scheme
-                              </Label>
-                              <Field
-                               name="Select_schemes"
-                               as="select"
-                               className="form-select"
-                              >
-                                <option value=" ">Choose option</option>
-                                <option value="abc">Abc</option>
-                                <option value="xyz">Xyz</option>
-                              </Field>
-                            </div>
-                            <div className="mb-3">
-                              <Label for="website" className="form-label">
-                                Website
-                              </Label>
-                              <Field
-                                id="website"
-                                name="website"
-                                type="text"
-                                placeholder="Please enter your website_URL"
-                                className={
-                                  "form-control" +
-                                  (errors.website && touched.website
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                              />
-                              <ErrorMessage
-                                name="website"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                              {/* <span className="text-primary font-size-12">
-                                    <strong>
-                                      Note: Please add the complete valid
-                                      address searchable on google maps.
-                                    </strong>
-                                  </span> */}
-                            </div>
-                            <div className="mb-3 mt-5">
+                            <Row>
+                              <Col sm={6} md={6} xl={6}>
+                                {/* Schemes */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="Select_schemes"
+                                    className="form-label"
+                                  >
+                                    Select scheme
+                                  </Label>
+                                  <Field
+                                    name="Select_schemes"
+                                    as="select"
+                                    className="form-select"
+                                  >
+                                    <option value=" ">Choose option</option>
+                                    <option value="abc">Abc</option>
+                                    <option value="xyz">Xyz</option>
+                                  </Field>
+                                </div>
+                              </Col>
+                              <Col sm={6} md={6} xl={6}>
+                                {" "}
+                                {/* Organization id */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="organization"
+                                    className="form-label"
+                                  >
+                                    Organization
+                                  </Label>
+                                  <Field
+                                    id="organization"
+                                    name="organization"
+                                    type="text"
+                                    placeholder="Please enter your organization"
+                                    className={
+                                      "form-control" +
+                                      (errors.organization &&
+                                      touched.organization
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="organization"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                            </Row>
+
+                            {/* <div className="mb-3 mt-5">
                               <h3>Who is registering the participant</h3>
-                            </div>
+                            </div> */}
                             <Row>
                               <Col sm={6} md={6} xl={6}>
                                 {/* Lab Staff Name field */}
@@ -578,7 +665,8 @@ class StaffRegister extends Component {
                                     for="lab_staff_name"
                                     className="form-label"
                                   >
-                                    Registered by (Name)
+                                    {/* Registered by (Name) */}
+                                    Name of notification person
                                   </Label>
                                   <Field
                                     id="lab_staff_name"
@@ -607,7 +695,8 @@ class StaffRegister extends Component {
                                     for="lab_staff_designation"
                                     className="form-label"
                                   >
-                                    Lab Staff Designation
+                                    {/* Registered by (Designation) */}
+                                    Designation of notification person
                                   </Label>
                                   <Field
                                     id="lab_staff_designation"
@@ -638,13 +727,40 @@ class StaffRegister extends Component {
                                     for="landline_registered_by"
                                     className="form-label"
                                   >
-                                    Telephone No
+                                    Contact No. of notification person
                                   </Label>
                                   <Field
                                     id="landline_registered_by"
                                     name="landline_registered_by"
                                     type="text"
-                                    placeholder="Please enter your landline no."
+                                    placeholder="Please enter landline no."
+                                    className={
+                                      "form-control" +
+                                      (errors.landline_registered_by &&
+                                      touched.landline_registered_by
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="landline_registered_by"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>{" "}
+                                {/* Landline field */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="landline_registered_by"
+                                    className="form-label"
+                                  >
+                                    Contact No. of notification person
+                                  </Label>
+                                  <Field
+                                    id="landline_registered_by"
+                                    name="landline_registered_by"
+                                    type="text"
+                                    placeholder="Please enter landline no."
                                     className={
                                       "form-control" +
                                       (errors.landline_registered_by &&
@@ -662,20 +778,22 @@ class StaffRegister extends Component {
                               </Col>
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
-                                  <Label className="form-label">Email</Label>
+                                  <Label className="form-label">
+                                    Email of notification person
+                                  </Label>
                                   <Field
-                                    name="email"
+                                    name="email_participant"
                                     type="text"
-                                    placeholder="Enter email"
+                                    placeholder="Enter email of notification person"
                                     className={
                                       "form-control" +
-                                      (errors.email && touched.email
+                                      (errors.email_participant && touched.email_participant
                                         ? " is-invalid"
                                         : "")
                                     }
                                   />
                                   <ErrorMessage
-                                    name="email"
+                                    name="email_participant"
                                     component="div"
                                     className="invalid-feedback"
                                   />
@@ -824,6 +942,7 @@ class StaffRegister extends Component {
                                 className="btn btn-primary btn-block"
                                 type="submit"
                                 // disabled={this.state.submittedMessage}
+                                disabled={isSubmitting} // Disables button during form submission
                                 style={{
                                   backgroundColor: "#1D1DE4",
                                 }}

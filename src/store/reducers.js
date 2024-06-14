@@ -31,6 +31,9 @@ import activitylogUnits from "./databaseadmin-history/reducers";
 import ManufacturalList from "./manufactural/reducers";
 import Instrument from "./instrument/reducer"
 
+
+//Participant
+import ParticipantList from "./participant-list/reducers";
 // organization
 import organizationaccount from "./organization/reducer"
 //LabMarket
@@ -108,6 +111,7 @@ const rootReducer = combineReducers({
   Dashboard,
   referrelFeeLabs,
   Layout,
+  ParticipantList,
 
 
   Login,

@@ -32,6 +32,9 @@ import UnitsListSaga from "./units/sagas";
 import UnitsHistorySaga from "./databaseadmin-history/sagas";
 import ReagentsListSaga from "./reagents/sagas";
 import ManufacturalListSaga from "./manufactural/sagas";
+
+//Participant
+import participantListSaga from "./participant-list/sagas";
 // organization
 import organizationaccountSaga from "./organization/saga";
 
@@ -80,6 +83,7 @@ export  default function* rootSaga() {
     fork(InstrumentListSaga),
     fork(ReagentsListSaga),
     fork(UnitsListSaga),
+    fork(participantListSaga),
     fork(UnitsHistorySaga),
     fork(dashboardSaga),
     fork(LayoutSaga),

@@ -31,7 +31,6 @@ import {
   apiError,
 } from "../../store/actions";
 
-import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
 import { propTypes } from "react-bootstrap/esm/Image";
 
 class LabProfile extends Component {
@@ -39,18 +38,11 @@ class LabProfile extends Component {
     super(props);
     this.state = {
       name: "",
-      country: "",
       email: "",
-      department: "",
-      landline: "",
-      address: "",
-      city: "",
-      organization: "",
-      postalcode: "",
-      is_active: "",
-      is_blocked: "",
-      fax: "",
-      isProfileUpdated: false,
+      lab_staff_name:"",
+      landline_registered_by:"",
+      shipping_address: "",
+      billing_address: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -67,19 +59,11 @@ class LabProfile extends Component {
       this.setState({
         name: this.props.success.name,
         email: this.props.success.email,
-        landline: this.props.success.landline,
-        address: this.props.success.address,
-        city: this.props.success.city,
-        fax: this.props.success.fax,
-        department: this.props.success.department,
-        country: this.props.success.country,
-        postalcode: this.props.success.postalcode,
-        organization: this.props.success.organization,
-
-        complaint_handling_email: this.props.success.complaint_handling_email,
-        complaint_handling_phone: this.props.success.complaint_handling_phone,
-
-        is_active: this.props.success.is_active,
+        landline_registered_by: this.props.success.landline_registered_by,
+        shipping_address: this.props.success.shipping_address,
+        billing_address: this.props.success.billing_address,
+        lab_staff_name: this.props.success.lab_staff_name,
+      
       });
     }, 1500);
   }
@@ -113,24 +97,15 @@ class LabProfile extends Component {
                       initialValues={{
                         name: (this.state && this.state.name) || "",
                         email: (this.state && this.state.email) || "",
-                        country: (this.state && this.state.country) || "",
-                        fax: (this.state && this.state.fax) || "",
-                        department: (this.state && this.state.department) || "",
-                        postalcode: (this.state && this.state.postalcode) || "",
-                        landline: (this.state && this.state.landline) || "",
-                        address: (this.state && this.state.address) || "",
-                        city: (this.state && this.state.city) || "",
-                        organization:
-                          (this.state && this.state.organization) || "",
-
-                        complaint_handling_email:
-                          (this.state && this.state.complaint_handling_email) ||
-                          "",
-                        complaint_handling_phone:
-                          (this.state && this.state.complaint_handling_phone) ||
-                          "",
-                        is_active:
-                          (this.state && this.state.is_active) || "Yes",
+                        lab_staff_name:
+                          (this.state && this.state.lab_staff_name) || "",
+                        landline_registered_by:
+                          (this.state && this.state.landline_registered_by) || "",
+                        shipping_address:
+                          (this.state && this.state.shipping_address) || "",
+                        billing_address:
+                          (this.state && this.state.billing_address) || "",
+                       
                       }}
                       validationSchema={Yup.object().shape({
                         name: Yup.string()
@@ -139,48 +114,28 @@ class LabProfile extends Component {
                           .min(3, "Please enter at least 3 characters")
                           .max(255, "Please enter maximum 255 characters"),
 
+                        lab_staff_name: Yup.string()
+                          .trim()
+                          .required("Please enter name of notification person")
+                          .min(3, "Please enter at least 3 characters")
+                          .max(255, "Please enter maximum 255 characters"),
+
                         email: Yup.string()
                           .required("Please enter your email")
                           .email("Please enter valid email")
                           .max(255, "Please enter maximum 255 characters"),
 
-                        landline: Yup.string()
-                          .required("Please enter your landline no.")
+                        landline_registered_by: Yup.string()
+                          .required("Please enter your landline_registered_by")
                           .max(255, "Please enter maximum 255 characters"),
-                        postalcode: Yup.string()
-                          .required("Please enter your postalcode no.")
+                        billing_address: Yup.string()
+                          .required("Please enter your billing_address")
                           .max(255, "Please enter maximum 255 characters"),
-                        fax: Yup.string()
-                          .required("Please enter your fax no.")
-                          .max(255, "Please enter maximum 255 characters"),
-                        address: Yup.string()
+                        shipping_address: Yup.string()
                           .trim()
-                          .required("Please enter your full address")
+                          .required("Please enter your shipping_address")
                           .max(255, "Please enter maximum 255 characters"),
-                        city: Yup.string()
-                          .trim()
-                          .required("Please enter your city")
-                          .max(255, "Please enter maximum 255 characters")
-                          .matches(
-                            /^[a-zA-Z][a-zA-Z ]+$/,
-                            "Please enter only alphabets and spaces"
-                          ),
-                        country: Yup.string()
-                          .trim()
-                          .required("Please enter your country")
-                          .max(255, "Please enter maximum 255 characters")
-                          .matches(
-                            /^[a-zA-Z][a-zA-Z ]+$/,
-                            "Please enter only alphabets and spaces"
-                          ),
-                        department: Yup.string()
-                          .trim()
-                          .required("Please enter your department")
-                          .max(255, "Please enter maximum 255 characters"),
-                        organization: Yup.string()
-                          .trim()
-                          .required("Please enter your organization")
-                          .max(255, "Please enter maximum 255 characters"),
+                       
                       })}
                       onSubmit={values => {
                         // console.log("ssssssssssss",emailFieldError )
@@ -220,10 +175,6 @@ class LabProfile extends Component {
                                   id="name"
                                   name="name"
                                   type="text"
-                                  onChange={e =>
-                                    this.setState({ name: e.target.value })
-                                  }
-                                  value={this.state.name}
                                   className={
                                     "form-control" +
                                     (errors.name && touched.name
@@ -239,27 +190,49 @@ class LabProfile extends Component {
                               </div>
                             </Col>
                             <Col sm={6} md={6} xl={6}>
-                              {/* Email field */}
+                              {/* Name of notifying person */}
                               <div className="mb-3">
-                                <Label for="email" className="form-label">
-                                  Email
+                                <Label
+                                  for="lab_staff_name"
+                                  className="form-label"
+                                >
+                                  {/* Registered by (Name) */}
+                                  Name of notification person
+                                </Label>
+                                <Field
+                                  id="lab_staff_name"
+                                  name="lab_staff_name"
+                                  type="text"
+                                  placeholder="Please enter the name of person registering participant"
+                                  className={
+                                    "form-control" +
+                                    (errors.lab_staff_name &&
+                                    touched.lab_staff_name
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <ErrorMessage
+                                  name="lab_staff_name"
+                                  component="div"
+                                  className="invalid-feedback"
+                                />
+                              </div>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col sm={6} md={6} xl={6}>
+                              <div className="mb-3">
+                                <Label className="form-label">
+                                  Email of notification person
                                 </Label>
                                 <Field
                                   name="email"
                                   type="text"
-                                  onFocus={() => {
-                                    this.setState({
-                                      emailFieldError: null,
-                                    });
-                                  }}
-                                  onChange={e =>
-                                    this.setState({ email: e.target.value })
-                                  }
-                                  value={this.state.email}
+                                  placeholder="Enter email"
                                   className={
                                     "form-control" +
-                                    ((errors.email && touched.email) ||
-                                    this.state.emailFieldError
+                                    (errors.email && touched.email
                                       ? " is-invalid"
                                       : "")
                                   }
@@ -269,67 +242,39 @@ class LabProfile extends Component {
                                   component="div"
                                   className="invalid-feedback"
                                 />
-                                <div className="invalid-feedback">
-                                  {this.state.emailFieldError}
-                                </div>
+
+                                {this.state.emailError && (
+                                  <div className="invalid-feedback d-block">
+                                    {this.state.emailError}
+                                  </div>
+                                )}
                               </div>
                             </Col>
-                          </Row>
-                          <Row>
+
                             <Col sm={6} md={6} xl={6}>
                               {/* Landline field */}
                               <div className="mb-3">
-                                <Label for="landline" className="form-label">
-                                  Landline
+                                <Label
+                                  for="landline_registered_by"
+                                  className="form-label"
+                                >
+                                  Contact No. of notification person
                                 </Label>
                                 <Field
-                                  id="landline"
-                                  name="landline"
+                                  id="landline_registered_by"
+                                  name="landline_registered_by"
                                   type="text"
-                                  onChange={e =>
-                                    this.setState({
-                                      landline: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.landline}
+                                  placeholder="Please enter landline no."
                                   className={
                                     "form-control" +
-                                    (errors.landline && touched.landline
+                                    (errors.landline_registered_by &&
+                                    touched.landline_registered_by
                                       ? " is-invalid"
                                       : "")
                                   }
                                 />
                                 <ErrorMessage
-                                  name="landline"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col sm={6} md={6} xl={6}>
-                              {" "}
-                              {/* fax */}
-                              <div className="mb-3">
-                                <Label for="fax" className="form-label">
-                                  Fax
-                                </Label>
-                                <Field
-                                  id="fax"
-                                  name="fax"
-                                  type="text"
-                                  onChange={e =>
-                                    this.setState({ fax: e.target.value })
-                                  }
-                                  value={this.state.fax}
-                                  className={
-                                    "form-control" +
-                                    (errors.fax && touched.fax
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="address"
+                                  name="landline_registered_by"
                                   component="div"
                                   className="invalid-feedback"
                                 />
@@ -337,180 +282,51 @@ class LabProfile extends Component {
                             </Col>
                           </Row>
 
-                          <Row>
-                            <Col sm={6} md={6} xl={6}>
-                              {" "}
-                              {/* postalcode */}
-                              <div className="mb-3">
-                                <Label for="postalcode" className="form-label">
-                                  Postalcode
-                                </Label>
-                                <Field
-                                  id="postalcode"
-                                  name="postalcode"
-                                  type="text"
-                                  onChange={e =>
-                                    this.setState({
-                                      postalcode: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.postalcode}
-                                  className={
-                                    "form-control" +
-                                    (errors.postalcode && touched.postalcode
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="postalcode"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col sm={6} md={6} xl={6}>
-                              {" "}
-                              {/* city */}
-                              <div className="mb-3">
-                                <Label for="name" className="form-label">
-                                  City
-                                </Label>
-                                <Field
-                                  id="city"
-                                  name="city"
-                                  type="text"
-                                  onChange={e =>
-                                    this.setState({ city: e.target.value })
-                                  }
-                                  value={this.state.city}
-                                  className={
-                                    "form-control" +
-                                    (errors.city && touched.city
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="city"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col sm={6} md={6} xl={6}>
-                              {" "}
-                              {/* country */}
-                              <div className="mb-3">
-                                <Label for="country" className="form-label">
-                                  Country
-                                </Label>
-                                <Field
-                                  id="country"
-                                  name="country"
-                                  type="text"
-                                  onChange={e =>
-                                    this.setState({ country: e.target.value })
-                                  }
-                                  value={this.state.country}
-                                  className={
-                                    "form-control" +
-                                    (errors.country && touched.country
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="address"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                            <Col sm={6} md={6} xl={6}>
-                              {" "}
-                              {/* department */}
-                              <div className="mb-3">
-                                <Label for="department" className="form-label">
-                                  Department
-                                </Label>
-                                <Field
-                                  id="department"
-                                  name="department"
-                                  type="text"
-                                  onChange={e =>
-                                    this.setState({
-                                      department: e.target.value,
-                                    })
-                                  }
-                                  value={this.state.department}
-                                  className={
-                                    "form-control" +
-                                    (errors.department && touched.department
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="department"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                          </Row>
-
-                          {/* organization */}
+                          {/* shipping field */}
                           <div className="mb-3">
-                            <Label for="organization" className="form-label">
-                              Organization
+                            <Label
+                              for="shipping_address"
+                              className="form-label"
+                            >
+                              Shipping Address
                             </Label>
                             <Field
-                              id="organization"
-                              name="organization"
+                              id="shipping_address"
+                              name="shipping_address"
                               type="text"
-                              onChange={e =>
-                                this.setState({ organization: e.target.value })
-                              }
-                              value={this.state.organization}
                               className={
                                 "form-control" +
-                                (errors.organization && touched.organization
+                                (errors.shipping_address &&
+                                touched.shipping_address
                                   ? " is-invalid"
                                   : "")
                               }
                             />
                             <ErrorMessage
-                              name="address"
+                              name="shipping_address"
                               component="div"
                               className="invalid-feedback"
                             />
                           </div>
-
-                          {/* Address field */}
+                          {/* billing_address */}
                           <div className="mb-3">
-                            <Label for="address" className="form-label">
-                              Complete address
+                            <Label for="billing_address" className="form-label">
+                              Billingh Address
                             </Label>
                             <Field
-                              id="address"
-                              name="address"
+                              id="billing_address"
+                              name="billing_address"
                               type="text"
-                              onChange={e =>
-                                this.setState({ address: e.target.value })
-                              }
-                              value={this.state.address}
                               className={
                                 "form-control" +
-                                (errors.address && touched.address
+                                (errors.billing_address &&
+                                touched.billing_address
                                   ? " is-invalid"
                                   : "")
                               }
                             />
                             <ErrorMessage
-                              name="address"
+                              name="billing_address"
                               component="div"
                               className="invalid-feedback"
                             />
