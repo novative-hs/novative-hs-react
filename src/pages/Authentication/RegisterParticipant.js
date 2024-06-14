@@ -748,33 +748,7 @@ class StaffRegister extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>{" "}
-                                {/* Landline field */}
-                                <div className="mb-3">
-                                  <Label
-                                    for="landline_registered_by"
-                                    className="form-label"
-                                  >
-                                    Contact No. of notification person
-                                  </Label>
-                                  <Field
-                                    id="landline_registered_by"
-                                    name="landline_registered_by"
-                                    type="text"
-                                    placeholder="Please enter landline no."
-                                    className={
-                                      "form-control" +
-                                      (errors.landline_registered_by &&
-                                      touched.landline_registered_by
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="landline_registered_by"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                              
                               </Col>
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
