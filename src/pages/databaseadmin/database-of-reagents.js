@@ -39,7 +39,6 @@ import {
   getReagentlist,
   addNewReagents,
   updateReagents,
-//   deletePathologist,
 } from "store/reagents/actions";
 
 import { isEmpty, size } from "lodash";
@@ -52,6 +51,7 @@ class ReagentsList extends Component {
     this.state = {
       nameFilter: '',
       addedbyFilter:'',
+      idFilter: '',
       dateFilter:'',
       codeFilter: '',
       statusFilter:'',
@@ -67,58 +67,42 @@ class ReagentsList extends Component {
           text: "id",
           dataField: "id",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, reagent) => <>{reagent.id}</>,
-        },
-        {
-            text: "Date of Addition",
-            dataField: "date_of_addition",
-            sort: true,
-            hidden: false,
-            headerFormatter: (column, colIndex) => {
-              return (
-                <>
-                <div>
-                
-                  <input
-                    type="text"
-                    value={this.state.dateFilter}
-                    onChange={e => this.handleFilterChange('dateFilter', e)}
-                    className="form-control"
-                 
-                  />
-                </div>
-                  <div>{column.text}</div>
-                  </>
-              );
-            },
-            formatter: (cellContent, unitlist) => (
-              <>
-                <span>
-                  {moment(unitlist.date_of_addition).format("DD MMM YYYY, h:mm A")}
-                </span>
-              </>
-            ),
-          },
-        {
-          dataField: "name",
-          text: "Name",
-          sort: true,
-         // style: { textAlign: 'left' },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>              
-                <input
-                  type="text"
-                  value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange('nameFilter', e)}
-                  className="form-control"
-               
-                />
-              </div>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    className="form-control"
+                  />
+                </div>
                 <div>{column.text}</div>
-                </>
+              </>
+            );
+          },
+          headerStyle: { width: '150px' },  // Adjust the width as needed
+  style: { width: '150px' },  // Adjust the width as needed
+        },
+        {
+          dataField: "name",
+          text: "Reagent",
+          sort: true,
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.nameFilter}
+                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
             );
           },
         },
@@ -145,30 +129,6 @@ class ReagentsList extends Component {
             );
           },
         },
- 
-          {
-            dataField: "added_by",
-            text: "Added By",
-            sort: true,
-            style: { textAlign: 'left' },
-            headerFormatter: (column, colIndex) => {
-              return (
-                <>
-                <div>
-                
-                  <input
-                    type="text"
-                    value={this.state.addedbyFilter}
-                    onChange={e => this.handleFilterChange('addedbyFilter', e)}
-                    className="form-control"
-                 
-                  />
-                </div>
-                  <div>{column.text}</div>
-                  </>
-              );
-            },
-          },
         {
           dataField: "status",
           text: "Status",
@@ -192,7 +152,37 @@ class ReagentsList extends Component {
             );
           },
         },
-
+         
+        {
+          text: "Date of Addition",
+          dataField: "date_of_addition",
+          sort: true,
+          hidden: false,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+              
+                <input
+                  type="text"
+                  value={this.state.dateFilter}
+                  onChange={e => this.handleFilterChange('dateFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
+          formatter: (cellContent, unitlist) => (
+            <>
+              <span>
+                {moment(unitlist.date_of_addition).format("DD MMM YYYY")}
+              </span>
+            </>
+          ),
+      },
         {
           dataField: "menu",
           isDummyField: true,
@@ -259,12 +249,13 @@ class ReagentsList extends Component {
     // Filter data based on filter values
     filterData = () => {
       const { ReagentList } = this.props;
-      const { nameFilter, addedbyFilter, dateFilter, statusFilter, codeFilter } = this.state;
+      const { nameFilter, addedbyFilter, dateFilter, idFilter,statusFilter, codeFilter } = this.state;
     
       const filteredData = ReagentList.filter(entry => {
         const name = entry.name ? entry.name.toString().toLowerCase() : "";
         const addedBy = entry.added_by ? entry.added_by.toString().toLowerCase() : "";
         const status = entry.status ? entry.status.toString(): "";
+        const id = entry.id ? entry.id.toString() : "";
         const code = entry.code ? entry.code.toString() : "";
         const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
     
@@ -272,6 +263,7 @@ class ReagentsList extends Component {
           name.includes(nameFilter.toLowerCase()) &&
           addedBy.includes(addedbyFilter.toLowerCase()) &&
           status.includes(statusFilter) &&
+          id.includes(idFilter) &&
           code.includes(codeFilter) &&
           date.includes(dateFilter)
         );

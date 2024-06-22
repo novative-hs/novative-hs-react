@@ -15,6 +15,11 @@ export const POST_CHANGE_PASSWORD = `${API_ENDPOINT}/api/account/change-password
 export const POST_LAB_INFORMATION = `${API_ENDPOINT}/api/lab/lab-information`;
 export const POST_CORPORATE_INFORMATION = `${API_ENDPOINT}/api/corporate/corporate-information`;
 // database admin
+
+/////////Sample
+export const GET_SAMPLE = `${API_ENDPOINT}/api/database-admin/sample-list`;
+export const ADD_SAMPLE = `${API_ENDPOINT}/api/database-admin/post-sample`;
+
 export const GET_UNITS_LIST = `${API_ENDPOINT}/api/database-admin/units_list`;
 export const ADD_NEW_UNITS = `${API_ENDPOINT}/api/database-admin/units_create`;
 export const UPDATE_UNITS = `${API_ENDPOINT}/api/database-admin/units_update`;
@@ -29,20 +34,25 @@ export const ADD_NEW_MANUFACTURAL = `${API_ENDPOINT}/api/database-admin/manufact
 export const UPDATE_MANUFACTURAL = `${API_ENDPOINT}/api/database-admin/manufactural_update`;
 
 export const GET_INSTRUMENT_TYPE_LIST = `${API_ENDPOINT}/api/database-admin/instrument-type-list`;
-export const ADD_NEW_INSTRUMENT_TYPE = `${API_ENDPOINT}/api/database-admin/instrument-type-list`;
+export const ADD_NEW_INSTRUMENT_TYPE = `${API_ENDPOINT}/api/database-admin/instrument-type-create-list`;
 export const UPDATE_NEW_INSTRUMENT_TYPE = `${API_ENDPOINT}/api/database-admin/update-instrument-type-list`;
 
 export const GET_METHOD_LIST = `${API_ENDPOINT}/api/database-admin/methods-list`;
-export const ADD_NEW_METHOD = `${API_ENDPOINT}/api/database-admin/methods-list`;
+export const ADD_NEW_METHOD = `${API_ENDPOINT}/api/database-admin/methods-create-list`;
 export const UPDATE_METHOD = `${API_ENDPOINT}/api/database-admin/update-method-list`;
 
+export const GET_SCHEME_LIST = `${API_ENDPOINT}/api/database-admin/scheme-list`;
+export const ADD_NEW_SCHEME = `${API_ENDPOINT}/api/database-admin/post-scheme`;
+export const UPDATE_SCHEME = `${API_ENDPOINT}/api/database-admin/update-scheme-list`;
+
 export const GET_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/analyte-list`;
-export const ADD_NEW_ANALYTE = `${API_ENDPOINT}/api/database-admin/analyte-list`;
+export const ADD_NEW_ANALYTE = `${API_ENDPOINT}/api/database-admin/analyte-create-list`;
 export const UPDATE_ANALYTE = `${API_ENDPOINT}/api/database-admin/update-analyte`;
 
+export const GET_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-reagents-list`;
+export const ADD_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-add-reagent`;
+export const UPDATE_ANALYTEREAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-update-reagent`;
 
-//Participant
-export const GET_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/participant-information`;
 
 ////////////news
 
@@ -51,7 +61,7 @@ export const ADD_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
 
 
 export const GET_INSTRUMENT_LIST = `${API_ENDPOINT}/api/database-admin/instrument-list`;
-export const ADD_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/instrument-list`;
+export const ADD_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/instrument-create`;
 export const UPDATE_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/update-instrument-list`;
 /// ORGANIZATION REGISTER
 export const ORGANIZATION_REGISTER = `${API_ENDPOINT}/api/account/register/`;
@@ -372,6 +382,12 @@ export const GET_SAMPLE_COLLECTION_COMPLETED_LIST = `${API_ENDPOINT}/api/samplec
 export const UPDATE_SAMPLE_COLLECTION_STATUS = `${API_ENDPOINT}/api/samplecollector/sample-collector-in-process`;
 
 // REGISTRATION ADMIN
+
+export const GET_ROUND_LIST = `${API_ENDPOINT}/api/registration-admin/round-list`;
+export const ADD_NEW_ROUND = `${API_ENDPOINT}/api/registration-admin/post-round`;
+export const UPDATE_ROUND = `${API_ENDPOINT}/api/registration-admin/update-round-list`;
+
+
 export const GET_PENDING_CORPORATE = `${API_ENDPOINT}/api/registration-admin/pending-corporate`;
 export const GET_APPROVED_CORPORATE = `${API_ENDPOINT}/api/registration-admin/approved-corporate`;
 export const GET_UNAPPROVED_CORPORATE = `${API_ENDPOINT}/api/registration-admin/unapproved-corporate`;

@@ -10,9 +10,9 @@ import {
     UPDATE_UNITS_FAIL,
   } from "./actionTypes";
   // get Units Action
-  export const getunitlist = () => ({
-    type: GET_UNITS_LIST,
-    payload: {},
+  export const getunitlist = (id) => ({
+    type: 'GET_UNITS_LIST',
+    payload: id,
   });
   
   export const getunitlistSuccess = ListUnits => ({

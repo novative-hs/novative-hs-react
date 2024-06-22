@@ -122,10 +122,7 @@ class StaffRegister extends Component {
                           cnic: (this.state && this.state.cnic) || "",
                           phone: (this.state && this.state.phone) || "",
                           city: (this.state && this.state.city) || "",
-                          postalcode:
-                            (this.state && this.state.postalcode) || "",
-
-                          fax: (this.state && this.state.fax) || "",
+                         
                           organization:
                             (this.state && this.state.organization) || "",
                           country: (this.state && this.state.country) || "",

@@ -29,11 +29,10 @@ import ListUnit from "./databaseofunits/reducer";
 import ReagentList from "./reagents/reducers";
 import activitylogUnits from "./databaseadmin-history/reducers";
 import ManufacturalList from "./manufactural/reducers";
-import Instrument from "./instrument/reducer"
-
-
-//Participant
-import ParticipantList from "./participant-list/reducers";
+import Instrument from "./instrument/reducer";
+import SchemeList from "./scheme/reducer";
+import RoundList from "./rounds/reducer";
+import sample from "./sample/reducer";
 // organization
 import organizationaccount from "./organization/reducer"
 //LabMarket
@@ -101,17 +100,20 @@ import financeAdmin from "./finance-admin/reducer";
 //Manufactural
 
 import news from "./news/reducer";
+import ListMethods from "./methods/reducers";
 
 const rootReducer = combineReducers({
   // public
+  sample,
+  RoundList,
   ReagentList,
   ListUnits,
+  ListMethods,
   news,
   organizationaccount,
   Dashboard,
   referrelFeeLabs,
   Layout,
-  ParticipantList,
 
 
   Login,
@@ -123,6 +125,7 @@ const rootReducer = combineReducers({
   ListUnit,
   LabMarket,
   Instrument,
+  SchemeList,
   LabMarket,
 
   financeAdmin,

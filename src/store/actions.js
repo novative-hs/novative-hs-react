@@ -1,5 +1,3 @@
-import ParticipantList from "./participant-list/reducers";
-
 export * from "./layout/actions";
 
 //dashboard
@@ -27,9 +25,9 @@ export * from "./databaseadmin-history/actions";
 export * from "./manufactural/actions";
 export * from "./databaseofunits/actions";
 export * from "./instrument/actions";
-
-//Partcipant
-export * from "./participant-list/actions";
+export * from "./scheme/actions";
+export * from "./rounds/actions";
+export * from "./sample/actions";
 // carts
 export * from "./carts/actions";
 
@@ -43,8 +41,7 @@ export * from "./organization/actions";
 
 // quality certificates
 export * from "./quality-certificates/actions";
-
-
+export * from "./methods/actions";
 
 
 

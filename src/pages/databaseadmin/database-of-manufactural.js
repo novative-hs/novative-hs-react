@@ -54,6 +54,7 @@ class Manufactural extends Component {
       addedbyFilter:'',
       dateFilter:'',
       cityFilter: '',
+      idFilter: '',
       addressFilter:'',
       telephoneFilter:'',
       countryFilter:'',
@@ -69,40 +70,24 @@ class Manufactural extends Component {
           text: "id",
           dataField: "id",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, manufacturtal) => <>{manufacturtal.id}</>,
-          filter: textFilter(),
-        },
-        {
-            text: "Date of Addition",
-            dataField: "date_of_addition",
-            sort: true,
-            hidden: false,
-            headerFormatter: (column, colIndex) => {
-              return (
-                <>
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
                 <div>
-                
                   <input
                     type="text"
-                    value={this.state.dateFilter}
-                    onChange={e => this.handleFilterChange('dateFilter', e)}
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
                     className="form-control"
-                 
                   />
                 </div>
-                  <div>{column.text}</div>
-                  </>
-              );
-            },
-            formatter: (cellContent, unitlist) => (
-              <>
-                <span>
-                  {moment(unitlist.date_of_addition).format("DD MMM YYYY, h:mm A")}
-                </span>
+                <div>{column.text}</div>
               </>
-            ),
+            );
           },
+          headerStyle: { width: '150px' },  // Adjust the width as needed
+  style: { width: '150px' },  // Adjust the width as needed
+        },
         {
           dataField: "name",
           text: "Name",
@@ -126,50 +111,42 @@ class Manufactural extends Component {
           style: { textAlign: 'left' }
         },
         {
-            dataField: "telephone",
-            text: "telephone",
-            sort: true,
-            headerFormatter: (column, colIndex) => {
-              return (
-                <>
-                <div>              
-                  <input
-                    type="text"
-                    value={this.state.telephoneFilter}
-                    onChange={e => this.handleFilterChange('telephoneFilter', e)}
-                    className="form-control"
-                 
-                  />
-                </div>
-                  <div>{column.text}</div>
-                  </>
-              );
-            },
-            
-            style: { textAlign: 'right' }
-          },
-        {
-            dataField: "city",
-            text: "city",
-            sort: true,
-            headerFormatter: (column, colIndex) => {
-              return (
-                <>
+          dataField: "city",
+          text: "Website",
+          sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
                 <div>              
                   <input
                     type="text"
                     value={this.state.cityFilter}
                     onChange={e => this.handleFilterChange('cityFilter', e)}
                     className="form-control"
-                 
                   />
                 </div>
-                  <div>{column.text}</div>
-                  </>
-              );
-            },
-            style: { textAlign: 'left' }
+                <div>{column.text}</div>
+              </>
+            );
           },
+          formatter: (cell, row) => {
+            // Check if the URL starts with http:// or https://
+            const isAbsoluteUrl = /^https?:\/\//i.test(cell);
+        
+            if (isAbsoluteUrl) {
+              // Directly render the absolute URL
+              return <a href={cell} target="_blank" rel="noopener noreferrer">{cell}</a>;
+            } else {
+              // Assume it's a relative URL and construct the absolute URL
+              const protocol = 'https://'; // Use https:// or http:// based on your requirement
+              const absoluteUrl = `${protocol}${cell}`;
+              return <a href={absoluteUrl} target="_blank" rel="noopener noreferrer">{cell}</a>;
+            }
+          },
+          style: { textAlign: 'left' }
+        },
+        
+        
         {
           dataField: "country",
           text: "country",
@@ -192,54 +169,37 @@ class Manufactural extends Component {
           },
           style: { textAlign: 'left' }
         },
+        
         {
-            dataField: "address",
-            text: "address",
-            sort: true,
-            headerFormatter: (column, colIndex) => {
-              return (
-                <>
-                <div>              
-                  <input
-                    type="text"
-                    value={this.state.addressFilter}
-                    onChange={e => this.handleFilterChange('addressFilter', e)}
-                    className="form-control"
-                 
-                  />
-                </div>
-                  <div>{column.text}</div>
-                  </>
-              );
-            },
-            style: { textAlign: 'left' }
+          text: "Date of Addition",
+          dataField: "date_of_addition",
+          sort: true,
+          hidden: false,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+              
+                <input
+                  type="text"
+                  value={this.state.dateFilter}
+                  onChange={e => this.handleFilterChange('dateFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
           },
-    
- 
-          {
-            dataField: "added_by",
-            text: "Added By",
-            sort: true,
-            headerFormatter: (column, colIndex) => {
-              return (
-                <>
-                <div>
-                
-                  <input
-                    type="text"
-                    value={this.state.addedbyFilter}
-                    onChange={e => this.handleFilterChange('addedbyFilter', e)}
-                    className="form-control"
-                 
-                  />
-                </div>
-                  <div>{column.text}</div>
-                  </>
-              );
-            },
-            style: { textAlign: 'left' }
-          },
-
+          formatter: (cellContent, unitlist) => (
+            <>
+              <span>
+                {moment(unitlist.date_of_addition).format("DD MMM YYYY")}
+              </span>
+            </>
+          ),
+        },
         {
           dataField: "menu",
           isDummyField: true,
@@ -298,11 +258,12 @@ class Manufactural extends Component {
     // Filter data based on filter values
     filterData = () => {
       const { ManufacturalList } = this.props;
-      const { nameFilter, addedbyFilter, dateFilter, cityFilter, addressFilter,telephoneFilter, countryFilter} = this.state;
+      const { nameFilter, addedbyFilter, dateFilter, cityFilter,idFilter, addressFilter,telephoneFilter, countryFilter} = this.state;
     
       const filteredData = ManufacturalList.filter(entry => {
         const name = entry.name ? entry.name.toString().toLowerCase() : "";
         const city = entry.city ? entry.city.toString().toLowerCase() : "";
+        const id = entry.id ? entry.id.toString() : "";
         const country = entry.country ? entry.country.toString().toLowerCase() : "";
         const address = entry.address ? entry.address.toString().toLowerCase() : "";
         const addedBy = entry.added_by ? entry.added_by.toString().toLowerCase() : "";
@@ -311,6 +272,7 @@ class Manufactural extends Component {
     
         return (
           name.includes(nameFilter.toLowerCase()) &&
+          id.includes(idFilter) &&
           city.includes(cityFilter.toLowerCase()) &&
           country.includes(countryFilter.toLowerCase()) &&
           address.includes(addressFilter.toLowerCase()) &&
@@ -463,13 +425,13 @@ class Manufactural extends Component {
         /> */}
         <div className="page-content">
           <MetaTags>
-            <title>Manufactural List | NEQAS</title>
+            <title>Manufacturer List | NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs
-              title="Manufactural"
-              breadcrumbItem="Manufactural List"
+              title="Manufacturer"
+              breadcrumbItem="Manufacturer List"
             />
             <Row className="justify-content-center">
             {/* <p className="text-danger">Note: Pathologist Information will scale the rating of your lab.</p> */}
@@ -511,7 +473,7 @@ class Manufactural extends Component {
                                       onClick={this.handleManufacturalClicks}
                                     >
                                       <i className="mdi mdi-plus-circle-outline me-1" />
-                                      Add New Manufactural
+                                      Add New Manufacturer
                                     </Button>
                                   </div>
                                 </Col>
@@ -541,8 +503,8 @@ class Manufactural extends Component {
                                         tag="h4"
                                       >
                                         {!!isEdit
-                                          ? "Edit Manufactural"
-                                          : "Add New Manufactural"}
+                                          ? "Edit Manufacturer"
+                                          : "Add New Manufacturer"}
                                       </ModalHeader>
                                       <ModalBody>
 <Formik
@@ -552,8 +514,7 @@ class Manufactural extends Component {
                                             hiddenEditFlag: isEdit,
                                             city: (manufacturtal && manufacturtal.city) || "",
                                             country: (manufacturtal && manufacturtal.country) || "",
-                                            address: (manufacturtal && manufacturtal.address) || "", 
-                                            telephone: (manufacturtal && manufacturtal.telephone) || "", 
+                                      
                                             name: (manufacturtal && manufacturtal.name) || "",
                                             // code: (manufacturtal && manufacturtal.code) || "",
                                             // status: (manufacturtal && manufacturtal.status) || "",
@@ -568,15 +529,9 @@ class Manufactural extends Component {
                                             // status: Yup.string()
                                             //   .trim()
                                             //   .required("Please select the Status from dropdown"),
-                                            city: Yup.string().trim().required("Please enter city"),
+                                            city: Yup.string().trim().required("Please enter website"),
                                             country: Yup.string().trim().required("Please enter country"),
-                                            telephone: Yup.string()
-      .trim()
-      .matches(/^[0-9]+$/, 'Telephone must be a number')
-      .required('Please enter telephone'),
-                                            address: Yup.string()
-                                                .trim()
-                                                .required("Please enter address"),
+                                    
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -585,8 +540,8 @@ class Manufactural extends Component {
                                                   id: manufacturtal.id,
                                                   city:values.city,
                                                   country: values.country,
-                                                  address: values.address,
-                                                  telephone: values.telephone,
+                                                
+                                                
                                                   name: values.name,
                                                 //   code: values.code,
                                                 //   status: values.status,
@@ -612,8 +567,6 @@ class Manufactural extends Component {
                                                   ) + 20,
                                                   city:values.city,
                                                   country: values.country,
-                                                  address: values.address,
-                                                  telephone: values.telephone,
                                                   name: values.name,
                                                 //   code: values.code,
                                                 //   status: values.status,
@@ -681,9 +634,7 @@ class Manufactural extends Component {
                                                               country:
                                                               manufacturtal.country,
                                                             
-                                                              telephone:
-                                                                manufacturtal.telephone,
-                                                                address: manufacturtal.address,
+                                                       
                                                           },
                                                         })
                                                       }
@@ -695,7 +646,7 @@ class Manufactural extends Component {
                                                     />
                                                   </div>
 
-                                                  <div className="mb-3">
+                                                  {/* <div className="mb-3">
                                                     <Label className="form-label">
                                                       Telephone
                                                       <span className="text-danger">
@@ -743,10 +694,10 @@ class Manufactural extends Component {
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
-                                                  </div>
+                                                  </div> */}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      City
+                                                      Website
                                                       <span className="text-danger">
                                                         *
                                                       </span>
@@ -780,9 +731,8 @@ class Manufactural extends Component {
                                                               country:
                                                               manufacturtal.country,
                                                             
-                                                              telephone:
-                                                                manufacturtal.telephone,
-                                                                address:manufacturtal.address,
+                                                       
+                                                          
                                                           },
                                                         })
                                                       }
@@ -822,11 +772,10 @@ class Manufactural extends Component {
                                                             name: manufacturtal.name,
                                                             city:
                                                             manufacturtal.city,
-                                                           telephone:
-                                                              manufacturtal.telephone,
+                                                   
                                                             country: e.target
                                                               .value,
-                                                            address: manufacturtal.address,
+                                                      
                                                           },
                                                         })
                                                       }
@@ -837,7 +786,7 @@ class Manufactural extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                                  <div className="mb-3">
+                                                  {/* <div className="mb-3">
                                                     <Label className="form-label">
                                                       Address
                                                       <span className="text-danger">
@@ -880,7 +829,7 @@ class Manufactural extends Component {
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
-                                                  </div>
+                                                  </div> */}
                                              
                                                 </Col>
                                               </Row>

@@ -39,8 +39,8 @@ import {
   getAnalytelist,
   addNewAnalyteList,
   updateAnalyteList,
-//   deletePathologist,
 } from "store/databaseofunits/actions";
+
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
@@ -50,64 +50,256 @@ class ReagentsList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
+      nameFilter: '',
+      addedbyFilter:'',
+      dateFilter:'',
+      codeFilter: '',
+      idFilter:'',
+      statusFilter:'',
       ListUnit: [],
-      analyte: "",
+      reagent: "",
       modal: false,
     //   deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       ReagentsListColumns: [
+
         {
           text: "id",
           dataField: "id",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, analyte) => <>{analyte.id}</>,
-        },
-        {
-            text: "Date of Addition",
-            dataField: "date_of_addition",
-            sort: true,
-            hidden: false,
-            formatter: (cellContent, analyte) => (
+          headerFormatter: (column, colIndex) => {
+            return (
               <>
-                <span>
-                  {moment(analyte.date_of_addition).format("DD MMM YYYY, h:mm A")}
-                </span>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
               </>
-            ),
-            filter: textFilter(),
+            );
           },
-        {
-          dataField: "name",
-          text: "Name",
-          sort: true,
-          filter: textFilter(),
-          style: { textAlign: 'left' }
+          
+          headerStyle: { width: '100px' },  // Adjust the width as needed
+  style: { width: '100px' },  // Adjust the width as needed
         },
+        
+        
         {
           dataField: "code",
           text: "code",
           sort: true,
-          filter: textFilter(),
-          style: { textAlign: 'right' }
+          
+          style: { textAlign: 'right' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+              
+                <input
+                  type="text"
+                  value={this.state.codeFilter}
+                  onChange={e => this.handleFilterChange('codeFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
         },
  
-          {
-            dataField: "added_by",
-            text: "Added By",
-            sort: true,
-            filter: textFilter(),
-            style: { textAlign: 'left' }
+        {
+          dataField: "name",
+          text: "Analyte",
+          sort: true,
+          
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>              
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
           },
+        },
+        {
+          dataField: "",
+          text: "Master Unit",
+          sort: true,
+          
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>              
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
+        },
+        {
+          dataField: "",
+          text: "No. of Methods",
+          sort: true,
+          
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>              
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
+        },
+        {
+          dataField: "",
+          text: "No. of Equipments",
+          sort: true,
+          
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>              
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
+        },
+        {
+          dataField: "",
+          text: "No. of Reagents",
+          sort: true,
+          
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>              
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
+        },
         {
           dataField: "status",
           text: "Status",
           sort: true,
-          filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <select
+                    value={this.state.statusFilter}
+                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    className="form-control"
+                  >
+                    <option value="">All</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
-
+          
+        {
+          dataField: 'link',
+          text: '',
+          formatter: (cellContent, analyte) => {
+            return (
+              <Link to={`/analyte-add-units/${analyte.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+                
+                <span>Add Units</span>
+              </Link>
+            );
+          }
+        },
+        {
+          dataField: 'link',
+          text: '',
+          formatter: (cellContent, analyte) => {
+            return (
+              <Link to={`/analyte-add-methods/${analyte.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+                <span>Add Methods</span>
+              </Link>
+            );
+          }
+        },
+        {
+          dataField: 'link',
+          text: '',
+          formatter: (cellContent, analyte) => {
+            return (
+              <Link to={`/analyte-add-equipments/${analyte.id}`}style={{ textDecoration: 'underline', color: '#0000CD' }}>
+                <span>Add Equipments</span>
+              </Link>
+            );
+          }
+        },
+        {
+          dataField: 'link',
+          text: '',
+          formatter: (cellContent, analyte) => {
+            return (
+              <Link to={`/analyte-add-reagents/${analyte.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+                <span>Add Reagents</span>
+              </Link>
+            );
+          }
+        },
+        
         {
           dataField: "menu",
           isDummyField: true,
@@ -129,14 +321,6 @@ class ReagentsList extends Component {
                   to={`/databaseadmin-history/${analyte.id}`}
                 ></Link>
               </Tooltip>
-              {/* <Tooltip title="Delete">
-              <Link className="text-danger" to="#">
-                <i
-                  className="mdi mdi-delete font-size-18"
-                  id="deletetooltip"
-                  onClick={() => this.onClickDelete(analyte)}
-                ></i>
-              </Link></Tooltip> */}
             </div>
           ),
        
@@ -163,11 +347,40 @@ class ReagentsList extends Component {
   };
 
   componentDidMount() {
-    const { ListUnit, onGetAnalyte } = this.props;
+    const { ListUnit, onGetAnalyte} = this.props;
+  
     onGetAnalyte(this.state.user_id);
     this.setState({ ListUnit });
   }
-
+  
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+    // Filter data based on filter values
+    filterData = () => {
+      const { ListUnit } = this.props;
+      const { nameFilter, addedbyFilter, dateFilter, statusFilter, codeFilter,idFilter } = this.state;
+    
+      const filteredData = ListUnit.filter(entry => {
+        const name = entry.name ? entry.name.toString().toLowerCase() : "";
+        const addedBy = entry.added_by ? entry.added_by.toString().toLowerCase() : "";
+        const status = entry.status ? entry.status.toString(): "";
+        const id = entry.id ? entry.id.toString() : "";
+        const code = entry.code ? entry.code.toString() : "";
+        const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
+    
+        return (
+          name.includes(nameFilter.toLowerCase()) &&
+          addedBy.includes(addedbyFilter.toLowerCase()) &&
+          status.includes(statusFilter) &&
+          id.includes(idFilter) &&
+          code.includes(codeFilter) &&
+          date.includes(dateFilter)
+        );
+      });
+    
+      return filteredData;
+    };
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -202,20 +415,6 @@ class ReagentsList extends Component {
     }
   };
 
-  /* Insert,Update Delete data */
-
-//   toggleDeleteModal = () => {
-//     this.setState(prevState => ({
-//       deleteModal: !prevState.deleteModal,
-//     }));
-//   };
-
-//   onClickDelete = ListUnit => {
-//     this.setState({ ListUnit: ListUnit });
-//     this.setState({ deleteModal: true });
-//   };
-
-  // The code for converting "image source" (url) to "Base64"
   toDataURL = url =>
     fetch(url)
       .then(response => response.blob())
@@ -242,18 +441,6 @@ class ReagentsList extends Component {
     return new File([u8arr], filename, { type: mime });
   };
 
-//   handleDeletePathologist = () => {
-//     const { onDeletePathologist, onGetAnalyte } = this.props;
-//     const { ListUnit } = this.state;
-//     if (ListUnit.id !== undefined) {
-//       onDeletePathologist(ListUnit);
-//       setTimeout(() => {
-//         onGetAnalyte(this.state.user_id);
-//       }, 1000);
-//       this.setState({ deleteModal: false });
-//     }
-//   };
-
   handleReagentsClick = (e, arg) => {
     const analyte = arg;
 
@@ -275,6 +462,7 @@ class ReagentsList extends Component {
     const { SearchBar } = Search;
 
     const { ListUnit } = this.props;
+    
 
     const { isEdit, 
         // deleteModal 
@@ -297,6 +485,7 @@ class ReagentsList extends Component {
       },
     ];
 
+    
     return (
       <React.Fragment>
         {/* <DeleteModal
@@ -335,18 +524,9 @@ class ReagentsList extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              <Row className="mb-2">
-                                <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col>
-                                <Col sm="8">
+                              <Row className="mb-4">
+
+<Col xl="12">
                                   <div className="text-sm-end">
                                     <Button
                                      style={{ background: "#0000CD" }}
@@ -552,7 +732,7 @@ class ReagentsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-
+                                               
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                      Status
@@ -574,17 +754,13 @@ class ReagentsList extends Component {
                                                 </Col>
                                               </Row>
                                               <Row>
-                                                <Col>
-                                                <div className="text-end">
-  <button
-    type="submit"
-    className="btn btn-success save-user"
-  >
-    Save
-  </button>
-</div>
-                                                </Col>
-                                              </Row>
+        <Col>
+          <div className="text-end">
+            <button type="submit" className="btn btn-success save-user"
+              style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+          </div>
+        </Col>
+      </Row>
                                             </Form>
                                           )}
                                         </Formik>
@@ -623,20 +799,19 @@ ReagentsList.propTypes = {
   createInstrumentType: PropTypes.array,
   onGetAnalyte: PropTypes.func,
   onAddNewAnalyte: PropTypes.func,
-//   onDeletePathologist: PropTypes.func,
   onUpdateAnalyte: PropTypes.func,
 };
 
-const mapStateToProps = ({ ListUnit }) => ({
-  ListUnit: ListUnit.ListUnit,
+const mapStateToProps = ({ ListUnit}) => ({
+  ListUnit: ListUnit?.ListUnit,
 });
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAnalyte: id => dispatch(getAnalytelist(id)),
   onAddNewAnalyte: (createInstrumentType, id) =>
     dispatch(addNewAnalyteList(createInstrumentType, id)),
-  onUpdateAnalyte: analyte => dispatch(updateAnalyteList(analyte)),
-//   onDeletePathologist: analyte => dispatch(deletePathologist(analyte)),
+  onUpdateAnalyte: reagent => dispatch(updateAnalyteList(reagent)),  
 });
 
 export default connect(

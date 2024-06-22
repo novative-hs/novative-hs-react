@@ -20,7 +20,6 @@ import {
   Label,
 } from "reactstrap";
 
-
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -35,6 +34,7 @@ import { isEmpty, size } from "lodash";
 
 import "assets/scss/table.scss";
 import moment from 'moment';
+
 class LabsRating extends Component {
   constructor(props) {
     super(props);
@@ -42,8 +42,8 @@ class LabsRating extends Component {
     this.state = {
       nameFilter: '',
       dateFilter: '',
-      addedbyFilter: '',
-
+      formulaFilter: '',
+      idFilter: '',
       selectedUnit: null,
       isEdit: false,
       ListUnits: [],
@@ -58,46 +58,93 @@ class LabsRating extends Component {
           text: "id",
           dataField: "id",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, unitlist) => <>{unitlist.id}</>,
-          filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          headerStyle: { width: '150px' },  // Adjust the width as needed
+  style: { width: '150px' },  // Adjust the width as needed
+        },
+        {
+          dataField: "name",
+          text: "Unit",
+          sort: true,
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.nameFilter}
+                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+        },
+        {
+          dataField: "formula",
+          text: "Unit Convergent Formula",
+          sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.formulaFilter}
+                    onChange={e => this.handleFilterChange('formulaFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           text: "Date of Addition",
           dataField: "date_of_addition",
           sort: true,
           hidden: false,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.dateFilter}
+                    onChange={e => this.handleFilterChange('dateFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
           formatter: (cellContent, unitlist) => (
             <>
               <span>
-                {moment(unitlist.date_of_addition).format("DD MMM YYYY, h:mm A")}
+                {moment(unitlist.date_of_addition).format("DD MMM YYYY")}
               </span>
             </>
           ),
-          filter: textFilter(),
         },
-        {
-          dataField: "id",
-          text: "ID",
-          sort: true,
-          hidden: true,
-          filter: textFilter(),
-        },
-        {
-          dataField: "name",
-          text: "Unit Name",
-          sort: true,
-          filter: textFilter(),
-        },
-    
-        {
-          dataField: "added_by",
-          text: "Added By",
-          sort: true,
-          filter: textFilter(),
-        },
-
-
         {
           dataField: "menu",
           isDummyField: true,
@@ -111,7 +158,6 @@ class LabsRating extends Component {
                     className="mdi mdi-pencil font-size-18"
                     id="edittooltip"
                     onClick={() => this.toggle(unitlist)}
-                  // onClick={e => this.handleCSRClick(e, CSR)}
                   ></i>
                 </Link>
               </Tooltip>
@@ -135,6 +181,10 @@ class LabsRating extends Component {
     this.setState({ ListUnits });
   }
 
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
@@ -142,16 +192,15 @@ class LabsRating extends Component {
       this.setState({ successMessage: "", modal: false });
     }, 3000);
   }
+
   toggle(unit) {
     if (unit && unit.id) {
-
       this.setState({
         modal: true,
-        selectedUnit: { id: unit.id, name: unit.name, added_by: unit.added_by },
+        selectedUnit: { id: unit.id, name: unit.name, formula: unit.formula, added_by: unit.added_by },
         isEdit: true,
       });
     } else {
-
       this.setState({
         modal: true,
         selectedUnit: null,
@@ -178,21 +227,35 @@ class LabsRating extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
+
   closeModal = () => {
     this.setState({ modal: false });
   }
+
   render() {
     const { SearchBar } = Search;
-
     const { ListUnits } = this.props;
-
     const { onGetUnitsList, onUpdateUnit } = this.props;
-    const unitlist = this.state.ListUnits;
+    const { nameFilter, dateFilter, idFilter,formulaFilter } = this.state;
 
+    // Apply the filters to the unit list
+    const filteredUnits = ListUnits.filter(entry => {
+      const name = entry.name ? entry.name.toString().toLowerCase() : "";
+      const formula = entry.formula ? entry.formula.toString().toLowerCase() : "";
+      const id = entry.id ? entry.id.toString() : "";
+      const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
+
+      return (
+        name.includes(nameFilter.toLowerCase()) &&
+        formula.includes(formulaFilter.toLowerCase()) &&
+        id.includes(idFilter) &&
+        date.includes(dateFilter)
+      );
+    });
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: ListUnits.length,
+      totalSize: filteredUnits.length,
       custom: true,
     };
 
@@ -203,6 +266,7 @@ class LabsRating extends Component {
       },
     ];
     const iconStyle = { color: 'red' };
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -210,26 +274,24 @@ class LabsRating extends Component {
             <title>Database Admin | Units</title>
           </MetaTags>
           <Container fluid>
-            {/* Render Breadcrumbs */}
             <Breadcrumbs title="Units" breadcrumbItem="Unit List" />
             <Row className="justify-content-center">
-              <Col lg="10">
+              <Col lg="8">
                 <Card>
                   <CardBody>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={ListUnits}
+                      data={filteredUnits}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.feedbackListColumns}
-                          data={ListUnits}
+                          data={filteredUnits}
                           search
                         >
-
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-4">
@@ -256,10 +318,12 @@ class LabsRating extends Component {
                                           enableReinitialize={true}
                                           initialValues={{
                                             name: this.state.selectedUnit ? this.state.selectedUnit.name : "",
+                                            formula: this.state.selectedUnit ? this.state.selectedUnit.formula : "",
                                             added_by: this.state.selectedUnit ? this.state.selectedUnit.added_by : "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             name: Yup.string().required("Name is required"),
+                                            formula: Yup.string().required("Convergent Formula is required"),
                                             added_by: Yup.string(),
                                           })}
 
@@ -272,6 +336,7 @@ class LabsRating extends Component {
 
                                             const newUnit = {
                                               name: values.name,
+                                              formula: values.formula,
                                               added_by: userId,
                                             };
 
@@ -325,12 +390,26 @@ class LabsRating extends Component {
                                                 </Col>
                                               </Row>
                                               <Row>
-                                                <Col>
-                                                  <div className="text-end">
-                                                    <button type="submit" className="btn btn-success save-user">Save</button>
+                                                <Col className="col-12">
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">Unit Convergent Formula</Label>
+                                                    <Field
+                                                      name="formula"
+                                                      type="text"
+                                                      className="form-control"
+                                                    />
+                                                    <ErrorMessage name="formula" component="div" className="text-danger" />
                                                   </div>
                                                 </Col>
                                               </Row>
+                                              <Row>
+        <Col>
+          <div className="text-end">
+            <button type="submit" className="btn btn-success save-user"
+              style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+          </div>
+        </Col>
+      </Row>
                                             </Form>
                                           )}
                                         </Formik>
@@ -395,7 +474,7 @@ const mapStateToProps = ({ ListUnits }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetUnitsList: () => dispatch(getunitlist()),
+  onGetUnitsList: (id) => dispatch(getunitlist(id)),
   onAddNewUnit: (createUnit, id) =>
     dispatch(addNewUnit(createUnit, id)),
   onUpdateUnit: (id, unitlist) => dispatch(updateUnits({ id, ...unitlist })),

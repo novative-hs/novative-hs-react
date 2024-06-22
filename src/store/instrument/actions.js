@@ -11,13 +11,13 @@ import {
 } from "./actionTypes";
 
 //////////INSTRUMENT
-export const getInstrumentlist = () => ({
+export const getInstrumentlist = (id) => ({
   type: GET_INSTRUMENT_LIST,
-  payload: {},
+  payload: id,
 });
 
 export const getInstrumentlistSuccess = (MethodList) => {
-  console.log("MethodList response in success action:", MethodList); 
+  console.log("Instrument response in success action:", MethodList); 
   return {
     type: GET_INSTRUMENT_LIST_SUCCESS,
     payload: MethodList,

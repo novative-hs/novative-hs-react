@@ -44,6 +44,13 @@ class Instrument extends Component {
     this.node = React.createRef();
     this.state = {
       selectedUnit: null,
+      nameFilter: '',
+      dateFilter: '',
+      instypeFilter: '',
+      manufacturerFilter:'',
+      codeFilter: '',
+      statusFilter:'',
+      idFilter: '',
       isEdit: false,
       Instrument: [],
       ListUnit:[],
@@ -59,85 +66,167 @@ class Instrument extends Component {
           text: "id",
           dataField: "id",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, methodlist) => <>{methodlist.id}</>,
-          filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          headerStyle: { width: '100px' },  // Adjust the width as needed
+  style: { width: '100px' },  // Adjust the width as needed
         },
-        // {
-        //   dataField: "id",
-        //   text: "ID",
-        //   sort: true,
-        //   filter: textFilter(),
-        // },
         {
           dataField: "name",
-          text: "Name",
+          text: "Equipment",
           sort: true,
-          filter: textFilter(),
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.nameFilter}
+                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "code",
-          text: "Code",
+          text: "code",
           sort: true,
-          filter: textFilter(),
+          //style: { textAlign: 'right' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+              
+                <input
+                  type="text"
+                  value={this.state.codeFilter}
+                  onChange={e => this.handleFilterChange('codeFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
         },
         {
           dataField: "instrument_type",
-          text: "Instrument Type",
+          text: "Equipment Type",
           sort: true,
-          filter: textFilter(),
+          //style: { textAlign: 'right' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+              
+                <input
+                  type="text"
+                  value={this.state.instypeFilter}
+                  onChange={e => this.handleFilterChange('instypeFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
         },
         {
           dataField: "manufactural",
-          text: "Manufactural",
+          text: "Manufacturer",
           sort: true,
-          filter: textFilter(),
-        },
-        
-        
-        {
-          text: "Date of Addition",
-          dataField: "date_of_addition",
-          sort: true,
-          hidden: false,
-          formatter: (cellContent, methodlist) => (
-            <>
-              <span>
-                {moment(methodlist.date_of_addition).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-          filter: textFilter(),
-        },
-        {
-          dataField: "added_by",
-          text: "Added By",
-          sort: true,
-          filter: textFilter(),
+          //style: { textAlign: 'right' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+              
+                <input
+                  type="text"
+                  value={this.state.manufacturerFilter}
+                  onChange={e => this.handleFilterChange('manufacturerFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
         },
         {
           dataField: "status",
           text: "Status",
           sort: true,
-          formatter: (cellContent, methodlist) => (
-            <>
-              {methodlist.status === "Active" ? (
-                <span>Active</span>
-              ) : (
-                <span>Inactive</span>
-              )}
-            </>
-          ),
-          filter: selectFilter({
-            options: {
-              '': 'All',
-              'Active': 'Active',
-              'Inactive': 'Inactive',
-            },
-            defaultValue: 'All',
-          }),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <select
+                    value={this.state.statusFilter}
+                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    className="form-control"
+                  >
+                    <option value="">All</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
 
+        {
+          text: "Date of Addition",
+          dataField: "date_of_addition",
+          sort: true,
+          hidden: false,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.dateFilter}
+                    onChange={e => this.handleFilterChange('dateFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          formatter: (cellContent, unitlist) => (
+            <>
+              <span>
+                {moment(unitlist.date_of_addition).format("DD MMM YYYY")}
+              </span>
+            </>
+          ),
+        },
+       
         {
           dataField: "menu",
           isDummyField: true,
@@ -184,6 +273,11 @@ class Instrument extends Component {
     onGetInstrumentTypeList(this.state.user_id);
     this.setState({ ListUnit });
   }
+
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+
 
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
@@ -248,11 +342,36 @@ class Instrument extends Component {
     const methodlist = this.state.Instrument;
 
 
+    const { nameFilter, dateFilter, idFilter,codeFilter,instypeFilter,manufacturerFilter,statusFilter } = this.state;
+
+    // Apply the filters to the unit list
+    const filteredUnits = Instrument.filter(entry => {
+      const name = entry.name ? entry.name.toString().toLowerCase() : "";
+      const status = entry.status ? entry.status.toString(): "";
+      const code = entry.code ? entry.code.toString() : "";
+      const instrument_type = entry.instrument_type ? entry.instrument_type.toString().toLowerCase() : "";
+      const manufactural = entry.manufactural ? entry.manufactural.toString().toLowerCase() : "";
+      const id = entry.id ? entry.id.toString() : "";
+      const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
+
+      return (
+        name.includes(nameFilter.toLowerCase()) &&
+        instrument_type.includes(instypeFilter.toLowerCase()) &&
+        code.includes(codeFilter) &&
+        status.includes(statusFilter) &&
+        manufactural.includes(manufacturerFilter.toLowerCase()) &&
+        id.includes(idFilter) &&
+        date.includes(dateFilter)
+      );
+    });
+
+
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: Instrument.length,
+      totalSize: filteredUnits.length,
       custom: true,
     };
+    
 
     const defaultSorted = [
       {
@@ -279,11 +398,11 @@ class Instrument extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Database Admin | Instrument List</title>
+            <title>Database Admin | Equipment List</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Instrument List" />
+            <Breadcrumbs title="List" breadcrumbItem="Equipment List" />
             <Row className="justify-content-center">
               <Col lg="10">
                 <Card>
@@ -292,13 +411,13 @@ class Instrument extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={Instrument}
+                      data={filteredUnits}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.feedbackListColumns}
-                          data={Instrument}
+                          data={filteredUnits}
                           search
                         >
 
@@ -309,14 +428,14 @@ class Instrument extends Component {
                                 <Col xl="12">
                                   <Col className="text-end">
 
-                                    <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Instrument</button>
+                                    <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Equipment</button>
 
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
                                     >
                                       <ModalHeader toggle={this.closeModal} tag="h4">
-                                        {"Instrument"}
+                                        {"Equipment"}
                                       </ModalHeader>
                                       <ModalBody>
                                         {this.state.successMessage && (
@@ -338,7 +457,7 @@ class Instrument extends Component {
     code: Yup.string()
       .required("Code is required")
       .matches(/^[0-9]+$/, "Code must be a number"),
-    instrument_type: Yup.mixed().required("Instrument Type is required").nullable(),
+    instrument_type: Yup.mixed().required("Equipment Type is required").nullable(),
     manufactural: Yup.mixed().required("Manufactural is required").nullable(),
   })}
   onSubmit={async (values, { setSubmitting }) => {
@@ -359,10 +478,10 @@ class Instrument extends Component {
     try {
       if (this.state.isEdit) {
         await this.props.onUpdateType(this.state.selectedUnit.id, newUnit);
-        this.displaySuccessMessage("Instrument updated successfully!");
+        this.displaySuccessMessage("Equipment updated successfully!");
       } else {
         await this.props.onAddNewType(newUnit);
-        this.displaySuccessMessage("Instrument added successfully!");
+        this.displaySuccessMessage("Equipment added successfully!");
       }
 
       await this.props.onGetInstrumentList(this.state.user_id);
@@ -379,7 +498,7 @@ class Instrument extends Component {
       <Row>
         <Col className="col-12">
           <div className="mb-3">
-            <Label className="col-form-label">Instrument Name</Label>
+            <Label className="col-form-label">Equipment Name</Label>
             <Field
               name="name"
               type="text"
@@ -397,14 +516,14 @@ class Instrument extends Component {
             <ErrorMessage name="code" component="div" className="text-danger" />
           </div>
           <div className="mb-3">
-  <Label className="col-form-label">Instrument Type</Label>
+  <Label className="col-form-label">Equipment Type</Label>
   <Field
     name="instrument_type" // Ensure the name matches the field name
     as="select"
     className="form-control"
     multiple={false}
   >
-    <option value="">Select Instrument Type</option> 
+    <option value="">Select Equipment Type</option> 
     {ListUnit.map(instrument_type => (
       <option key={instrument_type.value} value={instrument_type.value}>
         {instrument_type.label}
@@ -527,10 +646,10 @@ const mapStateToProps = ({ Instrument,ManufacturalList,ListUnit }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetInstrumentList: () => dispatch(getInstrumentlist()),
-  onGetManufacturalist: () => dispatch(getManufacturalList()),
+  onGetInstrumentList: (id) => dispatch(getInstrumentlist(id)),
+  onGetManufacturalist: (id) => dispatch(getManufacturalList(id)),
   
-  onGetInstrumentTypeList: () => dispatch(getinstrumenttypelist()),
+  onGetInstrumentTypeList: (id) => dispatch(getinstrumenttypelist(id)),
 
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewInstrument(createInstrumentType, id)),

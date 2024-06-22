@@ -41,21 +41,25 @@ import DatabaseOfReagentsPage from "pages/databaseadmin/database-of-reagents";
 import DatabaseOfManufactural from "pages/databaseadmin/database-of-manufactural";
 import DatabaseOfMethod from "pages/databaseadmin/method-list";
 import DatabaseOfAnalyte from "pages/databaseadmin/database-of-analyte";
+import AnalyteAddMethods from "pages/databaseadmin/analyte-add-methods";
+import AnalyteAddUnits from "pages/databaseadmin/analyte-add-units";
 import DatabaseOfinsrumentType from "pages/databaseadmin/instrument-type-list";
 import InstrumentList from "pages/databaseadmin/instruments-list";
+import AnalyteAddReagents from "pages/databaseadmin/analyte-add-reagents";
+import AnalyteAddEuipments from "pages/databaseadmin/analyte-add-equipments";
 import News from "pages/databaseadmin/news";
-
+import Scheme from "pages/databaseadmin/scheme";
+import Sample from "pages/databaseadmin/sample";
 //HR  Admin
 import DatabaseadminList from "pages/HrAdmin/databaseadmin-list";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
 
-//Dashboard PArticipant
+// //Dashboard PArticipant
 import DashboardPartcipant from "pages/Dashboard-Participant";
 import Rounds from "pages/Participant/rounds";
 import Performance from "pages/Participant/performance";
 import NewsPage from "pages/Participant/news-paritcipant";
 import Email from "pages/Participant/email";
-import AllParticipant from "pages/Participant/all-participants";
 
 // Lab Componentsss
 
@@ -92,13 +96,14 @@ import ChangePassword from "pages/Authentication/ChangePassword";
 
 // registration admin
 import PendingLabs from "pages/RegistrationAdmin/pending-labs";
+import Roundss from "pages/RegistrationAdmin/rounds";
 import labsListApprovedFeeOffered from "pages/RegistrationAdmin/labs-list-approved-fee";
 import labsListPendingFeeOffered from "pages/RegistrationAdmin/labs-list-pending-fee";
 import sharedPercentagePendingFeeTests from "pages/RegistrationAdmin/shared-percentage-pending-Fee";
 import sharedPercentageApprovedFeeTests from "pages/RegistrationAdmin/shared-percentage-approved-Fee";
 import ApprovedLabs from "pages/RegistrationAdmin/approved-labs";
 import UnapprovedLabs from "pages/RegistrationAdmin/unapproved-labs";
-import RegisterParticipant from "pages/Authentication/RegisterParticipant";
+import rounds from "pages/RegistrationAdmin/rounds";
 import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 
@@ -107,7 +112,7 @@ import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 // finance admin
 ;
 
-// Maeketer Admin routes
+// Marketer Admin routes
 
 
 import labList from "pages/Admin/labs-list";
@@ -148,6 +153,7 @@ import msgBoxFo from "pages/Complaints/msg-box";
 import RegistrationAdminList from "pages/HrAdmin/registration-admin-list";
 import csrList from "pages/HrAdmin/csr-list";
 import organizationList from "pages/HrAdmin/organizationList";
+import RegisterParticipant from "pages/Authentication/RegisterParticipant";
 
 // All general public routes will be listed here
 const publicRoutes = [
@@ -191,7 +197,7 @@ const publicRoutes = [
 ];
 
 const labAuthProtectedRoutes = [
-  { path: "/change-password", component: ChangePassword },
+  // { path: "/change-password", component: ChangePassword },
   { path: "/dashboard-lab", component: DashboardLab },
 
 
@@ -231,13 +237,20 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/dashboard-databaseadmin", component: DashboardatabaseAdmin },
   { path: "/database-of-units", component: DatabaseOfUnitsPage },
   { path: "/database-of-reagents", component: DatabaseOfReagentsPage },
-  { path: "/instrument-list", component: InstrumentList },
-  { path: "/database-of-instrumentType", component: DatabaseOfinsrumentType },
+  { path: "/equipment-list", component: InstrumentList },
+  { path: "/database-of-equipmentType", component: DatabaseOfinsrumentType },
   { path: "/database-of-manufactural", component: DatabaseOfManufactural },
   { path: "/database-of-method", component: DatabaseOfMethod },
   { path: "/database-of-analyte", component: DatabaseOfAnalyte },
   { path: "/databaseadmin-history/:id", component: UnitsHistory },
-  {path: "/news", component: News}
+  {path: "/news", component: News},
+  {path: "/scheme", component: Scheme},
+  {path: "/sample", component: Sample},
+  { path: "/analyte-add-methods/:id", component: AnalyteAddMethods }, 
+  { path: "/analyte-add-units/:id", component: AnalyteAddUnits }, 
+  { path: "/analyte-add-reagents/:id", component: AnalyteAddReagents }, 
+  { path: "/analyte-add-equipments/:id", component: AnalyteAddEuipments }, 
+
 
 
 
@@ -255,7 +268,9 @@ const participantsAuthProtectedRoutes = [
 
 
 const registrationAdminAuthProtectedRoutes = [
+  { path: "/round", component: rounds },
   { path: "/pending-participant", component: PendingLabs },
+  { path: "/rounds", component: Roundss },
   { path: "/labs-list-approved-fee", component: labsListApprovedFeeOffered },
   { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },
   {
@@ -277,7 +292,7 @@ const registrationAdminAuthProtectedRoutes = [
 
 ];
 
-//organization 
+
 const hrAdminAuthProtectedRoutes = [
   { path: "/add-staff", component: StaffRegister },
   { path: "/add-organization", component: OrganizationRegister },
@@ -285,8 +300,8 @@ const hrAdminAuthProtectedRoutes = [
   { path: "/databaseadmin-list", component: DatabaseadminList },
   { path: "/csr-list", component: csrList},
   { path: "/organization-list", component: organizationList},
-  { path: "/register-participant", component: RegisterParticipant },
-  { path: "/all-participant", component: AllParticipant},
+  { path: "/Register-Participant", component: RegisterParticipant },
+
   { path: "/registration-admin-list", component: RegistrationAdminList },
 ];
 

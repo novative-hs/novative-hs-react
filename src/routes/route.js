@@ -203,7 +203,7 @@ const AppRoute = ({
         return (
           <Redirect
             to={{
-              pathname: "/pending-labs",
+              pathname: "/pending-participant",
               state: { from: props.location },
             }}
           />
@@ -315,7 +315,7 @@ const AppRoute = ({
           isRegistrationAdminAuthProtected ||
           isDonorAuthProtected ||
           isMarketerAdminAuthProtected) &&
-        JSON.parse(localStorage.getItem("authUser")).account_type == "hr-admin"
+        JSON.parse(localStorage.getItem("authUser")).account_type == "organization"
       ) {
         return (
           <Redirect

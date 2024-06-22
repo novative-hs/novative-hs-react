@@ -41,6 +41,9 @@ class InstrumentType extends Component {
     this.node = React.createRef();
     this.state = {
       selectedUnit: null,
+      nameFilter: '',
+      dateFilter: '',
+      idFilter: '',
       isEdit: false,
       ListUnit: [],
       instrumenttype: "",
@@ -54,44 +57,71 @@ class InstrumentType extends Component {
           text: "id",
           dataField: "id",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, instrumenttype) => <>{instrumenttype.id}</>,
-          filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
-        // {
-        //   dataField: "id",
-        //   text: "ID",
-        //   sort: true,
-        //   hidden: true,
-        //   filter: textFilter(),
-        // },
         {
           dataField: "name",
-          text: "Name",
+          text: "Equipment",
           sort: true,
-          filter: textFilter(),
-        },
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.nameFilter}
+                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+        },        
         {
           text: "Date of Addition",
           dataField: "date_of_addition",
           sort: true,
           hidden: false,
-          formatter: (cellContent, instrumenttype) => (
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.dateFilter}
+                    onChange={e => this.handleFilterChange('dateFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          formatter: (cellContent, unitlist) => (
             <>
               <span>
-                {moment(instrumenttype.date_of_addition).format("DD MMM YYYY, h:mm A")}
+                {moment(unitlist.date_of_addition).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ),
-          filter: textFilter(),
         },
-        {
-          dataField: "user_name",
-          text: "Added By",
-          sort: true,
-          filter: textFilter(),
-        },
-
 
         {
           dataField: "menu",
@@ -130,6 +160,10 @@ class InstrumentType extends Component {
     this.setState({ ListUnit });
   }
 
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+  
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
@@ -180,6 +214,20 @@ class InstrumentType extends Component {
     const { SearchBar } = Search;
 
     const { ListUnit } = this.props;
+    const { nameFilter, dateFilter, idFilter } = this.state;
+
+    // Apply the filters to the unit list
+    const filteredUnits = ListUnit.filter(entry => {
+      const name = entry.name ? entry.name.toString().toLowerCase() : "";
+      const id = entry.id ? entry.id.toString() : "";
+      const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
+
+      return (
+        name.includes(nameFilter.toLowerCase()) &&
+        id.includes(idFilter) &&
+        date.includes(dateFilter)
+      );
+    });
 
     const { onGetInstrumentTypeList, onUpdateType } = this.props;
     const instrumenttype = this.state.ListUnit;
@@ -187,7 +235,7 @@ class InstrumentType extends Component {
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: ListUnit.length,
+      totalSize: filteredUnits.length,
       custom: true,
     };
 
@@ -202,26 +250,26 @@ class InstrumentType extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Database Admin | Instrument Type List</title>
+            <title>Database Admin | Equipment Type List</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Instrument Type List" />
+            <Breadcrumbs title="List" breadcrumbItem="Equipment Type List" />
             <Row className="justify-content-center">
-              <Col lg="10">
+              <Col lg="8">
                 <Card>
                   <CardBody>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={ListUnit}
+                      data={filteredUnits}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.feedbackListColumns}
-                          data={ListUnit}
+                          data={filteredUnits}
                           search
                         >
 
@@ -232,14 +280,14 @@ class InstrumentType extends Component {
                                 <Col xl="12">
                                   <Col className="text-end">
 
-                                    <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Instrument Type</button>
+                                    <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Equipment Type</button>
 
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
                                     >
                                       <ModalHeader toggle={this.closeModal} tag="h4">
-                                        {"Instrument Type"}
+                                        {"Equipment Type"}
                                       </ModalHeader>
                                       <ModalBody>
                                         {this.state.successMessage && (
@@ -276,7 +324,7 @@ class InstrumentType extends Component {
 
                                                 await this.props.onUpdateType(this.state.selectedUnit.id, newUnit);
 
-                                                this.displaySuccessMessage("Instrument Type updated successfully!");
+                                                this.displaySuccessMessage("Equipment Type updated successfully!");
 
                                                 await this.props.onGetInstrumentTypeList(this.state.user_id);
 
@@ -291,7 +339,7 @@ class InstrumentType extends Component {
 
                                                 await this.props.onAddNewType(newUnit);
 
-                                                this.displaySuccessMessage("Instrument Type added successfully!");
+                                                this.displaySuccessMessage("Equipment Type added successfully!");
 
                                                 await this.props.onGetInstrumentTypeList(this.state.user_id);
 
@@ -309,7 +357,7 @@ class InstrumentType extends Component {
                                               <Row>
                                                 <Col className="col-12">
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">Instrument Type Name</Label>
+                                                    <Label className="col-form-label">Equipment Type Name</Label>
                                                     <Field
                                                       name="name"
                                                       type="text"
@@ -390,7 +438,7 @@ const mapStateToProps = ({ ListUnit }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetInstrumentTypeList: () => dispatch(getinstrumenttypelist()),
+  onGetInstrumentTypeList: (id) => dispatch(getinstrumenttypelist(id)),
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewInstrumentType(createInstrumentType, id)),
   onUpdateType: (id, instrumenttype) => dispatch(updateNewInstrumentType({ id, ...instrumenttype })),

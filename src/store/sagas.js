@@ -32,9 +32,9 @@ import UnitsListSaga from "./units/sagas";
 import UnitsHistorySaga from "./databaseadmin-history/sagas";
 import ReagentsListSaga from "./reagents/sagas";
 import ManufacturalListSaga from "./manufactural/sagas";
-
-//Participant
-import participantListSaga from "./participant-list/sagas";
+import SchemeListSaga from "./scheme/saga";
+import RoundListSaga from "./rounds/saga";
+import SampleSaga from "./sample/saga";
 // organization
 import organizationaccountSaga from "./organization/saga";
 
@@ -70,6 +70,7 @@ import RegistrationAdminSaga from "./registration-admin/saga";
 import FinanceAdminSaga from "./finance-admin/saga";
 import InstrumentTypeListSaga from "./databaseofunits/saga";
 import NewsSaga from "./news/saga";
+import MethodsListSaga from "./methods/sagas";
 
 
 
@@ -78,18 +79,21 @@ import NewsSaga from "./news/saga";
 export  default function* rootSaga() {
   yield all([
     //public
+    fork(SampleSaga),
     fork(organizationaccountSaga),
     fork(NewsSaga),
+    fork(MethodsListSaga),
     fork(InstrumentListSaga),
     fork(ReagentsListSaga),
     fork(UnitsListSaga),
-    fork(participantListSaga),
     fork(UnitsHistorySaga),
     fork(dashboardSaga),
     fork(LayoutSaga),
     fork(AccountSaga),
-  fork(ManufacturalListSaga),
-   fork(LabInformationSaga),
+    fork(ManufacturalListSaga),
+    fork(SchemeListSaga),
+    fork(RoundListSaga),
+    fork(LabInformationSaga),
     fork(InstrumentTypeListSaga),
     fork(AuthSaga),
     fork(msgsSaga),

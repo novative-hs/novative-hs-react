@@ -10,9 +10,9 @@ import {
     UPDATE_MANUFACTURAL_FAIL,
   } from "./actionTypes";
   // get Units Action
-  export const getManufacturalList = () => ({
+  export const getManufacturalList = (id) => ({
     type: GET_MANUFACTURAL_LIST,
-    payload: {},
+    payload: id,
   });
   
   export const getManufacturalListSuccess =  ManufacturalList => ({
