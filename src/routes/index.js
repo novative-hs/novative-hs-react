@@ -243,7 +243,7 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/database-of-method", component: DatabaseOfMethod },
   { path: "/database-of-analyte", component: DatabaseOfAnalyte },
   { path: "/databaseadmin-history/:id", component: UnitsHistory },
-  {path: "/news", component: News},
+  {path: "/databaseadmin-news", component: News},
   {path: "/scheme", component: Scheme},
   {path: "/sample", component: Sample},
   { path: "/analyte-add-methods/:id", component: AnalyteAddMethods }, 
