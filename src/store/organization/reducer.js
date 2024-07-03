@@ -2,6 +2,12 @@ import {
   REGISTER_ORGANIZATION,
   REGISTER_ORGANIZATION_SUCCESSFUL,
   REGISTER_ORGANIZATION_FAILED,
+  GET_ORGANIZATION_LIST_SUCCESS,
+  GET_ORGANIZATION_LIST_FAIL,
+  UPDATE_ORGANIZATION_LIST_SUCCESS,
+  UPDATE_ORGANIZATION_LIST_FAIL,
+  DELETE_ORGANIZATION_LIST_SUCCESS,
+  DELETE_ORGANIZATION_LIST_FAIL,
 } from "./actionTypes";
 
 const initialState = {
@@ -11,10 +17,54 @@ const initialState = {
   incompleteRegistrationError: null,
   message: null,
   loading: false,
+  userAccountType: null,
+  OrganizationList: [],
 };
 
 const organizationaccount = (state = initialState, action) => {
   switch (action.type) {
+    case GET_ORGANIZATION_LIST_SUCCESS:
+      console.log("Data received in success action:", action.payload); // Log the action.payload
+      return {
+        ...state,
+        OrganizationList: action.payload.data,
+      };
+
+    case GET_ORGANIZATION_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+      case UPDATE_ORGANIZATION_LIST_SUCCESS:
+        return {
+          ...state,
+          OrganizationList: state.OrganizationList.map(organization =>
+            organization.id.toString() === action.payload.id.toString()
+              ? { organization, ...action.payload }
+              : organization
+          ),
+        };
+      case UPDATE_ORGANIZATION_LIST_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        }; 
+        case DELETE_ORGANIZATION_LIST_SUCCESS:
+          
+            return {
+              ...state,
+              organization: state.OrganizationList.filter(
+                person => person.id.toString() !== action.payload.id.toString()
+              
+            
+            ),
+          };
+    
+        case DELETE_ORGANIZATION_LIST_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
     case REGISTER_ORGANIZATION:
       state = {
         ...state,

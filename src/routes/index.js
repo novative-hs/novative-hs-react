@@ -45,11 +45,21 @@ import AnalyteAddMethods from "pages/databaseadmin/analyte-add-methods";
 import AnalyteAddUnits from "pages/databaseadmin/analyte-add-units";
 import DatabaseOfinsrumentType from "pages/databaseadmin/instrument-type-list";
 import InstrumentList from "pages/databaseadmin/instruments-list";
+import Scheme from "pages/databaseadmin/scheme";
+import Cycle from "pages/databaseadmin/cycle";
+import CycleAnalytes from "pages/databaseadmin/add-analytes-cycle-page";
+import Sample from "pages/databaseadmin/sample";
+
 import AnalyteAddReagents from "pages/databaseadmin/analyte-add-reagents";
 import AnalyteAddEuipments from "pages/databaseadmin/analyte-add-equipments";
-import News from "pages/databaseadmin/news";
-import Scheme from "pages/databaseadmin/scheme";
-import Sample from "pages/databaseadmin/sample";
+import DatabaseOfParticipantCity from "pages/databaseadmin/database-of-participantcity";
+import DatabaseOfParticipantDistrict from "pages/databaseadmin/database-of-participantdistrict";
+import DatabaseOfParticipantDepartment from "pages/databaseadmin/database-of-participantdepartment";
+import DatabaseOfParticipantDesignation from "pages/databaseadmin/database-of-participantdesignation";
+import DatabaseOfParticipanttype from "pages/databaseadmin/database-of-participanttype";
+import DatabaseOfParticipantSector from "pages/databaseadmin/database-of-participantsector";
+import UnitsAnalytes from "pages/databaseadmin/units-analyte";
+
 //HR  Admin
 import DatabaseadminList from "pages/HrAdmin/databaseadmin-list";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
@@ -60,6 +70,9 @@ import Rounds from "pages/Participant/rounds";
 import Performance from "pages/Participant/performance";
 import NewsPage from "pages/Participant/news-paritcipant";
 import Email from "pages/Participant/email";
+import AllParticipant from "pages/Participant/all-participants";
+import AllParticipant1 from "pages/Participant/all-participants1";
+import AllParticipant2 from "pages/Participant/all-participants1";
 
 // Lab Componentsss
 
@@ -106,6 +119,8 @@ import UnapprovedLabs from "pages/RegistrationAdmin/unapproved-labs";
 import rounds from "pages/RegistrationAdmin/rounds";
 import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
+import News from "pages/RegistrationAdmin/news";
+
 
 
 
@@ -137,6 +152,8 @@ import Pages500 from "pages/Utility/pages-500";
 
 import StaffRegister from "pages/HrAdmin/staff-register";
 import OrganizationRegister  from "pages/HrAdmin/organization-register";
+import OrganizationList  from "pages/SuperAdmin/organization-list";
+
 import StaffInfo from "pages/HrAdmin/staff-info";
 
 
@@ -150,7 +167,12 @@ import labsListPendingFee from "store/labs-list-pending/reducer";
 import msgBox from "pages/Complaints/msg-box";
 import msgBoxFo from "pages/Complaints/msg-box";
 
+import { components } from "react-select/dist/react-select.cjs.prod";
+// import RegParticipant from "pages/RegisterParticipant";
+import RegParticipant from "pages/Authentication/RegisterParticipant";
 import RegistrationAdminList from "pages/HrAdmin/registration-admin-list";
+import RegParticipantCSR from "pages/Authentication/RegisterParticipantCSR";
+
 import csrList from "pages/HrAdmin/csr-list";
 import organizationList from "pages/HrAdmin/organizationList";
 import RegisterParticipant from "pages/Authentication/RegisterParticipant";
@@ -164,6 +186,8 @@ const publicRoutes = [
   { path: "/register-affiliate", component: RegisterAffiliate },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/:token/confirm-password", component: ConfirmPwd },
+  
+  // { path: "/register-participant-copy", component: RegParticipantCopy},
 
 
   { path: "/lab-information/:id", component: LabInformation },
@@ -197,7 +221,7 @@ const publicRoutes = [
 ];
 
 const labAuthProtectedRoutes = [
-  // { path: "/change-password", component: ChangePassword },
+  { path: "/change-password", component: ChangePassword },
   { path: "/dashboard-lab", component: DashboardLab },
 
 
@@ -243,16 +267,27 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/database-of-method", component: DatabaseOfMethod },
   { path: "/database-of-analyte", component: DatabaseOfAnalyte },
   { path: "/databaseadmin-history/:id", component: UnitsHistory },
-  {path: "/databaseadmin-news", component: News},
+
+  
+
   {path: "/scheme", component: Scheme},
+  {path: "/cycle", component: Cycle},
+  {path: "/add-analytes-cycle-page/:id", component: CycleAnalytes},
+  
   {path: "/sample", component: Sample},
+
   { path: "/analyte-add-methods/:id", component: AnalyteAddMethods }, 
   { path: "/analyte-add-units/:id", component: AnalyteAddUnits }, 
   { path: "/analyte-add-reagents/:id", component: AnalyteAddReagents }, 
   { path: "/analyte-add-equipments/:id", component: AnalyteAddEuipments }, 
-
-
-
+  { path: "/units-analytes/:id", component: UnitsAnalytes }, 
+  //participant data
+  { path: "/database-of-participantcity", component: DatabaseOfParticipantCity },
+  { path: "/database-of-participantdistrict", component: DatabaseOfParticipantDistrict },
+  { path: "/database-of-participantdepartment", component: DatabaseOfParticipantDepartment },
+  { path: "/database-of-participantdesignation", component: DatabaseOfParticipantDesignation },
+  { path: "/database-of-participanttype", component: DatabaseOfParticipanttype },
+  { path: "/database-of-participantSector", component: DatabaseOfParticipantSector },
 
 ];
 const participantsAuthProtectedRoutes = [
@@ -261,8 +296,8 @@ const participantsAuthProtectedRoutes = [
   { path: "/performance", component: Performance},
   { path: "/newspage", component: NewsPage},
   { path: "/email", component: Email},
+  
  
-
 ];
 
 
@@ -288,21 +323,29 @@ const registrationAdminAuthProtectedRoutes = [
   {
     path: "/approvereferrellab", component: ApproveReferrelLab,
   },
-
+  { path: "/register-participant", component: RegParticipant},
+  { path: "/all-participant1", component: AllParticipant1},
+  {path: "/news", component: News},
+  
 
 ];
 
+//CSR
+const CSRAdminAuthProtectedRoutes = [
+  { path: "/register-participant-CSR", component: RegParticipantCSR},
+  { path: "/all-participant2", component: AllParticipant2},
+];
 
+//organization dashboard
 const hrAdminAuthProtectedRoutes = [
   { path: "/add-staff", component: StaffRegister },
   { path: "/add-organization", component: OrganizationRegister },
+  { path: "/organization-list", component: OrganizationList },
   { path: "/staff-info/:id", component: StaffInfo },
   { path: "/databaseadmin-list", component: DatabaseadminList },
-  { path: "/csr-list", component: csrList},
-  { path: "/organization-list", component: organizationList},
-  { path: "/Register-Participant", component: RegisterParticipant },
-
+  { path: "/csr-list", component: csrList },
   { path: "/registration-admin-list", component: RegistrationAdminList },
+  { path: "/all-participant", component: AllParticipant},
 ];
 
 const authProtectedRoutes = [
@@ -318,6 +361,7 @@ export {
   financeOfficerAuthProtectedRoutes,
   databaseAdminAuthProtectedRoutes,
   registrationAdminAuthProtectedRoutes,
+  CSRAdminAuthProtectedRoutes,
   hrAdminAuthProtectedRoutes,
   publicRoutes,
 };

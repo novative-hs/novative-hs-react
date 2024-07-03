@@ -36,14 +36,14 @@ import {
     payload: error,
   });
   //Add  Analyte Reagents
-  export const addNewAnalyteReagentlist = (createReagent, id) => ({
+  export const addNewAnalyteReagentlist = (createAnalyteReagent, id) => ({
     type: ADD_NEW_ANALYTESREAGENTS,
-    payload: { createReagent, id },
+    payload: { createAnalyteReagent, id },
   });
 
-  export const addNewAnalyteReagentlistSuccess = createReagent => ({
+  export const addNewAnalyteReagentlistSuccess = createAnalyteReagent => ({
     type: ADD_NEW_ANALYTESREAGENTS_SUCCESS,
-    payload: createReagent,
+    payload: createAnalyteReagent,
   });
   
   export const addNewAnalyteReagentlistFail = error => ({

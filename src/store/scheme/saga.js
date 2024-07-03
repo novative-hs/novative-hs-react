@@ -1,21 +1,24 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_SCHEME_LIST,ADD_NEW_SCHEME_LIST,UPDATE_NEW_SCHEME_LIST } from "./actionTypes";
+import { GET_SCHEME_LIST, ADD_NEW_SCHEME_LIST,  UPDATE_NEW_SCHEME_LIST, DELETE_SCHEME
+} from "./actionTypes";
 
-import { getschemelistSuccess,getschemelistFail,addNewSchemeListSuccess,addNewSchemeListFail, updateSchemeListSuccess,updateSchemeListFail } from "./actions";
+import { addNewSchemeListFail, addNewSchemeListSuccess, updateSchemeListSuccess,updateSchemeListFail,getSchemelistFail, getSchemelistSuccess, deleteSchemeSuccess,
+  deleteSchemeFail
+} from "./actions";
 
-//Include Both Helper File with needed schemes
-import { getSchemelist,addNewScheme, updateScheme} from "../../helpers/django_api_helper";
+//Include Both Helper File with needed methods
+import { getSchemelist, updateScheme , addNewScheme, deleteScheme} from "../../helpers/django_api_helper";
+
 
 function* fetchSchemeList(object) {
   try {
     const response = yield call(getSchemelist, object.payload);
-    console.log("Response from getSchemelist:", response); // Log the response object
-    yield put(getschemelistSuccess(response.data));
+    console.log("Response from getMethodlist:", response); // Log the response object
+    yield put(getSchemelistSuccess(response.data));
   } catch (error) {
-    console.error("Error in fetchSchemeList:", error);
-    yield put(getschemelistFail(error));
+    yield put(getSchemelistFail(error));
   }
 }
 function* onAddNewScheme(object) {
@@ -30,7 +33,7 @@ function* onAddNewScheme(object) {
     yield put(addNewSchemeListFail(error));
   }
 }
-function* onUpdatescheme({ payload: unit }) {
+function* onUpdateScheme({ payload: unit }) {
   try {
     const response = yield call(updateScheme, unit);
     yield put(updateSchemeListSuccess(response));
@@ -39,14 +42,21 @@ function* onUpdatescheme({ payload: unit }) {
   }
 }
 
-
-function* SchemeListSaga() {
-  
-  yield takeEvery(GET_SCHEME_LIST, fetchSchemeList);
-  yield takeEvery(ADD_NEW_SCHEME_LIST, onAddNewScheme);
-  yield takeEvery(UPDATE_NEW_SCHEME_LIST, onUpdatescheme);
-
- 
+function* onDeleteScheme({ payload: unit }) {
+  try {
+    const response = yield call(deleteScheme, unit);
+    yield put(deleteSchemeSuccess(response));
+  } catch (error) {
+    yield put(deleteSchemeFail(error));
+  }
 }
 
-export default SchemeListSaga;
+function* InstrumentTypeListSaga() {
+
+  yield takeEvery( GET_SCHEME_LIST, fetchSchemeList);
+  yield takeEvery( ADD_NEW_SCHEME_LIST, onAddNewScheme);
+  yield takeEvery( UPDATE_NEW_SCHEME_LIST, onUpdateScheme);
+  yield takeEvery(DELETE_SCHEME, onDeleteScheme);
+}
+
+export default InstrumentTypeListSaga;

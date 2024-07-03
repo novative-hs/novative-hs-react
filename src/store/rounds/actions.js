@@ -9,6 +9,9 @@ import {
   UPDATE_NEW_ROUND_LIST,
   UPDATE_NEW_ROUND_LIST_SUCCESS,
   UPDATE_NEW_ROUND_LIST_FAIL,
+  DELETE_ROUND,
+  DELETE_ROUND_SUCCESS,
+  DELETE_ROUND_FAIL,
 } from "./actionTypes";
 
 // Round
@@ -26,7 +29,6 @@ export const getroundlistSuccess = RoundList => {
 };
 
 export const getroundlistFail = (error) => {
-  console.log("Error response in fail action:", error); 
   return {
     type: GET_ROUND_LIST_FAIL,
     payload: error,
@@ -35,7 +37,6 @@ export const getroundlistFail = (error) => {
 
 
 export const addNewRoundList = (createUnit, id) => {
-  console.log('Action Creator - addNewRoundList called with:', createUnit, id);
   return {
     type: ADD_NEW_ROUND_LIST,
     payload: { createUnit, id },
@@ -52,17 +53,39 @@ export const addNewRoundListFail = error => ({
   payload: error,
 });
 
-export const updateRoundList = unit => ({
+export const updateRoundList = round => {
+  console.log('updatevvvvvvvvvvvvvvvvvcalled with:', round);
+  return{
   type: UPDATE_NEW_ROUND_LIST,
-  payload: unit,
-});
+  payload: round,
+}};
 
-export const updateRoundListSuccess = unit => ({
+export const updateRoundListSuccess = round => {
+  console.log('updatevvvvvvvvvvSuccess   vvvcalled with:', round);
+  return{
   type: UPDATE_NEW_ROUND_LIST_SUCCESS,
-  payload: unit,
+  payload: round,
+}};
+
+export const updateRoundListFail = error => {
+  console.log('updatevvvvvvvvvvSuccess   vvvcalled with:', error);
+  return{
+  type: UPDATE_NEW_ROUND_LIST_FAIL,
+  payload: error,
+}};
+
+
+export const deleteRound = round => ({
+  type: DELETE_ROUND,
+  payload: round,
 });
 
-export const updateRoundListFail = error => ({
-  type: UPDATE_NEW_ROUND_LIST_FAIL,
+export const deleteRoundSuccess = round => ({
+  type: DELETE_ROUND_SUCCESS,
+  payload: round,
+});
+
+export const deleteRoundFail = error => ({
+  type: DELETE_ROUND_FAIL,
   payload: error,
 });

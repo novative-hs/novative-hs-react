@@ -6,6 +6,8 @@ import {
   ADD_NEW_ROUND_LIST_FAIL,
   UPDATE_NEW_ROUND_LIST_SUCCESS,
   UPDATE_NEW_ROUND_LIST_FAIL,
+  DELETE_ROUND_SUCCESS,
+  DELETE_ROUND_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -38,13 +40,14 @@ const RoundList = (state = INIT_STATE, action) => {
               ...state,
               error: action.payload,
             };
+            
           case UPDATE_NEW_ROUND_LIST_SUCCESS:
             return {
               ...state,
-              RoundList: state.RoundList.map(unit =>
-                unit.id.toString() === action.payload.id.toString()
-                  ? { unit, ...action.payload }
-                  : unit
+              RoundList: state.RoundList.map(round =>
+                round.id.toString() === action.payload.id.toString()
+                  ? { round, ...action.payload }
+                  : round
               ),
             };
           case UPDATE_NEW_ROUND_LIST_FAIL:
@@ -52,6 +55,20 @@ const RoundList = (state = INIT_STATE, action) => {
               ...state,
               error: action.payload,
             };
+            case DELETE_ROUND_SUCCESS:
+              return {
+                ...state,
+                rounds: state.rounds.filter(
+                  round =>
+                    round.id.toString() !== action.payload.id.toString()
+                ),
+              };
+        
+            case DELETE_ROUND_FAIL:
+              return {
+                ...state,
+                error: action.payload,
+              };
             
     default:
       return state;

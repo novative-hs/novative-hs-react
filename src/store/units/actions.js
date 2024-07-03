@@ -8,7 +8,86 @@ import {
     UPDATE_UNITS,
     UPDATE_UNITS_SUCCESS,
     UPDATE_UNITS_FAIL,
+    GET_ANALYTESUNITS,
+    GET_ANALYTESUNITS_SUCCESS,
+    GET_ANALYTESUNITS_FAIL,
+
+    GET_ANALYTESUNITS_LIST,
+    GET_ANALYTESUNITS_LIST_SUCCESS,
+    GET_ANALYTESUNITS_LIST_FAIL,
+    ADD_NEW_ANALYTESUNITS,
+    ADD_NEW_ANALYTESUNITS_SUCCESS,
+    ADD_NEW_ANALYTESUNITS_FAIL,
+    UPDATE_ANALYTESUNITS,
+    UPDATE_ANALYTESUNITS_SUCCESS,
+    UPDATE_ANALYTESUNITS_FAIL
+
   } from "./actionTypes";
+///get analytes associated with unit
+  export const getAnalyteUnit = (id) => ({
+    type: GET_ANALYTESUNITS,
+    payload: id,
+  });
+  
+  export const getAnalyteUnitSuccess = UnitAnalyte => ({
+    type: GET_ANALYTESUNITS_SUCCESS,
+    payload: UnitAnalyte,
+  });
+  
+  export const getAnalyteUnitFail = error => ({
+    type: GET_ANALYTESUNITS_FAIL,
+    payload: error,
+  });
+
+// get  Analyte units
+export const getAnalyteUnitlist = (id) => ({
+  type: GET_ANALYTESUNITS_LIST,
+  payload: id,
+});
+
+export const getAnalyteUnitlistSuccess = UnitAnalyteList => ({
+  type: GET_ANALYTESUNITS_LIST_SUCCESS,
+  payload: UnitAnalyteList,
+});
+
+export const getAnalyteUnitlistFail = error => ({
+  type: GET_ANALYTESUNITS_LIST_FAIL,
+  payload: error,
+});
+//Add  Analyte units
+export const addNewAnalyteUnitlist = (createAnalyteUnit, id) => ({
+  type: ADD_NEW_ANALYTESUNITS,
+  payload: { createAnalyteUnit, id },
+});
+
+export const addNewAnalyteUnitlistSuccess = createAnalyteUnit => ({
+  type: ADD_NEW_ANALYTESUNITS_SUCCESS,
+  payload: createAnalyteUnit,
+});
+
+export const addNewAnalyteUnitlistFail = error => ({
+  type: ADD_NEW_ANALYTESUNITS_FAIL,
+  payload: error,
+});
+//Update  Analyte units
+export const updateAnalyteUnitlist = analytesunit => {
+  console.log('action creator called with analytesunit:', analytesunit);
+  return {
+    type: UPDATE_ANALYTESUNITS,
+    payload: analytesunit,
+  };
+};
+export const updateAnalyteUnitlistSuccess = analytesunit => ({
+  type: UPDATE_ANALYTESUNITS_SUCCESS,
+  payload: analytesunit,
+});
+
+export const updateAnalyteUnitlistFail = error => ({
+  type: UPDATE_ANALYTESUNITS_FAIL,
+  payload: error,
+});
+
+
   // get Units Action
   export const getunitlist = (id) => ({
     type: 'GET_UNITS_LIST',

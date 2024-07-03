@@ -42,34 +42,89 @@ export const ADD_NEW_METHOD = `${API_ENDPOINT}/api/database-admin/methods-create
 export const UPDATE_METHOD = `${API_ENDPOINT}/api/database-admin/update-method-list`;
 
 export const GET_SCHEME_LIST = `${API_ENDPOINT}/api/database-admin/scheme-list`;
-export const ADD_NEW_SCHEME = `${API_ENDPOINT}/api/database-admin/post-scheme`;
-export const UPDATE_SCHEME = `${API_ENDPOINT}/api/database-admin/update-scheme-list`;
+export const ADD_NEW_SCHEME = `${API_ENDPOINT}/api/database-admin/scheme-list`;
+export const UPDATE_SCHEME = `${API_ENDPOINT}/api/database-admin/update-scheme`;
+export const DELETE_SCHEME = `${API_ENDPOINT}/api/database-admin/delete-scheme`;
 
 export const GET_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/analyte-list`;
 export const ADD_NEW_ANALYTE = `${API_ENDPOINT}/api/database-admin/analyte-create-list`;
 export const UPDATE_ANALYTE = `${API_ENDPOINT}/api/database-admin/update-analyte`;
 
+export const GET_CYCLE_LIST = `${API_ENDPOINT}/api/database-admin/cycle-list`;
+export const ADD_NEW_CYCLE = `${API_ENDPOINT}/api/database-admin/post-cycle`;
+export const UPDATE_CYCLE = `${API_ENDPOINT}/api/database-admin/update-cycle-list`;
+export const DELETE_CYCLE = `${API_ENDPOINT}/api/database-admin/delete-cycle`;
+
+//Participant
+export const GET_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/participant-information`;
 export const GET_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-reagents-list`;
 export const ADD_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-add-reagent`;
 export const UPDATE_ANALYTEREAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-update-reagent`;
 
 
+
+export const GET_ANALYTESEQUIPMENTS_LIST = `${API_ENDPOINT}/api/database-admin/analyte-equipments-list`;
+export const ADD_NEW_ANALYTESEQUIPMENTS = `${API_ENDPOINT}/api/database-admin/analyte-add-equipments`;
+export const UPDATE_ANALYTESEQUIPMENTS = `${API_ENDPOINT}/api/database-admin/analyte-update-equipments`;
+
+export const GET_ANALYTESMETHODS_LIST = `${API_ENDPOINT}/api/database-admin/analyte-methods-list`;
+export const ADD_NEW_ANALYTESMETHODS = `${API_ENDPOINT}/api/database-admin/analyte-add-methods`;
+export const UPDATE_ANALYTESMETHODS = `${API_ENDPOINT}/api/database-admin/analyte-update-methods`;
+
+export const GET_ANALYTESUNITS_LIST = `${API_ENDPOINT}/api/database-admin/analyte-units-list`;
+export const ADD_NEW_ANALYTESUNITS = `${API_ENDPOINT}/api/database-admin/analyte-add-units`;
+export const UPDATE_ANALYTESUNITS = `${API_ENDPOINT}/api/database-admin/analyte-update-units`;
+//analyes associated with unit
+export const GET_ANALYTESUNITS = `${API_ENDPOINT}/api/database-admin/analyte-units`;
+
+////participant
+export const GET_CITY_LIST = `${API_ENDPOINT}/api/database-admin/city_list`;
+export const ADD_NEW_CITY = `${API_ENDPOINT}/api/database-admin/city_create`;
+export const UPDATE_CITY = `${API_ENDPOINT}/api/database-admin/city_update`;
+
+export const GET_DISTRICT_LIST = `${API_ENDPOINT}/api/database-admin/district_list`;
+export const ADD_NEW_DISTRICT = `${API_ENDPOINT}/api/database-admin/district_create`;
+export const UPDATE_DISTRICT = `${API_ENDPOINT}/api/database-admin/district_update`;
+
+export const GET_DEPARTMENT_LIST = `${API_ENDPOINT}/api/database-admin/department_list`;
+export const ADD_NEW_DEPARTMENT = `${API_ENDPOINT}/api/database-admin/department_create`;
+export const UPDATE_DEPARTMENT = `${API_ENDPOINT}/api/database-admin/department_update`;
+
+export const GET_DESIGNATION_LIST = `${API_ENDPOINT}/api/database-admin/designation_list`;
+export const ADD_NEW_DESIGNATION = `${API_ENDPOINT}/api/database-admin/designation_create`;
+export const UPDATE_DESIGNATION = `${API_ENDPOINT}/api/database-admin/designation_update`;
+
+export const GET_TYPE_LIST = `${API_ENDPOINT}/api/database-admin/participanttype_list`;
+export const ADD_NEW_TYPE = `${API_ENDPOINT}/api/database-admin/participanttype_create`;
+export const UPDATE_TYPE = `${API_ENDPOINT}/api/database-admin/participanttype_update`;
+
+export const GET_SECTOR_LIST = `${API_ENDPOINT}/api/database-admin/participantsector_list`;
+export const ADD_NEW_SECTOR = `${API_ENDPOINT}/api/database-admin/participantsector_create`;
+export const UPDATE_SECTOR = `${API_ENDPOINT}/api/database-admin/participantsector_update`;
+
 ////////////news
 
 export const GET_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
-export const ADD_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
+export const ADD_NEWS = `${API_ENDPOINT}/api/database-admin/news-add`;
 
 
 export const GET_INSTRUMENT_LIST = `${API_ENDPOINT}/api/database-admin/instrument-list`;
 export const ADD_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/instrument-create`;
 export const UPDATE_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/update-instrument-list`;
+
+export const GET_CYCLE_ANALYTE = `${API_ENDPOINT}/api/database-admin/cycle-analyte-list`;
+export const ADD_CYCLE_ANALYTE = `${API_ENDPOINT}/api/database-admin/cycle-add-analyte`;
+export const UPDATE_CYCLE_ANALYTE = `${API_ENDPOINT}/api/database-admin/cycle-update-analyte`;
+
 /// ORGANIZATION REGISTER
 export const ORGANIZATION_REGISTER = `${API_ENDPOINT}/api/account/register/`;
+export const GET_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organization/organization-list`;
+export const UPDATE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organization/update-organization-list`;
+export const DELETE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organization/delete-organization-list`;
 // LAB LIST
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;
 export const GET_MAIN_LABS = `${API_ENDPOINT}/api/lab/lab-list`;
-
 
 
 // TEST
@@ -386,6 +441,7 @@ export const UPDATE_SAMPLE_COLLECTION_STATUS = `${API_ENDPOINT}/api/samplecollec
 export const GET_ROUND_LIST = `${API_ENDPOINT}/api/registration-admin/round-list`;
 export const ADD_NEW_ROUND = `${API_ENDPOINT}/api/registration-admin/post-round`;
 export const UPDATE_ROUND = `${API_ENDPOINT}/api/registration-admin/update-round-list`;
+export const DELETE_ROUND = `${API_ENDPOINT}/api/registration-admin/delete-round`;
 
 
 export const GET_PENDING_CORPORATE = `${API_ENDPOINT}/api/registration-admin/pending-corporate`;
@@ -417,7 +473,6 @@ export const GET_LC_LIST = `${API_ENDPOINT}/api/accountstatement/corporate-accou
 // STAFF
 export const GET_CSR_LIST = `${API_ENDPOINT}/api/staff/csr-list`;
 export const GET_AUDITOR_LIST = `${API_ENDPOINT}/api/staff/auditor-list`;
-export const GET_ORGANIZATION_LIST = `${API_ENDPOINT}/api/staff/organization-list`;
 export const GET_FINANCE_OFFICER_LIST = `${API_ENDPOINT}/api/staff/finance-officer-list`;
 export const ADD_STAFF = `${API_ENDPOINT}/api/staff/register-staff`;
 export const UPDATE_STAFF = `${API_ENDPOINT}/api/staff/register-staff`;

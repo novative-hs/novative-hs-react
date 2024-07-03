@@ -1,4 +1,3 @@
-
 import {
   GET_SCHEME_LIST,
   GET_SCHEME_LIST_SUCCESS,
@@ -9,23 +8,29 @@ import {
   UPDATE_NEW_SCHEME_LIST,
   UPDATE_NEW_SCHEME_LIST_SUCCESS,
   UPDATE_NEW_SCHEME_LIST_FAIL,
+  DELETE_SCHEME,
+  DELETE_SCHEME_SUCCESS,
+  DELETE_SCHEME_FAIL,
 } from "./actionTypes";
 
-// Scheme
-export const getschemelist = id => ({
+
+
+
+//////////////Scheme////////////
+export const getSchemelist = id => ({
   type: GET_SCHEME_LIST,
   payload: id,
 });
 
-export const getschemelistSuccess = SchemeList => {
-  console.log("Scheme List response in success action:", SchemeList); 
+export const getSchemelistSuccess = (MethodList) => {
+  console.log("MethodList response in success action:", MethodList); 
   return {
     type: GET_SCHEME_LIST_SUCCESS,
-    payload: SchemeList,
+    payload: MethodList,
   };
 };
 
-export const getschemelistFail = (error) => {
+export const getSchemelistFail = (error) => {
   console.log("Error response in fail action:", error); 
   return {
     type: GET_SCHEME_LIST_FAIL,
@@ -34,13 +39,10 @@ export const getschemelistFail = (error) => {
 };
 
 
-export const addNewSchemeList = (createUnit, id) => {
-  console.log('Action Creator - addNewSchemeList called with:', createUnit, id);
-  return {
-    type: ADD_NEW_SCHEME_LIST,
-    payload: { createUnit, id },
-  };
-};
+export const addNewSchemeList = (createUnit, id) => ({
+  type: ADD_NEW_SCHEME_LIST,
+  payload: { createUnit, id },
+});
 
 export const addNewSchemeListSuccess = createUnit => ({
   type: ADD_NEW_SCHEME_LIST_SUCCESS,
@@ -64,5 +66,20 @@ export const updateSchemeListSuccess = unit => ({
 
 export const updateSchemeListFail = error => ({
   type: UPDATE_NEW_SCHEME_LIST_FAIL,
+  payload: error,
+});
+
+export const deleteScheme = id => ({
+  type: DELETE_SCHEME,
+  payload: id,
+});
+
+export const deleteSchemeSuccess = id => ({
+  type: DELETE_SCHEME_SUCCESS,
+  payload: id,
+});
+
+export const deleteSchemeFail = error => ({
+  type: DELETE_SCHEME_FAIL,
   payload: error,
 });

@@ -3,20 +3,15 @@ import PropTypes from "prop-types";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
-
-
 // Import Routes
 import {
   authProtectedRoutes,
   labAuthProtectedRoutes,
-  
-
   financeOfficerAuthProtectedRoutes,
   databaseAdminAuthProtectedRoutes,
   participantsAuthProtectedRoutes,
- 
   registrationAdminAuthProtectedRoutes,
-
+  CSRAdminAuthProtectedRoutes,
   hrAdminAuthProtectedRoutes,
   publicRoutes,
 } from "./routes/";
@@ -44,7 +39,6 @@ class App extends Component {
     // this.getLayout = this.getLayout.bind(this);
   }
 
-
   render() {
     // const Layout = this.getLayout();
 
@@ -67,8 +61,9 @@ class App extends Component {
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
+                isCSRAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                isParticipantAuthProtected= {false}
+                isParticipantAuthProtected={false}
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
               />
@@ -83,15 +78,15 @@ class App extends Component {
                 isAuthProtected={true}
                 isLabAuthProtected={false}
                 isCorporateAuthProtected={false}
-                isParticipantAuthProtected= {false}
+                isParticipantAuthProtected={false}
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
                 isdatabaseAdminAuthProtected={false}
-                 isAuditorAuthProtected={false}
+                isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
+                isCSRAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-               
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
@@ -107,23 +102,21 @@ class App extends Component {
                 isAuthProtected={true}
                 isLabAuthProtected={true}
                 isCorporateAuthProtected={false}
-                
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
                 isdatabaseAdminAuthProtected={false}
-                isParticipantAuthProtected= {true}
+                isParticipantAuthProtected={true}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
+                isCSRAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-                
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
 
-            
             {registrationAdminAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
@@ -133,24 +126,44 @@ class App extends Component {
                 isAuthProtected={true}
                 isLabAuthProtected={false}
                 isCorporateAuthProtected={false}
-               
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
                 isdatabaseAdminAuthProtected={false}
-                
-                isParticipantAuthProtected= {false}
+                isParticipantAuthProtected={false}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={true}
+                isCSRAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-              
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
 
-          
+            {CSRAdminAuthProtectedRoutes.map((route, idx) => (
+              <AppRoute
+                path={route.path}
+                layout={HorizontalLayout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={true}
+                isLabAuthProtected={false}
+                isCorporateAuthProtected={false}
+                isSampleCollectorAuthProtected={false}
+                isfinanceOfficerAuthProtected={false}
+                isdatabaseAdminAuthProtected={false}
+                isParticipantAuthProtected={false}
+                isAuditorAuthProtected={false}
+                isDonorAuthProtected={false}
+                isRegistrationAdminAuthProtected={false}
+                isCSRAdminAuthProtected={true}
+                isMarketerAdminAuthProtected={false}
+                isAuditorAdminAuthProtected={false}
+                isHRAdminAuthProtected={false}
+                exact
+              />
+            ))}
 
             {hrAdminAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
@@ -161,25 +174,22 @@ class App extends Component {
                 isAuthProtected={true}
                 isLabAuthProtected={false}
                 isCorporateAuthProtected={false}
-            
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
                 isdatabaseAdminAuthProtected={false}
-                isParticipantAuthProtected= {false}
-              
+                isParticipantAuthProtected={false}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
+                isCSRAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-             
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={true}
                 exact
               />
             ))}
 
-          
-             {financeOfficerAuthProtectedRoutes.map((route, idx) => (
+            {financeOfficerAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
                 layout={VerticalLayout}
@@ -191,18 +201,16 @@ class App extends Component {
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={true}
                 isdatabaseAdminAuthProtected={false}
-                isParticipantAuthProtected= {false}
+                isParticipantAuthProtected={false}
                 isAuditorAuthProtected={false}
-               
                 isRegistrationAdminAuthProtected={false}
+                isCSRAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-            
-                
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
-{databaseAdminAuthProtectedRoutes.map((route, idx) => (
+            {databaseAdminAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
                 layout={HorizontalLayout}
@@ -214,20 +222,19 @@ class App extends Component {
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
                 isdatabaseAdminAuthProtected={true}
-                isParticipantAuthProtected= {false}
+                isParticipantAuthProtected={false}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
+                isCSRAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-              
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
-          
 
-          {  participantsAuthProtectedRoutes.map((route, idx) => (
+            {participantsAuthProtectedRoutes.map((route, idx) => (
               <AppRoute
                 path={route.path}
                 layout={HorizontalLayout}
@@ -239,18 +246,18 @@ class App extends Component {
                 isSampleCollectorAuthProtected={false}
                 isfinanceOfficerAuthProtected={false}
                 isdatabaseAdminAuthProtected={false}
-                isParticipantAuthProtected= {true}
+                isParticipantAuthProtected={true}
                 isAuditorAuthProtected={false}
                 isDonorAuthProtected={false}
                 isRegistrationAdminAuthProtected={false}
+                isCSRAdminAuthProtected={false}
                 isMarketerAdminAuthProtected={false}
-              
                 isAuditorAdminAuthProtected={false}
                 isHRAdminAuthProtected={false}
                 exact
               />
             ))}
-       
+
             <Route path="*" component={Pages404} />
           </Switch>
         </Router>

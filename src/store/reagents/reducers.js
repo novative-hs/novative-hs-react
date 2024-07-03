@@ -28,11 +28,11 @@ import {
   const ReagentList = (state = INIT_STATE, action) => {
     switch (action.type) {
       /////analytesreagents
-        case GET_ANALYTESREAGENTS_LIST_SUCCESS:
-          return {
-            ...state,
-            ReagentAnalyteList: action.payload,
-          };
+      case GET_ANALYTESREAGENTS_LIST_SUCCESS:
+      return {
+        ...state,
+        ReagentAnalyteList: action.payload.reagents, // Update to handle reagents array
+      };
     
         case GET_ANALYTESREAGENTS_LIST_FAIL:
           return {

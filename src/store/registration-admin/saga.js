@@ -33,27 +33,27 @@ import {
 
 } from "../../helpers/django_api_helper";
 
-function* fetchPendingLabs() {
+function* fetchPendingLabs(action) {
   try {
-    const response = yield call(getPendingLabs);
+    const response = yield call(getPendingLabs, action.payload);
     yield put(getPendingLabsSuccess(response));
   } catch (error) {
     yield put(getPendingLabsFail(error));
   }
 }
 
-function* fetchApprovedLabs(object) {
+function* fetchApprovedLabs(action) {
   try {
-    const response = yield call(getApprovedLabs, object.payload.id);
+    const response = yield call(getApprovedLabs, action.payload);
     yield put(getApprovedLabsSuccess(response));
   } catch (error) {
     yield put(getApprovedLabsFail(error));
   }
 }
 
-function* fetchUnapprovedLabs(object) {
+function* fetchUnapprovedLabs(action) {
   try {
-    const response = yield call(getUnapprovedLabs, object.payload.id);
+    const response = yield call(getUnapprovedLabs, action.payload);
     yield put(getUnapprovedLabsSuccess(response));
   } catch (error) {
     yield put(getUnapprovedLabsFail(error));

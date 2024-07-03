@@ -2,15 +2,49 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
 import { GET_INSTRUMENT_LIST,
-  ADD_NEW_INSTRUMENT,UPDATE_INSTRUMENT
+  ADD_NEW_INSTRUMENT,UPDATE_INSTRUMENT,GET_ANALYTESEQUIPMENTS_LIST,ADD_NEW_ANALYTESEQUIPMENTS,UPDATE_ANALYTESEQUIPMENTS
 } from "./actionTypes";
 
-import { getInstrumentlistSuccess,getInstrumentlistFail,addNewInstrumentSuccess,addNewInstrumentFail,updateInstrumentSuccess,updateInstrumentFail
+import { getInstrumentlistSuccess,getInstrumentlistFail,addNewInstrumentSuccess,addNewInstrumentFail,updateInstrumentSuccess,updateInstrumentFail,getAnalyteEquipmentlistSuccess,getAnalyteEquipmentlistFail,
+  addNewAnalyteEquipmentlistSuccess,addNewAnalyteEquipmentlistFail,updateAnalyteEquipmentlistSuccess,updateAnalyteEquipmentlistFail
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getInstrumentlist,addNewInstrument,updateInstrument} from "../../helpers/django_api_helper";
+import { getInstrumentlist,addNewInstrument,updateInstrument,getAnalyteEquipmentlist,addNewAnalyteEquipmentlist,
+  updateAnalyteEquipmentlist
 
+} from "../../helpers/django_api_helper";
+
+///analyte equipments
+function* fetchAnalyteEquipmentsList(object) {
+  try {
+    const response = yield call(getAnalyteEquipmentlist, object.payload);
+    yield put(getAnalyteEquipmentlistSuccess(response.data));
+  } catch (error) {
+    yield put(getAnalyteEquipmentlistFail(error));
+  }
+}
+function* onAddNewAnalyteEquipments(object) {
+  try {
+    const response = yield call(
+      addNewAnalyteEquipmentlist,
+      object.payload.createAnalyteEquipment,
+      object.payload.id
+    );
+    yield put(addNewAnalyteEquipmentlistSuccess(response));
+  } catch (error) {
+    yield put(addNewAnalyteEquipmentlistFail(error));
+  }
+}
+function* onUpdateAnalyteEquipments({ payload: analytesequipment }) {
+  try {
+    const response = yield call(updateAnalyteEquipmentlist, analytesequipment);
+    yield put(updateAnalyteEquipmentlistSuccess(response));
+  } catch (error) {
+    yield put(updateAnalyteEquipmentlistFail (error));
+  }
+}
+////////////////////
 function* fetchInstrumentList(object) {
   try {
     const response = yield call(getInstrumentlist, object.payload);
@@ -42,6 +76,12 @@ function* onUpdateInstrument({ payload: unit }) {
 }
 
 function* InstrumentTypeListSaga() {
+
+  yield takeEvery(GET_ANALYTESEQUIPMENTS_LIST, fetchAnalyteEquipmentsList);
+  yield takeEvery(ADD_NEW_ANALYTESEQUIPMENTS, onAddNewAnalyteEquipments );
+  yield takeEvery(UPDATE_ANALYTESEQUIPMENTS, onUpdateAnalyteEquipments);
+
+
   yield takeEvery(GET_INSTRUMENT_LIST, fetchInstrumentList);
   yield takeEvery(ADD_NEW_INSTRUMENT, onAddNewInstrument);
   yield takeEvery(UPDATE_INSTRUMENT, onUpdateInstrument);

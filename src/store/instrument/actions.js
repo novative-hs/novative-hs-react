@@ -7,9 +7,66 @@ import {
   ADD_NEW_INSTRUMENT_FAIL,
   UPDATE_INSTRUMENT,
   UPDATE_INSTRUMENT_SUCCESS,
-  UPDATE_INSTRUMENT_FAIL
+  UPDATE_INSTRUMENT_FAIL,
+
+  GET_ANALYTESEQUIPMENTS_LIST,
+  GET_ANALYTESEQUIPMENTS_LIST_SUCCESS,
+  GET_ANALYTESEQUIPMENTS_LIST_FAIL,
+  ADD_NEW_ANALYTESEQUIPMENTS,
+  ADD_NEW_ANALYTESEQUIPMENTS_SUCCESS,
+  ADD_NEW_ANALYTESEQUIPMENTS_FAIL,
+  UPDATE_ANALYTESEQUIPMENTS,
+  UPDATE_ANALYTESEQUIPMENTS_SUCCESS,
+  UPDATE_ANALYTESEQUIPMENTS_FAIL
 } from "./actionTypes";
 
+
+export const getAnalyteEquipmentlist = (id) => ({
+  type: GET_ANALYTESEQUIPMENTS_LIST,
+  payload: id,
+});
+
+export const getAnalyteEquipmentlistSuccess = EquipmentAnalyteList => ({
+  type: GET_ANALYTESEQUIPMENTS_LIST_SUCCESS,
+  payload: EquipmentAnalyteList,
+});
+
+export const getAnalyteEquipmentlistFail = error => ({
+  type: GET_ANALYTESEQUIPMENTS_LIST_FAIL,
+  payload: error,
+});
+//Add  Analyte Equipments
+export const addNewAnalyteEquipmentlist = (createAnalyteEquipment, id) => ({
+  type: ADD_NEW_ANALYTESEQUIPMENTS,
+  payload: { createAnalyteEquipment, id },
+});
+
+export const addNewAnalyteEquipmentlistSuccess = createAnalyteEquipment => ({
+  type: ADD_NEW_ANALYTESEQUIPMENTS_SUCCESS,
+  payload: createAnalyteEquipment,
+});
+
+export const addNewAnalyteEquipmentlistFail = error => ({
+  type: ADD_NEW_ANALYTESEQUIPMENTS_FAIL,
+  payload: error,
+});
+//Update  Analyte Equipments
+export const updateAnalyteEquipmentlist = analytesequipment => {
+  console.log('action creator called with analytesequipment:', analytesequipment);
+  return {
+    type: UPDATE_ANALYTESEQUIPMENTS,
+    payload: analytesequipment,
+  };
+};
+export const updateAnalyteEquipmentlistSuccess = analytesequipment => ({
+  type: UPDATE_ANALYTESEQUIPMENTS_SUCCESS,
+  payload: analytesequipment,
+});
+
+export const updateAnalyteEquipmentlistFail = error => ({
+  type: UPDATE_ANALYTESEQUIPMENTS_FAIL,
+  payload: error,
+});
 //////////INSTRUMENT
 export const getInstrumentlist = (id) => ({
   type: GET_INSTRUMENT_LIST,

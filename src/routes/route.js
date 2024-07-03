@@ -19,8 +19,8 @@ const AppRoute = ({
   isdatabaseAdminAuthProtected,
   isParticipantAuthProtected,
   isRegistrationAdminAuthProtected,
-  isMarketerAdminAuthProtected,
   isCSRAdminAuthProtected,
+  isMarketerAdminAuthProtected,
   isCSRAuthProtected,
   isAuditorAdminAuthProtected,
   isHRAdminAuthProtected,
@@ -69,8 +69,8 @@ const AppRoute = ({
           isfinanceOfficerAuthProtected ||
           isdatabaseAdminAuthProtected||
           isRegistrationAdminAuthProtected ||
-          isMarketerAdminAuthProtected ||
           isCSRAdminAuthProtected ||
+          isMarketerAdminAuthProtected ||
           isCSRAuthProtected ||
           isAuditorAdminAuthProtected ||
           isHRAdminAuthProtected) &&
@@ -98,6 +98,7 @@ const AppRoute = ({
           isdatabaseAdminAuthProtected ||
           isParticipantAuthProtected ||
           isRegistrationAdminAuthProtected ||
+
           isCSRAdminAuthProtected ||
           isCSRAuthProtected ||
           isMarketerAdminAuthProtected ||
@@ -130,8 +131,8 @@ const AppRoute = ({
           isdatabaseAdminAuthProtected ||
           isParticipantAuthProtected ||
           isRegistrationAdminAuthProtected ||
-          isMarketerAdminAuthProtected ||
           isCSRAdminAuthProtected ||
+          isMarketerAdminAuthProtected ||
           isCSRAuthProtected ||
           isAuditorAdminAuthProtected ||
           isHRAdminAuthProtected) &&
@@ -208,36 +209,6 @@ const AppRoute = ({
             }}
           />
         );
-      }
-
-      // Auth protection logics for the marketer admin
-      else if (
-        isAuthProtected &&
-        (
-          isLabAuthProtected ||
-          isCorporateAuthProtected ||
-               isDonorAuthProtected ||
-          
-          isSampleCollectorAuthProtected ||
-          isfinanceOfficerAuthProtected ||
-          isdatabaseAdminAuthProtected ||
-          isAuditorAuthProtected ||
-          isCSRAuthProtected ||
-          isMarketerAdminAuthProtected ||
-          isRegistrationAdminAuthProtected ||
-          isAuditorAdminAuthProtected ||
-          isRegistrationAdminAuthProtected ||
-          isHRAdminAuthProtected) &&
-        JSON.parse(localStorage.getItem("authUser")).account_type == "csr-admin"
-      ) {
-        return (
-          <Redirect
-            to={{
-              pathname: "/pending-complaints-lab",
-              state: { from: props.location },
-            }}
-          />
-        );
       } else if (
         isAuthProtected &&
         (
@@ -249,7 +220,6 @@ const AppRoute = ({
           isdatabaseAdminAuthProtected ||
           isParticipantAuthProtected ||
           isAuditorAuthProtected ||
-          isCSRAdminAuthProtected ||
           isRegistrationAdminAuthProtected ||
           isMarketerAdminAuthProtected ||
           isDonorAuthProtected ||
@@ -260,7 +230,7 @@ const AppRoute = ({
         return (
           <Redirect
             to={{
-              pathname: "/dashboard-csr",
+              pathname: "/register-participant-CSR",
               state: { from: props.location },
             }}
           />

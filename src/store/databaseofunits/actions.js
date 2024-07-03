@@ -16,8 +16,20 @@ import {
   ADD_NEW_ANALYTE_LIST_FAIL,
   UPDATE_NEW_ANALYTE_LIST,
   UPDATE_NEW_ANALYTE_LIST_SUCCESS,
-  UPDATE_NEW_ANALYTE_LIST_FAIL
+  UPDATE_NEW_ANALYTE_LIST_FAIL,
+
+
+  GET_CYCLEANALYTE_LIST,
+  GET_CYCLEANALYTE_LIST_SUCCESS,
+  GET_CYCLEANALYTE_LIST_FAIL,
+  ADD_NEW_CYCLEANALYTE,
+  ADD_NEW_CYCLEANALYTE_SUCCESS,
+  ADD_NEW_CYCLEANALYTE_FAIL,
+  UPDATE_CYCLEANALYTE,
+  UPDATE_CYCLEANALYTE_SUCCESS,
+  UPDATE_CYCLEANALYTE_FAIL
 } from "./actionTypes";
+
 
 //////////////analyte////////////
 export const getAnalytelist = (id) => ({
@@ -121,6 +133,57 @@ export const updateNewInstrumentTypeSuccess = unit => ({
 
 export const updateNewInstrumentTypeFail = error => ({
   type: UPDATE_NEW_INSTRUMENT_TYPE_FAIL,
+  payload: error,
+});
+
+
+
+
+// Get Cycle Analytes
+export const getCycleAnalytelist = (id) => ({
+  type: GET_CYCLEANALYTE_LIST,
+  payload: id,
+});
+
+export const getCycleAnalytelistSuccess = CycleAnalyteList => ({
+  type: GET_CYCLEANALYTE_LIST_SUCCESS,
+  payload: CycleAnalyteList,
+});
+
+export const getCycleAnalytelistFail = error => ({
+  type: GET_CYCLEANALYTE_LIST_FAIL,
+  payload: error,
+});
+//Add  Cycle Analytes
+export const addNewCycleAnalytelist = (createCycleAnalyte, id) => ({
+  type: ADD_NEW_CYCLEANALYTE,
+  payload: { createCycleAnalyte, id },
+});
+
+export const addNewCycleAnalytelistSuccess = createCycleAnalyte => ({
+  type: ADD_NEW_CYCLEANALYTE_SUCCESS,
+  payload: createCycleAnalyte,
+});
+
+export const addNewCycleAnalytelistFail = error => ({
+  type: ADD_NEW_CYCLEANALYTE_FAIL,
+  payload: error,
+});
+//Update  Cycle Analytes
+export const updateCycleAnalytelist = cycleanalyte => {
+  console.log('action creator called with cycleanalyte:', cycleanalyte);
+  return {
+    type: UPDATE_CYCLEANALYTE,
+    payload: cycleanalyte,
+  };
+};
+export const updateCycleAnalytelistSuccess = cycleanalyte => ({
+  type: UPDATE_CYCLEANALYTE_SUCCESS,
+  payload: cycleanalyte,
+});
+
+export const updateCycleAnalytelistFail = error => ({
+  type: UPDATE_CYCLEANALYTE_FAIL,
   payload: error,
 });
 

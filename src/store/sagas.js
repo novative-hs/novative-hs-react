@@ -15,7 +15,7 @@ import LabProfileSaga from "./auth/labprofile/saga";
 import StaffProfileSaga from "./auth/staffprofile/saga";
 import LabSettingsSaga from "./auth/labsettings/saga";
 import PaymentsSaga from "./auth/payments/saga";
-import InstrumentListSaga from "./instrument/saga"
+import InstrumentListSaga from "./instrument/saga";
 
 import activitylogSaga from "./activtylog/saga";
 import activitylogfinanceSaga from "./activtylogfinance/saga";
@@ -33,8 +33,13 @@ import UnitsHistorySaga from "./databaseadmin-history/sagas";
 import ReagentsListSaga from "./reagents/sagas";
 import ManufacturalListSaga from "./manufactural/sagas";
 import SchemeListSaga from "./scheme/saga";
+import CycleListSaga from "./cycle/saga";
 import RoundListSaga from "./rounds/saga";
 import SampleSaga from "./sample/saga";
+
+//Participant
+import participantListSaga from "./participant-list/sagas";
+
 // organization
 import organizationaccountSaga from "./organization/saga";
 
@@ -56,29 +61,34 @@ import checkoutSaga from "./checkout/saga";
 import invoiceSaga from "./invoices/saga";
 import advinvoiceSaga from "./adv-invoice/saga";
 
-
-
 import complaintsSaga from "./complaints/saga";
-
 
 import LabMarketSaga from "./labmarket/saga";
 
 import AccountStatementsSaga from "./account-statements/saga";
 import StaffSaga from "./staff/saga";
-;
 import RegistrationAdminSaga from "./registration-admin/saga";
 import FinanceAdminSaga from "./finance-admin/saga";
 import InstrumentTypeListSaga from "./databaseofunits/saga";
 import NewsSaga from "./news/saga";
 import MethodsListSaga from "./methods/sagas";
 
-
-
-
+import CityListSaga from "./participantcity/sagas";
+import DistrictListSaga from "./participantdistrict/sagas";
+import DepartmentListSaga from "./participantdepartment/sagas";
+import DesignationListSaga from "./participantdesignation/sagas";
+import TypeListSaga from "./participanttype/sagas";
+import SectorListSaga from "./participantsector/sagas";
 
 export  default function* rootSaga() {
   yield all([
     //public
+    fork(SectorListSaga),
+    fork(TypeListSaga),
+    fork(DesignationListSaga),
+    fork(DepartmentListSaga),
+    fork(DistrictListSaga),
+    fork(CityListSaga),
     fork(SampleSaga),
     fork(organizationaccountSaga),
     fork(NewsSaga),
@@ -92,14 +102,16 @@ export  default function* rootSaga() {
     fork(AccountSaga),
     fork(ManufacturalListSaga),
     fork(SchemeListSaga),
+    fork(CycleListSaga),
     fork(RoundListSaga),
+    fork(participantListSaga),
     fork(LabInformationSaga),
     fork(InstrumentTypeListSaga),
     fork(AuthSaga),
     fork(msgsSaga),
 
     fork(LabMarketSaga),
-    
+
     fork(FinanceAdminSaga),
     fork(ForgetSaga),
     fork(ConfirmSaga),
@@ -108,36 +120,33 @@ export  default function* rootSaga() {
     fork(referrelFeeLabsSaga),
     fork(LabSettingsSaga),
     fork(LabNamesListSaga),
-  
+
     fork(StaffProfileSaga),
-  
+
     fork(PaymentsSaga),
-   
+
     fork(activitylogSaga),
     fork(activitylogfinanceSaga),
     fork(activitylogmarketerSaga),
-    
+
     fork(cartsSaga),
     fork(quotesSaga),
-   
+
     fork(LabsListPendingFeeSaga),
     fork(sharedPercentagePendingFeeTestsSaga),
 
- 
     fork(discountLabHazirsSaga),
     fork(discountLabHazirToLabsSaga),
     fork(labsListSaga),
     fork(labslisttsaga),
-   
+
     fork(discountLabSaga),
     fork(feedbacksSaga),
-   
+
     fork(complaintsSaga),
- 
-  
+
     fork(regAdminNotificationSaga),
 
-    
     fork(checkoutSaga),
 
     fork(invoiceSaga),
@@ -146,6 +155,5 @@ export  default function* rootSaga() {
 
     fork(StaffSaga),
     fork(RegistrationAdminSaga),
-    
   ]);
 }

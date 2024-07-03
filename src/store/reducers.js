@@ -33,6 +33,10 @@ import Instrument from "./instrument/reducer";
 import SchemeList from "./scheme/reducer";
 import RoundList from "./rounds/reducer";
 import sample from "./sample/reducer";
+import CycleList from "./cycle/reducer";
+//Participant
+import ParticipantList from "./participant-list/reducers";
+
 // organization
 import organizationaccount from "./organization/reducer"
 //LabMarket
@@ -102,10 +106,28 @@ import financeAdmin from "./finance-admin/reducer";
 import news from "./news/reducer";
 import ListMethods from "./methods/reducers";
 
+
+
+//participant
+import ListCity from "./participantcity/reducers";
+import ListDistrict from "./participantdistrict/reducers";
+import ListDepartment from "./participantdepartment/reducers";
+import ListDesignation from "./participantdesignation/reducers";
+import ListType from "./participanttype/reducers";
+import ListSector from "./participantsector/reducers";
+
+
 const rootReducer = combineReducers({
   // public
+  CycleList,
   sample,
   RoundList,
+  ListSector,
+  ListType,
+  ListDepartment,
+  ListDesignation,
+  ListDistrict,
+  ListCity,
   ReagentList,
   ListUnits,
   ListMethods,
@@ -114,7 +136,7 @@ const rootReducer = combineReducers({
   Dashboard,
   referrelFeeLabs,
   Layout,
-
+  ParticipantList,
 
   Login,
   Account,

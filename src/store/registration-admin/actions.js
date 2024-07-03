@@ -28,9 +28,9 @@ import {
 } from "./actionTypes";
 
 // -------------------- LAB ACTIONS --------------------
-export const getPendingLabs = () => ({
+export const getPendingLabs = id => ({
   type: GET_PENDING_LABS,
-  payload: {},
+  payload: id,
 });
 
 export const getPendingLabsSuccess = pendingLabs => ({
@@ -43,9 +43,9 @@ export const getPendingLabsFail = error => ({
   payload: error,
 });
 
-export const getApprovedLabs = () => ({
+export const getApprovedLabs = id => ({
   type: GET_APPROVED_LABS,
-  payload: {},
+  payload: id,
 });
 
 export const getApprovedLabsSuccess = approvedLabs => ({
@@ -58,9 +58,9 @@ export const getApprovedLabsFail = error => ({
   payload: error,
 });
 
-export const getUnapprovedLabs = () => ({
+export const getUnapprovedLabs = id => ({
   type: GET_UNAPPROVED_LABS,
-  payload: {},
+  payload: id,
 });
 
 export const getUnapprovedLabsSuccess = unapprovedLabs => ({
