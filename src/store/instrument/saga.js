@@ -2,16 +2,20 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
 import { GET_INSTRUMENT_LIST,
-  ADD_NEW_INSTRUMENT,UPDATE_INSTRUMENT,GET_ANALYTESEQUIPMENTS_LIST,ADD_NEW_ANALYTESEQUIPMENTS,UPDATE_ANALYTESEQUIPMENTS
+  ADD_NEW_INSTRUMENT,UPDATE_INSTRUMENT,GET_ANALYTESEQUIPMENTS_LIST,ADD_NEW_ANALYTESEQUIPMENTS,UPDATE_ANALYTESEQUIPMENTS,
+  DELETE_INSTRUMENT
 } from "./actionTypes";
 
 import { getInstrumentlistSuccess,getInstrumentlistFail,addNewInstrumentSuccess,addNewInstrumentFail,updateInstrumentSuccess,updateInstrumentFail,getAnalyteEquipmentlistSuccess,getAnalyteEquipmentlistFail,
-  addNewAnalyteEquipmentlistSuccess,addNewAnalyteEquipmentlistFail,updateAnalyteEquipmentlistSuccess,updateAnalyteEquipmentlistFail
+  addNewAnalyteEquipmentlistSuccess,addNewAnalyteEquipmentlistFail,updateAnalyteEquipmentlistSuccess,updateAnalyteEquipmentlistFail,
+  deleteInstrumentSuccess,
+  deleteInstrumentFail
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import { getInstrumentlist,addNewInstrument,updateInstrument,getAnalyteEquipmentlist,addNewAnalyteEquipmentlist,
-  updateAnalyteEquipmentlist
+  updateAnalyteEquipmentlist,
+  deleteInstrument
 
 } from "../../helpers/django_api_helper";
 
@@ -48,7 +52,7 @@ function* onUpdateAnalyteEquipments({ payload: analytesequipment }) {
 function* fetchInstrumentList(object) {
   try {
     const response = yield call(getInstrumentlist, object.payload);
-    console.log("Response from getMethodlist:", response); // Log the response object
+    console.log("Response from getInstrumentlist:", response); // Log the response object
     yield put(getInstrumentlistSuccess(response.data));
   } catch (error) {
     yield put(getInstrumentlistFail(error));
@@ -74,6 +78,14 @@ function* onUpdateInstrument({ payload: unit }) {
     yield put(updateInstrumentFail (error));
   }
 }
+function* onDeleteInstrument({ payload: Instrument }) {
+  try {
+    const response = yield call(deleteInstrument, Instrument);
+    yield put(deleteInstrumentSuccess(response));
+  } catch (error) {
+    yield put(deleteInstrumentFail(error));
+  }
+}
 
 function* InstrumentTypeListSaga() {
 
@@ -85,6 +97,7 @@ function* InstrumentTypeListSaga() {
   yield takeEvery(GET_INSTRUMENT_LIST, fetchInstrumentList);
   yield takeEvery(ADD_NEW_INSTRUMENT, onAddNewInstrument);
   yield takeEvery(UPDATE_INSTRUMENT, onUpdateInstrument);
+  yield takeEvery(DELETE_INSTRUMENT, onDeleteInstrument);
 }
 
 export default InstrumentTypeListSaga;

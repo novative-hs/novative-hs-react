@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import DeleteModal from "components/Common/DeleteModal";
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, {
   textFilter,
@@ -21,9 +22,11 @@ import {
   ModalHeader,
   ModalBody,
   Label,
+  Alert,
   Button,
+  FormGroup,
 } from "reactstrap";
-
+import { saveAs } from 'file-saver';
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -33,7 +36,7 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getmethodlist, addNewMethod, updateMethods } from "store/methods/actions";
+import { getmethodlist, addNewMethod, updateMethods,deleteMethod } from "store/methods/actions";
 import { isEmpty, size } from "lodash";
 import * as XLSX from "xlsx";
 import "assets/scss/table.scss";
@@ -51,11 +54,14 @@ class InstrumentType extends Component {
       addedbyFilter:'',
       idFilter: '',
       dateFilter:'',
+      countFilter:'',
       codeFilter: '',
       statusFilter:'',
       isEdit: false,
       ListMethods: [],
       methodlist: "",
+      errorMessage:"",
+      deleteModal: false,
       modal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -63,7 +69,7 @@ class InstrumentType extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -104,6 +110,37 @@ class InstrumentType extends Component {
               </>
             );
           },
+        },
+        {
+          dataField: 'analytes_count',
+          text: 'No of Analytes',
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.countFilter}
+                    onChange={(e) => this.handleFilterChange('countFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          formatter: (cellContent, unitlist) => {
+            return (
+              <div>
+                <Link
+                  to={`/methods-analyte/${unitlist.id}`}
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                >
+                  {unitlist.analytes_count}
+                </Link>
+              </div>
+            );
+          }
         },
         {
           dataField: "code",
@@ -204,12 +241,22 @@ class InstrumentType extends Component {
                   to={`/databaseadmin-history/${methodlist.id}`}
                 ></Link>
               </Tooltip>
+              <Tooltip title="Delete">
+                <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-delete font-size-18"
+                    id="deletetooltip"
+                    onClick={() => this.onClickDelete(methodlist)}
+                  ></i>
+                </Link>
+              </Tooltip>
             </div>
           ),
         },
       ],
     };
     this.toggle = this.toggle.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
@@ -223,11 +270,12 @@ class InstrumentType extends Component {
     // Filter data based on filter values
     filterData = () => {
       const { ListMethods } = this.props;
-      const { nameFilter, addedbyFilter, dateFilter, idFilter,statusFilter, codeFilter } = this.state;
+      const { nameFilter, addedbyFilter, dateFilter, idFilter,statusFilter, codeFilter,countFilter } = this.state;
     
       const filteredData = ListMethods.filter(entry => {
         const name = entry.name ? entry.name.toString().toLowerCase() : "";
         const addedBy = entry.added_by ? entry.added_by.toString().toLowerCase() : "";
+        const count = entry.analytes_count ? entry.analytes_count.toString() : "";
         const status = entry.status ? entry.status.toString(): "";
         const id = entry.id ? entry.id.toString() : "";
         const code = entry.code ? entry.code.toString() : "";
@@ -238,6 +286,7 @@ class InstrumentType extends Component {
           addedBy.includes(addedbyFilter.toLowerCase()) &&
           status.includes(statusFilter) &&
           id.includes(idFilter) &&
+          count.includes(countFilter) &&
           code.includes(codeFilter) &&
           date.includes(dateFilter)
         );
@@ -280,6 +329,37 @@ class InstrumentType extends Component {
       this.setState({ ListMethods: {}, isEdit: false });
     }
   }
+
+  toggleDeleteModal = () => {
+    this.setState(prevState => ({
+      deleteModal: !prevState.deleteModal,
+    }));
+  };
+
+  onClickDelete = (methodlist) => {
+    if (methodlist.analytes_count === 0) {
+      this.setState({ ListUnit: methodlist });
+      this.setState({ deleteModal: true });
+    } else {
+      this.setState({ errorMessage: "Cannot delete. Analytes are assigned." });
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        this.setState({ errorMessage: '' });
+      }, 2000);
+    }
+  };
+
+  handleDeleteInstrumentType = () => {
+    const { onDeleteInstrumentType} = this.props;
+    const { ListUnit } = this.state;
+    if (ListUnit.id !== undefined) {
+      onDeleteInstrumentType(ListUnit);
+      setTimeout(() => {
+        this.props.onGetInstrumentTypeList(this.state.user_id);
+      }, 1000);
+      this.setState({ deleteModal: false });
+    }
+  };
 
   onPaginationPageChange = page => {
     if (
@@ -392,6 +472,7 @@ class InstrumentType extends Component {
   render() {
     const { SearchBar } = Search;
     const { ListMethods } = this.props;
+    const { deleteModal, errorMessage } = this.state;
     const { onGetInstrumentTypeList, onUpdateType } = this.props;
   
     // Use the filterData function to get the filtered data
@@ -412,6 +493,11 @@ class InstrumentType extends Component {
   
     return (
       <React.Fragment>
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeleteInstrumentType}
+          onCloseClick={() => this.setState({ deleteModal: false })}
+        />
         <div className="page-content">
           <MetaTags>
             <title>Database Admin | Method List</title>
@@ -440,31 +526,82 @@ class InstrumentType extends Component {
                 Import from Excel
               </ModalHeader>
               <ModalBody>
-                {this.state.importError && (
-                  <div className="alert alert-danger" role="alert">
-                    {this.state.importError}
-                  </div>
-                )}
-                <div className="mb-3">
-                  <input
-                    type="file"
-                    className="form-control"
-                    onChange={this.handleFileChange}
-                    accept=".xlsx, .xls"
-                  />
+                <div className="mb-3 d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the default action
+                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/Method.xlsx";
+                      saveAs(downloadUrl, "Method.xlsx"); // Use the file-saver library to trigger the download
+                    }}
+                  >
+                    <i className="mdi mdi-download me-1" />
+                    Download File Format
+                  </button>
                 </div>
-                <Button color="primary" onClick={this.handleImport}>
-                  Import
-                </Button>{" "}
-                <Button color="secondary" onClick={this.toggleImportModal}>
-                  Cancel
-                </Button>
+
+
+                <div className="w-100">
+                  <h4><b>Instructions to fill the excel sheet:</b></h4>
+                  <div>
+                    <ol>
+                      <li>
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
+                      </li>
+                      <li>
+                        There should be a file of 3 column name, code, status (Active, Inactive)
+                      </li>
+                      <li>
+                        If you want to get more information, contact
+                        us at <strong>eternalqc@gmail.com</strong>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+                <div>
+                  {this.state.importError && (
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.importError}
+                    </div>
+                  )}
+                  <Col lg="10">
+                    <FormGroup className=" mt-4 mb-0">
+                      <Label htmlFor="expirydateInput" className="fw-bolder">
+                        Upload File
+                        <span
+                          style={{ color: "#f46a6a" }}
+                          className="font-size-18"
+                        >
+                          *
+                        </span>
+                      </Label>
+                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
+                    </FormGroup>
+                  </Col></div>
+
+
+                <Row className="mt-4">
+                  <Col sm="12" className="d-flex justify-content-end">
+                    <Button color="primary" onClick={this.handleImport} className="me-2">Upload</Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+                  </Col>
+                </Row>
               </ModalBody>
             </Modal>
             <Row className="justify-content-center">
               <Col lg="10">
                 <Card>
                   <CardBody>
+                    
+                  <Row>
+                      <Col className="pagination pagination-rounded justify-content-center mb-2">
+                        {errorMessage && (
+                          <Alert color="danger">
+                            {errorMessage}
+                          </Alert>
+                        )}
+                      </Col>
+                    </Row>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -564,6 +701,9 @@ class InstrumentType extends Component {
                                                 this.displaySuccessMessage(
                                                   "Method updated successfully!"
                                                 );
+                                                setTimeout(() => {
+                                                  this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                }, 1000);
                                               } else {
                                                 await this.props.onAddNewType(
                                                   newUnit
@@ -571,11 +711,11 @@ class InstrumentType extends Component {
                                                 this.displaySuccessMessage(
                                                   "Method added successfully!"
                                                 );
+                                                setTimeout(() => {
+                                                  this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                }, 1000);
                                               }
 
-                                              await this.props.onGetInstrumentTypeList(
-                                                this.state.user_id
-                                              );
                                             } catch (error) {
                                               console.error(
                                                 "Error updating/adding method:",
@@ -715,6 +855,7 @@ InstrumentType.propTypes = {
   onGetInstrumentTypeList: PropTypes.func,
   createInstrumentType: PropTypes.array,
   error: PropTypes.any,
+  onDeleteInstrumentType: PropTypes.func,
   success: PropTypes.any,
   onAddNewType: PropTypes.func,
   onUpdateType: PropTypes.func,
@@ -729,6 +870,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewMethod(createInstrumentType, id)),
   onUpdateType: (id, methodlist) => dispatch(updateMethods({ id, ...methodlist })),
+  onDeleteInstrumentType: methodlist => dispatch(deleteMethod(methodlist)),
 });
 
 export default connect(

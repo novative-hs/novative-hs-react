@@ -31,7 +31,8 @@ import paginationFactory, {
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
 import { getSchemelist } from "store/scheme/actions";
-import { getSample } from "store/sample/actions";
+import { getcyclelist } from "store/cycle/actions";
+import { getSamplelist } from "store/sample/actions";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
@@ -49,10 +50,23 @@ class InstrumentType extends Component {
     this.state = {
       selectedRound: null,
       isEdit: false,
+
+      idFilter: '',
+      roundsFilter: '',
+      schemenameFilter: '',
+      cyclenoFilter: '',
+      sampleFilter: '',
+      participantsFilter: '',
+      issuedateFilter: '',
+      closingdateFilter: '',
+      statusFilter: '',
+      
       RoundList: [],
       round: [],
       SchemeList: [],
-      sample: [],
+      CycleList: [],
+      // sample: [],
+      ListUnitt:[],
       methodlist: "",
       modal: false,
       deleteModal: false,
@@ -62,43 +76,145 @@ class InstrumentType extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
-          hidden: true,
+          hidden: false,
           formatter: (cellContent, methodlist) => <>{methodlist.id}</>,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          headerStyle: { width: '100px' },  // Adjust the width as needed
+          style: { width: '100px' },  // Adjust the width as needed
         },
         {
           dataField: "rounds",
           text: "Number of Rounds",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.roundsFilter}
+                    onChange={e => this.handleFilterChange('roundsFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "scheme_name",
           text: "Scheme Name",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.schemenameFilter}
+                    onChange={e => this.handleFilterChange('schemenameFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "cycle_no",
           text: "Cycle Number",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.cyclenoFilter}
+                    onChange={e => this.handleFilterChange('cyclenoFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "sample",
           text: "Sample Number",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.sampleFilter}
+                    onChange={e => this.handleFilterChange('sampleFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
-        // {
-        //   dataField: "sample",
-        //   text: "Number of Participants",
-        //   sort: true,
-        //   filter: textFilter(),
-        // },
+        {
+          dataField: "nooflabs",
+          text: "Number of Participants",
+          sort: true,
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.participantsFilter}
+                    onChange={e => this.handleFilterChange('participantsFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+        },
         {
           dataField: "issue_date",
           text: "Issue Date",
@@ -106,11 +222,28 @@ class InstrumentType extends Component {
           formatter: (cellContent, methodlist) => (
             <>
               <span>
-                {moment(methodlist.issue_date).format("DD MMM YYYY, h:mm A")}
+                {moment(methodlist.issue_date).format("DD MMM YYYY")}
               </span>
             </>
           ),
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.issuedateFilter}
+                    onChange={e => this.handleFilterChange('issuedateFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "closing_date",
@@ -119,10 +252,27 @@ class InstrumentType extends Component {
           formatter: (cellContent, methodlist) => (
             <>
               <span>
-                {moment(methodlist.closing_date).format("DD MMM YYYY, h:mm A")}
+                {moment(methodlist.closing_date).format("DD MMM YYYY")}
               </span>
-            </>
-          ), filter: textFilter(),
+            </>),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.closingdateFilter}
+                    onChange={e => this.handleFilterChange('closingdateFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "status",
@@ -145,17 +295,41 @@ class InstrumentType extends Component {
               )}
             </>
           ),
-          filter: selectFilter({
-            options: {
-              Created: "Created",
-              Ready: "Ready",
-              Open: "Open",
-              Closed: "Closed",
-              "Report Available": "Report Available",
-            },
-            defaultValue: 'All',
-          }),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <select
+                    value={this.state.statusFilter}
+                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    className="form-control"
+                  >
+                    <option value="">All</option>
+                    <option value="Created">Created</option>
+                    <option value="Ready">Ready</option>
+                    <option value="Open">Open</option>
+                    <option value="Closed">Closed</option>
+                    <option value="Report Available">Report Available</option>
+                  </select>
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
+        // {
+        //   dataField: 'link',
+        //   text: '',
+        //   formatter: (cellContent, round) => {
+        //     return (
+        //       <Link to={`/add-labs-round-page/${round.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+
+        //         <span>Add Participants</span>
+        //       </Link>
+
+        //     );
+        //   }
+        // },
         {
           dataField: "menu",
           isDummyField: true,
@@ -163,6 +337,13 @@ class InstrumentType extends Component {
           text: "Action",
           formatter: (cellContent, round) => (
             <div className="d-flex gap-3 ml-3">
+              <Tooltip title="Add Participants">
+                <Link to={`/add-labs-round-page/${round.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
+                  <i
+                    className="mdi mdi-account-plus-outline font-size-18"
+                    id="participantsIcon"
+                  ></i>
+                </Link></Tooltip>
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
@@ -192,12 +373,13 @@ class InstrumentType extends Component {
   }
 
   componentDidMount() {
-    const { onGetRoundList, onGetgetschemelist, onGetgetsamplelist } = this.props;
+    const { onGetRoundList, onGetgetschemelist, onGetgetcyclelist, onGetgetSamplelistlist } = this.props;
     const userId = this.state.user_id;
 
     onGetRoundList(userId);
     onGetgetschemelist(userId);
-    onGetgetsamplelist(userId); // Fetch the sample data here
+    onGetgetcyclelist(userId);
+    onGetgetSamplelistlist(userId); // Fetch the sample data here
   }
 
   toggleDeleteModal = () => {
@@ -232,6 +414,10 @@ class InstrumentType extends Component {
     }, 3000);
   }
 
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+
   toggle(round) {
     console.log("data in case of update asjdhasdf", round)
     if (round && round.id) {
@@ -243,12 +429,13 @@ class InstrumentType extends Component {
           scheme: round.scheme,
           cycle_no: round.cycle_no,
           sample: round.sample,
+          participants: round.participants,
           issue_date: round.issue_date
-            ? moment(round.issue_date).format("YYYY-MM-DDTHH:mm")
-            : "",
+          ? moment(round.issue_date).format("YYYY-MM-DD")
+          : "",
           closing_date: round.closing_date
-            ? moment(round.closing_date).format("YYYY-MM-DDTHH:mm")
-            : "",
+          ? moment(round.closing_date).format("YYYY-MM-DD")
+          : "",
           status: round.status,
           added_by: round.added_by,
         },
@@ -275,8 +462,14 @@ class InstrumentType extends Component {
     ) {
       this.setState({ SchemeList: this.props.SchemeList });
     }
-    if (!isEmpty(this.props.sample) && size(prevProps.sample) !== size(this.props.sample)) {
-      this.setState({ sample: this.props.sample });
+    if (
+      !isEmpty(this.props.CycleList) &&
+      size(prevProps.CycleList) !== size(this.props.CycleList)
+    ) {
+      this.setState({ CycleList: this.props.CycleList });
+    }
+    if (!isEmpty(this.props.ListUnitt) && size(prevProps.ListUnitt) !== size(this.props.ListUnitt)) {
+      this.setState({ ListUnitt: this.props.ListUnitt });
     }
   }
   onPaginationPageChange = page => {
@@ -294,20 +487,48 @@ class InstrumentType extends Component {
     this.setState({ modal: false });
   }
 
-
   render() {
     const { SearchBar } = Search;
-    const { RoundList, SchemeList, sample } = this.props;
+    const { RoundList, SchemeList, CycleList, ListUnitt } = this.props;
     console.log('SchemeList in render:', SchemeList);
-    console.log('Sample in render:', sample);
+    // console.log('Sample in render:', sample);
 
     const { isEdit, deleteModal } = this.state;
     const round = this.state.round;
-    const { onGetRoundList, onGetgetschemelist, onGetgetsamplelist, onAddNewRound, onUpdateRound } = this.props;
+    const { onGetRoundList, onGetgetschemelist, onGetgetcyclelist, onGetgetSamplelistlist, onAddNewRound, onUpdateRound } = this.props;
+
+
+    const { idFilter, roundsFilter, schemenameFilter, cyclenoFilter, sampleFilter, participantsFilter, issuedateFilter, closingdateFilter, statusFilter } = this.state;
+
+    const filteredData = RoundList.filter(entry => {   
+      // Modify accordingly for each filter condition
+      const id = entry.id ? entry.id.toString() : "";
+      const rounds = entry.rounds ? entry.rounds.toString() : "";
+      const scheme_name = entry.scheme_name ? entry.scheme_name.toString().toLowerCase() : "";
+      const cycle_no = entry.cycle_no ? entry.cycle_no.toString().toLowerCase() : "";
+      const sample = entry.sample ? entry.sample.toString() : "";
+      const participants = entry.participants ? entry.participants.toString() : "";
+      const issue_date = entry.issue_date ? entry.issue_date.toString() : "";
+      const closing_date = entry.closing_date ? entry.closing_date.toString() : "";
+      const status = entry.status ? entry.status.toString() : "";
+      
+      return (
+        id.includes(idFilter) &&
+        rounds.includes(roundsFilter) &&
+        scheme_name.includes(schemenameFilter.toLowerCase()) &&
+        cycle_no.includes(cyclenoFilter.toLowerCase()) &&
+        sample.includes(sampleFilter) &&
+        participants.includes(participantsFilter) &&
+        issue_date.includes(issuedateFilter) &&
+        closing_date.includes(closingdateFilter) &&
+        status.includes(statusFilter)
+    );
+  });
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: RoundList.length,
+      // totalSize: RoundList.length,
+      totalSize: filteredData.length,
       custom: true,
     };
 
@@ -340,13 +561,13 @@ class InstrumentType extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={RoundList}
+                      data={filteredData}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.feedbackListColumns}
-                          data={RoundList}
+                          data={filteredData}
                           search
                         >
                           {toolkitprops => (
@@ -388,6 +609,7 @@ class InstrumentType extends Component {
                                             scheme: this.state.selectedRound ? this.state.selectedRound.scheme : "",
                                             cycle_no: this.state.selectedRound ? this.state.selectedRound.cycle_no : "",
                                             sample: this.state.selectedRound ? this.state.selectedRound.sample : "",
+                                            participants: this.state.selectedRound ? this.state.selectedRound.participants : "",
                                             issue_date: this.state.selectedRound ? this.state.selectedRound.issue_date : "",
                                             closing_date: this.state.selectedRound ? this.state.selectedRound.closing_date : "",
                                             // notes: this.state.selectedRound ? this.state.selectedRound.notes : "",
@@ -398,6 +620,7 @@ class InstrumentType extends Component {
                                           // validationSchema={Yup.object().shape({
                                           //   rounds: Yup.string().required("Select the number of rounds"),
                                           //   sample: Yup.string().required("Sample is required"),
+                                          //   participants: Yup.string().required("Participants is required"),
                                           //   scheme: Yup.string().required("Scheme is required"),
                                           //   cycle_no: Yup.string()
                                           //     .required("Cycle number is required")
@@ -418,6 +641,7 @@ class InstrumentType extends Component {
                                               scheme: values.scheme,
                                               cycle_no: values.cycle_no,
                                               sample: values.sample,
+                                              participants: values.participants,
                                               issue_date: values.issue_date,
                                               closing_date: values.closing_date,
                                               status: values.status,
@@ -447,7 +671,7 @@ class InstrumentType extends Component {
                                           {({
                                             errors,
                                             status,
-                                            cycle,
+                                            round,
                                             touched,
                                           }) => (
                                             <Form>
@@ -484,15 +708,35 @@ class InstrumentType extends Component {
                                                     </Field>
                                                     <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
                                                   </div>
+
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">Cycle number</Label>
+                                                    <Label for="cycle_no">Cycle Number</Label>
+                                                    <Field
+                                                      as="select"
+                                                      name="cycle_no"
+                                                      className={"form-control" + (errors.cycle && touched.cycle ? " is-invalid" : "")}
+                                                    >
+                                                      <option value="">Select Cycle</option>
+                                                      {CycleList && CycleList.filter(cycle => cycle.status === 'Active').map((cycle) => (
+                                                        <option key={cycle.id} value={cycle.cycle_no}>
+                                                          {cycle.cycle_no} {/* Display cycle name */}
+                                                        </option>
+                                                      ))}
+                                                    </Field>
+                                                    <ErrorMessage name="cycle_no" component="div" className="invalid-feedback" />
+                                                  </div>
+
+
+
+                                                  {/* <div className="mb-3">
+                                                    <Label className="col-form-label">Cycle Number</Label>
                                                     <Field
                                                       name="cycle_no"
                                                       type="text"
                                                       className="form-control"
                                                     />
                                                     <ErrorMessage name="cycle_no" component="div" className="text-danger" />
-                                                  </div>
+                                                  </div> */}
 
                                                   <div className="mb-3">
                                                     <Label for="sample">Sample</Label>
@@ -502,9 +746,9 @@ class InstrumentType extends Component {
                                                       className={"form-control" + (errors.sample && touched.sample ? " is-invalid" : "")}
                                                     >
                                                       <option value="">Select Sample</option>
-                                                      {sample && sample.map(sample => (
-                                                        <option key={sample.id} value={sample.id}>{sample.
-                                                          sampleno}</option>
+                                                      {ListUnitt && ListUnitt.map(sample => (
+                                                        <option key={sample.id} value={sample.samplename}>{sample.
+                                                          samplename}</option>
                                                       ))}
                                                     </Field>
                                                     <ErrorMessage name="sample" component="div" className="invalid-feedback" />
@@ -515,7 +759,7 @@ class InstrumentType extends Component {
                                                     </Label>
                                                     <Field
                                                       name="issue_date"
-                                                      type="datetime-local"
+                                                      type="date"
                                                       id="issue_date"
                                                       className={
                                                         "form-control" +
@@ -537,7 +781,7 @@ class InstrumentType extends Component {
                                                     </Label>
                                                     <Field
                                                       name="closing_date"
-                                                      type="datetime-local"
+                                                      type="date"
                                                       id="closing_date"
                                                       className={
                                                         "form-control" +
@@ -654,11 +898,14 @@ InstrumentType.propTypes = {
   match: PropTypes.object,
   RoundList: PropTypes.array,
   SchemeList: PropTypes.array,
-  sample: PropTypes.array,
+  CycleList: PropTypes.array,
+  // sample: PropTypes.array,
+  ListUnitt: PropTypes.array,
   className: PropTypes.any,
   onGetRoundList: PropTypes.func,
   onGetgetschemelist: PropTypes.func,
-  onGetgetsamplelist: PropTypes.func,
+  onGetgetcyclelist: PropTypes.func,
+  onGetgetSamplelistlist: PropTypes.func,
   createInstrumentType: PropTypes.array,
   error: PropTypes.any,
   success: PropTypes.any,
@@ -667,16 +914,19 @@ InstrumentType.propTypes = {
   onDeleteRound: PropTypes.func,
 };
 
-const mapStateToProps = ({ RoundList, SchemeList, sample }) => ({
+const mapStateToProps = ({ RoundList, SchemeList, CycleList, sample, ListUnitt }) => ({
   RoundList: RoundList.RoundList,
   SchemeList: SchemeList.SchemeList,
-  sample: sample.sample,
+  // sample: sample.sample,
+  CycleList: CycleList.CycleList,
+  ListUnitt: ListUnitt.ListUnitt,
 
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetgetschemelist: id => dispatch(getSchemelist(id)),
-  onGetgetsamplelist: id => dispatch(getSample(id)),
+  onGetgetcyclelist: id => dispatch(getcyclelist(id)),
+  onGetgetSamplelistlist: id => dispatch(getSamplelist(id)),
   onGetRoundList: id => dispatch(getroundlist(id)),
   onAddNewRound: (id, createround) => dispatch(addNewRoundList(id, createround)),
   onUpdateRound: (id, round) => dispatch(updateRoundList({ id, ...round })),

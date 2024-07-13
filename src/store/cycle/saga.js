@@ -31,16 +31,6 @@ function* onAddNewCycle(object) {
     yield put(addNewCycleListFail(error));
   }
 }
-// function* onUpdatecycle(action) {
-//   try {
-//     const response = yield call(updateCycle, action.payload);
-//     console.log("API response:", response.data);
-//     yield put(updateCycleListSuccess(response.data));
-//   } catch (error) {
-//     console.error("API error:", error);
-//     yield put(updateCycleListFail(error));
-//   }
-// }
 
 function* onUpdatecycle({ payload: cycle }) {
   try {

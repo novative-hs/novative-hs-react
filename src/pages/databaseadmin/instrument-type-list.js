@@ -6,6 +6,7 @@ import { withRouter, Link } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import DeleteModal from "components/Common/DeleteModal";
 import * as Yup from "yup";
 import Tooltip from "@material-ui/core/Tooltip";
 import {
@@ -19,8 +20,11 @@ import {
   ModalBody,
   Label,
   Button,
+  FormGroup,
+  Input,
+  Alert
 } from "reactstrap";
-
+import { saveAs } from 'file-saver';
 
 import paginationFactory, {
   PaginationProvider,
@@ -31,7 +35,7 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getinstrumenttypelist, addNewInstrumentType, updateNewInstrumentType } from "store/databaseofunits/actions";
+import { getinstrumenttypelist, addNewInstrumentType, updateNewInstrumentType,deleteInstrumentType } from "store/databaseofunits/actions";
 import { isEmpty, size } from "lodash";
 import * as XLSX from "xlsx";
 import "assets/scss/table.scss";
@@ -47,9 +51,11 @@ class InstrumentType extends Component {
 
       selectedUnit: null,
       nameFilter: '',
+      countFilter:'',
       dateFilter: '',
       idFilter: '',
       isEdit: false,
+      deleteModal: false,
       ListUnit: [],
       instrumenttype: "",
       modal: false,
@@ -57,9 +63,10 @@ class InstrumentType extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       successMessage: "",
+      errorMessage:"",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -80,7 +87,7 @@ class InstrumentType extends Component {
         },
         {
           dataField: "name",
-          text: "Equipment",
+          text: "Equipment Type",
           sort: true,
           style: { textAlign: 'left' },
           headerFormatter: (column, colIndex) => {
@@ -98,7 +105,40 @@ class InstrumentType extends Component {
               </>
             );
           },
-        },        
+        },      
+        
+        {
+          dataField: 'instrument_count',
+          text: 'No of Equipments',
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.countFilter}
+                    onChange={(e) => this.handleFilterChange('countFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          formatter: (cellContent, unitlist) => {
+            return (
+              <div>
+                <Link
+                  to={`/instruments-in-type/${unitlist.id}`}
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                >
+                  {unitlist.instrument_count}
+                </Link>
+              </div>
+            );
+          }
+        },
+         
         {
           text: "Date of Addition",
           dataField: "date_of_addition",
@@ -151,12 +191,22 @@ class InstrumentType extends Component {
                   to={`/databaseadmin-history/${instrumenttype.id}`}
                 ></Link>
               </Tooltip>
+              <Tooltip title="Delete">
+                <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-delete font-size-18"
+                    id="deletetooltip"
+                    onClick={() => this.onClickDelete(instrumenttype)}
+                  ></i>
+                </Link>
+              </Tooltip>
             </div>
           ),
         },
       ],
     };
     this.toggle = this.toggle.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
@@ -168,7 +218,7 @@ class InstrumentType extends Component {
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
   };
-  
+
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
@@ -201,6 +251,37 @@ class InstrumentType extends Component {
     }
   }
 
+  toggleDeleteModal = () => {
+    this.setState(prevState => ({
+      deleteModal: !prevState.deleteModal,
+    }));
+  };
+
+  onClickDelete = (instrumentType) => {
+    if (instrumentType.instrument_count === 0) {
+      this.setState({ ListUnit: instrumentType });
+      this.setState({ deleteModal: true });
+    } else {
+      this.setState({ errorMessage: "Cannot delete. Instruments are assigned." });
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        this.setState({ errorMessage: '' });
+      }, 2000);
+    }
+  };
+
+  handleDeleteInstrumentType = () => {
+    const { onDeleteInstrumentType, onGetInstrumentTypeList } = this.props;
+    const { ListUnit } = this.state;
+    if (ListUnit.id !== undefined) {
+      onDeleteInstrumentType(ListUnit);
+      setTimeout(() => {
+        this.props.onGetInstrumentTypeList(this.state.user_id);
+      }, 1000);
+      this.setState({ deleteModal: false });
+    }
+  };
+
   onPaginationPageChange = page => {
     if (
       this.node &&
@@ -220,17 +301,17 @@ class InstrumentType extends Component {
     const fileType =
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';
-  
+
     // Define fields to export
     const fieldsToExport = ['id', 'name', 'date_of_addition'];
-  
+
     // Map each row to an object with only the desired fields
     const dataToExport = ListUnit.map(unit => ({
       id: unit.id,
       name: unit.name,
       date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
     }));
-  
+
     // Convert data to Excel format and save as file
     const ws = XLSX.utils.json_to_sheet(dataToExport);
     const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
@@ -239,7 +320,8 @@ class InstrumentType extends Component {
     const fileName = 'EquipmentType_list' + fileExtension;
     saveAs(data, fileName);
   };
- toggleImportModal = () => {
+  
+  toggleImportModal = () => {
     this.setState(prevState => ({
       importModal: !prevState.importModal,
       importFile: null,
@@ -273,7 +355,7 @@ class InstrumentType extends Component {
         const sheet = workbook.Sheets[sheetName];
         // Convert to JSON format
         const jsonData = XLSX.utils.sheet_to_json(sheet);
-        
+
         // Process jsonData and save to the database
         // Example of processing:
         for (let i = 0; i < jsonData.length; i++) {
@@ -305,25 +387,25 @@ class InstrumentType extends Component {
   };
   render() {
     const { SearchBar } = Search;
-
+    const {deleteModal } = this.state;
     const { ListUnit } = this.props;
-    const { nameFilter, dateFilter, idFilter } = this.state;
+    const { nameFilter, dateFilter, idFilter ,countFilter} = this.state;
+    const { errorMessage } = this.state;
 
     // Apply the filters to the unit list
     const filteredUnits = ListUnit.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const id = entry.id ? entry.id.toString() : "";
+      const count = entry.instrument_count ? entry.instrument_count.toString() : "";
       const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
 
       return (
         name.includes(nameFilter.toLowerCase()) &&
         id.includes(idFilter) &&
+        count.includes(countFilter) &&
         date.includes(dateFilter)
       );
     });
-
-    const { onGetInstrumentTypeList, onUpdateType } = this.props;
-    const instrumenttype = this.state.ListUnit;
 
 
     const pageOptions = {
@@ -341,6 +423,11 @@ class InstrumentType extends Component {
 
     return (
       <React.Fragment>
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeleteInstrumentType}
+          onCloseClick={() => this.setState({ deleteModal: false })}
+        />
         <div className="page-content">
           <MetaTags>
             <title>Database Admin | Equipment Type List</title>
@@ -350,33 +437,92 @@ class InstrumentType extends Component {
             <Breadcrumbs title="List" breadcrumbItem="Equipment Type List" />
 
             <Row className="justify-content-end">
-  <Col lg="auto" className="text-end">
-    <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
-  </Col>
-  <Col lg="auto" className="text-end">
-    <Button onClick={this.toggleImportModal} className="mb-3">Import from Excel</Button>
-  </Col>
-</Row>
-              <Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
-          <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
-          <ModalBody>
-            {this.state.importError && (
-              <div className="alert alert-danger" role="alert">
-                {this.state.importError}
-              </div>
-            )}
-            <div className="mb-3">
-              <input type="file" className= "form-control" onChange={this.handleFileChange} accept=".xlsx, .xls" />
-            </div>
-            <Button color="primary" onClick={this.handleImport}>Import</Button>
-            {' '}
-            <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
-          </ModalBody>
-        </Modal>
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
+              </Col>
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.toggleImportModal} className="mb-3">Import from Excel</Button>
+              </Col>
+            </Row>
+
+            <Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
+              <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
+              <ModalBody>
+                <div className="mb-3 d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the default action
+                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/equipment_type.xlsx";
+                      saveAs(downloadUrl, "equipment_type.xlsx"); // Use the file-saver library to trigger the download
+                    }}
+                  >
+                    <i className="mdi mdi-download me-1" />
+                    Download File Format
+                  </button>
+                </div>
+
+
+                <div className="w-100">
+                  <h4><b>Instructions to fill the excel sheet:</b></h4>
+                  <div>
+                    <ol>
+                      <li>
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
+                      </li>
+                      <li>
+                        There should be a file of 1 column, name
+                      </li>
+                      <li>
+                        If you want to get more information, contact
+                        us at <strong>eternalqc@gmail.com</strong>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+                <div>
+                  {this.state.importError && (
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.importError}
+                    </div>
+                  )}
+                  <Col lg="10">
+                    <FormGroup className=" mt-4 mb-0">
+                      <Label htmlFor="expirydateInput" className="fw-bolder">
+                        Upload File
+                        <span
+                          style={{ color: "#f46a6a" }}
+                          className="font-size-18"
+                        >
+                          *
+                        </span>
+                      </Label>
+                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
+                    </FormGroup>
+                  </Col></div>
+
+
+                <Row className="mt-4">
+                  <Col sm="12" className="d-flex justify-content-end">
+                    <Button color="primary" onClick={this.handleImport} className="me-2">Upload</Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+                  </Col>
+                </Row>
+              </ModalBody>
+            </Modal>
             <Row className="justify-content-center">
               <Col lg="8">
                 <Card>
                   <CardBody>
+                  <Row>
+                      <Col className="pagination pagination-rounded justify-content-center mb-2">
+                        {errorMessage && (
+                          <Alert color="danger">
+                            {errorMessage}
+                          </Alert>
+                        )}
+                      </Col>
+                    </Row>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -443,8 +589,9 @@ class InstrumentType extends Component {
                                                 await this.props.onUpdateType(this.state.selectedUnit.id, newUnit);
 
                                                 this.displaySuccessMessage("Equipment Type updated successfully!");
-
-                                                await this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                }, 1000);
 
                                                 // resetForm();
                                               } catch (error) {
@@ -458,8 +605,9 @@ class InstrumentType extends Component {
                                                 await this.props.onAddNewType(newUnit);
 
                                                 this.displaySuccessMessage("Equipment Type added successfully!");
-
-                                                await this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                }, 1000);
 
                                               } catch (error) {
 
@@ -489,7 +637,7 @@ class InstrumentType extends Component {
                                                 <Col>
                                                   <div className="text-end">
                                                     <button type="submit" className="btn btn-success save-user"
-                                                    style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+                                                      style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
                                                   </div>
                                                 </Col>
                                               </Row>
@@ -548,6 +696,7 @@ InstrumentType.propTypes = {
   error: PropTypes.any,
   success: PropTypes.any,
   onAddNewType: PropTypes.func,
+  onDeleteInstrumentType: PropTypes.func,
   onUpdateType: PropTypes.func,
 };
 
@@ -560,6 +709,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewInstrumentType(createInstrumentType, id)),
   onUpdateType: (id, instrumenttype) => dispatch(updateNewInstrumentType({ id, ...instrumenttype })),
+  onDeleteInstrumentType: instrumenttype => dispatch(deleteInstrumentType(instrumenttype)),
 });
 
 export default connect(

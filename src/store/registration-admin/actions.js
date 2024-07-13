@@ -1,5 +1,7 @@
 import {
-
+  GET_ALL_PARTICIPANT,
+  GET_ALL_PARTICIPANT_SUCCESS,
+  GET_ALL_PARTICIPANT_FAIL,
   GET_PENDING_LABS,
   GET_PENDING_LABS_SUCCESS,
   GET_PENDING_LABS_FAIL,
@@ -24,10 +26,46 @@ import {
   APPROVE_UNAPPROVE_B2B_CLIENT,
   APPROVE_UNAPPROVE_B2B_CLIENT_SUCCESS,
   APPROVE_UNAPPROVE_B2B_CLIENT_FAIL,
+  UPDATE_MEMBERSHIP_STATUS,
+  UPDATE_MEMBERSHIP_STATUS_SUCCESS,
+  UPDATE_MEMBERSHIP_STATUS_FAIL,
 
 } from "./actionTypes";
+  //Update  Membership Status Action
+  export const updateMembershipStatus = status => {
+    return {
+      type: UPDATE_MEMBERSHIP_STATUS,
+      payload: status,
+    };
+  };
+  
+  export const updateMembershipStatusSuccess = status => ({
+    type: UPDATE_MEMBERSHIP_STATUS_SUCCESS,
+    payload: status,
+  });
+  
+  export const updateMembershipStatusFail = error => ({
+    type: UPDATE_MEMBERSHIP_STATUS_FAIL,
+    payload: error,
+  });
 
 // -------------------- LAB ACTIONS --------------------
+export const getAllLabs = id => ({
+  type: GET_ALL_PARTICIPANT,
+  payload: id,
+});
+
+export const getAllLabsSuccess = AllLabs => ({
+  type: GET_ALL_PARTICIPANT_SUCCESS,
+  payload: AllLabs,
+});
+
+export const getAllLabsFail = error => ({
+  type: GET_ALL_PARTICIPANT_FAIL,
+  payload: error,
+});
+
+
 export const getPendingLabs = id => ({
   type: GET_PENDING_LABS,
   payload: id,

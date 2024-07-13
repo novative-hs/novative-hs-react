@@ -33,7 +33,9 @@ import Instrument from "./instrument/reducer";
 import SchemeList from "./scheme/reducer";
 import RoundList from "./rounds/reducer";
 import sample from "./sample/reducer";
+import ListUnitt from "./sample/reducer";
 import CycleList from "./cycle/reducer";
+import AddPayment from "./Payment/reducer";
 //Participant
 import ParticipantList from "./participant-list/reducers";
 
@@ -110,6 +112,8 @@ import ListMethods from "./methods/reducers";
 
 //participant
 import ListCity from "./participantcity/reducers";
+import ListCountry from "./participantcountry/reducers";
+import ListProvince from "./participantprovince/reducers";
 import ListDistrict from "./participantdistrict/reducers";
 import ListDepartment from "./participantdepartment/reducers";
 import ListDesignation from "./participantdesignation/reducers";
@@ -119,10 +123,14 @@ import ListSector from "./participantsector/reducers";
 
 const rootReducer = combineReducers({
   // public
+  AddPayment,
   CycleList,
   sample,
+  ListUnitt,
   RoundList,
+  ListProvince,
   ListSector,
+  ListCountry,
   ListType,
   ListDepartment,
   ListDesignation,

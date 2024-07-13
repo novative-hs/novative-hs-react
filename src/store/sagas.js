@@ -36,9 +36,11 @@ import SchemeListSaga from "./scheme/saga";
 import CycleListSaga from "./cycle/saga";
 import RoundListSaga from "./rounds/saga";
 import SampleSaga from "./sample/saga";
+import PaymentSaga from "./Payment/saga";
 
 //Participant
 import participantListSaga from "./participant-list/sagas";
+
 
 // organization
 import organizationaccountSaga from "./organization/saga";
@@ -74,6 +76,8 @@ import NewsSaga from "./news/saga";
 import MethodsListSaga from "./methods/sagas";
 
 import CityListSaga from "./participantcity/sagas";
+import CountryListSaga from "./participantcountry/sagas";
+import ProvinceListSaga from "./participantprovince/sagas";
 import DistrictListSaga from "./participantdistrict/sagas";
 import DepartmentListSaga from "./participantdepartment/sagas";
 import DesignationListSaga from "./participantdesignation/sagas";
@@ -83,6 +87,9 @@ import SectorListSaga from "./participantsector/sagas";
 export  default function* rootSaga() {
   yield all([
     //public
+    fork(PaymentSaga),
+    fork(ProvinceListSaga),
+    fork(CountryListSaga),
     fork(SectorListSaga),
     fork(TypeListSaga),
     fork(DesignationListSaga),

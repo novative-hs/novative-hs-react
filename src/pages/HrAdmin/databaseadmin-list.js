@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import { Tooltip } from "@material-ui/core";
+import moment from "moment";
 import {
   Card,
   CardBody,
@@ -34,7 +35,11 @@ import DeleteModal from "components/Common/DeleteModal";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import { getDatabaseadminList, updateStaff, deleteStaff } from "store/staff/actions";
+import {
+  getDatabaseadminList,
+  updateStaff,
+  deleteStaff,
+} from "store/staff/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
@@ -44,20 +49,24 @@ class DatabaseAdminList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
-      nameFilter: '',
-      emailFilter: '',
-      cnicFilter: '',
-      phoneFilter: '',
+      nameFilter: "",
+      emailFilter: "",
+      cnicFilter: "",
+      phoneFilter: "",
+      dateFilter: "",
+      isActive: true, // Initial state
+      statusFilter: "", 
 
       databaseadminList: [],
       staff: "",
       collectorImg: "",
       modal: false,
-      nameSort: 'asc', 
-      emailSort: 'asc',
-      cnicSort: 'asc', 
-      phoneSort: 'asc',
-      deleteModal: false,
+      nameSort: "asc",
+      emailSort: "asc",
+      cnicSort: "asc",
+      phoneSort: "asc",
+      dateSort: "asc",
+      // deleteModal: false,
       auditorListColumns: [
         {
           text: "id",
@@ -71,25 +80,32 @@ class DatabaseAdminList extends Component {
           text: "Name",
           sort: true,
           headerFormatter: (column, colIndex) => {
-        
             return (
               <>
-              <div>
-                
-                <input
-                  type="text"
-                  value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange('nameFilter', e)}
-                  className="form-control"
-                />
-                
-              </div>
-              <div>{column.text}   {column.sort ? (
-            <i className={this.state.nameSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('name')}></i>
-          ) : null}</div>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.nameFilter}
+                    onChange={e => this.handleFilterChange("nameFilter", e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>
+                  {column.text}{" "}
+                  {column.sort ? (
+                    <i
+                      className={
+                        this.state.nameSort === "asc"
+                          ? "fa fa-arrow-up"
+                          : "fa fa-arrow-down"
+                      }
+                      style={{ color: "red" }}
+                      onClick={() => this.handleSort("name")}
+                    ></i>
+                  ) : null}
+                </div>
               </>
             );
-            
           },
           formatter: (cellContent, DatabaseAdmin) => (
             <>
@@ -99,40 +115,49 @@ class DatabaseAdminList extends Component {
                     process.env.REACT_APP_BACKENDURL + DatabaseAdmin.photo,
                 }}
                 target="_blank"
-             
               >
                 {DatabaseAdmin.name}
               </Link>
             </>
           ),
-        headerAlign: 'center', // Align header text to center
-        align: 'left',
-        
+          headerAlign: "center", // Align header text to center
+          align: "left",
         },
         {
           dataField: "email",
           text: "Email",
           sort: true,
-          headerFormatter: (column, colIndex) => { // Add iconStyle as a parameter
+          headerFormatter: (column, colIndex) => {
+            // Add iconStyle as a parameter
             return (
               <>
                 <div>
                   <input
                     type="text"
                     value={this.state.emailFilter}
-                    onChange={e => this.handleFilterChange('emailFilter', e)}
+                    onChange={e => this.handleFilterChange("emailFilter", e)}
                     className="form-control"
                   />
-                  <div>{column.text}       {column.sort ? (
-            <i className={this.state.emailSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('email')}></i>
-          ) : null} </div>
+                  <div>
+                    {column.text}{" "}
+                    {column.sort ? (
+                      <i
+                        className={
+                          this.state.emailSort === "asc"
+                            ? "fa fa-arrow-up"
+                            : "fa fa-arrow-down"
+                        }
+                        style={{ color: "red" }}
+                        onClick={() => this.handleSort("email")}
+                      ></i>
+                    ) : null}{" "}
+                  </div>
                 </div>
-          
               </>
             );
           },
-          headerAlign: 'center',
-          align: 'left',
+          headerAlign: "center",
+          align: "left",
         },
         {
           dataField: "cnic",
@@ -141,80 +166,179 @@ class DatabaseAdminList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
-                
-                <input
-                  type="text"
-                  value={this.state.cnicFilter}
-                  onChange={e => this.handleFilterChange('cnicFilter', e)}
-                  className="form-control"
-                />
-               
-              </div>
-              <div>{column.text}  {column.sort ? (
-            <i className={this.state.cnicSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'} style={{color: "red"}} onClick={() => this.handleSort('cnic')}></i>
-          ) : null}</div>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.cnicFilter}
+                    onChange={e => this.handleFilterChange("cnicFilter", e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>
+                  {column.text}{" "}
+                  {column.sort ? (
+                    <i
+                      className={
+                        this.state.cnicSort === "asc"
+                          ? "fa fa-arrow-up"
+                          : "fa fa-arrow-down"
+                      }
+                      style={{ color: "red" }}
+                      onClick={() => this.handleSort("cnic")}
+                    ></i>
+                  ) : null}
+                </div>
               </>
             );
           },
-        headerAlign: 'center', // Align header text to center
-       
+          headerAlign: "center", // Align header text to center
         },
-{
-  dataField: "phone",
-  text: "Mobile No.",
-  sort: true,
-  headerFormatter: (column, colIndex) => {
-    return (
-      <>
-        <div className="d-flex justify-content-between align-items-center">
-          <input
-            type="text"
-            value={this.state.phoneFilter}
-            onChange={e => this.handleFilterChange('phoneFilter', e)}
-            className="form-control"
-          />
-        </div>
-        <div className="d-flex justify-content-center align-items-center">
-          {column.text}
-          {column.sort ? (
-            <i
-              className={this.state.phoneSort === 'asc' ? 'fa fa-arrow-up' : 'fa fa-arrow-down'}
-              style={{ marginLeft: '5px', cursor: 'pointer', color: "red" }}
-              onClick={() => this.handleSort('phone')}
-            />
-          ) : null}
-        </div>
-      </>
-    );
-  },
-  headerAlign: 'center', // Align header text to center
-},
+        {
+          dataField: "phone",
+          text: "Mobile No.",
+          sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div className="d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    value={this.state.phoneFilter}
+                    onChange={e => this.handleFilterChange("phoneFilter", e)}
+                    className="form-control"
+                  />
+                </div>
+                <div className="d-flex justify-content-center align-items-center">
+                  {column.text}
+                  {column.sort ? (
+                    <i
+                      className={
+                        this.state.phoneSort === "asc"
+                          ? "fa fa-arrow-up"
+                          : "fa fa-arrow-down"
+                      }
+                      style={{
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                        color: "red",
+                      }}
+                      onClick={() => this.handleSort("phone")}
+                    />
+                  ) : null}
+                </div>
+              </>
+            );
+          },
+          headerAlign: "center", // Align header text to center
+        },
+        {
+          dataField: "registered_at",
+          text: "Date of Addition",
+          sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div className="d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    value={this.state.dateFilter}
+                    onChange={e => this.handleFilterChange("dateFilter", e)}
+                    className="form-control"
+                  />
+                </div>
+                <div className="d-flex justify-content-center align-items-center">
+                  {column.text}
+                  {column.sort ? (
+                    <i
+                      className={
+                        this.state.dateSort === "asc"
+                          ? "fa fa-arrow-up"
+                          : "fa fa-arrow-down"
+                      }
+                      style={{
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                        color: "red",
+                      }}
+                      onClick={() => this.handleSort("registered_at")}
+                    />
+                  ) : null}
+                </div>
+              </>
+            );
+          },
+          formatter: (cellContent, DatabaseAdmin) => (
+            <>
+              <span>
+                {moment(DatabaseAdmin.registered_at).format(
+                  "DD MMM YYYY, h:mm A"
+                )}
+              </span>
+            </>
+          ),
+          headerAlign: "center", // Align header text to center
+        },
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
           formatter: (cellContent, DatabaseAdmin) => (
-            <div>
+            <div className="d-flex align-items-center">
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
                     className="mdi mdi-pencil font-size-18"
                     id="edittooltip"
-                    onClick={e => this.handleDatabaseAdminClick(e, DatabaseAdmin)}
+                    onClick={e =>
+                      this.handleDatabaseAdminClick(e, DatabaseAdmin)
+                    }
                   ></i>
                 </Link>
               </Tooltip>
-              <Tooltip title="Delete">
-                <Link className="text-danger" to="#">
+              <div key={DatabaseAdmin.id}>
+                {/* <Tooltip title="Account Inactive">
+                  <Link className="text-danger" to="#">
+                    <i
+                      className="mdi mdi-account-remove font-size-18"
+                      id="deletetooltip"
+                      onClick={() => this.handleStatusUpdateInactive(DatabaseAdmin)}
+                    ></i>
+                  </Link>
+                </Tooltip> */}
+                {/* <Tooltip title={DatabaseAdmin.status === "Active" ? "Account Inactive" : "Account Active"}>
+                <Link className={DatabaseAdmin.status === "Active" ? "text-danger" : "text-success"} to="#">
                   <i
-                    className="mdi mdi-delete font-size-18"
-                    id="deletetooltip"
-                    onClick={() => this.onClickDelete(DatabaseAdmin)}
+                    className={DatabaseAdmin.status === "Active" ? "mdi mdi-account-remove font-size-18" : "mdi mdi-account-plus font-size-18"}
+                    id="statusToggleTooltip"
+                    onClick={() => this.handleStatusUpdateInactive(DatabaseAdmin)}
                   ></i>
                 </Link>
-              </Tooltip>
+              </Tooltip> */}
+                {DatabaseAdmin.status === "Active" ? (
+                  <Tooltip title="Delete Account">
+                    <Link className="text-danger" to="#">
+                      <i
+                        className="mdi mdi-account-remove font-size-18"
+                        id="deletetooltip"
+                        onClick={() => this.handleStatusUpdateInactive(DatabaseAdmin)}
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Restore Account">
+                    <Link className="text-success" to="#">
+                      <i
+                        className="mdi mdi-account-plus font-size-18"
+                        id="addtooltip"
+                        onClick={() =>
+                          this.handleStatusUpdatActive(DatabaseAdmin)
+                        }
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                )}
+              </div>
             </div>
           ),
         },
@@ -226,48 +350,54 @@ class DatabaseAdminList extends Component {
     this.handleDatabaseAdminClick = this.handleDatabaseAdminClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleAuditorClicks = this.handleAuditorClicks.bind(this);
-    this.onClickDelete = this.onClickDelete.bind(this);
+    this.handleStatusUpdateInactive =
+      this.handleStatusUpdateInactive.bind(this);
+    this.handleStatusUpdatActive =
+      this.handleStatusUpdatActive.bind(this);
+
+    // this.onClickDelete = this.onClickDelete.bind(this);
   }
 
-handleSort = (field) => {
-  const newSortOrder = this.state[field + 'Sort'] === 'asc' ? 'desc' : 'asc';
-  this.setState({ [field + 'Sort']: newSortOrder }, () => {
-    this.sortData(field, newSortOrder);
-  });
-};
+  handleSort = field => {
+    const newSortOrder = this.state[field + "Sort"] === "asc" ? "desc" : "asc";
+    this.setState({ [field + "Sort"]: newSortOrder }, () => {
+      this.sortData(field, newSortOrder);
+    });
+  };
 
-sortData = (field, order) => {
-  const { databaseadminList } = this.state;
-  if (!Array.isArray(databaseadminList)) {
-
-    return;
-  }
-
-  const sortedData = [...databaseadminList].sort((a, b) => {
-    let aValue = a[field];
-    let bValue = b[field];
-
-    // Ensure both values are strings for case-insensitive comparison
-    aValue = aValue.toString().toLowerCase();
-    bValue = bValue.toString().toLowerCase();
-
-    if (order === 'asc') {
-      return aValue.localeCompare(bValue);
-    } else {
-      return bValue.localeCompare(aValue);
+  sortData = (field, order) => {
+    const { databaseadminList } = this.state;
+    if (!Array.isArray(databaseadminList)) {
+      return;
     }
-  });
 
-  this.setState({ databaseadminList: sortedData });
-};
+    const sortedData = [...databaseadminList].sort((a, b) => {
+      let aValue = a[field];
+      let bValue = b[field];
+
+      // Ensure both values are strings for case-insensitive comparison
+      aValue = aValue.toString().toLowerCase();
+      bValue = bValue.toString().toLowerCase();
+
+      if (order === "asc") {
+        return aValue.localeCompare(bValue);
+      } else {
+        return bValue.localeCompare(aValue);
+      }
+    });
+
+    this.setState({ databaseadminList: sortedData });
+  };
   componentDidMount() {
     const { onGetDatabaseAdminList } = this.props;
     const { user_id } = this.state;
     onGetDatabaseAdminList(user_id);
 
-    
     this.setState({ databaseadminList: this.props.databaseadminList });
-    console.log("the data received on the page is:", this.props.databaseadminList)
+    console.log(
+      "the data received on the page is:",
+      this.props.databaseadminList
+    );
   }
 
   toggle() {
@@ -278,19 +408,31 @@ sortData = (field, order) => {
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
   };
-    // Filter data based on filter values
-    filterData = () => {
-      const { databaseadminList } = this.props;
-      const { nameFilter, emailFilter, cnicFilter, phoneFilter } = this.state;
-      const filteredData = databaseadminList.filter(entry =>
+  // Filter data based on filter values
+  filterData = () => {
+    const { databaseadminList } = this.props;
+    const {
+      nameFilter,
+      emailFilter,
+      cnicFilter,
+      phoneFilter,
+      dateFilter,
+      statusFilter,
+    } = this.state;
+
+    const filteredData = databaseadminList.filter(
+      entry =>
         entry.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
         entry.email.toLowerCase().includes(emailFilter.toLowerCase()) &&
         entry.cnic.includes(cnicFilter) &&
-        entry.phone.includes(phoneFilter)
-      );
-      return filteredData;
-    };
+        entry.phone.includes(phoneFilter) &&
+        entry.registered_at.includes(dateFilter) &&
+        // entry.status === statusFilter // filter based on status
+        (statusFilter === "" || entry.status === statusFilter) // filter based on status
+    );
 
+    return filteredData;
+  };
   handleAuditorClicks = () => {
     this.setState({ DatabaseAdmin: "", collectorImg: "", isEdit: false });
     this.toggle();
@@ -321,28 +463,28 @@ sortData = (field, order) => {
 
   /* Insert,Update Delete data */
 
-  toggleDeleteModal = () => {
-    this.setState(prevState => ({
-      deleteModal: !prevState.deleteModal,
-    }));
-  };
+  // toggleDeleteModal = () => {
+  //   this.setState(prevState => ({
+  //     deleteModal: !prevState.deleteModal,
+  //   }));
+  // };
 
-  onClickDelete = databaseadminList => {
-    this.setState({ databaseadminList: databaseadminList });
-    this.setState({ deleteModal: true });
-  };
+  // onClickDelete = databaseadminList => {
+  //   this.setState({ databaseadminList: databaseadminList });
+  //   this.setState({ deleteModal: true });
+  // };
 
-  handleDeleteDatabaseadmin = () => {
-    const { onDeleteStaff, onGetDatabaseAdminList } = this.props;
-    const { databaseadminList } = this.state;
-    if (databaseadminList.id !== undefined) {
-      onDeleteStaff(databaseadminList);
-      setTimeout(() => {
-        onGetDatabaseAdminList(this.state.user_id);
-      }, 1000);
-      this.setState({ deleteModal: false });
-    }
-  };
+  // handleDeleteDatabaseadmin = () => {
+  //   const { onDeleteStaff, onGetDatabaseAdminList } = this.props;
+  //   const { databaseadminList } = this.state;
+  //   if (databaseadminList.id !== undefined) {
+  //     onDeleteStaff(databaseadminList);
+  //     setTimeout(() => {
+  //       onGetDatabaseAdminList(this.state.user_id);
+  //     }, 1000);
+  //     this.setState({ deleteModal: false });
+  //   }
+  // };
 
   handleDatabaseAdminClick = (e, arg) => {
     this.setState({
@@ -358,9 +500,40 @@ sortData = (field, order) => {
     this.toggle();
   };
 
-  render() {
-    const { nameFilter, emailFilter, cnicFilter, phoneFilter } = this.state;
+  // Method to handle status change
 
+  handleStatusUpdateInactive = DatabaseAdmin => {
+    const updatedAdmin = {
+      ...DatabaseAdmin,
+      isActive: false,
+    };
+
+    this.props.onUpdateStaff(updatedAdmin);
+    setTimeout(() => {
+      this.props.onGetDatabaseAdminList(
+        this.state.user_id
+      );
+    }, 1000);// Adjust the delay as needed
+  
+  };
+
+  handleStatusUpdatActive = DatabaseAdmin => {
+    const updatedAdmin = {
+      ...DatabaseAdmin,
+      isActive: true,
+    };
+  
+    this.props.onUpdateStaff(updatedAdmin);
+    setTimeout(() => {
+      this.props.onGetDatabaseAdminList(
+        this.state.user_id
+      );
+    }, 1000);// Adjust the delay as needed
+  
+  };
+  render() {
+    const { nameFilter, emailFilter, cnicFilter, phoneFilter, dateFilter } =
+      this.state;
     const { databaseadminList } = this.props;
 
     const { isEdit, deleteModal } = this.state;
@@ -383,18 +556,21 @@ sortData = (field, order) => {
 
     return (
       <React.Fragment>
-        <DeleteModal
+        {/* <DeleteModal
           show={deleteModal}
           onDeleteClick={this.handleDeleteDatabaseadmin}
           onCloseClick={() => this.setState({ deleteModal: false })}
-        />
+        /> */}
         <div className="page-content">
           <MetaTags>
             <title>Database Admin List | NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Database Admin" breadcrumbItem="Database Admin List" />
+            <Breadcrumbs
+              title="Database Admin"
+              breadcrumbItem="Database Admin List"
+            />
             <Row className="justify-content-center">
               <Col lg="10">
                 <Card>
@@ -415,26 +591,48 @@ sortData = (field, order) => {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-                              
-                              </Row >
+                              <Col xl="12">
+                                <h6>Activate/Deactivate Staff Accounts</h6> </Col>
+                                <Col xs="5" sm="5" md="4" lg="3">
+                                  <div className="mb-3">
+                                    <select
+                                      className="form-control"
+                                      value={this.state.statusFilter}
+                                      onChange={e =>
+                                        this.handleFilterChange(
+                                          "statusFilter",
+                                          e
+                                        )
+                                      }
+                                    >
+                                      <option value="">All</option>
+                                      <option value="Active">Active</option>
+                                      <option value="Inactive">Inactive</option>
+                                    </select>
+                                  </div>
+                                </Col>
+                              </Row>
+
                               <Row className=" mb-4 navbar-nav">
                                 <Col xl="12">
                                   <div className="table-responsive">
-
-                    <BootstrapTable
+                                    <BootstrapTable
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       // defaultSorted={defaultSorted}
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses={"table-header-sky-blue"}
+                                      headerWrapperClasses={
+                                        "table-header-sky-blue"
+                                      }
                                       responsive
                                       ref={this.node}
-                                      data={this.filterData()}                                  
-                                      headerFormatter={(column, colIndex) => column.headerFormatter(column, colIndex)} 
+                                      data={this.filterData()}
+                                      headerFormatter={(column, colIndex) =>
+                                        column.headerFormatter(column, colIndex)
+                                      }
                                     />
-                                 
 
                                     <Modal
                                       isOpen={this.state.modal}
@@ -454,7 +652,6 @@ sortData = (field, order) => {
                                             name: (staff && staff.name) || "",
                                             cnic: (staff && staff.cnic) || "",
                                             phone: (staff && staff.phone) || "",
-                                         
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddentEditFlag: Yup.boolean(),
@@ -475,7 +672,6 @@ sortData = (field, order) => {
                                                 /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/,
                                                 "Please enter a valid Pakistani phone number e.g. 03123456789"
                                               ),
-                                        
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -484,13 +680,14 @@ sortData = (field, order) => {
                                                 name: values.name,
                                                 cnic: values.cnic,
                                                 phone: values.phone,
-                                           
                                               };
 
                                               // save new Staff
                                               onUpdateStaff(staffData);
                                               setTimeout(() => {
-                                                onGetDatabaseAdminList( this.state.user_id);
+                                                onGetDatabaseAdminList(
+                                                  this.state.user_id
+                                                );
                                               }, 1000);
                                             }
                                             this.toggle();
@@ -621,8 +818,6 @@ sortData = (field, order) => {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-
-                                             
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -682,7 +877,7 @@ const mapStateToProps = ({ staff }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetDatabaseAdminList: (id) => dispatch(getDatabaseadminList(id)),
+  onGetDatabaseAdminList: id => dispatch(getDatabaseadminList(id)),
   onUpdateStaff: DatabaseAdmin => dispatch(updateStaff(DatabaseAdmin)),
   onDeleteStaff: DatabaseAdmin => dispatch(deleteStaff(DatabaseAdmin)),
 });
@@ -691,43 +886,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(DatabaseAdminList));
-
-
-
-                                  {/* <Row className="m-1 bg-dark ">
-                      <Col >
-                        <input
-                          type="text"
-                          value={nameFilter}
-                          onChange={e => this.handleFilterChange('nameFilter', e)}
-                      
-                          className="form-control"
-                        />
-                      </Col>
-                      <Col>
-                        <input
-                          type="text"
-                          value={emailFilter}
-                          onChange={e => this.handleFilterChange('emailFilter', e)}
-                        
-                          className="form-control"
-                        />
-                      </Col>
-                      <Col>
-                        <input
-                          type="text"
-                          value={cnicFilter}
-                          onChange={e => this.handleFilterChange('cnicFilter', e)}
-                   
-                          className="form-control"
-                        />
-                      </Col>
-                      <Col>
-                        <input
-                          type="text"
-                          value={phoneFilter}
-                          onChange={e => this.handleFilterChange('phoneFilter', e)}
-                          className="form-control"
-                        />
-                      </Col>
-                    </Row> */}

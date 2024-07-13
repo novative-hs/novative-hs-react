@@ -10,7 +10,9 @@ import {
   ADD_NEW_ANALYTESEQUIPMENTS_SUCCESS,
   ADD_NEW_ANALYTESEQUIPMENTS_FAIL,
   UPDATE_ANALYTESEQUIPMENTS_SUCCESS,
-  UPDATE_ANALYTESEQUIPMENTS_FAIL
+  UPDATE_ANALYTESEQUIPMENTS_FAIL,
+  DELETE_INSTRUMENT_SUCCESS,
+  DELETE_INSTRUMENT_FAIL
 
 } from "./actionTypes";
 
@@ -107,6 +109,21 @@ case GET_INSTRUMENT_LIST_FAIL:
       ...state,
       error: action.payload,
     };
+    //////
+    case DELETE_INSTRUMENT_SUCCESS:
+          return {
+            ...state,
+            Instrument: state.Instrument.filter(
+              unit => unit.id.toString() !== action.payload.id.toString()
+            ),
+          };
+    
+        case DELETE_INSTRUMENT_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
 
     default:
       return state;

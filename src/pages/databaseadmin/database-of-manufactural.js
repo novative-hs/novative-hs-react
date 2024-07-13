@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import DeleteModal from "components/Common/DeleteModal";
 
 import {
   Card,
@@ -17,7 +18,9 @@ import {
   ModalHeader,
   ModalBody,
   Label,
+  Alert,
   Input,
+  FormGroup,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -39,12 +42,16 @@ import {
   getManufacturalList,
   addNewManufactural,
   updateManufactural,
-//   deletePathologist,
+  deleteManufacturer
 } from "store/manufactural/actions";
+import { getcountrylist} from "store/participantcountry/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
 import moment from 'moment';
+
+import { saveAs } from 'file-saver';
+
 class Manufactural extends Component {
   constructor(props) {
     super(props);
@@ -56,21 +63,25 @@ class Manufactural extends Component {
       nameFilter: '',
       addedbyFilter:'',
       dateFilter:'',
-      cityFilter: '',
+      websiteFilter: '',
+      countrFilter:'',
+      countFilter:'',
       idFilter: '',
       addressFilter:'',
       telephoneFilter:'',
       countryFilter:'',
       ManufacturalList: [],
+      ListCountry:[],
       manufacturtal: "",
       modal: false,
+      errorMessage:"",
     //   deleteModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       ReagentsListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -114,7 +125,7 @@ class Manufactural extends Component {
           style: { textAlign: 'left' }
         },
         {
-          dataField: "city",
+          dataField: "website",
           text: "Website",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -123,8 +134,8 @@ class Manufactural extends Component {
                 <div>              
                   <input
                     type="text"
-                    value={this.state.cityFilter}
-                    onChange={e => this.handleFilterChange('cityFilter', e)}
+                    value={this.state.websiteFilter}
+                    onChange={e => this.handleFilterChange('websiteFilter', e)}
                     className="form-control"
                   />
                 </div>
@@ -136,14 +147,25 @@ class Manufactural extends Component {
             // Check if the URL starts with http:// or https://
             const isAbsoluteUrl = /^https?:\/\//i.test(cell);
         
+            // Truncate the URL to 50 characters
+            const displayUrl = cell.length > 50 ? `${cell.substring(0, 50)}...` : cell;
+        
             if (isAbsoluteUrl) {
-              // Directly render the absolute URL
-              return <a href={cell} target="_blank" rel="noopener noreferrer">{cell}</a>;
+              // Directly render the absolute URL with a tooltip
+              return (
+                <a href={cell} target="_blank" rel="noopener noreferrer" title={cell}>
+                  {displayUrl}
+                </a>
+              );
             } else {
               // Assume it's a relative URL and construct the absolute URL
               const protocol = 'https://'; // Use https:// or http:// based on your requirement
               const absoluteUrl = `${protocol}${cell}`;
-              return <a href={absoluteUrl} target="_blank" rel="noopener noreferrer">{cell}</a>;
+              return (
+                <a href={absoluteUrl} target="_blank" rel="noopener noreferrer" title={absoluteUrl}>
+                  {displayUrl}
+                </a>
+              );
             }
           },
           style: { textAlign: 'left' }
@@ -171,6 +193,68 @@ class Manufactural extends Component {
             );
           },
           style: { textAlign: 'left' }
+        },
+        {
+          dataField: 'instrument_count',
+          text: 'No of Equipments',
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.countFilter}
+                    onChange={(e) => this.handleFilterChange('countFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          formatter: (cellContent, unitlist) => {
+            return (
+              <div>
+                <Link
+                  to={`/instruments-in-manufacturer/${unitlist.id}`}
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                >
+                  {unitlist.instrument_count}
+                </Link>
+              </div>
+            );
+          }
+        },
+        {
+          dataField: 'reagents_count',
+          text: 'No of Reagents',
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.countrFilter}
+                    onChange={(e) => this.handleFilterChange('countrFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          formatter: (cellContent, unitlist) => {
+            return (
+              <div>
+                <Link
+                  to={`/reagents-in-manufacturer/${unitlist.id}`}
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                >
+                  {unitlist.reagents_count}
+                </Link>
+              </div>
+            );
+          }
         },
         
         {
@@ -224,6 +308,15 @@ class Manufactural extends Component {
                   to={`/databaseadmin-history/${manufacturtal.id}`}
                 ></Link>
               </Tooltip>
+              <Tooltip title="Delete">
+                <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-delete font-size-18"
+                    id="deletetooltip"
+                    onClick={() => this.onClickDelete(manufacturtal)}
+                  ></i>
+                </Link>
+              </Tooltip>
             </div>
           ),
        
@@ -233,7 +326,7 @@ class Manufactural extends Component {
     this.handleManufacturalClick = this.handleManufacturalClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleManufacturalClicks = this.handleManufacturalClicks.bind(this);
-    // this.onClickDelete = this.onClickDelete.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   // The code for converting "Base64" to javascript "File Object"
@@ -253,7 +346,41 @@ class Manufactural extends Component {
     const { ManufacturalList, onGetManufactural } = this.props;
     onGetManufactural(this.state.user_id);
     this.setState({ ManufacturalList });
+
+    const { ListCountry, onGetCountrylist } = this.props;
+    onGetCountrylist(this.state.user_id);
+    this.setState({ ListCountry });
   }
+  toggleDeleteModal = () => {
+    this.setState(prevState => ({
+      deleteModal: !prevState.deleteModal,
+    }));
+  };
+
+  onClickDelete = (manufacturtal) => {
+    if (manufacturtal.reagents_count === 0 && manufacturtal.instrument_count === 0) {
+      this.setState({ ManufacturalList: manufacturtal, deleteModal: true });
+    } else {
+      this.setState({ errorMessage: "Cannot delete. Values are assigned." });
+      // Clear error message after 2 seconds
+      setTimeout(() => {
+        this.setState({ errorMessage: '' });
+      }, 2000);
+    }
+  };
+  
+
+  handleDeleteInstrumentType = () => {
+    const { onDeleteInstrumentType} = this.props;
+    const { ManufacturalList } = this.state;
+    if (ManufacturalList.id !== undefined) {
+      onDeleteInstrumentType(ManufacturalList);
+      setTimeout(() => {
+        this.props.onGetManufactural(this.state.user_id);
+      }, 1000);
+      this.setState({ deleteModal: false });
+    }
+  };
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
@@ -261,14 +388,16 @@ class Manufactural extends Component {
     // Filter data based on filter values
     filterData = () => {
       const { ManufacturalList } = this.props;
-      const { nameFilter, addedbyFilter, dateFilter, cityFilter,idFilter, addressFilter,telephoneFilter, countryFilter} = this.state;
+      const { nameFilter, addedbyFilter, dateFilter, websiteFilter,idFilter, addressFilter,telephoneFilter,countrFilter, countFilter,countryFilter} = this.state;
     
       const filteredData = ManufacturalList.filter(entry => {
         const name = entry.name ? entry.name.toString().toLowerCase() : "";
-        const city = entry.city ? entry.city.toString().toLowerCase() : "";
+        const website = entry.website ? entry.website.toString().toLowerCase() : "";
         const id = entry.id ? entry.id.toString() : "";
         const country = entry.country ? entry.country.toString().toLowerCase() : "";
         const address = entry.address ? entry.address.toString().toLowerCase() : "";
+        const count = entry.instrument_count ? entry.instrument_count.toString() : "";
+        const countr = entry.reagents_count ? entry.reagents_count.toString() : "";
         const addedBy = entry.added_by ? entry.added_by.toString().toLowerCase() : "";
         const telephone = entry.telephone ? entry.telephone.toString() : "";
         const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
@@ -276,8 +405,10 @@ class Manufactural extends Component {
         return (
           name.includes(nameFilter.toLowerCase()) &&
           id.includes(idFilter) &&
-          city.includes(cityFilter.toLowerCase()) &&
+          website.includes(websiteFilter.toLowerCase()) &&
           country.includes(countryFilter.toLowerCase()) &&
+          count.includes(countFilter) &&
+          countr.includes(countrFilter) &&
           address.includes(addressFilter.toLowerCase()) &&
           addedBy.includes(addedbyFilter.toLowerCase()) &&
           telephone.includes(telephoneFilter) &&
@@ -321,20 +452,6 @@ class Manufactural extends Component {
     }
   };
 
-  /* Insert,Update Delete data */
-
-//   toggleDeleteModal = () => {
-//     this.setState(prevState => ({
-//       deleteModal: !prevState.deleteModal,
-//     }));
-//   };
-
-//   onClickDelete = ManufacturalList => {
-//     this.setState({ ManufacturalList: ManufacturalList });
-//     this.setState({ deleteModal: true });
-//   };
-
-  // The code for converting "image source" (url) to "Base64"
   toDataURL = url =>
     fetch(url)
       .then(response => response.blob())
@@ -361,17 +478,6 @@ class Manufactural extends Component {
     return new File([u8arr], filename, { type: mime });
   };
 
-//   handleDeletePathologist = () => {
-//     const { onDeletePathologist, onGetManufactural } = this.props;
-//     const { ManufacturalList } = this.state;
-//     if (ManufacturalList.id !== undefined) {
-//       onDeletePathologist(ManufacturalList);
-//       setTimeout(() => {
-//         onGetManufactural(this.state.user_id);
-//       }, 1000);
-//       this.setState({ deleteModal: false });
-//     }
-//   };
 
   handleManufacturalClick = (e, arg) => {
     const manufacturtal = arg;
@@ -380,11 +486,8 @@ class Manufactural extends Component {
       manufacturtal: {
         id: manufacturtal.id,
         name: manufacturtal.name,
-        // status: manufacturtal.status,
         country: manufacturtal.country,
-        address: manufacturtal.address,
-        telephone: manufacturtal.telephone,
-        city: manufacturtal.city,
+        website: manufacturtal.website,
         added_by: manufacturtal.added_by,
       },
       isEdit: true,
@@ -405,7 +508,7 @@ class Manufactural extends Component {
     const dataToExport = ManufacturalList.map(unit => ({
       id: unit.id,
       name: unit.name,
-      website: unit.city,
+      website: unit.website,
       country: unit.country,
       date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
     }));
@@ -462,7 +565,7 @@ class Manufactural extends Component {
           await this.props.onAddNewManufactural({
 
             name: item.name,
-            city: item.website,
+            website: item.website,
             country: item.country,
             added_by: localStorage.getItem("authUser")
               ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -490,6 +593,7 @@ class Manufactural extends Component {
     const { SearchBar } = Search;
 
     const { ManufacturalList } = this.props;
+    const { errorMessage, deleteModal} = this.state;
 
     const { isEdit, 
         // deleteModal 
@@ -504,6 +608,13 @@ class Manufactural extends Component {
       totalSize: ManufacturalList.length,
       custom: true,
     };
+    const ListCountry = [];
+    for (let i = 0; i < this.props.ListCountry.length; i++) {
+      ListCountry.push({
+        label: this.props.ListCountry[i].name,
+        value: this.props.ListCountry[i].id,
+      });
+    }
 
     const defaultSorted = [
       {
@@ -514,11 +625,11 @@ class Manufactural extends Component {
 
     return (
       <React.Fragment>
-        {/* <DeleteModal
-        //   show={deleteModal}
-          onDeleteClick={this.handleDeletePathologist}
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeleteInstrumentType}
           onCloseClick={() => this.setState({ deleteModal: false })}
-        /> */}
+        />
         <div className="page-content">
           <MetaTags>
             <title>Manufacturer List | NEQAS</title>
@@ -540,18 +651,67 @@ class Manufactural extends Component {
               <Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
           <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
           <ModalBody>
-            {this.state.importError && (
-              <div className="alert alert-danger" role="alert">
-                {this.state.importError}
-              </div>
-            )}
-            <div className="mb-3">
-              <input type="file" className= "form-control" onChange={this.handleFileChange} accept=".xlsx, .xls" />
-            </div>
-            <Button color="primary" onClick={this.handleImport}>Import</Button>
-            {' '}
-            <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
-          </ModalBody>
+                <div className="mb-3 d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the default action
+                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/Manufactural.xlsx";
+                      saveAs(downloadUrl, "Manufactural.xlsx"); // Use the file-saver library to trigger the download
+                    }}
+                  >
+                    <i className="mdi mdi-download me-1" />
+                    Download File Format
+                  </button>
+                </div>
+
+
+                <div className="w-100">
+                  <h4><b>Instructions to fill the excel sheet:</b></h4>
+                  <div>
+                    <ol>
+                      <li>
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
+                      </li>
+                      <li>
+                        There should be a file of 3 columns, name, website, country
+                      </li>
+                      <li>
+                        If you want to get more information, contact
+                        us at <strong>eternalqc@gmail.com</strong>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+                <div>
+                  {this.state.importError && (
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.importError}
+                    </div>
+                  )}
+                  <Col lg="10">
+                    <FormGroup className=" mt-4 mb-0">
+                      <Label htmlFor="expirydateInput" className="fw-bolder">
+                        Upload File
+                        <span
+                          style={{ color: "#f46a6a" }}
+                          className="font-size-18"
+                        >
+                          *
+                        </span>
+                      </Label>
+                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
+                    </FormGroup>
+                  </Col></div>
+
+
+                <Row className="mt-4">
+                  <Col sm="12" className="d-flex justify-content-end">
+                    <Button color="primary" onClick={this.handleImport} className="me-2">Import</Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+                  </Col>
+                </Row>
+              </ModalBody>
         </Modal>
             <Row className="justify-content-center">
             {/* <p className="text-danger">Note: Pathologist Information will scale the rating of your lab.</p> */}
@@ -559,6 +719,15 @@ class Manufactural extends Component {
               <Col lg="10">
                 <Card>
                   <CardBody>
+                  <Row>
+                      <Col className="pagination pagination-rounded justify-content-center mb-2">
+                        {errorMessage && (
+                          <Alert color="danger">
+                            {errorMessage}
+                          </Alert>
+                        )}
+                      </Col>
+                    </Row>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -575,16 +744,6 @@ class Manufactural extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-4">
-                                {/* <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col> */}
                                 <Col xl="12">
                                   <div className="text-sm-end">
                                     <Button
@@ -598,356 +757,226 @@ class Manufactural extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
-                                      bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      ref={this.node}
-                                      data={this.filterData()}
-                                    />
+                            <Row className="mb-4">
+                              <Col xl="12">
+                                <div className="table-responsive">
+                                  <BootstrapTable
+                                    {...toolkitprops.baseProps}
+                                    {...paginationTableProps}
+                                    defaultSorted={defaultSorted}
+                                    classes={"table align-middle table-hover"}
+                                    bordered={false}
+                                    striped={true}
+                                    headerWrapperClasses={"table-light"}
+                                    responsive
+                                    ref={this.node}
+                                    data={this.filterData()}
+                                  />
 
-                                    <Modal
-                                      isOpen={this.state.modal}
-                                      className={this.props.className}
+                                  <Modal
+                                    isOpen={this.state.modal}
+                                    className={this.props.className}
+                                  >
+                                    <ModalHeader
+                                      toggle={this.toggle}
+                                      tag="h4"
                                     >
-                                      <ModalHeader
-                                        toggle={this.toggle}
-                                        tag="h4"
-                                      >
-                                        {!!isEdit
-                                          ? "Edit Manufacturer"
-                                          : "Add New Manufacturer"}
-                                      </ModalHeader>
-                                      <ModalBody>
+                                      {!!isEdit
+                                        ? "Edit Manufacturer"
+                                        : "Add New Manufacturer"}
+                                    </ModalHeader>
+                                    <ModalBody>
 <Formik
-                                          enableReinitialize={true}
-                                          
-                                          initialValues={{
-                                            hiddenEditFlag: isEdit,
-                                            city: (manufacturtal && manufacturtal.city) || "",
-                                            country: (manufacturtal && manufacturtal.country) || "",
-                                      
-                                            name: (manufacturtal && manufacturtal.name) || "",
-                                            // code: (manufacturtal && manufacturtal.code) || "",
-                                            // status: (manufacturtal && manufacturtal.status) || "",
-                                            added_by: localStorage.getItem("authUser")
-                                              ? JSON.parse(localStorage.getItem("authUser")).user_id
-                                              : "",
-                                          }}
-                                          validationSchema={Yup.object().shape({
-                                            hiddenEditFlag: Yup.boolean(),
-                                            name: Yup.string().trim().required("Please enter name"),
-                                            // code: Yup.string().trim().required("Please enter Valid Code"),
-                                            // status: Yup.string()
-                                            //   .trim()
-                                            //   .required("Please select the Status from dropdown"),
-                                            city: Yup.string().trim().required("Please enter website"),
-                                            country: Yup.string().trim().required("Please enter country"),
+                                        enableReinitialize={true}
+                                        
+                                        initialValues={{
+                                          hiddenEditFlag: isEdit,
+                                          website: (manufacturtal && manufacturtal.website) || "",
+                                          country: (manufacturtal && manufacturtal.country) || "",
                                     
-                                          })}
-                                          onSubmit={values => {
-                                            if (isEdit) {
-                                              {
-                                                const updateManufactural = {
-                                                  id: manufacturtal.id,
-                                                  city:values.city,
-                                                  country: values.country,
-                                                
-                                                
-                                                  name: values.name,
-                                                //   code: values.code,
-                                                //   status: values.status,
-                                                  added_by: values.added_by,
-                                                };
-
-                                                // update Pathologist
-                                                onUpdateManufactural(
-                                                  updateManufactural
-                                                );
-                                                console.log("data in the pul api", updateManufactural)
-                                                setTimeout(() => {
-                                                  onGetManufactural(
-                                                    this.state.user_id
-                                                  );
-                                                }, 1000);
-                                              }
-                                            } else {
-                                              const newReagent = {
-                                                id:
-                                                  Math.floor(
-                                                    Math.random() * (30 - 20)
-                                                  ) + 20,
-                                                  city:values.city,
-                                                  country: values.country,
-                                                  name: values.name,
-                                                //   code: values.code,
-                                                //   status: values.status,
-                                                  added_by: values.added_by,
+                                          name: (manufacturtal && manufacturtal.name) || "",
+                                          // code: (manufacturtal && manufacturtal.code) || "",
+                                          // status: (manufacturtal && manufacturtal.status) || "",
+                                          added_by: localStorage.getItem("authUser")
+                                            ? JSON.parse(localStorage.getItem("authUser")).user_id
+                                            : "",
+                                        }}
+                                        validationSchema={Yup.object().shape({
+                                          hiddenEditFlag: Yup.boolean(),
+                                          name: Yup.string().trim().required("Please enter name"),
+                                          website: Yup.string().trim().required("Please enter website"),
+                                          country: Yup.string().trim().required("Please enter country"),
+                                  
+                                        })}
+                                        onSubmit={values => {
+                                          if (isEdit) {
+                                            {
+                                              const updateManufactural = {
+                                                id: manufacturtal.id,
+                                                website:values.website,
+                                                country: values.country,
+                                              
+                                              
+                                                name: values.name,
+                                                added_by: values.added_by,
                                               };
 
-                                              // save new Pathologist
-                                              onAddNewManufactural(
-                                                newReagent,
-                                                this.state.user_id
+                                              onUpdateManufactural(
+                                                updateManufactural
                                               );
+                                              console.log("data in the pul api", updateManufactural)
                                               setTimeout(() => {
                                                 onGetManufactural(
                                                   this.state.user_id
                                                 );
                                               }, 1000);
                                             }
-                                            this.setState({
-                                              selectedPathologist: null,
-                                            });
-                                            this.toggle();
-                                          }}
-                                        > 
-                                          {({ errors, status, touched }) => (
-                                            <Form>
-                                              <Row>
-                                                <Col className="col-12">
+                                          } else {
+                                            const newReagent = {
+                                              id:
+                                                Math.floor(
+                                                  Math.random() * (30 - 20)
+                                                ) + 20,
+                                                website:values.website,
+                                                country: values.country,
+                                                name: values.name,
+                                                added_by: values.added_by,
+                                            };
+
+                                            // save new Pathologist
+                                            onAddNewManufactural(
+                                              newReagent,
+                                              this.state.user_id
+                                            );
+                                            setTimeout(() => {
+                                              onGetManufactural(
+                                                this.state.user_id
+                                              );
+                                            }, 1000);
+                                          }
+                                          this.setState({
+                                            selectedPathologist: null,
+                                          });
+                                          this.toggle();
+                                        }}
+                                      > 
+                                        {({ errors, status, touched }) => (
+                                          <Form>
+                                            <Row>
+                                              <Col className="col-12">
+                                                <Field
+                                                  type="hidden"
+                                                  className="form-control"
+                                                  name="hiddenEditFlag"
+                                                  value={isEdit}
+                                                />
+                                                <div className="mb-3">
+                                                  <Label className="form-label">
+                                                    Name
+                                                    <span className="text-danger">
+                                                      *
+                                                    </span>
+                                                  </Label>
                                                   <Field
-                                                    type="hidden"
-                                                    className="form-control"
-                                                    name="hiddenEditFlag"
-                                                    value={isEdit}
-                                                  />
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Name
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="name"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.name &&
-                                                        touched.name
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.manufacturtal
-                                                          .name
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          manufacturtal: {
-                                                         
-                                                            id: manufacturtal.id,
-                                                            name: e.target
-                                                              .value,
+                                                    name="name"
+                                                    type="text"
+                                                    className={
+                                                      "form-control" +
+                                                      (errors.name &&
+                                                      touched.name
+                                                        ? " is-invalid"
+                                                        : "")
+                                                    }
+                                                    value={
+                                                      this.state.manufacturtal
+                                                        .name
+                                                    }
+                                                    onChange={e =>
+                                                      this.setState({
+                                                        manufacturtal: {
                                                         
-                                                              city:
-                                                              manufacturtal.city,
-                                                              country:
-                                                              manufacturtal.country,
-                                                            
-                                                       
-                                                          },
-                                                        })
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
-                                                  {/* <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Telephone
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="telephone"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.telephone &&
-                                                        touched.telephone
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.manufacturtal
-                                                          .telephone
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          manufacturtal: {
-                                                         
-                                                            id: manufacturtal.id, 
-                                                            name: manufacturtal.name,
-                                                          
-                                                            telephone: e.target
-                                                              .value,
-
-                                                         
-                                                              city:
-                                                              manufacturtal.city,
-                                                              country:
-                                                              manufacturtal.country,
-                                                            
-                                                                address: manufacturtal.address,
+                                                          id: manufacturtal.id,
+                                                          name: e.target
+                                                            .value,
                                                       
-                                                          },
-                                                        })
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="telephone"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div> */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Website
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="city"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.city &&
-                                                        touched.city
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.manufacturtal
-                                                          .city
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          manufacturtal: {
-                                                         
-                                                            id: manufacturtal.id,
-                                                            name: manufacturtal.name,
-                                                            city: e.target
-                                                              .value,
-                                                      
-                                                           
-                                                              country:
-                                                              manufacturtal.country,
-                                                            
-                                                       
-                                                          
-                                                          },
-                                                        })
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="city"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Country
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="name"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.country &&
-                                                        touched.country
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.manufacturtal
-                                                          .country
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          manufacturtal: {
-                                                         
-                                                            id: manufacturtal.id,
-                                                            name: manufacturtal.name,
-                                                            city:
-                                                            manufacturtal.city,
-                                                   
-                                                            country: e.target
-                                                              .value,
-                                                      
-                                                          },
-                                                        })
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="country"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  {/* <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="address"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" + 
-                                                        (errors.address &&
-                                                        touched.address
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.manufacturtal.address
-                                                          
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          manufacturtal: {
-                                                            id: manufacturtal.id,
-                                                            name: manufacturtal.name,
-                                                            city:
-                                                            manufacturtal.city,
+                                                            website:
+                                                            manufacturtal.website,
                                                             country:
                                                             manufacturtal.country,
                                                           
-                                                            telephone:
-                                                              manufacturtal.telephone,
-                                                              address: e.target.value,
-                                                          },
-                                                        })
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="address"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div> */}
+                                                      
+                                                        },
+                                                      })
+                                                    }
+                                                  />
+                                                  <ErrorMessage
+                                                    name="name"
+                                                    component="div"
+                                                    className="invalid-feedback"
+                                                  />
+                                                </div>
+
+                                                <div className="mb-3">
+                                                  <Label className="form-label">
+                                                    Website
+                                                    <span className="text-danger">
+                                                      *
+                                                    </span>
+                                                  </Label>
+                                                  <Field
+                                                    name="website"
+                                                    type="text"
+                                                    className={
+                                                      "form-control" +
+                                                      (errors.website &&
+                                                      touched.website
+                                                        ? " is-invalid"
+                                                        : "")
+                                                    }
+                                                    value={
+                                                      this.state.manufacturtal
+                                                        .website
+                                                    }
+                                                    onChange={e =>
+                                                      this.setState({
+                                                        manufacturtal: {
+                                                        
+                                                          id: manufacturtal.id,
+                                                          name: manufacturtal.name,
+                                                          website: e.target
+                                                            .value,                                                          
+                                                            country:
+                                                            manufacturtal.country,                                                      
+                                                      
+                                                        
+                                                        },
+                                                      })
+                                                    }
+                                                  />
+                                                  <ErrorMessage
+                                                    name="website"
+                                                    component="div"
+                                                    className="invalid-feedback"
+                                                  />
+                                                </div>
+                                                <div className="mb-3">
+  <Label className="col-form-label">Country</Label>
+  <Field
+    name="country" // Ensure the name matches the field name
+    as="select"
+    className="form-control"
+    multiple={false}
+  >
+    <option value="">Select Country</option> 
+    {ListCountry.map(country => (
+      <option key={country.value} value={this.state.country}>
+        {country.label}
+      </option>
+    ))}
+  </Field>
+  <ErrorMessage name="country" component="div" className="text-danger" />
+</div>
+                                                  
                                              
                                                 </Col>
                                               </Row>
@@ -995,21 +1024,25 @@ Manufactural.propTypes = {
   ManufacturalList: PropTypes.array,
   className: PropTypes.any,
   onGetManufactural: PropTypes.func,
+  onGetCountrylist: PropTypes.func,
   onAddNewManufactural: PropTypes.func,
-//   onDeletePathologist: PropTypes.func,
+  ListCountry:PropTypes.array,
+  onDeleteInstrumentType: PropTypes.func,
   onUpdateManufactural: PropTypes.func,
 };
 
-const mapStateToProps = ({ ManufacturalList }) => ({
+const mapStateToProps = ({ ManufacturalList,ListCountry }) => ({
   ManufacturalList: ManufacturalList.ManufacturalList,
+  ListCountry: ListCountry.ListCountry,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetManufactural: id => dispatch(getManufacturalList(id)),
+  onGetCountrylist: (id) => dispatch(getcountrylist(id)),
   onAddNewManufactural: (manufacturtal, id) =>
     dispatch(addNewManufactural(manufacturtal, id)),
   onUpdateManufactural: manufacturtal => dispatch(updateManufactural(manufacturtal)),
-//   onDeletePathologist: manufacturtal => dispatch(deletePathologist(manufacturtal)),
+  onDeleteInstrumentType: manufacturtal => dispatch(deleteManufacturer(manufacturtal)),
 });
 
 export default connect(

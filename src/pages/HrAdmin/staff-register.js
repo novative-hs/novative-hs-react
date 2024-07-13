@@ -87,7 +87,7 @@ class StaffRegister extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Staff" breadcrumbItem="Register" />
+            <Breadcrumbs title="Register" breadcrumbItem="Add New Staff" />
             <Row className="justify-content-center">
               <Col lg="8">
                 <Card>
@@ -178,6 +178,24 @@ class StaffRegister extends Component {
                       
                        {({ setFieldValue, errors, touched }) => (
                           <Form className="form-horizontal">
+                            
+                            <div className="mb-3">
+                              <Label for="account_type" className="form-label">
+                                Account type
+                              </Label>
+                              <Field
+                                name="account_type"
+                                component="select"
+                                className="form-select"
+                              >
+                                <option value="CSR">CSR</option>
+                                <option value="database-admin">Database Admin</option>
+                                <option value="registration-admin">
+                                  Registration Admin
+                                </option>
+
+                              </Field>
+                            </div>
                             {/* Username field */}
 
                             <div className="mb-3">
@@ -366,23 +384,6 @@ class StaffRegister extends Component {
                               <ErrorMessage name="password2" component="div" className="invalid-feedback" />
                             </div>
 
-                            <div className="mb-3">
-                              <Label for="account_type" className="form-label">
-                                Account type
-                              </Label>
-                              <Field
-                                name="account_type"
-                                component="select"
-                                className="form-select"
-                              >
-                                <option value="CSR">CSR</option>
-                                <option value="database-admin">Database Admin</option>
-                                <option value="registration-admin">
-                                  Registration Admin
-                                </option>
-
-                              </Field>
-                            </div>
 
                             <Row>
                               <Col>

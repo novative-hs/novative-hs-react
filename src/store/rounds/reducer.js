@@ -20,7 +20,6 @@ const INIT_STATE = {
 const RoundList = (state = INIT_STATE, action) => {
   switch (action.type) {
         case GET_ROUND_LIST_SUCCESS:
-          console.log("Data received in success action:", action.payload); // Log the action.payload
           return {
             ...state,
             RoundList: action.payload,

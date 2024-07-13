@@ -27,7 +27,7 @@ class AnalyteAddUnits extends Component {
       errorMessage: '', // State for error message
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => (

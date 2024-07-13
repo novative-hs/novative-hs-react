@@ -1,12 +1,12 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_REAGENTS_LIST, ADD_NEW_REAGENTS , UPDATE_REAGENTS ,GET_ANALYTESREAGENTS_LIST,ADD_NEW_ANALYTESREAGENTS,UPDATE_ANALYTESREAGENTS} from "./actionTypes";
+import { DELETE_REAGENT,GET_REAGENTS_LIST, ADD_NEW_REAGENTS , UPDATE_REAGENTS ,GET_ANALYTESREAGENTS_LIST,ADD_NEW_ANALYTESREAGENTS,UPDATE_ANALYTESREAGENTS} from "./actionTypes";
 
-import { getReagentlistSuccess, getReagentlistFail, addNewReagentsSuccess, addNewReagentsFail, updateReagentsSuccess, updateReagentsFail ,getAnalyteReagentlistSuccess,getAnalyteReagentlistFail,addNewAnalyteReagentlistSuccess,addNewAnalyteReagentlistFail,updateAnalyteReagentlistSuccess,updateAnalyteReagentlistFail } from "./actions";
+import { deleteReagentSuccess,deleteReagentFail,getReagentlistSuccess, getReagentlistFail, addNewReagentsSuccess, addNewReagentsFail, updateReagentsSuccess, updateReagentsFail ,getAnalyteReagentlistSuccess,getAnalyteReagentlistFail,addNewAnalyteReagentlistSuccess,addNewAnalyteReagentlistFail,updateAnalyteReagentlistSuccess,updateAnalyteReagentlistFail } from "./actions";
 
-//Include Both Helper File with needed methods
-import { getReagentsList, addNewReagents, updateReagents,
+
+import { deleteReagent,getReagentsList, addNewReagents, updateReagents,
   getAnalyteReagentlist,addNewAnalyteReagentlist,updateAnalyteReagentlist } from "../../helpers/django_api_helper";
 
 ///analyte reagents
@@ -69,6 +69,14 @@ function* onUpdateReagents({ payload: reagent }) {
     yield put(updateReagentsFail (error));
   }
 }
+function* onDeleteReagent({ payload: Reagent }) {
+  try {
+    const response = yield call(deleteReagent, Reagent);
+    yield put(deleteReagentSuccess(response));
+  } catch (error) {
+    yield put(deleteReagentFail(error));
+  }
+}
 
 
 function* ReagentsListSaga() {
@@ -80,6 +88,7 @@ function* ReagentsListSaga() {
   yield takeEvery(GET_REAGENTS_LIST, fetchReagentsList);
   yield takeEvery(ADD_NEW_REAGENTS, onAddNewReagents );
   yield takeEvery(UPDATE_REAGENTS, onUpdateReagents);
+  yield takeEvery(DELETE_REAGENT, onDeleteReagent);
 }
 
 export default ReagentsListSaga;

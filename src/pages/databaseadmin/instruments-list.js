@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
+import DeleteModal from "components/Common/DeleteModal";
 import BootstrapTable from 'react-bootstrap-table-next';
 import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -19,6 +20,8 @@ import {
   ModalHeader,
   ModalBody,
   Label,
+  Button,
+  Alert
 } from "reactstrap";
 
 
@@ -31,11 +34,12 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getInstrumentlist, addNewInstrument, updateInstrument } from "store/instrument/actions";
+import { getInstrumentlist, addNewInstrument, updateInstrument,deleteInstrument } from "store/instrument/actions";
 import {getManufacturalList} from "store/manufactural/actions";
 import {getinstrumenttypelist} from "store/databaseofunits/actions"
+import { getcountrylist} from "store/participantcountry/actions";
 import { isEmpty, size } from "lodash";
-
+import * as XLSX from "xlsx";
 import "assets/scss/table.scss";
 import moment from 'moment';
 class Instrument extends Component {
@@ -49,12 +53,18 @@ class Instrument extends Component {
       instypeFilter: '',
       manufacturerFilter:'',
       codeFilter: '',
+      modelFilter: '',
       statusFilter:'',
       idFilter: '',
+      countFilter:'',
+      countryFilter:'',
+      deleteModal: false,
       isEdit: false,
       Instrument: [],
       ListUnit:[],
       ManufacturalList: [],
+      ListCountry:[],
+      errorMessage:"",
       methodlist: "",
       modal: false,
       user_id: localStorage.getItem("authUser")
@@ -63,7 +73,7 @@ class Instrument extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -104,6 +114,40 @@ class Instrument extends Component {
               </>
             );
           },
+        },
+        
+        {
+          dataField: 'analytes_count',
+          text: 'No of Analytes',
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.countFilter}
+                    onChange={(e) => this.handleFilterChange('countFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          formatter: (cellContent, unitlist) => {
+            return (
+              <div>
+                <Link
+                  to={`/instruments-analyte/${unitlist.id}`}
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                >
+                  {unitlist.analytes_count}
+                </Link>
+              </div>
+            );
+          },
+          headerStyle: { width: '120px' },  // Adjust the width as needed
+  style: { width: '120px' },
         },
         {
           dataField: "code",
@@ -152,6 +196,29 @@ class Instrument extends Component {
           },
         },
         {
+          dataField: "model",
+          text: "Model No.",
+          sort: true,
+          //style: { textAlign: 'right' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+              
+                <input
+                  type="text"
+                  value={this.state.modelFilter}
+                  onChange={e => this.handleFilterChange('modelFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
+        },
+        {
           dataField: "manufactural",
           text: "Manufacturer",
           sort: true,
@@ -165,6 +232,29 @@ class Instrument extends Component {
                   type="text"
                   value={this.state.manufacturerFilter}
                   onChange={e => this.handleFilterChange('manufacturerFilter', e)}
+                  className="form-control"
+               
+                />
+              </div>
+                <div>{column.text}</div>
+                </>
+            );
+          },
+        },
+        {
+          dataField: "country",
+          text: "Country",
+          sort: true,
+          //style: { textAlign: 'right' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+              <div>
+              
+                <input
+                  type="text"
+                  value={this.state.countryFilter}
+                  onChange={e => this.handleFilterChange('countryFilter', e)}
                   className="form-control"
                
                 />
@@ -250,12 +340,22 @@ class Instrument extends Component {
                   to={`/units-history/${methodlist.id}`}
                 ></Link>
               </Tooltip>
+              <Tooltip title="Delete">
+                <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-delete font-size-18"
+                    id="deletetooltip"
+                    onClick={() => this.onClickDelete(methodlist)}
+                  ></i>
+                </Link>
+              </Tooltip>
             </div>
           ),
         },
       ],
     };
     this.toggle = this.toggle.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
@@ -267,6 +367,10 @@ class Instrument extends Component {
     const { ManufacturalList, onGetManufacturalist } = this.props;
     onGetManufacturalist(this.state.user_id);
     this.setState({ ManufacturalList });
+
+    const { ListCountry, onGetCountrylist } = this.props;
+    onGetCountrylist(this.state.user_id);
+    this.setState({ ListCountry });
     
     
     const { ListUnit, onGetInstrumentTypeList } = this.props;
@@ -276,6 +380,36 @@ class Instrument extends Component {
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
+  };
+  toggleDeleteModal = () => {
+    this.setState(prevState => ({
+      deleteModal: !prevState.deleteModal,
+    }));
+  };
+
+  onClickDelete = (methodlist) => {
+    if (methodlist.analytes_count === 0) {
+      this.setState({ ListUnit: methodlist });
+      this.setState({ deleteModal: true });
+    } else {
+      this.setState({ errorMessage: "Cannot delete. Analytes are assigned." });
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        this.setState({ errorMessage: '' });
+      }, 2000);
+    }
+  };
+
+  handleDeleteInstrumentType = () => {
+    const { onDeleteInstrumentType} = this.props;
+    const { ListUnit } = this.state;
+    if (ListUnit.id !== undefined) {
+      onDeleteInstrumentType(ListUnit);
+      setTimeout(() => {
+        this.props.onGetInstrumentList(this.state.user_id);
+      }, 1000);
+      this.setState({ deleteModal: false });
+    }
   };
 
 
@@ -296,9 +430,11 @@ class Instrument extends Component {
           name: unit.name, 
           added_by: unit.added_by ,
           code: unit.code, 
+          model: unit.model, 
           status: unit.status,
           instrument_type: unit.instrument_type, // Access the value property
-          manufactural: unit.manufactural // Access the value property
+          manufactural: unit.manufactural, // Access the value property
+          country: unit.country // Access the value property
         },
         isEdit: true,
       });
@@ -333,24 +469,126 @@ class Instrument extends Component {
   closeModal = () => {
     this.setState({ modal: false });
   }
+
+  exportToExcel = () => {
+    const { Instrument } = this.props;
+    const fileType =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+  
+    // Define fields to export
+    const fieldsToExport = ['id', 'name', 'code', 'status','date_of_addition'];
+  
+    // Map each row to an object with only the desired fields
+    const dataToExport = Instrument.map(unit => ({
+      id: unit.id,
+      equipment: unit.name,
+      code: unit.code,
+      Equipment_Type: unit.instrument_type,
+      Manufacturer: unit.manufactural,
+      status: unit.status,
+      date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
+    }));
+  
+    // Convert data to Excel format and save as file
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: fileType });
+    const fileName = 'Equipment_list' + fileExtension;
+    saveAs(data, fileName);
+  };
+
+  toggleImportModal = () => {
+    this.setState(prevState => ({
+      importModal: !prevState.importModal,
+      importFile: null,
+      importError: null,
+    }));
+  };
+
+  handleFileChange = (e) => {
+    const file = e.target.files[0];
+    this.setState({
+      importFile: file,
+    });
+  };
+
+  handleImport = async () => {
+    const { importFile } = this.state;
+    if (!importFile) {
+      this.setState({
+        importError: 'Please select a file.',
+      });
+      return;
+    }
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        // Assuming your data is in the first sheet
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        // Convert to JSON format
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+        
+        // Process jsonData and save to the database
+        // Example of processing:
+        for (let i = 0; i < jsonData.length; i++) {
+          const item = jsonData[i];
+          // Dispatch an action to save item to the database
+          await this.props.onAddNewType({
+
+            name: item.name,
+            code: item.code,
+            status: item.status,
+            added_by: localStorage.getItem("authUser")
+              ? JSON.parse(localStorage.getItem("authUser")).user_id
+              : "",
+            // Add other fields as required based on your schema
+          });
+        }
+
+        // Close the modal and show success message
+        this.toggleImportModal();
+        this.displaySuccessMessage('Data imported successfully!');
+        // Optionally, reload data from backend after import
+        await this.props.onGetInstrumentList(this.state.user_id);
+      };
+
+      reader.readAsArrayBuffer(importFile);
+    } catch (error) {
+      console.error('Error importing data:', error);
+      this.setState({
+        importError: 'Error importing data. Please try again.',
+      });
+    }
+  };
+
   render() {
+    const {deleteModal } = this.state;
+    const { errorMessage } = this.state;
     const { SearchBar } = Search;
 
     const { Instrument } = this.props;
 
-    const { onGetInstrumentList, onUpdateType } = this.props;
     const methodlist = this.state.Instrument;
 
 
-    const { nameFilter, dateFilter, idFilter,codeFilter,instypeFilter,manufacturerFilter,statusFilter } = this.state;
+    const { nameFilter, dateFilter, idFilter,codeFilter,instypeFilter,manufacturerFilter,statusFilter,countFilter,countryFilter,modelFilter } = this.state;
 
     // Apply the filters to the unit list
     const filteredUnits = Instrument.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const status = entry.status ? entry.status.toString(): "";
       const code = entry.code ? entry.code.toString() : "";
+      const model = entry.model ? entry.model.toString() : "";
+      const count = entry.analytes_count ? entry.analytes_count.toString() : "";
       const instrument_type = entry.instrument_type ? entry.instrument_type.toString().toLowerCase() : "";
       const manufactural = entry.manufactural ? entry.manufactural.toString().toLowerCase() : "";
+      const country = entry.country ? entry.country.toString().toLowerCase() : "";
       const id = entry.id ? entry.id.toString() : "";
       const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
 
@@ -358,8 +596,11 @@ class Instrument extends Component {
         name.includes(nameFilter.toLowerCase()) &&
         instrument_type.includes(instypeFilter.toLowerCase()) &&
         code.includes(codeFilter) &&
+        model.includes(modelFilter) &&
         status.includes(statusFilter) &&
         manufactural.includes(manufacturerFilter.toLowerCase()) &&
+        country.includes(countryFilter.toLowerCase()) &&
+        count.includes(countFilter) &&
         id.includes(idFilter) &&
         date.includes(dateFilter)
       );
@@ -387,6 +628,14 @@ class Instrument extends Component {
       });
     }
     
+    const ListCountry = [];
+    for (let i = 0; i < this.props.ListCountry.length; i++) {
+      ListCountry.push({
+        label: this.props.ListCountry[i].name,
+        value: this.props.ListCountry[i].id,
+      });
+    }
+    
     const ListUnit = [];
     for (let i = 0; i < this.props.ListUnit.length; i++) {
       ListUnit.push({
@@ -396,6 +645,11 @@ class Instrument extends Component {
     }
     return (
       <React.Fragment>
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeleteInstrumentType}
+          onCloseClick={() => this.setState({ deleteModal: false })}
+        />
         <div className="page-content">
           <MetaTags>
             <title>Database Admin | Equipment List</title>
@@ -403,10 +657,44 @@ class Instrument extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="List" breadcrumbItem="Equipment List" />
+            <Row className="justify-content-end">
+  <Col lg="auto" className="text-end">
+    <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
+  </Col>
+  {/* <Col lg="auto" className="text-end">
+    <Button onClick={this.toggleImportModal} className="mb-3">Import from Excel</Button>
+  </Col> */}
+</Row>
+              <Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
+          <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
+          <ModalBody>
+            {this.state.importError && (
+              <div className="alert alert-danger" role="alert">
+                {this.state.importError}
+              </div>
+            )}
+            <div className="mb-3">
+              <input type="file" className= "form-control" onChange={this.handleFileChange} accept=".xlsx, .xls" />
+            </div>
+            <Button color="primary" onClick={this.handleImport}>Import</Button>
+            {' '}
+            <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+          </ModalBody>
+        </Modal>
             <Row className="justify-content-center">
               <Col lg="10">
                 <Card>
-                  <CardBody>
+                  <CardBody>                  
+                    
+                  <Row>
+                      <Col className="pagination pagination-rounded justify-content-center mb-2">
+                        {errorMessage && (
+                          <Alert color="danger">
+                            {errorMessage}
+                          </Alert>
+                        )}
+                      </Col>
+                    </Row>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -448,17 +736,22 @@ class Instrument extends Component {
   initialValues={{
     name: this.state.selectedUnit ? this.state.selectedUnit.name : "",
     code: this.state.selectedUnit ? this.state.selectedUnit.code : "",
+    model: this.state.selectedUnit ? this.state.selectedUnit.model : "",
     status: this.state.selectedUnit ? this.state.selectedUnit.status : "Active",
     instrument_type: this.state.selectedUnit ? this.state.selectedUnit.instrument_type : "", // Assign selected instrument_type
     manufactural: this.state.selectedUnit ? this.state.selectedUnit.manufactural : "", // Assign selected manufactural
+    country: this.state.selectedUnit ? this.state.selectedUnit.country : "", 
   }}
   validationSchema={Yup.object().shape({
     name: Yup.string().required("Name is required"),
     code: Yup.string()
       .required("Code is required")
       .matches(/^[0-9]+$/, "Code must be a number"),
-    instrument_type: Yup.mixed().required("Equipment Type is required").nullable(),
-    manufactural: Yup.mixed().required("Manufactural is required").nullable(),
+    model: Yup.string()
+      .required("Model Number is required"),
+    instrument_type: Yup.mixed().required("Equipment Type is required"),
+    manufactural: Yup.mixed().required("Manufacturer is required"),
+    country: Yup.mixed().required("Country is required"),
   })}
   onSubmit={async (values, { setSubmitting }) => {
     const userId = localStorage.getItem("authUser")
@@ -468,10 +761,12 @@ class Instrument extends Component {
       const newUnit = {
         name: values.name,
         code: values.code,
+        model: values.model,
         status: values.status,
         added_by: userId,
         instrument_type: values.instrument_type,
         manufactural: values.manufactural,     
+        country: values.country,     
       };
       
 
@@ -479,12 +774,17 @@ class Instrument extends Component {
       if (this.state.isEdit) {
         await this.props.onUpdateType(this.state.selectedUnit.id, newUnit);
         this.displaySuccessMessage("Equipment updated successfully!");
+        setTimeout(() => {
+          this.props.onGetInstrumentList(this.state.user_id);
+        }, 1000);
       } else {
         await this.props.onAddNewType(newUnit);
         this.displaySuccessMessage("Equipment added successfully!");
+        setTimeout(() => {
+          this.props.onGetInstrumentList(this.state.user_id);
+        }, 1000);
       }
 
-      await this.props.onGetInstrumentList(this.state.user_id);
     } catch (error) {
       console.error("Error updating/adding method:", error);
     }
@@ -525,7 +825,7 @@ class Instrument extends Component {
   >
     <option value="">Select Equipment Type</option> 
     {ListUnit.map(instrument_type => (
-      <option key={instrument_type.value} value={instrument_type.value}>
+      <option key={instrument_type.value} value={this.state.instrument_type}>
         {instrument_type.label}
       </option>
     ))}
@@ -533,22 +833,47 @@ class Instrument extends Component {
   <ErrorMessage name="instrument_type" component="div" className="text-danger" />
 </div>
 <div className="mb-3">
-  <Label className="col-form-label">Manufacturals</Label>
+            <Label className="col-form-label">Model No.</Label>
+            <Field
+              name="model"
+              type="text"
+              className="form-control"
+            />
+            <ErrorMessage name="model" component="div" className="text-danger" />
+          </div>
+<div className="mb-3">
+  <Label className="col-form-label">Manufacturer</Label>
   <Field
     name="manufactural" // Ensure the name matches the field name
     as="select"
     className="form-control"
     multiple={false}
-    // value={console.log("fhvueffefu",value.manufactural)}
   >
-    <option value="">Select Manufactural</option> 
+    <option value="">Select Manufacturer</option> 
     {ManufacturalList.map(manufactural => (
-      <option key={manufactural.value} value={manufactural.value}>
+      <option key={manufactural.value} value={this.state.manufactural}>
         {manufactural.label}
       </option>
     ))}
   </Field>
   <ErrorMessage name="manufactural" component="div" className="text-danger" />
+</div>
+<div className="mb-3">
+  <Label className="col-form-label">Country</Label>
+  <Field
+    name="country" // Ensure the name matches the field name
+    as="select"
+    className="form-control"
+    multiple={false}
+  >
+    <option value="">Select Country</option> 
+    {ListCountry.map(country => (
+      <option key={country.value} value={this.state.country}>
+        {country.label}
+      </option>
+    ))}
+  </Field>
+  <ErrorMessage name="country" component="div" className="text-danger" />
 </div>
 
           <div className="mb-3">
@@ -626,34 +951,39 @@ Instrument.propTypes = {
   match: PropTypes.object,
   Instrument: PropTypes.array,
   ManufacturalList: PropTypes.array,
+  ListCountry:PropTypes.array,
   ListUnit: PropTypes.array,
   className: PropTypes.any,
   onGetInstrumentList: PropTypes.func,
   onGetManufacturalist: PropTypes.func,
+  onGetCountrylist: PropTypes.func,
   onGetInstrumentTypeList: PropTypes.func,
   createInstrumentType: PropTypes.array,
   error: PropTypes.any,
   success: PropTypes.any,
+  onDeleteInstrumentType: PropTypes.func,
   onAddNewType: PropTypes.func,
   onUpdateType: PropTypes.func,
 };
 
-const mapStateToProps = ({ Instrument,ManufacturalList,ListUnit }) => ({
+const mapStateToProps = ({ Instrument,ManufacturalList,ListUnit,ListCountry }) => ({
   ListUnit:ListUnit.ListUnit,
   Instrument: Instrument.Instrument,
   ManufacturalList: ManufacturalList.ManufacturalList,
+  ListCountry: ListCountry.ListCountry,
 
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetInstrumentList: (id) => dispatch(getInstrumentlist(id)),
   onGetManufacturalist: (id) => dispatch(getManufacturalList(id)),
-  
+  onGetCountrylist: (id) => dispatch(getcountrylist(id)),
   onGetInstrumentTypeList: (id) => dispatch(getinstrumenttypelist(id)),
 
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewInstrument(createInstrumentType, id)),
   onUpdateType: (id, methodlist) => dispatch(updateInstrument({ id, ...methodlist })),
+  onDeleteInstrumentType: methodlist => dispatch(deleteInstrument(methodlist)),
 });
 
 export default connect(

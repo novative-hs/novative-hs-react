@@ -5,6 +5,8 @@ import {
   ADD_NEW_MANUFACTURAL_FAIL,
   UPDATE_MANUFACTURAL_SUCCESS,
   UPDATE_MANUFACTURAL_FAIL,
+  DELETE_MANUFACTURER_SUCCESS,
+  DELETE_MANUFACTURER_FAIL,
 
   } from "./actionTypes";
   
@@ -54,7 +56,20 @@ import {
           ...state,
           error: action.payload,
         };
-
+      
+        case DELETE_MANUFACTURER_SUCCESS:
+          return {
+            ...state,
+            ManufacturalList: state.ManufacturalList.filter(
+              manufactural => manufactural.id.toString() !== action.payload.id.toString()
+            ),
+          };
+    
+        case DELETE_MANUFACTURER_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
 
       default:
         return state;

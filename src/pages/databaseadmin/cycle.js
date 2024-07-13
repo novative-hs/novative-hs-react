@@ -52,9 +52,19 @@ class InstrumentType extends Component {
     this.state = {
       selectedCycle: null,
       isEdit: false,
+
+      idFilter: '',
+      schemenameFilter: '',
+      cyclenoFilter: '',
+      cycleFilter: '',
+      startdateFilter: '',
+      enddateFilter: '',
+      roundsFilter: '',
+      noofanalytesFilter: '',
+      statusFilter: '',
+
       CycleList: [],
       SchemeList: [],
-      cycle: "",
       cycle: "",
       modal: false,
       deleteModal: false,
@@ -64,46 +74,115 @@ class InstrumentType extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
-          hidden: true,
+          hidden: false,
           formatter: (cellContent, cycle) => <>{cycle.id}</>,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+
+          headerStyle: { width: '100px' },  // Adjust the width as needed
+          style: { width: '100px' },  // Adjust the width as needed
+        
         },
         {
           dataField: "scheme_name",
           text: "Scheme Name",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.schemenameFilter}
+                    onChange={e => this.handleFilterChange('schemenameFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "cycle_no",
           text: "Cycle Name / Number",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.cyclenoFilter}
+                    onChange={e => this.handleFilterChange('cyclenoFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "cycle",
           text: "Cycle Duration",
           sort: true,
-          formatter: (cellContent, cycle) => (
-            <>
-              {cycle.cycle === "Months" ? (
-                <span>Months</span>
-              ) : (
-                <span>Year</span>
-              )}
-            </>
-          ),
-          filter: selectFilter({
-            options: {
-
-              'Months': 'Months',
-              'Year': 'Year',
-            },
-
-          }),
+          formatter: (cellContent, cycle) => {
+            const startDate = new Date(cycle.start_date);
+            const endDate = new Date(cycle.end_date);
+            const diffTime = Math.abs(endDate - startDate);
+            const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.4375)); // Average days in a month
+            const diffYears = Math.ceil(diffMonths / 12);
+            let durationText = '';
+            if (cycle.cycle === 'Months') {
+              durationText = `${diffMonths} Months`;
+            } else {
+              durationText = `${diffYears} Year${diffYears !== 1 ? 's' : ''}`;
+            }
+        
+            return <span>{durationText}</span>;
+          },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <select
+                    value={this.state.cycleFilter}
+                    onChange={e => this.handleFilterChange('cycleFilter', e)}
+                    className="form-control"
+                  >
+                    <option value="">All</option>
+                    <option value="Months">Months</option>
+                    <option value="Year">Year</option>
+                  </select>
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "start_date",
@@ -112,11 +191,28 @@ class InstrumentType extends Component {
           formatter: (cellContent, cycle) => (
             <>
               <span>
-                {moment(cycle.start_date).format("DD MMM YYYY, h:mm A")}
+                {moment(cycle.start_date).format("DD MMM YYYY")}
 
               </span>
-            </>
-          ), filter: textFilter(),
+            </>),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.startdateFilter}
+                    onChange={e => this.handleFilterChange('startdateFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "end_date",
@@ -125,23 +221,86 @@ class InstrumentType extends Component {
           formatter: (cellContent, cycle) => (
             <>
               <span>
-                {moment(cycle.end_date).format("DD MMM YYYY, h:mm A")}
+                {moment(cycle.end_date).format("DD MMM YYYY")}
 
               </span>
-            </>
-          ), filter: textFilter(),
+            </>),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.enddateFilter}
+                    onChange={e => this.handleFilterChange('enddateFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "rounds",
           text: "Number of Rounds in Cycle",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.roundsFilter}
+                    onChange={e => this.handleFilterChange('roundsFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
-          dataField: "analytes",
+          dataField: "noofanalytes",
           text: "No of Analytes for this Cycle",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.noofanalytesFilter}
+                    onChange={e => this.handleFilterChange('noofanalytesFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+          formatter: (cellContent, unitlist) => {
+            return (
+              <div>
+                <Link
+                  to={`/cycle-analyte/${unitlist.id}`}
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                >
+                  {unitlist.noofanalytes}
+                </Link>
+              </div>
+            );
+          }
         },
         {
           dataField: "status",
@@ -156,28 +315,38 @@ class InstrumentType extends Component {
               )}
             </>
           ),
-          filter: selectFilter({
-            options: {
-              '': 'All',
-              'Active': 'Active',
-              'Inactive': 'Inactive',
-            },
-            defaultValue: 'All',
-          }),
-        },
-        {
-          dataField: 'link',
-          text: '',
-          formatter: (cellContent, cycle) => {
+          headerFormatter: (column, colIndex) => {
             return (
-              <Link to={`/add-analytes-cycle-page/${cycle.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
-
-                <span>Add Analytes</span>
-              </Link>
-
+              <>
+                <div>
+                  <select
+                    value={this.state.statusFilter}
+                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    className="form-control"
+                  >
+                    <option value="">All</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+                <div>{column.text}</div>
+              </>
             );
-          }
+          },
         },
+        // {
+        //   dataField: 'link',
+        //   text: '',
+        //   formatter: (cellContent, cycle) => {
+        //     return (
+        //       <Link to={`/add-analytes-cycle-page/${cycle.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+
+        //         <span>Add Analytes</span>
+        //       </Link>
+
+        //     );
+        //   }
+        // },
         {
           dataField: "menu",
           isDummyField: true,
@@ -253,21 +422,29 @@ class InstrumentType extends Component {
       this.setState({ successMessage: "", modal: false });
     }, 3000);
   }
+
+
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+
   toggle(cycle) {
     if (cycle && cycle.id) {
+      console.log("data inn toggle", cycle.id, cycle)
       console.log("data inn toggle", cycle.id, cycle)
       this.setState({
         modal: true,
         selectedCycle: {
           id: cycle.id,
           scheme_name: cycle.scheme_id,
+          scheme_name: cycle.scheme_id,
           cycle_no: cycle.cycle_no,
           cycle: cycle.cycle,
           start_date: cycle.start_date
-            ? moment(cycle.start_date).format("YYYY-MM-DDTHH:mm")
+            ? moment(cycle.start_date).format("YYYY-MM-DD")
             : "",
             end_date: cycle.end_date
-            ? moment(cycle.end_date).format("YYYY-MM-DDTHH:mm")
+            ? moment(cycle.end_date).format("YYYY-MM-DD")
             : "",
           rounds: cycle.rounds,
           analytes: cycle.analytes,
@@ -284,14 +461,6 @@ class InstrumentType extends Component {
       });
     }
   }
-
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   const { CycleList } = this.props;
-  //   if (!isEmpty(CycleList) && size(prevProps.CycleList) !== size(CycleList)) {
-  //     this.setState({ CycleList: {}, isEdit: false });
-  //   }
-  // }
-
 
   componentDidUpdate(prevProps) {
     if (!isEmpty(this.props.SchemeList) && size(prevProps.SchemeList) !== size(this.props.SchemeList)) {
@@ -314,71 +483,101 @@ class InstrumentType extends Component {
     this.setState({ modal: false });
   }
 
+  
 
 
-  render() {
-    const { SearchBar } = Search;
-    const ListUnit = this.props.ListUnit.map(cycle => ({
-      label: cycle.name,
-      value: cycle.id,
-    }));
-    const { CycleList, SchemeList } = this.props;
-    const { isEdit, deleteModal } = this.state;
-    const { onGetInstrumentTypeList, onUpdateType, onGetgetschemelist, onAddNewType } = this.props;
-    const cycle = this.state.CycleList;
+  
+render() {
+  const { SearchBar } = Search;
+  const ListUnit = this.props.ListUnit.map(cycle => ({
+    label: cycle.name,
+    value: cycle.id,
+  }));
+  const { CycleList, SchemeList } = this.props;
+  const { isEdit, deleteModal } = this.state;
+  const { onGetInstrumentTypeList, onUpdateType, onGetgetschemelist, onAddNewType } = this.props;
+  const cycle = this.state.CycleList;
+  
+  const { idFilter, schemenameFilter, cyclenoFilter, cycleFilter, startdateFilter, enddateFilter, roundsFilter, noofanalytesFilter, statusFilter } = this.state;
 
-
-    const pageOptions = {
-      sizePerPage: 10,
-      totalSize: CycleList.length,
-      custom: true,
-    };
-
-    const defaultSorted = [
-      {
-        dataField: "id",
-        order: "desc",
-      },
-    ];
-
+  const filteredData = CycleList.filter(entry => {   
+    // Modify accordingly for each filter condition
+    const id = entry.id ? entry.id.toString() : "";
+    const scheme_name = entry.scheme_name ? entry.scheme_name.toString().toLowerCase() : "";
+    const cycle_no = entry.cycle_no ? entry.cycle_no.toString().toLowerCase() : "";
+    const cycle = entry.cycle ? entry.cycle.toString() : "";
+    const start_date = entry.start_date ? entry.start_date.toString() : "";
+    const end_date = entry.end_date ? entry.end_date.toString() : "";
+    const rounds = entry.rounds ? entry.rounds.toString() : "";
+    const analytes = entry.analytes ? entry.analytes.toString() : "";
+    const status = entry.status ? entry.status.toString() : "";
+    
     return (
-      <React.Fragment>
-        <DeleteModal
-          show={deleteModal}
-          onDeleteClick={this.handleDeleteCycle}
-          onCloseClick={() => this.setState({ deleteModal: false })}
-        />
-        <div className="page-content">
-          <MetaTags>
-            <title>Database Admin | Cycle List</title>
-          </MetaTags>
-          <Container fluid>
-            {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Cycle List" />
-            <Row className="justify-content-center">
-              <Col lg="10">
-                <Card>
-                  <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
-                      keyField="id"
-                      columns={this.state.feedbackListColumns}
-                      data={CycleList}
-                    >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.feedbackListColumns}
-                          data={CycleList}
-                          search
-                        >
+      id.includes(idFilter) &&
+      scheme_name.includes(schemenameFilter.toLowerCase()) &&
+      cycle_no.includes(cyclenoFilter.toLowerCase()) &&
+      cycle.includes(cycleFilter) &&
+      start_date.includes(startdateFilter) &&
+      end_date.includes(enddateFilter) &&
+      rounds.includes(roundsFilter) &&
+      analytes.includes(noofanalytesFilter) &&
+      status.includes(statusFilter)
+    );
+  });
 
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-4">
 
-                                <Col xl="12">
-                                  <Col className="text-end">
+  const pageOptions = {
+    sizePerPage: 10,
+    // totalSize: CycleList.length,
+    totalSize: filteredData.length,
+    custom: true,
+  };
+
+  const defaultSorted = [
+    {
+      dataField: "id",
+      order: "desc",
+    },
+  ];
+
+  return (
+    <React.Fragment>
+      <DeleteModal
+        show={deleteModal}
+        onDeleteClick={this.handleDeleteCycle}
+        onCloseClick={() => this.setState({ deleteModal: false })}
+      />
+      <div className="page-content">
+        <MetaTags>
+          <title>Database Admin | Cycle List</title>
+        </MetaTags>
+        <Container fluid>
+          {/* Render Breadcrumbs */}
+          <Breadcrumbs title="List" breadcrumbItem="Cycle List" />
+          <Row className="justify-content-center">
+            <Col lg="10">
+              <Card>
+                <CardBody>
+                  <PaginationProvider
+                    pagination={paginationFactory(pageOptions)}
+                    keyField="id"
+                    columns={this.state.feedbackListColumns}
+                    data={filteredData}
+                  >
+                    {({ paginationProps, paginationTableProps }) => (
+                      <ToolkitProvider
+                        keyField="id"
+                        columns={this.state.feedbackListColumns}
+                        data={filteredData}
+                        search
+                      >
+
+                        {toolkitprops => (
+                          <React.Fragment>
+                            <Row className="mb-4">
+
+                              <Col xl="12">
+                                <Col className="text-end">
 
                                     <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Cycle</button>
                                     <Modal
@@ -501,7 +700,7 @@ class InstrumentType extends Component {
                                                     <Label className="col-form-label">Cycle Start Date</Label>
                                                     <Field
                                                       name="start_date"
-                                                      type="datetime-local"
+                                                      type="date"
                                                       id="start_date"
                                                       className={
                                                         "form-control" +
@@ -520,7 +719,7 @@ class InstrumentType extends Component {
                                                     <Label className="col-form-label">Cycle End Date</Label>
                                                     <Field
                                                       name="end_date"
-                                                      type="datetime-local"
+                                                      type="date"
                                                       id="end_date"
                                                       className={
                                                         "form-control" +
@@ -546,20 +745,21 @@ class InstrumentType extends Component {
                                                     />
                                                     <ErrorMessage name="rounds" component="div" className="text-danger" />
                                                   </div>
-                                                  {/* <div className="mb-3">
-                                                    <Label className="col-form-label">Status</Label>
-                                                    <Field
-                                                      name="status"
-                                                      as="select"
-                                                      defaultValue="Active"
-                                                      className="form-control"
-                                                      multiple={false}
-                                                    >
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Status
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field as="select" name="status" className={`form-control ${errors.status && touched.status ? "is-invalid" : ""
+                                                      }`}>
+                                                      <option value="">----- Please select -----</option>
                                                       <option value="Active">Active</option>
                                                       <option value="Inactive">Inactive</option>
                                                     </Field>
-                                                    <ErrorMessage name="status" component="div" className="text-danger" />
-                                                  </div> */}
+                                                    <ErrorMessage name="status" component="div" className="invalid-feedback" />
+                                                  </div>
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -573,11 +773,8 @@ class InstrumentType extends Component {
                                             </Form>
                                           )}
                                         </Formik>
-
-
                                       </ModalBody>
                                     </Modal>
-
                                   </Col>
                                   <div className="table-responsive">
                                     <BootstrapTable
@@ -627,7 +824,6 @@ InstrumentType.propTypes = {
   onGetInstrumentTypeList: PropTypes.func,
   createInstrumentType: PropTypes.array,
   error: PropTypes.any,
-  // onGetAnalyte: PropTypes.func,
   onGetgetschemelist: PropTypes.func,
   success: PropTypes.any,
   onAddNewType: PropTypes.func,
@@ -636,13 +832,12 @@ InstrumentType.propTypes = {
 };
 
 const mapStateToProps = ({ CycleList, ListUnit, SchemeList }) => ({
-  CycleList: CycleList.CycleList,
-  SchemeList: SchemeList.SchemeList,
-  ListUnit: ListUnit.ListUnit,
+CycleList: CycleList.CycleList,
+SchemeList: SchemeList.SchemeList,
+ListUnit: ListUnit.ListUnit,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  // onGetAnalyte: id => dispatch(getAnalytelist(id)),
   onGetgetschemelist: id => dispatch(getSchemelist(id)),
   onGetInstrumentTypeList: (id) => dispatch(getcyclelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewCycleList(id, createUnit)),
@@ -650,8 +845,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onDeleteCycle: cycle => dispatch(deleteCycle(cycle)),
 });
 
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+mapStateToProps,
+mapDispatchToProps
 )(withRouter(InstrumentType));

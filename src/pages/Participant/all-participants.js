@@ -6,6 +6,7 @@ import { withRouter, Link } from "react-router-dom";
 import StarRatings from "react-star-ratings";
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
+import * as XLSX from "xlsx";
 
 import {
   Card,
@@ -70,7 +71,7 @@ class Manufactural extends Component {
       //Array of objects
       feedbackListColumns: [
         {
-          text: "Id",
+          text: "ID",
           dataField: "id",
           sort: true,
           // hidden: true,
@@ -79,22 +80,22 @@ class Manufactural extends Component {
           // filter: textFilter(),
         },
         {
-          text: "Lab Name",
+          text: "Participant Name",
           dataField: "name",
           sort: true,
           formatter: (cellContent, list) => <>{list.name}</>,
-        },
-        {
-          text: "Organization",
-          dataField: "organization",
-          sort: true,
-          formatter: (cellContent, list) => <>{list.organization}</>,
         },
         {
           text: "City",
           dataField: "city",
           sort: true,
           formatter: (cellContent, list) => <>{list.city}</>,
+        },
+        {
+          text: "District",
+          dataField: "district",
+          sort: true,
+          formatter: (cellContent, list) => <>{list.district}</>,
         },
         {
           text: "Name of Notification Person",
@@ -109,10 +110,15 @@ class Manufactural extends Component {
           sort: true,
           formatter: (cellContent, list) => <>{list.landline_registered_by}</>,
         },
+        {
+          text: "Email Id of Notification Person",
+          dataField: "email_participant",
+          sort: true,
+          formatter: (cellContent, list) => <>{list.email_participant}</>,
+        },
       ],
     };
     this.toggle = this.toggle.bind(this);
-    
   }
 
   componentDidMount() {
@@ -126,7 +132,7 @@ class Manufactural extends Component {
       modal: !prevState.modal,
     }));
   }
- 
+
   onPaginationPageChange = page => {
     if (
       this.node &&
@@ -137,6 +143,36 @@ class Manufactural extends Component {
     ) {
       this.node.current.props.pagination.options.onPageChange(page);
     }
+  };
+  exportToExcel = () => {
+    const { ParticipantList } = this.props;
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+
+    // Define fields to export
+    const fieldsToExport = ["id", "name", "date_of_addition"];
+
+    // Map each row to an object with only the desired fields
+    const dataToExport = ParticipantList.map(unit => ({
+      id: unit.id,
+      name: unit.name,
+      city: unit.city,
+      district: unit.district,
+      landline_registered_by: unit.landline_registered_by,
+      email_participant: unit.email_participant,
+      // date_of_addition: moment(unit.date_of_addition).format(
+      //   "DD MMM YYYY, h:mm A"
+      // ),
+    }));
+
+    // Convert data to Excel format and save as file
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: fileType });
+    const fileName = "EquipmentType_list" + fileExtension;
+    saveAs(data, fileName);
   };
 
   render() {
@@ -167,8 +203,13 @@ class Manufactural extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="" breadcrumbItem="" />
+            <Breadcrumbs title="" breadcrumbItem="" /> 
             <Row>
+                 <Col lg="12" className="text-end">
+                <Button onClick={this.exportToExcel} className="mb-3">
+                  Export to Excel
+                </Button>
+              </Col>
               <Col lg="12">
                 <Card>
                   <CardBody>
@@ -201,7 +242,6 @@ class Manufactural extends Component {
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}
-                                    
                                     />
                                   </div>
                                 </Col>

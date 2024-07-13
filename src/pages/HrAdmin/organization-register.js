@@ -163,6 +163,7 @@ class OrganizationRegister extends Component {
                           website: (this.state && this.state.website) || "",
                           city: (this.state && this.state.city) || "",
                           country: (this.state && this.state.country) || "",
+                          photo: (this.state && this.state.photo) || '',
                         }}
                         validationSchema={Yup.object().shape({
                           username: Yup.string()
@@ -183,6 +184,7 @@ class OrganizationRegister extends Component {
                           email: Yup.string()
                             .required("Please enter your email")
                             .email("Please enter valid email"),
+                          photo: Yup.string().required("Please upload photo"),
                         })}
                         onSubmit={values => {
                           this.props.registerOrganization(values);
@@ -291,7 +293,23 @@ class OrganizationRegister extends Component {
                                 className="invalid-feedback"
                               />
                             </div>
-
+                            <div className="mb-3">
+                              <Label for="photo" className="form-label">
+                                Photo
+                              </Label>
+                              <Input
+                                id="formFile"
+                                name="photo"
+                                placeholder="Choose image"
+                                type="file"
+                                accept=".jpg,.jpeg,.png"
+                                onChange={(e) => setFieldValue('photo', e.target.files[0])}
+                                className={
+                                  'form-control' + (errors.photo && touched.photo ? ' is-invalid' : '')
+                                }
+                              />
+                              <ErrorMessage name="photo" component="div" className="invalid-feedback" />
+                            </div>
                             <div className="mb-3">
                               <Label for="username" className="form-label">
                                 Username

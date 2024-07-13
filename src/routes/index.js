@@ -32,7 +32,7 @@ import DashboardLab from "../pages/Dashboard-Lab/index";
 // import DashboardFinanceOfficer from "pages/Dashboard-FinanceOfficer/StackedColumnChart";
 import FinanceOfficerProfile from "../pages/Authentication/StaffProfile";
 import DashboardFinance from "../pages/Dashboard-Finance/index"
-
+import DashboardOrganization from "../pages/Dashboard-Organization";
 
 //Database Admin
 import DashboardatabaseAdmin from "pages/Dashboard-DatabaseAdmin";
@@ -47,18 +47,32 @@ import DatabaseOfinsrumentType from "pages/databaseadmin/instrument-type-list";
 import InstrumentList from "pages/databaseadmin/instruments-list";
 import Scheme from "pages/databaseadmin/scheme";
 import Cycle from "pages/databaseadmin/cycle";
-import CycleAnalytes from "pages/databaseadmin/add-analytes-cycle-page";
+import CycleAnalytes from "pages/databaseadmin/cycle-analyte";
+import SchemeAnalytes from "pages/databaseadmin/add-analytes-scheme-page";
+
 import Sample from "pages/databaseadmin/sample";
+import SampleAnalytes from "pages/databaseadmin/add-analytes-sample-page";
 
 import AnalyteAddReagents from "pages/databaseadmin/analyte-add-reagents";
 import AnalyteAddEuipments from "pages/databaseadmin/analyte-add-equipments";
 import DatabaseOfParticipantCity from "pages/databaseadmin/database-of-participantcity";
+import DatabaseOfParticipantCountry from "pages/databaseadmin/database-of-participantcountry";
+import DatabaseOfParticipantProvince from "pages/databaseadmin/database-of-participantprovince";
+
 import DatabaseOfParticipantDistrict from "pages/databaseadmin/database-of-participantdistrict";
 import DatabaseOfParticipantDepartment from "pages/databaseadmin/database-of-participantdepartment";
 import DatabaseOfParticipantDesignation from "pages/databaseadmin/database-of-participantdesignation";
 import DatabaseOfParticipanttype from "pages/databaseadmin/database-of-participanttype";
 import DatabaseOfParticipantSector from "pages/databaseadmin/database-of-participantsector";
 import UnitsAnalytes from "pages/databaseadmin/units-analyte";
+import InstrumentsInType from "pages/databaseadmin/instrumentsintype";
+import InstrumentsInManufacturer from "pages/databaseadmin/instrumentsinmanufacturer";
+import ReagentsInManufacturer from "pages/databaseadmin/reagentsinmanufacturer";
+
+import MethodsAnalytes from "pages/databaseadmin/methods-analyte";
+import InstrumentsAnalytes from "pages/databaseadmin/instruments-analyte";
+
+import ReagentsAnalytes from "pages/databaseadmin/reagent-analyte";
 
 //HR  Admin
 import DatabaseadminList from "pages/HrAdmin/databaseadmin-list";
@@ -108,8 +122,10 @@ import AboutUs from "pages/Public/about-us";
 import ChangePassword from "pages/Authentication/ChangePassword";
 
 // registration admin
+import AllLabs from "pages/RegistrationAdmin/All-participant";
 import PendingLabs from "pages/RegistrationAdmin/pending-labs";
-import Roundss from "pages/RegistrationAdmin/rounds";
+import Dashboardregistrationadmin from "pages/Dashboard-RegistrationAdmin";
+import RoundLabs from "pages/RegistrationAdmin/add-labs-round-page";
 import labsListApprovedFeeOffered from "pages/RegistrationAdmin/labs-list-approved-fee";
 import labsListPendingFeeOffered from "pages/RegistrationAdmin/labs-list-pending-fee";
 import sharedPercentagePendingFeeTests from "pages/RegistrationAdmin/shared-percentage-pending-Fee";
@@ -121,6 +137,9 @@ import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 import News from "pages/RegistrationAdmin/news";
 
+
+
+import RegParticipant from "pages/Authentication/RegisterParticipant";
 
 
 
@@ -169,9 +188,10 @@ import msgBoxFo from "pages/Complaints/msg-box";
 
 import { components } from "react-select/dist/react-select.cjs.prod";
 // import RegParticipant from "pages/RegisterParticipant";
-import RegParticipant from "pages/Authentication/RegisterParticipant";
+// import RegParticipant from "pages/Authentication/RegisterParticipant";
 import RegistrationAdminList from "pages/HrAdmin/registration-admin-list";
 import RegParticipantCSR from "pages/Authentication/RegisterParticipantCSR";
+import ParticipantPayment from "pages/Authentication/participant-payment";
 
 import csrList from "pages/HrAdmin/csr-list";
 import organizationList from "pages/HrAdmin/organizationList";
@@ -272,17 +292,27 @@ const databaseAdminAuthProtectedRoutes = [
 
   {path: "/scheme", component: Scheme},
   {path: "/cycle", component: Cycle},
-  {path: "/add-analytes-cycle-page/:id", component: CycleAnalytes},
-  
+  {path: "/cycle-analyte/:id", component: CycleAnalytes},
+  {path: "/add-analytes-scheme-page/:id", component: SchemeAnalytes},
   {path: "/sample", component: Sample},
+  {path: "/add-analytes-sample-page/:id", component: SampleAnalytes},
 
   { path: "/analyte-add-methods/:id", component: AnalyteAddMethods }, 
   { path: "/analyte-add-units/:id", component: AnalyteAddUnits }, 
   { path: "/analyte-add-reagents/:id", component: AnalyteAddReagents }, 
   { path: "/analyte-add-equipments/:id", component: AnalyteAddEuipments }, 
   { path: "/units-analytes/:id", component: UnitsAnalytes }, 
+  { path: "/methods-analyte/:id", component: MethodsAnalytes },
+  { path: "/instruments-analyte/:id", component: InstrumentsAnalytes },  
+  { path: "/reagents-analyte/:id", component: ReagentsAnalytes }, 
+  { path: "/instruments-in-type/:id", component: InstrumentsInType },   
+  { path: "/instruments-in-manufacturer/:id", component: InstrumentsInManufacturer }, 
+  { path: "/reagents-in-manufacturer/:id", component: ReagentsInManufacturer }, 
+  
   //participant data
   { path: "/database-of-participantcity", component: DatabaseOfParticipantCity },
+  { path: "/database-of-participantcountry", component: DatabaseOfParticipantCountry },
+  { path: "/database-of-participantprovince", component: DatabaseOfParticipantProvince },
   { path: "/database-of-participantdistrict", component: DatabaseOfParticipantDistrict },
   { path: "/database-of-participantdepartment", component: DatabaseOfParticipantDepartment },
   { path: "/database-of-participantdesignation", component: DatabaseOfParticipantDesignation },
@@ -303,14 +333,19 @@ const participantsAuthProtectedRoutes = [
 
 
 const registrationAdminAuthProtectedRoutes = [
+  { path: "/dashboard-registrationadmin", component: Dashboardregistrationadmin },
   { path: "/round", component: rounds },
+  { path: "/all-participant", component: AllLabs },
+  {path: "/add-labs-round-page/:id", component: RoundLabs},
   { path: "/pending-participant", component: PendingLabs },
-  { path: "/rounds", component: Roundss },
   { path: "/labs-list-approved-fee", component: labsListApprovedFeeOffered },
   { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },
   {
     path: "/shared-percentage-pending-Fee/:id", component: sharedPercentagePendingFeeTests,
   },
+  
+  { path: "/register-participant", component: RegParticipant},
+  { path: "/participant-payment", component: ParticipantPayment},
   {
     path: "/shared-percentage-approved-Fee/:id", component: sharedPercentageApprovedFeeTests,
   },
@@ -338,6 +373,7 @@ const CSRAdminAuthProtectedRoutes = [
 
 //organization dashboard
 const hrAdminAuthProtectedRoutes = [
+  { path: "/dashboard-organization", component: DashboardOrganization },
   { path: "/add-staff", component: StaffRegister },
   { path: "/add-organization", component: OrganizationRegister },
   { path: "/organization-list", component: OrganizationList },
@@ -345,7 +381,7 @@ const hrAdminAuthProtectedRoutes = [
   { path: "/databaseadmin-list", component: DatabaseadminList },
   { path: "/csr-list", component: csrList },
   { path: "/registration-admin-list", component: RegistrationAdminList },
-  { path: "/all-participant", component: AllParticipant},
+  { path: "/all-participants", component: AllParticipant},
 ];
 
 const authProtectedRoutes = [

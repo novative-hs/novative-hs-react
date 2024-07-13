@@ -17,8 +17,9 @@ import {
 
 
 //////////////Scheme////////////
-export const getSchemelist = id => ({
+export const getSchemelist = (id) => ({
   type: GET_SCHEME_LIST,
+  payload: id,
   payload: id,
 });
 
@@ -38,7 +39,7 @@ export const getSchemelistFail = (error) => {
   };
 };
 
-
+//////////////Add New Scheme////////////
 export const addNewSchemeList = (createUnit, id) => ({
   type: ADD_NEW_SCHEME_LIST,
   payload: { createUnit, id },
@@ -54,6 +55,7 @@ export const addNewSchemeListFail = error => ({
   payload: error,
 });
 
+//////////////Update Scheme////////////
 export const updateSchemeList = unit => ({
   type: UPDATE_NEW_SCHEME_LIST,
   payload: unit,

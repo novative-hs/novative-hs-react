@@ -60,7 +60,7 @@ class PendingLabs extends Component {
           formatter: (cellContent, pendingLab) => (
             <>
               <span style={{
-                width: '200px', // Set your desired width here
+                 width: '200px', // Set your desired width here
                 fontSize: '14px',
               
                 textOverflow: 'ellipsis',
@@ -68,14 +68,14 @@ class PendingLabs extends Component {
                 textAlign: 'left', // Align text to the left
                 display: 'block',
               }}>
-                  <Link
+                  {/* <Link
                     to="#"
                     // onClick={e => this.openLabModal(e, pendingLab)}
                     onMouseEnter={e => this.openLabModal(e, pendingLab)}
                     onPointerLeave={this.handleMouseExit()}
-                  >
+                  > */}
                    {pendingLab.name}
-                  </Link>
+                  {/* </Link> */}
               </span>
             </>
           ),filter: textFilter(),
@@ -87,66 +87,66 @@ class PendingLabs extends Component {
           hidden: true,
           formatter: (cellContent, pendingLab) => <>{pendingLab.id}</>,
         },
-        // {
-        //   dataField: "city",
-        //   text: "Participant City",
-        //   sort: true,
-        //   formatter: (cellContent, pendingLab) => (
-        //     <>
-        //       <span style={{
-        //         width: '200px', // Set your desired width here
-        //         fontSize: '14px',
-        //         textOverflow: 'ellipsis',
-        //         whiteSpace: 'prewrap',
-        //         textAlign: 'center', // Align text to the left
-        //         display: 'block',
-        //       }}>
-        //       {pendingLab.city}
+        {
+          dataField: "city",
+          text: "Participant City",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+              <span style={{
+                 width: '200px', // Set your desired width here
+                fontSize: '14px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'center', // Align text to the left
+                display: 'block',
+              }}>
+              {pendingLab.city}
 
-        //       </span>
-        //     </>
-        //   ),filter: textFilter(),
-        // },
-        // {
-        //   dataField: "district",
-        //   text: "Participant District",
-        //   sort: true,
-        //   formatter: (cellContent, pendingLab) => (
-        //     <>
-        //       <span style={{
-        //         width: '200px', // Set your desired width here
-        //         fontSize: '14px',
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "district",
+          text: "Participant District",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+              <span style={{
+                 width: '200px', // Set your desired width here
+                fontSize: '14px',
               
-        //         textOverflow: 'ellipsis',
-        //         whiteSpace: 'prewrap',
-        //         textAlign: 'center', // Align text to the left
-        //         display: 'block',
-        //       }}>
-        //       {pendingLab.district}
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'center', // Align text to the left
+                display: 'block',
+              }}>
+              {pendingLab.district}
 
-        //       </span>
-        //     </>
-        //   ),filter: textFilter(),
-        // },
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
 
-        // {
-        //   dataField: "type",
-        //   text: "Lab Type",
-        //   sort: true,
-        //   formatter: (cellContent, pendingLab) => (
-        //     <>
-        //            {pendingLab.type}
+        {
+          dataField: "email",
+          text: "Participant Email",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+                   {pendingLab.email}
                   
-        //     </>
-        //   ),filter: textFilter(),  
-        // },
+            </>
+          ),filter: textFilter(),  
+        },
         {
           dataField: "shipping_address",
           text: "Shipping Address",
           sort: true,   
           formatter: (cellContent, pendingLab) => (
             <span style={{
-              width: '200px', // Set your desired width here
+               width: '200px', // Set your desired width here
               fontSize: '14px',
             
               textOverflow: 'ellipsis',
@@ -166,7 +166,7 @@ class PendingLabs extends Component {
           sort: true,   
           formatter: (cellContent, pendingLab) => (
             <span style={{
-              width: '200px', // Set your desired width here
+               width: '200px', // Set your desired width here
               fontSize: '14px',
             
               textOverflow: 'ellipsis',
@@ -180,43 +180,38 @@ class PendingLabs extends Component {
           ),filter: textFilter(),  
           
         },
-        // {
-        //   dataField: "city",
-        //   text: "City",
-        //   sort: true,
-        // },
    
-        {
-          dataField: "registered_by",
-          text: "Registered by",
-          sort: true,
-          formatter: (cellContent, pendingLab) => (
-            <>
-              {pendingLab.registered_by == 'Lab' ? (
-                <span><Link
-                to="#"
-                // onClick={e => this.openPatientModal(e, pendingLab)}
-                onMouseEnter={e =>  this.openPatientModal(e, pendingLab)}
-                onPointerLeave={this.handleMouseExit()}
-              >
-               {pendingLab.registered_by}
-              </Link>
-              </span>
-              ) : (
-                <span>
-                  <Link
-                to="#"
-                // onClick={e => this.openMarketerModal(e, pendingLab)}
-                onMouseEnter={e =>   this.openMarketerModal(e, pendingLab)}
-                onPointerLeave={this.handleMouseExit()}
-              >
-               {pendingLab.registered_by}
-              </Link>
-                </span>
-              )}
-            </>
-          ),filter: textFilter(),
-        },
+        // {
+        //   dataField: "registered_by",
+        //   text: "Registered by",
+        //   sort: true,
+        //   formatter: (cellContent, pendingLab) => (
+        //     <>
+        //       {pendingLab.registered_by == 'Lab' ? (
+        //         <span><Link
+        //         to="#"
+        //         // onClick={e => this.openPatientModal(e, pendingLab)}
+        //         onMouseEnter={e =>  this.openPatientModal(e, pendingLab)}
+        //         onPointerLeave={this.handleMouseExit()}
+        //       >
+        //        {pendingLab.registered_by}
+        //       </Link>
+        //       </span>
+        //       ) : (
+        //         <span>
+        //           <Link
+        //         to="#"
+        //         // onClick={e => this.openMarketerModal(e, pendingLab)}
+        //         onMouseEnter={e =>   this.openMarketerModal(e, pendingLab)}
+        //         onPointerLeave={this.handleMouseExit()}
+        //       >
+        //        {pendingLab.registered_by}
+        //       </Link>
+        //         </span>
+        //       )}
+        //     </>
+        //   ),filter: textFilter(),
+        // },
         
         // {
         //   dataField: "registered_at",
@@ -275,7 +270,25 @@ class PendingLabs extends Component {
     const { pendingLabs, onGetPendingLabs } = this.props;
     onGetPendingLabs(this.state.user_id);
     this.setState({ pendingLabs });
+    this.setInitialDropdownValue();
   }
+  setInitialDropdownValue = () => {
+    const { pathname } = this.props.history.location;
+    let selectedValue = '';
+
+    if (pathname.includes('/pending-participant')) {
+      selectedValue = 'Pending Participant';
+    } else if (pathname.includes('/approved-participant')) {
+      selectedValue = 'Approved Participant';
+    } else if (pathname.includes('/unapproved-participant')) {
+      selectedValue = 'Unapproved Participant';
+    } else if (pathname.includes('/all-participant')) {
+      selectedValue = 'All Participant';
+    }
+
+    this.setState({ selectedValue });
+  };
+
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
@@ -380,7 +393,25 @@ class PendingLabs extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
+  handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
 
+    this.setState({ selectedValue });
+
+    // Perform navigation based on the selected value
+    if (selectedValue === 'Pending Participant') {
+      this.props.history.push('/pending-participant');
+    }
+    if (selectedValue === 'Approved Participant') {
+      this.props.history.push('/approved-participant');
+    }
+    if (selectedValue === 'Unapproved Participant') {
+      this.props.history.push('/unapproved-participant');
+    }
+    if (selectedValue === 'All Participant') {
+      this.props.history.push('/all-participant');
+    }
+  };
   render() {
     const { SearchBar } = Search;
 
@@ -421,6 +452,7 @@ class PendingLabs extends Component {
               <Col lg="10">
                 <Card>
                   <CardBody>
+
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -436,6 +468,29 @@ class PendingLabs extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
+                             <Row className="mb-2">
+                                <Col sm="4">
+                                  <div className="ms-2 mb-4">
+                                    <div>
+                                      <Label for="main_lab_appointments" className="form-label">
+                                    <strong>Select Pending, Approved, Unapproved and All Participant</strong>
+                                      </Label>
+                                      <select
+                                        className="form-control select2"
+                                        title="main_lab_appointments"
+                                        name="main_lab_appointments"
+                                        onChange={this.handleSelectChange}
+                                        value={this.state.selectedValue}
+                                      >
+                                        <option value="Pending Participant">Pending Participant</option>
+                                        <option value="Approved Participant">Approved Participant</option>
+                                        <option value="Unapproved Participant">Unapproved Participant</option>
+                                        <option value="All Participant">All Participant</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </Col>
+                              </Row>
                               <Row className="mb-2 mt-3">
                                 {/* <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
@@ -886,6 +941,7 @@ PendingLabs.propTypes = {
   className: PropTypes.any,
   onGetPendingLabs: PropTypes.func,
   onApproveUnapproveLab: PropTypes.func,
+  history: PropTypes.any,
 };
 const mapStateToProps = ({ registrationAdmin }) => ({
   pendingLabs: registrationAdmin.pendingLabs,

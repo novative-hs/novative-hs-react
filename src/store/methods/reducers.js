@@ -5,6 +5,8 @@ import {
     ADD_NEW_METHODS_FAIL,
     UPDATE_METHODS_SUCCESS,
     UPDATE_METHODS_FAIL,
+    DELETE_METHOD_SUCCESS,
+    DELETE_METHOD_FAIL,
 
     GET_ANALYTESMETHODS_LIST_SUCCESS,
     GET_ANALYTESMETHODS_LIST_FAIL,
@@ -108,7 +110,19 @@ import {
           ...state,
           error: action.payload,
         };
-
+        case DELETE_METHOD_SUCCESS:
+          return {
+            ...state,
+            ListMethods: state.ListMethods.filter(
+              method => method.id.toString() !== action.payload.id.toString()
+            ),
+          };
+    
+        case DELETE_METHOD_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
 
       default:
         return state;

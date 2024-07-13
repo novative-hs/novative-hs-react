@@ -31,6 +31,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 // import DeleteModal from "components/Common/DeleteModal";
@@ -51,6 +52,13 @@ class ReagentsList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
+      idFilter: '',
+      nameFilter: '',
+      priceFilter: '',
+      dateofadditionFilter: '',
+      noofanalytesFilter: '',
+      addedbyFilter: '',
+      statusFilter: '',
       SchemeList: [],
       analyte: "",
       modal: false,
@@ -60,18 +68,79 @@ class ReagentsList extends Component {
         : "",
       ReagentsListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
-          hidden: true,
+          hidden: false,
           formatter: (cellContent, analyte) => <>{analyte.id}</>,
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.idFilter}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+
+          headerStyle: { width: '100px' },  // Adjust the width as needed
+          style: { width: '100px' },  // Adjust the width as needed
         },
+        
         {
           dataField: "name",
           text: "Scheme Name",
           sort: true,
-          filter: textFilter(),
-          style: { textAlign: 'left' }
+          // filter: textFilter(),
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.nameFilter}
+                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+        },
+        {
+          dataField: "price",
+          text: "Price",
+          sort: true,
+          // filter: textFilter(),
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.priceFilter}
+                    onChange={e => this.handleFilterChange('priceFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           text: "Date of Addition",
@@ -85,21 +154,108 @@ class ReagentsList extends Component {
               </span>
             </>
           ),
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.dateofadditionFilter}
+                    onChange={e => this.handleFilterChange('dateofadditionFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+        },
+        {
+          dataField: "noofanalytes",
+          text: "No of Analytes in this Scheme",
+          sort: true,
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.noofanalytesFilter}
+                    onChange={e => this.handleFilterChange('noofanalytesFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "added_by",
           text: "Added By",
           sort: true,
-          filter: textFilter(),
-          style: { textAlign: 'left' }
+          // filter: textFilter(),
+          style: { textAlign: 'left' },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+
+                  <input
+                    type="text"
+                    value={this.state.addedbyFilter}
+                    onChange={e => this.handleFilterChange('addedbyFilter', e)}
+                    className="form-control"
+
+                  />
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
         {
           dataField: "status",
           text: "Status",
           sort: true,
-          filter: textFilter(),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <select
+                    value={this.state.statusFilter}
+                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    className="form-control"
+                  >
+                    <option value="">All</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
         },
+        // {
+        //   dataField: 'link',
+        //   text: '',
+        //   formatter: (cellContent, scheme) => {
+        //     return (
+        //       <Link to={`/add-analytes-scheme-page/${scheme.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+
+        //         <span>Add Analytes</span>
+        //       </Link>
+        //     );
+        //   }
+        // },
         {
           dataField: "menu",
           isDummyField: true,
@@ -107,6 +263,13 @@ class ReagentsList extends Component {
           text: "Action",
           formatter: (cellContent, analyte) => (
             <div className="d-flex gap-3 ml-3">
+              <Tooltip title="Add Analytes">
+                <Link to={`/add-analytes-scheme-page/${analyte.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
+                  <i
+                    className="mdi mdi-magnify font-size-18"
+                    id="analyteIcon"
+                  ></i>
+                </Link></Tooltip>
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
@@ -180,6 +343,11 @@ class ReagentsList extends Component {
   onClickDelete = SchemeList => {
     this.setState({ SchemeList: SchemeList });
     this.setState({ deleteModal: true });
+  };
+
+
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
   };
 
 
@@ -276,6 +444,8 @@ class ReagentsList extends Component {
       analyte: {
         id: analyte.id,
         name: analyte.name,
+        price: analyte.price,
+        // analytes: analyte.analytes,
         status: analyte.status,
         added_by: analyte.added_by,
       },
@@ -287,9 +457,32 @@ class ReagentsList extends Component {
 
   render() {
     const { SearchBar } = Search;
-
     const { SchemeList } = this.props;
+    
+    const { idFilter, nameFilter, priceFilter, dateofadditionFilter, noofanalytesFilter, addedbyFilter, statusFilter   } = this.state;
 
+    const filteredData = SchemeList.filter(entry => {   
+      // Modify accordingly for each filter condition
+      const id = entry.id ? entry.id.toString() : "";
+      const name = entry.name ? entry.name.toString().toLowerCase() : "";
+      const price = entry.price ? entry.price.toString().toLowerCase() : "";
+      const date_of_addition = entry.date_of_addition ? entry.date_of_addition.toString() : "";
+      const noofanalytes = entry.noofanalytes ? entry.noofanalytes.toString() : "";
+      const added_by = entry.added_by ? entry.added_by.toString() : "";
+      const status = entry.status ? entry.status.toString() : "";
+
+      return (
+        id.includes(idFilter) &&
+        name.includes(nameFilter.toLowerCase()) &&
+        price.includes(priceFilter) &&
+        date_of_addition.includes(dateofadditionFilter) &&
+        noofanalytes.includes(noofanalytesFilter.toLowerCase()) &&
+        added_by.includes(addedbyFilter) &&
+        status.includes(statusFilter)      
+      );
+    });
+
+    
     const { isEdit, deleteModal } = this.state;
     const { onAddNewScheme, onUpdateScheme, onGetScheme } =
       this.props;
@@ -297,7 +490,8 @@ class ReagentsList extends Component {
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: SchemeList.length,
+      // totalSize: SchemeList.length,
+      totalSize: filteredData.length,
       custom: true,
     };
 
@@ -335,13 +529,13 @@ class ReagentsList extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.ReagentsListColumns}
-                      data={SchemeList}
+                      data={filteredData}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.ReagentsListColumns}
-                          data={SchemeList}
+                          data={filteredData}
                           search
                         >
                           {toolkitprops => (
@@ -393,7 +587,8 @@ class ReagentsList extends Component {
                                           initialValues={{
                                             hiddenEditFlag: isEdit,
                                             name: (analyte && analyte.name) || "",
-                                            
+                                            price: (analyte && analyte.price) || "",
+                                            // analytes: (analyte && analyte.analytes) || "",
                                             status: (analyte && analyte.status) || "",
                                             added_by: localStorage.getItem("authUser")
                                               ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -402,9 +597,10 @@ class ReagentsList extends Component {
                                           validationSchema={Yup.object().shape({
                                             hiddenEditFlag: Yup.boolean(),
                                             name: Yup.string().trim().required("Please enter name"),
-                                            status: Yup.string()
-                                              .trim()
-                                              .required("Please select the Status from dropdown"),
+                                            // price: Yup.string().trim().required("Please enter Price"),
+                                            // status: Yup.string()
+                                            //   .trim()
+                                            //   .required("Please select the Status from dropdown"),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -412,7 +608,7 @@ class ReagentsList extends Component {
                                                 const updateSchemeList = {
                                                   id: analyte.id,
                                                   name: values.name,
-                                                 
+                                                  price: values.price,
                                                   status: values.status,
                                                   added_by: values.added_by,
                                                 };
@@ -433,7 +629,7 @@ class ReagentsList extends Component {
                                                     Math.random() * (30 - 20)
                                                   ) + 20,
                                                 name: values.name,
-                                               
+                                                price: values.price,
                                                 status: values.status,
                                                 added_by: values.added_by,
                                               };
@@ -468,9 +664,7 @@ class ReagentsList extends Component {
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Name
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
+                                                      <span className="text-danger">*</span>
                                                     </Label>
                                                     <Field
                                                       name="name"
@@ -505,6 +699,24 @@ class ReagentsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
+                                                    <div className="mb-3">
+                                                      <Label className="form-label">
+                                                        Price
+                                                        <span className="text-danger">*</span>
+                                                      </Label>
+                                                      <Field
+                                                        name="price"
+                                                        type="text"
+                                                        className={"form-control" + (errors.price && touched.price ? " is-invalid" : "")}
+                                                        value={this.state.analyte.price}
+                                                        onChange={e =>
+                                                          this.setState({
+                                                            analyte: { ...analyte, price: e.target.value },
+                                                          })
+                                                        }
+                                                      />
+                                                      <ErrorMessage name="price" component="div" className="invalid-feedback" />
+                                                    </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Status
@@ -523,14 +735,10 @@ class ReagentsList extends Component {
                                                 </Col>
                                               </Row>
                                               <Row>
-                                                <Col>
+                                              <Col>
                                                   <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                    >
-                                                      Save
-                                                    </button>
+                                                    <button type="submit" className="btn btn-success save-user"
+                                                      style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
                                                   </div>
                                                 </Col>
                                               </Row>

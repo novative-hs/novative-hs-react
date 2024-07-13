@@ -8,6 +8,12 @@ import {
   UPDATE_NEW_INSTRUMENT_TYPE,
   UPDATE_NEW_INSTRUMENT_TYPE_SUCCESS,
   UPDATE_NEW_INSTRUMENT_TYPE_FAIL,
+  DELETE_INSTRUMENT_TYPE,
+  DELETE_INSTRUMENT_TYPE_SUCCESS,
+  DELETE_INSTRUMENT_TYPE_FAIL,
+  DELETE_ANALYTE,
+  DELETE_ANALYTE_SUCCESS,
+  DELETE_ANALYTE_FAIL,
   GET_ANALYTE_LIST,
   GET_ANALYTE_LIST_SUCCESS,
   GET_ANALYTE_LIST_FAIL,
@@ -17,31 +23,71 @@ import {
   UPDATE_NEW_ANALYTE_LIST,
   UPDATE_NEW_ANALYTE_LIST_SUCCESS,
   UPDATE_NEW_ANALYTE_LIST_FAIL,
+  ADD_EQUIPMENTTYPE_FILE,
+  ADD_EQUIPMENTTYPE_FILE_SUCCESS,
+  ADD_EQUIPMENTTYPE_FILE_FAIL,
+  GET_SCHEMEANALYTE_LIST,
+  GET_SCHEMEANALYTE_LIST_SUCCESS,
+  GET_SCHEMEANALYTE_LIST_FAIL,
+  ADD_NEW_SCHEMEANALYTE,
+  ADD_NEW_SCHEMEANALYTE_SUCCESS,
+  ADD_NEW_SCHEMEANALYTE_FAIL,
+  UPDATE_SCHEMEANALYTE,
+  UPDATE_SCHEMEANALYTE_SUCCESS,
+  UPDATE_SCHEMEANALYTE_FAIL,
 
 
-  GET_CYCLEANALYTE_LIST,
-  GET_CYCLEANALYTE_LIST_SUCCESS,
-  GET_CYCLEANALYTE_LIST_FAIL,
-  ADD_NEW_CYCLEANALYTE,
-  ADD_NEW_CYCLEANALYTE_SUCCESS,
-  ADD_NEW_CYCLEANALYTE_FAIL,
-  UPDATE_CYCLEANALYTE,
-  UPDATE_CYCLEANALYTE_SUCCESS,
-  UPDATE_CYCLEANALYTE_FAIL
+//Cycle Analyte
+  GET_ANALYTESCYCLES,
+  GET_ANALYTESCYCLES_SUCCESS,
+  GET_ANALYTESCYCLES_FAIL,
+
+// Sample Analyte
+  GET_SAMPLE_ANALYTE_LIST,
+  GET_SAMPLE_ANALYTE_LIST_SUCCESS,
+  GET_SAMPLE_ANALYTE_LIST_FAIL,
+  ADD_NEW_SAMPLE_ANALYTE,
+  ADD_NEW_SAMPLE_ANALYTE_SUCCESS,
+  ADD_NEW_SAMPLE_ANALYTE_FAIL,
+  UPDATE_SAMPLE_ANALYTE,
+  UPDATE_SAMPLE_ANALYTE_SUCCESS,
+  UPDATE_SAMPLE_ANALYTE_FAIL
 } from "./actionTypes";
 
 
-//////////////analyte////////////
+// equipment type file upload
+export const addEquipmentTypefile = (EquipmentData, id) => (
+  console.log("data file", EquipmentData),
+  {
+  type: ADD_EQUIPMENTTYPE_FILE,
+  payload: { EquipmentData, id},
+});
+
+export const addEquipmentTypefileSuccess = EquipmentData => ({
+  type: ADD_EQUIPMENTTYPE_FILE_SUCCESS,
+  payload: EquipmentData,
+});
+
+export const addEquipmentTypefileFail = error => (
+  {
+  type: ADD_EQUIPMENTTYPE_FILE_FAIL,
+  payload: error,
+});
+
+
+
+
+//////////////Analyte////////////
 export const getAnalytelist = (id) => ({
   type: GET_ANALYTE_LIST,
   payload: id,
 });
 
-export const getAnalytelistSuccess = (MethodList) => {
-  console.log("Analyte response in success action:", MethodList); 
+export const getAnalytelistSuccess = (AnalyteList) => {
+  console.log("Analyte response in success action:", AnalyteList); 
   return {
     type: GET_ANALYTE_LIST_SUCCESS,
-    payload: MethodList,
+    payload: AnalyteList,
   };
 };
 
@@ -81,6 +127,22 @@ export const updateAnalyteListSuccess = unit => ({
 
 export const updateAnalyteListFail = error => ({
   type: UPDATE_NEW_ANALYTE_LIST_FAIL,
+  payload: error,
+});
+
+//delete analyte Action
+export const deleteAnalyte = Analyte => ({
+  type: DELETE_ANALYTE,
+  payload: Analyte,
+});
+
+export const deleteAnalyteSuccess = Analyte => ({
+  type: DELETE_ANALYTE_SUCCESS,
+  payload: Analyte,
+});
+
+export const deleteAnalyteFail = error => ({
+  type: DELETE_ANALYTE_FAIL,
   payload: error,
 });
 /////////////////instrument///////////
@@ -135,55 +197,139 @@ export const updateNewInstrumentTypeFail = error => ({
   type: UPDATE_NEW_INSTRUMENT_TYPE_FAIL,
   payload: error,
 });
+export const deleteInstrumentType = InstrumentType => ({
+  type: DELETE_INSTRUMENT_TYPE,
+  payload: InstrumentType,
+});
+
+export const deleteInstrumentTypeSuccess = InstrumentType => ({
+  type: DELETE_INSTRUMENT_TYPE_SUCCESS,
+  payload: InstrumentType,
+});
+
+export const deleteInstrumentTypeFail = error => ({
+  type: DELETE_INSTRUMENT_TYPE_FAIL,
+  payload: error,
+});
 
 
 
-
-// Get Cycle Analytes
-export const getCycleAnalytelist = (id) => ({
-  type: GET_CYCLEANALYTE_LIST,
+// Get Scheme Analytes
+export const getSchemeAnalytelist = (id) => ({
+  type: GET_SCHEMEANALYTE_LIST,
   payload: id,
 });
 
-export const getCycleAnalytelistSuccess = CycleAnalyteList => ({
-  type: GET_CYCLEANALYTE_LIST_SUCCESS,
-  payload: CycleAnalyteList,
+export const getSchemeAnalytelistSuccess = SchemeAnalyteList => ({
+  type: GET_SCHEMEANALYTE_LIST_SUCCESS,
+  payload: SchemeAnalyteList,
 });
 
-export const getCycleAnalytelistFail = error => ({
-  type: GET_CYCLEANALYTE_LIST_FAIL,
+export const getSchemeAnalytelistFail = error => ({
+  type: GET_SCHEMEANALYTE_LIST_FAIL,
   payload: error,
 });
-//Add  Cycle Analytes
-export const addNewCycleAnalytelist = (createCycleAnalyte, id) => ({
-  type: ADD_NEW_CYCLEANALYTE,
-  payload: { createCycleAnalyte, id },
+//Add  Scheme Analytes
+export const addNewSchemeAnalytelist = (createSchemeAnalyte, id) => ({
+  type: ADD_NEW_SCHEMEANALYTE,
+  payload: { createSchemeAnalyte, id },
 });
 
-export const addNewCycleAnalytelistSuccess = createCycleAnalyte => ({
-  type: ADD_NEW_CYCLEANALYTE_SUCCESS,
-  payload: createCycleAnalyte,
+export const addNewSchemeAnalytelistSuccess = createSchemeAnalyte => ({
+  type: ADD_NEW_SCHEMEANALYTE_SUCCESS,
+  payload: createSchemeAnalyte,
 });
 
-export const addNewCycleAnalytelistFail = error => ({
-  type: ADD_NEW_CYCLEANALYTE_FAIL,
+export const addNewSchemeAnalytelistFail = error => ({
+  type: ADD_NEW_SCHEMEANALYTE_FAIL,
   payload: error,
 });
-//Update  Cycle Analytes
-export const updateCycleAnalytelist = cycleanalyte => {
-  console.log('action creator called with cycleanalyte:', cycleanalyte);
+//Update  Scheme Analytes
+export const updateSchemeAnalytelist = schemeanalyte => {
+  console.log('action creator called with schemeanalyte:', schemeanalyte);
   return {
-    type: UPDATE_CYCLEANALYTE,
-    payload: cycleanalyte,
+    type: UPDATE_SCHEMEANALYTE,
+    payload: schemeanalyte,
   };
 };
-export const updateCycleAnalytelistSuccess = cycleanalyte => ({
-  type: UPDATE_CYCLEANALYTE_SUCCESS,
-  payload: cycleanalyte,
+export const updateSchemeAnalytelistSuccess = schemeanalyte => ({
+  type: UPDATE_SCHEMEANALYTE_SUCCESS,
+  payload: schemeanalyte,
 });
 
-export const updateCycleAnalytelistFail = error => ({
-  type: UPDATE_CYCLEANALYTE_FAIL,
+export const updateSchemeAnalytelistFail = error => ({
+  type: UPDATE_SCHEMEANALYTE_FAIL,
+  payload: error,
+});
+
+
+
+///Get Analytes Associated With Cycle
+export const getAnalyteCycle = (id) => ({
+  type: GET_ANALYTESCYCLES,
+  payload: id,
+});
+
+export const getAnalyteCycleSuccess = CycleAnalyte => ({
+  type: GET_ANALYTESCYCLES_SUCCESS,
+  payload: CycleAnalyte,
+});
+
+export const getAnalyteCycleFail = error => ({
+  type: GET_ANALYTESCYCLES_FAIL,
+  payload: error,
+});
+
+
+// Get Sample Analyte
+export const getSampleAnalytelist = (id) => ({
+  type: GET_SAMPLE_ANALYTE_LIST,
+  payload: id,
+});
+
+export const getSampleAnalytelistSuccess = SampleAnalyteList => (
+  console.log("data in actionsffffffffffffffffff",SampleAnalyteList ),
+  {
+  type: GET_SAMPLE_ANALYTE_LIST_SUCCESS,
+  payload: SampleAnalyteList,
+});
+
+export const getSampleAnalytelistFail = error => (
+  console.log("data in actionsffffffffffffffffff", error ),
+  {
+  type: GET_SAMPLE_ANALYTE_LIST_FAIL,
+  payload: error,
+});
+//Add  Sample Analyte
+export const addNewSampleAnalytelist = (createSampleAnalyte, id) => ({
+  type: ADD_NEW_SAMPLE_ANALYTE,
+  payload: { createSampleAnalyte, id },
+});
+
+export const addNewSampleAnalytelistSuccess = createSampleAnalyte => ({
+  type: ADD_NEW_SAMPLE_ANALYTE_SUCCESS,
+  payload: createSampleAnalyte,
+});
+
+export const addNewSampleAnalytelistFail = error => ({
+  type: ADD_NEW_SAMPLE_ANALYTE_FAIL,
+  payload: error,
+});
+//Update  Sample Analyte
+export const updateSampleAnalytelist = schemeanalyte => {
+  console.log('action creator called with schemeanalyte:', schemeanalyte);
+  return {
+    type: UPDATE_SAMPLE_ANALYTE,
+    payload: schemeanalyte,
+  };
+};
+export const updateSampleAnalytelistSuccess = schemeanalyte => ({
+  type: UPDATE_SAMPLE_ANALYTE_SUCCESS,
+  payload: schemeanalyte,
+});
+
+export const updateSampleAnalytelistFail = error => ({
+  type: UPDATE_SAMPLE_ANALYTE_FAIL,
   payload: error,
 });
 

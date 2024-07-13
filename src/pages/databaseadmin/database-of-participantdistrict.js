@@ -54,7 +54,7 @@ class ParticipantDistrict extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -322,7 +322,9 @@ class ParticipantDistrict extends Component {
 
                                                 this.displaySuccessMessage("District updated successfully!");
 
-                                                await this.props.onGetDistrictList(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetDistrictList(this.state.user_id);
+                                                }, 1000);
 
                                                 // resetForm();
                                               } catch (error) {
@@ -337,7 +339,9 @@ class ParticipantDistrict extends Component {
 
                                                 this.displaySuccessMessage("District added successfully!");
 
-                                                await this.props.onGetDistrictList(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetDistrictList(this.state.user_id);
+                                                }, 1000);
 
                                               } catch (error) {
 

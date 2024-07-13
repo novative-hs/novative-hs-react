@@ -21,7 +21,7 @@ export const getroundlist = id => ({
 });
 
 export const getroundlistSuccess = RoundList => {
-  console.log("Round List response in success action:", RoundList); 
+
   return {
     type: GET_ROUND_LIST_SUCCESS,
     payload: RoundList,

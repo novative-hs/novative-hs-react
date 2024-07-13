@@ -40,14 +40,19 @@ export const postRegister = user => {
   formData.append("email_participant", user.email_participant);
 
   formData.append("department", user.department);
-  formData.append("organization", user.organization);
+  formData.append("province", user.province);
   formData.append("country", user.country);
   formData.append("landline", user.landline);
   formData.append("address", user.address);
 
+  formData.append("state", user.state);
+  formData.append("email_participant", user.email_participant);
+  formData.append("billing_address", user.billing_address);
+  formData.append("shipping_address", user.shipping_address);
+
   formData.append("lab_staff_name", user.lab_staff_name);
-  formData.append("lab_staff_designation", user.lab_staff_designation);
-  formData.append("Select_schemes", user.Select_schemes);
+  // formData.append("lab_staff_designation", user.lab_staff_designation);
+  // formData.append("Select_schemes", user.Select_schemes);
   formData.append("website", user.website);
   formData.append("district", user.district);
   formData.append("landline_registered_by", user.landline_registered_by);
@@ -141,7 +146,7 @@ export const organizationRegister = user => {
   formData.append("name", user.name);
   formData.append("email", user.email);
   formData.append("website", user.website);
-
+  formData.append("logo", user.photo);
   console.log("data", user);
 
   return axios.post(`${url.ORGANIZATION_REGISTER}`, formData, {
@@ -229,46 +234,7 @@ del(`${url.DELETE_ORGANIZATION_LIST}/${organization.id}`, {
   headers: getHeader(authHeader()),
 });
 
-// Post Register Information to create account
-// export const organizationRegister = user => {
-//   console.log("django OOOOOOOOOOOOOOOOOOO", user)
 
-//   return axios
-//     .post(url.ORGANIZATION_REGISTER, user)
-//     .then(response => {
-//       if (response.status >= 200 || response.status <= 299)
-//         return response.data;
-//       throw response.data;
-//     }
-//     )
-
-//     .catch(err => {
-//       let message;
-//       if (err.response && err.response.status) {
-//         switch (err.response.status) {
-//           case 400:
-//             message = err.response.data;
-//             break;
-//           case 404:
-//             message = "Sorry! the page you are looking for could not be found";
-//             break;
-//           case 500:
-//             message =
-//               "Sorry! something went wrong, please contact our support team";
-//             break;
-//           case 401:
-//             message = "Invalid credentials";
-//             break;
-//           default:
-//             message = err[1];
-//             break;
-//         }
-//       }
-//       throw message;
-
-//     }
-//     );
-// };
 
 // Post Lab Information
 export const postLabInformation = (id, lab) => {
@@ -492,21 +458,35 @@ export const getInstrumentlist = (id) =>
     formData.append("name", createUnit.name);
     formData.append("added_by", createUnit.added_by);
     formData.append("code", createUnit.code);
+  formData.append("model", createUnit.model);
     formData.append("status", createUnit.status);
     formData.append("instrument_type", createUnit.instrument_type);
     formData.append("manufactural", createUnit.manufactural);
+  formData.append("country", createUnit.country);
     return axios.post(`${url.ADD_NEW_INSTRUMENT}`, formData, {
       headers: getHeader(authHeader()),
     });
+  };
+  export const addEquipmentTypefile = (EquipmentData) => {
+    let formData = new FormData();
+    formData.append("excel_file", EquipmentData.excel_file);
+
+    console.log("django api helper", EquipmentData)
+  
+    return axios.post(`${url.ADD_EQUIPMENTTYPE_FILE}`, formData, {
+      headers: getHeader(authHeader()),
+    });
   };
   export const updateInstrument = unit => {
     let formData = new FormData();
     formData.append("name", unit.name);
     formData.append("added_by", unit.added_by);
     formData.append("code", unit.code);
+    formData.append("model", unit.model);
     formData.append("status", unit.status);
     formData.append("instrument_type", unit.instrument_type);
     formData.append("manufactural", unit.manufactural);
+    formData.append("country", unit.country);
     return axios.put(
       `${url.UPDATE_NEW_INSTRUMENT}/${unit.id}`,
       formData,
@@ -515,7 +495,11 @@ export const getInstrumentlist = (id) =>
       }
     );
   };
-  
+  export const deleteInstrument = Instrument =>
+    del(`${url.DELETE_INSTRUMENT}/${Instrument.id}`, {
+      headers: getHeader(authHeader()),
+    });
+
   export const getUnitsList = id => {
     if (id) {
         return get(`${url.GET_UNITS_LIST}/${id}`, {
@@ -526,7 +510,6 @@ export const getInstrumentlist = (id) =>
         return Promise.reject('Invalid id');
     }
 };
-
 
 export const addNewCreateUnits = (createUnit) => {
   let formData = new FormData();
@@ -562,20 +545,76 @@ export const getHistoryUnits = id => {
 
 
 
-export const addSample = (sample) => {
-  console.log("Sample data in Django API helper:", sample);
-  let formData = new FormData();
-  formData.append("added_by", sample.added_by);
-  formData.append("sampleno", sample.sampleno);
-  formData.append("details", sample.details);
-  formData.append("notes", sample.notes);
-  if (sample.scheme) {
+// Sample
+ export const getSamplelist = (id) =>
+    get(`${url.GET_SAMPLE_LIST}/${id}`, {
+      headers: getHeader(authHeader()),
+    });
+/////////////////////////////////
+  export const addNewSampleList = (sample) => {
+    let formData = new FormData();
+    formData.append("samplename", sample.samplename);
+    formData.append("added_by", sample.added_by);
+    formData.append("sampleno", sample.sampleno);
     formData.append("scheme", sample.scheme);
-  }
-
-  return axios.post(url.ADD_SAMPLE, formData, {
-    headers: getHeader(authHeader()), 
+    formData.append("detail", sample.detail);
+    formData.append("notes", sample.notes);
+    formData.append("status", sample.status);
+    return axios.post(`${url.ADD_NEW_SAMPLE_LIST}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+//////////////////////////////////////
+export const updateSampleList = sample => {
+    let formData = new FormData();
+    formData.append("samplename", sample.samplename);
+    formData.append("sampleno", sample.sampleno);
+    formData.append("scheme", sample.scheme);
+    formData.append("cycle", sample.cycle);
+    formData.append("round", sample.round);
+    formData.append("detail", sample.detail);
+    formData.append("notes", sample.notes);
+    formData.append("added_by", sample.added_by);
+    
+    return axios.put(
+      `${url.UPDATE_NEW_SAMPLE_LIST}/${sample.id}`,
+        formData,
+        {
+            headers: getHeader(authHeader()),
+        }
+    );
+};
+///////////////////////
+export const deleteSampleList = sample =>
+  del(`${url.DELETE_NEW_SAMPLE_LIST}/${sample.id}`, {
+    headers: getHeader(authHeader()),
   });
+  
+/////////Analyte Sample List
+export const getSampleAnalytelist = (id) =>
+  get(`${url.GET_SAMPLE_ANALYTE_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const addNewSampleAnalytelist = (createSchemeAnalyte) => {
+  let formData = new FormData();
+  formData.append("analytes", createSchemeAnalyte.analytes);
+  formData.append("added_by", createSchemeAnalyte.added_by);
+  return axios.post(`${url.ADD_SAMPLE_ANALYTE_LIST}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const updateSampleAnalytelist = schemeanalyte => {
+  let formData = new FormData();
+  formData.append("analytes", schemeanalyte.analytes);
+  return axios.put(
+    `${url.UPDATE_SAMPLE_ANALYTE_LIST}/${schemeanalyte.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 //---------------database admin get Reagents list-------
@@ -584,16 +623,52 @@ export const getReagentsList = (id) =>
     headers: getHeader(authHeader()),
   });
 
+
+  //---------------Get Participant List-------
 export const getParticipantList = id =>
   get(`${url.GET_PARTICIPANT_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
+
+//---------------Round add Labs-------
+export const getRoundLablist = (id) =>
+  get(`${url.GET_ROUND_LABS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const addNewRoundLablist = (createRoundLab) => {
+  let formData = new FormData();
+  formData.append("participants", createRoundLab.participants);
+  formData.append("added_by", createRoundLab.added_by);
+  return axios.post(`${url.ADD_ROUND_LABS}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const updateRoundLablist = roundslab => {
+  let formData = new FormData();
+  formData.append("participants", roundslab.participants);
+  return axios.put(
+    `${url.UPDATE_ROUNDLABS}/${roundslab.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};
+
+
+
+
 export const addNewReagents = (createReagent) => {
   let formData = new FormData();
   formData.append("name", createReagent.name);
   formData.append("code", createReagent.code);
   formData.append("status", createReagent.status);
-  formData.append("added_by", createReagent.added_by);
+  formData.append("added_by", createReagent.added_by);  
+  formData.append("manufactural", createReagent.manufactural);
+  formData.append("country", createReagent.country);
   return axios.post(`${url.ADD_NEW_REAGENTS}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -608,6 +683,8 @@ export const updateReagents = reagent => {
   formData.append("status", reagent.status);
   formData.append("name", reagent.name);
   formData.append("added_by", reagent.added_by);
+  formData.append("manufactural", reagent.manufactural);
+  formData.append("country", reagent.country);
   return axios.put(
     `${url.UPDATE_REAGENTS}/${reagent.id}`,
     formData,
@@ -616,6 +693,10 @@ export const updateReagents = reagent => {
     }
   );
 };
+export const deleteReagent = Reagent =>
+  del(`${url.DELETE_REAGENT}/${Reagent.id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 //---------------Analyte add Reagents-------
 export const getAnalyteReagentlist = (id) =>
@@ -648,6 +729,43 @@ export const getAnalyteUnit = (id) =>
   get(`${url.GET_ANALYTESUNITS}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
+  ///////analytes associated with REAGENT
+export const getAnalyteReagent = (id) =>
+  get(`${url.GET_ANALYTESREAGENTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+  
+
+  ///////analytes associated with INSTRUMENT
+export const getAnalyteInstrument = (id) =>
+  get(`${url.GET_ANALYTESINSTRUMENTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+   ///////analytes associated with METHOD
+export const getAnalyteMethod = (id) =>
+  get(`${url.GET_ANALYTESMETHODS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+
+
+  export const instrumentsintype = (id) =>
+    get(`${url.GET_INSTRUMENTSINTYPE}/${id}`, {
+      headers: getHeader(authHeader()),
+    });
+
+  export const instrumentsinmaufacturer = (id) =>
+    get(`${url.GET_INSTRUMENTSINMANUFACTURER}/${id}`, {
+      headers: getHeader(authHeader()),
+    });
+    
+    export const reagentsinmaufacturer = (id) =>
+      get(`${url.GET_REAGENTSINMANUFACTURER}/${id}`, {
+        headers: getHeader(authHeader()),
+      });
+  
 //---------------Analyte add Units-------
 export const getAnalyteUnitlist = (id) =>
   get(`${url.GET_ANALYTESUNITS_LIST}/${id}`, {
@@ -676,12 +794,6 @@ export const updateAnalyteUnitlist = analytesunit => {
       headers: getHeader(authHeader()),
     }
   );
-};
-/////////////////////////////////////////
-export const getSample = id => {
-  return axios.get(`${url.GET_SAMPLE}/${id}`, {
-    headers: getHeader(authHeader()),
-  });
 };
 
 //---------------Analyte add Methods-------
@@ -746,10 +858,8 @@ export const getManufacturalList = (id) =>
 export const addNewManufactural = (createManufactural) => {
   let formData = new FormData();
   formData.append("name", createManufactural.name);
-  formData.append("telephone", createManufactural.telephone);
-  formData.append("city", createManufactural.city);
+  formData.append("website", createManufactural.website);
   formData.append("country", createManufactural.country);
-  formData.append("address", createManufactural.address);
   formData.append("added_by", createManufactural.added_by);
   return axios.post(`${url.ADD_NEW_MANUFACTURAL}`, formData, {
     headers: getHeader(authHeader()),
@@ -762,10 +872,8 @@ export const updateManufactural = manufactural => {
   console.log("id received is ", manufactural)
   formData.append("id", manufactural.id);
   formData.append("name", manufactural.name);
-  formData.append("telephone", manufactural.telephone);
-  formData.append("city", manufactural.city);
+  formData.append("website", manufactural.website);
   formData.append("country", manufactural.country);
-  formData.append("address", manufactural.address);
   formData.append("added_by", manufactural.added_by);
   return axios.put(
     `${url.UPDATE_MANUFACTURAL}/${manufactural.id}`,
@@ -775,6 +883,11 @@ export const updateManufactural = manufactural => {
     }
   );
 };
+
+export const deleteManufacturer = Analyte =>
+  del(`${url.DELETE_MANUFACTURER}/${Analyte.id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 export const getInstrumenttypelist = (id) =>
   get(`${url.GET_INSTRUMENT_TYPE_LIST}/${id}`, {
@@ -806,6 +919,11 @@ export const updateNewInstrumentType = unit => {
     }
   );
 };
+export const deleteInstrumentType = InstrumentType =>
+  del(`${url.DELETE_INSTRUMENT_TYPE}/${InstrumentType.id}`, {
+    headers: getHeader(authHeader()),
+  });
+
 ///////////methodlist/////////////n
 export const getMethodlist = (id) =>
   get(`${url.GET_METHOD_LIST}/${id}`, {
@@ -835,17 +953,34 @@ export const updateMethod = unit => {
     }
   );
 };
+export const updateMembershipstatus = status => {
+  let formData = new FormData();
+  formData.append("membership_status", status.membership_status);
+  formData.append("added_by", status.added_by);
+  return axios.put(
+    `${url.UPDATE_MEMBERSHIP_STATUS}/${status.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};
 
-///////////Scheme list/////////////
-export const getSchemelist = () =>
-  get(`${url.GET_SCHEME_LIST}`, {
+export const deleteMethod = Method =>
+  del(`${url.DELETE_METHOD}/${Method.id}`, {
     headers: getHeader(authHeader()),
   });
-export const addNewScheme = (createUnit) => {
+///////////Scheme list/////////////
+export const getSchemelist = (id) =>
+  get(`${url.GET_SCHEME_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const addNewScheme = (createUnit, id) => {
   let formData = new FormData();
   formData.append("name", createUnit.name);
+  formData.append("price", createUnit.price);
+  // formData.append("analytes", createUnit.analytes);
   formData.append("added_by", createUnit.added_by);
-  
   formData.append("status", createUnit.status);
   return axios.post(`${url.ADD_NEW_SCHEME}`, formData, {
     headers: getHeader(authHeader()),
@@ -854,6 +989,7 @@ export const addNewScheme = (createUnit) => {
 export const updateScheme = unit => {
   let formData = new FormData();
   formData.append("name", unit.name);
+  formData.append("price", unit.price);
   formData.append("added_by", unit.added_by);
   formData.append("status", unit.status);
   return axios.put(
@@ -885,7 +1021,7 @@ export const addNewCycle = (createUnit, id) => {
   formData.append("start_date", createUnit.start_date);
   formData.append("end_date", createUnit.end_date);
   formData.append("analytes", createUnit.analytes);
-  // formData.append("status", createUnit.status);
+  formData.append("status", createUnit.status);
   formData.append("added_by", createUnit.added_by);
   return axios.post(`${url.ADD_NEW_CYCLE}`, formData, {
     headers: {
@@ -927,33 +1063,59 @@ export const deleteCycle = unit =>
     headers: getHeader(authHeader()),
   });
 
-
-  //---------------Cycle add Analytes-------
-export const getCycleAnalytelist = (id) =>
-  get(`${url.GET_CYCLE_ANALYTE}/${id}`, {
+//-----------------Payment----------------
+export const addNewPayment = (payment, id) => {
+  console.log("data in django api helper", payment.participant)
+  let formData = new FormData();
+  formData.append("participant", payment.participant);
+  formData.append("scheme", payment.scheme);
+  // formData.append("cycle_no", payment.cycle_no);
+  formData.append("price", payment.price);
+  formData.append("discount", payment.discount);
+  formData.append("paymentmethod", payment.paymentmethod);
+  formData.append("paydate", payment.paydate);
+  formData.append("photo", payment.photo);
+  formData.append("added_by", payment.added_by);
+  return axios.post(`${url.ADD_NEW_PAYMENT}`, formData, {
+    headers: {
+      ...getHeader(authHeader()),
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+};
+  // ---------------Scheme add Analytes-------
+export const getSchemeAnalytelist = (id) =>
+  get(`${url.GET_SCHEME_ANALYTE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCycleAnalytelist = (createCycleAnalyte) => {
+export const addNewSchemeAnalytelist = (createSchemeAnalyte) => {
   let formData = new FormData();
-  formData.append("reagents", createCycleAnalyte.reagents);
-  formData.append("added_by", createCycleAnalyte.added_by);
-  return axios.post(`${url.ADD_CYCLE_ANALYTE}`, formData, {
+  formData.append("analytes", createSchemeAnalyte.analytes);
+  formData.append("added_by", createSchemeAnalyte.added_by);
+  return axios.post(`${url.ADD_SCHEME_ANALYTE}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
 
-export const updateCycleAnalytelist = cycleanalyte => {
+export const updateSchemeAnalytelist = schemeanalyte => {
   let formData = new FormData();
-  formData.append("reagents", cycleanalyte.reagents);
+  formData.append("analytes", schemeanalyte.analytes);
   return axios.put(
-    `${url.UPDATE_CYCLE_ANALYTE}/${cycleanalyte.id}`,
+    `${url.UPDATE_SCHEME_ANALYTE}/${schemeanalyte.id}`,
     formData,
     {
       headers: getHeader(authHeader()),
     }
   );
 };
+
+
+/////// Analytes Associated With Cycle
+export const getAnalyteCycle = (id) =>
+  get(`${url.GET_ANALYTESCYCLES}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 ///////////Analyte list/////////////
 export const getAnalytelist = (id) =>
@@ -992,6 +1154,10 @@ export const updateAnalyte = unit => {
     }
   );
 };
+export const deleteAnalyte = Analyte =>
+  del(`${url.DELETE_ANALYTE}/${Analyte.id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 
 ////participant city
@@ -1023,6 +1189,68 @@ return axios.put(
   }
 );
 };
+
+////participant country
+export const getCountryList = (id) =>
+  get(`${url.GET_COUNTRY_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const addNewCreateCountry = (createCountry) => {
+let formData = new FormData();
+formData.append("name", createCountry.name);
+formData.append("added_by", createCountry.added_by);
+return axios.post(`${url.ADD_NEW_COUNTRY}`, formData, {
+  headers: getHeader(authHeader()),
+});
+};
+export const updateCountry = country => {
+let formData = new FormData();
+// Make sure 'country' object contains 'id' field
+console.log("id received is ", country.id)
+formData.append("id", country.id);
+formData.append("name", country.name);
+formData.append("added_by", country.added_by);
+return axios.put(
+  `${url.UPDATE_COUNTRY}/${country.id}`,
+  formData,
+  {
+    headers: getHeader(authHeader()),
+  }
+);
+};
+
+////participant Province
+export const getProvinceList = (id) =>
+  get(`${url.GET_PROVINCE_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const addNewCreateProvince = (createProvince) => {
+let formData = new FormData();
+formData.append("name", createProvince.name);
+formData.append("added_by", createProvince.added_by);
+return axios.post(`${url.ADD_NEW_PROVINCE}`, formData, {
+  headers: getHeader(authHeader()),
+});
+};
+export const updateProvince = province => {
+let formData = new FormData();
+// Make sure 'province' object contains 'id' field
+console.log("id received is ", province.id)
+formData.append("id", province.id);
+formData.append("name", province.name);
+formData.append("added_by", province.added_by);
+return axios.put(
+  `${url.UPDATE_PROVINCE}/${province.id}`,
+  formData,
+  {
+    headers: getHeader(authHeader()),
+  }
+);
+};
+
+
 ///participant district
 export const getDistrictList = (id) =>
   get(`${url.GET_DISTRICT_LIST}/${id}`, {
@@ -2091,19 +2319,6 @@ export const deletecedata = cemployee =>
     headers: getHeader(authHeader()),
   });
 
-export const addNewCemployeefile = (cemployeeData) => {
-  let formData = new FormData();
-  formData.append("excel_file", cemployeeData.excel_file);
-
-  console.log("django api helper", cemployeeData)
-
-  return axios.post(`${url.ADD_NEW_CEMPLOYEE_FILE}`, formData, {
-    headers: getHeader(authHeader()),
-  });
-};
-
-
-
 export const updateCemployee = cemployeeData => {
   let formData = new FormData();
   formData.append("name", cemployeeData.name);
@@ -2200,6 +2415,7 @@ export const updateStaff = staff => {
   // formData.append("email", staff.email);
   formData.append("cnic", staff.cnic);
   formData.append("phone", staff.phone);
+  formData.append("isActive", staff.isActive);
   // formData.append("roles", staff.roles);
   // formData.append("city", staff.city);
   // formData.append("territory_office", staff.territory_office);
@@ -2296,10 +2512,10 @@ export const addNewRound = (createUnit, id) => {
   let formData = new FormData();
   formData.append("rounds", createUnit.rounds);
   formData.append("sample", createUnit.sample);
+  formData.append("cycle_no", createUnit.cycle_no);
   formData.append("scheme", createUnit.scheme);
   formData.append("issue_date", createUnit.issue_date);
   formData.append("closing_date", createUnit.closing_date);
-  formData.append("notes", createUnit.notes);
   formData.append("status", createUnit.status);
   formData.append("added_by", createUnit.added_by);
   return axios.post(`${url.ADD_NEW_ROUND}`, formData, {
@@ -2318,13 +2534,15 @@ export const addNewRound = (createUnit, id) => {
     
 export const updateRound = unit => {
   let formData = new FormData();
-  formData.append("rounds", unit.rounds);
-  formData.append("scheme", unit.scheme);
-  formData.append("issue_date", unit.issue_date);
-  formData.append("closing_date", unit.closing_date);
-  formData.append("notes", unit.notes);
-  formData.append("status", unit.status);
-  formData.append("added_by", unit.added_by);
+  formData.append("rounds", round.rounds);
+  formData.append("scheme", round.scheme);
+  formData.append("cycle_no", round.cycle_no);
+  formData.append("sample", round.sample);
+  formData.append("issue_date", round.issue_date);
+  formData.append("closing_date", round.closing_date);
+  formData.append("notes", round.notes);
+  formData.append("status", round.status);
+  formData.append("added_by", round.added_by);
   return axios.put(
     `${url.UPDATE_ROUND}/${unit.id}`,
     formData,
@@ -2347,6 +2565,12 @@ export const getApprovedCorporate = () =>
   });
 export const getUnapprovedCorporate = () =>
   get(`${url.GET_UNAPPROVED_CORPORATE}`, {
+    headers: getHeader(authHeader()),
+  });
+  
+
+export const getAllLabs = id =>
+  get(`${url.GET_ALL_PARTICIPANT}/${id}`, {
     headers: getHeader(authHeader()),
   });
 export const getPendingLabs = id =>

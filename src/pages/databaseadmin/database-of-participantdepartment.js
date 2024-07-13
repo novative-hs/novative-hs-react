@@ -54,7 +54,7 @@ class ParticipantDepartment extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -322,7 +322,9 @@ class ParticipantDepartment extends Component {
 
                                                 this.displaySuccessMessage("Department updated successfully!");
 
-                                                await this.props.onGetDepartmentList(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetDepartmentList(this.state.user_id);
+                                                }, 1000);
 
                                                 // resetForm();
                                               } catch (error) {
@@ -337,7 +339,9 @@ class ParticipantDepartment extends Component {
 
                                                 this.displaySuccessMessage("Department added successfully!");
 
-                                                await this.props.onGetDepartmentList(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetDepartmentList(this.state.user_id);
+                                                }, 1000);
 
                                               } catch (error) {
 

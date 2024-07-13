@@ -8,6 +8,9 @@ import {
   UPDATE_INSTRUMENT,
   UPDATE_INSTRUMENT_SUCCESS,
   UPDATE_INSTRUMENT_FAIL,
+  DELETE_INSTRUMENT,
+  DELETE_INSTRUMENT_SUCCESS,
+  DELETE_INSTRUMENT_FAIL,
 
   GET_ANALYTESEQUIPMENTS_LIST,
   GET_ANALYTESEQUIPMENTS_LIST_SUCCESS,
@@ -117,6 +120,22 @@ export const updateInstrumentSuccess = unit => ({
 
 export const updateInstrumentFail = error => ({
   type: UPDATE_INSTRUMENT_FAIL,
+  payload: error,
+});
+
+ //delete instruments Action
+ export const deleteInstrument = Instrument => ({
+  type: DELETE_INSTRUMENT,
+  payload: Instrument,
+});
+
+export const deleteInstrumentSuccess = Instrument => ({
+  type: DELETE_INSTRUMENT_SUCCESS,
+  payload: Instrument,
+});
+
+export const deleteInstrumentFail = error => ({
+  type: DELETE_INSTRUMENT_FAIL,
   payload: error,
 });
 

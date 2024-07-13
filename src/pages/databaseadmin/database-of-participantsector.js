@@ -54,7 +54,7 @@ class ParticipantSector extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -321,8 +321,10 @@ class ParticipantSector extends Component {
                                                 await this.props.onUpdateSector(this.state.selectedSector.id, newSector);
 
                                                 this.displaySuccessMessage("Participant Sector updated successfully!");
+                                                setTimeout(() => {
+                                                  this.props.onGetSectorList(this.state.user_id);
+                                                }, 1000);
 
-                                                await this.props.onGetSectorList(this.state.user_id);
 
                                                 // resetForm();
                                               } catch (error) {
@@ -337,7 +339,9 @@ class ParticipantSector extends Component {
 
                                                 this.displaySuccessMessage("Participant Sector added successfully!");
 
-                                                await this.props.onGetSectorList(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetSectorList(this.state.user_id);
+                                                }, 1000);
 
                                               } catch (error) {
 

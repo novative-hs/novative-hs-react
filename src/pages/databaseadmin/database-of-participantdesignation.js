@@ -54,7 +54,7 @@ class ParticipantDesignation extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -322,7 +322,9 @@ class ParticipantDesignation extends Component {
 
                                                 this.displaySuccessMessage("Designation updated successfully!");
 
-                                                await this.props.onGetdesignationlist(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetdesignationlist(this.state.user_id);
+                                                }, 1000);
 
                                                 // resetForm();
                                               } catch (error) {
@@ -337,7 +339,9 @@ class ParticipantDesignation extends Component {
 
                                                 this.displaySuccessMessage("Designation added successfully!");
 
-                                                await this.props.onGetdesignationlist(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetdesignationlist(this.state.user_id);
+                                                }, 1000);
 
                                               } catch (error) {
 

@@ -8,6 +8,9 @@ import {
     UPDATE_MANUFACTURAL,
     UPDATE_MANUFACTURAL_SUCCESS,
     UPDATE_MANUFACTURAL_FAIL,
+    DELETE_MANUFACTURER,
+    DELETE_MANUFACTURER_SUCCESS,
+    DELETE_MANUFACTURER_FAIL
   } from "./actionTypes";
   // get Units Action
   export const getManufacturalList = (id) => ({
@@ -15,7 +18,9 @@ import {
     payload: id,
   });
   
-  export const getManufacturalListSuccess =  ManufacturalList => ({
+  export const getManufacturalListSuccess =  ManufacturalList => (
+    console.log("data in actions",ManufacturalList ),
+    {
     type: GET_MANUFACTURAL_LIST_SUCCESS,
     payload:  ManufacturalList,
   });
@@ -56,5 +61,20 @@ import {
     type: UPDATE_MANUFACTURAL_FAIL,
     payload: error,
   });
+  //delete MANUFACTURER Action
+export const deleteManufacturer = Manufactural => ({
+  type: DELETE_MANUFACTURER,
+  payload: Manufactural,
+});
+
+export const deleteManufacturerSuccess = Manufactural => ({
+  type: DELETE_MANUFACTURER_SUCCESS,
+  payload: Manufactural,
+});
+
+export const deleteManufacturerFail = error => ({
+  type: DELETE_MANUFACTURER_FAIL,
+  payload: error,
+});
 
   

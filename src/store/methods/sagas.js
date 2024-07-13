@@ -1,12 +1,12 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_METHODS_LIST, ADD_NEW_METHODS , UPDATE_METHODS ,GET_ANALYTESMETHODS_LIST,ADD_NEW_ANALYTESMETHODS,UPDATE_ANALYTESMETHODS} from "./actionTypes";
+import { DELETE_METHOD,GET_METHODS_LIST, ADD_NEW_METHODS , UPDATE_METHODS ,GET_ANALYTESMETHODS_LIST,ADD_NEW_ANALYTESMETHODS,UPDATE_ANALYTESMETHODS} from "./actionTypes";
 
-import { getmethodlistSuccess, getmethodlistFail, addNewMethodSuccess, addNewMethodFail, updateMethodsSuccess, updateMethodsFail,getAnalyteMethodlistSuccess,getAnalyteMethodlistFail,addNewAnalyteMethodlistSuccess,addNewAnalyteMethodlistFail,updateAnalyteMethodlistSuccess,updateAnalyteMethodlistFail  } from "./actions";
+import { deleteMethodSuccess,deleteMethodFail,getmethodlistSuccess, getmethodlistFail, addNewMethodSuccess, addNewMethodFail, updateMethodsSuccess, updateMethodsFail,getAnalyteMethodlistSuccess,getAnalyteMethodlistFail,addNewAnalyteMethodlistSuccess,addNewAnalyteMethodlistFail,updateAnalyteMethodlistSuccess,updateAnalyteMethodlistFail  } from "./actions";
 
 //Include Both Helper File with needed methods
-import {getMethodlist,addNewMethod, updateMethod, getAnalytemethodlist,updateAnalytemethodlist,addNewAnalytemethodlist } from "../../helpers/django_api_helper";
+import {deleteMethod,getMethodlist,addNewMethod, updateMethod, getAnalytemethodlist,updateAnalytemethodlist,addNewAnalytemethodlist } from "../../helpers/django_api_helper";
 
 ///analyte methods
 function* fetchAnalyteMethodsList(object) {
@@ -68,7 +68,14 @@ function* onUpdateMethods({ payload: unit }) {
     yield put(updateMethodsFail (error));
   }
 }
-
+function* onDeleteMethod({ payload: Method }) {
+  try {
+    const response = yield call(deleteMethod, Method);
+    yield put(deleteMethodSuccess(response));
+  } catch (error) {
+    yield put(deleteMethodFail(error));
+  }
+}
 
 function* MethodsListSaga() {
 
@@ -81,6 +88,7 @@ function* MethodsListSaga() {
   yield takeEvery(GET_METHODS_LIST, fetchMethodsList);
   yield takeEvery(ADD_NEW_METHODS, onAddNewMethod );
   yield takeEvery(UPDATE_METHODS, onUpdateMethods);
+  yield takeEvery(DELETE_METHOD, onDeleteMethod);
 }
 
 export default MethodsListSaga;

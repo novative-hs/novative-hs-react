@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
-
+import moment from "moment";
 import { Tooltip } from "@material-ui/core";
 import {
   Card,
@@ -55,7 +55,9 @@ class RegistrationAdminList extends Component {
       emailFilter: '',
       cnicFilter: '',
       phoneFilter: '',
-
+      dateFilter: '',
+      isActive: true, // Initial state
+      statusFilter: "", 
       financeOfficerList: [],
       staff: "",
       collectorImg: "",
@@ -63,6 +65,7 @@ class RegistrationAdminList extends Component {
       emailSort: 'asc',
       cnicSort: 'asc',
       phoneSort: 'asc',
+      dateSort: 'asc',
       modal: false,
       deleteModal: false,
       registrationAdminListColumns: [
@@ -209,44 +212,82 @@ class RegistrationAdminList extends Component {
           },
           headerAlign: 'center', // Align header text to center
         },
-
-
-        // {
-        //   dataField: "territory_office",
-        //   text: "Territory Office",
-        //   sort: true,
-        // },
-        // {
-        //   dataField: "photo",
-        //   text: "Photo",
-        //   sort: true,
-        //   formatter: (cellContent, RegistrationAdmin) => (
-        //     <>
-        //       <Link
-        //         to={{
-        //           pathname:
-        //             process.env.REACT_APP_BACKENDURL + RegistrationAdmin.photo,
-        //         }}
-        //         target="_blank"
-        //       >
-        //         View
-        //       </Link>
-        //     </>
-        //   ),
-        // },
-
-        // {
-        //   dataField: "roles",
-        //   text: "Roles",
-        //   sort: true,
-        // },
+        {
+          dataField: "registered_at",
+          text: "Date of Addition",
+          sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div className="d-flex justify-content-between align-items-center">
+                  <input
+                    type="text"
+                    value={this.state.dateFilter}
+                    onChange={e => this.handleFilterChange("dateFilter", e)}
+                    className="form-control"
+                  />
+                </div>
+                <div className="d-flex justify-content-center align-items-center">
+                  {column.text}
+                  {column.sort ? (
+                    <i
+                      className={
+                        this.state.dateSort === "asc"
+                          ? "fa fa-arrow-up"
+                          : "fa fa-arrow-down"
+                      }
+                      style={{
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                        color: "red",
+                      }}
+                      onClick={() => this.handleSort("registered_at")}
+                    />
+                  ) : null}
+                </div>
+              </>
+            );
+          },
+          formatter: (cellContent, RegistrationAdmin) => (
+            <>
+              <span>
+                {moment(RegistrationAdmin.registered_at).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          headerAlign: "center", // Align header text to center
+        },
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
+          // formatter: (cellContent, RegistrationAdmin) => (
+          //   <div>
+          //     <Tooltip title="Update">
+          //       <Link className="text-success" to="#">
+          //         <i
+          //           className="mdi mdi-pencil font-size-18"
+          //           id="edittooltip"
+          //           onClick={e =>
+          //             this.handleRegistrationAdminClick(e, RegistrationAdmin)
+          //           }
+          //         ></i>
+          //       </Link>
+          //     </Tooltip>
+          //     <Tooltip title="Delete">
+          //       <Link className="text-danger" to="#">
+          //         <i
+          //           className="mdi mdi-delete font-size-18"
+          //           id="deletetooltip"
+          //           onClick={() => this.onClickDelete(RegistrationAdmin)}
+          //         ></i>
+          //       </Link>
+          //     </Tooltip>
+          //   </div>
+          // ),
           formatter: (cellContent, RegistrationAdmin) => (
-            <div>
+            <div className="d-flex align-items-center">
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
@@ -258,15 +299,31 @@ class RegistrationAdminList extends Component {
                   ></i>
                 </Link>
               </Tooltip>
-              <Tooltip title="Delete">
-                <Link className="text-danger" to="#">
-                  <i
-                    className="mdi mdi-delete font-size-18"
-                    id="deletetooltip"
-                    onClick={() => this.onClickDelete(RegistrationAdmin)}
-                  ></i>
-                </Link>
-              </Tooltip>
+              <div key={RegistrationAdmin.id}>
+                {RegistrationAdmin.status === "Active" ? (
+                  <Tooltip title="Delete Account">
+                    <Link className="text-danger" to="#">
+                      <i
+                        className="mdi mdi-account-remove font-size-18"
+                        id="deletetooltip"
+                        onClick={() => this.handleStatusUpdateInactive(RegistrationAdmin)}
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Restore Account">
+                    <Link className="text-success" to="#">
+                      <i
+                        className="mdi mdi-account-plus font-size-18"
+                        id="addtooltip"
+                        onClick={() =>
+                          this.handleStatusUpdatActive(RegistrationAdmin)
+                        }
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                )}
+              </div>
             </div>
           ),
         },
@@ -280,6 +337,10 @@ class RegistrationAdminList extends Component {
     this.handleRegistrationAdminClicks =
       this.handleRegistrationAdminClicks.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
+    this.handleStatusUpdateInactive =
+    this.handleStatusUpdateInactive.bind(this);
+  this.handleStatusUpdatActive =
+    this.handleStatusUpdatActive.bind(this);
   }
   handleSort = (field) => {
     const newSortOrder = this.state[field + 'Sort'] === 'asc' ? 'desc' : 'asc';
@@ -396,14 +457,47 @@ class RegistrationAdminList extends Component {
   };
   filterData = () => {
     const { financeOfficerList } = this.props;
-    const { nameFilter, emailFilter, cnicFilter, phoneFilter } = this.state;
+    const { nameFilter, emailFilter, cnicFilter, phoneFilter,dateFilter , statusFilter} = this.state;
     const filteredData = financeOfficerList.filter(entry =>
       entry.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
       entry.email.toLowerCase().includes(emailFilter.toLowerCase()) &&
       entry.cnic.includes(cnicFilter) &&
-      entry.phone.includes(phoneFilter)
+      entry.phone.includes(phoneFilter)&&
+      entry.registered_at.includes(dateFilter)&&
+      (statusFilter === "" || entry.status === statusFilter) // filter based on status
     );
     return filteredData;
+  };
+  // Method to handle status change
+
+  handleStatusUpdateInactive = RegistrationAdmin => {
+    const updatedAdmin = {
+      ...RegistrationAdmin,
+      isActive: false,
+    };
+
+    this.props.onUpdateStaff(updatedAdmin);
+    setTimeout(() => {
+      this.props.onGetRegistrationAdminListt(
+        this.state.user_id
+      );
+    }, 1000);// Adjust the delay as needed
+  
+  };
+
+  handleStatusUpdatActive = RegistrationAdmin => {
+    const updatedAdmin = {
+      ...RegistrationAdmin,
+      isActive: true,
+    };
+  
+    this.props.onUpdateStaff(updatedAdmin);
+    setTimeout(() => {
+      this.props.onGetRegistrationAdminListt(
+        this.state.user_id
+      );
+    }, 1000);// Adjust the delay as needed
+  
   };
   render() {
     // const { SearchBar } = Search;
@@ -463,19 +557,28 @@ class RegistrationAdminList extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                              {/* <Row className="mb-2">
-                                <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
+                              <Row className="mb-2">
+                              <Col xl="12">
+                                <h6>Activate/Deactivate Staff Accounts</h6> </Col>
+                                <Col xs="5" sm="5" md="4" lg="3">
+                                  <div className="mb-3">
+                                    <select
+                                      className="form-control"
+                                      value={this.state.statusFilter}
+                                      onChange={e =>
+                                        this.handleFilterChange(
+                                          "statusFilter",
+                                          e
+                                        )
+                                      }
+                                    >
+                                      <option value="">All</option>
+                                      <option value="Active">Active</option>
+                                      <option value="Inactive">Inactive</option>
+                                    </select>
                                   </div>
                                 </Col>
-                              </Row> */}
-                              <Row className="mb-2"></Row>
+                              </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">

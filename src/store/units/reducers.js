@@ -8,13 +8,25 @@ import {
 
     GET_ANALYTESUNITS_SUCCESS,
     GET_ANALYTESUNITS_FAIL,
+    GET_INSTRUMENTSINTYPE_SUCCESS,
+    GET_INSTRUMENTSINTYPE_FAIL,
+    GET_ANALYTESMETHODS_SUCCESS,
+    GET_ANALYTESMETHODS_FAIL,
+    GET_ANALYTESREAGENTS_SUCCESS,
+    GET_ANALYTESREAGENTS_FAIL,
+    GET_ANALYTESINSTRUMENTS_SUCCESS,
+    GET_ANALYTESINSTRUMENTS_FAIL,
 
     GET_ANALYTESUNITS_LIST_SUCCESS,
     GET_ANALYTESUNITS_LIST_FAIL,
     ADD_NEW_ANALYTESUNITS_SUCCESS,
     ADD_NEW_ANALYTESUNITS_FAIL,
     UPDATE_ANALYTESUNITS_SUCCESS,
-    UPDATE_ANALYTESUNITS_FAIL
+    UPDATE_ANALYTESUNITS_FAIL,
+    GET_INSTRUMENTSINMANUFACTURER_FAIL,
+    GET_INSTRUMENTSINMANUFACTURER_SUCCESS,
+    GET_REAGENTSINMANUFACTURER_SUCCESS,
+    GET_REAGENTSINMANUFACTURER_FAIL
 
   } from "./actionTypes";
   
@@ -25,6 +37,12 @@ import {
     analytesunit: [],
 
     UnitAnalyte:[],
+    InstrumentsInType:[],
+    InstrumentsInManufacturer:[],
+    ReagentsInManufacturer:[],
+    MethodAnalyte:[],
+    ReagentAnalyte:[],
+    InstrumentAnalyte:[],
 
     ListUnits: [],
     error: {},
@@ -34,6 +52,92 @@ import {
   
   const ListUnits = (state = INIT_STATE, action) => {
     switch (action.type) {
+
+      /////reagents in MANUFACTURER
+      case GET_REAGENTSINMANUFACTURER_SUCCESS:
+        console.log("ReagentsInManufacturer:", action.payload);
+      return {
+        ...state,
+        ReagentsInManufacturer: action.payload, // Update to handle units array
+      };
+    
+        case GET_REAGENTSINMANUFACTURER_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
+
+      /////instruments in MANUFACTURER
+      case GET_INSTRUMENTSINMANUFACTURER_SUCCESS:
+        console.log("InstrumentsInManufacturer:", action.payload);
+      return {
+        ...state,
+        InstrumentsInManufacturer: action.payload, // Update to handle units array
+      };
+    
+        case GET_INSTRUMENTSINMANUFACTURER_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
+
+      /////instruments in instrument type
+      case GET_INSTRUMENTSINTYPE_SUCCESS:
+        console.log("InstrumentsInType:", action.payload);
+      return {
+        ...state,
+        InstrumentsInType: action.payload, // Update to handle units array
+      };
+    
+        case GET_INSTRUMENTSINTYPE_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
+        /////analytes associated with methods
+      case GET_ANALYTESMETHODS_SUCCESS:
+        console.log("ANALYTESMETHODS:", action.payload);
+      return {
+        ...state,
+        MethodAnalyte: action.payload, // Update to handle units array
+      };
+    
+        case GET_ANALYTESMETHODS_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
+
+          /////analytes associated with INSTRUMENTS
+      case GET_ANALYTESINSTRUMENTS_SUCCESS:
+        console.log("InstrumentAnalyte:", action.payload);
+      return {
+        ...state,
+        InstrumentAnalyte: action.payload, // Update to handle units array
+      };
+    
+        case GET_ANALYTESINSTRUMENTS_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
+          /////analytes associated with REAGENTS
+      case GET_ANALYTESREAGENTS_SUCCESS:
+        console.log("ANALYTESREAGENTS:", action.payload);
+      return {
+        ...state,
+        ReagentAnalyte: action.payload, // Update to handle units array
+      };
+    
+        case GET_ANALYTESREAGENTS_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
+      /////analytes associated with units
       case GET_ANALYTESUNITS_SUCCESS:
         console.log("ANALYTESUNITS:", action.payload);
       return {

@@ -16,25 +16,55 @@ import {
   GET_UNAPPROVED_B2B_CLIENTS_FAIL,
   APPROVE_UNAPPROVE_B2B_CLIENT_SUCCESS,
   APPROVE_UNAPPROVE_B2B_CLIENT_FAIL,
-  
+  GET_ALL_PARTICIPANT_SUCCESS,
+  GET_ALL_PARTICIPANT_FAIL,
+  UPDATE_MEMBERSHIP_STATUS_SUCCESS,
+  UPDATE_MEMBERSHIP_STATUS_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
-
+  AllLabs:[],
   pendingLabs: [],
   approvedLabs: [],
   unapprovedLabs: [],
   pendingB2BClients: [],
   approvedB2BClients: [],
   unapprovedB2BClients: [],
- 
   success: [],
   error: {},
+  Membershipstatus:[],
 };
 
 const registrationAdmin = (state = INIT_STATE, action) => {
   switch (action.type) {
 
+    case UPDATE_MEMBERSHIP_STATUS_SUCCESS:
+      return {
+        ...state,
+        Membershipstatus: state.Membershipstatus.map(status =>
+          status.id.toString() === action.payload.id.toString()
+            ? { status, ...action.payload }
+            : status
+        ),
+      };
+
+    case UPDATE_MEMBERSHIP_STATUS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case GET_ALL_PARTICIPANT_SUCCESS:
+      return {
+        ...state,
+        AllLabs: action.payload.data,
+      };
+
+    case GET_ALL_PARTICIPANT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     
     case GET_PENDING_LABS_SUCCESS:
       return {

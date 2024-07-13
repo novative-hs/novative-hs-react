@@ -8,6 +8,9 @@ import {
     UPDATE_REAGENTS,
     UPDATE_REAGENTS_SUCCESS,
     UPDATE_REAGENTS_FAIL,
+    DELETE_REAGENT,
+    DELETE_REAGENT_SUCCESS,
+    DELETE_REAGENT_FAIL,
 
     GET_ANALYTESREAGENTS_LIST,
     GET_ANALYTESREAGENTS_LIST_SUCCESS,
@@ -114,5 +117,19 @@ import {
     type: UPDATE_REAGENTS_FAIL,
     payload: error,
   });
+//delete reagents Action
+export const deleteReagent = Reagent => ({
+  type: DELETE_REAGENT,
+  payload: Reagent,
+});
 
+export const deleteReagentSuccess = Reagent => ({
+  type: DELETE_REAGENT_SUCCESS,
+  payload: Reagent,
+});
+
+export const deleteReagentFail = error => ({
+  type: DELETE_REAGENT_FAIL,
+  payload: error,
+});
   

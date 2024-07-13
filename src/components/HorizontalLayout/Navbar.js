@@ -127,14 +127,7 @@ class Navbar extends Component {
                           <li>
                             <Link to="/database-of-units" className="dropdown-item">Database of units</Link>
                           </li>
-                            <li>
-                              <Link
-                                to="/equipment-list"
-                                className="dropdown-item"
-                              >
-                                Database of equipments
-                              </Link>
-                            </li>
+                            
                             <li>
                               <Link
                                 to="/database-of-equipmentType"
@@ -149,6 +142,14 @@ class Navbar extends Component {
                                 className="dropdown-item"
                               >
                                 Database of manufacturer
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                to="/equipment-list"
+                                className="dropdown-item"
+                              >
+                                Database of equipments
                               </Link>
                             </li>
                             <li>
@@ -217,6 +218,12 @@ class Navbar extends Component {
                           <li>
                             <Link to="/database-of-participantcity" className="dropdown-item">City</Link>
                           </li>
+                          <li>
+                            <Link to="/database-of-participantcountry" className="dropdown-item">Country</Link>
+                          </li>
+                          <li>
+                            <Link to="/database-of-participantprovince" className="dropdown-item">Province</Link>
+                          </li>
                             <li>
                               <Link
                                 to="/database-of-participantdistrict"
@@ -261,19 +268,19 @@ class Navbar extends Component {
                         </li>
                         <li className="nav-item">
                         <Link
-                                to="/cycle"
+                                to="/scheme"
                                 className="dropdown-item"
                               >
-                            <span className="pt-4 font-size-12">Cycle</span>
+                            <span className="pt-4 font-size-12">Scheme</span>
                             {/* {this.props.t("Tests")} */}
                           </Link>
                         </li>
                         <li className="nav-item">
                         <Link
-                                to="/scheme"
+                                to="/cycle"
                                 className="dropdown-item"
                               >
-                            <span className="pt-4 font-size-12">Scheme</span>
+                            <span className="pt-4 font-size-12">Cycle</span>
                             {/* {this.props.t("Tests")} */}
                           </Link>
                         </li>
@@ -290,7 +297,7 @@ class Navbar extends Component {
                     </Collapse>
                   </nav>
                 )}
-              {this.state.account_type &&
+             {this.state.account_type &&
                 this.state.account_type === "organization" && (
                   <nav
                     className="navbar navbar-light navbar-expand-lg"
@@ -304,20 +311,7 @@ class Navbar extends Component {
                       <ul className="navbar-nav">
                         <li className="nav-item">
                           <Link to="/add-staff" className="dropdown-item">
-                            <span className="pt-4 font-size-12">
-                              Add Staff(Registration, DatabaseAdmin, CSR)
-                            </span>
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link
-                            to={"/all-participant"}
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">
-                              Participant List
-                            </span>
-                            {/* {this.props.t("Packages")} */}
+                            <span className="pt-4 font-size-12">Add Staff</span>
                           </Link>
                         </li>
                         <li className="nav-item">
@@ -326,7 +320,7 @@ class Navbar extends Component {
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">
-                              Database Admin list
+                              Database Admin
                             </span>
                             {/* {this.props.t("Profiles")} */}
                           </Link>
@@ -337,23 +331,30 @@ class Navbar extends Component {
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">
-                              Registrationn Admin list
+                              Registration Admin
                             </span>
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>
                         <li className="nav-item">
                           <Link to={"/csr-list"} className="dropdown-item">
-                            <span className="pt-4 font-size-12">CSR list</span>
+                            <span className="pt-4 font-size-12">CSR</span>
                             {/* {this.props.t("Packages")} */}
                           </Link>
                         </li>
+                        <li className="nav-item">
+                          <Link to="/all-participants" className="dropdown-item">
+                            <span className="pt-4 font-size-12">
+                              Participants List
+                            </span>
+                          </Link>
+                        </li>              
                       </ul>
                     </Collapse>
                   </nav>
                 )}
 
-              {this.state.account_type &&
+{this.state.account_type &&
                 this.state.account_type === "registration-admin" && (
                   <nav
                     className="navbar navbar-light navbar-expand-lg"
@@ -365,62 +366,14 @@ class Navbar extends Component {
                       id="topnav-menu-content"
                     >
                       <ul className="navbar-nav">
-                        <li className="nav-item">
-                          <span
-                            className="dropdown-item"
-                            onMouseEnter={this.toggleDropdown}
-                            // onMouseLeave={this.toggleDropdown}
-                          >
-                            <span className="pt-4 font-size-12">
-                              Participant
-                            </span>
-                          </span>
-                          <ul
-                            className={
-                              dropdownOpen
-                                ? "dropdown-menu show"
-                                : "dropdown-menu"
-                            }
-                            style={{ backgroundColor: "#0000CD" }}
-                          >
-                            <li>
-                              <Link
-                                to="/pending-participant"
-                                className="dropdown-item"
-                              >
-                                Pending
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to="/approved-participant"
-                                className="dropdown-item"
-                              >
-                                Approved
-                              </Link>
-                            </li>
-                            <li>
-                              <Link
-                                to="/unapproved-participant"
-                                className="dropdown-item"
-                              >
-                                Unapproved
-                              </Link>
-                            </li>
-                          </ul>
-                        </li>
-                        <li className="nav-item">
-                          <Link to={`/round`} className="dropdown-item">
-                            <span className="pt-4 font-size-12">Rounds</span>
-                            {/* {this.props.t("Profiles")} */}
+                      <li className="nav-item">
+                          <Link to={`/pending-participant`} className="dropdown-item">
+                            <span className="pt-4 font-size-12">Participant</span>
                           </Link>
                         </li>
-                        <li className="nav-item">
-                          <Link to="/news" className="dropdown-item">
-                            News
-                          </Link>
-                        </li>
-                      
+
+                  
+
                         <li className="nav-item">
                           <Link
                             to="/register-participant"
@@ -431,14 +384,25 @@ class Navbar extends Component {
                             </span>
                           </Link>
                         </li>
+
                         <li className="nav-item">
+                        <Link to={"/round"} className="dropdown-item">
+                          <span className="pt-4 font-size-12">Rounds</span>
+                        </Link>
+                      </li>
+                      <li>
                           <Link
-                            to="/all-participant1"
+                            to="/participant-payment"
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">
-                              Participants List
+                              Payment
                             </span>
+                          </Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link to="/news" className="dropdown-item">
+                            News
                           </Link>
                         </li>
                       </ul>
@@ -468,11 +432,13 @@ class Navbar extends Component {
                             Organization List
                           </Link>
                         </li>
-                      </ul>
-                    </Collapse>
-                  </nav>
-                )}
 
+                     
+                    </ul>
+                  </Collapse>
+
+                </nav>
+              )}
 {this.state.account_type &&
                 this.state.account_type === "CSR" && (
                   <nav
@@ -526,14 +492,9 @@ class Navbar extends Component {
                     id="topnav-menu-content"
                   >
                     <ul className="navbar-nav">
-                      {/* <li className="nav-item">
-                        <Link to={"/email"} className="dropdown-item">
-                          <span className="pt-4 font-size-12">Email us</span>
-                        </Link>
-                      </li> */}
 
                       <li className="nav-item">
-                        <Link to={"/rounds"} className="dropdown-item">
+                        <Link to={"/rounds-participant"} className="dropdown-item">
                           <span className="pt-4 font-size-12">Rounds</span>
                         </Link>
                       </li>

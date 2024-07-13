@@ -5,6 +5,8 @@ import {
     ADD_NEW_REAGENTS_FAIL,
     UPDATE_REAGENTS_SUCCESS,
     UPDATE_REAGENTS_FAIL,
+    DELETE_REAGENT_SUCCESS,
+    DELETE_REAGENT_FAIL,
 
     GET_ANALYTESREAGENTS_LIST_SUCCESS,
     GET_ANALYTESREAGENTS_LIST_FAIL,
@@ -104,6 +106,19 @@ import {
           ...state,
           error: action.payload,
         };
+        case DELETE_REAGENT_SUCCESS:
+          return {
+            ...state,
+            ListReagents: state.ListReagents.filter(
+              reagent => reagent.id.toString() !== action.payload.id.toString()
+            ),
+          };
+    
+        case DELETE_REAGENT_FAIL:
+          return {
+            ...state,
+            error: action.payload,
+          };
 
 
       default:

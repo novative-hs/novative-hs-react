@@ -27,7 +27,7 @@ class AnalyteAddMethods extends Component {
       feedbackMessage: '',
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => (

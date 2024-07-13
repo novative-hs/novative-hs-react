@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import Tooltip from "@material-ui/core/Tooltip";
 import {
   Card,
   CardBody,
@@ -14,6 +15,7 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
+  Alert,
 
 } from "reactstrap";
 
@@ -29,7 +31,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 //Import Breadcrumb
 import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getApprovedLabs } from "store/registration-admin/actions";
+import { getApprovedLabs, updateMembershipStatus} from "store/registration-admin/actions";
 import "assets/scss/table.scss";
 
 class ApprovedLabs extends Component {
@@ -39,6 +41,7 @@ class ApprovedLabs extends Component {
     this.state = {
       approvedLabs: [],
       id: "",
+      successMessage: "",
       btnText: "Copy",
       isHovered: false,
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
@@ -62,30 +65,7 @@ class ApprovedLabs extends Component {
           hidden: true,
           formatter: (cellContent, approvedLab) => <>{approvedLab.id}</>,
         },
-        // {
-        //   dataField: "city",
-        //   text: "Participant City",
-        //   // sort: true,
-        //   formatter: (cellContent, approvedLab) => (
-        //     <>
-        //       <span>
-        //         {approvedLab.city}
-        //       </span>
-        //     </>
-        //   ), filter: textFilter(),
-        // },
-        // {
-        //   dataField: "district",
-        //   text: "District",
-        //   // sort: true,
-        //   formatter: (cellContent, approvedLab) => (
-        //     <>
-        //       <span>
-        //         {approvedLab.district}
-        //       </span>
-        //     </>
-        //   ), filter: textFilter(),
-        // },
+     
         {
           dataField: "name",
           text: "Participant Name",
@@ -93,7 +73,7 @@ class ApprovedLabs extends Component {
           formatter: (cellContent, approvedLab) => (
             <>
               <span style={{
-                width: '200px', // Set your desired width here
+                width: '150px', // Set your desired width here
                 fontSize: '14px',
               
                 textOverflow: 'ellipsis',
@@ -101,17 +81,52 @@ class ApprovedLabs extends Component {
                 textAlign: 'left', // Align text to the left
                 display: 'block',
               }}>
-                <Link
+                {/* <Link
                   to="#"
                   onMouseEnter={e => this.openPatientModal(e, approvedLab)}
                   onPointerLeave={this.handleMouseExit()}
-                >
+                > */}
                   {approvedLab.name}
-                </Link>
+                {/* </Link> */}
               </span>
             </>
           ),
           filter: textFilter(),
+        },
+        {
+          dataField: "city",
+          text: "Participant City",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span>
+                {approvedLab.city}
+              </span>
+            </>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "district",
+          text: "Participant District",
+          // sort: true,
+          formatter: (cellContent, approvedLab) => (
+            <>
+              <span>
+                {approvedLab.district}
+              </span>
+            </>
+          ), filter: textFilter(),
+        },
+        {
+          dataField: "email",
+          text: "Participant Email",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+                   {pendingLab.email}
+                  
+            </>
+          ),filter: textFilter(),  
         },
         {
           dataField: "shipping_address",
@@ -119,7 +134,7 @@ class ApprovedLabs extends Component {
           sort: true,   
           formatter: (cellContent, pendingLab) => (
             <span style={{
-              width: '200px', // Set your desired width here
+              width: '150px', // Set your desired width here
               fontSize: '14px',
             
               textOverflow: 'ellipsis',
@@ -139,7 +154,7 @@ class ApprovedLabs extends Component {
           sort: true,   
           formatter: (cellContent, pendingLab) => (
             <span style={{
-              width: '200px', // Set your desired width here
+              width: '150px', // Set your desired width here
               fontSize: '14px',
             
               textOverflow: 'ellipsis',
@@ -154,38 +169,104 @@ class ApprovedLabs extends Component {
           
         },
         {
-          dataField: "registered_by",
-          text: "Registered by",
-          sort: true,
+          dataField: "payment_status",
+          text: "Payment Status",
+          sort: true,   
           formatter: (cellContent, pendingLab) => (
-            <>
-              {pendingLab.registered_by == 'Lab' ? (
-                <span>
-                 
-                  <Link
-                to="#"
-                
-                onMouseEnter={e =>  this.openLabModal(e, pendingLab)}
-                onPointerLeave={this.handleMouseExit()}
-              >
-               {pendingLab.registered_by}
-              </Link>
-              </span>
-              ) : (
-                <span>
-                  <Link
-                to="#"
-                // onClick={e => this.openMarketerModal(e, pendingLab)}
-                onMouseEnter={e =>   this.openMarketerModal(e, pendingLab)}
-                onPointerLeave={this.handleMouseExit()}
-              >
-               {pendingLab.registered_by}
-              </Link>
-                </span>
-              )}
-            </>
-          ),filter: textFilter(),
+            <span style={{
+              width: '150px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
+                   {pendingLab.payment_status}
+                  
+            </span>
+          ),filter: textFilter(),  
+          
         },
+        {
+          dataField: "membership_status",
+          text: "Membership Status",
+          sort: true,   
+          formatter: (cellContent, pendingLab) => (
+            <span style={{
+              width: '150px', // Set your desired width here
+              fontSize: '14px',
+            
+              textOverflow: 'ellipsis',
+              whiteSpace: 'prewrap',
+              textAlign: 'left', // Align text to the left
+              display: 'block',
+            }}>
+                   {pendingLab.membership_status}
+                  
+            </span>
+          ),filter: textFilter(),  
+          
+        },
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, methodlist) => (
+            <div>
+              <Tooltip title="Update Membership Status">
+                <Link className="text-success" to="#">
+                  <i
+                    className="mdi mdi-pencil font-size-18"
+                    id="edittooltip"
+                    onClick={() => this.toggle(methodlist)}
+                    // onClick={e => this.handleCSRClick(e, CSR)}
+                  ></i>
+                </Link>
+              </Tooltip>
+              {/* <Tooltip title="History">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/databaseadmin-history/${methodlist.id}`}
+                ></Link>
+              </Tooltip> */}
+            </div>
+          ),
+        },
+        // {
+        //   dataField: "registered_by",
+        //   text: "Registered by",
+        //   sort: true,
+        //   formatter: (cellContent, pendingLab) => (
+        //     <>
+        //       {pendingLab.registered_by == 'Lab' ? (
+        //         <span>
+                 
+        //           <Link
+        //         to="#"
+                
+        //         onMouseEnter={e =>  this.openLabModal(e, pendingLab)}
+        //         onPointerLeave={this.handleMouseExit()}
+        //       >
+        //        {pendingLab.registered_by}
+        //       </Link>
+        //       </span>
+        //       ) : (
+        //         <span>
+        //           <Link
+        //         to="#"
+        //         // onClick={e => this.openMarketerModal(e, pendingLab)}
+        //         onMouseEnter={e =>   this.openMarketerModal(e, pendingLab)}
+        //         onPointerLeave={this.handleMouseExit()}
+        //       >
+        //        {pendingLab.registered_by}
+        //       </Link>
+        //         </span>
+        //       )}
+        //     </>
+        //   ),filter: textFilter(),
+        // },
         // {
         //   dataField: "email",
         //   text: "Email",
@@ -218,16 +299,54 @@ class ApprovedLabs extends Component {
     this.handlePatientFeedbackClick =
       this.handlePatientFeedbackClick.bind(this);
   }
+  displaySuccessMessage = message => {
+    this.setState({ successMessage: message });
+
+    setTimeout(() => {
+      this.setState({ successMessage: "", modal: false });
+    }, 3000);
+  };
 
   componentDidMount() {
     const { onGetApprovedLabs } = this.props;
     onGetApprovedLabs(this.state.user_id);
+    // Set the initial dropdown value based on the URL
+    this.setInitialDropdownValue();
   }
+  setInitialDropdownValue = () => {
+    const { pathname } = this.props.history.location;
+    let selectedValue = '';
 
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-    }));
+    if (pathname.includes('/pending-participant')) {
+      selectedValue = 'Pending Participant';
+    } else if (pathname.includes('/approved-participant')) {
+      selectedValue = 'Approved Participant';
+    } else if (pathname.includes('/unapproved-participant')) {
+      selectedValue = 'Unapproved Participant';
+    } else if (pathname.includes('/all-participant')) {
+      selectedValue = 'All Participant';
+    }
+
+    this.setState({ selectedValue });
+  };
+
+  toggle(unit) {
+    if (unit && unit.id) {
+      this.setState({
+        modal: true,
+        selectedUnit: {
+          id: unit.id,
+          membership_status: unit.membership_status,
+        },
+        isEdit: true,
+      });
+    } else {
+      this.setState({
+        modal: true,
+        selectedUnit: null,
+        isEdit: false,
+      });
+    }
   }
 
   openLabModal = (e, arg) => {
@@ -293,6 +412,25 @@ class ApprovedLabs extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
+  handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
+
+    this.setState({ selectedValue });
+
+    // Perform navigation based on the selected value
+    if (selectedValue === 'Pending Participant') {
+      this.props.history.push('/pending-participant');
+    }
+    if (selectedValue === 'Approved Participant') {
+      this.props.history.push('/approved-participant');
+    }
+    if (selectedValue === 'Unapproved Participant') {
+      this.props.history.push('/unapproved-participant');
+    }
+    if (selectedValue === 'All Participant') {
+      this.props.history.push('/all-participant');
+    }
+  };
 
   render() {
     const { SearchBar } = Search;
@@ -324,12 +462,127 @@ class ApprovedLabs extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Participant " breadcrumbItem="Approved" />
             <Row className="justify-content-center align-item-center">
-                {/* <div> <span className="text-danger font-size-12">
-                  <strong>
-                    Note: There will be Approved and Active Labs Shown on it.
-                  </strong>
-                  </span>
-                </div> */}
+
+            <Modal
+                                      isOpen={this.state.modal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.closeModal}
+                                        tag="h4"
+                                      >
+                                        {"Update Membership Status"}
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        {this.state.successMessage && (
+                                          <div
+                                            className="alert alert-success"
+                                            role="alert"
+                                          >
+                                            {this.state.successMessage}
+                                          </div>
+                                        )}
+                                        <Formik
+                                          enableReinitialize={true}
+                                          initialValues={{
+                                              membership_status: this.state.selectedUnit
+                                              ? this.state.selectedUnit.membership_status
+                                              : "Suspended",
+                                          }}                                   
+                                          onSubmit={async (
+                                            values,
+                                            { setSubmitting }
+                                          ) => {
+                                            const userId = localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
+                                              : "";
+
+                                            const newUnit = {
+                                              membership_status: values.membership_status,
+                                              added_by: userId,
+                                            };
+
+                                            try {
+                                              if (this.state.isEdit) {
+                                                await this.props.onupdateMembershipStatus(
+                                                  this.state.selectedUnit.id,
+                                                  newUnit
+                                                );
+                                                this.displaySuccessMessage(
+                                                  "Membership Status updated successfully!"
+                                                );
+                                                setTimeout(() => {
+                                                  this.props.onGetApprovedLabs(this.state.user_id);
+                                                }, 1000);
+                                              } 
+                                            } catch (error) {
+                                              console.error(
+                                                "Error updating/adding method:",
+                                                error
+                                              );
+                                            }
+
+                                            setSubmitting(false);
+                                          }}
+                                        >
+                                          {({ errors, status, touched }) => (
+                                            <Form>
+                                              <Row>
+                                                <Col className="col-12">
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">
+                                                    Membership Status
+                                                    </Label>
+                                                    <Field
+                                                      name="membership_status"
+                                                      as="select"
+                                                      defaultValue="Suspended"
+                                                      className="form-control"
+                                                      multiple={false}
+                                                    >
+                                                      <option value="Suspended">
+                                                      Suspended
+                                                      </option>
+                                                      <option value="Active">
+                                                        Active
+                                                      </option>
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="membership_status"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col>
+                                                  <div className="text-end">
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#0000CD",
+                                                        borderColor: "#0000CD",
+                                                      }}
+                                                    >
+                                                      Save
+                                                    </button>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </Form>
+                                          )}
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
               <Col lg="10">
                 <Card>
                   <CardBody>
@@ -348,6 +601,29 @@ class ApprovedLabs extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
+                             <Row className="mb-2">
+                                <Col sm="4">
+                                  <div className="ms-2 mb-4">
+                                    <div>
+                                      <Label for="main_lab_appointments" className="form-label">
+                                      <strong>Select Pending, Approved, Unapproved and All Participant</strong>
+                                      </Label>
+                                      <select
+                                        className="form-control select2"
+                                        title="main_lab_appointments"
+                                        name="main_lab_appointments"
+                                        onChange={this.handleSelectChange}
+                                        value={this.state.selectedValue}
+                                      >
+                                        <option value="Pending Participant">Pending Participant</option>
+                                        <option value="Approved Participant">Approved Participant</option>
+                                        <option value="Unapproved Participant">Unapproved Participant</option>
+                                        <option value="All Participant">All Participant</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </Col>
+                              </Row>
                               <Row className="mb-2">
                                 {/* <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
@@ -374,7 +650,7 @@ class ApprovedLabs extends Component {
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}
-                                      sort={{ sortCaret: (order, column) => order === 'desc' ? <i className="fa fa-arrow-up" style={iconStyle}></i> : <i className="fa fa-arrow-down" style={iconStyle}></i> }} // Customize sort caret icons
+                                      // sort={{ sortCaret: (order, column) => order === 'desc' ? <i className="fa fa-arrow-up" style={iconStyle}></i> : <i className="fa fa-arrow-down" style={iconStyle}></i> }} // Customize sort caret icons
 
                                     />
                                     {/* {this.state.isHovered && ( */}
@@ -647,6 +923,8 @@ ApprovedLabs.propTypes = {
   approvedLabs: PropTypes.array,
   className: PropTypes.any,
   onGetApprovedLabs: PropTypes.func,
+  onupdateMembershipStatus: PropTypes.func,
+  history: PropTypes.any,
 };
 const mapStateToProps = ({ registrationAdmin }) => ({
   approvedLabs: registrationAdmin.approvedLabs,
@@ -654,6 +932,7 @@ const mapStateToProps = ({ registrationAdmin }) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
+  onupdateMembershipStatus: (id, status) => dispatch(updateMembershipStatus({ id, ...status })),
 });
 
 export default connect(

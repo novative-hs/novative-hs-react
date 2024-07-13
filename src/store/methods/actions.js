@@ -8,6 +8,9 @@ import {
     UPDATE_METHODS,
     UPDATE_METHODS_SUCCESS,
     UPDATE_METHODS_FAIL,
+    DELETE_METHOD,
+    DELETE_METHOD_SUCCESS,
+    DELETE_METHOD_FAIL,
 
     GET_ANALYTESMETHODS_LIST,
     GET_ANALYTESMETHODS_LIST_SUCCESS,
@@ -116,3 +119,19 @@ import {
     type: UPDATE_METHODS_FAIL,
     payload: error,
   });
+  //delete Methods Action
+  export const deleteMethod = Method => ({
+    type: DELETE_METHOD,
+    payload: Method,
+  });
+  
+  export const deleteMethodSuccess = Method => ({
+    type: DELETE_METHOD_SUCCESS,
+    payload: Method,
+  });
+  
+  export const deleteMethodFail = error => ({
+    type: DELETE_METHOD_FAIL,
+    payload: error,
+  });
+  

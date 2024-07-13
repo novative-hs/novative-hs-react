@@ -17,8 +17,16 @@ export const POST_CORPORATE_INFORMATION = `${API_ENDPOINT}/api/corporate/corpora
 // database admin
 
 /////////Sample
-export const GET_SAMPLE = `${API_ENDPOINT}/api/database-admin/sample-list`;
-export const ADD_SAMPLE = `${API_ENDPOINT}/api/database-admin/post-sample`;
+export const GET_SAMPLE_LIST = `${API_ENDPOINT}/api/database-admin/sample-list`;
+export const ADD_NEW_SAMPLE_LIST = `${API_ENDPOINT}/api/database-admin/post-sample-list`;
+export const UPDATE_NEW_SAMPLE_LIST  = `${API_ENDPOINT}/api/database-admin/update-sample-list`;
+export const DELETE_NEW_SAMPLE_LIST = `${API_ENDPOINT}/api/database-admin/delete-sample`;
+
+// Sample Analyte
+export const GET_SAMPLE_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/sample-analyte-list`;
+export const ADD_SAMPLE_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/sample-add-analyte`;
+export const UPDATE_SAMPLE_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/sample-update-analyte`;
+
 
 export const GET_UNITS_LIST = `${API_ENDPOINT}/api/database-admin/units_list`;
 export const ADD_NEW_UNITS = `${API_ENDPOINT}/api/database-admin/units_create`;
@@ -28,14 +36,19 @@ export const GET_HISTORY_LIST = `${API_ENDPOINT}/api/database-admin/history_list
 export const GET_REAGENTS_LIST = `${API_ENDPOINT}/api/database-admin/reagent_list`;
 export const ADD_NEW_REAGENTS = `${API_ENDPOINT}/api/database-admin/reagent_create`;
 export const UPDATE_REAGENTS = `${API_ENDPOINT}/api/database-admin/reagent_update`;
+export const DELETE_REAGENT = `${API_ENDPOINT}/api/database-admin/delete-reagent`;
+
 
 export const GET_MANUFACTURAL_LIST = `${API_ENDPOINT}/api/database-admin/manufactural_list`;
 export const ADD_NEW_MANUFACTURAL = `${API_ENDPOINT}/api/database-admin/manufactural_create`;
 export const UPDATE_MANUFACTURAL = `${API_ENDPOINT}/api/database-admin/manufactural_update`;
+export const DELETE_MANUFACTURER = `${API_ENDPOINT}/api/database-admin/delete-manufacturer`;
 
 export const GET_INSTRUMENT_TYPE_LIST = `${API_ENDPOINT}/api/database-admin/instrument-type-list`;
 export const ADD_NEW_INSTRUMENT_TYPE = `${API_ENDPOINT}/api/database-admin/instrument-type-create-list`;
 export const UPDATE_NEW_INSTRUMENT_TYPE = `${API_ENDPOINT}/api/database-admin/update-instrument-type-list`;
+export const ADD_EQUIPMENTTYPE_FILE = `${API_ENDPOINT}/api/database-admin/instrument-type-file`;
+export const DELETE_INSTRUMENT_TYPE = `${API_ENDPOINT}/api/database-admin/delete-instrumenttype`;
 
 export const GET_METHOD_LIST = `${API_ENDPOINT}/api/database-admin/methods-list`;
 export const ADD_NEW_METHOD = `${API_ENDPOINT}/api/database-admin/methods-create-list`;
@@ -45,10 +58,13 @@ export const GET_SCHEME_LIST = `${API_ENDPOINT}/api/database-admin/scheme-list`;
 export const ADD_NEW_SCHEME = `${API_ENDPOINT}/api/database-admin/scheme-list`;
 export const UPDATE_SCHEME = `${API_ENDPOINT}/api/database-admin/update-scheme`;
 export const DELETE_SCHEME = `${API_ENDPOINT}/api/database-admin/delete-scheme`;
+export const DELETE_METHOD = `${API_ENDPOINT}/api/database-admin/delete-method`;
+
 
 export const GET_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/analyte-list`;
 export const ADD_NEW_ANALYTE = `${API_ENDPOINT}/api/database-admin/analyte-create-list`;
 export const UPDATE_ANALYTE = `${API_ENDPOINT}/api/database-admin/update-analyte`;
+export const DELETE_ANALYTE = `${API_ENDPOINT}/api/database-admin/delete-analyte`;
 
 export const GET_CYCLE_LIST = `${API_ENDPOINT}/api/database-admin/cycle-list`;
 export const ADD_NEW_CYCLE = `${API_ENDPOINT}/api/database-admin/post-cycle`;
@@ -57,6 +73,14 @@ export const DELETE_CYCLE = `${API_ENDPOINT}/api/database-admin/delete-cycle`;
 
 //Participant
 export const GET_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/participant-information`;
+
+// Rounds Labs
+export const GET_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-labs-list`;
+export const ADD_NEW_PAYMENT = `${API_ENDPOINT}/api/registration-admin/add-payment`;
+export const ADD_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-add-lab`;
+export const UPDATE_ROUNDLABS = `${API_ENDPOINT}/api/registration-admin/round-update-lab`;
+
+// Analyte Reagents
 export const GET_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-reagents-list`;
 export const ADD_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-add-reagent`;
 export const UPDATE_ANALYTEREAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-update-reagent`;
@@ -76,11 +100,27 @@ export const ADD_NEW_ANALYTESUNITS = `${API_ENDPOINT}/api/database-admin/analyte
 export const UPDATE_ANALYTESUNITS = `${API_ENDPOINT}/api/database-admin/analyte-update-units`;
 //analyes associated with unit
 export const GET_ANALYTESUNITS = `${API_ENDPOINT}/api/database-admin/analyte-units`;
+export const GET_ANALYTESMETHODS = `${API_ENDPOINT}/api/database-admin/analyte-methods`;
+export const GET_ANALYTESREAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-reagents`;
+export const GET_ANALYTESINSTRUMENTS = `${API_ENDPOINT}/api/database-admin/analyte-instruments`;
+
+
+export const GET_INSTRUMENTSINTYPE = `${API_ENDPOINT}/api/database-admin/instrument-instrumenttype`;
+export const GET_INSTRUMENTSINMANUFACTURER = `${API_ENDPOINT}/api/database-admin/instrument-manufacturer`;
+export const GET_REAGENTSINMANUFACTURER = `${API_ENDPOINT}/api/database-admin/reagent-manufacturer`;
 
 ////participant
 export const GET_CITY_LIST = `${API_ENDPOINT}/api/database-admin/city_list`;
 export const ADD_NEW_CITY = `${API_ENDPOINT}/api/database-admin/city_create`;
 export const UPDATE_CITY = `${API_ENDPOINT}/api/database-admin/city_update`;
+
+export const GET_COUNTRY_LIST = `${API_ENDPOINT}/api/database-admin/country_list`;
+export const ADD_NEW_COUNTRY = `${API_ENDPOINT}/api/database-admin/country_create`;
+export const UPDATE_COUNTRY = `${API_ENDPOINT}/api/database-admin/country_update`;
+
+export const GET_PROVINCE_LIST = `${API_ENDPOINT}/api/database-admin/province_list`;
+export const ADD_NEW_PROVINCE = `${API_ENDPOINT}/api/database-admin/province_create`;
+export const UPDATE_PROVINCE = `${API_ENDPOINT}/api/database-admin/province_update`;
 
 export const GET_DISTRICT_LIST = `${API_ENDPOINT}/api/database-admin/district_list`;
 export const ADD_NEW_DISTRICT = `${API_ENDPOINT}/api/database-admin/district_create`;
@@ -111,10 +151,15 @@ export const ADD_NEWS = `${API_ENDPOINT}/api/database-admin/news-add`;
 export const GET_INSTRUMENT_LIST = `${API_ENDPOINT}/api/database-admin/instrument-list`;
 export const ADD_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/instrument-create`;
 export const UPDATE_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/update-instrument-list`;
+export const DELETE_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/delete-instrument`;
 
-export const GET_CYCLE_ANALYTE = `${API_ENDPOINT}/api/database-admin/cycle-analyte-list`;
-export const ADD_CYCLE_ANALYTE = `${API_ENDPOINT}/api/database-admin/cycle-add-analyte`;
-export const UPDATE_CYCLE_ANALYTE = `${API_ENDPOINT}/api/database-admin/cycle-update-analyte`;
+// Scheme Analytes
+export const GET_SCHEME_ANALYTE = `${API_ENDPOINT}/api/database-admin/scheme-analyte-list`;
+export const ADD_SCHEME_ANALYTE = `${API_ENDPOINT}/api/database-admin/scheme-add-analyte`;
+export const UPDATE_SCHEME_ANALYTE = `${API_ENDPOINT}/api/database-admin/scheme-update-analyte`;
+
+// Cycle Analytes
+export const GET_ANALYTESCYCLES = `${API_ENDPOINT}/api/database-admin/analyte-cycles`;
 
 /// ORGANIZATION REGISTER
 export const ORGANIZATION_REGISTER = `${API_ENDPOINT}/api/account/register/`;
@@ -442,7 +487,7 @@ export const GET_ROUND_LIST = `${API_ENDPOINT}/api/registration-admin/round-list
 export const ADD_NEW_ROUND = `${API_ENDPOINT}/api/registration-admin/post-round`;
 export const UPDATE_ROUND = `${API_ENDPOINT}/api/registration-admin/update-round-list`;
 export const DELETE_ROUND = `${API_ENDPOINT}/api/registration-admin/delete-round`;
-
+export const UPDATE_MEMBERSHIP_STATUS = `${API_ENDPOINT}/api/registration-admin/update-membership-status`;
 
 export const GET_PENDING_CORPORATE = `${API_ENDPOINT}/api/registration-admin/pending-corporate`;
 export const GET_APPROVED_CORPORATE = `${API_ENDPOINT}/api/registration-admin/approved-corporate`;
@@ -451,7 +496,7 @@ export const APPROVE_UNAPPROVE_CORPORATE = `${API_ENDPOINT}/api/registration-adm
 export const ADD_CHECKOUT_DATA = `${API_ENDPOINT}/api/patient/checkout`;
 export const GET_CHECKOUT_ITEMS = `${API_ENDPOINT}/api/patient/checkout-items`;
 
-
+export const GET_ALL_PARTICIPANT = `${API_ENDPOINT}/api/registration-admin/all-labs`;
 export const GET_PENDING_LABS = `${API_ENDPOINT}/api/registration-admin/pending-labs`;
 export const GET_APPROVED_LABS = `${API_ENDPOINT}/api/registration-admin/approved-labs`;
 export const GET_UNAPPROVED_LABS = `${API_ENDPOINT}/api/registration-admin/unapproved-labs`;

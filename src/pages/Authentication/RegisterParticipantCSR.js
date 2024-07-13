@@ -24,12 +24,25 @@ import {
 // Redux
 import { connect } from "react-redux";
 import Select from "react-select";
-import { CITIES, DISTRICTS } from "helpers/global_variables_helper";
+
+import { getcitylist } from "store/participantcity/actions";
+import { getdepartmentlist } from "store/participantdepartment/actions";
+import { getdistrictlist } from "store/participantdistrict/actions";
+import { getdesignationlist } from "store/participantdesignation/actions";
+import { getcountrylist} from "store/participantcountry/actions";
+import { getprovincelist} from "store/participantprovince/actions";
 
 class StaffRegister extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      ListCity: [],
+      ListDepartment: [],
+      ListDistrict: [],
+      ListDesignation: [],
+      ListCountry: [],
+      ListProvince: [],
+
       usernameFieldError: null,
       passwordFieldError: null,
       incompleteRegistrationError: null,
@@ -39,6 +52,29 @@ class StaffRegister extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
     };
+  }
+
+  componentDidMount() {
+    const { onGetCityList } = this.props;
+    onGetCityList(this.state.user_id);
+    // console.log("city listttt", this.props.ListCity);
+
+    const { onGetDepartmentList } = this.props;
+    onGetDepartmentList(this.state.user_id);
+
+    const { onGetDistrictList } = this.props;
+    onGetDistrictList(this.state.user_id);
+
+    const { onGetdesignationlist } = this.props;
+    onGetdesignationlist(this.state.user_id);
+
+    const { onGetCountryList } = this.props;
+    onGetCountryList(this.state.user_id);
+
+    const { onGetProvinceList } = this.props;
+    onGetProvinceList(this.state.user_id);
+
+    
   }
   componentDidUpdate(prevProps) {
     if (prevProps.emailError !== this.props.emailError) {
@@ -59,7 +95,27 @@ class StaffRegister extends Component {
         incompleteRegistrationError: this.props.incompleteRegistrationError,
       });
     }
+    ///////////////////////////////////////////////////////
+    if (prevProps.ListCity !== this.props.ListCity) {
+      this.setState({ ListCity: this.props.ListCity });
+    }
+    if (prevProps.ListDepartment !== this.props.ListDepartment) {
+      this.setState({ ListDepartment: this.props.ListDepartment });
+    }
+    if (prevProps.ListDistrict !== this.props.ListDistrict) {
+      this.setState({ ListDistrict: this.props.ListDistrict });
+    }
+    if (prevProps.ListDesignation !== this.props.ListDesignation) {
+      this.setState({ ListDesignation: this.props.ListDesignation });
+    }
+    if (prevProps.ListCountry !== this.props.ListCountry) {
+      this.setState({ ListCountry: this.props.ListCountry });
+    }
+    if (prevProps.ListProvince !== this.props.ListProvince) {
+      this.setState({ ListProvince: this.props.ListProvince });
+    }
   }
+
   togglePasswordVisibility = () => {
     const passwordInput = document.querySelector('input[name="password"]');
     const eyeIcon = document.getElementById("eye-icon");
@@ -88,6 +144,46 @@ class StaffRegister extends Component {
   render() {
     // console.log("Email error received:", this.props.emailError);
 
+    const { ListCity } = this.state;
+    const { ListDepartment } = this.state;
+    const { ListDistrict } = this.state;
+    const { ListDesignation } = this.state;
+    const { ListCountry } = this.state;
+    const { ListProvince } = this.state;
+
+    const cityOptions = ListCity.map(city => ({
+      value: city.name,
+      label: city.name,
+    }));
+    const deptOptions = ListDepartment.map(department => ({
+      value: department.name,
+      label: department.name,
+    }));
+    const districtOptions = ListDistrict.map(district => ({
+      value: district.name,
+      label: district.name,
+    }));
+    const designationOptions = ListDesignation.map(designation => ({
+      value: designation.name,
+      label: designation.name,
+    }));
+    const countryOptions = ListCountry.map(country => ({
+      value: country.name,
+      label: country.name,
+    }));
+    const provinceOptions = ListProvince.map(province => ({
+      value: province.name,
+      label: province.name,
+    }));
+
+    const customStyles = {
+      menuList: provided => ({
+        ...provided,
+        maxHeight: 200, // Maximum height for the menu list
+        overflowY: "auto", // Enable vertical scrolling
+        // WebkitOverflowScrolling: "touch", // Smooth scrolling for mobile devices
+      }),
+    };
     return (
       <React.Fragment>
         <div className="page-content">
@@ -112,7 +208,8 @@ class StaffRegister extends Component {
                         initialValues={{
                           username: (this.state && this.state.username) || "",
                           email: (this.state && this.state.email) || "",
-                          email_participant: (this.state && this.state.email_participant) || "",
+                          email_participant:
+                            (this.state && this.state.email_participant) || "",
                           password: (this.state && this.state.password) || "",
                           password2: (this.state && this.state.password2) || "",
                           account_type:
@@ -122,28 +219,20 @@ class StaffRegister extends Component {
                           cnic: (this.state && this.state.cnic) || "",
                           phone: (this.state && this.state.phone) || "",
                           city: (this.state && this.state.city) || "",
-                          postalcode:
-                            (this.state && this.state.postalcode) || "",
-
-                          fax: (this.state && this.state.fax) || "",
-                          organization:
-                            (this.state && this.state.organization) || "",
+                          province:
+                            (this.state && this.state.province) || "",
                           country: (this.state && this.state.country) || "",
                           billing_address:
                             (this.state && this.state.billing_address) || "",
                           shipping_address:
                             (this.state && this.state.shipping_address) || "",
-                          state: (this.state && this.state.state) || "",
-                          Select_schemes:
-                            (this.state && this.state.Select_schemes) || "No",
+                          // Select_schemes:
+                          //   (this.state && this.state.Select_schemes) || "No",
                           department:
                             (this.state && this.state.department) || "",
 
                           lab_staff_name:
                             (this.state && this.state.lab_staff_name) || "",
-                          lab_staff_designation:
-                            (this.state && this.state.lab_staff_designation) ||
-                            "",
                           district: (this.state && this.state.district) || "",
                           landline_registered_by:
                             (this.state && this.state.landline_registered_by) ||
@@ -154,6 +243,7 @@ class StaffRegister extends Component {
                             ? JSON.parse(localStorage.getItem("authUser"))
                                 .user_id
                             : "",
+                          city: (this.state && this.state.city) || " ",
                         }}
                         validationSchema={Yup.object().shape({
                           username: Yup.string()
@@ -189,9 +279,16 @@ class StaffRegister extends Component {
                                 "Both password need to be the same"
                               ),
                             }),
-                          city: Yup.string()
-                            .trim()
-                            .required("Please enter city"),
+                          // city: Yup.array()
+                          // .of(
+                          //   Yup.object().shape({
+                          //     value: Yup.string().required(),
+                          //     label: Yup.string().required(),
+                          //   })
+                          // )
+                          // .min(1, "At least one city is required"),
+
+                          city: Yup.string().required("City is required"),
 
                           // landline: Yup.string()
                           //   .required("Telephone number is required")
@@ -200,11 +297,11 @@ class StaffRegister extends Component {
                           //     "Telephone number must be between 7 and 15 digits"
                           //   ),
 
-                          organization: Yup.string()
-                            .required("Organization name is required")
+                          province: Yup.string()
+                            .required("province  is required")
                             .max(
                               100,
-                              "Organization name can't be longer than 100 characters"
+                              "province name can't be longer than 100 characters"
                             ),
 
                           country: Yup.string()
@@ -220,12 +317,6 @@ class StaffRegister extends Component {
                           //     500,
                           //     "Address can't be longer than 500 characters"
                           //   ),
-                          state: Yup.string()
-                            .required("State is required")
-                            .max(
-                              200,
-                              "State can't be longer than 200 characters"
-                            ),
                           billing_address: Yup.string()
                             .required("billing_address is required")
                             .max(
@@ -238,10 +329,6 @@ class StaffRegister extends Component {
                               500,
                               "Address can't be longer than 500 characters"
                             ),
-
-                          Select_schemes:
-                            Yup.string().required("Scheme is required"),
-
                           department: Yup.string()
                             .required("Department is required")
                             .max(
@@ -261,12 +348,6 @@ class StaffRegister extends Component {
                               50,
                               "Lab staff name can't be longer than 50 characters"
                             ),
-                          lab_staff_designation: Yup.string()
-                            .required("Lab staff designation is required")
-                            .max(
-                              50,
-                              "Lab staff designation can't be longer than 50 characters"
-                            ),
 
                           landline_registered_by: Yup.string()
                             .required("Landline number is required")
@@ -277,24 +358,17 @@ class StaffRegister extends Component {
                           website: Yup.string().url("Invalid URL"),
                           // .required("Website is required"),
                         })}
-                        // onSubmit={values => {
-                        //   this.props.registerUser(values);
-                        //   // console.log("valuessss",  this.props.registerUser(values))
-
-                        //   // Check for errors and set the success message
-                        //   setTimeout(() => {
-                        //     if (
-                        //       !this.state.usernameFieldError &&
-                        //       !this.state.passwordFieldError &&
-                        //       !this.state.incompleteRegistrationError
-                        //     ) {
-                        //       this.setState({
-                        //         submittedMessage: "Participant added  successfully.",
-                        //       });
-                        //     }
-                        //   }, 1000); // Initial 1 second delay
-                        // }}
                         onSubmit={(values, { setSubmitting }) => {
+                          // for multiple selection
+                          // const cityIds = values.city
+                          //   .map(city => city.value)
+                          //   .join(",");
+
+                          // const formData = {
+                          //   ...values,
+                          //   city: cityIds,
+                          // };
+
                           this.props.registerUser(values);
                           setSubmitting(false); // Ensures form is not submitting
                           setTimeout(() => {
@@ -311,7 +385,13 @@ class StaffRegister extends Component {
                           }, 1000); // Initial 1 second delay
                         }}
                       >
-                        {({ errors, touched, isSubmitting }) => (
+                        {({
+                          values,
+                          errors,
+                          touched,
+                          isSubmitting,
+                          setFieldValue,
+                        }) => (
                           <Form className="form-horizontal">
                             {/* Name field */}
                             <Row>
@@ -341,10 +421,7 @@ class StaffRegister extends Component {
                               <Col sm={6} md={6} xl={6}>
                                 {/* Organization email */}
                                 <div className="mb-3">
-                                  <Label
-                                    for="email"
-                                    className="form-label"
-                                  >
+                                  <Label for="email" className="form-label">
                                     Email
                                   </Label>
                                   <Field
@@ -354,8 +431,7 @@ class StaffRegister extends Component {
                                     placeholder="Please enter your email"
                                     className={
                                       "form-control" +
-                                      (errors.email &&
-                                      touched.email
+                                      (errors.email && touched.email
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -401,20 +477,41 @@ class StaffRegister extends Component {
                                   <Label for="city" className="form-label">
                                     City
                                   </Label>
-                                  <Field
-                                    id="city"
-                                    name="city"
-                                    type="text"
-                                    placeholder="Please enter your city/town"
+                                  <Select
+                                    name="city" // The field name in Formik
+                                    // isMulti // Enable multi-select
+                                    options={cityOptions} // Options for the select
+                                    styles={customStyles}
                                     className={
-                                      "form-control" +
-                                      (errors.city && touched.city
+                                      // "form-control" +
+                                      errors.city && touched.city
                                         ? " is-invalid"
-                                        : "")
+                                        : "" // Conditional class based on validation
                                     }
+                                    //   onChange={
+                                    //     selectedOptions =>
+                                    //       setFieldValue("city", selectedOptions) // Update Formik state
+                                    //   }
+                                    //   value={values.city} // Set the current selected values
+                                    // />
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "city",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      ); // Update Formik state with string value
+                                    }}
+                                    value={
+                                      cityOptions.find(
+                                        option => option.value === values.city
+                                      ) || null
+                                    } // Set the current selected value
+                                    // menuPlacement="auto"
+                                    // menuShouldScrollIntoView={false}
                                   />
                                   <ErrorMessage
-                                    name="city"
+                                    name="city" // Error for the city field
                                     component="div"
                                     className="invalid-feedback"
                                   />
@@ -429,17 +526,29 @@ class StaffRegister extends Component {
                                   <Label for="country" className="form-label">
                                     Country
                                   </Label>
-                                  <Field
-                                    id="country"
-                                    name="country"
-                                    type="text"
-                                    placeholder="Please enter your country"
+                                  <Select
+                                    name="country" // The field name in Formik
+                                    options={countryOptions} // Options for the select
+                                    styles={customStyles}
                                     className={
-                                      "form-control" +
-                                      (errors.country && touched.country
+                                      errors.country && touched.country
                                         ? " is-invalid"
-                                        : "")
+                                        : ""
                                     }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "country",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      );
+                                    }}
+                                    value={
+                                      countryOptions.find(
+                                        option =>
+                                          option.value === values.country
+                                      ) || null
+                                    } // Set the current selected value
                                   />
                                   <ErrorMessage
                                     name="country"
@@ -449,25 +558,40 @@ class StaffRegister extends Component {
                                 </div>
                               </Col>
                               <Col sm={6} md={6} xl={6}>
-                                {/* State field */}
-                                <div className="mb-3">
-                                  <Label for="state" className="form-label">
-                                    State
+                                 {/* province  */}
+                                 <div className="mb-3">
+                                  <Label
+                                    for="province"
+                                    className="form-label"
+                                  >
+                                    Province
                                   </Label>
-                                  <Field
-                                    id="state"
-                                    name="state"
-                                    type="text"
-                                    placeholder="Please enter your state"
+                                  <Select
+                                    name="province" // The field name in Formik
+                                    options={provinceOptions} // Options for the select
+                                    styles={customStyles}
                                     className={
-                                      "form-control" +
-                                      (errors.state && touched.state
+                                      errors.province && touched.province
                                         ? " is-invalid"
-                                        : "")
+                                        : ""
                                     }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "province",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      );
+                                    }}
+                                    value={
+                                      provinceOptions.find(
+                                        option =>
+                                          option.value === values.province
+                                      ) || null
+                                    } // Set the current selected value
                                   />
                                   <ErrorMessage
-                                    name="state"
+                                    name="province"
                                     component="div"
                                     className="invalid-feedback"
                                   />
@@ -544,20 +668,33 @@ class StaffRegister extends Component {
                                   >
                                     Department
                                   </Label>
-                                  <Field
-                                    id="department"
-                                    name="department"
-                                    type="text"
-                                    placeholder="Please enter your department"
+                                  <Select
+                                    name="department" // The field name in Formik
+                                    options={deptOptions} // Options for the select
+                                    styles={customStyles}
                                     className={
-                                      "form-control" +
-                                      (errors.department && touched.department
+                                      // "form-control" +
+                                      errors.department && touched.department
                                         ? " is-invalid"
-                                        : "")
+                                        : "" // Conditional class based on validation
                                     }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "department",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      ); // Update Formik state with string value
+                                    }}
+                                    value={
+                                      deptOptions.find(
+                                        option =>
+                                          option.value === values.department
+                                      ) || null
+                                    } // Set the current selected value
                                   />
                                   <ErrorMessage
-                                    name="department"
+                                    name="department" // Error for the city field
                                     component="div"
                                     className="invalid-feedback"
                                   />
@@ -569,29 +706,35 @@ class StaffRegister extends Component {
                                   <Label for="district" className="form-label">
                                     District
                                   </Label>
-                                  <Field
-                                    id="district"
-                                    name="district"
-                                    type="text"
-                                    placeholder="Please enter district"
+                                  <Select
+                                    name="district" // The field name in Formik
+                                    options={districtOptions} // Options for the select
+                                    styles={customStyles}
                                     className={
-                                      "form-control" +
-                                      (errors.district && touched.district
+                                      errors.district && touched.district
                                         ? " is-invalid"
-                                        : "")
+                                        : ""
                                     }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "district",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      );
+                                    }}
+                                    value={
+                                      districtOptions.find(
+                                        option =>
+                                          option.value === values.district
+                                      ) || null
+                                    } // Set the current selected value
                                   />
                                   <ErrorMessage
-                                    name="district"
+                                    name="district" // Error for the city field
                                     component="div"
                                     className="invalid-feedback"
                                   />
-                                  {/* <span className="text-primary font-size-12">
-                                    <strong>
-                                      Note: Please add the complete valid
-                                      address searchable on google maps.
-                                    </strong>
-                                  </span> */}
                                 </div>
                               </Col>
                             </Row>
@@ -602,9 +745,9 @@ class StaffRegister extends Component {
                               <Col sm={6} md={6} xl={6}></Col>
                             </Row>
                             <Row>
-                              <Col sm={6} md={6} xl={6}>
-                                {/* Schemes */}
-                                <div className="mb-3">
+                              {/* Schemes */}
+                              {/* <Col sm={6} md={6} xl={6}> 
+                              <div className="mb-3">
                                   <Label
                                     for="Select_schemes"
                                     className="form-label"
@@ -621,36 +764,10 @@ class StaffRegister extends Component {
                                     <option value="xyz">Xyz</option>
                                   </Field>
                                 </div>
-                              </Col>
+                              </Col> */}
                               <Col sm={6} md={6} xl={6}>
                                 {" "}
-                                {/* Organization id */}
-                                <div className="mb-3">
-                                  <Label
-                                    for="organization"
-                                    className="form-label"
-                                  >
-                                    Organization
-                                  </Label>
-                                  <Field
-                                    id="organization"
-                                    name="organization"
-                                    type="text"
-                                    placeholder="Please enter your organization"
-                                    className={
-                                      "form-control" +
-                                      (errors.organization &&
-                                      touched.organization
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="organization"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
+                              
                               </Col>
                             </Row>
 
@@ -688,40 +805,6 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col>
-                              {/* Lab Staff Designation field */}
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label
-                                    for="lab_staff_designation"
-                                    className="form-label"
-                                  >
-                                    {/* Registered by (Designation) */}
-                                    Designation of notification person
-                                  </Label>
-                                  <Field
-                                    id="lab_staff_designation"
-                                    name="lab_staff_designation"
-                                    type="text"
-                                    placeholder="Please enter the designation of person registering lab"
-                                    className={
-                                      "form-control" +
-                                      (errors.lab_staff_designation &&
-                                      touched.lab_staff_designation
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="lab_staff_designation"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-
-                              
-                            </Row>
-                            <Row>
                               <Col sm={6} md={6} xl={6}>
                                 {/* Landline field */}
                                 <div className="mb-3">
@@ -750,8 +833,51 @@ class StaffRegister extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>{" "}
-                               
                               </Col>
+                              {/* Lab Staff Designation field */}
+                              {/* <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label
+                                    for="lab_staff_designation"
+                                    className="form-label"
+                                  >
+                                    Designation of notification person
+                                  </Label>
+                                  <Select
+                                    name="lab_staff_designation" // The field name in Formik
+                                    options={designationOptions} // Options for the select
+                                    styles={customStyles}
+                                    className={
+                                      errors.lab_staff_designation &&
+                                      touched.lab_staff_designation
+                                        ? " is-invalid"
+                                        : ""
+                                    }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "lab_staff_designation",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      );
+                                    }}
+                                    value={
+                                      designationOptions.find(
+                                        option =>
+                                          option.value ===
+                                          values.lab_staff_designation
+                                      ) || null
+                                    } // Set the current selected value
+                                  />
+                                  <ErrorMessage
+                                    name="lab_staff_designation" // Error for the city field
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col> */}
+                            </Row>
+                            <Row>
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
                                   <Label className="form-label">
@@ -763,7 +889,8 @@ class StaffRegister extends Component {
                                     placeholder="Enter email of notification person"
                                     className={
                                       "form-control" +
-                                      (errors.email_participant && touched.email_participant
+                                      (errors.email_participant &&
+                                      touched.email_participant
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -954,8 +1081,30 @@ StaffRegister.propTypes = {
   userAccountType: PropTypes.any,
   className: PropTypes.any,
   emailError: PropTypes.any,
+
+  ListCity: PropTypes.array,
+  ListDepartment: PropTypes.array,
+  ListDistrict: PropTypes.array,
+  ListDesignation: PropTypes.array,
+  ListCountry: PropTypes.array,
+  ListProvince: PropTypes.array,
+
+  onGetCityList: PropTypes.func,
+  onGetDepartmentList: PropTypes.func,
+  onGetDistrictList: PropTypes.func,
+  onGetdesignationlist: PropTypes.func,
+  onGetCountryList: PropTypes.func,
+  onGetProvinceList: PropTypes.func,
 };
-const mapStateToProps = ({ Account }) => ({
+const mapStateToProps = ({
+  Account,
+  ListCity,
+  ListDepartment,
+  ListDistrict,
+  ListDesignation,
+  ListCountry,
+  ListProvince
+}) => ({
   emailError: Account.emailError,
   userAccountType: Account.userAccountType,
   loading: Account.loading,
@@ -963,12 +1112,26 @@ const mapStateToProps = ({ Account }) => ({
   passwordError: Account.passwordError,
   userID: Account.userID,
   usernameError: Account.usernameError,
+
+  ListCity: ListCity.ListCity,
+  ListDepartment: ListDepartment.ListDepartment,
+  ListDistrict: ListDistrict.ListDistrict,
+  ListDesignation: ListDesignation.ListDesignation,
+  ListCountry: ListCountry.ListCountry,
+  ListProvince: ListProvince.ListProvince,
 });
 const mapDispatchToProps = dispatch => {
   return {
     apiError: error => dispatch(apiError(error)),
     registerUser: user => dispatch(registerUser(user)),
     registerUserFailed: error => dispatch(registerUserFailed(error)),
+
+    onGetCityList: id => dispatch(getcitylist(id)),
+    onGetDepartmentList: id => dispatch(getdepartmentlist(id)),
+    onGetDistrictList: id => dispatch(getdistrictlist(id)),
+    onGetdesignationlist: id => dispatch(getdesignationlist(id)),
+    onGetCountryList: (id) => dispatch(getcountrylist(id)),
+    onGetProvinceList: (id) => dispatch(getprovincelist(id)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(StaffRegister);

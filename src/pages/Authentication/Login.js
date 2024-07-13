@@ -285,7 +285,7 @@ class Login extends Component {
                               } else if (
                                 success.account_type === "registration-admin"
                               ) {
-                                this.props.history.push("/pending-participant");
+                                this.props.history.push("/dashboard-registrationadmin");
                               }  else if (
                                 success.account_type === "CSR"
                               ) {
@@ -301,7 +301,7 @@ class Login extends Component {
                               } else if (
                                 success.account_type === "organization"
                               ) {
-                                this.props.history.push("/add-staff");
+                                this.props.history.push("/dashboard-organization");
                               }
                             }
                           }, 1000);

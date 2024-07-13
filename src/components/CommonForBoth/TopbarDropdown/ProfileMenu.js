@@ -67,7 +67,7 @@ class ProfileMenu extends Component {
             {this.state.account_type && this.state.account_type == "labowner" && (
               <DropdownItem tag="a" href={"/lab-profile"}>
                 <i className="mdi mdi-account font-size-16 align-middle ms-1" />{" "}
-                {this.props.t("Lab Profile")}
+                {this.props.t("Update Profile")}
               </DropdownItem>
             )}
            

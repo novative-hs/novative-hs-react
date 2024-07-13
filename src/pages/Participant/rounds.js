@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import StarRatings from "react-star-ratings";
 import BootstrapTable from "react-bootstrap-table-next";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
+import filterFactory, {
+  textFilter,
+  selectFilter,
+} from "react-bootstrap-table2-filter";
 
 import {
   Card,
@@ -32,21 +34,20 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-import { getManufacturalList } from "store/manufactural/actions";
+import { getroundlist } from "store/rounds/actions";
 import { isEmpty, size, uniq } from "lodash";
 import { Tooltip } from "@material-ui/core";
 import "assets/scss/table.scss";
 import moment from "moment";
 import Select from "react-select";
 
-class Manufactural extends Component {
+class roundural extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      ManufacturalList: [],
-      manufact: "",
-      rating: "",
+      RoundList: [],
+      round: "",
       modal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -54,35 +55,31 @@ class Manufactural extends Component {
       nameOptions: [],
       selectedName: "All", // Add this state to keep track of the selected name
       //Filters
-      cityFilter: "",
-      nameFilter: "",
-      added_byFilter: "",
-      date_of_additionFilter: "",
-      telephoneFilter: "",
-      addressFilter: "",
-      countryFilter: "",
+      // nameFilter: "",
+      roundsFilter: "",
+      scheme_nameFilter: "",
+      issue_dateFilter: "",
+      closing_dateFilter: "",
+      statusFilter: "",
       //Sorting
-      nameSort: "asc",
-      citySort: "asc",
-      added_bySort: "asc",
-      dateSort: "asc",
-      telephoneSort: "asc",
-      addressSort: "asc",
-      countrySort: "asc",
+      roundsSort: "asc",
+      scheme_nameSort: "asc",
+      statusSort: "asc",
+      issue_dateSort: "asc",
+      closing_dateSort: "asc",
       //Array of objects
       feedbackListColumns: [
         {
-          text: "Id",
+          text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
-
-          formatter: (cellContent, manufact) => <>{manufact.id}</>,
-          // filter: textFilter(),
+          formatter: (cellContent, round) => <>{round.id}</>,
+          filter: textFilter(),
         },
         {
-          text: "Name",
-          dataField: "name",
+          dataField: "scheme_name",
+          text: "Scheme Name",
           sort: true,
           headerFormatter: (column, colIndex) => {
             return (
@@ -90,8 +87,10 @@ class Manufactural extends Component {
                 <div>
                   <input
                     type="text"
-                    value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange("nameFilter", e)}
+                    value={this.state.scheme_nameFilter}
+                    onChange={e =>
+                      this.handleFilterChange("scheme_nameFilter", e)
+                    }
                     className="form-control"
                   />
                 </div>
@@ -100,12 +99,45 @@ class Manufactural extends Component {
                   {column.sort ? (
                     <i
                       className={
-                        this.state.nameSort === "asc"
+                        this.state.scheme_nameSort === "asc"
                           ? "fa fa-arrow-up"
                           : "fa fa-arrow-down"
                       }
                       style={{ color: "red" }}
-                      onClick={() => this.handleSort("name")}
+                      onClick={() => this.handleSort("scheme_name")}
+                    ></i>
+                  ) : null}
+                </div>
+              </>
+            );
+          },
+        },
+        {
+          dataField: "rounds",
+          text: "Number of Rounds",
+          sort: true,
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.roundsFilter}
+                    onChange={e => this.handleFilterChange("roundsFilter", e)}
+                    className="form-control"
+                  />
+                </div>
+                <div>
+                  {column.text}{" "}
+                  {column.sort ? (
+                    <i
+                      className={
+                        this.state.roundsSort === "asc"
+                          ? "fa fa-arrow-up"
+                          : "fa fa-arrow-down"
+                      }
+                      style={{ color: "red" }}
+                      onClick={() => this.handleSort("rounds")}
                     ></i>
                   ) : null}
                 </div>
@@ -115,8 +147,8 @@ class Manufactural extends Component {
           // filter: textFilter(),
         },
         {
-          text: "Added_by",
-          dataField: "added_by",
+          dataField: "issue_date",
+          text: "Issue Date",
           sort: true,
           headerFormatter: (column, colIndex) => {
             return (
@@ -124,74 +156,41 @@ class Manufactural extends Component {
                 <div>
                   <input
                     type="text"
-                    value={this.state.added_byFilter}
-                    onChange={e => this.handleFilterChange("added_byFilter", e)}
-                    className="form-control"
-                  />
-                </div>
-                <div>{column.text} {column.sort ? (
-                    <i
-                      className={
-                        this.state.added_bySort === "asc"
-                          ? "fa fa-arrow-up"
-                          : "fa fa-arrow-down"
-                      }
-                      style={{ color: "red" }}
-                      onClick={() => this.handleSort("added_by")}
-                    ></i>
-                  ) : null}</div>
-              </>
-            );
-          },
-
-          // filter: textFilter(),
-        },
-        {
-          text: "Date of Addition",
-          dataField: "date_of_addition",
-          sort: true,
-          hidden: false,
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div>
-                  <input
-                    type="text"
-                    value={this.state.date_of_additionFilter}
+                    value={this.state.issue_dateFilter}
                     onChange={e =>
-                      this.handleFilterChange("date_of_additionFilter", e)
+                      this.handleFilterChange("issue_dateFilter", e)
                     }
                     className="form-control"
                   />
                 </div>
-                <div>{column.text} {column.sort ? (
+                <div>
+                  {column.text}{" "}
+                  {column.sort ? (
                     <i
                       className={
-                        this.state.dateSort === "asc"
+                        this.state.issue_dateSort === "asc"
                           ? "fa fa-arrow-up"
                           : "fa fa-arrow-down"
                       }
                       style={{ color: "red" }}
-                      onClick={() => this.handleSort("date_of_addition")}
+                      onClick={() => this.handleSort("issue_date")}
                     ></i>
-                  ) : null}</div>
+                  ) : null}
+                </div>
               </>
             );
           },
-          formatter: (cellContent, manufact) => (
+          formatter: (cellContent, round) => (
             <>
               <span>
-                {moment(manufact.date_of_addition).format(
-                  "DD MMM YYYY, h:mm A"
-                )}
+                {moment(round.issue_date).format("DD MMM YYYY, h:mm A")}
               </span>
             </>
           ),
-          // filter: textFilter(),
         },
         {
-          text: "Telephone",
-          dataField: "telephone",
+          dataField: "closing_date",
+          text: "Closing Date",
           sort: true,
           headerFormatter: (column, colIndex) => {
             return (
@@ -199,32 +198,42 @@ class Manufactural extends Component {
                 <div>
                   <input
                     type="text"
-                    value={this.state.telephoneFilter}
+                    value={this.state.closing_dateFilter}
                     onChange={e =>
-                      this.handleFilterChange("telephoneFilter", e)
+                      this.handleFilterChange("closing_dateFilter", e)
                     }
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}{column.sort ? (
+                <div>
+                  {column.text}{" "}
+                  {column.sort ? (
                     <i
                       className={
-                        this.state.telephoneSort === "asc"
+                        this.state.closing_dateSort === "asc"
                           ? "fa fa-arrow-up"
                           : "fa fa-arrow-down"
                       }
                       style={{ color: "red" }}
-                      onClick={() => this.handleSort("telephone")}
+                      onClick={() => this.handleSort("closing_date")}
                     ></i>
-                  ) : null}</div>
+                  ) : null}
+                </div>
               </>
             );
           },
-          // filter: textFilter(),
+          formatter: (cellContent, round) => (
+            <>
+              <span>
+                {moment(round.closing_date).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
         },
+
         {
-          text: "Address",
-          dataField: "address",
+          dataField: "status",
+          text: "Round Status",
           sort: true,
           headerFormatter: (column, colIndex) => {
             return (
@@ -232,117 +241,88 @@ class Manufactural extends Component {
                 <div>
                   <input
                     type="text"
-                    value={this.state.addressFilter}
-                    onChange={e => this.handleFilterChange("addressFilter", e)}
+                    value={this.state.statusFilter}
+                    onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   />
                 </div>
-                <div>{column.text} {column.sort ? (
-                    <i
-                      className={
-                        this.state.addressSort === "asc"
-                          ? "fa fa-arrow-up"
-                          : "fa fa-arrow-down"
-                      }
-                      style={{ color: "red" }}
-                      onClick={() => this.handleSort("address")}
-                    ></i>
-                  ) : null}</div>
-              </>
-            );
-          },
-          // filter: textFilter(),
-        },
-        {
-          text: "City",
-          dataField: "city",
-          sort: true,
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
                 <div>
-                  <input
-                    type="text"
-                    value={this.state.cityFilter}
-                    onChange={e => this.handleFilterChange("cityFilter", e)}
-                    className="form-control"
-                  />
-                </div>
-                <div>{column.text}{column.sort ? (
+                  {column.text}{" "}
+                  {column.sort ? (
                     <i
                       className={
-                        this.state.citySort === "asc"
+                        this.state.statusSort === "asc"
                           ? "fa fa-arrow-up"
                           : "fa fa-arrow-down"
                       }
                       style={{ color: "red" }}
-                      onClick={() => this.handleSort("city")}
+                      onClick={() => this.handleSort("status")}
                     ></i>
-                  ) : null}</div>
-              </>
-            );
-          },
-
-          // filter: textFilter(),
-        },
-        {
-          text: "Country",
-          dataField: "country",
-          sort: true,
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div>
-                  <input
-                    type="text"
-                    value={this.state.countryFilter}
-                    onChange={e => this.handleFilterChange("countryFilter", e)}
-                    className="form-control"
-                  />
+                  ) : null}
                 </div>
-                <div>{column.text} {column.sort ? (
-                    <i
-                      className={
-                        this.state.countrySort === "asc"
-                          ? "fa fa-arrow-up"
-                          : "fa fa-arrow-down"
-                      }
-                      style={{ color: "red" }}
-                      onClick={() => this.handleSort("country")}
-                    ></i>
-                  ) : null}</div>
               </>
             );
           },
-
-          // filter: textFilter(),
         },
-
         // {
-        //   dataField: "menu",
-        //   isDummyField: true,
-        //   editable: false,
-        //   text: "Action",
-        //   formatter: (cellContent, manufact) => (
-        //     <Col>
-        //       <Tooltip title="Update">
-        //         <Link className="text-success" to="#">
-        //           <i
-        //             className="mdi mdi-pencil font-size-18"
-        //             id="edittooltip"
-        //             // onClick={() => this.handleEditBtnClick(manufact)}
-        //           ></i>
-        //         </Link>
-        //       </Tooltip>
-        //       <Tooltip title="Add Comment">
-        //         <Link
-        //           className="fas fa-comment font-size-18"
-        //           // to={`/csr-notes-complains/${complaint.id}`}
-        //         ></Link>
-        //       </Tooltip>
-        //     </Col>
-        //   ),
+        //   dataField: "status",
+        //   text: "Results Status",
+        //   sort: true,
+        //   headerFormatter: (column, colIndex) => {
+        //     return (
+        //       <>
+        //         <div>
+        //           <input
+        //             type="text"
+        //             value={this.state.statusFilter}
+        //             onChange={e => this.handleFilterChange("statusFilter", e)}
+        //             className="form-control"
+        //           />
+        //         </div>
+        //         <div>
+        //           {column.text}{" "}
+        //           {column.sort ? (
+        //             <i
+        //               className={
+        //                 this.state.statusSort === "asc"
+        //                   ? "fa fa-arrow-up"
+        //                   : "fa fa-arrow-down"
+        //               }
+        //               style={{ color: "red" }}
+        //               onClick={() => this.handleSort("status")}
+        //             ></i>
+        //           ) : null}
+        //         </div>
+        //       </>
+        //     );
+        //   },
         // },
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, round) => (
+            <Col>
+              <Tooltip title="Report">
+                <Link className="text-success" to="#">
+                  <i
+                    className="mdi mdi-file-chart font-size-18"
+                    id="edittooltip"
+                    // onClick={() => this.handleEditBtnClick(round)}
+                  ></i>
+                </Link>
+              </Tooltip>
+              <Tooltip title="Download Result">
+                <Link
+                  // className="fas fa-comment font-size-18"
+                  className="mdi mdi-cloud-download font-size-18"
+                  // to={`/csr-notes-complains/${complaint.id}`}
+                ></Link>
+              </Tooltip>
+            </Col>
+          ),
+        },
       ],
     };
     this.toggle = this.toggle.bind(this);
@@ -350,9 +330,10 @@ class Manufactural extends Component {
   }
 
   componentDidMount() {
-    const { ManufacturalList, ongetManufacturalList } = this.props;
-    ongetManufacturalList(this.state.user_id);
-    this.setState({ ManufacturalList });
+    const { RoundList, onGetRoundList } = this.props;
+    console.log("DDDDDDDDDD", RoundList);
+    onGetRoundList(this.state.user_id);
+    this.setState({ RoundList });
   }
 
   toggle() {
@@ -360,45 +341,55 @@ class Manufactural extends Component {
       modal: !prevState.modal,
     }));
   }
-  handleFilterChange = (filterName, e) => {
-    this.setState({ [filterName]: e.target.value });
+  handleFilterChange = (scheme_nameFilter, e) => {
+    this.setState({ [scheme_nameFilter]: e.target.value });
   };
   // Filter data based on filter values
+
   filterData = () => {
-    const { ManufacturalList } = this.props;
+    const { RoundList } = this.props;
     const {
-      nameFilter,
-      cityFilter,
-      countryFilter,
-      addressFilter,
-      added_byFilter,
-      date_of_additionFilter,
-      telephoneFilter,
+      selectedName,
+      roundsFilter,
+      scheme_nameFilter,
+      issue_dateFilter,
+      closing_dateFilter,
+      statusFilter,
     } = this.state;
 
-    const filteredData = ManufacturalList.filter(entry => {
-      const name = entry.name ? entry.name.toLowerCase() : "";
-      const city = entry.city ? entry.city.toLowerCase() : "";
-      const country = entry.country ? entry.country.toLowerCase() : "";
-      const address = entry.address ? entry.address.toLowerCase() : "";
-      const added_by = entry.added_by ? entry.added_by.toLowerCase() : "";
-      const date_of_addition = entry.date_of_addition
-        ? entry.date_of_addition.toString()
+    let filteredData = RoundList;
+
+    // Filter by selected name
+    if (selectedName !== "All") {
+      filteredData = filteredData.filter(
+        entry => entry.scheme_name === selectedName
+      );
+    }
+
+    filteredData = filteredData.filter(entry => {
+      const rounds = entry.rounds ? entry.rounds.toString() : "";
+      const scheme_name = entry.scheme_name
+        ? entry.scheme_name.toLowerCase()
         : "";
-      const telephone = entry.telephone ? entry.telephone.toString() : "";
+      const status = entry.status ? entry.status.toLowerCase() : "";
+
+      const issue_date = entry.issue_date ? entry.issue_date.toString() : "";
+      const closing_date = entry.closing_date
+        ? entry.closing_date.toString()
+        : "";
       return (
-        name.includes(nameFilter.toLowerCase()) &&
-        city.includes(cityFilter.toLowerCase()) &&
-        country.includes(countryFilter.toLowerCase()) &&
-        address.includes(addressFilter.toLowerCase()) &&
-        added_by.includes(added_byFilter.toLowerCase()) &&
-        date_of_addition.includes(date_of_additionFilter) &&
-        telephone.includes(telephoneFilter)
+        // name.includes(nameFilter.toLowerCase()) &&
+        rounds.includes(roundsFilter.toLowerCase()) &&
+        scheme_name.includes(scheme_nameFilter.toLowerCase()) &&
+        status.includes(statusFilter.toLowerCase()) &&
+        issue_date.includes(issue_dateFilter) &&
+        closing_date.includes(closing_dateFilter)
       );
     });
 
     return filteredData;
   };
+
   // sorting the data
   handleSort = field => {
     const newSortOrder = this.state[field + "Sort"] === "asc" ? "desc" : "asc";
@@ -408,12 +399,12 @@ class Manufactural extends Component {
   };
 
   sortData = (field, order) => {
-    const { ManufacturalList } = this.state;
-    if (!Array.isArray(ManufacturalList)) {
+    const { RoundList } = this.state;
+    if (!Array.isArray(RoundList)) {
       return;
     }
 
-    const sortedData = [...ManufacturalList].sort((a, b) => {
+    const sortedData = [...RoundList].sort((a, b) => {
       let aValue = a[field];
       let bValue = b[field];
 
@@ -428,18 +419,26 @@ class Manufactural extends Component {
       }
     });
 
-    this.setState({ ManufacturalList: sortedData });
+    this.setState({ RoundList: sortedData });
   };
+
   componentDidUpdate(prevProps) {
-    const { ManufacturalList } = this.props;
-    if (
-      ManufacturalList !== prevProps.ManufacturalList &&
-      !isEmpty(ManufacturalList)
-    ) {
-      const uniqueNames = uniq(ManufacturalList.map(item => item.name));
+    const { RoundList } = this.props;
+    if (RoundList !== prevProps.RoundList && !isEmpty(RoundList)) {
+      const uniqueNames = uniq(RoundList.map(item => item.scheme_name));
       this.setState({ nameOptions: ["All", ...uniqueNames] });
     }
   }
+
+  // componentDidUpdate(prevProps) {
+  //   const { RoundList } = this.props;
+  //   if (
+  //     !isEmpty(this.props.RoundList) &&
+  //     size(prevProps.RoundList) !== size(this.props.RoundList)
+  //   ) {
+  //     this.setState({ RoundList: this.props.RoundList });
+  //   }
+  // }
 
   // handleNameFilterChange(event) {
   //   this.setState({ selectedName: event.target.value });
@@ -466,15 +465,15 @@ class Manufactural extends Component {
   render() {
     const { SearchBar } = Search;
 
-    const { ManufacturalList } = this.props;
+    const { RoundList } = this.props;
     const { nameOptions, selectedName } = this.state;
 
-    const { ongetManufacturalList } = this.props;
-    const manufact = this.state.ManufacturalList;
+    const { onGetRoundList } = this.props;
+    const round = this.state.RoundList;
 
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: ManufacturalList.length, // replace later with size(manufact),
+      totalSize: RoundList.length, // replace later with size(round),
       custom: true,
     };
 
@@ -485,18 +484,21 @@ class Manufactural extends Component {
       },
     ];
 
-    // Filter ManufacturalList based on the selectedName
-    const filteredManufactList =
+    // Filter RoundList based on the selectedName
+    const filteredroundList =
       selectedName === "All"
-        ? ManufacturalList
-        : ManufacturalList.filter(manufact => manufact.name === selectedName);
+        ? RoundList
+        : RoundList.filter(round => round.scheme_name === selectedName);
 
-    const methodsName = nameOptions.map(name => ({ value: name, label: name }));
+    const schemeName = nameOptions.map(scheme_name => ({
+      value: scheme_name,
+      label: scheme_name,
+    }));
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Labs Rating List | Lab Hazir</title>
+            <title>Rounds</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -509,14 +511,15 @@ class Manufactural extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      // data={ManufacturalList}
-                      data={filteredManufactList} // Use filtered list here
+                      // data={RoundList}
+                      data={filteredroundList} // Use filtered list here
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.feedbackListColumns}
-                          data={filteredManufactList} // Use filtered list here
+                          // data={RoundList}
+                          data={filteredroundList} // Use filtered list here
                           search
                         >
                           {toolkitprops => (
@@ -554,17 +557,25 @@ class Manufactural extends Component {
                                     </div>
                                   </div>
                                 </Col> */}
+
+                                {/* workingg */}
                                 <Col xs="4" sm="4" md="3" lg="3">
                                   <div className="mb-3">
                                     <Select
                                       onChange={this.handleNameFilterChange}
-                                      options={methodsName}
+                                      options={schemeName}
                                       placeholder="Select Name..."
                                       isSearchable={true}
                                       isClearable={true}
-                                      value={methodsName.find(
-                                        option => option.value === selectedName
-                                      )} // Find the matching option
+                                      // Find the matching option
+                                      value={
+                                        selectedName === "All"
+                                          ? null
+                                          : schemeName.find(
+                                              option =>
+                                                option.value === selectedName
+                                            )
+                                      } // Find the matching option
                                       styles={{
                                         control: (provided, state) => ({
                                           ...provided,
@@ -619,30 +630,26 @@ class Manufactural extends Component {
   }
 }
 
-Manufactural.propTypes = {
+roundural.propTypes = {
   match: PropTypes.object,
-  ManufacturalList: PropTypes.array,
+  RoundList: PropTypes.array,
 
   className: PropTypes.any,
-  ongetManufacturalList: PropTypes.func,
+  onGetRoundList: PropTypes.func,
 
   error: PropTypes.any,
   success: PropTypes.any,
 };
 
-const mapStateToProps = ({ ManufacturalList }) => ({
-  ManufacturalList: ManufacturalList.ManufacturalList,
+const mapStateToProps = ({ RoundList }) => ({
+  RoundList: RoundList.RoundList,
 });
 
-// const mapDispatchToProps = (dispatch, ownProps) => ({
-//   ongetManufacturalList: () => dispatch(getManufacturalList()),
-// });
-
 const mapDispatchToProps = dispatch => ({
-  ongetManufacturalList: user_id => dispatch(getManufacturalList(user_id)),
+  onGetRoundList: id => dispatch(getroundlist(id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Manufactural));
+)(withRouter(roundural));

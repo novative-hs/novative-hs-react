@@ -54,7 +54,7 @@ class ParticipantCity extends Component {
       successMessage: "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => {
@@ -321,8 +321,10 @@ class ParticipantCity extends Component {
                                                 await this.props.onUpdateCity(this.state.selectedCity.id, newCity);
 
                                                 this.displaySuccessMessage("City updated successfully!");
+                                                setTimeout(() => {
+                                                  this.props.onGetCityList(this.state.user_id);
+                                                }, 1000);
 
-                                                await this.props.onGetCityList(this.state.user_id);
 
                                                 // resetForm();
                                               } catch (error) {
@@ -337,7 +339,9 @@ class ParticipantCity extends Component {
 
                                                 this.displaySuccessMessage("City added successfully!");
 
-                                                await this.props.onGetCityList(this.state.user_id);
+                                                setTimeout(() => {
+                                                  this.props.onGetCityList(this.state.user_id);
+                                                }, 1000);
 
                                               } catch (error) {
 
