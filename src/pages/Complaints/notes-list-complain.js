@@ -138,7 +138,7 @@ class NotesList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>This is Internal Labhazir | Lab Hazir</title>
+            <title>This is Internal Labhazir | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

@@ -50,9 +50,6 @@ export * from "./organization/actions";
 // quality certificates
 export * from "./quality-certificates/actions";
 
-
-
-
 export * from "./methods/actions";
 
 
@@ -105,6 +102,7 @@ export * from "./news/actions";
 // admins
 export * from "./registration-admin/actions";
 export * from "./finance-admin/actions";
+export * from "./qualitativetype/actions";
 
 export * from "./chat-box/actions";
 //participant
@@ -117,3 +115,8 @@ export * from "./participantdesignation/actions";
 export * from "./participanttype/actions";
 export * from "./participantsector/actions";
 export * from "./participantprovince/actions";
+
+//Selected_schemes
+export * from "./selected-scheme/actions";
+export * from "./results/actions";
+export * from "./resultsSubmit/actions";

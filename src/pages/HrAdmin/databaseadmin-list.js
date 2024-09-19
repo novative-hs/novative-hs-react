@@ -430,7 +430,7 @@ class DatabaseAdminList extends Component {
         // entry.status === statusFilter // filter based on status
         (statusFilter === "" || entry.status === statusFilter) // filter based on status
     );
-
+ 
     return filteredData;
   };
   handleAuditorClicks = () => {

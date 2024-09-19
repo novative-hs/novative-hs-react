@@ -803,7 +803,7 @@ class Checkout extends Component {
         <React.Fragment>
           <div className="page-content">
             <MetaTags>
-              <title>Checkout | Lab Hazir - Dashboard</title>
+              <title>Checkout | NHS NEQAS - Dashboard</title>
             </MetaTags>
             <Container fluid>
               {/* Render Breadcrumb */}

@@ -188,7 +188,7 @@ class StaffRegister extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Staff | Lab Hazir</title>
+            <title>Staff | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -518,7 +518,6 @@ class StaffRegister extends Component {
                                 </div>
                               </Col>
                             </Row>
-
                             <Row>
                               <Col sm={6} md={6} xl={6}>
                                 {/* country */}
@@ -599,6 +598,86 @@ class StaffRegister extends Component {
                               </Col>
                             </Row>
                             <Row>
+                               {/* District */}
+                               <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label for="district" className="form-label">
+                                    District
+                                  </Label>
+                                  <Select
+                                    name="district" // The field name in Formik
+                                    options={districtOptions} // Options for the select
+                                    styles={customStyles}
+                                    className={
+                                      errors.district && touched.district
+                                        ? " is-invalid"
+                                        : ""
+                                    }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "district",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      );
+                                    }}
+                                    value={
+                                      districtOptions.find(
+                                        option =>
+                                          option.value === values.district
+                                      ) || null
+                                    } // Set the current selected value
+                                  />
+                                  <ErrorMessage
+                                    name="district" // Error for the city field
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label
+                                    for="department"
+                                    className="form-label"
+                                  >
+                                    Department
+                                  </Label>
+                                  <Select
+                                    name="department" // The field name in Formik
+                                    options={deptOptions} // Options for the select
+                                    styles={customStyles}
+                                    className={
+                                      // "form-control" +
+                                      errors.department && touched.department
+                                        ? " is-invalid"
+                                        : "" // Conditional class based on validation
+                                    }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "department",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      ); // Update Formik state with string value
+                                    }}
+                                    value={
+                                      deptOptions.find(
+                                        option =>
+                                          option.value === values.department
+                                      ) || null
+                                    } // Set the current selected value
+                                  />
+                                  <ErrorMessage
+                                    name="department" // Error for the city field
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                             
+                            </Row>
+                            <Row>
                               <Col sm={6} md={6} xl={6}>
                                 {/* Shipping Address */}
                                 <div className="mb-3">
@@ -659,85 +738,7 @@ class StaffRegister extends Component {
                               </Col>
                             </Row>
                             {/* department field */}
-                            <Row>
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label
-                                    for="department"
-                                    className="form-label"
-                                  >
-                                    Department
-                                  </Label>
-                                  <Select
-                                    name="department" // The field name in Formik
-                                    options={deptOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      // "form-control" +
-                                      errors.department && touched.department
-                                        ? " is-invalid"
-                                        : "" // Conditional class based on validation
-                                    }
-                                    onChange={selectedOption => {
-                                      setFieldValue(
-                                        "department",
-                                        selectedOption
-                                          ? selectedOption.value
-                                          : ""
-                                      ); // Update Formik state with string value
-                                    }}
-                                    value={
-                                      deptOptions.find(
-                                        option =>
-                                          option.value === values.department
-                                      ) || null
-                                    } // Set the current selected value
-                                  />
-                                  <ErrorMessage
-                                    name="department" // Error for the city field
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                              {/* District */}
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label for="district" className="form-label">
-                                    District
-                                  </Label>
-                                  <Select
-                                    name="district" // The field name in Formik
-                                    options={districtOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      errors.district && touched.district
-                                        ? " is-invalid"
-                                        : ""
-                                    }
-                                    onChange={selectedOption => {
-                                      setFieldValue(
-                                        "district",
-                                        selectedOption
-                                          ? selectedOption.value
-                                          : ""
-                                      );
-                                    }}
-                                    value={
-                                      districtOptions.find(
-                                        option =>
-                                          option.value === values.district
-                                      ) || null
-                                    } // Set the current selected value
-                                  />
-                                  <ErrorMessage
-                                    name="district" // Error for the city field
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
+                            
                             <Row>
                               {/* Participant Sector */}
                               <Col sm={6} md={6} xl={6}></Col>

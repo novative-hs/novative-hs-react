@@ -87,7 +87,7 @@ class LabQualityCertificates extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Quality Certificates List | Lab Hazir</title>
+            <title>Quality Certificates List | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* <Breadcrumbs

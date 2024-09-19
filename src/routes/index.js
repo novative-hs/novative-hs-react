@@ -37,12 +37,16 @@ import DashboardOrganization from "../pages/Dashboard-Organization";
 //Database Admin
 import DashboardatabaseAdmin from "pages/Dashboard-DatabaseAdmin";
 import DatabaseOfUnitsPage from "pages/databaseadmin/database-of-units";
+import DatabaseOfQualitativeTypePage from "pages/databaseadmin/database-of-qualitativetype";
+
 import DatabaseOfReagentsPage from "pages/databaseadmin/database-of-reagents";
 import DatabaseOfManufactural from "pages/databaseadmin/database-of-manufactural";
 import DatabaseOfMethod from "pages/databaseadmin/method-list";
 import DatabaseOfAnalyte from "pages/databaseadmin/database-of-analyte";
 import AnalyteAddMethods from "pages/databaseadmin/analyte-add-methods";
 import AnalyteAddUnits from "pages/databaseadmin/analyte-add-units";
+import AnalyteAddQualitativeUnits from "pages/databaseadmin/analyte-add-qualitative-units";
+
 import DatabaseOfinsrumentType from "pages/databaseadmin/instrument-type-list";
 import InstrumentList from "pages/databaseadmin/instruments-list";
 import Scheme from "pages/databaseadmin/scheme";
@@ -87,6 +91,8 @@ import Email from "pages/Participant/email";
 import AllParticipant from "pages/Participant/all-participants";
 import AllParticipant1 from "pages/Participant/all-participants1";
 import AllParticipant2 from "pages/Participant/all-participants1";
+import ParticipantsResult from "pages/Participant/results";
+import Report from "pages/Participant/report";
 
 // Lab Componentsss
 
@@ -136,6 +142,7 @@ import rounds from "pages/RegistrationAdmin/rounds";
 import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 import News from "pages/RegistrationAdmin/news";
+import Statistics from "pages/RegistrationAdmin/statics";
 
 
 
@@ -280,6 +287,7 @@ const financeOfficerAuthProtectedRoutes = [
 const databaseAdminAuthProtectedRoutes = [
   { path: "/dashboard-databaseadmin", component: DashboardatabaseAdmin },
   { path: "/database-of-units", component: DatabaseOfUnitsPage },
+  { path: "/database-of-qualitativetype", component: DatabaseOfQualitativeTypePage },
   { path: "/database-of-reagents", component: DatabaseOfReagentsPage },
   { path: "/equipment-list", component: InstrumentList },
   { path: "/database-of-equipmentType", component: DatabaseOfinsrumentType },
@@ -297,8 +305,11 @@ const databaseAdminAuthProtectedRoutes = [
   {path: "/sample", component: Sample},
   {path: "/add-analytes-sample-page/:id", component: SampleAnalytes},
 
+  
+
   { path: "/analyte-add-methods/:id", component: AnalyteAddMethods }, 
-  { path: "/analyte-add-units/:id", component: AnalyteAddUnits }, 
+  { path: "/analyte-add-units/:id", component: AnalyteAddUnits },   
+  { path: "/analyte-add-qualitative-units/:id", component: AnalyteAddQualitativeUnits }, 
   { path: "/analyte-add-reagents/:id", component: AnalyteAddReagents }, 
   { path: "/analyte-add-equipments/:id", component: AnalyteAddEuipments }, 
   { path: "/units-analytes/:id", component: UnitsAnalytes }, 
@@ -322,10 +333,12 @@ const databaseAdminAuthProtectedRoutes = [
 ];
 const participantsAuthProtectedRoutes = [
   { path: "/dashboard-partcipant", component: DashboardPartcipant },
-  { path: "/rounds", component: Rounds },
+  { path: "/rounds-participant", component: Rounds },
   { path: "/performance", component: Performance},
   { path: "/newspage", component: NewsPage},
   { path: "/email", component: Email},
+  { path: "/participantsResults/:id", component: ParticipantsResult},
+  { path: "/report/:id", component: Report},
   
  
 ];
@@ -358,9 +371,9 @@ const registrationAdminAuthProtectedRoutes = [
   {
     path: "/approvereferrellab", component: ApproveReferrelLab,
   },
-  { path: "/register-participant", component: RegParticipant},
   { path: "/all-participant1", component: AllParticipant1},
   {path: "/news", component: News},
+  { path: "/statistics/:id", component: Statistics},
   
 
 ];

@@ -31,7 +31,7 @@ export default class CarouselPage extends Component {
                                     <p className="font-size-16 mb-4">
                                       &quot;Please ensure your email has been
                                       verified and your account has been approved
-                                      by Lab Hazir before you attempt to Login.
+                                      by NHS NEQAS before you attempt to Login.
                                       &ldquo;
                                     </p>
                                   </div>
@@ -39,7 +39,7 @@ export default class CarouselPage extends Component {
                               </div>
                               <div>
                                 <h4 className="font-size-16 text-primary">
-                                  - Team Lab Hazir
+                                  - Team NHS NEQAS
                                 </h4>
                               </div>
                             </div>
@@ -79,7 +79,7 @@ export default class CarouselPage extends Component {
                                 </div>
                                 <div>
                                   <h4 className="font-size-16 text-primary">
-                                    - Team Lab Hazir
+                                    - Team NHS NEQAS
                                   </h4>
                                 </div>
                               </div>
@@ -124,7 +124,7 @@ export default class CarouselPage extends Component {
                               </div>
                               <div>
                                 <h4 className="font-size-16 text-primary">
-                                  - Team Lab Hazir
+                                  - Team NHS NEQAS
                                 </h4>
                                 <p className="font-size-14 mb-0"></p>
                               </div>
@@ -158,7 +158,7 @@ export default class CarouselPage extends Component {
                               </div>
                               <div>
                                 <h4 className="font-size-16 text-primary">
-                                  - Team Lab Hazir
+                                  - Team NHS NEQAS
                                 </h4>
                               </div>
                             </div>
@@ -188,7 +188,7 @@ export default class CarouselPage extends Component {
 
                                   <div>
                                     <h4 className="font-size-16 text-primary">
-                                      - Team Lab Hazir
+                                      - Team NHS NEQAS
                                     </h4>
                                   </div>
                                 </div>
@@ -220,7 +220,7 @@ export default class CarouselPage extends Component {
 
                                     <div>
                                       <h4 className="font-size-16 text-primary">
-                                        - Team Lab Hazir
+                                        - Team NHS NEQAS
                                       </h4>
                                     </div>
                                   </div>
@@ -259,7 +259,7 @@ export default class CarouselPage extends Component {
                                     <p className="font-size-12">
                                       &quot;Please ensure your email has been
                                       verified and your account has been approved
-                                      by Lab Hazir before you attempt to Login.
+                                      by NHS NEQAS before you attempt to Login.
                                       &ldquo;
                                     </p>
                                   </div>
@@ -267,7 +267,7 @@ export default class CarouselPage extends Component {
                               </div>
                               <div>
                                 <h4 className="font-size-16 text-primary">
-                                  - Team Lab Hazir
+                                  - Team NHS NEQAS
                                 </h4>
                               </div>
                             </div>
@@ -295,7 +295,7 @@ export default class CarouselPage extends Component {
                                   </div>
                                 </div>
                                 <div>
-                                  <h3 className="font-size-12 text-primary">- Team Lab Hazir</h3>
+                                  <h3 className="font-size-12 text-primary">- Team NHS NEQAS</h3>
                                 </div>
                               </div>
                             </div>
@@ -337,7 +337,7 @@ export default class CarouselPage extends Component {
                               </div>
                               <div>
                                 <h4 className="font-size-16 text-primary">
-                                  - Team Lab Hazir
+                                  - Team NHS NEQAS
                                 </h4>
                                 <p className="font-size-14 mb-0"></p>
                               </div>
@@ -370,7 +370,7 @@ export default class CarouselPage extends Component {
                               </div>
                               <div>
                                 <h4 className="font-size-13 text-primary">
-                                  - Team Lab Hazir
+                                  - Team NHS NEQAS
                                 </h4>
                               </div>
                             </div>
@@ -400,7 +400,7 @@ export default class CarouselPage extends Component {
 
                                   <div>
                                     <h4 className="font-size-16 text-primary">
-                                      - Team Lab Hazir
+                                      - Team NHS NEQAS
                                     </h4>
                                   </div>
                                 </div>
@@ -432,7 +432,7 @@ export default class CarouselPage extends Component {
 
                                     <div>
                                       <h4 className="font-size-16 text-primary">
-                                        - Team Lab Hazir
+                                        - Team NHS NEQAS
                                       </h4>
                                     </div>
                                   </div>

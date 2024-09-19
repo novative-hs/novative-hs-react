@@ -157,14 +157,14 @@ const userProfile = {
   projects: [
     {
       id: 1,
-      name: "Lab Hazir admin UI",
+      name: "NHS NEQAS admin UI",
       startDate: "2 Sep, 2019",
       deadline: "20 Oct, 2019",
       budget: "$506",
     },
     {
       id: 2,
-      name: "Lab Hazir admin Logo",
+      name: "NHS NEQAS admin Logo",
       startDate: "1 Sep, 2019",
       deadline: "2 Sep, 2019",
       budget: "$94",

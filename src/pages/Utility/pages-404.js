@@ -12,7 +12,7 @@ class Pages404 extends Component {
       <React.Fragment>
         <div className="account-pages my-5 pt-5">
           <MetaTags>
-            <title>404 Error Page | Lab Hazir</title>
+            <title>404 Error Page | NHS NEQAS</title>
           </MetaTags>
           <Container>
             <Row>

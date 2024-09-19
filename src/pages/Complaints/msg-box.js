@@ -135,7 +135,7 @@ class MsgsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Comments List | Lab Hazir</title>
+            <title>Comments List | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

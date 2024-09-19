@@ -393,7 +393,7 @@ class PaymentStatussList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Payments In with Approvel Status | Lab Hazir</title>
+            <title>Payments In with Approvel Status | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

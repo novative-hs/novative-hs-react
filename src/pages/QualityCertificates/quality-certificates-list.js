@@ -326,7 +326,7 @@ class QualityCertificatesList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Quality Certificates List | Lab Hazir</title>
+            <title>Quality Certificates List | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

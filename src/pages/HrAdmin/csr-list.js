@@ -394,7 +394,7 @@ class CSRList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>CSR List | Lab Hazir</title>
+            <title>CSR List | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

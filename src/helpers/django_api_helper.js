@@ -145,94 +145,95 @@ export const organizationRegister = user => {
   formData.append("account_type", user.account_type);
   formData.append("name", user.name);
   formData.append("email", user.email);
+  formData.append("currency", user.currency);
+  formData.append("payment_proof", user.payment_proof);
+  formData.append("amount", user.amount);
+  formData.append("issue_date", user.issue_date);
+  formData.append("closing_date", user.closing_date);
   formData.append("website", user.website);
   formData.append("logo", user.photo);
   console.log("data", user);
 
-  return axios.post(`${url.ORGANIZATION_REGISTER}`, formData, {
-    headers: getHeader(authHeader()),
-  })
-  .then(response => {
-    if (response.status >= 200 || response.status <= 299)
-      return response.data;
-    throw response.data;
-  }
-  )
+  return axios
+    .post(`${url.ORGANIZATION_REGISTER}`, formData, {
+      headers: getHeader(authHeader()),
+    })
+    .then(response => {
+      if (response.status >= 200 || response.status <= 299)
+        return response.data;
+      throw response.data;
+    })
 
-  .catch(err => {
-    let message;
-    if (err.response && err.response.status) {
-      switch (err.response.status) {
-        case 400:
-          message = err.response.data;
-          break;
-        case 404:
-          message = "Sorry! the page you are looking for could not be found";
-          break;
-        case 500:
-          message =
-            "Sorry! something went wrong, please contact our support team";
-          break;
-        case 401:
-          message = "Invalid credentials";
-          break;
-        default:
-          message = err[1];
-          break;
+    .catch(err => {
+      let message;
+      if (err.response && err.response.status) {
+        switch (err.response.status) {
+          case 400:
+            message = err.response.data;
+            break;
+          case 404:
+            message = "Sorry! the page you are looking for could not be found";
+            break;
+          case 500:
+            message =
+              "Sorry! something went wrong, please contact our support team";
+            break;
+          case 401:
+            message = "Invalid credentials";
+            break;
+          default:
+            message = err[1];
+            break;
+        }
       }
-    }
-    throw message;
-
-  }
-  );
+      throw message;
+    });
 };
 
-
 export const getOrganizationlist = () => {
-  return axios.get(url.GET_ORGANIZATION_LIST, {
-    headers: getHeader(authHeader()),
-  })
-  .then(response => {
-    console.log('getOrganizationList response:', response); // Log the entire response for debugging
-    return response; // Return the response to the caller
-  })
-  .catch(error => {
-    console.error('Error fetching organization list:', error); // Log any errors that occur
-    throw error; // Re-throw the error for handling in the calling code
-  });
+  return axios
+    .get(url.GET_ORGANIZATION_LIST, {
+      headers: getHeader(authHeader()),
+    })
+    .then(response => {
+      console.log("getOrganizationList response:", response); // Log the entire response for debugging
+      return response; // Return the response to the caller
+    })
+    .catch(error => {
+      console.error("Error fetching organization list:", error); // Log any errors that occur
+      throw error; // Re-throw the error for handling in the calling code
+    });
 };
 
 // helper.js
 
-export const updateOrganizationList = async (organization) => {
-let formData = new FormData();
-formData.append("id", organization.id);  // Include the organization ID in the form data
-formData.append("name", organization.name);
-formData.append("email", organization.email);
-formData.append("website", organization.website);
-formData.append("country", organization.country);
+export const updateOrganizationList = async organization => {
+  let formData = new FormData();
+  formData.append("id", organization.id); // Include the organization ID in the form data
+  formData.append("name", organization.name);
+  formData.append("email", organization.email);
+  formData.append("website", organization.website);
+  formData.append("country", organization.country);
+  formData.append("status", organization.status);
 
-return axios.put(
-  `${url.UPDATE_ORGANIZATION_LIST}/${organization.id}`,
-  formData,
-  {
-    headers: getHeader(authHeader()),
-  }
-)
-.then(response => {
-  console.log('updateNewOrganization response:', response); // Log the entire response for debugging
-  return response; // Return the response to the caller
-})
-.catch(error => {
-  console.error('Error updating organization:', error); // Log any errors that occur
-  throw error; // Re-throw the error for handling in the calling code
-});
+  return axios
+    .put(`${url.UPDATE_ORGANIZATION_LIST}/${organization.id}`, formData, {
+      headers: getHeader(authHeader()),
+    })
+    .then(response => {
+      console.log("updateNewOrganization response:", response); // Log the entire response for debugging
+      return response; // Return the response to the caller
+    })
+    .catch(error => {
+      console.error("Error updating organization:", error); // Log any errors that occur
+      throw error; // Re-throw the error for handling in the calling code
+    });
 };
 
 export const deleteOrganizationList = organization =>
-del(`${url.DELETE_ORGANIZATION_LIST}/${organization.id}`, {
-  headers: getHeader(authHeader()),
-});
+  del(`${url.DELETE_ORGANIZATION_LIST}/${organization.id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 
 
@@ -245,8 +246,11 @@ export const postLabInformation = (id, lab) => {
   formData.append("organization", lab.organization);
   formData.append("country", lab.country);
   formData.append("postalcode", lab.postalcode);
-  formData.append("is_registering_for_first_time", lab.is_registering_for_first_time);
-  formData.append("fax", lab.fax)
+  formData.append(
+    "is_registering_for_first_time",
+    lab.is_registering_for_first_time
+  );
+  formData.append("fax", lab.fax);
   formData.append("email", lab.email);
   // formData.append("logo", lab.logo);
   // formData.append("owner_name", lab.owner_name);
@@ -286,7 +290,7 @@ export const postLabInformation = (id, lab) => {
   formData.append("marketer_phone", lab.marketer_phone);
   formData.append("marketer_city", lab.marketer_city);
 
-  console.log("djangooooo user", lab)
+  console.log("djangooooo user", lab);
   return axios
     .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, {
       headers: getHeader(authHeader()),
@@ -371,13 +375,13 @@ export const postLogin = user => {
   formData.append("password", user.password);
   formData.append("guest_id", user.guest_id);
 
-  console.log("django api", user)
+  console.log("django api", user);
   return axios.post(url.POST_LOGIN, formData, {
     headers: getHeader(authHeader()),
   });
 };
 //////////////////////////
-export const getNews = (id) =>
+export const getNews = id =>
   get(`${url.GET_NEWS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -398,25 +402,24 @@ export const getNews = (id) =>
 //     headers: getHeader(authHeader()),
 //   });
 //******************************* */
-export const addNews = (news) => {
+export const addNews = news => {
   console.log("Calling addNews function with data:", news);
   let formData = new FormData();
-  formData.append("title", news.title);  
-  
+  formData.append("title", news.title);
+
   formData.append("description", news.description);
   formData.append("added_by", news.added_by);
   if (news.picture) {
     formData.append("picture", news.picture);
   }
   // console.log("fffffffffform", formData)
-   // Log each key-value pair in the FormData
+  // Log each key-value pair in the FormData
   //  formData.forEach((value, key) => {
   //   console.log("form dataaaaaaaaaaaaa", key, value);
   // });
   return axios.post(`${url.ADD_NEWS}`, formData, {
-        headers: getHeader(authHeader()),
-      });
-  
+    headers: getHeader(authHeader()),
+  });
 };
 // export const addNews = (news) => {
 //   console.log("Calling addNews function with data:", news); // Add console log to check if function is called
@@ -425,7 +428,7 @@ export const addNews = (news) => {
 //   formData.append("title", news.title);
 //   formData.append("description", news.description);
 //   formData.append("added_by", news.added_by);
-  
+
 //   if (news.picture) {
 //     formData.append("picture", news.picture);
 //   }
@@ -449,19 +452,19 @@ export const addNews = (news) => {
 
 //---------------database admin get units list-------
 ///////////instrumentlist/////////////
-export const getInstrumentlist = (id) =>
-    get(`${url.GET_INSTRUMENT_LIST}/${id}`, {
-     headers: getHeader(authHeader()),
+export const getInstrumentlist = id =>
+  get(`${url.GET_INSTRUMENT_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
   });
-  export const addNewInstrument = (createUnit) => {
-    let formData = new FormData();
-    formData.append("name", createUnit.name);
-    formData.append("added_by", createUnit.added_by);
-    formData.append("code", createUnit.code);
+export const addNewInstrument = createUnit => {
+  let formData = new FormData();
+  formData.append("name", createUnit.name);
+  formData.append("added_by", createUnit.added_by);
+  formData.append("code", createUnit.code);
   formData.append("model", createUnit.model);
-    formData.append("status", createUnit.status);
-    formData.append("instrument_type", createUnit.instrument_type);
-    formData.append("manufactural", createUnit.manufactural);
+  formData.append("status", createUnit.status);
+  formData.append("instrument_type", createUnit.instrument_type);
+  formData.append("manufactural", createUnit.manufactural);
   formData.append("country", createUnit.country);
     return axios.post(`${url.ADD_NEW_INSTRUMENT}`, formData, {
       headers: getHeader(authHeader()),
@@ -500,18 +503,18 @@ export const getInstrumentlist = (id) =>
       headers: getHeader(authHeader()),
     });
 
-  export const getUnitsList = id => {
-    if (id) {
-        return get(`${url.GET_UNITS_LIST}/${id}`, {
-            headers: getHeader(authHeader()),
-        });
-    } else {
-        console.error('Invalid id:', id);
-        return Promise.reject('Invalid id');
-    }
+export const getUnitsList = id => {
+  if (id) {
+    return get(`${url.GET_UNITS_LIST}/${id}`, {
+      headers: getHeader(authHeader()),
+    });
+  } else {
+    console.error("Invalid id:", id);
+    return Promise.reject("Invalid id");
+  }
 };
 
-export const addNewCreateUnits = (createUnit) => {
+export const addNewCreateUnits = createUnit => {
   let formData = new FormData();
   formData.append("name", createUnit.name);
   formData.append("added_by", createUnit.added_by);
@@ -522,18 +525,52 @@ export const addNewCreateUnits = (createUnit) => {
 export const updateUnits = unit => {
   let formData = new FormData();
   // Make sure 'unit' object contains 'id' field
-  console.log("id received is ", unit.id)
+  console.log("id received is ", unit.id);
   formData.append("id", unit.id);
   formData.append("name", unit.name);
   formData.append("added_by", unit.added_by);
-  return axios.put(
-    `${url.UPDATE_UNITS}/${unit.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_UNITS}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
+
+export const getQualitativeTypeList = id => {
+  if (id) {
+      return get(`${url.GET_QualitativeType_LIST}/${id}`, {
+          headers: getHeader(authHeader()),
+      });
+  } else {
+      console.error('Invalid id:', id);
+      return Promise.reject('Invalid id');
+  }
+};
+
+export const addNewCreateQualitativeType = (createQualitativeType) => {
+let formData = new FormData();
+formData.append("name", createQualitativeType.name);
+formData.append("number", createQualitativeType.number);
+formData.append("added_by", createQualitativeType.added_by);
+return axios.post(`${url.ADD_NEW_QualitativeType}`, formData, {
+  headers: getHeader(authHeader()),
+});
+};
+export const updateQualitativeType = qualitativetype => {
+let formData = new FormData();
+// Make sure 'qualitativetype' object contains 'id' field
+console.log("id received is ", qualitativetype.id)
+formData.append("id", qualitativetype.id);
+formData.append("name", qualitativetype.name);
+formData.append("number", qualitativetype.number);
+formData.append("added_by", qualitativetype.added_by);
+return axios.put(
+  `${url.UPDATE_QualitativeType}/${qualitativetype.id}`,
+  formData,
+  {
+    headers: getHeader(authHeader()),
+  }
+);
+};
+
 
 
 export const getHistoryUnits = id => {
@@ -543,15 +580,13 @@ export const getHistoryUnits = id => {
   });
 };
 
-
-
 // Sample
  export const getSamplelist = (id) =>
     get(`${url.GET_SAMPLE_LIST}/${id}`, {
       headers: getHeader(authHeader()),
     });
 /////////////////////////////////
-  export const addNewSampleList = (sample) => {
+  export const addNewSampleList = sample => {
     let formData = new FormData();
     formData.append("samplename", sample.samplename);
     formData.append("added_by", sample.added_by);
@@ -618,26 +653,101 @@ export const updateSampleAnalytelist = schemeanalyte => {
 };
 
 //---------------database admin get Reagents list-------
-export const getReagentsList = (id) =>
+export const getReagentsList = id =>
   get(`${url.GET_REAGENTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-
-  //---------------Get Participant List-------
+//---------------Get Participant List-------
 export const getParticipantList = id =>
   get(`${url.GET_PARTICIPANT_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
+//---------------Get ParticipantRound List-------
+export const getParticipantRoundList = id =>
+  get(`${url.GET_PARTICIPANTROUND_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 //---------------Round add Labs-------
-export const getRoundLablist = (id) =>
+export const getRoundLablist = id =>
   get(`${url.GET_ROUND_LABS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewRoundLablist = (createRoundLab) => {
+export const getSelectedSchemesList = id =>
+  get(`${url.SELECTED_SCHEMES}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+//------------- results page
+export const getSchemeAnalytesList = id =>
+  get(`${url.SCHEMES_ANALYTES}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+//Get result list
+export const getResultsList = id =>
+  get(`${url.GET_RESULT}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+//submit result lab count 
+export const getResultSubmit = id =>
+  get(`${url.GET_RESULT_SUBMIT}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+// export const getReport = id =>
+//   get(`${url.GET_REPORT}/${id}`, {
+//     headers: getHeader(authHeader()),
+//   });
+export const getReport = id => 
+  get(`${url.GET_REPORT}/${id}`, {
+    headers: getHeader(authHeader()),
+  }).then(response => {
+    console.log("API Raw Response:", response); // Log the raw response
+    return response; // Ensure response is being returned correctly
+  }).catch(error => {
+    console.error("Error in API Call:", error);
+  });
+  
+//Participant result POST
+export const postResult = (result, id) => {
+  let formData = new FormData();
+  formData.append("round_id", result.round_id);
+  formData.append("analyte_id", result.analyte_id);
+  formData.append("unit_name", result.unit_name);
+  formData.append("instrument_name", result.instrument_name);
+  formData.append("method_name", result.method_name);
+  formData.append("reagent_name", result.reagent_name);
+  formData.append("result", result.result);
+  formData.append("rounds", result.rounds);
+  formData.append("round_status", result.round_status);
+  formData.append("scheme_id", result.scheme_id);
+  formData.append("result_status", result.result_status);
+  formData.append("result_type", result.result_type);
+
+  return axios.post(`${url.POST_RESULT}/${id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+// export const getSchemeAnalytesList = (id) => {
+//   return axios.get(`${url.SCHEMES_ANALYTES}/${id}`, {
+//     headers: getHeader(authHeader()), // Ensure getHeader and authHeader are correct
+//   })
+//   .then(response => {
+//     // Log the response data
+//     console.log("Response data:", response.data);
+//     return response; // Return the response for further use
+//   })
+//   .catch(error => {
+//     // Log any errors encountered
+//     console.error("Error fetching data:", error);
+//     throw error; // Rethrow the error to be handled by the caller
+//   });
+// };
+export const addNewRoundLablist = createRoundLab => {
   let formData = new FormData();
   formData.append("participants", createRoundLab.participants);
   formData.append("added_by", createRoundLab.added_by);
@@ -649,24 +759,17 @@ export const addNewRoundLablist = (createRoundLab) => {
 export const updateRoundLablist = roundslab => {
   let formData = new FormData();
   formData.append("participants", roundslab.participants);
-  return axios.put(
-    `${url.UPDATE_ROUNDLABS}/${roundslab.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_ROUNDLABS}/${roundslab.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 
-
-
-
-export const addNewReagents = (createReagent) => {
+export const addNewReagents = createReagent => {
   let formData = new FormData();
   formData.append("name", createReagent.name);
   formData.append("code", createReagent.code);
   formData.append("status", createReagent.status);
-  formData.append("added_by", createReagent.added_by);  
+  formData.append("added_by", createReagent.added_by);
   formData.append("manufactural", createReagent.manufactural);
   formData.append("country", createReagent.country);
   return axios.post(`${url.ADD_NEW_REAGENTS}`, formData, {
@@ -677,7 +780,7 @@ export const addNewReagents = (createReagent) => {
 export const updateReagents = reagent => {
   let formData = new FormData();
 
-  console.log("id received is ", reagent.id)
+  console.log("id received is ", reagent.id);
   formData.append("id", reagent.id);
   formData.append("code", reagent.code);
   formData.append("status", reagent.status);
@@ -685,13 +788,9 @@ export const updateReagents = reagent => {
   formData.append("added_by", reagent.added_by);
   formData.append("manufactural", reagent.manufactural);
   formData.append("country", reagent.country);
-  return axios.put(
-    `${url.UPDATE_REAGENTS}/${reagent.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_REAGENTS}/${reagent.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const deleteReagent = Reagent =>
   del(`${url.DELETE_REAGENT}/${Reagent.id}`, {
@@ -699,12 +798,12 @@ export const deleteReagent = Reagent =>
   });
 
 //---------------Analyte add Reagents-------
-export const getAnalyteReagentlist = (id) =>
+export const getAnalyteReagentlist = id =>
   get(`${url.GET_ANALYTE_REAGENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewAnalyteReagentlist = (createAnalyteReagent) => {
+export const addNewAnalyteReagentlist = createAnalyteReagent => {
   let formData = new FormData();
   formData.append("reagents", createAnalyteReagent.reagents);
   formData.append("added_by", createAnalyteReagent.added_by);
@@ -724,60 +823,84 @@ export const updateAnalyteReagentlist = analytesreagent => {
     }
   );
 };
+
+//---------------Analyte add Qualitative-------
+export const getAnalyteQualitativelist = (id) =>
+  get(`${url.GET_ANALYTE_QUALITATIVE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const addNewAnalyteQualitativelist = (createAnalyteReagent) => {
+  let formData = new FormData();
+  formData.append("qualitativetype", createAnalyteReagent.reagents);
+  formData.append("added_by", createAnalyteReagent.added_by);
+  return axios.post(`${url.ADD_ANALYTE_QUALITATIVE}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const updateAnalyteQualitativelist = analytesreagent => {
+  let formData = new FormData();
+  formData.append("qualitativetype", analytesreagent.reagents);
+  return axios.put(
+    `${url.UPDATE_ANALYTEQUALITATIVE}/${analytesreagent.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};
 ///////analytes associated with unit
-export const getAnalyteUnit = (id) =>
+export const getAnalyteUnit = id =>
   get(`${url.GET_ANALYTESUNITS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-  ///////analytes associated with REAGENT
-export const getAnalyteReagent = (id) =>
+///////analytes associated with REAGENT
+export const getAnalyteReagent = id =>
   get(`${url.GET_ANALYTESREAGENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-  
 
-  ///////analytes associated with INSTRUMENT
-export const getAnalyteInstrument = (id) =>
+///////analytes associated with INSTRUMENT
+export const getAnalyteInstrument = id =>
   get(`${url.GET_ANALYTESINSTRUMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-   ///////analytes associated with METHOD
-export const getAnalyteMethod = (id) =>
+///////analytes associated with METHOD
+export const getAnalyteMethod = id =>
   get(`${url.GET_ANALYTESMETHODS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
+export const instrumentsintype = id =>
+  get(`${url.GET_INSTRUMENTSINTYPE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
+export const instrumentsinmaufacturer = id =>
+  get(`${url.GET_INSTRUMENTSINMANUFACTURER}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
-  export const instrumentsintype = (id) =>
-    get(`${url.GET_INSTRUMENTSINTYPE}/${id}`, {
-      headers: getHeader(authHeader()),
-    });
+export const reagentsinmaufacturer = id =>
+  get(`${url.GET_REAGENTSINMANUFACTURER}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
-  export const instrumentsinmaufacturer = (id) =>
-    get(`${url.GET_INSTRUMENTSINMANUFACTURER}/${id}`, {
-      headers: getHeader(authHeader()),
-    });
-    
-    export const reagentsinmaufacturer = (id) =>
-      get(`${url.GET_REAGENTSINMANUFACTURER}/${id}`, {
-        headers: getHeader(authHeader()),
-      });
-  
 //---------------Analyte add Units-------
-export const getAnalyteUnitlist = (id) =>
+export const getAnalyteUnitlist = id =>
   get(`${url.GET_ANALYTESUNITS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewAnalyteUnitlist = (createAnalyteUnit) => {
+export const addNewAnalyteUnitlist = createAnalyteUnit => {
   let formData = new FormData();
   formData.append("units", createAnalyteUnit.units);
   formData.append("added_by", createAnalyteUnit.added_by);
   formData.append("masterUnit", createAnalyteUnit.masterUnit);
-  
+
   return axios.post(`${url.ADD_NEW_ANALYTESUNITS}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -797,12 +920,12 @@ export const updateAnalyteUnitlist = analytesunit => {
 };
 
 //---------------Analyte add Methods-------
-export const getAnalytemethodlist = (id) =>
+export const getAnalytemethodlist = id =>
   get(`${url.GET_ANALYTESMETHODS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewAnalytemethodlist = (createAnalyteMethod) => {
+export const addNewAnalytemethodlist = createAnalyteMethod => {
   let formData = new FormData();
   formData.append("methods", createAnalyteMethod.methods);
   formData.append("added_by", createAnalyteMethod.added_by);
@@ -824,12 +947,12 @@ export const updateAnalytemethodlist = analytesmethod => {
 };
 
 //---------------Analyte add Equipments-------
-export const getAnalyteEquipmentlist = (id) =>
+export const getAnalyteEquipmentlist = id =>
   get(`${url.GET_ANALYTESEQUIPMENTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewAnalyteEquipmentlist = (createAnalyteEquipment) => {
+export const addNewAnalyteEquipmentlist = createAnalyteEquipment => {
   let formData = new FormData();
   formData.append("equipments", createAnalyteEquipment.equipments);
   formData.append("added_by", createAnalyteEquipment.added_by);
@@ -850,12 +973,12 @@ export const updateAnalyteEquipmentlist = analytesequipment => {
   );
 };
 //---------------database admin get Manufactural list-------
-export const getManufacturalList = (id) =>
+export const getManufacturalList = id =>
   get(`${url.GET_MANUFACTURAL_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewManufactural = (createManufactural) => {
+export const addNewManufactural = createManufactural => {
   let formData = new FormData();
   formData.append("name", createManufactural.name);
   formData.append("website", createManufactural.website);
@@ -869,19 +992,15 @@ export const addNewManufactural = (createManufactural) => {
 export const updateManufactural = manufactural => {
   let formData = new FormData();
 
-  console.log("id received is ", manufactural)
+  console.log("id received is ", manufactural);
   formData.append("id", manufactural.id);
   formData.append("name", manufactural.name);
   formData.append("website", manufactural.website);
   formData.append("country", manufactural.country);
   formData.append("added_by", manufactural.added_by);
-  return axios.put(
-    `${url.UPDATE_MANUFACTURAL}/${manufactural.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_MANUFACTURAL}/${manufactural.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 
 export const deleteManufacturer = Analyte =>
@@ -889,7 +1008,7 @@ export const deleteManufacturer = Analyte =>
     headers: getHeader(authHeader()),
   });
 
-export const getInstrumenttypelist = (id) =>
+export const getInstrumenttypelist = id =>
   get(`${url.GET_INSTRUMENT_TYPE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -911,13 +1030,9 @@ export const updateNewInstrumentType = unit => {
   let formData = new FormData();
   formData.append("name", unit.name);
   formData.append("added_by", unit.added_by);
-  return axios.put(
-    `${url.UPDATE_NEW_INSTRUMENT_TYPE}/${unit.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_NEW_INSTRUMENT_TYPE}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const deleteInstrumentType = InstrumentType =>
   del(`${url.DELETE_INSTRUMENT_TYPE}/${InstrumentType.id}`, {
@@ -925,11 +1040,11 @@ export const deleteInstrumentType = InstrumentType =>
   });
 
 ///////////methodlist/////////////n
-export const getMethodlist = (id) =>
+export const getMethodlist = id =>
   get(`${url.GET_METHOD_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const addNewMethod = (createUnit) => {
+export const addNewMethod = createUnit => {
   let formData = new FormData();
   formData.append("name", createUnit.name);
   formData.append("added_by", createUnit.added_by);
@@ -945,13 +1060,9 @@ export const updateMethod = unit => {
   formData.append("added_by", unit.added_by);
   formData.append("code", unit.code);
   formData.append("status", unit.status);
-  return axios.put(
-    `${url.UPDATE_METHOD}/${unit.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_METHOD}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateMembershipstatus = status => {
   let formData = new FormData();
@@ -971,7 +1082,7 @@ export const deleteMethod = Method =>
     headers: getHeader(authHeader()),
   });
 ///////////Scheme list/////////////
-export const getSchemelist = (id) =>
+export const getSchemelist = id =>
   get(`${url.GET_SCHEME_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -979,7 +1090,7 @@ export const addNewScheme = (createUnit, id) => {
   let formData = new FormData();
   formData.append("name", createUnit.name);
   formData.append("price", createUnit.price);
-  // formData.append("analytes", createUnit.analytes);
+  formData.append("analytetype", createUnit.analytetype);
   formData.append("added_by", createUnit.added_by);
   formData.append("status", createUnit.status);
   return axios.post(`${url.ADD_NEW_SCHEME}`, formData, {
@@ -991,14 +1102,11 @@ export const updateScheme = unit => {
   formData.append("name", unit.name);
   formData.append("price", unit.price);
   formData.append("added_by", unit.added_by);
+  formData.append("analytetype", unit.analytetype);
   formData.append("status", unit.status);
-  return axios.put(
-    `${url.UPDATE_SCHEME}/${unit.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_SCHEME}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 
 export const deleteScheme = unit =>
@@ -1012,31 +1120,37 @@ export const getCyclelist = id =>
     headers: getHeader(authHeader()),
   });
 export const addNewCycle = (createUnit, id) => {
-  console.log("Adding New Cycle", createUnit, id)
+  console.log("Adding New Cycle", createUnit, id);
   let formData = new FormData();
   formData.append("scheme_name", createUnit.scheme_name);
   formData.append("cycle_no", createUnit.cycle_no);
   formData.append("rounds", createUnit.rounds);
-  formData.append("cycle", createUnit.cycle);
+  // formData.append("cycle", createUnit.cycle);
   formData.append("start_date", createUnit.start_date);
   formData.append("end_date", createUnit.end_date);
   formData.append("analytes", createUnit.analytes);
   formData.append("status", createUnit.status);
   formData.append("added_by", createUnit.added_by);
-  return axios.post(`${url.ADD_NEW_CYCLE}`, formData, {
-    headers: {
-      ...getHeader(authHeader()),
-      'Content-Type': 'multipart/form-data',
-    },
-  }).then(response => {
-    console.log("Cycle added successfully:", response.data);
-    return response.data;
-  }).catch(error => {
-    console.error("Error adding cycle:", error.response ? error.response.data : error.message);
-    throw error;
-  });
+  return axios
+    .post(`${url.ADD_NEW_CYCLE}`, formData, {
+      headers: {
+        ...getHeader(authHeader()),
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(response => {
+      console.log("Cycle added successfully:", response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error(
+        "Error adding cycle:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
 };
-    
+
 export const updateCycle = cycle => {
   let formData = new FormData();
   formData.append("id", cycle.id);
@@ -1065,7 +1179,7 @@ export const deleteCycle = unit =>
 
 //-----------------Payment----------------
 export const addNewPayment = (payment, id) => {
-  console.log("data in django api helper", payment.participant)
+  console.log("data in django api helper", payment.participant);
   let formData = new FormData();
   formData.append("participant", payment.participant);
   formData.append("scheme", payment.scheme);
@@ -1079,17 +1193,17 @@ export const addNewPayment = (payment, id) => {
   return axios.post(`${url.ADD_NEW_PAYMENT}`, formData, {
     headers: {
       ...getHeader(authHeader()),
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     },
-  })
+  });
 };
-  // ---------------Scheme add Analytes-------
-export const getSchemeAnalytelist = (id) =>
+// ---------------Scheme add Analytes-------
+export const getSchemeAnalytelist = id =>
   get(`${url.GET_SCHEME_ANALYTE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewSchemeAnalytelist = (createSchemeAnalyte) => {
+export const addNewSchemeAnalytelist = createSchemeAnalyte => {
   let formData = new FormData();
   formData.append("analytes", createSchemeAnalyte.analytes);
   formData.append("added_by", createSchemeAnalyte.added_by);
@@ -1118,20 +1232,28 @@ export const getAnalyteCycle = (id) =>
   });
 
 ///////////Analyte list/////////////
-export const getAnalytelist = (id) =>
+export const getAnalytelist = id =>
   get(`${url.GET_ANALYTE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const addNewAnalyte = (createUnit) => {
-  let formData = new FormData();
-  formData.append("name", createUnit.name);
-  formData.append("added_by", createUnit.added_by);
-  formData.append("code", createUnit.code);
-  formData.append("status", createUnit.status);
-  return axios.post(`${url.ADD_NEW_ANALYTE}`, formData, {
+
+///////////Analyte FOR Scheme/////////////
+export const getAnalyteforSchemelist = id =>
+  get(`${url.GET_ANALYTEFORSCHEME_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-};
+
+export const addNewAnalyte = (createUnit) => {
+    let formData = new FormData();
+    formData.append("name", createUnit.name);
+    formData.append("added_by", createUnit.added_by);
+    formData.append("code", createUnit.code);
+    formData.append("status", createUnit.status);
+    return axios.post(`${url.ADD_NEW_ANALYTE}`, formData, {
+      headers: getHeader(authHeader()),
+    });
+  };
+  
 export const updateAnalyte = unit => {
   let formData = new FormData();
   formData.append("name", unit.name);
@@ -1146,254 +1268,216 @@ export const updateAnalyte = unit => {
     });
   }
 
-  return axios.put(
-    `${url.UPDATE_ANALYTE}/${unit.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_ANALYTE}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const deleteAnalyte = Analyte =>
   del(`${url.DELETE_ANALYTE}/${Analyte.id}`, {
     headers: getHeader(authHeader()),
   });
 
-
 ////participant city
-export const getCityList = (id) =>
+export const getCityList = id =>
   get(`${url.GET_CITY_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateCity = (createCity) => {
-let formData = new FormData();
-formData.append("name", createCity.name);
-formData.append("added_by", createCity.added_by);
-return axios.post(`${url.ADD_NEW_CITY}`, formData, {
-  headers: getHeader(authHeader()),
-});
+export const addNewCreateCity = createCity => {
+  let formData = new FormData();
+  formData.append("name", createCity.name);
+  formData.append("added_by", createCity.added_by);
+  return axios.post(`${url.ADD_NEW_CITY}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateCity = city => {
-let formData = new FormData();
-// Make sure 'city' object contains 'id' field
-console.log("id received is ", city.id)
-formData.append("id", city.id);
-formData.append("name", city.name);
-formData.append("added_by", city.added_by);
-return axios.put(
-  `${url.UPDATE_CITY}/${city.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  // Make sure 'city' object contains 'id' field
+  console.log("id received is ", city.id);
+  formData.append("id", city.id);
+  formData.append("name", city.name);
+  formData.append("added_by", city.added_by);
+  return axios.put(`${url.UPDATE_CITY}/${city.id}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
 
 ////participant country
-export const getCountryList = (id) =>
+export const getCountryList = id =>
   get(`${url.GET_COUNTRY_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateCountry = (createCountry) => {
-let formData = new FormData();
-formData.append("name", createCountry.name);
-formData.append("added_by", createCountry.added_by);
-return axios.post(`${url.ADD_NEW_COUNTRY}`, formData, {
-  headers: getHeader(authHeader()),
-});
+export const addNewCreateCountry = createCountry => {
+  let formData = new FormData();
+  formData.append("name", createCountry.name);
+  formData.append("added_by", createCountry.added_by);
+  return axios.post(`${url.ADD_NEW_COUNTRY}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateCountry = country => {
-let formData = new FormData();
-// Make sure 'country' object contains 'id' field
-console.log("id received is ", country.id)
-formData.append("id", country.id);
-formData.append("name", country.name);
-formData.append("added_by", country.added_by);
-return axios.put(
-  `${url.UPDATE_COUNTRY}/${country.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  // Make sure 'country' object contains 'id' field
+  console.log("id received is ", country.id);
+  formData.append("id", country.id);
+  formData.append("name", country.name);
+  formData.append("added_by", country.added_by);
+  return axios.put(`${url.UPDATE_COUNTRY}/${country.id}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
 
 ////participant Province
-export const getProvinceList = (id) =>
+export const getProvinceList = id =>
   get(`${url.GET_PROVINCE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateProvince = (createProvince) => {
-let formData = new FormData();
-formData.append("name", createProvince.name);
-formData.append("added_by", createProvince.added_by);
-return axios.post(`${url.ADD_NEW_PROVINCE}`, formData, {
-  headers: getHeader(authHeader()),
-});
+export const addNewCreateProvince = createProvince => {
+  let formData = new FormData();
+  formData.append("name", createProvince.name);
+  formData.append("added_by", createProvince.added_by);
+  return axios.post(`${url.ADD_NEW_PROVINCE}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateProvince = province => {
-let formData = new FormData();
-// Make sure 'province' object contains 'id' field
-console.log("id received is ", province.id)
-formData.append("id", province.id);
-formData.append("name", province.name);
-formData.append("added_by", province.added_by);
-return axios.put(
-  `${url.UPDATE_PROVINCE}/${province.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  // Make sure 'province' object contains 'id' field
+  console.log("id received is ", province.id);
+  formData.append("id", province.id);
+  formData.append("name", province.name);
+  formData.append("added_by", province.added_by);
+  return axios.put(`${url.UPDATE_PROVINCE}/${province.id}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
 
-
 ///participant district
-export const getDistrictList = (id) =>
+export const getDistrictList = id =>
   get(`${url.GET_DISTRICT_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateDistrict = (createDistrict) => {
-let formData = new FormData();
-formData.append("name", createDistrict.name);
-formData.append("added_by", createDistrict.added_by);
-return axios.post(`${url.ADD_NEW_DISTRICT}`, formData, {
-  headers: getHeader(authHeader()),
-});
+export const addNewCreateDistrict = createDistrict => {
+  let formData = new FormData();
+  formData.append("name", createDistrict.name);
+  formData.append("added_by", createDistrict.added_by);
+  return axios.post(`${url.ADD_NEW_DISTRICT}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateDistrict = district => {
-let formData = new FormData();
-console.log("id received is ", district.id)
-formData.append("id", district.id);
-formData.append("name", district.name);
-formData.append("added_by", district.added_by);
-return axios.put(
-  `${url.UPDATE_DISTRICT}/${district.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  console.log("id received is ", district.id);
+  formData.append("id", district.id);
+  formData.append("name", district.name);
+  formData.append("added_by", district.added_by);
+  return axios.put(`${url.UPDATE_DISTRICT}/${district.id}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
 
 ///participant department
-export const getDepartmentList = (id) =>
+export const getDepartmentList = id =>
   get(`${url.GET_DEPARTMENT_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateDepartment = (createDepartment) => {
-let formData = new FormData();
-formData.append("name", createDepartment.name);
-formData.append("added_by", createDepartment.added_by);
-return axios.post(`${url.ADD_NEW_DEPARTMENT}`, formData, {
-  headers: getHeader(authHeader()),
-});
+export const addNewCreateDepartment = createDepartment => {
+  let formData = new FormData();
+  formData.append("name", createDepartment.name);
+  formData.append("added_by", createDepartment.added_by);
+  return axios.post(`${url.ADD_NEW_DEPARTMENT}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateDepartment = department => {
-let formData = new FormData();
-console.log("id received is ", department.id)
-formData.append("id", department.id);
-formData.append("name", department.name);
-formData.append("added_by", department.added_by);
-return axios.put(
-  `${url.UPDATE_DEPARTMENT}/${department.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  console.log("id received is ", department.id);
+  formData.append("id", department.id);
+  formData.append("name", department.name);
+  formData.append("added_by", department.added_by);
+  return axios.put(`${url.UPDATE_DEPARTMENT}/${department.id}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
 
 ///participant Designation
-export const getDesignationList = (id) =>
+export const getDesignationList = id =>
   get(`${url.GET_DESIGNATION_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateDesignation = (createDesignation) => {
-let formData = new FormData();
-formData.append("name", createDesignation.name);
-formData.append("added_by", createDesignation.added_by);
-return axios.post(`${url.ADD_NEW_DESIGNATION}`, formData, {
-  headers: getHeader(authHeader()),
-});
+export const addNewCreateDesignation = createDesignation => {
+  let formData = new FormData();
+  formData.append("name", createDesignation.name);
+  formData.append("added_by", createDesignation.added_by);
+  return axios.post(`${url.ADD_NEW_DESIGNATION}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateDesignation = designation => {
-let formData = new FormData();
-console.log("id received is ", designation.id)
-formData.append("id", designation.id);
-formData.append("name", designation.name);
-formData.append("added_by", designation.added_by);
-return axios.put(
-  `${url.UPDATE_DESIGNATION}/${designation.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  console.log("id received is ", designation.id);
+  formData.append("id", designation.id);
+  formData.append("name", designation.name);
+  formData.append("added_by", designation.added_by);
+  return axios.put(`${url.UPDATE_DESIGNATION}/${designation.id}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
 
 ///participant type
-export const getTypeList = (id) =>
+export const getTypeList = id =>
   get(`${url.GET_TYPE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateType = (createType) => {
-let formData = new FormData();
-formData.append("name", createType.name);
-formData.append("added_by", createType.added_by);
-return axios.post(`${url.ADD_NEW_TYPE}`, formData, {
-  headers: getHeader(authHeader()),
-});
+export const addNewCreateType = createType => {
+  let formData = new FormData();
+  formData.append("name", createType.name);
+  formData.append("added_by", createType.added_by);
+  return axios.post(`${url.ADD_NEW_TYPE}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateType = type => {
-let formData = new FormData();
-console.log("id received is ", type.id)
-formData.append("id", type.id);
-formData.append("name", type.name);
-formData.append("added_by", type.added_by);
-return axios.put(
-  `${url.UPDATE_TYPE}/${type.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  console.log("id received is ", type.id);
+  formData.append("id", type.id);
+  formData.append("name", type.name);
+  formData.append("added_by", type.added_by);
+  return axios.put(`${url.UPDATE_TYPE}/${type.id}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
 
 ///participant sector
-export const getSectorList = (id) =>
+export const getSectorList = id =>
   get(`${url.GET_SECTOR_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateSector = (createSector) => {
-let formData = new FormData();
-formData.append("name", createSector.name);
-formData.append("added_by", createSector.added_by);
-return axios.post(`${url.ADD_NEW_SECTOR}`, formData, {
-  headers: getHeader(authHeader()),
-});
+export const addNewCreateSector = createSector => {
+  let formData = new FormData();
+  formData.append("name", createSector.name);
+  formData.append("added_by", createSector.added_by);
+  return axios.post(`${url.ADD_NEW_SECTOR}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 export const updateSector = sector => {
-let formData = new FormData();
-console.log("id received is ", sector.id)
-formData.append("id", sector.id);
-formData.append("name", sector.name);
-formData.append("added_by", sector.added_by);
-return axios.put(
-  `${url.UPDATE_SECTOR}/${sector.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  console.log("id received is ", sector.id);
+  formData.append("id", sector.id);
+  formData.append("name", sector.name);
+  formData.append("added_by", sector.added_by);
+  return axios.put(`${url.UPDATE_SECTOR}/${sector.id}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
 // ------------- Get Labs Request -------------
 export const getLabs = () =>
@@ -1405,7 +1489,6 @@ export const getMainLabs = () =>
   get(url.GET_MAIN_LABS, {
     headers: getHeader(authHeader()),
   });
-
 
 // ------------- Offered Test Requests START -------------
 export const getTests = () =>
@@ -1427,13 +1510,13 @@ export const getCorporateTests = id =>
     headers: getHeader(authHeader()),
   });
 
-// List of Corporate 
+// List of Corporate
 export const getLabCorporate = id =>
   get(`${url.GET_LABCORPORATE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-// List of Corporate 
+// List of Corporate
 
 export const getACorporate = () =>
   get(url.GET_ACORPORATE, {
@@ -1450,12 +1533,16 @@ export const updateACorporateStatus = offeredTest => {
   formData.append("plateform_charges", offeredTest.plateform_charges);
   // formData.append("is_active", offeredTest.is_active);
 
-  return axios.put(`${url.UPDATE_ACORPORATE_STATUS}/${offeredTest.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_ACORPORATE_STATUS}/${offeredTest.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
-// List of Accepted Corporate 
+// List of Accepted Corporate
 export const getALabCorporate = id =>
   get(`${url.GET_ALABCORPORATE}/${id}`, {
     headers: getHeader(authHeader()),
@@ -1518,7 +1605,7 @@ export const addNewOfferedTest = (offeredTest, id) => {
   );
   formData.append("is_test_performed", offeredTest.is_test_performed);
   formData.append("is_active", offeredTest.is_active);
-  console.log("api helper", offeredTest, id)
+  console.log("api helper", offeredTest, id);
   return axios.post(`${url.ADD_NEW_OFFERED_TEST}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1529,7 +1616,7 @@ export const addNewCorporateTest = (offeredTest, id) => {
   formData.append("price", offeredTest.price);
   formData.append("start_date", offeredTest.start_date);
   formData.append("end_date", offeredTest.end_date);
-  console.log("api helper", offeredTest, id)
+  console.log("api helper", offeredTest, id);
   return axios.post(`${url.ADD_NEW_CORPORATE_TEST}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1538,7 +1625,7 @@ export const addNewCorporate = (offeredTest, id) => {
   let formData = new FormData();
   formData.append("corporate_id", offeredTest.corporate_id);
   formData.append("status", offeredTest.status);
-  console.log("api helper", offeredTest, id)
+  console.log("api helper", offeredTest, id);
   return axios.post(`${url.ADD_NEW_CORPORATE}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1547,7 +1634,7 @@ export const addNewOfferedMainTest = (offeredTest, id) => {
   let formData = new FormData();
   formData.append("main_lab_tests", offeredTest.main_lab_tests);
   // formData.append("unit_id", offeredTest.unit_id);
-  console.log("dataaaa", offeredTest)
+  console.log("dataaaa", offeredTest);
   return axios.post(`${url.ADD_NEW_OFFERED_MAINTEST}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1593,9 +1680,13 @@ export const updateCorporateStatus = offeredTest => {
   formData.append("shared_percentage", offeredTest.shared_percentage);
   // formData.append("is_active", offeredTest.is_active);
 
-  return axios.put(`${url.UPDATE_CORPORATE_STATUS}/${offeredTest.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_CORPORATE_STATUS}/${offeredTest.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 export const deleteOfferedTest = offeredTest =>
@@ -1657,7 +1748,7 @@ export const addNewNoteComplaint = (note, id) => {
   formData.append("note", note.note);
   formData.append("complaint_id", note.complaint_id);
 
-  console.log("heeeeeee", note, id)
+  console.log("heeeeeee", note, id);
   return axios.post(`${url.ADD_NEW_NOTE_COMPLAINT}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1674,7 +1765,7 @@ export const addNewNote = (note, id) => {
   formData.append("note", note.note);
   formData.append("appointment_id", note.appointment_id);
 
-  console.log("heeeeeee", note, id)
+  console.log("heeeeeee", note, id);
   return axios.post(`${url.ADD_NEW_NOTE}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1689,7 +1780,7 @@ export const addNewMsg = (msg, id) => {
   formData.append("msg", msg.msg);
   formData.append("advertisement_id", msg.advertisement_id);
 
-  console.log("heeeeeee", msg, id)
+  console.log("heeeeeee", msg, id);
   return axios.post(`${url.ADD_NEW_MSG}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1700,7 +1791,7 @@ export const addNewCollectionPointQuality = (qualityCertificate, id) => {
   let formData = new FormData();
   formData.append("main_lab_quality", qualityCertificate.main_lab_quality);
   // formData.append("unit_id", qualityCertificate.unit_id);
-  console.log("main_lab_quality", qualityCertificate)
+  console.log("main_lab_quality", qualityCertificate);
   return axios.post(`${url.ADD_NEW_COLLECTIONPOINT_QUALITY}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1717,7 +1808,10 @@ export const addNewQualityCertificate = (qualityCertificate, id) => {
   formData.append("type", qualityCertificate.type);
   formData.append("certificate", qualityCertificate.certificate);
   formData.append("certificate_type", qualityCertificate.certificate_type);
-  formData.append("sub_certificate_type", qualityCertificate.sub_certificate_type);
+  formData.append(
+    "sub_certificate_type",
+    qualityCertificate.sub_certificate_type
+  );
   formData.append("expiry_date", qualityCertificate.expiry_date);
   formData.append("start_date", qualityCertificate.start_date);
   formData.append("end_date", qualityCertificate.end_date);
@@ -1765,7 +1859,7 @@ export const getNotification = (id, previousApiCallTime) => {
   let formData = new FormData();
   formData.append("previousApiCallTime", previousApiCallTime);
   formData.append("id", id);
-  console.log("data", previousApiCallTime)
+  console.log("data", previousApiCallTime);
   return axios.post(`${url.GET_NOTIFICATION}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1775,18 +1869,17 @@ export const getSampleNotification = (id, previousApiCallTime) => {
   let formData = new FormData();
   formData.append("previousApiCallTime", previousApiCallTime);
   formData.append("id", id);
-  console.log("data", previousApiCallTime)
+  console.log("data", previousApiCallTime);
   return axios.post(`${url.GET_SAMPLE_NOTIFICATION}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
 
-
 export const getMarketerNotification = (id, previousApiCallTime) => {
   let formData = new FormData();
   formData.append("previousApiCallTime", previousApiCallTime);
   formData.append("id", id);
-  console.log("data", previousApiCallTime)
+  console.log("data", previousApiCallTime);
   return axios.post(`${url.GET_MARKETER_NOTIFICATION}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1796,7 +1889,7 @@ export const getCsrAdminNotification = (id, previousApiCallTime) => {
   let formData = new FormData();
   formData.append("previousApiCallTime", previousApiCallTime);
   formData.append("id", id);
-  console.log("data", previousApiCallTime)
+  console.log("data", previousApiCallTime);
   return axios.post(`${url.GET_CSR_ADMIN_NOTIFICATION}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1806,7 +1899,7 @@ export const getRegAdminNotification = (id, previousApiCallTime) => {
   let formData = new FormData();
   formData.append("previousApiCallTime", previousApiCallTime);
   formData.append("id", id);
-  console.log("data", previousApiCallTime)
+  console.log("data", previousApiCallTime);
   return axios.post(`${url.GET_REG_ADMIN_NOTIFICATION}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1816,7 +1909,7 @@ export const getCsrOfficerNotification = (id, previousApiCallTime) => {
   let formData = new FormData();
   formData.append("previousApiCallTime", previousApiCallTime);
   formData.append("id", id);
-  console.log("data", previousApiCallTime)
+  console.log("data", previousApiCallTime);
   return axios.post(`${url.GET_CSR_OFFICER_NOTIFICATION}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -1831,7 +1924,7 @@ export const getActivityLogFinance = id =>
 export const getLcList = () =>
   get(`${url.GET_LC_LIST}`, {
     headers: getHeader(authHeader()),
-  })
+  });
 export const getCorporateList = () =>
   get(`${url.GET_CORPORATE_LIST}`, {
     headers: getHeader(authHeader()),
@@ -1943,7 +2036,6 @@ export const postChangePwd = user => {
   });
 };
 
-
 // ------------- Lab Profile Requests START -------------
 export const getLabProfile = id =>
   get(`${url.GET_LAB_PROFILE}/${id}`, {
@@ -1956,7 +2048,7 @@ export const updateLabProfile = (labProfile, id) => {
   formData.append("shipping_address", labProfile.shipping_address);
   formData.append("billing_address", labProfile.billing_address);
   formData.append("landline_registered_by", labProfile.landline_registered_by);
- 
+
   formData.append("email_participant", labProfile.email_participant);
   formData.append("name", labProfile.name);
   formData.append("lab_staff_name", labProfile.lab_staff_name);
@@ -1984,7 +2076,10 @@ export const updateLabSettings = (labSettings, id) => {
   // formData.append("lab_experience", labSettings.lab_experience);
   formData.append("registration_no", labSettings.registration_no);
   formData.append("license_no", labSettings.license_no);
-  formData.append("is_homesampling_offered", labSettings.is_homesampling_offered);
+  formData.append(
+    "is_homesampling_offered",
+    labSettings.is_homesampling_offered
+  );
   formData.append(
     "health_dept_certificate",
     labSettings.health_dept_certificate
@@ -2011,7 +2106,7 @@ export const updateLabSettings = (labSettings, id) => {
 
   formData.append("account_number", labSettings.account_number);
   formData.append("branch_code", labSettings.branch_code);
-  console.log("labsettings", labSettings)
+  console.log("labsettings", labSettings);
 
   return axios.put(`${url.UPDATE_LAB_SETTINGS}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -2035,7 +2130,6 @@ export const updateLabPayments = (labPayments, id) => {
   });
 };
 
-
 // Get Region Wise Advertisement
 export const getRegionWiseAdvertisement = locationDetails => {
   let formData = new FormData();
@@ -2044,8 +2138,6 @@ export const getRegionWiseAdvertisement = locationDetails => {
   formData.append("search_type", locationDetails.search_type);
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
-
-
 
   return axios.post(`${url.GET_REGION_WISE_ADVERTISEMENT}`, formData, {
     headers: getHeader(authHeader()),
@@ -2092,7 +2184,7 @@ export const getCorporateProfileforpayment = id =>
   });
 
 export const updateCorporateProfile = (CorporateProfile, id) => {
-  console.log('Updating corporate profile:', CorporateProfile, id);
+  console.log("Updating corporate profile:", CorporateProfile, id);
 
   let formData = new FormData();
   formData.append("name", CorporateProfile.name);
@@ -2103,13 +2195,15 @@ export const updateCorporateProfile = (CorporateProfile, id) => {
   formData.append("address", CorporateProfile.address);
   formData.append("city", CorporateProfile.city);
   formData.append("payment_terms", CorporateProfile.payment_terms);
-  formData.append("national_taxation_no", CorporateProfile.national_taxation_no);
+  formData.append(
+    "national_taxation_no",
+    CorporateProfile.national_taxation_no
+  );
 
   return axios.put(`${url.UPDATE_CORPORATE_PROFILE}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
-
 
 // ----------------- Complaints -----------------
 export const addNewComplaint = complaint => {
@@ -2124,7 +2218,7 @@ export const addNewComplaint = complaint => {
   formData.append("phone", complaint.phone);
   formData.append("subject", complaint.subject);
   formData.append("message", complaint.message);
-  console.log("data", complaint)
+  console.log("data", complaint);
   return axios.post(`${url.ADD_NEW_COMPLAINT}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -2171,9 +2265,13 @@ export const updateCsrAppointments = csrAppointment => {
   // formData.append("comments", csrAppointment.comments);
   console.log("Form data: ", csrAppointment);
 
-  return axios.put(`${url.UPDATE_CSR_APPOINTMENTS}/${csrAppointment.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_CSR_APPOINTMENTS}/${csrAppointment.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 export const getCsrComplaints = id =>
@@ -2184,18 +2282,34 @@ export const getCsrComplaints = id =>
 export const updateCsrComplaints = csrcomplaint => {
   let formData = new FormData();
   // formData.append("comment", data.comment);
-  formData.append("appointment_requested_at", csrcomplaint.appointment_requested_at);
+  formData.append(
+    "appointment_requested_at",
+    csrcomplaint.appointment_requested_at
+  );
   formData.append("appointment_option", csrcomplaint.appointment_option);
   formData.append("staff", csrcomplaint.staff);
   formData.append("comments", csrcomplaint.comments);
   console.log("Form data: ", csrcomplaint);
 
-  return axios.put(`${url.UPDATE_CSR_COMPLAINTS}/${csrcomplaint.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_CSR_COMPLAINTS}/${csrcomplaint.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 // Get Quotes
-export const getQuotes = (city_id, test_id, search_type, address, longitude, latitude, km, locationAccessAllowed) => {
+export const getQuotes = (
+  city_id,
+  test_id,
+  search_type,
+  address,
+  longitude,
+  latitude,
+  km,
+  locationAccessAllowed
+) => {
   let formData = new FormData();
   formData.append("city_id", city_id);
   formData.append("test_id", test_id);
@@ -2205,7 +2319,16 @@ export const getQuotes = (city_id, test_id, search_type, address, longitude, lat
   formData.append("address", address);
   formData.append("km", km);
   formData.append("locationAccessAllowed", locationAccessAllowed);
-  console.log("In near by lsbd: ", city_id, test_id, search_type, address, longitude, latitude, km)
+  console.log(
+    "In near by lsbd: ",
+    city_id,
+    test_id,
+    search_type,
+    address,
+    longitude,
+    latitude,
+    km
+  );
   return axios.post(`${url.GET_QUOTES}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -2213,10 +2336,8 @@ export const getQuotes = (city_id, test_id, search_type, address, longitude, lat
 // ------------- Cart START -------------
 export const getCarts = id =>
   get(`${url.GET_CARTS}/${id}`, {
-
     headers: getHeader(authHeader()),
   });
-
 
 export const emptyCart = id =>
   del(`${url.EMPTY_CART}/${id}`, {
@@ -2232,7 +2353,10 @@ export const addToCart = (cart, id) => {
   let formData = new FormData();
 
   // formData.append("lab_id", cart.lab_id);
-  formData.append("lab_id", cart.lab_id !== undefined ? cart.lab_id : cart.lab_id_id);
+  formData.append(
+    "lab_id",
+    cart.lab_id !== undefined ? cart.lab_id : cart.lab_id_id
+  );
   formData.append("offered_test_id", cart.id);
   formData.append("amount", cart.price);
   formData.append("guest_id", cart.guest_id);
@@ -2240,16 +2364,12 @@ export const addToCart = (cart, id) => {
   formData.append("invoice_labhazir_discount", cart.discount_by_labhazir);
   // formData.append("amount", cart.price);
 
-
-
-  console.log("cart items in django apiiii", cart, cart.lab_id_id)
+  console.log("cart items in django apiiii", cart, cart.lab_id_id);
 
   return axios.post(`${url.ADD_TO_CART}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
-
-
 
 // Get Invoice Detail
 export const getInvoiceDetail = id =>
@@ -2262,8 +2382,6 @@ export const getFeedbacks = id =>
   get(`${url.GET_FEEDBACKS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
-
 
 // FEEDBACK
 export const getLabsRating = () =>
@@ -2295,10 +2413,12 @@ export const getNearbyLabs = locationDetails => {
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
   formData.append("guest_id", locationDetails.guest_id);
-  formData.append("locationAccessAllowed", locationDetails.locationAccessAllowed);
+  formData.append(
+    "locationAccessAllowed",
+    locationDetails.locationAccessAllowed
+  );
   formData.append("corporatepatient", locationDetails.corporatepatient);
-  console.log("In near by lsbd: ", locationDetails)
-
+  console.log("In near by lsbd: ", locationDetails);
 
   return axios.post(`${url.GET_NEARBY_LABS}`, formData, {
     headers: getHeader(authHeader()),
@@ -2319,21 +2439,27 @@ export const deletecedata = cemployee =>
     headers: getHeader(authHeader()),
   });
 
+export const addNewCemployeefile = cemployeeData => {
+  let formData = new FormData();
+  formData.append("excel_file", cemployeeData.excel_file);
+
+  console.log("django api helper", cemployeeData);
+
+  return axios.post(`${url.ADD_NEW_CEMPLOYEE_FILE}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 export const updateCemployee = cemployeeData => {
   let formData = new FormData();
   formData.append("name", cemployeeData.name);
   formData.append("employee_code", cemployeeData.employee_code);
   formData.append("status", cemployeeData.status);
 
-  return axios.put(
-    `${url.UPDATE_CEMPLOYEE}/${cemployeeData.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_CEMPLOYEE}/${cemployeeData.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
-
 
 // ------------- ACCOUNT STATEMENTS -------------
 export const getAccountStatements = id =>
@@ -2369,43 +2495,44 @@ export const addStaff = (userID, staff) => {
 
   console.log("data", staff, userID);
 
-  return axios.post(`${url.ADD_STAFF}/${userID}`, formData, {
-    headers: getHeader(authHeader()),
-  })
-  .then(response => {
-    if (response.status >= 200 && response.status <= 299) {
-      return response.data;
-    }
-    throw response.data;
-  })
-  .catch(err => {
-    let message;
-    if (err.response && err.response.status) {
-      switch (err.response.status) {
-        case 400:
-          message = err.response.data;
-          break;
-        case 404:
-          message = "Sorry! The page you are looking for could not be found";
-          break;
-        case 500:
-          message = "Sorry! Something went wrong, please contact our support team";
-          break;
-        case 401:
-          message = "Invalid credentials";
-          break;
-        default:
-          message = "An unknown error occurred";
-          break;
+  return axios
+    .post(`${url.ADD_STAFF}/${userID}`, formData, {
+      headers: getHeader(authHeader()),
+    })
+    .then(response => {
+      if (response.status >= 200 && response.status <= 299) {
+        return response.data;
       }
-    } else {
-      message = "Network error or server is not responding";
-    }
-    console.log("django staff error:", message); // Log the error message here
-    throw message; // Throw the error message to be caught in the saga
-  });
+      throw response.data;
+    })
+    .catch(err => {
+      let message;
+      if (err.response && err.response.status) {
+        switch (err.response.status) {
+          case 400:
+            message = err.response.data;
+            break;
+          case 404:
+            message = "Sorry! The page you are looking for could not be found";
+            break;
+          case 500:
+            message =
+              "Sorry! Something went wrong, please contact our support team";
+            break;
+          case 401:
+            message = "Invalid credentials";
+            break;
+          default:
+            message = "An unknown error occurred";
+            break;
+        }
+      } else {
+        message = "Network error or server is not responding";
+      }
+      console.log("django staff error:", message); // Log the error message here
+      throw message; // Throw the error message to be caught in the saga
+    });
 };
-
 
 export const updateStaff = staff => {
   let formData = new FormData();
@@ -2486,7 +2613,7 @@ export const getAuditorList = id =>
   get(`${url.GET_AUDITOR_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-  
+
 export const getOrganizationList = () =>
   get(`${url.GET_ORGANIZATION_LIST}`, {
     headers: getHeader(authHeader()),
@@ -2496,11 +2623,7 @@ export const getRegistrationAdminList = id =>
   get(`${url.GET_FINANCE_OFFICER_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-  export const deleteRound = round =>
-    del(`${url.DELETE_ROUND}/${round.id}`, {
-      headers: getHeader(authHeader()),
-    });
-
+  
 
 //          Registration Admin
 export const getRoundlist = id =>
@@ -2508,41 +2631,47 @@ export const getRoundlist = id =>
     headers: getHeader(authHeader()),
   });
 export const addNewRound = (createUnit, id) => {
-  console.log("Adding New Round", createUnit, id)
+  console.log("Adding New Round", createUnit, id);
   let formData = new FormData();
   formData.append("rounds", createUnit.rounds);
-  formData.append("sample", createUnit.sample);
-  formData.append("cycle_no", createUnit.cycle_no);
   formData.append("scheme", createUnit.scheme);
+  formData.append("cycle_no", createUnit.cycle_no);
+  formData.append("sample", createUnit.sample);
   formData.append("issue_date", createUnit.issue_date);
   formData.append("closing_date", createUnit.closing_date);
   formData.append("status", createUnit.status);
   formData.append("added_by", createUnit.added_by);
-  return axios.post(`${url.ADD_NEW_ROUND}`, formData, {
-    headers: {
-      ...getHeader(authHeader()),
-      'Content-Type': 'multipart/form-data',
-    },
-  }).then(response => {
-    console.log("Round added successfully:", response.data);
-    return response.data;
-  }).catch(error => {
-    console.error("Error adding roound:", error.response ? error.response.data : error.message);
-    throw error;
-  });
+  return axios
+    .post(`${url.ADD_NEW_ROUND}`, formData, {
+      headers: {
+        ...getHeader(authHeader()),
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(response => {
+      console.log("Round added successfully:", response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error(
+        "Error adding roound:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
 };
-    
+
 export const updateRound = unit => {
   let formData = new FormData();
-  formData.append("rounds", round.rounds);
-  formData.append("scheme", round.scheme);
-  formData.append("cycle_no", round.cycle_no);
-  formData.append("sample", round.sample);
-  formData.append("issue_date", round.issue_date);
-  formData.append("closing_date", round.closing_date);
-  formData.append("notes", round.notes);
-  formData.append("status", round.status);
-  formData.append("added_by", round.added_by);
+  formData.append("rounds", unit.rounds);
+  formData.append("scheme", unit.scheme);
+  formData.append("cycle_no", unit.cycle_no);
+  formData.append("sample", unit.sample);
+  formData.append("issue_date", unit.issue_date);
+  formData.append("closing_date", unit.closing_date);
+  // formData.append("notes", unit.notes);
+  formData.append("status", unit.status);
+  formData.append("added_by", unit.added_by);
   return axios.put(
     `${url.UPDATE_ROUND}/${unit.id}`,
     formData,
@@ -2551,6 +2680,11 @@ export const updateRound = unit => {
     }
   );
 };
+
+export const deleteRound = round =>
+  del(`${url.DELETE_ROUND}/${round.id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 
 // ------------- Registration Admin requests START -------------
@@ -2567,7 +2701,6 @@ export const getUnapprovedCorporate = () =>
   get(`${url.GET_UNAPPROVED_CORPORATE}`, {
     headers: getHeader(authHeader()),
   });
-  
 
 export const getAllLabs = id =>
   get(`${url.GET_ALL_PARTICIPANT}/${id}`, {
@@ -2607,8 +2740,6 @@ export const approveUnapproveLab = data => {
   });
 };
 
-
-
 // Pending offered test labs list
 
 export const getLabsListPendingFee = () =>
@@ -2619,7 +2750,6 @@ export const getLabsListApprovedFee = () =>
   get(`${url.GET_LABS_LIST_APPROVED_FEE}`, {
     headers: getHeader(authHeader()),
   });
-
 
 export const getSharedPercentagePendingFeeTests = id =>
   get(`${url.GET_SHARED_PERCENTAGE_PENDING_FEE}/${id}`, {
@@ -2634,9 +2764,13 @@ export const updateSharedPercentagePendingFeeTest = data => {
 
   formData.append("shared_percentage", data.shared_percentage);
 
-  return axios.put(`${url.UPDATE_SHARED_PERCENTAGE_PENDING_FEE}/${data.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_SHARED_PERCENTAGE_PENDING_FEE}/${data.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 export const updateSharedPercentageAllPendingFeeTest = data => {
@@ -2645,18 +2779,25 @@ export const updateSharedPercentageAllPendingFeeTest = data => {
   formData.append("shared_percentage", data.shared_percentage);
   // formData.append("shared_percentage", data.shared_percentage);
 
-  return axios.put(`${url.UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE}/${data.lab_id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE}/${data.lab_id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 // Get Checkout Items
-export const getCheckoutItems = (id, is_home_sampling_availed, is_state_sampling_availed) => {
+export const getCheckoutItems = (
+  id,
+  is_home_sampling_availed,
+  is_state_sampling_availed
+) => {
   let formData = new FormData();
   formData.append("is_home_sampling_availed", is_home_sampling_availed);
   formData.append("is_state_sampling_availed", is_state_sampling_availed);
   console.log("different values", id, is_home_sampling_availed);
   console.log("different values", id, is_state_sampling_availed);
-
 
   return axios.post(`${url.GET_CHECKOUT_ITEMS}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -2699,15 +2840,15 @@ export const addCheckoutData = (checkoutData, id) => {
   formData.append("expiry_date", checkoutData.expiry_date);
   formData.append("cvv_code", checkoutData.cvv_code);
 
-  console.log("add different with address data with home sampling", checkoutData);
+  console.log(
+    "add different with address data with home sampling",
+    checkoutData
+  );
 
   return axios.post(`${url.ADD_CHECKOUT_DATA}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
-
-
-
 
 // ------------- CSR Admin requests START -------------
 export const getPendingComplaints = () =>
@@ -2745,7 +2886,6 @@ export const assignComplaint = data => {
   // formData.append("office", data.office);
   formData.append("assigned_to", data.assignedTo);
   formData.append("is_it_urgent", data.is_it_urgent);
-
 
   return axios.put(`${url.ASSIGN_COMPLAINT}`, formData, {
     headers: getHeader(authHeader()),
@@ -2804,7 +2944,7 @@ export const addNewAdvertisement = (advertisement, id) => {
   formData.append("city_id", advertisement.city_id);
   // formData.append("district", advertisement.district);
 
-  console.log("advertisement", advertisement, id)
+  console.log("advertisement", advertisement, id);
 
   return axios.post(`${url.ADD_NEW_ADVERTISEMENT}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -2907,9 +3047,13 @@ export const updateDiscountLabHazirToLab = data => {
     formData.append("end_date_by_labhazir", data.end_date_by_labhazir);
   }
 
-  return axios.put(`${url.UPDATE_DISCOUNT_LABHAZIRTOLAB}/${data.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_DISCOUNT_LABHAZIRTOLAB}/${data.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 export const updateDiscountAllLabHazirToLab = data => {
@@ -2923,9 +3067,13 @@ export const updateDiscountAllLabHazirToLab = data => {
     formData.append("end_date_by_labhazir", data.end_date_by_labhazir);
   }
 
-  return axios.put(`${url.UPDATE_DISCOUNT_ALL_LABHAZIRTOLAB}/${data.lab_id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_DISCOUNT_ALL_LABHAZIRTOLAB}/${data.lab_id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 // export const getReferrelFeeLabs = id =>
@@ -2943,8 +3091,7 @@ export const getPutReferrelFeeLabs = data => {
 
   formData.append("test_name", data.test_name);
 
-  console.log("In registration admin: ", data)
-
+  console.log("In registration admin: ", data);
 
   return axios.post(`${url.GET_PUT_REFERREL_FEES}`, formData, {
     headers: getHeader(authHeader()),
@@ -2960,20 +3107,27 @@ export const updateReferrelFeeLab = referrelLabFee => {
 
   formData.append("shared_percentage", referrelLabFee.shared_percentage);
 
-  return axios.put(`${url.UPDATE_REFERREL_FEE}/${referrelLabFee.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_REFERREL_FEE}/${referrelLabFee.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 export const updateReferrelAllFeeLab = referrelLabFee => {
   let formData = new FormData();
   // formData.append("account_id", id);
   formData.append("shared_percentage", referrelLabFee.shared_percentage);
 
-  return axios.put(`${url.UPDATE_REFERREL_ALL_FEE}/${referrelLabFee.lab_id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_REFERREL_ALL_FEE}/${referrelLabFee.lab_id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
-
 
 //discount lab
 export const getDiscountLab = id =>
@@ -3069,9 +3223,8 @@ export const addNewLabAdvertisement = (advertisement, id) => {
 
   formData.append("km", advertisement.km);
 
-  console.log("advertisement", advertisement, id)
+  console.log("advertisement", advertisement, id);
   // formData.append("amount", advertisement.amount);
-
 
   return axios.post(`${url.ADD_NEW_LAB_ADVERTISEMENT}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -3089,17 +3242,16 @@ export const updateLabAdvertisement = advertisement => {
   formData.append("number_of_days", advertisement.number_of_days);
   formData.append("amount", advertisement.amount);
 
-  console.log("api helper", advertisement)
+  console.log("api helper", advertisement);
 
-
-  return axios.put(`${url.UPDATE_LAB_ADVERTISEMENT}/${advertisement.id}`,
+  return axios.put(
+    `${url.UPDATE_LAB_ADVERTISEMENT}/${advertisement.id}`,
     formData,
     {
       headers: getHeader(authHeader()),
     }
-  )
+  );
 };
-
 
 // ------------- inPayments Settings Requests START -------------
 
@@ -3169,7 +3321,7 @@ export const updatePaymentInBouncedStatus = paymentInBouncedStatus => {
   formData.append("payment_status", paymentInBouncedStatus.payment_status);
   formData.append("verified_by", paymentInBouncedStatus.verified_by);
 
-  console.log("payment in django api helper", paymentInBouncedStatus)
+  console.log("payment in django api helper", paymentInBouncedStatus);
   return axios.put(
     `${url.UPDATE_PAYMENTINBOUNCED_STATUS}/${paymentInBouncedStatus.id}`,
     formData,
@@ -3184,7 +3336,6 @@ export const deleteLabAdvertisement = advertisement =>
   del(`${url.DELETE_LAB_ADVERTISEMENT}/${advertisement.id}`, {
     headers: getHeader(authHeader()),
   });
-
 
 export const getPaymentStatuss = id =>
   get(`${url.GET_PAYMENT_STATUSS}/${id}`, {
@@ -3202,8 +3353,6 @@ export const getPaymentOutClearStatuss = id =>
   get(`${url.GET_PAYMENTOUT_CLEAR_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
-
 
 // ------------- Registration Admin requests START -------------
 
@@ -3227,11 +3376,14 @@ export const updateApproveUnapproveInPayment = data => {
   formData.append("id", data.id);
   formData.append("is_approved", data.is_approved);
 
-  return axios.put(`${url.UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT}/${data.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_APPROVE_UNAPPROVE_IN_PAYMENT}/${data.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
-
 
 // ------------- Advertisement Price List Requests START -------------
 export const getAdvertisementPriceLists = () =>
@@ -3255,7 +3407,6 @@ export const getAllDonationAppointments = id =>
   get(`${url.GET_ALL_DONATION_APPOINTMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
 
 export const getOutPayment = id =>
   get(`${url.GET_OUT_PAYMENT}/${id}`, {
@@ -3307,8 +3458,7 @@ export const addNewOutPayment = (outPayment, id) => {
   // formData.append("cleared_at",   outPayment.cleared_at);
   formData.append("comments", outPayment.comments);
 
-  console.log("django api helper", outPayment, id)
-
+  console.log("django api helper", outPayment, id);
 
   return axios.post(`${url.ADD_NEW_OUT_PAYMENT}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -3331,8 +3481,7 @@ export const addNewCorporatePayment = (outPayment, id) => {
   // formData.append("cleared_at",   outPayment.cleared_at);
   formData.append("comments", outPayment.comments);
 
-  console.log("django api helper", outPayment, id)
-
+  console.log("django api helper", outPayment, id);
 
   return axios.post(`${url.ADD_NEW_CORPORATE_PAYMENT}/${id}`, formData, {
     headers: getHeader(authHeader()),
@@ -3375,15 +3524,12 @@ export const addNewInvoiceAdjustment = (outPayment, id) => {
   formData.append("status", outPayment.status);
   formData.append("comments", outPayment.comments);
 
-  console.log("django api helper", outPayment, id)
-
+  console.log("django api helper", outPayment, id);
 
   return axios.post(`${url.ADD_NEW_INVOICE_ADJUSTMENT}/${id}`, formData, {
     headers: getHeader(authHeader()),
   });
 };
-
-
 
 export const getPaymentOutStatuss = id =>
   get(`${url.GET_PAYMENTOUT_STATUSS}/${id}`, {
@@ -3399,7 +3545,7 @@ export const getBouncedInStatuss = id =>
     headers: getHeader(authHeader()),
   });
 
-// corporate out payment 
+// corporate out payment
 // export const getCCreatedOutStatuss = id =>
 //   get(`${url.GET_CCREATEDOUT_STATUSS}/${id}`, {
 //     headers: getHeader(authHeader()),
@@ -3413,7 +3559,7 @@ export const getCCreatedOutStatuss = id =>
       return response; // Optionally return the response if needed
     })
     .catch(error => {
-      console.error('Error fetching API:', error); // Log any errors to the console
+      console.error("Error fetching API:", error); // Log any errors to the console
       throw error; // Optionally rethrow the error if needed
     });
 
@@ -3492,7 +3638,7 @@ export const updateLabAdvertisementRequest = advertisement => {
   formData.append("declined_reason", advertisement.declined_reason);
   formData.append("responded_at", advertisement.responded_at);
 
-  console.log("django api helper", advertisement)
+  console.log("django api helper", advertisement);
 
   return axios.put(
     `${url.UPDATE_LAB_ADVERTISEMENT_REQUEST}/${advertisement.id}`,
@@ -3507,7 +3653,6 @@ export const deletePaymentout = paymentout =>
   del(`${url.DELETE_PAYMENTOUT}/${paymentout.id}`, {
     headers: getHeader(authHeader()),
   });
-
 
 // ------------- Accepeted Lab Advertisements Requests TO labhazir START -------------
 export const getLabAdvertisementRequestsAccepted = () =>
@@ -3535,8 +3680,7 @@ export const getAdvLive = locationDetails => {
   formData.append("address", locationDetails.address);
   formData.append("city", locationDetails.city);
 
-  console.log("labhaziradvLives: ", locationDetails)
-
+  console.log("labhaziradvLives: ", locationDetails);
 
   return axios.post(`${url.GET_ADV_LIVE}`, formData, {
     headers: getHeader(authHeader()),
@@ -3545,9 +3689,11 @@ export const getAdvLive = locationDetails => {
 
 //------------ Get Advertisement Invoice Detail-------------
 export const getAdvInvoice = id =>
-  get(`${url.GET_ADV_INVOICE}/${id}`, {
-    headers: getHeader(authHeader()),
-  },
+  get(
+    `${url.GET_ADV_INVOICE}/${id}`,
+    {
+      headers: getHeader(authHeader()),
+    },
     console.log(id)
   );
 
@@ -3569,13 +3715,11 @@ export const getLabNamesList = () =>
     headers: getHeader(authHeader()),
   });
 
-
 //------------ Get Medical Test List-------------
 export const onlyMedicalTestList = () =>
   get(`${url.GET_ONLY_MEDICAL_LIST}`, {
     headers: getHeader(authHeader()),
   });
-
 
 //------------ Get CSR Central Territories List-------------
 export const getCsrCentralList = () =>
@@ -3613,10 +3757,7 @@ export const getAuditorSouthList = () =>
 //   headers: getHeader(authHeader()),
 // });
 
-
 // export const getAuditorNorthList = () =>
 //   get(`${url.GET_AUDITOR_NORTH_TERRITORY_LIST}`, {
 //     headers: getHeader(authHeader()),
 //   });
-
-

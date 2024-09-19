@@ -59,6 +59,7 @@ class ReagentsList extends Component {
       noofanalytesFilter: '',
       addedbyFilter: '',
       statusFilter: '',
+      analytetypeFilter: '',
       SchemeList: [],
       analyte: "",
       modal: false,
@@ -221,6 +222,30 @@ class ReagentsList extends Component {
           },
         },
         {
+          dataField: "analytetype",
+          text: "Type",
+          sort: true,
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div>
+                  <select
+                    value={this.state.analytetypeFilter}
+                    onChange={e => this.handleFilterChange('analytetypeFilter', e)}
+                    className="form-control"
+                  >
+                    <option value="">All</option>
+                    <option value="Qualitative">Qualitative</option>
+                    <option value="Quantitative">Quantitative</option>
+                  </select>
+                </div>
+                <div>{column.text}</div>
+              </>
+            );
+          },
+        },
+        {
           dataField: "status",
           text: "Status",
           sort: true,
@@ -284,14 +309,14 @@ class ReagentsList extends Component {
                   to={`/databaseadmin-history/${analyte.id}`}
                 ></Link>
               </Tooltip>
-              <Tooltip title="Delete">
+              {/* <Tooltip title="Delete">
               <Link className="text-danger" to="#">
                 <i
                   className="mdi mdi-delete font-size-18"
                   id="deletetooltip"
                   onClick={() => this.onClickDelete(analyte)}
                 ></i>
-              </Link></Tooltip>
+              </Link></Tooltip> */}
             </div>
           ),
         },
@@ -385,20 +410,6 @@ class ReagentsList extends Component {
     }
   };
 
-  /* Insert,Update Delete data */
-
-    // toggleDeleteModal = () => {
-    //   this.setState(prevState => ({
-    //     deleteModal: !prevState.deleteModal,
-    //   }));
-    // };
-
-    // onClickDelete = ListUnit => {
-    //   this.setState({ ListUnit: ListUnit });
-    //   this.setState({ deleteModal: true });
-    // };
-
-  // The code for converting "image source" (url) to "Base64"
   toDataURL = url =>
     fetch(url)
       .then(response => response.blob())
@@ -445,7 +456,7 @@ class ReagentsList extends Component {
         id: analyte.id,
         name: analyte.name,
         price: analyte.price,
-        // analytes: analyte.analytes,
+        analytetype: analyte.analytetype,
         status: analyte.status,
         added_by: analyte.added_by,
       },
@@ -459,13 +470,14 @@ class ReagentsList extends Component {
     const { SearchBar } = Search;
     const { SchemeList } = this.props;
     
-    const { idFilter, nameFilter, priceFilter, dateofadditionFilter, noofanalytesFilter, addedbyFilter, statusFilter   } = this.state;
+    const { idFilter, nameFilter, priceFilter, dateofadditionFilter, noofanalytesFilter, addedbyFilter, statusFilter, analytetypeFilter   } = this.state;
 
     const filteredData = SchemeList.filter(entry => {   
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString() : "";
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const price = entry.price ? entry.price.toString().toLowerCase() : "";
+      const analytetype  = entry.analytetype ? entry.analytetype.toString() : "";
       const date_of_addition = entry.date_of_addition ? entry.date_of_addition.toString() : "";
       const noofanalytes = entry.noofanalytes ? entry.noofanalytes.toString() : "";
       const added_by = entry.added_by ? entry.added_by.toString() : "";
@@ -478,7 +490,9 @@ class ReagentsList extends Component {
         date_of_addition.includes(dateofadditionFilter) &&
         noofanalytes.includes(noofanalytesFilter.toLowerCase()) &&
         added_by.includes(addedbyFilter) &&
-        status.includes(statusFilter)      
+        status.includes(statusFilter)   &&
+        analytetype.includes(analytetypeFilter)      
+   
       );
     });
 
@@ -588,7 +602,7 @@ class ReagentsList extends Component {
                                             hiddenEditFlag: isEdit,
                                             name: (analyte && analyte.name) || "",
                                             price: (analyte && analyte.price) || "",
-                                            // analytes: (analyte && analyte.analytes) || "",
+                                            analytetype: (analyte && analyte.analytetype) || "",
                                             status: (analyte && analyte.status) || "",
                                             added_by: localStorage.getItem("authUser")
                                               ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -597,10 +611,13 @@ class ReagentsList extends Component {
                                           validationSchema={Yup.object().shape({
                                             hiddenEditFlag: Yup.boolean(),
                                             name: Yup.string().trim().required("Please enter name"),
-                                            // price: Yup.string().trim().required("Please enter Price"),
-                                            // status: Yup.string()
-                                            //   .trim()
-                                            //   .required("Please select the Status from dropdown"),
+                                            price: Yup.string().trim().required("Please enter Price"),
+                                            analytetype: Yup.string()
+                                            .trim()
+                                            .required("Please select the Type from dropdown"),
+                                            status: Yup.string()
+                                              .trim()
+                                              .required("Please select the Status from dropdown"),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -609,10 +626,11 @@ class ReagentsList extends Component {
                                                   id: analyte.id,
                                                   name: values.name,
                                                   price: values.price,
+                                                  analytetype: values.analytetype,
                                                   status: values.status,
                                                   added_by: values.added_by,
                                                 };
-                                                // update Pathologist
+                                              
                                                 onUpdateScheme(
                                                   updateSchemeList
                                                 );
@@ -630,6 +648,7 @@ class ReagentsList extends Component {
                                                   ) + 20,
                                                 name: values.name,
                                                 price: values.price,
+                                                analytetype: values.analytetype,
                                                 status: values.status,
                                                 added_by: values.added_by,
                                               };
@@ -687,8 +706,8 @@ class ReagentsList extends Component {
                                                             id: analyte.id,
                                                             name: e.target
                                                               .value,
-                                                            status:
-                                                              analyte.status,
+                                                            // status:
+                                                              // analyte.status,
                                                           },
                                                         })
                                                       }
@@ -717,6 +736,24 @@ class ReagentsList extends Component {
                                                       />
                                                       <ErrorMessage name="price" component="div" className="invalid-feedback" />
                                                     </div>
+                                                    <div className="mb-3">
+                                                    <Label className="form-label">
+                                                     Type
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field as="select" name="analytetype" className={`form-control ${
+        errors.analytetype && touched.analytetype ? "is-invalid" : ""
+      }`}>
+        <option value="">----- Please select -----</option>
+        <option value="Qualitative">Qualitative</option>
+          <option value="Quantitative">Quantitative</option>
+      </Field>
+      <ErrorMessage name="analytetype" component="div" className="invalid-feedback" />
+
+                                                 
+                                                  </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Status

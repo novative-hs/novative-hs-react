@@ -60,7 +60,7 @@ class HorizontalLayout extends Component {
     // let currentage = title.charAt(1).toUpperCase() + title.slice(2)
 
     // document.title =
-    //   currentage + " | Lab Hazir - Dashboard"
+    //   currentage + " | NHS NEQAS - Dashboard"
 
     this.props.changeLayout("horizontal");
     if (this.props.topbarTheme) {

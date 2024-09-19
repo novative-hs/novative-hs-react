@@ -12,7 +12,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 
 // Import actions
 import { 
-  getAnalytelist, 
+  getAnalyteforSchemelist, 
   getSchemeAnalytelist, 
   addNewSchemeAnalytelist, 
   updateSchemeAnalytelist 
@@ -102,7 +102,7 @@ class SchemeAddAnalyte extends Component {
   }
 
   fetchData()  {
-    const { ongetAnalytelist, onGetSchemeAnalytes } = this.props;
+    const { ongetAnalyteforSchemelist, onGetSchemeAnalytes } = this.props;
     const schemeId = this.props.match.params.id;
 
     if (schemeId) {
@@ -116,11 +116,11 @@ class SchemeAddAnalyte extends Component {
       : null;
     const user_id = authUser ? authUser.user_id : null;
 
-    if (user_id) {
-      console.log("User ID found:", user_id);
-      ongetAnalytelist(user_id);
+    if (schemeId) {
+      console.log("Scheme ID found:", schemeId);
+      ongetAnalyteforSchemelist(this.props.match.params.id);
     } else {
-      console.error("User ID not found in localStorage");
+      console.error("Scheme ID not found in localStorage");
     }
   }
 
@@ -301,7 +301,7 @@ SchemeAddAnalyte.propTypes = {
   ListUnit: PropTypes.array,
   SchemeAnalyteList: PropTypes.array,
   onGetSchemeAnalytes: PropTypes.func,
-  ongetAnalytelist: PropTypes.func,
+  ongetAnalyteforSchemelist: PropTypes.func,
   onAddNewSchemeAnalytes: PropTypes.func,
   onUpdateSchemeAnalytes: PropTypes.func,
   history: PropTypes.object.isRequired,
@@ -314,7 +314,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetSchemeAnalytes: id => dispatch(getSchemeAnalytelist(id)),
-  ongetAnalytelist: (id) => dispatch(getAnalytelist(id)),
+  ongetAnalyteforSchemelist: (id) => dispatch(getAnalyteforSchemelist(id)),
   onAddNewSchemeAnalytes: (createSchemeAnalyte, id) => dispatch(addNewSchemeAnalytelist(createSchemeAnalyte, id)),
   onUpdateSchemeAnalytes: (schemeanalyte) => dispatch(updateSchemeAnalytelist(schemeanalyte)),
 });

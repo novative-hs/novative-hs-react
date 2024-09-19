@@ -21,6 +21,7 @@ import {
   ModalHeader,
   ModalBody,
   Label,
+  Alert
 } from "reactstrap";
 
 import paginationFactory, {
@@ -60,7 +61,7 @@ class InstrumentType extends Component {
       issuedateFilter: '',
       closingdateFilter: '',
       statusFilter: '',
-      
+      errorMessage:"",
       RoundList: [],
       round: [],
       SchemeList: [],
@@ -129,6 +130,7 @@ class InstrumentType extends Component {
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
+            
             return (
               <>
                 <div>
@@ -171,7 +173,7 @@ class InstrumentType extends Component {
         },
         {
           dataField: "sample",
-          text: "Sample Number",
+          text: "Sample Name",
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
@@ -335,41 +337,67 @@ class InstrumentType extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, round) => (
-            <div className="d-flex gap-3 ml-3">
-              <Tooltip title="Add Participants">
-                <Link to={`/add-labs-round-page/${round.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
-                  <i
-                    className="mdi mdi-account-plus-outline font-size-18"
-                    id="participantsIcon"
-                  ></i>
-                </Link></Tooltip>
-              <Tooltip title="Update">
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={() => this.toggle(round)}
-                  ></i>
-                </Link></Tooltip>
+          formatter: (cellContent, round) => {
+            // const scheme = round.scheme ? round.scheme.toString() : ""; // Extract scheme from round object
+            return (
+              <div className="d-flex gap-3 ml-3">
+                <Tooltip title="Add Participants">
+                  <Link
+                    to={`/add-labs-round-page/${round.id}`}
+                    style={{ textDecoration: "underline", color: "#008000" }}
+                  >
+                    <i
+                      className="mdi mdi-account-plus-outline font-size-18"
+                      id="participantsIcon"
+                    ></i>
+                  </Link>
+                </Tooltip>
 
-              <Tooltip title="Delete">
-                <Link className="text-danger" to="#">
-                  <i
-                    className="mdi mdi-delete font-size-18"
-                    id="deletetooltip"
-                    onClick={() => this.onClickDelete(round)}
-                  ></i>
-                </Link></Tooltip>
-            </div>
-          ),
+                {/* Show the statistics icon only when the status is "closed" */}
+                {round.status === "Closed" && (
+                  <Tooltip title="Statistics">
+                    <Link
+                      to="#"
+                      onClick={() => this.onClickStatistics(round)}
+                      style={{ textDecoration: "underline", color: "#008000" }}
+                    >
+                      <i
+                        className="mdi mdi-chart-bar font-size-18"
+                        id="statisticsIcon"
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                )}
+                          
+                <Tooltip title="Update">
+                  <Link className="text-success" to="#">
+                    <i
+                      className="mdi mdi-pencil font-size-18"
+                      id="edittooltip"
+                      onClick={() => this.toggle(round)}
+                    ></i>
+                  </Link>
+                </Tooltip>
 
+                <Tooltip title="Delete">
+                  <Link className="text-danger" to="#">
+                    <i
+                      className="mdi mdi-delete font-size-18"
+                      id="deletetooltip"
+                      onClick={() => this.onClickDelete(round)}
+                    ></i>
+                  </Link>
+                </Tooltip>
+              </div>
+            );
+          },
         },
       ],
     };
 
     this.toggle = this.toggle.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
+    this.onClickStatistics = this.onClickStatistics.bind(this);
   }
 
   componentDidMount() {
@@ -379,7 +407,7 @@ class InstrumentType extends Component {
     onGetRoundList(userId);
     onGetgetschemelist(userId);
     onGetgetcyclelist(userId);
-    onGetgetSamplelistlist(userId); // Fetch the sample data here
+    onGetgetSamplelistlist(userId); 
   }
 
   toggleDeleteModal = () => {
@@ -400,11 +428,24 @@ class InstrumentType extends Component {
     }
   };
 
-  onClickDelete = RoundList => {
-    this.setState({ RoundList: RoundList });
-    this.setState({ deleteModal: true });
-  };
+  // onClickDelete = RoundList => {
+  //   this.setState({ RoundList: RoundList });
+  //   this.setState({ deleteModal: true });
+  // };
 
+
+  onClickDelete = (RoundList) => {
+    if (RoundList.status === 'Open') {
+      this.setState({ errorMessage: "Cannot delete. Round is Open" });
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        this.setState({ errorMessage: '' });
+      }, 2000);
+    } else {
+      this.setState({ RoundList: RoundList });
+      this.setState({ deleteModal: true });
+    }
+  };
 
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
@@ -418,6 +459,22 @@ class InstrumentType extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
+  onClickStatistics = (round) => {
+    if (round && round.id) {
+      // Update the round's status to "report available"
+      const updatedRound = {
+        ...round,
+        status: "Report Available",
+      };
+  
+      // Dispatch the update action to save the new status
+      this.props.onUpdateRound(round.id, updatedRound);
+      
+      // Optionally, redirect to the statistics page
+      this.props.history.push(`/statistics/${round.id}`);
+    }
+  };
+
   toggle(round) {
     console.log("data in case of update asjdhasdf", round)
     if (round && round.id) {
@@ -426,8 +483,6 @@ class InstrumentType extends Component {
         selectedRound: {
           id: round.id,
           rounds: round.rounds,
-          scheme: round.scheme,
-          cycle_no: round.cycle_no,
           sample: round.sample,
           participants: round.participants,
           issue_date: round.issue_date
@@ -490,15 +545,14 @@ class InstrumentType extends Component {
   render() {
     const { SearchBar } = Search;
     const { RoundList, SchemeList, CycleList, ListUnitt } = this.props;
-    console.log('SchemeList in render:', SchemeList);
-    // console.log('Sample in render:', sample);
+    // console.log('SchemeList in render:', SchemeList);
 
-    const { isEdit, deleteModal } = this.state;
+    const { isEdit, deleteModal, errorMessage } = this.state;
     const round = this.state.round;
     const { onGetRoundList, onGetgetschemelist, onGetgetcyclelist, onGetgetSamplelistlist, onAddNewRound, onUpdateRound } = this.props;
 
 
-    const { idFilter, roundsFilter, schemenameFilter, cyclenoFilter, sampleFilter, participantsFilter, issuedateFilter, closingdateFilter, statusFilter } = this.state;
+    const { idFilter, roundsFilter, schemenameFilter, cyclenoFilter, sampleFilter, participantsFilter, issuedateFilter, closingdateFilter, statusFilter} = this.state;
 
     const filteredData = RoundList.filter(entry => {   
       // Modify accordingly for each filter condition
@@ -557,6 +611,15 @@ class InstrumentType extends Component {
               <Col lg="10">
                 <Card>
                   <CardBody>
+                  <Row>
+                      <Col className="pagination pagination-rounded justify-content-center mb-2">
+                        {errorMessage && (
+                          <Alert color="danger">
+                            {errorMessage}
+                          </Alert>
+                        )}
+                      </Col>
+                    </Row>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -606,8 +669,6 @@ class InstrumentType extends Component {
                                           initialValues={{
                                             // hiddenEditFlag: isEdit,
                                             rounds: this.state.selectedRound ? this.state.selectedRound.rounds : "",
-                                            scheme: this.state.selectedRound ? this.state.selectedRound.scheme : "",
-                                            cycle_no: this.state.selectedRound ? this.state.selectedRound.cycle_no : "",
                                             sample: this.state.selectedRound ? this.state.selectedRound.sample : "",
                                             participants: this.state.selectedRound ? this.state.selectedRound.participants : "",
                                             issue_date: this.state.selectedRound ? this.state.selectedRound.issue_date : "",
@@ -638,8 +699,6 @@ class InstrumentType extends Component {
 
                                             const newround = {
                                               rounds: values.rounds,
-                                              scheme: values.scheme,
-                                              cycle_no: values.cycle_no,
                                               sample: values.sample,
                                               participants: values.participants,
                                               issue_date: values.issue_date,
@@ -692,51 +751,6 @@ class InstrumentType extends Component {
                                                       className="text-danger"
                                                     />
                                                   </div>
-                                                  <div className="mb-3">
-                                                    <Label for="scheme">Scheme</Label>
-                                                    <Field
-                                                      as="select"
-                                                      name="scheme"
-                                                      className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
-                                                    >
-                                                      <option value="">Select Scheme</option>
-                                                      {SchemeList && SchemeList.filter(scheme => scheme.status === 'Active').map((scheme) => (
-                                                        <option key={scheme.id} value={scheme.id}>
-                                                          {scheme.name} {/* Display scheme_name */}
-                                                        </option>
-                                                      ))}
-                                                    </Field>
-                                                    <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label for="cycle_no">Cycle Number</Label>
-                                                    <Field
-                                                      as="select"
-                                                      name="cycle_no"
-                                                      className={"form-control" + (errors.cycle && touched.cycle ? " is-invalid" : "")}
-                                                    >
-                                                      <option value="">Select Cycle</option>
-                                                      {CycleList && CycleList.filter(cycle => cycle.status === 'Active').map((cycle) => (
-                                                        <option key={cycle.id} value={cycle.cycle_no}>
-                                                          {cycle.cycle_no} {/* Display cycle name */}
-                                                        </option>
-                                                      ))}
-                                                    </Field>
-                                                    <ErrorMessage name="cycle_no" component="div" className="invalid-feedback" />
-                                                  </div>
-
-
-
-                                                  {/* <div className="mb-3">
-                                                    <Label className="col-form-label">Cycle Number</Label>
-                                                    <Field
-                                                      name="cycle_no"
-                                                      type="text"
-                                                      className="form-control"
-                                                    />
-                                                    <ErrorMessage name="cycle_no" component="div" className="text-danger" />
-                                                  </div> */}
 
                                                   <div className="mb-3">
                                                     <Label for="sample">Sample</Label>
@@ -912,6 +926,10 @@ InstrumentType.propTypes = {
   onAddNewRound: PropTypes.func,
   onUpdateRound: PropTypes.func,
   onDeleteRound: PropTypes.func,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ RoundList, SchemeList, CycleList, sample, ListUnitt }) => ({

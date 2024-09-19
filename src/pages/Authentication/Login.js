@@ -158,7 +158,7 @@ class Login extends Component {
       <React.Fragment>
         <div>
           <MetaTags>
-            <title>Login | Lab Hazir</title>
+            <title>Login | NHS NEQAS</title>
           </MetaTags>
           <Container
             fluid

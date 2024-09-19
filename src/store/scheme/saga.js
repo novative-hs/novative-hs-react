@@ -21,6 +21,14 @@ function* fetchSchemeList(object) {
     yield put(getSchemelistFail(error));
   }
 }
+function* fetchCorporateTestsList(object) {
+  try {
+    const response = yield call(getCorporateTestsList, object.payload);
+    yield put(getCorporateTestsListSuccess(response));
+  } catch (error) {
+    yield put(getCorporateTestsListFail(error));
+  }
+}
 function* onAddNewScheme(object) {
   try {
     const response = yield call(

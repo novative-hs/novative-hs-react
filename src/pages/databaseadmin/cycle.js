@@ -150,34 +150,22 @@ class InstrumentType extends Component {
           dataField: "cycle",
           text: "Cycle Duration",
           sort: true,
-          formatter: (cellContent, cycle) => {
-            const startDate = new Date(cycle.start_date);
-            const endDate = new Date(cycle.end_date);
-            const diffTime = Math.abs(endDate - startDate);
-            const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.4375)); // Average days in a month
-            const diffYears = Math.ceil(diffMonths / 12);
-            let durationText = '';
-            if (cycle.cycle === 'Months') {
-              durationText = `${diffMonths} Months`;
-            } else {
-              durationText = `${diffYears} Year${diffYears !== 1 ? 's' : ''}`;
-            }
-        
-            return <span>{durationText}</span>;
-          },
+          formatter: (cellContent, cycle) => (
+            <>
+              {cycle.cycle}
+            </>
+          ),
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <select
+                  <input
+                    type="text"
                     value={this.state.cycleFilter}
                     onChange={e => this.handleFilterChange('cycleFilter', e)}
                     className="form-control"
-                  >
-                    <option value="">All</option>
-                    <option value="Months">Months</option>
-                    <option value="Year">Year</option>
-                  </select>
+
+                  />
                 </div>
                 <div>{column.text}</div>
               </>
@@ -293,7 +281,7 @@ class InstrumentType extends Component {
             return (
               <div>
                 <Link
-                  to={`/cycle-analyte/${unitlist.id}`}
+                  to={`/cycle-analyte/${unitlist.scheme_id}`}
                   style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
                 >
                   {unitlist.noofanalytes}
@@ -439,7 +427,7 @@ class InstrumentType extends Component {
           scheme_name: cycle.scheme_id,
           scheme_name: cycle.scheme_id,
           cycle_no: cycle.cycle_no,
-          cycle: cycle.cycle,
+          // cycle: cycle.cycle,
           start_date: cycle.start_date
             ? moment(cycle.start_date).format("YYYY-MM-DD")
             : "",
@@ -601,7 +589,7 @@ render() {
                                             rounds: this.state.selectedCycle ? this.state.selectedCycle.rounds : "",
                                             analytes: this.state.selectedAnalytes,
                                             status: this.state.selectedCycle ? this.state.selectedCycle.status : "Active",
-                                            cycle: this.state.selectedCycle ? this.state.selectedCycle.cycle : "Months",
+                                            // cycle: this.state.selectedCycle ? this.state.selectedCycle.cycle : "Months",
                                             start_date: this.state.selectedCycle ? this.state.selectedCycle.start_date : "",
                                             end_date: this.state.selectedCycle ? this.state.selectedCycle.end_date : "",
                                       
@@ -623,7 +611,7 @@ render() {
                                             const newround = {
                                               scheme_name: values.scheme_name,
                                               cycle_no: values.cycle_no,
-                                              cycle: values.cycle,
+                                              // cycle: values.cycle,
                                               start_date: values.start_date,
                                               end_date: values.end_date,
                                               rounds: values.rounds,
@@ -682,7 +670,7 @@ render() {
                                                     />
                                                     <ErrorMessage name="cycle_no" component="div" className="text-danger" />
                                                   </div>
-                                                  <div className="mb-3">
+                                                  {/* <div className="mb-3">
                                                     <Label className="col-form-label">Cycle Duration</Label>
                                                     <Field
                                                       name="cycle"
@@ -695,7 +683,7 @@ render() {
                                                       <option value="Year">Year</option>
                                                     </Field>
                                                     <ErrorMessage name="cycle" component="div" className="text-danger" />
-                                                  </div>
+                                                  </div> */}
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">Cycle Start Date</Label>
                                                     <Field

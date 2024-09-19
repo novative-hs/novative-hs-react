@@ -5,21 +5,19 @@ import MetaTags from "react-meta-tags";
 import { withRouter } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
-import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import { Card, CardBody, Col, Container, Row,Alert } from "reactstrap";
 
 // Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 // Import actions
 import { 
-  getAnalytelist, 
-  getCycleAnalytelist, 
-  addNewCycleAnalytelist, 
-  updateCycleAnalytelist 
-} from "store/databaseofunits/actions";
+  getAnalyteQualitativelist,
+  addNewAnalyteQualitativelist, 
+  updateAnalyteQualitativelist,getqualitativetypelist } from "store/qualitativetype/actions";
 import "assets/scss/table.scss";
 
-class CycleAddAnalyte extends Component {
+class AnalyteAddQualitativeUnits extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +28,7 @@ class CycleAddAnalyte extends Component {
       feedbackMessage: '',
       feedbackListColumns: [
         {
-          text: "id",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => (
@@ -51,7 +49,7 @@ class CycleAddAnalyte extends Component {
         },
         {
           dataField: "name",
-          text: "Analytes",
+          text: "Type",
           sort: true,
           headerFormatter: (column, colIndex) => (
             <>
@@ -95,18 +93,18 @@ class CycleAddAnalyte extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // Update selectedCheckboxes when CycleAnalyteList changes
-    if (prevProps.CycleAnalyteList !== this.props.CycleAnalyteList) {
+    // Update selectedCheckboxes when ReagentAnalyteList changes
+    if (prevProps.ReagentAnalyteList !== this.props.ReagentAnalyteList) {
       this.updateSelectedCheckboxes();
     }
   }
 
   fetchData() {
-    const { ongetAnalytelist, onGetCycleAnalytes } = this.props;
+    const { onGetReagentList, onGetAnalyteReagents } = this.props;
     const analyteId = this.props.match.params.id;
 
     if (analyteId) {
-      onGetCycleAnalytes(analyteId);
+      onGetAnalyteReagents(analyteId);
     } else {
       console.error("Analyte ID not found in URL parameters");
     }
@@ -118,7 +116,7 @@ class CycleAddAnalyte extends Component {
 
     if (user_id) {
       console.log("User ID found:", user_id);
-      ongetAnalytelist(user_id);
+      onGetReagentList(user_id);
     } else {
       console.error("User ID not found in localStorage");
     }
@@ -126,37 +124,41 @@ class CycleAddAnalyte extends Component {
 
   updateSelectedCheckboxes() {
     const selectedCheckboxes = {};
-    this.props.CycleAnalyteList.forEach(id => {
-      selectedCheckboxes[id] = true; // Assuming CycleAnalyteList is an array of IDs
+    this.props.ReagentAnalyteList.forEach(id => {
+      selectedCheckboxes[id] = true; // Assuming ReagentAnalyteList is an array of IDs
     });
     this.setState({ selectedCheckboxes });
   }
 
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
-    const { onUpdateCycleAnalytes, match, ListUnit, history } = this.props;
+    const { onUpdateAnalyteReagents, match, ListQualitativeType } = this.props;
     const analyteId = match.params.id;
 
-    const selectedReagents = ListUnit.filter(analyte => selectedCheckboxes[analyte.id]);
+    const selectedReagents = ListQualitativeType.filter(reagent => selectedCheckboxes[reagent.id]);
+    if (selectedReagents.length === 0) {
+      this.setState({ errorMessage: "Please select First." });
+      // Clear error message after 5 seconds
+      setTimeout(() => {
+        this.setState({ errorMessage: '' });
+      }, 1000);
+      return;
+    }
 
     if (analyteId) {
       const payload = {
         id: analyteId,
-        reagents: selectedReagents.map(analyte => analyte.id)  // Map to only analyte IDs
+        reagents: selectedReagents.map(reagent => reagent.id)  // Map to only reagent IDs
       };
 
       // Determine if we are adding or updating based on analyteId presence
       if (analyteId) {
         // If analyteId exists, we are updating
-        onUpdateCycleAnalytes(payload);
-        this.setFeedbackMessage("Analytes updated successfully.");
+        onUpdateAnalyteReagents(payload);
+        this.setFeedbackMessage("Updated successfully.");
       } else {
-        // Otherwise, we are adding new
-        // Call your add new method here if needed
-        // this.props.onAddNewCycleAnalytes(payload, someOtherId); 
-        this.setFeedbackMessage("Analytes added successfully.");
+        this.setFeedbackMessage("Added successfully.");
       }
-      history.push('/cycle');
     } else {
       console.error("Analyte ID not found");
     }
@@ -166,8 +168,8 @@ class CycleAddAnalyte extends Component {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
       setTimeout(() => {
-        this.setState({ feedbackMessage: '' });
-      }, 3000); // 3 seconds
+        this.props.history.push("/database-of-analyte");
+      }, 500); 
     });
   };
 
@@ -185,10 +187,10 @@ class CycleAddAnalyte extends Component {
   };
 
   filterData = () => {
-    const { ListUnit } = this.props;
+    const { ListQualitativeType } = this.props;
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
 
-    const filteredData = ListUnit.filter(entry => {
+    const filteredData = ListQualitativeType.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const id = entry.id ? entry.id.toString() : "";
 
@@ -216,17 +218,18 @@ class CycleAddAnalyte extends Component {
   };
 
   render() {
-    const { ListUnit } = this.props;
+    const { ListQualitativeType } = this.props;
     const defaultSorted = [{ dataField: "id", order: "desc" }];
+    const { errorMessage } = this.state;
 
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Database Admin | Analytes List</title>
+            <title>Database Admin | Qualitative Type List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Analytes List" />
+            <Breadcrumbs title="List" breadcrumbItem="Qualitative Type List" />
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -238,12 +241,17 @@ class CycleAddAnalyte extends Component {
                             {this.state.feedbackMessage}
                           </div>
                         )}
+                        {errorMessage && (
+                          <Alert color="danger">
+                            {errorMessage}
+                          </Alert>
+                        )}
                       </Col>
                     </Row>
                     <ToolkitProvider
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={ListUnit}
+                      data={ListQualitativeType}
                       search
                     >
                       {toolkitprops => (
@@ -290,30 +298,30 @@ class CycleAddAnalyte extends Component {
   }
 }
 
-CycleAddAnalyte.propTypes = {
+AnalyteAddQualitativeUnits.propTypes = {
   match: PropTypes.object,
-  ListUnit: PropTypes.array,
-  CycleAnalyteList: PropTypes.array,
-  onGetCycleAnalytes: PropTypes.func,
-  ongetAnalytelist: PropTypes.func,
-  onAddNewCycleAnalytes: PropTypes.func,
-  onUpdateCycleAnalytes: PropTypes.func,
-  history: PropTypes.object.isRequired,
+  ListQualitativeType: PropTypes.array,
+  ReagentAnalyteList: PropTypes.array,
+  history: PropTypes.object,
+  onGetAnalyteReagents: PropTypes.func,
+  onGetReagentList: PropTypes.func,
+  onAddNewAnalyteReagents: PropTypes.func,
+  onUpdateAnalyteReagents: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
-  ListUnit: state.ListUnit?.ListUnit,
-  CycleAnalyteList: state.ListUnit?.CycleAnalyteList,
+  ListQualitativeType: state.ListQualitativeType?.ListQualitativeType,
+  ReagentAnalyteList: state.ListQualitativeType?.ReagentAnalyteList || [],
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetCycleAnalytes: id => dispatch(getCycleAnalytelist(id)),
-  ongetAnalytelist: (id) => dispatch(getAnalytelist(id)),
-  onAddNewCycleAnalytes: (createCycleAnalyte, id) => dispatch(addNewCycleAnalytelist(createCycleAnalyte, id)),
-  onUpdateCycleAnalytes: (cycleanalyte) => dispatch(updateCycleAnalytelist(cycleanalyte)),
+  onGetAnalyteReagents: id => dispatch(getAnalyteQualitativelist(id)),
+  onGetReagentList: (id) => dispatch(getqualitativetypelist(id)),
+  onAddNewAnalyteReagents: (createAnalyteReagent, id) => dispatch(addNewAnalyteQualitativelist(createAnalyteReagent, id)),
+  onUpdateAnalyteReagents: (analytesreagent) => dispatch(updateAnalyteQualitativelist(analytesreagent)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(CycleAddAnalyte));
+)(withRouter(AnalyteAddQualitativeUnits));

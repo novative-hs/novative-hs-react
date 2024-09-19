@@ -33,6 +33,10 @@ export const ADD_NEW_UNITS = `${API_ENDPOINT}/api/database-admin/units_create`;
 export const UPDATE_UNITS = `${API_ENDPOINT}/api/database-admin/units_update`;
 export const GET_HISTORY_LIST = `${API_ENDPOINT}/api/database-admin/history_list`;
 
+export const GET_QualitativeType_LIST = `${API_ENDPOINT}/api/database-admin/qualitativetype-list`;
+export const ADD_NEW_QualitativeType = `${API_ENDPOINT}/api/database-admin/qualitativetype-create`;
+export const UPDATE_QualitativeType = `${API_ENDPOINT}/api/database-admin/qualitativetype-update`;
+
 export const GET_REAGENTS_LIST = `${API_ENDPOINT}/api/database-admin/reagent_list`;
 export const ADD_NEW_REAGENTS = `${API_ENDPOINT}/api/database-admin/reagent_create`;
 export const UPDATE_REAGENTS = `${API_ENDPOINT}/api/database-admin/reagent_update`;
@@ -60,8 +64,8 @@ export const UPDATE_SCHEME = `${API_ENDPOINT}/api/database-admin/update-scheme`;
 export const DELETE_SCHEME = `${API_ENDPOINT}/api/database-admin/delete-scheme`;
 export const DELETE_METHOD = `${API_ENDPOINT}/api/database-admin/delete-method`;
 
-
 export const GET_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/analyte-list`;
+export const GET_ANALYTEFORSCHEME_LIST = `${API_ENDPOINT}/api/database-admin/analyte-for-scheme`;
 export const ADD_NEW_ANALYTE = `${API_ENDPOINT}/api/database-admin/analyte-create-list`;
 export const UPDATE_ANALYTE = `${API_ENDPOINT}/api/database-admin/update-analyte`;
 export const DELETE_ANALYTE = `${API_ENDPOINT}/api/database-admin/delete-analyte`;
@@ -74,16 +78,32 @@ export const DELETE_CYCLE = `${API_ENDPOINT}/api/database-admin/delete-cycle`;
 //Participant
 export const GET_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/participant-information`;
 
+// Round Participant
+export const GET_PARTICIPANTROUND_LIST = `${API_ENDPOINT}/api/registration-admin/participent-rount`;
+
 // Rounds Labs
 export const GET_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-labs-list`;
 export const ADD_NEW_PAYMENT = `${API_ENDPOINT}/api/registration-admin/add-payment`;
 export const ADD_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-add-lab`;
 export const UPDATE_ROUNDLABS = `${API_ENDPOINT}/api/registration-admin/round-update-lab`;
 
+// Selected-Schemes, Result Page Participant
+export const SELECTED_SCHEMES= `${API_ENDPOINT}/api/registration-admin/selectedSchemes-list`;
+export const SCHEMES_ANALYTES= `${API_ENDPOINT}/api/registration-admin/analyteSpecificScheme-list`;
+export const POST_RESULT= `${API_ENDPOINT}/api/registration-admin/resultpost`;
+export const GET_RESULT= `${API_ENDPOINT}/api/registration-admin/getResultsData`;
+export const GET_RESULT_SUBMIT= `${API_ENDPOINT}/api/registration-admin/getAnalyteResultSubmit`;
+export const GET_REPORT= `${API_ENDPOINT}/api/registration-admin/getReport`;
+
 // Analyte Reagents
 export const GET_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-reagents-list`;
 export const ADD_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-add-reagent`;
 export const UPDATE_ANALYTEREAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-update-reagent`;
+
+// Analyte Qualitative
+export const GET_ANALYTE_QUALITATIVE = `${API_ENDPOINT}/api/database-admin/analyte-qualitativeunits-list`;
+export const ADD_ANALYTE_QUALITATIVE = `${API_ENDPOINT}/api/database-admin/analyte-add-qualitativeunits`;
+export const UPDATE_ANALYTEQUALITATIVE = `${API_ENDPOINT}/api/database-admin/analyte-update-qualitativeunits`;
 
 
 
@@ -163,9 +183,9 @@ export const GET_ANALYTESCYCLES = `${API_ENDPOINT}/api/database-admin/analyte-cy
 
 /// ORGANIZATION REGISTER
 export const ORGANIZATION_REGISTER = `${API_ENDPOINT}/api/account/register/`;
-export const GET_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organization/organization-list`;
-export const UPDATE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organization/update-organization-list`;
-export const DELETE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organization/delete-organization-list`;
+export const GET_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/organization-list`;
+export const UPDATE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/update-organization-list`;
+export const DELETE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/delete-organization-list`;
 // LAB LIST
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;
@@ -262,7 +282,7 @@ export const ADD_NEW_ADVERTISEMENT_PRICE_LIST = `${API_ENDPOINT}/api/marketer-ad
 export const UPDATE_ADVERTISEMENT_PRICE_LIST = `${API_ENDPOINT}/api/marketer-admin/advertisement-price`;
 export const DELETE_ADVERTISEMENT_PRICE_LIST = `${API_ENDPOINT}/api/marketer-admin/advertisement-price`;
 
-// DISCOUNT LAB HAZIR
+// DISCOUNT NHS NEQAS
 export const GET_DISCOUNT_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discount-test`;
 export const UPDATE_DISCOUNT_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discount-test`;
 export const UPDATE_DISCOUNT_ALL_LABHAZIR = `${API_ENDPOINT}/api/marketer-admin/discount-all-tests`;
@@ -447,10 +467,8 @@ export const GET_TESTSS = `${API_ENDPOINT}/api/medicaltest/tests-list`;
 export const GET_PACKAGES = `${API_ENDPOINT}/api/medicaltest/package-list`;
 
 export const GET_RADIOLOGY = `${API_ENDPOINT}/api/medicaltest/radiology-list`;
-export const GET_TESTS_LIST = `${API_ENDPOINT}/api/medicaltest/test-list`;
-export const GET_CORPORATE_TESTS_LIST = `${API_ENDPOINT}/api/medicaltest/corporate-test-list`;
-
-
+export const GET_TESTS_LIST = `${API_ENDPOINT}/api/database-admin/scheme-analytes-list`;
+export const GET_CORPORATE_TESTS_LIST = `${API_ENDPOINT}/api/database-admin/scheme-analytes-list`;
 
 // INVOICES
 export const GET_INVOICE_DETAIL = `${API_ENDPOINT}/api/patient/invoice-detail`;

@@ -83,10 +83,17 @@ import DepartmentListSaga from "./participantdepartment/sagas";
 import DesignationListSaga from "./participantdesignation/sagas";
 import TypeListSaga from "./participanttype/sagas";
 import SectorListSaga from "./participantsector/sagas";
+import QualitativeTypeListSaga from "./qualitativetype/sagas";
+
+//selected schemes
+import SelectedSchemeListSaga from "./selected-scheme/saga";
+import AnalyteSchemeSaga from "./results/saga";
+import ResultSubmitSaga from "./resultsSubmit/saga";
 
 export  default function* rootSaga() {
   yield all([
     //public
+    fork(QualitativeTypeListSaga),
     fork(PaymentSaga),
     fork(ProvinceListSaga),
     fork(CountryListSaga),
@@ -109,6 +116,9 @@ export  default function* rootSaga() {
     fork(AccountSaga),
     fork(ManufacturalListSaga),
     fork(SchemeListSaga),
+    fork(SelectedSchemeListSaga),
+    fork(AnalyteSchemeSaga),
+    fork(ResultSubmitSaga),
     fork(CycleListSaga),
     fork(RoundListSaga),
     fork(participantListSaga),

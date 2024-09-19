@@ -74,16 +74,15 @@ class Payment extends Component {
     const { approvedLabs, CycleList } = this.state;
 
     const participantOptions = approvedLabs.map(participant => ({
-      value: participant.name,
+      value: participant.id,
       label: participant.name,
     }));
+
     const schemeOptions = CycleList.map((scheme) => ({
       value: scheme.id, // Use scheme ID instead of scheme name
-      label: scheme.scheme_name,
+      label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
+
     }));
-
-
-
 
     const customStyles = {
       menuList: provided => ({
@@ -128,7 +127,7 @@ class Payment extends Component {
   }}
   validationSchema={Yup.object().shape({
     participant: Yup.string().required("Participant is required"),
-    scheme: Yup.array().min(1, "At least one scheme must be selected").required("Scheme is required"),
+    scheme: Yup.string().required("Scheme is required"),
     paydate: Yup.string().required("Date is required"),
     photo: Yup.string().required("Deposit Slip is required"),
     paymentmethod: Yup.string().required("Payment Method is required"),
@@ -165,6 +164,12 @@ class Payment extends Component {
     } catch (error) {
       console.error("Error adding payment:", error);
     }
+    setTimeout(() => {
+      this.props.ongetApprovedLabs(this.state.user_id);
+    }, 1000);
+    setTimeout(() => {
+      this.props.ongetcyclelist(this.state.user_id);
+    }, 1000);
 
     setSubmitting(false);
   }}
@@ -176,32 +181,33 @@ class Payment extends Component {
     isSubmitting,
     setFieldValue,
   }) => {
-    const handleSchemeChange = (selectedOptions) => {
+    const handleSchemeChange = (selectedOption) => {
       setFieldValue(
         "scheme",
-        selectedOptions ? selectedOptions.map((option) => option.value) : []
+        selectedOption ? selectedOption.value : null  // Handle single selection
       );
-
-      const selectedSchemes = CycleList.filter((scheme) =>
-        selectedOptions.map((option) => option.value).includes(scheme.id)
-      );
-
-      const cycle_no = selectedSchemes.map((scheme) => scheme.cycle_no).join(", ");
-      const total_price = selectedSchemes.reduce((sum, scheme) => sum + parseFloat(scheme.price), 0);
-
-      let roundedPrice = Math.round(total_price);
-
-      setFieldValue("cycle_no", cycle_no);
-      setFieldValue("price", roundedPrice.toFixed(2));
-
-      if (values.discount) {
-        const discountPrice = roundedPrice - (roundedPrice * parseFloat(values.discount) / 100);
-        roundedPrice = Math.round(discountPrice);
+    
+      const selectedScheme = CycleList.find((scheme) => scheme.id === selectedOption?.value);
+    
+      if (selectedScheme) {
+        const cycle_no = selectedScheme.cycle_no;
+        const total_price = parseFloat(selectedScheme.price);
+    
+        let roundedPrice = Math.round(total_price);
+    
+        setFieldValue("cycle_no", cycle_no);
         setFieldValue("price", roundedPrice.toFixed(2));
-      } else {
-        setFieldValue("price", roundedPrice.toFixed(2));
+    
+        if (values.discount) {
+          const discountPrice = roundedPrice - (roundedPrice * parseFloat(values.discount) / 100);
+          roundedPrice = Math.round(discountPrice);
+          setFieldValue("price", roundedPrice.toFixed(2));
+        } else {
+          setFieldValue("price", roundedPrice.toFixed(2));
+        }
       }
     };
+    
 
     const handleDiscountChange = (e) => {
       let discountValue = parseFloat(e.target.value);
@@ -259,11 +265,10 @@ class Payment extends Component {
                                       </Label>
                                       <Select
                                         name="scheme"
-                                        isMulti
                                         options={schemeOptions}
                                         className={errors.scheme && touched.scheme ? "is-invalid" : ""}
                                         onChange={handleSchemeChange}
-                                        value={schemeOptions.filter(option => values.scheme.includes(option.value)) || []}
+                                        value={schemeOptions.find(option => option.value === values.scheme) || null}  // Single selection
                                       />
                                       <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
                                     </div>

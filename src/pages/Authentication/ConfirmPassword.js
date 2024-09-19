@@ -188,7 +188,7 @@ class ConfirmPasswordPage extends Component {
                           Login
                         </Link>{" "}
                       </p>
-                      {/* <p>© {new Date().getFullYear()} Lab Hazir</p> */}
+                      {/* <p>© {new Date().getFullYear()} NHS NEQAS</p> */}
                     </div>
                   </div>
                   {/* </div> */}

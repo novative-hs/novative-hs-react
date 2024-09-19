@@ -90,7 +90,7 @@ class AccountStatements extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Lab Corporate Statements | Lab Hazir</title>
+            <title>Lab Corporate Statements | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -110,7 +110,7 @@ class AccountStatements extends Component {
                               <th scope="col">Lab Name</th>
                               <th scope="col">Status</th>
                               {/* <th scope="col">Amount</th> */}
-                              <th scope="col">Referral Fee of Lab Hazir</th>
+                              <th scope="col">Referral Fee of NHS NEQAS</th>
                               <th scope="col">Referral Fee of B2B (%)</th>
                               <th scope="col">Credit</th>
                               <th scope="col">Debit</th>

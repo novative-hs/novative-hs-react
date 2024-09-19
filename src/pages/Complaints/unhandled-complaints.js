@@ -384,7 +384,7 @@ class UnhandledComplaints extends Component {
 
         <div className="page-content">
           <MetaTags>
-            <title>Open Complaints| Lab Hazir</title>
+            <title>Open Complaints| NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

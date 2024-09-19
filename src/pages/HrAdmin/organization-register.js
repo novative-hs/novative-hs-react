@@ -164,6 +164,11 @@ class OrganizationRegister extends Component {
                           city: (this.state && this.state.city) || "",
                           country: (this.state && this.state.country) || "",
                           photo: (this.state && this.state.photo) || '',
+                          amount: (this.state && this.state.amount) || "",
+                          payment_proof: (this.state && this.state.payment_proof) || "",
+                          issue_date: (this.state && this.state.issue_date) || "",
+                          closing_date: (this.state && this.state.closing_date) || "",
+                          currency: (this.state && this.state.currency) || "",
                         }}
                         validationSchema={Yup.object().shape({
                           username: Yup.string()
@@ -184,7 +189,16 @@ class OrganizationRegister extends Component {
                           email: Yup.string()
                             .required("Please enter your email")
                             .email("Please enter valid email"),
+                          amount: Yup.number()
+                            .required("Please enter Amount here"),
                           photo: Yup.string().required("Please upload photo"),
+                          payment_proof: Yup.string().required("Please upload Payment photo"),
+                          currency: Yup.string()
+                            .required("Please select your Currency")
+                            .notOneOf([""], "Please select a valid currency"),
+                          issue_date: Yup.date().required("Please select Membership Start Date"),
+                          closing_date: Yup.date().required("Please select Membership End Date"),
+
                         })}
                         onSubmit={values => {
                           this.props.registerOrganization(values);
@@ -310,6 +324,7 @@ class OrganizationRegister extends Component {
                               />
                               <ErrorMessage name="photo" component="div" className="invalid-feedback" />
                             </div>
+                           
                             <div className="mb-3">
                               <Label for="username" className="form-label">
                                 Username
@@ -410,13 +425,190 @@ class OrganizationRegister extends Component {
                               />
                             </div>
 
+                            <h4 className="text-danger">Please Enter Payment Details for Membership and Account Activation:</h4>
+                            <div className="mb-3">
+                        <Label for="currency" className="form-label">
+                          Currency
+                        </Label>
+                        <Field
+                          name="currency"
+                          as="select"
+                          className={`form-control ${errors.currency && touched.currency ? "is-invalid" : ""
+                          }`}                        >
+                          <option
+                            value=""
+                          >
+                            --- Select Currency ---
+                          </option>
+                          <option value="Afghani">Afghani</option>
+                          <option value="Euro">Euro</option>
+                          <option value="Dollar">
+                            Dollar
+                          </option>
+                          <option value="Pakistani Rupees">Pakistani Rupees</option>
+                          <option value="India Rupees">
+                            India Rupees
+                          </option>
+                          <option value="Pound">Pound</option>
+                          <option value="Dinar">Dinar</option>
+                          <option value="Dirham">Dirham</option>
+                          <option value="Japanese">
+                            Japanese
+                          </option>
+                        </Field>
+                      </div>
+                      <div className="mb-3">
+                                    <Label for="amount" className="form-label">
+                                      Price
+                                    </Label>
+                                    <Field
+                                      name="amount"
+                                      type="text"
+                                      placeholder="Enter amount"
+                                      className={
+                                        "form-control" +
+                                        (errors.amount && touched.amount ? " is-invalid" : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="amount"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                      <div className="mb-3">
+                              <Label for="payment_proof" className="form-label">
+                                Payment Proof
+                              </Label>
+                              <Input
+                                id="formFile"
+                                name="payment_proof"
+                                placeholder="Choose image"
+                                type="file"
+                                accept=".jpg,.jpeg,.png"
+                                onChange={(e) => setFieldValue('payment_proof', e.target.files[0])}
+                                className={
+                                  'form-control' + (errors.payment_proof && touched.payment_proof ? ' is-invalid' : '')
+                                }
+                              />
+                              <ErrorMessage name="payment_proof" component="div" className="invalid-feedback" />
+                            </div>
+                            {/* <div className="mb-3">
+                                                          <Label className="form-label">
+                                                            Start Date
+                                                          </Label>
+                                                          <Field
+                                                            name="issue_date"
+                                                            type="datetime-local" min={new Date(
+                                                              new Date().toString().split("GMT")[0] +
+                                                              " UTC"
+                                                            )
+                                                              .toISOString()
+                                                              .slice(0, -8)}
+                                                            value={
+                                                              this.state
+                                                                .issue_date
+                                                            }
+                                                            onChange={e =>
+                                                              this.setState({
+                                                                issue_date: e.target.value,
+                                                              })
+                                                            }
+                                                            // className={
+                                                            //   "form-control" +
+                                                            //   (errors.issue_date &&
+                                                            //     touched.issue_date
+                                                            //     ? " is-invalid"
+                                                            //     : "")
+                                                            // }
+                                                          />
+                                                          <ErrorMessage
+                                                            name="issue_date"
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
+                                                        <div className="mb-3">
+                                                          <Label className="form-label">
+                                                            End Date
+                                                          </Label>
+                                                          <Field
+                                                            name="closing_date"
+                                                            type="datetime-local"
+                                                            min={new Date(
+                                                              new Date().toString().split("GMT")[0] +
+                                                              " UTC"
+                                                            )
+                                                              .toISOString()
+                                                              .slice(0, -8)}
+                                                            value={
+                                                              this.state
+                                                                .closing_date
+                                                            }
+                                                             onChange={e =>
+                                                              this.setState({
+                                                                closing_date: e.target.value,
+                                                              })
+                                                            }
+                                                            // className={
+                                                            //   "form-control" +
+                                                            //   (errors.closing_date &&
+                                                            //     touched.closing_date
+                                                            //     ? " is-invalid"
+                                                            //     : "")
+                                                            // }
+                                                          />
+                                                          <ErrorMessage
+                                                            name="closing_date"
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div> */}
+                                                        <div className="mb-3">
+                                                    <Label className="col-form-label">Membership Start Date</Label>
+                                                    <Field
+                                                      name="issue_date"
+                                                      type="date"
+                                                      id="issue_date"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.issue_date && touched.issue_date
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="issue_date"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">Membership End Date</Label>
+                                                    <Field
+                                                      name="closing_date"
+                                                      type="date"
+                                                      id="closing_date"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.closing_date && touched.closing_date
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="closing_date"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
                             <Row>
                               <Col>
                                 <div className="text-end">
                                   <button
                                     type="submit"
                                     className="btn btn-primary save-user"
-                                    disabled={this.state.submittedMessage}
+                                    // disabled={this.state.submittedMessage}
                                   >
                                     Save
                                   </button>
@@ -450,6 +642,8 @@ OrganizationRegister.propTypes = {
   userID: PropTypes.any,
   userAccountType: PropTypes.any,
   className: PropTypes.any,
+  success: PropTypes.any,
+
 };
 
 const mapStateToProps = ({ organizationaccount }) => ({

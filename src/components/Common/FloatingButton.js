@@ -14,7 +14,7 @@ class FloatingActionButton extends Component {
       >
         <div>
           <Link
-            to="/nearby-labs"
+            to="/login"
             className="btn btn-primary btn-sm"
             style={{
               borderRadius: "50%",

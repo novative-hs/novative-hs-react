@@ -203,7 +203,7 @@ class Manufactural extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="" breadcrumbItem="" /> 
+            <Breadcrumbs title="Participants List" breadcrumbItem="Participants List" /> 
             <Row>
                  <Col lg="12" className="text-end">
                 <Button onClick={this.exportToExcel} className="mb-3">

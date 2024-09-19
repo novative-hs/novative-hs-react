@@ -203,7 +203,7 @@ class Register extends Component {
       <React.Fragment>
         <div>
           <MetaTags>
-            <title>Register | Lab Hazir</title>
+            <title>Register | NHS NEQAS</title>
           </MetaTags>
           <Container fluid className="p-0">
             <Row className="g-0">
@@ -219,7 +219,7 @@ class Register extends Component {
                             Register account - Step 1 of 2
                           </h5>
                           <p className="text-muted">
-                            Get your free Lab Hazir account now.
+                            Get your free NHS NEQAS account now.
                           </p>
                         </div>
 

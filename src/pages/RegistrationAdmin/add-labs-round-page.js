@@ -12,7 +12,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 
 // Import actions
 import { 
-  getParticipantList, 
+  getParticipantRoundList, 
   getRoundLablist, 
   addNewRoundLablist, 
   updateRoundLablist 
@@ -102,7 +102,7 @@ class RoundAddParticipant extends Component {
   }
 
   fetchData()  {
-    const { ongetParticipantlist, onGetRoundLabs } = this.props;
+    const { ongetParticipantRoundlist, onGetRoundLabs } = this.props;
     const roundId = this.props.match.params.id;
 console.log("ffffffffffff", roundId)
     if (roundId) {
@@ -111,14 +111,14 @@ console.log("ffffffffffff", roundId)
       console.error("round ID not found in URL parameters");
     }
 
-    const authUser = localStorage.getItem("authUser")
-      ? JSON.parse(localStorage.getItem("authUser"))
-      : null;
-    const user_id = authUser ? authUser.user_id : null;
+    // const authUser = localStorage.getItem("authUser")
+    //   ? JSON.parse(localStorage.getItem("authUser"))
+    //   : null;
+    // const user_id = authUser ? authUser.user_id : null;
 
-    if (user_id) {
-      console.log("User ID found:", user_id);
-      ongetParticipantlist(user_id);
+    if (roundId) {
+      console.log("User ID found:", roundId);
+      ongetParticipantRoundlist(roundId);
     } else {
       console.error("User ID not found in localStorage");
     }
@@ -306,7 +306,7 @@ RoundAddParticipant.propTypes = {
   ParticipantList: PropTypes.array,
   LabRoundList: PropTypes.array,
   onGetRoundLabs: PropTypes.func,
-  ongetParticipantlist: PropTypes.func,
+  ongetParticipantRoundlist: PropTypes.func,
   onAddNewRoundLabs: PropTypes.func,
   onUpdateRoundLabs: PropTypes.func,
   history: PropTypes.object.isRequired,
@@ -319,7 +319,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetRoundLabs: id => dispatch(getRoundLablist(id)),
-  ongetParticipantlist: (id) => dispatch(getParticipantList(id)),
+  ongetParticipantRoundlist: (id) => dispatch(getParticipantRoundList(id)),
   onAddNewRoundLabs: (createRoundLab, id) => dispatch(addNewRoundLablist(createRoundLab, id)),
   onUpdateRoundLabs: (roundslab) => dispatch(updateRoundLablist(roundslab)),
 });

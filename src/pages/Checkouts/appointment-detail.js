@@ -58,7 +58,7 @@ class InvoiceDetail extends Component {
       <React.Fragment>
         <div ref={this.node} className="page-content">
           <MetaTags>
-            <title>Appointment Detail | Lab Hazir - Dashboard</title>
+            <title>Appointment Detail | NHS NEQAS - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

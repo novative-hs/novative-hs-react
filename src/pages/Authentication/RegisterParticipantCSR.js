@@ -192,7 +192,7 @@ class StaffRegister extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Staff" breadcrumbItem="Register" />
+            <Breadcrumbs title="Register Participants" breadcrumbItem="Register Participants" />
             <Row className="justify-content-center">
               <Col lg="8">
                 <Card>

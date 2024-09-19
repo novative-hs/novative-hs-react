@@ -36,6 +36,7 @@ import sample from "./sample/reducer";
 import ListUnitt from "./sample/reducer";
 import CycleList from "./cycle/reducer";
 import AddPayment from "./Payment/reducer";
+import CycleAnalyte from "./databaseofunits/reducer";
 //Participant
 import ParticipantList from "./participant-list/reducers";
 
@@ -119,12 +120,20 @@ import ListDepartment from "./participantdepartment/reducers";
 import ListDesignation from "./participantdesignation/reducers";
 import ListType from "./participanttype/reducers";
 import ListSector from "./participantsector/reducers";
+import ListQualitativeType from "./qualitativetype/reducers";
+
+//SelectedSchemes
+import SelectedSchemeList from "./selected-scheme/reducer"
+import SchemeAnalytesList from "./results/reducer"
+import ResultSubmit from "./resultsSubmit/reducer"
 
 
 const rootReducer = combineReducers({
   // public
+  ListQualitativeType,
   AddPayment,
   CycleList,
+  CycleAnalyte,
   sample,
   ListUnitt,
   RoundList,
@@ -156,6 +165,9 @@ const rootReducer = combineReducers({
   LabMarket,
   Instrument,
   SchemeList,
+  SelectedSchemeList,
+  SchemeAnalytesList,
+  ResultSubmit,
   LabMarket,
 
   financeAdmin,

@@ -117,7 +117,7 @@ class ChangePassword extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title> Lab Hazir | Change Password</title>
+            <title> NHS NEQAS | Change Password</title>
           </MetaTags>
           <Container fluid style={{}}>
             <Breadcrumbs title="Account" breadcrumbItem="Change Password" />

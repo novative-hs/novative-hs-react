@@ -34,7 +34,7 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import { getSamplelist, addNewSampleList, updateSampleList, deleteSampleList } from "store/sample/actions";
 
-import { getSchemelist } from "store/scheme/actions";
+import { getcyclelist } from "store/cycle/actions";
 import "assets/scss/table.scss";
 import ListUnitt from "store/sample/reducer";
 // import { List } from "antd/es/form/Form";
@@ -46,7 +46,7 @@ class SampleList extends Component {
       isEdit: false,
       ListUnitt: [],
       sample: [],
-      SchemeList: [],
+      CycleList: [],
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -154,7 +154,7 @@ class SampleList extends Component {
         },
         {
           dataField: "noofanalytes",
-          text: "No of Analytes for this Sample",
+          text: "No of Analytes for the Scheme",
           sort: true,
           headerFormatter: (column, colIndex) => {
             return (
@@ -204,13 +204,13 @@ class SampleList extends Component {
           text: "Action",
           formatter: (cellContent, sample) => (
             <div className="d-flex gap-3 ml-3">
-              <Tooltip title="Add Analytes">
+              {/* <Tooltip title="Add Analytes">
                 <Link to={`/add-analytes-sample-page/${sample.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
                   <i
                     className="mdi mdi-magnify font-size-18"
                     id="analyteIcon"
                   ></i>
-                </Link></Tooltip>
+                </Link></Tooltip> */}
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
@@ -221,7 +221,7 @@ class SampleList extends Component {
                   ></i>
                 </Link>
               </Tooltip>
-              <Tooltip title="Delete">
+              {/* <Tooltip title="Delete">
                 <Link className="text-danger" to="#">
                   <i
                     className="mdi mdi-delete font-size-18"
@@ -229,7 +229,7 @@ class SampleList extends Component {
                     onClick={() => this.onClickDelete(sample)}
                   ></i>
                 </Link>
-              </Tooltip>
+              </Tooltip> */}
             </div>
           ),
         },
@@ -242,13 +242,13 @@ class SampleList extends Component {
 
   componentDidMount() {
 
-    const { ListUnitt, onGetSampleList, onGetScheme } = this.props;
+    const { ListUnitt, onGetSampleList, onGetcyclelist } = this.props;
 
     // Ensure user_id is available before fetching data
     onGetSampleList(this.state.user_id);
     this.setState({ ListUnitt });
 
-    onGetScheme(this.state.user_id);
+    onGetcyclelist(this.state.user_id);
   }
 
   handleFilterChange = (filterName, e) => {
@@ -305,12 +305,12 @@ class SampleList extends Component {
   }
   
   componentDidUpdate(prevProps) {
-    const { ListUnitt, SchemeList, } = this.props;
+    const { ListUnitt, CycleList, } = this.props;
     if (!isEmpty(ListUnitt) && size(prevProps.ListUnitt) !== size(ListUnitt)) {
       this.setState({ ListUnitt: {}, isEdit: false });
     }
-    if (!isEmpty(SchemeList) && size(prevProps.SchemeList) !== size(SchemeList)) {
-      this.setState({ SchemeList: {}, isEdit: false });
+    if (!isEmpty(CycleList) && size(prevProps.CycleList) !== size(CycleList)) {
+      this.setState({ CycleList: {}, isEdit: false });
     }
 
   }
@@ -349,10 +349,10 @@ class SampleList extends Component {
   render() {
     const { deleteModal } = this.state;
     const { SearchBar } = Search;
-    const { onAddSampleList, onUpdateSampleList, onGetSampleList, onDeleteSampleList, onGetScheme } = this.props;
+    const { onAddSampleList, onUpdateSampleList, onGetSampleList, onDeleteSampleList, onGetcyclelist } = this.props;
     const { idFilter, nameFilter, schemeFilter, cycleFilter, analyteFilter,statusFilter} = this.state;
     
-    const { ListUnitt, SchemeList } = this.props;
+    const { ListUnitt, CycleList } = this.props;
 
     const filteredData = ListUnitt.filter(entry => {
       // Modify accordingly for each filter condition
@@ -519,16 +519,16 @@ class SampleList extends Component {
                                                     <ErrorMessage name="sampleno" component="div" className="text-danger" />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label for="scheme">Scheme</Label>
+                                                    <Label for="scheme">Select Cycle No</Label>
                                                     <Field
                                                       as="select"
                                                       name="scheme"
                                                       className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
                                                     >
-                                                      <option value="">Select Scheme</option>
-                                                      {SchemeList && SchemeList.filter(scheme => scheme.status === 'Active').map((scheme) => (
+                                                      <option value="">Select Cycle</option>
+                                                      {CycleList && CycleList.map(scheme => (
                                                         <option key={scheme.id} value={scheme.id}>
-                                                          {scheme.name} 
+                                                          {scheme.cycle_no} 
                                                         </option>
                                                       ))}
                                                     </Field>
@@ -628,7 +628,7 @@ SampleList.propTypes = {
   match: PropTypes.object,
   sample: PropTypes.array,
   ListUnitt: PropTypes.array,
-  SchemeList: PropTypes.array,
+  CycleList: PropTypes.array,
   className: PropTypes.any,
   error: PropTypes.any,
   success: PropTypes.any,
@@ -636,13 +636,12 @@ SampleList.propTypes = {
   onAddSampleList: PropTypes.func,
   onUpdateSampleList: PropTypes.func,
   onDeleteSampleList: PropTypes.func,
-
-  onGetScheme: PropTypes.func,
+  onGetcyclelist: PropTypes.func,
   id: PropTypes.string,
 };
 
-const mapStateToProps = ({ ListUnitt, SchemeList }) => ({
-  SchemeList: SchemeList.SchemeList,
+const mapStateToProps = ({ ListUnitt, CycleList}) => ({
+  CycleList: CycleList.CycleList,
   ListUnitt: ListUnitt.ListUnitt,
 
 });
@@ -651,7 +650,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetSampleList: (id) => { dispatch(getSamplelist(id)); },
   onAddSampleList: (sample) => { dispatch(addNewSampleList(sample)); },
   onUpdateSampleList: (id, sample) => dispatch(updateSampleList(id, sample)),
-  onGetScheme: id => dispatch(getSchemelist(id)),
+  onGetcyclelist: id => dispatch(getcyclelist(id)),
   onDeleteSampleList: (sample) => {dispatch(deleteSampleList(sample));
     
   },

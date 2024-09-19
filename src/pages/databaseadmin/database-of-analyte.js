@@ -62,8 +62,9 @@ class AnalyteList extends Component {
       masterunitFilter: '',
       dateFilter: '',
       codeFilter: '',
-      idFilter: '',
-      statusFilter: '',
+      idFilter:'',
+      typeFilter:'',
+      statusFilter:'',
       ListUnit: [],
       analyte: "",
       errorMessage: "",
@@ -149,8 +150,6 @@ class AnalyteList extends Component {
           dataField: "master_unit_name",
           text: "Master Unit",
           sort: true,
-
-          style: { textAlign: 'left' },
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -160,7 +159,6 @@ class AnalyteList extends Component {
                     value={this.state.masterunitFilter}
                     onChange={e => this.handleFilterChange('masterunitFilter', e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -168,6 +166,7 @@ class AnalyteList extends Component {
             );
           },
         },
+        
         {
           dataField: "noofmethods",
           text: "No. of Methods",
@@ -234,6 +233,7 @@ class AnalyteList extends Component {
             );
           },
         },
+        
         {
           dataField: "status",
           text: "Status",
@@ -266,12 +266,15 @@ class AnalyteList extends Component {
           formatter: (cellContent, analyte) => (
             <div className="d-flex gap-3 ml-3">
               <Tooltip title="Add Units">
-                <Link to={`/analyte-add-units/${analyte.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
-                  <i
-                    className="mdi mdi-package-variant-closed font-size-18"
-                    id="unitIcon"
-                  ></i>
-                </Link></Tooltip>
+      <Link
+        to={
+            `/analyte-add-units/${analyte.id}`
+        }
+        style={{ textDecoration: "underline", color: "#008000" }}
+      >
+        <i className="mdi mdi-package-variant-closed font-size-18" id="unitIcon"></i>
+      </Link>
+    </Tooltip>
 
               <Tooltip title="Add Methods">
                 <Link to={`/analyte-add-methods/${analyte.id}`} style={{ textDecoration: 'underline', color: '#9400D3' }}>
@@ -562,32 +565,32 @@ class AnalyteList extends Component {
     const { SearchBar } = Search;
     const { errorMessage } = this.state;
     const { ListUnit } = this.props;
-    const { nameFilter, dateFilter, statusFilter, codeFilter, idFilter, masterunitFilter, methodsFilter, equipmentFilter, reagentsFilter } = this.state;
-
-    const filteredData = ListUnit.filter(entry => {   
-      // Modify accordingly for each filter condition
-      const name = entry.name ? entry.name.toString().toLowerCase() : "";
-      const master_unit_name = entry.master_unit_name ? entry.master_unit_name.toString().toLowerCase() : "";
-      const status = entry.status ? entry.status.toString() : "";
-      const id = entry.id ? entry.id.toString() : "";
-      const noofmethods = entry.noofmethods ? entry.noofmethods.toString() : "";
-      const noofreagents = entry.noofreagents ? entry.noofreagents.toString() : "";
-      const noofinstruments = entry.noofinstruments ? entry.noofinstruments.toString() : "";
-      const code = entry.code ? entry.code.toString() : "";
-      const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
-
-      return (
-        name.includes(nameFilter.toLowerCase()) &&
-        master_unit_name.includes(masterunitFilter.toLowerCase()) &&
-        status.includes(statusFilter) &&
-        id.includes(idFilter) &&
-        noofmethods.includes(methodsFilter) &&
-        noofreagents.includes(reagentsFilter) &&
-        noofinstruments.includes(equipmentFilter) &&
-        code.includes(codeFilter) &&
-        date.includes(dateFilter)
-      );
-    });
+    const { nameFilter, dateFilter, statusFilter, codeFilter, idFilter,masterunitFilter,typeFilter,methodsFilter,equipmentFilter ,reagentsFilter} = this.state;
+    
+      const filteredData = ListUnit.filter(entry => {
+        // Modify accordingly for each filter condition
+        const name = entry.name ? entry.name.toString().toLowerCase() : "";
+        const master_unit_name = entry.master_unit_name ? entry.master_unit_name.toString().toLowerCase() : "";
+        const status = entry.status ? entry.status.toString() : "";
+        const id = entry.id ? entry.id.toString() : "";
+        const noofmethods = entry.noofmethods ? entry.noofmethods.toString() : "";
+        const noofreagents = entry.noofreagents ? entry.noofreagents.toString() : "";
+        const noofinstruments = entry.noofinstruments ? entry.noofinstruments.toString() : "";
+        const code = entry.code ? entry.code.toString() : "";
+        const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
+    
+        return (
+          name.includes(nameFilter.toLowerCase()) &&
+          master_unit_name.includes(masterunitFilter.toLowerCase()) &&
+          status.includes(statusFilter) &&
+          id.includes(idFilter) &&
+          noofmethods.includes(methodsFilter) &&
+          noofreagents.includes(reagentsFilter) &&
+          noofinstruments.includes(equipmentFilter) &&
+          code.includes(codeFilter) &&
+          date.includes(dateFilter)
+        );
+      });
 
 
     const { isEdit } = this.state;
@@ -791,6 +794,8 @@ class AnalyteList extends Component {
                                             status: Yup.string()
                                               .trim()
                                               .required("Please select the Status from dropdown"),
+                                           
+
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -819,10 +824,10 @@ class AnalyteList extends Component {
                                                   Math.floor(
                                                     Math.random() * (30 - 20)
                                                   ) + 20,
-                                                name: values.name,
-                                                code: values.code,
-                                                status: values.status,
-                                                added_by: values.added_by,
+                                                  name: values.name,
+                                                  code: values.code,
+                                                  status: values.status,
+                                                  added_by: values.added_by,
                                               };
 
                                               // save new Pathologist
@@ -936,7 +941,8 @@ class AnalyteList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-
+                                                  
+                                               
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Status

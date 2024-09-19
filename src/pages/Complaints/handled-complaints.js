@@ -321,7 +321,7 @@ class handledComplaintsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Closed Complaints List | Lab Hazir</title>
+            <title>Closed Complaints List | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

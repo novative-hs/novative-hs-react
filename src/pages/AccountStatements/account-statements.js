@@ -163,7 +163,7 @@ class AccountStatements extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Account Statements | Lab Hazir</title>
+            <title>Account Statements | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -213,7 +213,7 @@ class AccountStatements extends Component {
                 </div>
                 <div>
                   <span className="font-size-12">
-                    <strong><span className="text-danger">Referral Fee of Lab Hazir </span></strong> <span>= Decided Percentage referral free of Total without Discount - (Discount by Lab Hazir)</span>
+                    <strong><span className="text-danger">Referral Fee of NHS NEQAS </span></strong> <span>= Decided Percentage referral free of Total without Discount - (Discount by NHS NEQAS)</span>
                   </span>
                 </div>
 

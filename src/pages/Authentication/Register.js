@@ -233,7 +233,7 @@ class Register extends Component {
               rel="stylesheet"
               href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
             />
-            <title>Register | Lab Hazir</title>
+            <title>Register | NHS NEQAS</title>
           </MetaTags>
           <Container
             fluid

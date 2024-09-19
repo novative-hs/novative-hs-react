@@ -175,13 +175,13 @@ CycleAnalyte.propTypes = {
 const mapStateToProps = (state) => {
   console.log('Redux State:', state); // Log entire Redux state to see structure and contents
   return {
-    CycleAnalyte: state.ListUnits.CycleAnalyte || []
+    CycleAnalyte: state.CycleAnalyte.CycleAnalyte || []
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getAnalyteCycle(id)),
-});
+}); 
 
 export default connect(
   mapStateToProps,

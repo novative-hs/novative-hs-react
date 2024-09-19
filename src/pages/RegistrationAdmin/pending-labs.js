@@ -54,58 +54,11 @@ class PendingLabs extends Component {
         : "",
       pendingLabListColumns: [
         {
-          dataField: "name",
-          text: "Participant name",
-          sort: true,
-          formatter: (cellContent, pendingLab) => (
-            <>
-              <span style={{
-                 width: '200px', // Set your desired width here
-                fontSize: '14px',
-              
-                textOverflow: 'ellipsis',
-                whiteSpace: 'prewrap',
-                textAlign: 'left', // Align text to the left
-                display: 'block',
-              }}>
-                  {/* <Link
-                    to="#"
-                    // onClick={e => this.openLabModal(e, pendingLab)}
-                    onMouseEnter={e => this.openLabModal(e, pendingLab)}
-                    onPointerLeave={this.handleMouseExit()}
-                  > */}
-                   {pendingLab.name}
-                  {/* </Link> */}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
           text: "id",
           dataField: "id",
           sort: true,
           hidden: true,
           formatter: (cellContent, pendingLab) => <>{pendingLab.id}</>,
-        },
-        {
-          dataField: "city",
-          text: "Participant City",
-          sort: true,
-          formatter: (cellContent, pendingLab) => (
-            <>
-              <span style={{
-                 width: '200px', // Set your desired width here
-                fontSize: '14px',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'prewrap',
-                textAlign: 'center', // Align text to the left
-                display: 'block',
-              }}>
-              {pendingLab.city}
-
-              </span>
-            </>
-          ),filter: textFilter(),
         },
         {
           dataField: "district",
@@ -128,103 +81,101 @@ class PendingLabs extends Component {
             </>
           ),filter: textFilter(),
         },
-
         {
-          dataField: "email",
-          text: "Participant Email",
+          dataField: "city",
+          text: "Participant City",
           sort: true,
           formatter: (cellContent, pendingLab) => (
             <>
-                   {pendingLab.email}
-                  
+              <span style={{
+                 width: '200px', // Set your desired width here
+                fontSize: '14px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'center', // Align text to the left
+                display: 'block',
+              }}>
+              {pendingLab.city}
+
+              </span>
             </>
-          ),filter: textFilter(),  
+          ),filter: textFilter(),
         },
         {
-          dataField: "shipping_address",
-          text: "Shipping Address",
-          sort: true,   
+          dataField: "name",
+          text: "Participant name",
+          sort: true,
           formatter: (cellContent, pendingLab) => (
-            <span style={{
-               width: '200px', // Set your desired width here
-              fontSize: '14px',
-            
-              textOverflow: 'ellipsis',
-              whiteSpace: 'prewrap',
-              textAlign: 'left', // Align text to the left
-              display: 'block',
-            }}>
-                   {pendingLab.shipping_address}
-                  
-            </span>
-          ),filter: textFilter(),  
-          
+            <>
+              <span style={{
+                 width: '200px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
+                  <Link
+                    to="#"
+                    // onClick={e => this.openLabModal(e, pendingLab)}
+                    onMouseEnter={e => this.openLabModal(e, pendingLab)}
+                    onPointerLeave={this.handleMouseExit()}
+                  >
+                   {pendingLab.name}
+                  </Link>
+              </span>
+            </>
+          ),filter: textFilter(),
         },
         {
-          dataField: "billing_address",
-          text: "Billing Address",
-          sort: true,   
+          dataField: "lab_staff_name",
+          text: "Name of Notification Person",
+          sort: true,
           formatter: (cellContent, pendingLab) => (
-            <span style={{
-               width: '200px', // Set your desired width here
-              fontSize: '14px',
-            
-              textOverflow: 'ellipsis',
-              whiteSpace: 'prewrap',
-              textAlign: 'left', // Align text to the left
-              display: 'block',
-            }}>
-                   {pendingLab.billing_address}
-                  
-            </span>
-          ),filter: textFilter(),  
-          
+            <>
+              <span>
+                {pendingLab.lab_staff_name}
+              </span>
+            </>
+          ),filter: textFilter(),
         },
-   
-        // {
-        //   dataField: "registered_by",
-        //   text: "Registered by",
-        //   sort: true,
-        //   formatter: (cellContent, pendingLab) => (
-        //     <>
-        //       {pendingLab.registered_by == 'Lab' ? (
-        //         <span><Link
-        //         to="#"
-        //         // onClick={e => this.openPatientModal(e, pendingLab)}
-        //         onMouseEnter={e =>  this.openPatientModal(e, pendingLab)}
-        //         onPointerLeave={this.handleMouseExit()}
-        //       >
-        //        {pendingLab.registered_by}
-        //       </Link>
-        //       </span>
-        //       ) : (
-        //         <span>
-        //           <Link
-        //         to="#"
-        //         // onClick={e => this.openMarketerModal(e, pendingLab)}
-        //         onMouseEnter={e =>   this.openMarketerModal(e, pendingLab)}
-        //         onPointerLeave={this.handleMouseExit()}
-        //       >
-        //        {pendingLab.registered_by}
-        //       </Link>
-        //         </span>
-        //       )}
-        //     </>
-        //   ),filter: textFilter(),
-        // },
-        
-        // {
-        //   dataField: "registered_at",
-        //   text: "Registered at",
-        //   sort: true,
-        //   formatter: (cellContent, pendingLab) => (
-        //     <>
-        //       <span>
-        //         {new Date(pendingLab.registered_at).toLocaleString("en-US")}
-        //       </span>
-        //     </>
-        //   ),
-        // },
+        {
+          dataField: "email_participant",
+          text: "Email of Notification Person",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+              <span>
+                {pendingLab.email_participant}
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "landline_registered_by",
+          text: "Contact No of Notification Person",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+              <span>
+                {pendingLab.landline_registered_by}
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "membership_status",
+          text: "Membership Status",
+          sort: true,
+          formatter: (cellContent, pendingLab) => (
+            <>
+              <span>
+                {pendingLab.membership_status}
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
         {
           dataField: "data",
           text: "id",
@@ -308,10 +259,9 @@ class PendingLabs extends Component {
   openLabModal = (e, arg) => {
     this.setState({
       LabModal: true,
-      landline: arg.landline,
       email: arg.email,
-      city: arg.city,
-      district: arg.district,
+      shipping_address: arg.shipping_address,
+      billing_address: arg.billing_address,
     });
   };
   handleMouseExit = () => {
@@ -436,7 +386,7 @@ class PendingLabs extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Pending Labs | Lab Hazir</title>
+            <title>Pending Labs | NHS NEQAS</title>
           </MetaTags>
 
            <ApproveUnapproveModal
@@ -556,14 +506,14 @@ class PendingLabs extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                    City
+                                                    Shipping Address
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.city
+                                                        this.state.shipping_address
                                                       }
                                                       className="form-control"
                                                       readOnly={true}
@@ -573,14 +523,14 @@ class PendingLabs extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                  District
+                                                  Billing Address
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.district
+                                                        this.state.billing_address
                                                       }
                                                       className="form-control"
                                                       readOnly={true}

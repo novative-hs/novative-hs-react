@@ -99,7 +99,7 @@ class Contact extends Component {
         <div className="page-content">
          
           <MetaTags>
-            <title> Lab Hazir | Contact Form</title>
+            <title> NHS NEQAS | Contact Form</title>
           </MetaTags>
           <Container fluid={true}>
             <Breadcrumbs title="Contact" breadcrumbItem="Contact Us" />

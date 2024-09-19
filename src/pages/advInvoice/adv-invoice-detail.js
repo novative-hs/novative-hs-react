@@ -150,7 +150,7 @@ class LabAudits extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Invoice | Lab Hazir - Dashboard</title>
+            <title>Invoice | NHS NEQAS - Dashboard</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

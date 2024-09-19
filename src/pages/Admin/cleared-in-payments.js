@@ -418,7 +418,7 @@ class PendingB2BClients extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Cleared In Payments | Lab Hazir</title>
+            <title>Cleared In Payments | NHS NEQAS</title>
           </MetaTags>
 
           <Container fluid>

@@ -48,19 +48,67 @@ class PendingLabs extends Component {
       isApproved: false,
       unapprovedModal: false,
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
-      pendingLab: "",
+      AllLabs: "",
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       pendingLabListColumns: [
         {
+          text: "id",
+          dataField: "id",
+          sort: true,
+          hidden: true,
+          formatter: (cellContent, AllLabs) => <>{AllLabs.id}</>,
+        },
+        {
+          dataField: "district",
+          text: "Participant District",
+          sort: true,
+          formatter: (cellContent, AllLabs) => (
+            <>
+              <span style={{
+                 width: '200px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'center', // Align text to the left
+                display: 'block',
+              }}>
+              {AllLabs.district}
+
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
+          dataField: "city",
+          text: "Participant City",
+          sort: true,
+          formatter: (cellContent, AllLabs) => (
+            <>
+              <span style={{
+                 width: '200px', // Set your desired width here
+                fontSize: '14px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'center', // Align text to the left
+                display: 'block',
+              }}>
+              {AllLabs.city}
+
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
+        {
           dataField: "name",
           text: "Participant name",
           sort: true,
-          formatter: (cellContent, pendingLab) => (
+          formatter: (cellContent, AllLabs) => (
             <>
               <span style={{
-                width: '200px', // Set your desired width here
+                 width: '200px', // Set your desired width here
                 fontSize: '14px',
               
                 textOverflow: 'ellipsis',
@@ -68,163 +116,79 @@ class PendingLabs extends Component {
                 textAlign: 'left', // Align text to the left
                 display: 'block',
               }}>
-                  {/* <Link
+                  <Link
                     to="#"
-                    // onClick={e => this.openLabModal(e, pendingLab)}
-                    onMouseEnter={e => this.openLabModal(e, pendingLab)}
+                    // onClick={e => this.openLabModal(e, AllLabs)}
+                    onMouseEnter={e => this.openLabModal(e, AllLabs)}
                     onPointerLeave={this.handleMouseExit()}
-                  > */}
-                   {pendingLab.name}
-                  {/* </Link> */}
+                  >
+                   {AllLabs.name}
+                  </Link>
               </span>
             </>
           ),filter: textFilter(),
         },
         {
-          text: "id",
-          dataField: "id",
+          dataField: "lab_staff_name",
+          text: "Name of Notification Person",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, pendingLab) => <>{pendingLab.id}</>,
+          formatter: (cellContent, AllLabs) => (
+            <>
+              <span>
+                {AllLabs.lab_staff_name}
+              </span>
+            </>
+          ),filter: textFilter(),
         },
         {
-            dataField: "city",
-            text: "Participant City",
-            // sort: true,
-            formatter: (cellContent, approvedLab) => (
-              <>
-                <span>
-                  {approvedLab.city}
-                </span>
-              </>
-            ), filter: textFilter(),
-          },
-          {
-            dataField: "district",
-            text: "Participant District",
-            // sort: true,
-            formatter: (cellContent, approvedLab) => (
-              <>
-                <span>
-                  {approvedLab.district}
-                </span>
-              </>
-            ), filter: textFilter(),
-          },
-          {
-            dataField: "email",
-            text: "Participant Email",
-            sort: true,
-            formatter: (cellContent, pendingLab) => (
-              <>
-                     {pendingLab.email}
-                    
-              </>
-            ),filter: textFilter(),  
-          },
-        {
-          dataField: "shipping_address",
-          text: "Shipping Address",
-          sort: true,   
-          formatter: (cellContent, pendingLab) => (
-            <span style={{
-              width: '200px', // Set your desired width here
-              fontSize: '14px',
-            
-              textOverflow: 'ellipsis',
-              whiteSpace: 'prewrap',
-              textAlign: 'left', // Align text to the left
-              display: 'block',
-            }}>
-                   {pendingLab.shipping_address}
-                  
-            </span>
-          ),filter: textFilter(),  
-          
+          dataField: "email_participant",
+          text: "Email of Notification Person",
+          sort: true,
+          formatter: (cellContent, AllLabs) => (
+            <>
+              <span>
+                {AllLabs.email_participant}
+              </span>
+            </>
+          ),filter: textFilter(),
         },
         {
-          dataField: "billing_address",
-          text: "Billing Address",
-          sort: true,   
-          formatter: (cellContent, pendingLab) => (
-            <span style={{
-              width: '200px', // Set your desired width here
-              fontSize: '14px',
-            
-              textOverflow: 'ellipsis',
-              whiteSpace: 'prewrap',
-              textAlign: 'left', // Align text to the left
-              display: 'block',
-            }}>
-                   {pendingLab.billing_address}
-                  
-            </span>
-          ),filter: textFilter(),  
-          
+          dataField: "landline_registered_by",
+          text: "Contact No of Notification Person",
+          sort: true,
+          formatter: (cellContent, AllLabs) => (
+            <>
+              <span>
+                {AllLabs.landline_registered_by}
+              </span>
+            </>
+          ),filter: textFilter(),
         },
-        // {
-        //   dataField: "city",
-        //   text: "City",
-        //   sort: true,
-        // },
-   
-        // {
-        //   dataField: "registered_by",
-        //   text: "Registered by",
-        //   sort: true,
-        //   formatter: (cellContent, pendingLab) => (
-        //     <>
-        //       {pendingLab.registered_by == 'Lab' ? (
-        //         <span><Link
-        //         to="#"
-        //         // onClick={e => this.openPatientModal(e, pendingLab)}
-        //         onMouseEnter={e =>  this.openPatientModal(e, pendingLab)}
-        //         onPointerLeave={this.handleMouseExit()}
-        //       >
-        //        {pendingLab.registered_by}
-        //       </Link>
-        //       </span>
-        //       ) : (
-        //         <span>
-        //           <Link
-        //         to="#"
-        //         // onClick={e => this.openMarketerModal(e, pendingLab)}
-        //         onMouseEnter={e =>   this.openMarketerModal(e, pendingLab)}
-        //         onPointerLeave={this.handleMouseExit()}
-        //       >
-        //        {pendingLab.registered_by}
-        //       </Link>
-        //         </span>
-        //       )}
-        //     </>
-        //   ),filter: textFilter(),
-        // },
-        
-        // {
-        //   dataField: "registered_at",
-        //   text: "Registered at",
-        //   sort: true,
-        //   formatter: (cellContent, pendingLab) => (
-        //     <>
-        //       <span>
-        //         {new Date(pendingLab.registered_at).toLocaleString("en-US")}
-        //       </span>
-        //     </>
-        //   ),
-        // },
+        {
+          dataField: "membership_status",
+          text: "Membership Status",
+          sort: true,
+          formatter: (cellContent, AllLabs) => (
+            <>
+              <span>
+                {AllLabs.membership_status}
+              </span>
+            </>
+          ),filter: textFilter(),
+        },
         {
           dataField: "data",
           text: "id",
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, pendingLab) => (
+          formatter: (cellContent, AllLabs) => (
             <>
             <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
                 to="#"
-                onClick={e => this.handleApprovedEvent(pendingLab.id)}
+                onClick={e => this.handleApprovedEvent(AllLabs.id)}
                 
               >
                 <i className="mdi mdi-check-circle font-size-14"></i>
@@ -235,7 +199,7 @@ class PendingLabs extends Component {
               <Link
                 className="btn btn-danger btn-rounded"
                 to="#"
-                onClick={() => this.handleUnapprovedEvent(pendingLab.id)}
+                onClick={() => this.handleUnapprovedEvent(AllLabs.id)}
               >
                 <i className="mdi mdi-close-circle font-size-14"></i>
               </Link>
@@ -294,10 +258,9 @@ class PendingLabs extends Component {
   openLabModal = (e, arg) => {
     this.setState({
       LabModal: true,
-      landline: arg.landline,
       email: arg.email,
-      city: arg.city,
-      district: arg.district,
+      shipping_address: arg.shipping_address,
+      billing_address: arg.billing_address,
     });
   };
   handleMouseExit = () => {
@@ -542,14 +505,14 @@ class PendingLabs extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                    City
+                                                    Shipping Address
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.city
+                                                        this.state.shipping_address
                                                       }
                                                       className="form-control"
                                                       readOnly={true}
@@ -559,14 +522,14 @@ class PendingLabs extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                  District
+                                                  Billing Address
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
                                                     <input
                                                       type="text"
                                                       value={
-                                                        this.state.district
+                                                        this.state.billing_address
                                                       }
                                                       className="form-control"
                                                       readOnly={true}

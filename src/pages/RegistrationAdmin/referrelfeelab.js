@@ -357,7 +357,7 @@ class ReferrelLabFee extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Lab Hazir | Referrel Fee Lab Hazir</title>
+            <title>NHS NEQAS | Referrel Fee NHS NEQAS</title>
           </MetaTags>
           <ConfirmModal
           show={this.state.confirmModal}
@@ -365,7 +365,7 @@ class ReferrelLabFee extends Component {
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Referrel Fee" breadcrumbItem="Lab Hazir" />
+            <Breadcrumbs title="Referrel Fee" breadcrumbItem="NHS NEQAS" />
             <Row>
               <Col lg="12">
                 <Card>

@@ -87,7 +87,7 @@ class LabAudits extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Activity Log | Lab Hazir - Dashboard</title>
+            <title>Activity Log | NHS NEQAS - Dashboard</title>
           </MetaTags>
           <Container fluid>
           <Card>

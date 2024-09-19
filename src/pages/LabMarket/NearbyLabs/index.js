@@ -3242,7 +3242,7 @@ class NearbyLabs extends Component {
             !isEmpty(regionWiseAdvertisement)) ? (
           <div className="page-content">
             <MetaTags>
-              <title>Nearby Labs | Lab Hazir - Dashboard</title>
+              <title>Nearby Labs | NHS NEQAS - Dashboard</title>
             </MetaTags>
             <Row style={{ marginLeft: "20px", marginRight: "20px", marginTop: "-20px" }}>
               {/* <Breadcrumbs
@@ -4403,7 +4403,7 @@ class NearbyLabs extends Component {
           this.state.user_type === "patient" ? (
           <div>
             <MetaTags>
-              <title>Nearby Labs | Lab Hazir - Dashboard</title>
+              <title>Nearby Labs | NHS NEQAS - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "80px", marginLeft: "20px", marginRight: "20px" }}>
               <Card className="mini-stats-wid" style={{ marginTop: "4px", marginBottom: "10px", padding: 0, backgroundColor: "#CFE0F6" }}>
@@ -5512,7 +5512,7 @@ class NearbyLabs extends Component {
           isEmpty(regionWiseAdvertisement) ? (
           <div>
             <MetaTags>
-              <title>Nearby Labs | Lab Hazir - Dashboard</title>
+              <title>Nearby Labs | NHS NEQAS - Dashboard</title>
             </MetaTags>
             <Row
               style={{
@@ -6487,7 +6487,7 @@ class NearbyLabs extends Component {
           isEmpty(this.state.user_type) ? (
           <div>
             <MetaTags>
-              <title>Nearby Labs | Lab Hazir - Dashboard</title>
+              <title>Nearby Labs | NHS NEQAS - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "70px" }}>
               <Slider {...settings} appendDots={customDots}>
@@ -7536,7 +7536,7 @@ class NearbyLabs extends Component {
           this.state.user_type === "patient" ? (
           <div>
             <MetaTags>
-              <title>Nearby Labs | Lab Hazir - Dashboard</title>
+              <title>Nearby Labs | NHS NEQAS - Dashboard</title>
             </MetaTags>
             <Row style={{ marginTop: "70px" }}>
               <Slider {...settings} appendDots={customDots}>

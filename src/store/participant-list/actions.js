@@ -2,7 +2,9 @@ import {
     GET_PARTICIPANT_LIST,
     GET_PARTICIPANT_LIST_FAIL,
     GET_PARTICIPANT_LIST_SUCCESS,
-
+    GET_PARTICIPANTROUND_LIST,
+    GET_PARTICIPANTROUND_LIST_FAIL,
+    GET_PARTICIPANTROUND_LIST_SUCCESS,
 
     GET_ROUNDSLABS_LIST,
     GET_ROUNDSLABS_LIST_SUCCESS,
@@ -16,7 +18,7 @@ import {
    
   } from "./actionTypes";
 
-  // get Units Action
+  // get Participents
   export const getParticipantList = (id) => ({
     type: GET_PARTICIPANT_LIST,
     payload: id,
@@ -29,6 +31,22 @@ import {
   
   export const getParticipantListFail = error => ({
     type: GET_PARTICIPANT_LIST_FAIL,
+    payload: error,
+  });
+
+  // get Participents Round
+  export const getParticipantRoundList = (id) => ({
+    type: GET_PARTICIPANTROUND_LIST,
+    payload: id,
+  });
+  
+  export const getParticipantRoundListSuccess =  ParticipantList => ({
+    type: GET_PARTICIPANTROUND_LIST_SUCCESS,
+    payload:  ParticipantList,
+  });
+  
+  export const getParticipantRoundListFail = error => ({
+    type: GET_PARTICIPANTROUND_LIST_FAIL,
     payload: error,
   });
 

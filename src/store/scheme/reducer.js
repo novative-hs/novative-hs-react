@@ -12,7 +12,8 @@ import {
 
 const INIT_STATE = {
   SchemeList: [],
-  AddUnits: [],  
+  AddUnits: [], 
+  SchemeAnalytes: [],   
   unit: [],
   error: {}, 
 };

@@ -1638,7 +1638,7 @@ class NearbyLabs extends Component {
 
         <div className="page-content">
           <MetaTags>
-            <title>Nearby Labs | Lab Hazir - Dashboard</title>
+            <title>Nearby Labs | NHS NEQAS - Dashboard</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Lab Marketplace" breadcrumbItem="Nearby Labs" />

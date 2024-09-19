@@ -61,14 +61,14 @@ export const updateRoundList = round => {
 }};
 
 export const updateRoundListSuccess = round => {
-  console.log('updatevvvvvvvvvvSuccess   vvvcalled with:', round);
+  console.log('update round Success:', round);
   return{
   type: UPDATE_NEW_ROUND_LIST_SUCCESS,
   payload: round,
 }};
 
 export const updateRoundListFail = error => {
-  console.log('updatevvvvvvvvvvSuccess   vvvcalled with:', error);
+  console.log('update round fail:', error);
   return{
   type: UPDATE_NEW_ROUND_LIST_FAIL,
   payload: error,

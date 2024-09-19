@@ -5,7 +5,7 @@ const tasks = [
     tasks: [
       {
         id: 11,
-        description: "Create a Lab Hazir Dashboard UI",
+        description: "Create a NHS NEQAS Dashboard UI",
         members: [
           {
             username: "",
@@ -40,7 +40,7 @@ const tasks = [
       },
       {
         id: 13,
-        description: "Create a Lab Hazir Logo",
+        description: "Create a NHS NEQAS Logo",
         members: [
           {
             username: "Fransis",

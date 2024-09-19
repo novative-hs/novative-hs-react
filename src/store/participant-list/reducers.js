@@ -1,7 +1,8 @@
 import {
   GET_PARTICIPANT_LIST_FAIL,
   GET_PARTICIPANT_LIST_SUCCESS,
-
+  GET_PARTICIPANTROUND_LIST_FAIL,
+  GET_PARTICIPANTROUND_LIST_SUCCESS,
 
   GET_ROUNDSLABS_LIST_SUCCESS,
   GET_ROUNDSLABS_LIST_FAIL,
@@ -64,7 +65,7 @@ import {
             error: action.payload,
           };
 
-          // Participant
+      // Participant
       case GET_PARTICIPANT_LIST_SUCCESS:
         return {
           ...state,
@@ -72,6 +73,18 @@ import {
         };
   
       case GET_PARTICIPANT_LIST_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
+      // Round Participant
+      case GET_PARTICIPANTROUND_LIST_SUCCESS:
+        return {
+          ...state,
+          ParticipantList: action.payload,
+        };
+
+      case GET_PARTICIPANTROUND_LIST_FAIL:
         return {
           ...state,
           error: action.payload,

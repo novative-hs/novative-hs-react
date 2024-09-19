@@ -1322,7 +1322,7 @@ class CartList extends Component {
 
         <div className="page-content">
           <MetaTags>
-            <title>Cart List | Lab Hazir</title>
+            <title>Cart List | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Cart" breadcrumbItem="Cart List" />

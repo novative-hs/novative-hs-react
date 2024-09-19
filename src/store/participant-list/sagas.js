@@ -1,12 +1,12 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_PARTICIPANT_LIST, GET_ROUNDSLABS_LIST,ADD_NEW_ROUNDSLABS,UPDATE_ROUNDSLABS} from "./actionTypes";
+import { GET_PARTICIPANT_LIST, GET_PARTICIPANTROUND_LIST, GET_ROUNDSLABS_LIST,ADD_NEW_ROUNDSLABS,UPDATE_ROUNDSLABS} from "./actionTypes";
 
-import { getParticipantListSuccess, getParticipantListFail, getRoundLablistSuccess,getRoundLablistFail,addNewRoundLablistSuccess,addNewRoundLablistFail,updateRoundLablistSuccess,updateRoundLablistFail } from "./actions";
+import { getParticipantListSuccess, getParticipantListFail, getParticipantRoundListSuccess, getParticipantRoundListFail, getRoundLablistSuccess,getRoundLablistFail,addNewRoundLablistSuccess,addNewRoundLablistFail,updateRoundLablistSuccess,updateRoundLablistFail } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getParticipantList, getRoundLablist,addNewRoundLablist,updateRoundLablist} from "../../helpers/django_api_helper";
+import { getParticipantList, getParticipantRoundList, getRoundLablist,addNewRoundLablist,updateRoundLablist} from "../../helpers/django_api_helper";
 
 
 /// Rounds Participants
@@ -47,6 +47,14 @@ function* fetchParticipantList(object) {
     yield put(getParticipantListFail(error));
   }
 }
+function* fetchParticipantRoundList(object) {
+  try {
+    const response = yield call(getParticipantRoundList, object.payload);
+    yield put(getParticipantRoundListSuccess(response.data));
+  } catch (error) {
+    yield put(getParticipantRoundListFail(error));
+  }
+}
 
 function* participantListSaga() {
 
@@ -56,6 +64,8 @@ function* participantListSaga() {
 
 
   yield takeEvery(GET_PARTICIPANT_LIST, fetchParticipantList);
+  yield takeEvery(GET_PARTICIPANTROUND_LIST, fetchParticipantRoundList);
+
 }
 
 export default participantListSaga;

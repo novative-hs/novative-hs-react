@@ -56,7 +56,7 @@ class LabSummary extends Component {
                 <Col xs="7">
                   <div className="text-primary p-3">
                     <h5 className="text-primary">Welcome Back !</h5>
-                    <p>Lab Hazir Dashboard</p>
+                    <p>NHS NEQAS Dashboard</p>
                     <Link
                             to={"/lab-profile"}
                             className="btn btn-primary btn-sm"

@@ -293,7 +293,7 @@ class PendingB2BClients extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Labs List | Lab Hazir</title>
+            <title>Labs List | NHS NEQAS</title>
           </MetaTags>
 
           <ApproveUnapproveModal

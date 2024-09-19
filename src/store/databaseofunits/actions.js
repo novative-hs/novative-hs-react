@@ -17,6 +17,9 @@ import {
   GET_ANALYTE_LIST,
   GET_ANALYTE_LIST_SUCCESS,
   GET_ANALYTE_LIST_FAIL,
+  GET_ANALYTEFORSCHEME_LIST,
+  GET_ANALYTEFORSCHEME_LIST_SUCCESS,
+  GET_ANALYTEFORSCHEME_LIST_FAIL,
   ADD_NEW_ANALYTE_LIST,
   ADD_NEW_ANALYTE_LIST_SUCCESS,
   ADD_NEW_ANALYTE_LIST_FAIL,
@@ -74,7 +77,27 @@ export const addEquipmentTypefileFail = error => (
   payload: error,
 });
 
+//////////////Analyte for scheme////////////
+export const getAnalyteforSchemelist = (id) => ({
+  type: GET_ANALYTEFORSCHEME_LIST,
+  payload: id,
+});
 
+export const getAnalyteforSchemelistSuccess = (AnalyteList) => {
+  console.log("Analyte response in success action:", AnalyteList); 
+  return {
+    type: GET_ANALYTEFORSCHEME_LIST_SUCCESS,
+    payload: AnalyteList,
+  };
+};
+
+export const getAnalyteforSchemelistFail = (error) => {
+  console.log("Error response in fail action:", error); 
+  return {
+    type: GET_ANALYTEFORSCHEME_LIST_FAIL,
+    payload: error,
+  };
+};
 
 
 //////////////Analyte////////////
@@ -288,7 +311,7 @@ export const getSampleAnalytelist = (id) => ({
 });
 
 export const getSampleAnalytelistSuccess = SampleAnalyteList => (
-  console.log("data in actionsffffffffffffffffff",SampleAnalyteList ),
+  console.log("data in actionsffffffffffffffffff", SampleAnalyteList ),
   {
   type: GET_SAMPLE_ANALYTE_LIST_SUCCESS,
   payload: SampleAnalyteList,

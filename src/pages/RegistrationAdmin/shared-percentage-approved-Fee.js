@@ -327,7 +327,7 @@ class SharedPercentageLabHazirList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Lab Hazir | Discount Lab Hazir</title>
+            <title>NHS NEQAS | Discount NHS NEQAS</title>
           </MetaTags>
           <ConfirmModal
           show={this.state.confirmModal}
@@ -335,7 +335,7 @@ class SharedPercentageLabHazirList extends Component {
           />
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Approved Shared Percentage" breadcrumbItem="Lab Hazir" />
+            <Breadcrumbs title="Approved Shared Percentage" breadcrumbItem="NHS NEQAS" />
             <Row>
               <Col lg="12">
                 <Card>

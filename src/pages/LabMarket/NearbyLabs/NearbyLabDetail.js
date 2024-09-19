@@ -628,7 +628,7 @@ class NearbyLabDetail extends Component {
         )}
         <div className="page-content">
           <MetaTags>
-            <title>Nearby Lab Detail | Lab Hazir - Dashboard</title>
+            <title>Nearby Lab Detail | NHS NEQAS - Dashboard</title>
           </MetaTags>
 
           {this.props.success ? (

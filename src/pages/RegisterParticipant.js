@@ -100,7 +100,7 @@ class LabInformation extends Component {
       <React.Fragment>
         <div>
           <MetaTags>
-            <title>Lab Information | Lab Hazir</title>
+            <title>Lab Information | NHS NEQAS</title>
           </MetaTags>
           {/* <div
             className="background-container py-5"

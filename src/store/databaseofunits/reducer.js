@@ -12,6 +12,8 @@ import {
 
   GET_ANALYTE_LIST_SUCCESS,
   GET_ANALYTE_LIST_FAIL,
+  GET_ANALYTEFORSCHEME_LIST_SUCCESS,
+  GET_ANALYTEFORSCHEME_LIST_FAIL,
   ADD_NEW_ANALYTE_LIST_SUCCESS,
   ADD_NEW_ANALYTE_LIST_FAIL,
   UPDATE_NEW_ANALYTE_LIST_SUCCESS,
@@ -44,9 +46,7 @@ const INIT_STATE = {
   AddSchemeAnalyte: [],
   schemeanalyte: [],
   SampleAnalyteList:[],
-
   CycleAnalyte:[],
-
   EquipmentData:[],
   ListUnit: [],
   AddUnits: [],  
@@ -163,6 +163,20 @@ const ListUnit = (state = INIT_STATE, action) => {
                 ...state,
                 error: action.payload,
               };
+
+                          /////////////analyte for scheme
+            case GET_ANALYTEFORSCHEME_LIST_SUCCESS:
+              console.log("Data received in success action:", action.payload); // Log the action.payload
+              return {
+                ...state,
+                ListUnit: action.payload,
+              };
+        
+            case GET_ANALYTEFORSCHEME_LIST_FAIL:
+              return {
+                ...state,
+                error: action.payload,
+              };
         
               case ADD_NEW_ANALYTE_LIST_SUCCESS:
                 return {
@@ -246,10 +260,10 @@ const ListUnit = (state = INIT_STATE, action) => {
                     ///// Analytes Associated With Cycle
                     case GET_ANALYTESCYCLES_SUCCESS:
                       console.log("ANALYTESCYCLES:", action.payload);
-                    return {
-                      ...state,
-                      CycleAnalyte: action.payload, // Update to handle units array
-                    };
+                      return {
+                        ...state,
+                        CycleAnalyte: action.payload, // Update to handle units array
+                      };
                   
                       case GET_ANALYTESCYCLES_FAIL:
                         return {

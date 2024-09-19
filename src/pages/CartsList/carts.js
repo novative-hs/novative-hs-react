@@ -214,7 +214,7 @@ class CartList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Carts List | Lab Hazir</title>
+            <title>Carts List | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

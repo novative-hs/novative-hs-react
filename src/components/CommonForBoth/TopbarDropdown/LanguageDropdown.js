@@ -49,7 +49,7 @@ class LanguageDropdown extends Component {
           <DropdownToggle className="btn header-item" tag="button">
             <img
               src={languages[selectedLang].flag}
-              alt="Lab Hazir"
+              alt="NHS NEQAS"
               height="16"
               className="me-1"
             />
@@ -65,7 +65,7 @@ class LanguageDropdown extends Component {
               >
                 <img
                   src={languages[key].flag}
-                  alt="Lab Hazir"
+                  alt="NHS NEQAS"
                   className="me-1"
                   height="12"
                 />

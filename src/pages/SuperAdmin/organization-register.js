@@ -102,7 +102,7 @@ class OrganizationRegister extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Staff | Lab Hazir</title>
+            <title>Staff | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}

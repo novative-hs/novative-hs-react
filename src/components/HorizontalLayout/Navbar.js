@@ -127,6 +127,9 @@ class Navbar extends Component {
                           <li>
                             <Link to="/database-of-units" className="dropdown-item">Database of units</Link>
                           </li>
+                          <li>
+                            <Link to="/database-of-qualitativetype" className="dropdown-item">Database of QualitativeType</Link>
+                          </li>
                             
                             <li>
                               <Link

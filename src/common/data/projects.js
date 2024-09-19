@@ -59,9 +59,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Lab Hazir Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Lab Hazir Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Lab Hazir Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "NHS NEQAS Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "NHS NEQAS Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "NHS NEQAS Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -112,9 +112,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Lab Hazir Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Lab Hazir Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Lab Hazir Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "NHS NEQAS Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "NHS NEQAS Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "NHS NEQAS Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -171,9 +171,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Lab Hazir Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Lab Hazir Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Lab Hazir Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "NHS NEQAS Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "NHS NEQAS Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "NHS NEQAS Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -221,9 +221,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Lab Hazir Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Lab Hazir Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Lab Hazir Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "NHS NEQAS Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "NHS NEQAS Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "NHS NEQAS Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -253,7 +253,7 @@ const projects = [
   {
     id: 4,
     img: "img5",
-    name: "Lab Hazir Dashboard UI",
+    name: "NHS NEQAS Dashboard UI",
     description: "Separate existence is a myth",
     status: "Completed",
     color: "success",
@@ -275,9 +275,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Lab Hazir Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Lab Hazir Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Lab Hazir Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "NHS NEQAS Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "NHS NEQAS Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "NHS NEQAS Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -328,9 +328,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Lab Hazir Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Lab Hazir Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Lab Hazir Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "NHS NEQAS Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "NHS NEQAS Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "NHS NEQAS Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -401,9 +401,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Lab Hazir Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Lab Hazir Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Lab Hazir Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "NHS NEQAS Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "NHS NEQAS Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "NHS NEQAS Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [
@@ -462,9 +462,9 @@ const projects = [
       ],
     },
     files: [
-      { name: "Lab Hazir Landing.Zip", size: "3.25 MB", link: "#" },
-      { name: "Lab Hazir Admin.Zip", size: "3.15 MB", link: "#" },
-      { name: "Lab Hazir Logo.Zip", size: "2.02 MB", link: "#" },
+      { name: "NHS NEQAS Landing.Zip", size: "3.25 MB", link: "#" },
+      { name: "NHS NEQAS Admin.Zip", size: "3.15 MB", link: "#" },
+      { name: "NHS NEQAS Logo.Zip", size: "2.02 MB", link: "#" },
       { name: "Veltrix admin.Zip", size: "2.25 MB", link: "#" },
     ],
     comments: [

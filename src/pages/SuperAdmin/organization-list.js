@@ -35,7 +35,8 @@ import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 import {
-  getOrganizationlist, updateOrganizationList, deleteOrganizationList } from "store/organization/actions";
+  getOrganizationlist, updateOrganizationList, deleteOrganizationList
+} from "store/organization/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
@@ -71,7 +72,7 @@ class OrganizationList extends Component {
         //   hidden: true,
         //   formatter: (cellContent, organization) => <>{organization.id}</>,
         // },
-       
+
         {
           dataField: "name",
           text: "Name",
@@ -99,6 +100,20 @@ class OrganizationList extends Component {
           sort: true,
           filter: textFilter(),
           style: { textAlign: 'left' }
+        },
+        {
+          dataField: "payment_status",
+          text: "Payment Status",
+          sort: true,
+          filter: textFilter(),
+          // style: { textAlign: 'left' }
+        },
+        {
+          dataField: "status",
+          text: "Status",
+          sort: true,
+          filter: textFilter(),
+          // style: { textAlign: 'left' }
         },
         {
           dataField: "menu",
@@ -130,7 +145,7 @@ class OrganizationList extends Component {
         },
       ],
     };
-    
+
     this.handleReagentsClick = this.handleReagentsClick.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleReagentsClicks = this.handleReagentsClicks.bind(this);
@@ -209,25 +224,26 @@ class OrganizationList extends Component {
     }
   };
   handleReagentsClick = (e, arg) => {
-    
+
     const organization = arg;
     console.log("data in case of update ssd", organization)
     this.setState({
       organization: {
-        
+
         id: organization.id,
         name: organization.name,
         email: organization.email,
         website: organization.website,
         country: organization.country,
+        status: organization.status,
       },
       isEdit: true,
     });
 
     this.toggle();
-  };     
- 
- 
+  };
+
+
   render() {
     // const { SearchBar } = Search;
     const { OrganizationList } = this.props;
@@ -250,11 +266,11 @@ class OrganizationList extends Component {
     const iconStyle = { color: 'red' };
     return (
       <React.Fragment>
-      <DeleteModal
-        show={deleteModal}
-        onDeleteClick={this.handleDeleteOrganizationList}
-        onCloseClick={() => this.setState({ deleteModal: false })}
-      />
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={this.handleDeleteOrganizationList}
+          onCloseClick={() => this.setState({ deleteModal: false })}
+        />
 
         <div className="page-content">
           <MetaTags>
@@ -267,7 +283,7 @@ class OrganizationList extends Component {
               breadcrumbItem="Organization List"
             />
             <Row className="justify-content-center">
-            {/* <p className="text-danger">Note: Pathologist Information will scale the rating of your lab.</p> */}
+              {/* <p className="text-danger">Note: Pathologist Information will scale the rating of your lab.</p> */}
 
               <Col lg="10">
                 <Card>
@@ -341,21 +357,22 @@ class OrganizationList extends Component {
                                           : " Organization List"}
                                       </ModalHeader>
                                       <ModalBody>
-                                      <Formik
+                                        <Formik
                                           enableReinitialize={true}
-                                          
+
                                           initialValues={{
                                             hiddenEditFlag: isEdit,
                                             name: organization.name || "",
                                             email: organization.email || "",
                                             website: organization.website || "",
                                             country: organization.country || "",
+                                            status: organization.status || "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddenEditFlag: Yup.boolean(),
                                             name: Yup.string().trim().required("Please enter name"),
                                             email: Yup.string().trim().required("Please enter an email address")
-                                            .email("Please enter a valid email address"),
+                                              .email("Please enter a valid email address"),
                                             website: Yup.string().trim().required("Please enter Website"),
                                             country: Yup.string().trim().required("Please enter a country")
                                           })}
@@ -366,17 +383,18 @@ class OrganizationList extends Component {
                                               email: values.email,
                                               website: values.website,
                                               country: values.country,
+                                              status: values.status,
                                             };
-                                            console.log("data before submit",updateOrganizationList )
-                                          
+                                            console.log("data before submit", updateOrganizationList)
+
                                             onUpdateOrganizationList(updateOrganizationList);
                                             setTimeout(() => {
                                               onGetOrganizationList(this.state.user_id);
                                             }, 1000);
-                                     
+
                                             this.toggle();
                                           }}
-                                        > 
+                                        >
                                           {({ errors, status, touched }) => (
                                             <Form>
                                               <Row>
@@ -400,7 +418,7 @@ class OrganizationList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.name &&
-                                                        touched.name
+                                                          touched.name
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -411,16 +429,16 @@ class OrganizationList extends Component {
                                                       onChange={e =>
                                                         this.setState({
                                                           organization: {
-                                                         
+
                                                             id: organization.id,
                                                             name: e.target
                                                               .value,
                                                             email:
                                                               organization.email,
                                                             website:
-                                                             organization.website,
+                                                              organization.website,
                                                             country:
-                                                             organization.country,
+                                                              organization.country,
                                                           },
                                                         })
                                                       }
@@ -433,29 +451,29 @@ class OrganizationList extends Component {
                                                   </div>
 
                                                   <div className="mb-3">
-                                                  <Label className="form-label">
-                                                    Email
-                                                    <span className="text-danger">*</span>
-                                                  </Label>
-                                                  <Field
-                                                    name="email"
-                                                    type="email"
-                                                    className={"form-control" + (errors.email && touched.email ? " is-invalid" : "")}
-                                                    value={organization.email}
-                                                    onChange={e =>
-                                                      this.setState(prevState => ({
-                                                        organization: {
-                                                          ...prevState.organization,
-                                                          email: e.target.value,
-                                                        }
-                                                      }))
-                                                    }
-                                                  />
-                                                  <ErrorMessage name="email" component="div" className="invalid-feedback" />
-                                                </div>
+                                                    <Label className="form-label">
+                                                      Email
+                                                      <span className="text-danger">*</span>
+                                                    </Label>
+                                                    <Field
+                                                      name="email"
+                                                      type="email"
+                                                      className={"form-control" + (errors.email && touched.email ? " is-invalid" : "")}
+                                                      value={organization.email}
+                                                      onChange={e =>
+                                                        this.setState(prevState => ({
+                                                          organization: {
+                                                            ...prevState.organization,
+                                                            email: e.target.value,
+                                                          }
+                                                        }))
+                                                      }
+                                                    />
+                                                    <ErrorMessage name="email" component="div" className="invalid-feedback" />
+                                                  </div>
 
-                                              {/* //////////// */}
-                                              <div className="mb-3">
+                                                  {/* //////////// */}
+                                                  <div className="mb-3">
                                                     <Label className="form-label">
                                                       Website
                                                       <span className="text-danger">
@@ -466,15 +484,15 @@ class OrganizationList extends Component {
                                                       name="website"
                                                       type="website"
                                                       className={
-                                                        "form-control" + 
+                                                        "form-control" +
                                                         (errors.email &&
-                                                        touched.email
+                                                          touched.email
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                       value={
                                                         this.state.organization.website
-                                                          
+
                                                       }
                                                       onChange={e =>
                                                         this.setState({
@@ -485,7 +503,7 @@ class OrganizationList extends Component {
                                                               organization.email,
                                                             website:
                                                               e.target.value,
-                                                              country: organization.country,
+                                                            country: organization.country,
                                                           },
                                                         })
                                                       }
@@ -499,38 +517,67 @@ class OrganizationList extends Component {
                                                   {/* //////////////////////////////// */}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                     Country
+                                                      Country
                                                       <span className="text-danger">
                                                         *
                                                       </span>
                                                     </Label>
-                                                     <Field
-                                                    name="country"
-                                                    type="text"
-                                                    className={"form-control" + (errors.country && touched.country ? " is-invalid" : "")}
-                                                    value={organization.country}
-                                                    onChange={e =>
-                                                      this.setState(prevState => ({
-                                                        organization: {
-                                                          ...prevState.organization,
-                                                          country: e.target.value,
-                                                        }
-                                                      }))
-                                                    }
-                                                  />
+                                                    <Field
+                                                      name="country"
+                                                      type="text"
+                                                      className={"form-control" + (errors.country && touched.country ? " is-invalid" : "")}
+                                                      value={organization.country}
+                                                      onChange={e =>
+                                                        this.setState(prevState => ({
+                                                          organization: {
+                                                            ...prevState.organization,
+                                                            country: e.target.value,
+                                                          }
+                                                        }))
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label for="status" className="form-label">
+                                                      Organization Status
+                                                    </Label>
+                                                    <Field
+                                                      name="status"
+                                                      as="select"
+                                                      className={`form-control ${errors.status && touched.status ? "is-invalid" : ""
+                                                        }`}
+                                                        value={organization.status || ""} // Set the default value from organization.status
+                                                        onChange={e =>
+                                                        this.setState(prevState => ({
+                                                          organization: {
+                                                            ...prevState.organization,
+                                                            status: e.target.value,
+                                                          }
+                                                        }))
+                                                      }                        >
+                                                      <option
+                                                        value=""
+                                                      >
+                                                        --- Select Currency ---
+                                                      </option>
+                                                      <option value="Pending">Pending</option>
+                                                      <option value="Approved">Approved</option>
+                                                      <option value="Block">Block</option>
+
+                                                    </Field>
                                                   </div>
                                                 </Col>
                                               </Row>
                                               <Row>
                                                 <Col>
-                                                <div className="text-end">
-                                                  <button
-                                                    type="submit"
-                                                    className="btn btn-success save-user"
-                                                  >
-                                                    Save
-                                                  </button>
-                                                </div>
+                                                  <div className="text-end">
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                    >
+                                                      Save
+                                                    </button>
+                                                  </div>
                                                 </Col>
                                               </Row>
                                             </Form>
@@ -571,7 +618,6 @@ OrganizationList.propTypes = {
   onUpdateOrganizationList: PropTypes.func,
   ondeleteOrganization: PropTypes.func,
 };
-
 const mapStateToProps = ({ organizationaccount }) => ({
   OrganizationList: organizationaccount.OrganizationList,
 });
@@ -580,6 +626,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onUpdateOrganizationList: organization => dispatch(updateOrganizationList(organization)),
   ondeleteOrganization: (organization) => dispatch(deleteOrganizationList(organization)),
 });
-
-
 export default connect(mapStateToProps, mapDispatchToProps)(OrganizationList);

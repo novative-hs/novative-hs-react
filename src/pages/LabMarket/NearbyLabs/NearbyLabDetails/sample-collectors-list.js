@@ -143,7 +143,7 @@ class LabSampleCollectors extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Home Sample Collectors List | Lab Hazir</title>
+            <title>Home Sample Collectors List | NHS NEQAS</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
