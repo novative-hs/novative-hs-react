@@ -2664,8 +2664,6 @@ export const addNewRound = (createUnit, id) => {
 export const updateRound = unit => {
   let formData = new FormData();
   formData.append("rounds", unit.rounds);
-  formData.append("scheme", unit.scheme);
-  formData.append("cycle_no", unit.cycle_no);
   formData.append("sample", unit.sample);
   formData.append("issue_date", unit.issue_date);
   formData.append("closing_date", unit.closing_date);
