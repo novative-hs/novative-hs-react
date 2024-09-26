@@ -203,7 +203,7 @@ const AppRoute = ({
         return (
           <Redirect
             to={{
-              pathname: "/pending-participant",
+              // pathname: "/pending-participant",
               state: { from: props.location },
             }}
           />

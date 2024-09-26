@@ -16,7 +16,7 @@ import {
   Label,
   ModalHeader,
   ModalBody,
-
+  Input,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -29,36 +29,40 @@ import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 import DeleteModal from "components/Common/DeleteModal";
 import {
-  getOrganizationlist, updateOrganizationList, deleteOrganizationList
+  getOrganizationlist,
+  updateOrganizationList,
+  deleteOrganizationList,
 } from "store/organization/actions";
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
-import moment from 'moment';
+import moment from "moment";
 
 class OrganizationList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      nameFilter: '',
-      emailFilter: '',
-      websiteFilter: '',
-      countryFilter: '',
+      nameFilter: "",
+      emailFilter: "",
+      websiteFilter: "",
+      countryFilter: "",
       OrganizationList: [],
       organization: "",
       collectorImg: "",
-      nameSort: 'asc',
-      emailSort: 'asc',
-      websiteSort: 'asc',
-      countrySort: 'asc',
+      nameSort: "asc",
+      emailSort: "asc",
+      websiteSort: "asc",
+      countrySort: "asc",
       modal: false,
+      photo: null, // Store the photo file if needed
+
       deleteModal: false,
       modal: false,
       user_id: localStorage.getItem("authUser")
@@ -78,28 +82,28 @@ class OrganizationList extends Component {
           text: "Name",
           sort: true,
           filter: textFilter(),
-          style: { textAlign: 'left' }
+          style: { textAlign: "left" },
         },
         {
           dataField: "email",
           text: "Email",
           sort: true,
           filter: textFilter(),
-          style: { textAlign: 'left' }
+          style: { textAlign: "left" },
         },
         {
           dataField: "website",
           text: "Website",
           sort: true,
           filter: textFilter(),
-          style: { textAlign: 'left' }
+          style: { textAlign: "left" },
         },
         {
           dataField: "country",
           text: "Country",
           sort: true,
           filter: textFilter(),
-          style: { textAlign: 'left' }
+          style: { textAlign: "left" },
         },
         {
           dataField: "payment_status",
@@ -200,7 +204,6 @@ class OrganizationList extends Component {
     this.setState({ deleteModal: true });
   };
 
-
   onPaginationPageChange = page => {
     if (
       this.node &&
@@ -224,18 +227,22 @@ class OrganizationList extends Component {
     }
   };
   handleReagentsClick = (e, arg) => {
-
     const organization = arg;
-    console.log("data in case of update ssd", organization)
+    console.log("data in case of update ssd", organization);
     this.setState({
       organization: {
-
         id: organization.id,
         name: organization.name,
         email: organization.email,
         website: organization.website,
         country: organization.country,
         status: organization.status,
+        currency: organization.currency,
+        amount: organization.amount,
+        issue_date: organization.issue_date,
+        closing_date: organization.closing_date,
+        photo: organization.photo,
+        payment_proof: organization.payment_proof,
       },
       isEdit: true,
     });
@@ -243,12 +250,15 @@ class OrganizationList extends Component {
     this.toggle();
   };
 
-
   render() {
     // const { SearchBar } = Search;
     const { OrganizationList } = this.props;
     const { isEdit, deleteModal, organization } = this.state;
-    const { onUpdateOrganizationList, onGetOrganizationList, ondeleteOrganization, } = this.props;
+    const {
+      onUpdateOrganizationList,
+      onGetOrganizationList,
+      ondeleteOrganization,
+    } = this.props;
     // const organization = this.state.organization;
 
     const pageOptions = {
@@ -263,7 +273,7 @@ class OrganizationList extends Component {
         order: "desc",
       },
     ];
-    const iconStyle = { color: 'red' };
+    const iconStyle = { color: "red" };
     return (
       <React.Fragment>
         <DeleteModal
@@ -341,7 +351,20 @@ class OrganizationList extends Component {
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}
-                                      sort={{ sortCaret: (order, column) => order === 'desc' ? <i className="fa fa-arrow-up" style={iconStyle}></i> : <i className="fa fa-arrow-down" style={iconStyle}></i> }}
+                                      sort={{
+                                        sortCaret: (order, column) =>
+                                          order === "desc" ? (
+                                            <i
+                                              className="fa fa-arrow-up"
+                                              style={iconStyle}
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              className="fa fa-arrow-down"
+                                              style={iconStyle}
+                                            ></i>
+                                          ),
+                                      }}
                                     />
 
                                     <Modal
@@ -359,7 +382,6 @@ class OrganizationList extends Component {
                                       <ModalBody>
                                         <Formik
                                           enableReinitialize={true}
-
                                           initialValues={{
                                             hiddenEditFlag: isEdit,
                                             name: organization.name || "",
@@ -367,14 +389,64 @@ class OrganizationList extends Component {
                                             website: organization.website || "",
                                             country: organization.country || "",
                                             status: organization.status || "",
+                                            amount: organization.amount || "",
+                                            issue_date:
+                                              organization.issue_date || "",
+                                            closing_date:
+                                              organization.closing_date || "",
+                                            photo: organization.photo || "",
+                                            payment_proof: this.state.organization.payment_proof || null,
+                                            currency:
+                                              organization.currency || "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddenEditFlag: Yup.boolean(),
-                                            name: Yup.string().trim().required("Please enter name"),
-                                            email: Yup.string().trim().required("Please enter an email address")
-                                              .email("Please enter a valid email address"),
-                                            website: Yup.string().trim().required("Please enter Website"),
-                                            country: Yup.string().trim().required("Please enter a country")
+                                            name: Yup.string()
+                                              .trim()
+                                              .required("Please enter name"),
+                                            email: Yup.string()
+                                              .trim()
+                                              .required(
+                                                "Please enter an email address"
+                                              )
+                                              .email(
+                                                "Please enter a valid email address"
+                                              ),
+                                            website: Yup.string()
+                                              .trim()
+                                              .required("Please enter Website"),
+                                            country: Yup.string()
+                                              .trim()
+                                              .required(
+                                                "Please enter a country"
+                                              ),
+
+                                            amount: Yup.string()
+                                              .trim()
+                                              .matches(
+                                                /^\d+(\.\d{1,2})?$/,
+                                                "Please enter a valid amount"
+                                              ) // Allows numbers with up to 2 decimal places
+                                              .required(
+                                                "Please enter an amount"
+                                              ),
+                                            currency: Yup.string()
+                                              .required(
+                                                "Please select your Currency"
+                                              )
+                                              .notOneOf(
+                                                [""],
+                                                "Please select a valid currency"
+                                              ),
+                                            issue_date: Yup.date().required(
+                                              "Please select Membership Start Date"
+                                            ),
+                                            closing_date: Yup.date().required(
+                                              "Please select Membership End Date"
+                                            ),
+                                            photo: Yup.string().required(
+                                              "Please upload photo"
+                                            ),
                                           })}
                                           onSubmit={values => {
                                             const updateOrganizationList = {
@@ -384,18 +456,37 @@ class OrganizationList extends Component {
                                               website: values.website,
                                               country: values.country,
                                               status: values.status,
+                                              currency: values.currency,
+                                              issue_date: values.issue_date,
+                                              closing_date: values.closing_date,
+                                              amount: values.amount,
+                                              photo: values.photo,
+                                              // Check if a new file was uploaded
+                                              payment_proof: values.payment_proof ? values.payment_proof : this.state.organization.payment_proof,
                                             };
-                                            console.log("data before submit", updateOrganizationList)
+                                            console.log(
+                                              "data before submit",
+                                              updateOrganizationList
+                                            );
 
-                                            onUpdateOrganizationList(updateOrganizationList);
+                                            onUpdateOrganizationList(
+                                              updateOrganizationList
+                                            );
                                             setTimeout(() => {
-                                              onGetOrganizationList(this.state.user_id);
+                                              onGetOrganizationList(
+                                                this.state.user_id
+                                              );
                                             }, 1000);
 
                                             this.toggle();
                                           }}
                                         >
-                                          {({ errors, status, touched }) => (
+                                          {({
+                                            errors,
+                                            status,
+                                            touched,
+                                            setFieldValue,
+                                          }) => (
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
@@ -427,20 +518,15 @@ class OrganizationList extends Component {
                                                           .name
                                                       }
                                                       onChange={e =>
-                                                        this.setState({
-                                                          organization: {
-
-                                                            id: organization.id,
-                                                            name: e.target
-                                                              .value,
-                                                            email:
-                                                              organization.email,
-                                                            website:
-                                                              organization.website,
-                                                            country:
-                                                              organization.country,
-                                                          },
-                                                        })
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              name: e.target
+                                                                .value,
+                                                            },
+                                                          })
+                                                        )
                                                       }
                                                     />
                                                     <ErrorMessage
@@ -453,23 +539,38 @@ class OrganizationList extends Component {
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Email
-                                                      <span className="text-danger">*</span>
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
                                                     </Label>
                                                     <Field
                                                       name="email"
                                                       type="email"
-                                                      className={"form-control" + (errors.email && touched.email ? " is-invalid" : "")}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.email &&
+                                                          touched.email
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
                                                       value={organization.email}
                                                       onChange={e =>
-                                                        this.setState(prevState => ({
-                                                          organization: {
-                                                            ...prevState.organization,
-                                                            email: e.target.value,
-                                                          }
-                                                        }))
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              email:
+                                                                e.target.value,
+                                                            },
+                                                          })
+                                                        )
                                                       }
                                                     />
-                                                    <ErrorMessage name="email" component="div" className="invalid-feedback" />
+                                                    <ErrorMessage
+                                                      name="email"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
                                                   </div>
 
                                                   {/* //////////// */}
@@ -491,21 +592,19 @@ class OrganizationList extends Component {
                                                           : "")
                                                       }
                                                       value={
-                                                        this.state.organization.website
-
+                                                        this.state.organization
+                                                          .website
                                                       }
                                                       onChange={e =>
-                                                        this.setState({
-                                                          organization: {
-                                                            id: organization.id,
-                                                            name: organization.name,
-                                                            email:
-                                                              organization.email,
-                                                            website:
-                                                              e.target.value,
-                                                            country: organization.country,
-                                                          },
-                                                        })
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              website:
+                                                                e.target.value,
+                                                            },
+                                                          })
+                                                        )
                                                       }
                                                     />
                                                     <ErrorMessage
@@ -525,45 +624,420 @@ class OrganizationList extends Component {
                                                     <Field
                                                       name="country"
                                                       type="text"
-                                                      className={"form-control" + (errors.country && touched.country ? " is-invalid" : "")}
-                                                      value={organization.country}
-                                                      onChange={e =>
-                                                        this.setState(prevState => ({
-                                                          organization: {
-                                                            ...prevState.organization,
-                                                            country: e.target.value,
-                                                          }
-                                                        }))
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.country &&
+                                                          touched.country
+                                                          ? " is-invalid"
+                                                          : "")
                                                       }
+                                                      value={
+                                                        organization.country
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              country:
+                                                                e.target.value,
+                                                            },
+                                                          })
+                                                        )
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="country"
+                                                      component="div"
+                                                      className="invalid-feedback"
                                                     />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label for="status" className="form-label">
+                                                    <Label for="name" className="form-label">
+                                                      Logo (Choose file only if you want to change Logo)
+                                                    </Label>
+                                                    <Row>
+                                                      <Col md={8} lg={8}>
+                                                        <Input
+                                                          id="formFile"
+                                                          name="photo"
+                                                          placeholder="Choose image"
+                                                          type="file"
+                                                          accept=".jpg,.jpeg,.png"
+                                                          onChange={e =>
+                                                            setFieldValue(
+                                                              "photo",
+                                                              e.target.files[0]
+                                                            )
+                                                          }
+                                                          className={
+                                                            "form-control" +
+                                                            (errors.photo && touched.photo
+                                                              ? " is-invalid"
+                                                              : "")
+                                                          }
+                                                        />
+                                                      </Col>
+
+                                                      <Col md={4} lg={4}>
+                                                        {this.state.organization.photo && (
+                                                          <div className="mt-2">
+                                                            <a
+                                                              className="ms-2"
+                                                              href={`${process.env.REACT_APP_BACKENDURL}${this.state.organization.photo}`}
+                                                              target="_blank"
+                                                              rel="noopener noreferrer"
+                                                            >
+                                                              View Uploaded File
+                                                            </a>
+                                                          </div>
+                                                        )}
+                                                      </Col>
+                                                      </Row>
+                                                      </div>
+
+                                                  <div className="mb-3">
+                                                    <Label
+                                                      for="currency"
+                                                      className="form-label"
+                                                    >
+                                                      Currency
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="currency"
+                                                      as="select"
+                                                      className={`form-control ${errors.currency &&
+                                                          touched.currency
+                                                          ? "is-invalid"
+                                                          : ""
+                                                        }`}
+                                                      value={
+                                                        organization.currency
+                                                      } // Ensure you're managing state properly
+                                                      onChange={e =>
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              currency:
+                                                                e.target.value, // Update the currency in the state
+                                                            },
+                                                          })
+                                                        )
+                                                      }
+                                                    >
+                                                      <option value="">
+                                                        --- Select Currency ---
+                                                      </option>
+                                                      <option value="Afghani">
+                                                        Afghani
+                                                      </option>
+                                                      <option value="Euro">
+                                                        Euro
+                                                      </option>
+                                                      <option value="Dollar">
+                                                        Dollar
+                                                      </option>
+                                                      <option value="Pakistani Rupees">
+                                                        Pakistani Rupees
+                                                      </option>
+                                                      <option value="India Rupees">
+                                                        India Rupees
+                                                      </option>
+                                                      <option value="Pound">
+                                                        Pound
+                                                      </option>
+                                                      <option value="Dinar">
+                                                        Dinar
+                                                      </option>
+                                                      <option value="Dirham">
+                                                        Dirham
+                                                      </option>
+                                                      <option value="Japanese">
+                                                        Japanese
+                                                      </option>
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="currency"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label
+                                                      for="amount"
+                                                      className="form-label"
+                                                    >
+                                                      Price
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="amount"
+                                                      type="text"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.amount &&
+                                                          touched.amount
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        organization.amount
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              amount:
+                                                                e.target.value,
+                                                            },
+                                                          })
+                                                        )
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="amount"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  {/* <div className="mb-3">
+                                                    <Label
+                                                      for="payment_proof"
+                                                      className="form-label"
+                                                    >
+                                                      Payment Proof
+                                                    </Label>
+                                                    <Input
+                                                      id="formFile"
+                                                      name="payment_proof"
+                                                      placeholder="Choose image"
+                                                      type="file"
+                                                      accept=".jpg,.jpeg,.png"
+                                                      onChange={e =>
+                                                        setFieldValue(
+                                                          "payment_proof",
+                                                          e.target.files[0]
+                                                        )
+                                                      }
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.payment_proof &&
+                                                        touched.payment_proof
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="payment_proof"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div> */}
+                                                  
+                                                  <div className="mb-3">
+                                                    <Label for="name" className="form-label">
+                                                      Logo (Choose file only if you want to change Payment Copy)
+                                                    </Label>
+                                                    <Row>
+                                                      <Col md={8} lg={8}>
+                                                        <Input
+                                                          id="formFile"
+                                                          name="payment_proof"
+                                                          placeholder="Choose image"
+                                                          type="file"
+                                                          accept=".jpg,.jpeg,.png"
+                                                          onChange={e =>
+                                                            setFieldValue(
+                                                              "payment_proof",
+                                                              e.target.files[0]
+                                                            )
+                                                          }
+                                                          className={
+                                                            "form-control" +
+                                                            (errors.payment_proof && touched.payment_proof
+                                                              ? " is-invalid"
+                                                              : "")
+                                                          }
+                                                        />
+                                                      </Col>
+                                                      <Col md={4} lg={4}>
+                                                        {this.state.organization.payment_proof && (
+                                                          <div className="mt-2">
+                                                            <a
+                                                              className="ms-2"
+                                                              href={`${process.env.REACT_APP_BACKENDURL}${this.state.organization.payment_proof}`}
+                                                              target="_blank"
+                                                              rel="noopener noreferrer"
+                                                            >
+                                                              View Uploaded File
+                                                            </a>
+                                                          </div>
+                                                        )}
+                                                      </Col>
+                                                    </Row>
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Membership Start Date
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="issue_date"
+                                                      type="date"
+                                                      id="issue_date"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.issue_date &&
+                                                          touched.issue_date
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        // Convert the ISO date to YYYY-MM-DD format for the date picker
+                                                        organization.issue_date
+                                                          ? new Date(
+                                                            organization.issue_date
+                                                          )
+                                                            .toISOString()
+                                                            .split("T")[0]
+                                                          : ""
+                                                      }
+                                                      onChange={e => {
+                                                        const selectedDate =
+                                                          e.target.value; // This is in YYYY-MM-DD format
+                                                        // Convert the selected date to ISO format before storing it in the state
+                                                        const isoDate =
+                                                          new Date(
+                                                            selectedDate
+                                                          ).toISOString();
+
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              issue_date:
+                                                                isoDate, // Store the ISO 8601 format
+                                                            },
+                                                          })
+                                                        );
+                                                      }}
+                                                    />
+                                                    <ErrorMessage
+                                                      name="issue_date"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Membership End Date
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      name="closin"
+                                                      type="date"
+                                                      id="closing_date"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.closing_date &&
+                                                          touched.closing_date
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        // Convert the ISO date to YYYY-MM-DD format for the date picker
+                                                        organization.closing_date
+                                                          ? new Date(
+                                                            organization.closing_date
+                                                          )
+                                                            .toISOString()
+                                                            .split("T")[0]
+                                                          : ""
+                                                      }
+                                                      onChange={e => {
+                                                        const selectedDate =
+                                                          e.target.value; // This is in YYYY-MM-DD format
+                                                        // Convert the selected date to ISO format before storing it in the state
+                                                        const isoDate =
+                                                          new Date(
+                                                            selectedDate
+                                                          ).toISOString();
+
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              closing_date:
+                                                                isoDate, // Store the ISO 8601 format
+                                                            },
+                                                          })
+                                                        );
+                                                      }}
+                                                    />
+                                                    <ErrorMessage
+                                                      name="closing_date"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+
+                                                  <div className="mb-3">
+                                                    <Label
+                                                      for="status"
+                                                      className="form-label"
+                                                    >
                                                       Organization Status
                                                     </Label>
                                                     <Field
                                                       name="status"
                                                       as="select"
-                                                      className={`form-control ${errors.status && touched.status ? "is-invalid" : ""
+                                                      className={`form-control ${errors.status &&
+                                                          touched.status
+                                                          ? "is-invalid"
+                                                          : ""
                                                         }`}
-                                                        value={organization.status || ""} // Set the default value from organization.status
-                                                        onChange={e =>
-                                                        this.setState(prevState => ({
-                                                          organization: {
-                                                            ...prevState.organization,
-                                                            status: e.target.value,
-                                                          }
-                                                        }))
-                                                      }                        >
-                                                      <option
-                                                        value=""
-                                                      >
+                                                      value={
+                                                        organization.status ||
+                                                        ""
+                                                      } // Set the default value from organization.status
+                                                      onChange={e =>
+                                                        this.setState(
+                                                          prevState => ({
+                                                            organization: {
+                                                              ...prevState.organization,
+                                                              status:
+                                                                e.target.value,
+                                                            },
+                                                          })
+                                                        )
+                                                      }
+                                                    >
+                                                      <option value="">
                                                         --- Select Currency ---
                                                       </option>
-                                                      <option value="Pending">Pending</option>
-                                                      <option value="Approved">Approved</option>
-                                                      <option value="Block">Block</option>
-
+                                                      <option value="Pending">
+                                                        Pending
+                                                      </option>
+                                                      <option value="Approved">
+                                                        Approved
+                                                      </option>
+                                                      <option value="Block">
+                                                        Block
+                                                      </option>
                                                     </Field>
                                                   </div>
                                                 </Col>
@@ -623,7 +1097,9 @@ const mapStateToProps = ({ organizationaccount }) => ({
 });
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetOrganizationList: () => dispatch(getOrganizationlist()),
-  onUpdateOrganizationList: organization => dispatch(updateOrganizationList(organization)),
-  ondeleteOrganization: (organization) => dispatch(deleteOrganizationList(organization)),
+  onUpdateOrganizationList: organization =>
+    dispatch(updateOrganizationList(organization)),
+  ondeleteOrganization: organization =>
+    dispatch(deleteOrganizationList(organization)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(OrganizationList);

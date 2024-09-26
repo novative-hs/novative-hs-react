@@ -25,6 +25,7 @@ class SchemeAddAnalyte extends Component {
     this.state = {
       nameFilter: '',
       idFilter: '',
+      organization_name: '',
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
       feedbackMessage: '',
@@ -90,6 +91,10 @@ class SchemeAddAnalyte extends Component {
   }
 
   componentDidMount() {
+    
+    const { organization_name } = this.props.match.params;
+    this.setState({ organization_name });
+
     // Fetch data when the component mounts
     this.fetchData();
   }
@@ -162,7 +167,7 @@ class SchemeAddAnalyte extends Component {
         // this.props.onAddNewSchemeAnalytes(payload, someOtherId); 
         this.setFeedbackMessage("Analytes added successfully.");
       }
-      history.push('/scheme');
+      history.push(`/${this.state.organization_name}/scheme`);
     } else {
       console.error("Analyte ID not found");
     }

@@ -9,6 +9,11 @@ import {
   Label,
   Input,
   Alert,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  FormGroup,
+  Button,
 } from "reactstrap";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
@@ -29,8 +34,13 @@ import { getcitylist } from "store/participantcity/actions";
 import { getdepartmentlist } from "store/participantdepartment/actions";
 import { getdistrictlist } from "store/participantdistrict/actions";
 import { getdesignationlist } from "store/participantdesignation/actions";
-import { getcountrylist} from "store/participantcountry/actions";
-import { getprovincelist} from "store/participantprovince/actions";
+import { getcountrylist } from "store/participantcountry/actions";
+import { getprovincelist } from "store/participantprovince/actions";
+import { gettypelist } from "store/participanttype/actions";
+import { getsectorlist } from "store/participantsector/actions";
+
+import { saveAs } from "file-saver";
+import * as XLSX from "xlsx";
 
 class StaffRegister extends Component {
   constructor(props) {
@@ -42,7 +52,10 @@ class StaffRegister extends Component {
       ListDesignation: [],
       ListCountry: [],
       ListProvince: [],
-
+      ListType: [],
+      regParticipant: [],
+      ListSector: [],
+      modal: false,
       usernameFieldError: null,
       passwordFieldError: null,
       incompleteRegistrationError: null,
@@ -74,7 +87,11 @@ class StaffRegister extends Component {
     const { onGetProvinceList } = this.props;
     onGetProvinceList(this.state.user_id);
 
-    
+    const { onGettypelist } = this.props;
+    onGettypelist(this.state.user_id);
+
+    const { onGetsectorlist } = this.props;
+    onGetsectorlist(this.state.user_id);
   }
   componentDidUpdate(prevProps) {
     if (prevProps.emailError !== this.props.emailError) {
@@ -114,6 +131,12 @@ class StaffRegister extends Component {
     if (prevProps.ListProvince !== this.props.ListProvince) {
       this.setState({ ListProvince: this.props.ListProvince });
     }
+    if (prevProps.ListType !== this.props.ListType) {
+      this.setState({ ListType: this.props.ListType });
+    }
+    if (prevProps.ListSector !== this.props.ListSector) {
+      this.setState({ ListSector: this.props.ListSector });
+    }
   }
 
   togglePasswordVisibility = () => {
@@ -140,10 +163,98 @@ class StaffRegister extends Component {
       eyeIcon2.className = "mdi mdi-eye-outline";
     }
   };
+  displaySuccessMessage = message => {
+    this.setState({ successMessage: message });
 
+    setTimeout(() => {
+      this.setState({ successMessage: "", modal: false });
+    }, 3000);
+  };
+
+  toggleImportModal = () => {
+    this.setState(prevState => ({
+      importModal: !prevState.importModal,
+      importFile: null,
+      importError: null,
+    }));
+  };
+  handleFileChange = e => {
+    const file = e.target.files[0];
+    this.setState({
+      importFile: file,
+    });
+  };
+
+  handleImport = async () => {
+    const { importFile } = this.state;
+    if (!importFile) {
+      this.setState({
+        importError: "Please select a file.",
+      });
+      return;
+    }
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async e => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        // Assuming your data is in the first sheet
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        // Convert to JSON format
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        // Process jsonData and save to the database
+        // Example of processing:
+        for (let i = 0; i < jsonData.length; i++) {
+          const item = jsonData[i];
+          // Dispatch an action to save item to the database
+          await this.props.registerUser({
+            name: item.name,
+            username: item.username,
+            email: item.email,
+            email_participant: item.email_participant,
+            password: item.password,
+            password2: item.password2,
+            city: item.city,
+            phone: item.phone,
+            type: item.type,
+            sector: item.sector,
+            address: item.address,
+            designation: item.designation,
+            country: item.country,
+            province: item.province,
+            billing_address: item.billing_address,
+            shipping_address: item.shipping_address,
+            department: item.department,
+            district: item.district,
+            lab_staff_name: item.lab_staff_name,
+            landline_registered_by: item.landline_registered_by,
+            website: item.website,
+            added_by: localStorage.getItem("authUser")
+              ? JSON.parse(localStorage.getItem("authUser")).user_id
+              : "",
+            // Add other fields as required based on your schema
+          });
+        }
+
+        // Close the modal and show success message
+        this.toggleImportModal();
+        this.displaySuccessMessage("Data imported successfully!");
+      };
+
+      reader.readAsArrayBuffer(importFile);
+    } catch (error) {
+      console.error("Error importing data:", error);
+      this.setState({
+        importError: "Error importing data. Please try again.",
+      });
+    }
+  };
   render() {
     // console.log("Email error received:", this.props.emailError);
-
+    const { ListType, ListSector } = this.state;
     const { ListCity } = this.state;
     const { ListDepartment } = this.state;
     const { ListDistrict } = this.state;
@@ -175,6 +286,14 @@ class StaffRegister extends Component {
       value: province.name,
       label: province.name,
     }));
+    const typeOptions = ListType.map(type => ({
+      value: type.name,
+      label: type.name,
+    }));
+    const sectorOptions = ListSector.map(type => ({
+      value: type.name,
+      label: type.name,
+    }));
 
     const customStyles = {
       menuList: provided => ({
@@ -193,11 +312,116 @@ class StaffRegister extends Component {
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Staff" breadcrumbItem="Register" />
+            <Row className="justify-content-end">
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.toggleImportModal} className="mb-3">
+                  Import from Excel
+                </Button>
+              </Col>
+            </Row>
+            <Modal
+              isOpen={this.state.importModal}
+              toggle={this.toggleImportModal}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.toggleImportModal}>
+                Import from Excel
+              </ModalHeader>
+              <ModalBody>
+                <div className="mb-3 d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary"
+                    onClick={e => {
+                      e.preventDefault(); // Prevent the default action
+                      const downloadUrl =
+                        process.env.REACT_APP_BACKENDURL +
+                        "/media/public/ParticipentsData.xlsx";
+                      saveAs(downloadUrl, "ParticipentsData.xlsx"); // Use the file-saver library to trigger the download
+                    }}
+                  >
+                    <i className="mdi mdi-download me-1" />
+                    Download File Format
+                  </button>
+                </div>
+
+                <div className="w-100">
+                  <h4>
+                    <b>Instructions to fill the excel sheet:</b>
+                  </h4>
+                  <div>
+                    <ol>
+                      <li>
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods,
+                        .xml, .html, .txt, .dbf
+                      </li>
+                      <li>
+                        There should be a file having columns, name,username,
+                        email,email_participant, city,
+                        country, province, billing_address, shipping_address,
+                        department, district, lab_staff_name,
+                        landline_registered_by, phone, website
+                      </li>
+                      <li>
+                        If you want to get more information, contact us at{" "}
+                        <strong>eternalqc@gmail.com</strong>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+                <div>
+                  {this.state.importError && (
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.importError}
+                    </div>
+                  )}
+                  <Col lg="10">
+                    <FormGroup className=" mt-4 mb-0">
+                      <Label htmlFor="expirydateInput" className="fw-bolder">
+                        Upload File
+                        <span
+                          style={{ color: "#f46a6a" }}
+                          className="font-size-18"
+                        >
+                          *
+                        </span>
+                      </Label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        onChange={this.handleFileChange}
+                        accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf"
+                      />
+                    </FormGroup>
+                  </Col>
+                </div>
+
+                <Row className="mt-4">
+                  <Col sm="12" className="d-flex justify-content-end">
+                    <Button
+                      color="primary"
+                      onClick={this.handleImport}
+                      className="me-2"
+                    >
+                      Upload
+                    </Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>
+                      Cancel
+                    </Button>
+                  </Col>
+                </Row>
+              </ModalBody>
+            </Modal>
             <Row className="justify-content-center">
               <Col lg="8">
+              <div>
+              <h5 className="text-danger">Important Note:</h5>
+                <p className="text-muted text-left">
+                  When uploading the file, please ensure that each participant has a unique <strong> username </strong> and <strong> email address.</strong> 
+                  </p>
+              </div>
                 <Card>
                   <CardBody>
-                    <div className="mt-4">
+                    <div >
                       {this.state.submittedMessage && (
                         <Alert color="success" style={{ marginTop: "13px" }}>
                           {this.state.submittedMessage}
@@ -217,10 +441,8 @@ class StaffRegister extends Component {
                             "labowner",
                           name: (this.state && this.state.name) || "",
                           cnic: (this.state && this.state.cnic) || "",
-                          phone: (this.state && this.state.phone) || "",
                           city: (this.state && this.state.city) || "",
-                          province:
-                            (this.state && this.state.province) || "",
+                          province: (this.state && this.state.province) || "",
                           country: (this.state && this.state.country) || "",
                           billing_address:
                             (this.state && this.state.billing_address) || "",
@@ -236,6 +458,21 @@ class StaffRegister extends Component {
                           district: (this.state && this.state.district) || "",
                           landline_registered_by:
                             (this.state && this.state.landline_registered_by) ||
+                            "",
+                          phone:
+                            (this.state && this.state.phone) ||
+                            "",
+                          type:
+                            (this.state && this.state.type) ||
+                            "",
+                          designation:
+                            (this.state && this.state.designation) ||
+                            "",
+                          sector:
+                            (this.state && this.state.sector) ||
+                            "",
+                          address:
+                            (this.state && this.state.address) ||
                             "",
                           website: (this.state && this.state.website) || "",
 
@@ -271,7 +508,7 @@ class StaffRegister extends Component {
                             .email("Please enter valid email"),
 
                           password2: Yup.string()
-                            .required("Please re-enter your password")
+                            .required("Please Correct your password")
                             .when("password", {
                               is: val => (val && val.length > 0 ? true : false),
                               then: Yup.string().oneOf(
@@ -318,13 +555,14 @@ class StaffRegister extends Component {
                           //     "Address can't be longer than 500 characters"
                           //   ),
                           billing_address: Yup.string()
-                            .required("billing_address is required")
+                            .required("Billing Address is required")
                             .max(
                               500,
                               "Address can't be longer than 500 characters"
                             ),
-                          shipping_address: Yup.string()
-                            .required("shipping_address is required")
+                          
+                          address: Yup.string()
+                            .required("Address is required")
                             .max(
                               500,
                               "Address can't be longer than 500 characters"
@@ -342,6 +580,24 @@ class StaffRegister extends Component {
                               50,
                               "District can't be longer than 50 characters"
                             ),
+                          type: Yup.string()
+                            .required("Type is required")
+                            .max(
+                              50,
+                              "Type can't be longer than 50 characters"
+                            ),
+                          designation: Yup.string()
+                            .required("Designation is required")
+                            .max(
+                              50,
+                              "Type can't be longer than 50 characters"
+                            ),
+                          sector: Yup.string()
+                            .required("Sector is required")
+                            .max(
+                              50,
+                              "Type can't be longer than 50 characters"
+                            ),
                           lab_staff_name: Yup.string()
                             .required("Lab staff name is required")
                             .max(
@@ -354,6 +610,12 @@ class StaffRegister extends Component {
                             .matches(
                               /^\d{7,15}$/,
                               "Landline number must be between 7 and 15 digits"
+                            ),
+                          phone: Yup.string()
+                            .required("Phone number is required")
+                            .matches(
+                              /^\d{7,15}$/,
+                              "Phone number must be between 7 and 15 digits"
                             ),
                           // website: Yup.string().url("Invalid URL"),
                           // .required("Website is required"),
@@ -470,7 +732,68 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col>
+                              <Col sm={6} md={6} xl={6}>
+                                {/* Landline field */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="phone"
+                                    className="form-label"
+                                  >
+                                    Contact No
+                                  </Label>
+                                  <Field
+                                    id="phone"
+                                    name="phone"
+                                    type="text"
+                                    placeholder="Please enter contact no."
+                                    className={
+                                      "form-control" +
+                                      (errors.phone &&
+                                      touched.phone
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="phone"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>{" "}
+                              </Col>
 
+                            </Row>
+                            <Row>
+                            <Col sm={6} md={6} xl={6}>
+                                {/* Lab Staff Name field */}
+                                <div className="mb-3">
+                                  <Label
+                                    for="address"
+                                    className="form-label"
+                                  >
+                                    {/* Registered by (Name) */}
+                                    Address
+                                  </Label>
+                                  <Field
+                                    id="address"
+                                    name="address"
+                                    type="text"
+                                    placeholder="Please enter Complete Address."
+                                    className={
+                                      "form-control" +
+                                      (errors.address &&
+                                      touched.address
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="address"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
                               {/* city */}
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
@@ -517,9 +840,90 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col>
+                            
+                            
                             </Row>
+
                             <Row>
+                              {/* District */}
                               <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label for="district" className="form-label">
+                                    District
+                                  </Label>
+                                  <Select
+                                    name="district" // The field name in Formik
+                                    options={districtOptions} // Options for the select
+                                    styles={customStyles}
+                                    className={
+                                      errors.district && touched.district
+                                        ? " is-invalid"
+                                        : ""
+                                    }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "district",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      );
+                                    }}
+                                    value={
+                                      districtOptions.find(
+                                        option =>
+                                          option.value === values.district
+                                      ) || null
+                                    } // Set the current selected value
+                                  />
+                                  <ErrorMessage
+                                    name="district" // Error for the city field
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                              <Col sm={6} md={6} xl={6}>
+                                {/* province  */}
+                                <div className="mb-3">
+                                  <Label for="province" className="form-label">
+                                    Province
+                                  </Label>
+                                  <Select
+                                    name="province" // The field name in Formik
+                                    options={provinceOptions} // Options for the select
+                                    styles={customStyles}
+                                    className={
+                                      errors.province && touched.province
+                                        ? " is-invalid"
+                                        : ""
+                                    }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "province",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      );
+                                    }}
+                                    value={
+                                      provinceOptions.find(
+                                        option =>
+                                          option.value === values.province
+                                      ) || null
+                                    } // Set the current selected value
+                                  />
+                                  <ErrorMessage
+                                    name="province"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                            
+                            </Row>
+
+                            <Row>
+                            <Col sm={6} md={6} xl={6}>
                                 {/* country */}
                                 <div className="mb-3">
                                   <Label for="country" className="form-label">
@@ -556,85 +960,7 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col>
-                              <Col sm={6} md={6} xl={6}>
-                                 {/* province  */}
-                                 <div className="mb-3">
-                                  <Label
-                                    for="province"
-                                    className="form-label"
-                                  >
-                                    Province
-                                  </Label>
-                                  <Select
-                                    name="province" // The field name in Formik
-                                    options={provinceOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      errors.province && touched.province
-                                        ? " is-invalid"
-                                        : ""
-                                    }
-                                    onChange={selectedOption => {
-                                      setFieldValue(
-                                        "province",
-                                        selectedOption
-                                          ? selectedOption.value
-                                          : ""
-                                      );
-                                    }}
-                                    value={
-                                      provinceOptions.find(
-                                        option =>
-                                          option.value === values.province
-                                      ) || null
-                                    } // Set the current selected value
-                                  />
-                                  <ErrorMessage
-                                    name="province"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                               {/* District */}
-                               <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label for="district" className="form-label">
-                                    District
-                                  </Label>
-                                  <Select
-                                    name="district" // The field name in Formik
-                                    options={districtOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      errors.district && touched.district
-                                        ? " is-invalid"
-                                        : ""
-                                    }
-                                    onChange={selectedOption => {
-                                      setFieldValue(
-                                        "district",
-                                        selectedOption
-                                          ? selectedOption.value
-                                          : ""
-                                      );
-                                    }}
-                                    value={
-                                      districtOptions.find(
-                                        option =>
-                                          option.value === values.district
-                                      ) || null
-                                    } // Set the current selected value
-                                  />
-                                  <ErrorMessage
-                                    name="district" // Error for the city field
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
+                              
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
                                   <Label
@@ -675,8 +1001,87 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col>
-                             
                             </Row>
+                            <Row>
+                              {/* District */}
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label for="type" className="form-label">
+                                    Lab Type
+                                  </Label>
+                                  <Select
+                                    name="type" // The field name in Formik
+                                    options={typeOptions} // Options for the select
+                                    styles={customStyles}
+                                    className={
+                                      errors.type && touched.type
+                                        ? " is-invalid"
+                                        : ""
+                                    }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "type",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      );
+                                    }}
+                                    value={
+                                      typeOptions.find(
+                                        option =>
+                                          option.value === values.type
+                                      ) || null
+                                    } // Set the current selected value
+                                  />
+                                  <ErrorMessage
+                                    name="type" // Error for the city field
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label
+                                    for="sector"
+                                    className="form-label"
+                                  >
+                                    Sector
+                                  </Label>
+                                  <Select
+                                    name="sector" // The field name in Formik
+                                    options={sectorOptions} // Options for the select
+                                    styles={customStyles}
+                                    className={
+                                      // "form-control" +
+                                      errors.sector && touched.sector
+                                        ? " is-invalid"
+                                        : "" // Conditional class based on validation
+                                    }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "sector",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      ); // Update Formik state with string value
+                                    }}
+                                    value={
+                                      sectorOptions.find(
+                                        option =>
+                                          option.value === values.sector
+                                      ) || null
+                                    } // Set the current selected value
+                                  />
+                                  <ErrorMessage
+                                    name="sector" // Error for the city field
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                            </Row>
+
                             <Row>
                               <Col sm={6} md={6} xl={6}>
                                 {/* Shipping Address */}
@@ -738,7 +1143,7 @@ class StaffRegister extends Component {
                               </Col>
                             </Row>
                             {/* department field */}
-                            
+
                             <Row>
                               {/* Participant Sector */}
                               <Col sm={6} md={6} xl={6}></Col>
@@ -768,7 +1173,6 @@ class StaffRegister extends Component {
                               </Col> */}
                               <Col sm={6} md={6} xl={6}>
                                 {" "}
-                              
                               </Col>
                             </Row>
 
@@ -907,6 +1311,46 @@ class StaffRegister extends Component {
                                       {this.state.emailError}
                                     </div>
                                   )}
+                                </div>
+                              </Col>
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label
+                                    for="designation"
+                                    className="form-label"
+                                  >
+                                    Designation of notification person
+                                    </Label>
+                                  <Select
+                                    name="designation" // The field name in Formik
+                                    options={designationOptions} // Options for the select
+                                    styles={customStyles}
+                                    className={
+                                      // "form-control" +
+                                      errors.designation && touched.designation
+                                        ? " is-invalid"
+                                        : "" // Conditional class based on validation
+                                    }
+                                    onChange={selectedOption => {
+                                      setFieldValue(
+                                        "designation",
+                                        selectedOption
+                                          ? selectedOption.value
+                                          : ""
+                                      ); // Update Formik state with string value
+                                    }}
+                                    value={
+                                      designationOptions.find(
+                                        option =>
+                                          option.value === values.designation
+                                      ) || null
+                                    } // Set the current selected value
+                                  />
+                                  <ErrorMessage
+                                    name="designation" // Error for the city field
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
                                 </div>
                               </Col>
                             </Row>
@@ -1089,13 +1533,16 @@ StaffRegister.propTypes = {
   ListDesignation: PropTypes.array,
   ListCountry: PropTypes.array,
   ListProvince: PropTypes.array,
-
+  ListType: PropTypes.array,
+  ListSector: PropTypes.array,
   onGetCityList: PropTypes.func,
   onGetDepartmentList: PropTypes.func,
   onGetDistrictList: PropTypes.func,
   onGetdesignationlist: PropTypes.func,
   onGetCountryList: PropTypes.func,
   onGetProvinceList: PropTypes.func,
+  onGettypelist: PropTypes.func,
+  onGetsectorlist: PropTypes.func,
 };
 const mapStateToProps = ({
   Account,
@@ -1104,7 +1551,10 @@ const mapStateToProps = ({
   ListDistrict,
   ListDesignation,
   ListCountry,
-  ListProvince
+  ListProvince,
+  regParticipant,
+  ListType,
+  ListSector,
 }) => ({
   emailError: Account.emailError,
   userAccountType: Account.userAccountType,
@@ -1113,13 +1563,16 @@ const mapStateToProps = ({
   passwordError: Account.passwordError,
   userID: Account.userID,
   usernameError: Account.usernameError,
-
+  ListSector: ListSector.ListSector,
   ListCity: ListCity.ListCity,
   ListDepartment: ListDepartment.ListDepartment,
   ListDistrict: ListDistrict.ListDistrict,
   ListDesignation: ListDesignation.ListDesignation,
   ListCountry: ListCountry.ListCountry,
   ListProvince: ListProvince.ListProvince,
+  regParticipant: regParticipant.regParticipant,
+  ListType: ListType.ListType,
+
 });
 const mapDispatchToProps = dispatch => {
   return {
@@ -1131,8 +1584,10 @@ const mapDispatchToProps = dispatch => {
     onGetDepartmentList: id => dispatch(getdepartmentlist(id)),
     onGetDistrictList: id => dispatch(getdistrictlist(id)),
     onGetdesignationlist: id => dispatch(getdesignationlist(id)),
-    onGetCountryList: (id) => dispatch(getcountrylist(id)),
-    onGetProvinceList: (id) => dispatch(getprovincelist(id)),
+    onGetCountryList: id => dispatch(getcountrylist(id)),
+    onGetProvinceList: id => dispatch(getprovincelist(id)),
+    onGettypelist: id => dispatch(gettypelist(id)),
+    onGetsectorlist: id => dispatch(getsectorlist(id)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(StaffRegister);

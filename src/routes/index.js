@@ -213,6 +213,7 @@ const publicRoutes = [
   { path: "/register-affiliate", component: RegisterAffiliate },
   { path: "/forgot-password", component: ForgetPwd },
   { path: "/:token/confirm-password", component: ConfirmPwd },
+  { path: "/change-password", component: ChangePassword },
   
   // { path: "/register-participant-copy", component: RegParticipantCopy},
 
@@ -263,49 +264,37 @@ const labAuthProtectedRoutes = [
   },
 
 
-
-
-
   {
     path: "/lab-payments/:id",
     component: Payments,
   },
 
-
 ];
-
 
 const financeOfficerAuthProtectedRoutes = [
   { path: "/dashboard-finance", component: DashboardFinance },
   { path: "/financeofficer-profile", component: FinanceOfficerProfile },
 
 
-
-
-
 ];
 const databaseAdminAuthProtectedRoutes = [
-  { path: "/dashboard-databaseadmin", component: DashboardatabaseAdmin },
-  { path: "/database-of-units", component: DatabaseOfUnitsPage },
-  { path: "/database-of-qualitativetype", component: DatabaseOfQualitativeTypePage },
-  { path: "/database-of-reagents", component: DatabaseOfReagentsPage },
-  { path: "/equipment-list", component: InstrumentList },
-  { path: "/database-of-equipmentType", component: DatabaseOfinsrumentType },
-  { path: "/database-of-manufactural", component: DatabaseOfManufactural },
-  { path: "/database-of-method", component: DatabaseOfMethod },
-  { path: "/database-of-analyte", component: DatabaseOfAnalyte },
+  { path: "/:organization_name/dashboard-databaseadmin", component: DashboardatabaseAdmin },
+  { path: "/:organization_name/database-of-units", component: DatabaseOfUnitsPage },
+  { path: "/:organization_name/database-of-qualitativetype", component: DatabaseOfQualitativeTypePage },
+  { path: "/:organization_name/database-of-reagents", component: DatabaseOfReagentsPage },
+  { path: "/:organization_name/equipment-list", component: InstrumentList },
+  { path: "/:organization_name/database-of-equipmentType", component: DatabaseOfinsrumentType },
+  { path: "/:organization_name/database-of-manufactural", component: DatabaseOfManufactural },
+  { path: "/:organization_name/database-of-method", component: DatabaseOfMethod },
+  { path: "/:organization_name/database-of-analyte", component: DatabaseOfAnalyte },
   { path: "/databaseadmin-history/:id", component: UnitsHistory },
 
-  
-
-  {path: "/scheme", component: Scheme},
-  {path: "/cycle", component: Cycle},
-  {path: "/cycle-analyte/:id", component: CycleAnalytes},
+  {path: "/:organization_name/scheme", component: Scheme},
+  {path: "/:organization_name/cycle", component: Cycle},
+  {path: "/:organization_name/cycle-analyte/:id", component: CycleAnalytes},
   {path: "/add-analytes-scheme-page/:id", component: SchemeAnalytes},
-  {path: "/sample", component: Sample},
+  {path: "/:organization_name/sample", component: Sample},
   {path: "/add-analytes-sample-page/:id", component: SampleAnalytes},
-
-  
 
   { path: "/analyte-add-methods/:id", component: AnalyteAddMethods }, 
   { path: "/analyte-add-units/:id", component: AnalyteAddUnits },   
@@ -321,49 +310,48 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/reagents-in-manufacturer/:id", component: ReagentsInManufacturer }, 
   
   //participant data
-  { path: "/database-of-participantcity", component: DatabaseOfParticipantCity },
-  { path: "/database-of-participantcountry", component: DatabaseOfParticipantCountry },
-  { path: "/database-of-participantprovince", component: DatabaseOfParticipantProvince },
-  { path: "/database-of-participantdistrict", component: DatabaseOfParticipantDistrict },
-  { path: "/database-of-participantdepartment", component: DatabaseOfParticipantDepartment },
-  { path: "/database-of-participantdesignation", component: DatabaseOfParticipantDesignation },
-  { path: "/database-of-participanttype", component: DatabaseOfParticipanttype },
-  { path: "/database-of-participantSector", component: DatabaseOfParticipantSector },
+  { path: "/:organization_name/database-of-participantcity", component: DatabaseOfParticipantCity },
+  { path: "/:organization_name/database-of-participantcountry", component: DatabaseOfParticipantCountry },
+  { path: "/:organization_name/database-of-participantprovince", component: DatabaseOfParticipantProvince },
+  { path: "/:organization_name/database-of-participantdistrict", component: DatabaseOfParticipantDistrict },
+  { path: "/:organization_name/database-of-participantdepartment", component: DatabaseOfParticipantDepartment },
+  { path: "/:organization_name/database-of-participantdesignation", component: DatabaseOfParticipantDesignation },
+  { path: "/:organization_name/database-of-participanttype", component: DatabaseOfParticipanttype },
+  { path: "/:organization_name/database-of-participantSector", component: DatabaseOfParticipantSector },
 
 ];
 const participantsAuthProtectedRoutes = [
-  { path: "/dashboard-partcipant", component: DashboardPartcipant },
-  { path: "/rounds-participant", component: Rounds },
-  { path: "/performance", component: Performance},
-  { path: "/newspage", component: NewsPage},
+  { path:"/:organization_name/dashboard-participant", component: DashboardPartcipant },
+  { path: "/:organization_name/rounds-participant", component: Rounds },
+  { path: "/:organization_name/performance", component: Performance},
+  { path: "/:organization_name/newspage", component: NewsPage},
   { path: "/email", component: Email},
-  { path: "/participantsResults/:id", component: ParticipantsResult},
-  { path: "/report/:id", component: Report},
+  { path: "/:organization_name/:id/participantsResults", component: ParticipantsResult},
+  { path: "/:organization_name/:id/report", component: Report},
   
- 
 ];
 
 
 
 const registrationAdminAuthProtectedRoutes = [
-  { path: "/dashboard-registrationadmin", component: Dashboardregistrationadmin },
-  { path: "/round", component: rounds },
-  { path: "/all-participant", component: AllLabs },
+  { path: "/:organization_name/dashboard-registrationadmin", component: Dashboardregistrationadmin },
+  { path: "/:organization_name/round", component: rounds },
+  { path: "/:organization_name/all-participant", component: AllLabs },
   {path: "/add-labs-round-page/:id", component: RoundLabs},
-  { path: "/pending-participant", component: PendingLabs },
+  { path: "/:organization_name/pending-participant", component: PendingLabs },
   { path: "/labs-list-approved-fee", component: labsListApprovedFeeOffered },
   { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },
   {
-    path: "/shared-percentage-pending-Fee/:id", component: sharedPercentagePendingFeeTests,
+    path: "/:organization_name/shared-percentage-pending-Fee/:id", component: sharedPercentagePendingFeeTests,
   },
   
-  { path: "/register-participant", component: RegParticipant},
-  { path: "/participant-payment", component: ParticipantPayment},
+  { path: "/:organization_name/register-participant", component: RegParticipant},
+  { path: "/:organization_name/participant-payment", component: ParticipantPayment},
   {
-    path: "/shared-percentage-approved-Fee/:id", component: sharedPercentageApprovedFeeTests,
+    path: "/:organization_name/shared-percentage-approved-Fee/:id", component: sharedPercentageApprovedFeeTests,
   },
-  { path: "/approved-participant", component: ApprovedLabs },
-  { path: "/unapproved-participant", component: UnapprovedLabs },
+  { path: "/:organization_name/approved-participant", component: ApprovedLabs },
+  { path: "/:organization_name/unapproved-participant", component: UnapprovedLabs },
 
   {
     path: "/referrellab", component: ReferrelLab,
@@ -371,30 +359,30 @@ const registrationAdminAuthProtectedRoutes = [
   {
     path: "/approvereferrellab", component: ApproveReferrelLab,
   },
-  { path: "/all-participant1", component: AllParticipant1},
-  {path: "/news", component: News},
-  { path: "/statistics/:id", component: Statistics},
+  { path: "/:organization_name/all-participant1", component: AllParticipant1},
+  {path: "/:organization_name/news", component: News},
+  { path: "/:organization_name/statistics/:id", component: Statistics},
   
 
 ];
 
 //CSR
 const CSRAdminAuthProtectedRoutes = [
-  { path: "/register-participant-CSR", component: RegParticipantCSR},
-  { path: "/all-participant2", component: AllParticipant2},
+  { path: "/:organization_name/register-participant-CSR", component: RegParticipantCSR},
+  { path: "/:organization_name/all-participant2", component: AllParticipant2},
 ];
 
 //organization dashboard
 const hrAdminAuthProtectedRoutes = [
-  { path: "/dashboard-organization", component: DashboardOrganization },
-  { path: "/add-staff", component: StaffRegister },
+  { path: "/:organization_name/dashboard-organization", component: DashboardOrganization },
+  { path: "/:organization_name/add-staff", component: StaffRegister },
   { path: "/add-organization", component: OrganizationRegister },
   { path: "/organization-list", component: OrganizationList },
   { path: "/staff-info/:id", component: StaffInfo },
-  { path: "/databaseadmin-list", component: DatabaseadminList },
-  { path: "/csr-list", component: csrList },
-  { path: "/registration-admin-list", component: RegistrationAdminList },
-  { path: "/all-participants", component: AllParticipant},
+  { path: "/:organization_name/databaseadmin-list", component: DatabaseadminList },
+  { path: "/:organization_name/csr-list", component: csrList },
+  { path: "/:organization_name/registration-admin-list", component: RegistrationAdminList },
+  { path: "/:organization_name/all-participants", component: AllParticipant},
 ];
 
 const authProtectedRoutes = [

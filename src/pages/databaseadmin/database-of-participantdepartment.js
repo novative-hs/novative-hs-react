@@ -17,8 +17,13 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  Button,
+  FormGroup,
   Label,
 } from "reactstrap";
+
+import { saveAs } from 'file-saver';
+import * as XLSX from "xlsx";
 
 import paginationFactory, {
   PaginationProvider,
@@ -143,7 +148,7 @@ class ParticipantDepartment extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${departmentlist.id}`}
+                  to={`/databaseadmin-history/${departmentlist.id}?type=Department`}
                 ></Link>
               </Tooltip>
             </div>
@@ -210,6 +215,96 @@ class ParticipantDepartment extends Component {
   closeModal = () => {
     this.setState({ modal: false });
   }
+  exportToExcel = () => {
+    const { ListDepartment } = this.props;
+    const fileType =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+
+    // Define fields to export
+    const fieldsToExport = ['id', 'name', 'date_of_addition'];
+
+    // Map each row to an object with only the desired fields
+    const dataToExport = ListDepartment.map(unit => ({
+      id: unit.id,
+      name: unit.name,
+      date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
+    }));
+
+    // Convert data to Excel format and save as file
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: fileType });
+    const fileName = 'Unit_list' + fileExtension;
+    saveAs(data, fileName);
+  };
+
+  toggleImportModal = () => {
+    this.setState(prevState => ({
+      importModal: !prevState.importModal,
+      importFile: null,
+      importError: null,
+    }));
+  };
+  handleFileChange = (e) => {
+    const file = e.target.files[0];
+    this.setState({
+      importFile: file,
+    });
+  };
+
+  handleImport = async () => {
+    const { importFile } = this.state;
+    if (!importFile) {
+      this.setState({
+        importError: 'Please select a file.',
+      });
+      return;
+    }
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        // Assuming your data is in the first sheet
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        // Convert to JSON format
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        // Process jsonData and save to the database
+        // Example of processing:
+        for (let i = 0; i < jsonData.length; i++) {
+          const item = jsonData[i];
+          // Dispatch an action to save item to the database
+          await this.props.onAddNewDepartment({
+            name: item.name,
+            added_by: localStorage.getItem("authUser")
+              ? JSON.parse(localStorage.getItem("authUser")).user_id
+              : "",
+            // Add other fields as required based on your schema
+          });
+        }
+
+        // Close the modal and show success message
+        this.toggleImportModal();
+        this.displaySuccessMessage('Data imported successfully!');
+        // Optionally, reload data from backend after import
+        setTimeout(() => {
+          this.props.onGetDepartmentList(this.state.user_id);
+        }, 1000);
+      };
+
+      reader.readAsArrayBuffer(importFile);
+    } catch (error) {
+      console.error('Error importing data:', error);
+      this.setState({
+        importError: 'Error importing data. Please try again.',
+      });
+    }
+  };
 
   render() {
     const { SearchBar } = Search;
@@ -252,6 +347,81 @@ class ParticipantDepartment extends Component {
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="Department" breadcrumbItem="Department List" />
+
+            <Row className="justify-content-end">
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
+              </Col>
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.toggleImportModal} className="mb-3">Import from Excel</Button>
+              </Col>
+            </Row>
+            <Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
+              <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
+              <ModalBody>
+                <div className="mb-3 d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the default action
+                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/Department.xlsx";
+                      saveAs(downloadUrl, "Unit.xlsx"); // Use the file-saver library to trigger the download
+                    }}
+                  >
+                    <i className="mdi mdi-download me-1" />
+                    Download File Format
+                  </button>
+                </div>
+
+
+                <div className="w-100">
+                  <h4><b>Instructions to fill the excel sheet:</b></h4>
+                  <div>
+                    <ol>
+                      <li>
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
+                      </li>
+                      <li>
+                        There should be a file of 1 column, name
+                      </li>
+                      <li>
+                        If you want to get more information, contact
+                        us at <strong>eternalqc@gmail.com</strong>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+                <div>
+                  {this.state.importError && (
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.importError}
+                    </div>
+                  )}
+                  <Col lg="10">
+                    <FormGroup className=" mt-4 mb-0">
+                      <Label htmlFor="expirydateInput" className="fw-bolder">
+                        Upload File
+                        <span
+                          style={{ color: "#f46a6a" }}
+                          className="font-size-18"
+                        >
+                          *
+                        </span>
+                      </Label>
+                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
+                    </FormGroup>
+                  </Col></div>
+
+
+                <Row className="mt-4">
+                  <Col sm="12" className="d-flex justify-content-end">
+                    <Button color="primary" onClick={this.handleImport} className="me-2">Upload</Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+                  </Col>
+                </Row>
+              </ModalBody>
+            </Modal>
+
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>

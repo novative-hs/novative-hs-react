@@ -305,7 +305,7 @@ class Manufactural extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${manufacturtal.id}`}
+                  to={`/databaseadmin-history/${manufacturtal.id}?type=Manufactural`}
                 ></Link>
               </Tooltip>
               <Tooltip title="Delete">

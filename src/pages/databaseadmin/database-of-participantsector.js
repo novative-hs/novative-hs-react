@@ -143,7 +143,7 @@ class ParticipantSector extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${sectorlist.id}`}
+                  to={`/databaseadmin-history/${sectorlist.id}?type=ParticipantSector`}
                 ></Link>
               </Tooltip>
             </div>

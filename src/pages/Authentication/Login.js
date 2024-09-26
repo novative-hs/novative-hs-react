@@ -264,6 +264,7 @@ class Login extends Component {
 
                           setTimeout(() => {
                             const success = this.props.success;
+                            console.log("success msj", success)
                             const error = this.props.error;
                             if (error) {
                               // Handle the error without triggering redirection
@@ -279,17 +280,18 @@ class Login extends Component {
                               const isLargeScreen = window.innerWidth > 470;
 
                               if (success.account_type === "labowner") {
-                                this.props.history.push(
-                                  "/dashboard-partcipant"
-                                );
+                                const { organization_name } = success;
+                                   this.props.history.push(`/${encodeURIComponent(organization_name)}/dashboard-participant`);
                               } else if (
                                 success.account_type === "registration-admin"
                               ) {
-                                this.props.history.push("/dashboard-registrationadmin");
+                                const { organization_name } = success;
+                                this.props.history.push(`/${encodeURIComponent(organization_name)}/dashboard-registrationadmin`);
                               }  else if (
                                 success.account_type === "CSR"
                               ) {
-                                this.props.history.push("/register-participant-CSR");
+                                const { organization_name } = success;
+                                this.props.history.push(`/${encodeURIComponent(organization_name)}/register-participant-CSR`);
                               } else if (
                                 success.account_type === "superadmin"
                               ) {
@@ -297,11 +299,13 @@ class Login extends Component {
                               } else if (
                                 success.account_type === "database-admin"
                               ) {
-                                this.props.history.push("/dashboard-databaseadmin");
+                                const { organization_name } = success;
+                                this.props.history.push(`/${encodeURIComponent(organization_name)}/dashboard-databaseadmin`);
                               } else if (
                                 success.account_type === "organization"
                               ) {
-                                this.props.history.push("/dashboard-organization");
+                                const { organization_name } = success;
+                                this.props.history.push(`/${encodeURIComponent(organization_name)}/dashboard-organization`);
                               }
                             }
                           }, 1000);

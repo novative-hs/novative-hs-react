@@ -51,7 +51,7 @@ class InstrumentType extends Component {
     this.state = {
       selectedRound: null,
       isEdit: false,
-
+      organization_name: '',
       idFilter: '',
       roundsFilter: '',
       schemenameFilter: '',
@@ -401,6 +401,10 @@ class InstrumentType extends Component {
   }
 
   componentDidMount() {
+    
+    const { organization_name } = this.props.match.params;
+    this.setState({ organization_name });
+
     const { onGetRoundList, onGetgetschemelist, onGetgetcyclelist, onGetgetSamplelistlist } = this.props;
     const userId = this.state.user_id;
 
@@ -471,7 +475,7 @@ class InstrumentType extends Component {
       this.props.onUpdateRound(round.id, updatedRound);
       
       // Optionally, redirect to the statistics page
-      this.props.history.push(`/statistics/${round.id}`);
+      this.props.history.push(`/${this.state.organization_name}/statistics/${round.id}`);
     }
   };
 

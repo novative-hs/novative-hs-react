@@ -36,19 +36,28 @@ export const getOrganizationlistFail = (error) => {
   };
 };
 
-export const updateOrganizationList = organization => ({
-  type: UPDATE_ORGANIZATION_LIST,
-  payload: organization,
-});
-export const updateOrganizationListSuccess = organization => ({
-    type:   UPDATE_ORGANIZATION_LIST_SUCCESS,
+export const updateOrganizationList = organization => {
+  // console.log('Updating Organization List:', organization); // Log the organization object
+  return {
+    type: UPDATE_ORGANIZATION_LIST,
     payload: organization,
-  });
+  };
+};
+// Action to dispatch when the update is successful
+export const updateOrganizationListSuccess = organization => {
+  // console.log('Update Organization List Success:', organization); // Log the organization object on success
+  return {
+    type: UPDATE_ORGANIZATION_LIST_SUCCESS,
+    payload: organization,
+  };
+};
 
-export const updateOrganizationListFail = error => ({
+export const updateOrganizationListFail = error => {
+  // console.log('Update Organization List FAil:', error);
+  return{
     type: UPDATE_ORGANIZATION_LIST_FAIL,
     payload: error,
-  });
+  }};
 
 
 

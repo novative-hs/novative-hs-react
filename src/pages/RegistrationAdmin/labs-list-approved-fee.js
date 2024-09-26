@@ -192,7 +192,7 @@ class LabsLists extends Component {
                                     <td className="text-start">{lab_list.city}</td>
                                     <td className="text-start" style={{ whiteSpace: 'pre-wrap', width: '200px' }}>
                                       <b>
-                                        <Link to={`/shared-percentage-approved-Fee/${lab_list.id}`}>{lab_list.name}</Link>
+                                        <Link to={`/:organization_name/shared-percentage-approved-Fee/${lab_list.id}`}>{lab_list.name}</Link>
                                       </b>
                                     </td>
                                     <td className="text-start">{lab_list.type}</td>

@@ -297,7 +297,7 @@ class ReagentList extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${reagent.id}`}
+                  to={`/databaseadmin-history/${reagent.id}?type=Reagent`}
                 ></Link>
               </Tooltip>
               <Tooltip title="Delete">

@@ -143,7 +143,7 @@ class ParticipantType extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${typelist.id}`}
+                  to={`/databaseadmin-history/${typelist.id}?type=ParticipantType`}
                 ></Link>
               </Tooltip>
             </div>

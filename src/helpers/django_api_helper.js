@@ -23,39 +23,31 @@ function getHeader(token) {
 }
 export const postRegister = user => {
   let formData = new FormData();
+  formData.append("name", user.name);
+  formData.append("email", user.email);
+  formData.append("phone", user.phone);
+  formData.append("type", user.type);
+  formData.append("sector", user.sector);
+  formData.append("designation", user.designation);
+  formData.append("address", user.address);
+  formData.append("added_by", user.added_by);
+  formData.append("password", user.password);
+  formData.append("password2", user.password2);
+  formData.append("email_participant", user.email_participant);
+  formData.append("city", user.city);
+  formData.append("country", user.country);
+  formData.append("province", user.province);
+  formData.append("billing_address", user.billing_address);
+  formData.append("shipping_address", user.shipping_address);
+  formData.append("department", user.department);
+  formData.append("district", user.district);
+  formData.append("lab_staff_name", user.lab_staff_name);
+  formData.append("landline_registered_by", user.landline_registered_by);
+  formData.append("website", user.website);
   formData.append("username", user.username);
   formData.append("password2", user.password2);
   formData.append("password", user.password);
   formData.append("account_type", user.account_type);
-
-  formData.append("name", user.name);
-  formData.append("cnic", user.cnic);
-  formData.append("email", user.email);
-  formData.append("phone", user.phone);
-  formData.append("photo", user.photo);
-  formData.append("city", user.city);
-  formData.append("state", user.state);
-  formData.append("shipping_address", user.shipping_address);
-  formData.append("billing_address", user.billing_address);
-  formData.append("email_participant", user.email_participant);
-
-  formData.append("department", user.department);
-  formData.append("province", user.province);
-  formData.append("country", user.country);
-  formData.append("landline", user.landline);
-  formData.append("address", user.address);
-
-  formData.append("state", user.state);
-  formData.append("email_participant", user.email_participant);
-  formData.append("billing_address", user.billing_address);
-  formData.append("shipping_address", user.shipping_address);
-
-  formData.append("lab_staff_name", user.lab_staff_name);
-  // formData.append("lab_staff_designation", user.lab_staff_designation);
-  // formData.append("Select_schemes", user.Select_schemes);
-  formData.append("website", user.website);
-  formData.append("district", user.district);
-  formData.append("landline_registered_by", user.landline_registered_by);
   formData.append("added_by", user.added_by);
 
   console.log("data", user);
@@ -215,6 +207,12 @@ export const updateOrganizationList = async organization => {
   formData.append("website", organization.website);
   formData.append("country", organization.country);
   formData.append("status", organization.status);
+  formData.append("currency", organization.currency);
+  formData.append("amount", organization.amount);
+  formData.append("issue_date", organization.issue_date);
+  formData.append("closing_date", organization.closing_date);
+  formData.append("photo", organization.photo);
+  formData.append("payment_proof", organization.payment_proof);
 
   return axios
     .put(`${url.UPDATE_ORGANIZATION_LIST}/${organization.id}`, formData, {
@@ -450,6 +448,36 @@ export const addNews = news => {
 //   });
 // };
 
+export const addParticipants = register => {
+  let formData = new FormData();
+  formData.append("name", register.name);
+  formData.append("user_name", register.user_name);
+  formData.append("email", register.email);
+  formData.append("phone", register.phone);
+  formData.append("type", register.type);
+  formData.append("sector", register.sector);
+  formData.append("designation", register.designation);
+  formData.append("address", register.address);
+  formData.append("password_foradmins", register.password_foradmins);
+  formData.append("added_by", register.added_by);
+  formData.append("password", register.password);
+  formData.append("password2", register.password2);
+  formData.append("email_participant", register.email_participant);
+  formData.append("city", register.city);
+  formData.append("country", register.country);
+  formData.append("province", register.province);
+  formData.append("billing_address", register.billing_address);
+  formData.append("shipping_address", register.shipping_address);
+  formData.append("department", register.department);
+  formData.append("district", register.district);
+  formData.append("lab_staff_name", register.lab_staff_name);
+  formData.append("landline_registered_by", register.landline_registered_by);
+  formData.append("website", register.website);
+  return axios.post(`${url.REGISTER_PARTICIPANT_LIST}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 //---------------database admin get units list-------
 ///////////instrumentlist/////////////
 export const getInstrumentlist = id =>
@@ -573,12 +601,14 @@ return axios.put(
 
 
 
-export const getHistoryUnits = id => {
-  console.log("ID passed to getHistoryUnits:", id);
+export const getHistoryUnits = (id, type) => {
+  console.log("ID and type passed to getHistoryUnits:", id, type);
   return get(`${url.GET_HISTORY_LIST}/${id}`, {
     headers: getHeader(authHeader()),
+    params: { type }, // Send type as a query parameter
   });
 };
+
 
 // Sample
  export const getSamplelist = (id) =>

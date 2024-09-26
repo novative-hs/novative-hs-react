@@ -162,6 +162,8 @@ export const GET_SECTOR_LIST = `${API_ENDPOINT}/api/database-admin/participantse
 export const ADD_NEW_SECTOR = `${API_ENDPOINT}/api/database-admin/participantsector_create`;
 export const UPDATE_SECTOR = `${API_ENDPOINT}/api/database-admin/participantsector_update`;
 
+export const REGISTER_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/register-participants-file`;
+
 ////////////news
 
 export const GET_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
@@ -483,10 +485,10 @@ export const GET_LAB_PAYMENTS = `${API_ENDPOINT}/api/patient/payment-info`;
 // ACCOUNT STATEMENTS
 export const GET_ACCOUNT_STATEMENTS = `${API_ENDPOINT}/api/accountstatement/lab-account-statements`;
 
-
-
 // STAFF PROFILES
 export const GET_STAFF_PROFILE = `${API_ENDPOINT}/api/staff/staff-profile`;
+
+// STAFF PROFILES
 export const UPDATE_STAFF_PROFILE = `${API_ENDPOINT}/api/staff/staff-profile`;
 // NEARBY LABS
 export const GET_NEARBY_LABS = `${API_ENDPOINT}/api/patient/nearby-labs`;

@@ -259,19 +259,11 @@ class AnalyteAddUnits extends Component {
           masterUnit: !selectedCheckboxes[id]?.masterUnit
         };
       } else if (column === "allowedUnit") {
-        // Count currently selected allowed units
-        let countAllowedUnits = Object.values(selectedCheckboxes).reduce((count, checkbox) => {
-          return count + (checkbox.allowedUnit ? 1 : 0);
-        }, 0);
-
-        // Check if the limit (2) has been reached
-        if (selectedCheckboxes[id]?.allowedUnit || countAllowedUnits < 2) {
-          // Toggle the selected checkbox in the "Allowed Unit" column
-          selectedCheckboxes[id] = {
-            ...selectedCheckboxes[id],
-            allowedUnit: !selectedCheckboxes[id]?.allowedUnit
-          };
-        }
+        // Toggle the selected checkbox in the "Allowed Unit" column
+        selectedCheckboxes[id] = {
+          ...selectedCheckboxes[id],
+          allowedUnit: !selectedCheckboxes[id]?.allowedUnit
+        };
       }
 
       return { selectedCheckboxes };

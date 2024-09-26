@@ -45,6 +45,7 @@ class PendingLabs extends Component {
       AllLabs: [],
       id: "",
       btnText: "Copy",
+      organization_name: '',
       isApproved: false,
       unapprovedModal: false,
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
@@ -218,6 +219,9 @@ class PendingLabs extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    this.setState({ organization_name });
+
     const { AllLabs, onGetPendingLabs } = this.props;
     onGetPendingLabs(this.state.user_id);
     this.setState({ AllLabs });
@@ -227,13 +231,13 @@ class PendingLabs extends Component {
     const { pathname } = this.props.history.location;
     let selectedValue = '';
 
-    if (pathname.includes('/pending-participant')) {
+     if (pathname.includes(`/${this.state.organization_name}/pending-participant`)) {
       selectedValue = 'Pending Participant';
-    } else if (pathname.includes('/approved-participant')) {
+    } else if (pathname.includes(`/${this.state.organization_name}/approved-participant`)) {
       selectedValue = 'Approved Participant';
-    } else if (pathname.includes('/unapproved-participant')) {
+    } else if (pathname.includes(`/${this.state.organization_name}/unapproved-participant`)) {
       selectedValue = 'Unapproved Participant';
-    } else if (pathname.includes('/all-participant')) {
+    } else if (pathname.includes(`/${this.state.organization_name}/all-participant`)) {
       selectedValue = 'All Participant';
     }
 
@@ -349,19 +353,18 @@ class PendingLabs extends Component {
 
     // Perform navigation based on the selected value
     if (selectedValue === 'Pending Participant') {
-      this.props.history.push('/pending-participant');
+      this.props.history.push(`/${this.state.organization_name}/pending-participant`);
     }
     if (selectedValue === 'Approved Participant') {
-      this.props.history.push('/approved-participant');
+      this.props.history.push(`/${this.state.organization_name}/approved-participant`);
     }
     if (selectedValue === 'Unapproved Participant') {
-      this.props.history.push('/unapproved-participant');
+      this.props.history.push(`/${this.state.organization_name}/unapproved-participant`);
     }
     if (selectedValue === 'All Participant') {
-      this.props.history.push('/all-participant');
+      this.props.history.push(`/${this.state.organization_name}/all-participant`);
     }
   };
-
   render() {
     const { SearchBar } = Search;
 

@@ -1,25 +1,26 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
-// Crypto Redux States
-import { GET_HISTORY_LIST} from "./actionTypes";
+// Redux action types
+import { GET_HISTORY_LIST } from "./actionTypes";
 
-import {getActivityLogUnitsSuccess , getActivityLogUnitsFail  } from "./actions";
+// Action creators
+import { getActivityLogUnitsSuccess, getActivityLogUnitsFail } from "./actions";
 
-//Include Both Helper File with needed methods
-import {  getHistoryUnits} from "../../helpers/django_api_helper";
+// Helper API call
+import { getHistoryUnits } from "../../helpers/django_api_helper";
 
 function* fetchActivityLogUnits(action) {
   try {
-    const id = action.payload; 
-    const response = yield call(getHistoryUnits, id); 
-    yield put(getActivityLogUnitsSuccess(response));
+    const { id, type } = action.payload;  // Destructure id and type from payload
+    const response = yield call(getHistoryUnits, id, type); // Pass both id and type to the API call
+    yield put(getActivityLogUnitsSuccess(response));  // Dispatch success with the response
   } catch (error) {
-    yield put(getActivityLogUnitsFail(error));
+    yield put(getActivityLogUnitsFail(error));  // Dispatch failure if error occurs
   }
 }
 
 function* UnitsHistorySaga() {
-  yield takeEvery(GET_HISTORY_LIST, fetchActivityLogUnits);
+  yield takeEvery(GET_HISTORY_LIST, fetchActivityLogUnits);  // Watch for GET_HISTORY_LIST action
 }
 
 export default UnitsHistorySaga;

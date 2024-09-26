@@ -39,6 +39,7 @@ import AddPayment from "./Payment/reducer";
 import CycleAnalyte from "./databaseofunits/reducer";
 //Participant
 import ParticipantList from "./participant-list/reducers";
+import regParticipant from "./registerParticipantFile/reducer";
 
 // organization
 import organizationaccount from "./organization/reducer"
@@ -147,6 +148,7 @@ const rootReducer = combineReducers({
   ListCity,
   ReagentList,
   ListUnits,
+  regParticipant,
   ListMethods,
   news,
   organizationaccount,

@@ -52,7 +52,7 @@ class InstrumentType extends Component {
     this.state = {
       selectedCycle: null,
       isEdit: false,
-
+      organization_name: '',
       idFilter: '',
       schemenameFilter: '',
       cyclenoFilter: '',
@@ -132,7 +132,6 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.cyclenoFilter}
@@ -278,10 +277,11 @@ class InstrumentType extends Component {
             );
           },
           formatter: (cellContent, unitlist) => {
+            const { organization_name } = this.state;
             return (
               <div>
                 <Link
-                  to={`/cycle-analyte/${unitlist.scheme_id}`}
+                  to={`/${organization_name}/cycle-analyte/${unitlist.scheme_id}`}
                   style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
                 >
                   {unitlist.noofanalytes}
@@ -372,6 +372,10 @@ class InstrumentType extends Component {
   }
 
   componentDidMount() {
+    
+    const { organization_name } = this.props.match.params;
+    this.setState({ organization_name });
+
     const { ListUnit, onGetgetschemelist, onGetInstrumentTypeList } = this.props;
     const userId = this.state.user_id;
 

@@ -166,7 +166,7 @@ class QualitativeType extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${unitlist.id}`}
+                  to={`/databaseadmin-history/${unitlist.id}?type=QualitativeType`}
                 ></Link>
               </Tooltip>
             </div>

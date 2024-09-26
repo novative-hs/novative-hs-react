@@ -309,7 +309,7 @@ class AnalyteList extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${analyte.id}`}
+                  to={`/databaseadmin-history/${analyte.id}?type=Analyte`}
                 ></Link>
               </Tooltip>
               <Tooltip title="Delete">

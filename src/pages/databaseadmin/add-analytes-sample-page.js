@@ -136,6 +136,7 @@ class SchemeAddAnalyte extends Component {
     const { selectedCheckboxes } = this.state;
     const { onUpdateSchemeAnalytes, match, ListUnit, history } = this.props;
     const schemeId = match.params.id;
+    const { organization_name } = this.props.match.params;
 
     const selectedAnalytes = ListUnit.filter(analyte => selectedCheckboxes[analyte.id]);
     
@@ -162,7 +163,7 @@ class SchemeAddAnalyte extends Component {
         // this.props.onAddNewSchemeAnalytes(payload, someOtherId); 
         this.setFeedbackMessage("Analytes added successfully.");
       }
-      history.push('/sample');
+      history.push(`/${organization_name}/sample`);
     } else {
       console.error("Analyte ID not found");
     }

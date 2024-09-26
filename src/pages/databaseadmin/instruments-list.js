@@ -20,6 +20,7 @@ import {
   ModalHeader,
   ModalBody,
   Label,
+  FormGroup,
   Button,
   Alert
 } from "reactstrap";
@@ -337,9 +338,15 @@ class Instrument extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/units-history/${methodlist.id}`}
+                  to={`/databaseadmin-history/${methodlist.id}?type=Instrumentlist`}
                 ></Link>
               </Tooltip>
+              {/* <Tooltip title="History">
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/units-history/${methodlist.id}`}
+                ></Link>
+              </Tooltip> */}
               <Tooltip title="Delete">
                 <Link className="text-danger" to="#">
                   <i
@@ -661,26 +668,76 @@ class Instrument extends Component {
   <Col lg="auto" className="text-end">
     <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
   </Col>
-  {/* <Col lg="auto" className="text-end">
+  <Col lg="auto" className="text-end">
     <Button onClick={this.toggleImportModal} className="mb-3">Import from Excel</Button>
-  </Col> */}
+  </Col>
 </Row>
-              <Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
-          <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
-          <ModalBody>
-            {this.state.importError && (
-              <div className="alert alert-danger" role="alert">
-                {this.state.importError}
-              </div>
-            )}
-            <div className="mb-3">
-              <input type="file" className= "form-control" onChange={this.handleFileChange} accept=".xlsx, .xls" />
-            </div>
-            <Button color="primary" onClick={this.handleImport}>Import</Button>
-            {' '}
-            <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
-          </ModalBody>
-        </Modal>
+<Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
+              <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
+              <ModalBody>
+                <div className="mb-3 d-flex justify-content-center">
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the default action
+                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/equipment.xlsx";
+                      saveAs(downloadUrl, "equipment_type.xlsx"); // Use the file-saver library to trigger the download
+                    }}
+                  >
+                    <i className="mdi mdi-download me-1" />
+                    Download File Format
+                  </button>
+                </div>
+
+
+                <div className="w-100">
+                  <h4><b>Instructions to fill the excel sheet:</b></h4>
+                  <div>
+                    <ol>
+                      <li>
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
+                      </li>
+                      <li>
+                        There should be a file of 1 column, name
+                      </li>
+                      <li>
+                        If you want to get more information, contact
+                        us at <strong>eternalqc@gmail.com</strong>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+                <div>
+                  {this.state.importError && (
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.importError}
+                    </div>
+                  )}
+                  <Col lg="10">
+                    <FormGroup className=" mt-4 mb-0">
+                      <Label htmlFor="expirydateInput" className="fw-bolder">
+                        Upload File
+                        <span
+                          style={{ color: "#f46a6a" }}
+                          className="font-size-18"
+                        >
+                          *
+                        </span>
+                      </Label>
+                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
+                    </FormGroup>
+                  </Col></div>
+
+
+                <Row className="mt-4">
+                  <Col sm="12" className="d-flex justify-content-end">
+                    <Button color="primary" onClick={this.handleImport} className="me-2">Upload</Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+                  </Col>
+                </Row>
+              </ModalBody>
+            </Modal>
+        
             <Row className="justify-content-center">
               <Col lg="10">
                 <Card>

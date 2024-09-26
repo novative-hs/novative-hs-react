@@ -158,7 +158,7 @@ class LabsRating extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${unitlist.id}`}
+                  to={`/databaseadmin-history/${unitlist.id}?type=Units`}
                 ></Link>
               </Tooltip>
             </div>
@@ -431,6 +431,7 @@ class LabsRating extends Component {
                 </Row>
               </ModalBody>
             </Modal>
+            
             <Row className="justify-content-center">
               <Col lg="6">
                 <Card>

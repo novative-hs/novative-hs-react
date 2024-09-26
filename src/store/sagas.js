@@ -40,7 +40,7 @@ import PaymentSaga from "./Payment/saga";
 
 //Participant
 import participantListSaga from "./participant-list/sagas";
-
+import regParticipantSaga from "./registerParticipantFile/saga";
 
 // organization
 import organizationaccountSaga from "./organization/saga";
@@ -110,6 +110,7 @@ export  default function* rootSaga() {
     fork(InstrumentListSaga),
     fork(ReagentsListSaga),
     fork(UnitsListSaga),
+    fork(regParticipantSaga),
     fork(UnitsHistorySaga),
     fork(dashboardSaga),
     fork(LayoutSaga),

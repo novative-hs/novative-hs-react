@@ -81,21 +81,19 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <div className="page-content">
-          <MetaTags>
+          {/* <MetaTags>
             <title>Dashboard | Finance Admin</title>
-          </MetaTags>
-          <Container fluid>
+          </MetaTags> */}
+          {/* <Container fluid> */}
             {/* Render Breadcrumb */}
-            <Breadcrumbs
+            {/* <Breadcrumbs
               title={this.props.t("Dashboards")}
               breadcrumbItem={this.props.t("Dashboard")}
-            />
+            /> */}
             <Row>
               <StaffSummary />
-
-        
             </Row>
-          </Container>
+          {/* </Container> */}
         </div>
       </React.Fragment>
     );

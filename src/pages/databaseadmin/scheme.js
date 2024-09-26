@@ -30,7 +30,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -40,26 +40,26 @@ import {
   getSchemelist,
   addNewSchemeList,
   updateSchemeList,
-  deleteScheme
+  deleteScheme,
 } from "store/scheme/actions";
 
 import { isEmpty, size } from "lodash";
 import DeleteModal from "components/Common/DeleteModal";
 import "assets/scss/table.scss";
-import moment from 'moment';
+import moment from "moment";
 class ReagentsList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      idFilter: '',
-      nameFilter: '',
-      priceFilter: '',
-      dateofadditionFilter: '',
-      noofanalytesFilter: '',
-      addedbyFilter: '',
-      statusFilter: '',
-      analytetypeFilter: '',
+      idFilter: "",
+      nameFilter: "",
+      priceFilter: "",
+      dateofadditionFilter: "",
+      noofanalytesFilter: "",
+      addedbyFilter: "",
+      statusFilter: "",
+      analytetypeFilter: "",
       SchemeList: [],
       analyte: "",
       modal: false,
@@ -82,7 +82,7 @@ class ReagentsList extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    onChange={e => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -91,27 +91,25 @@ class ReagentsList extends Component {
             );
           },
 
-          headerStyle: { width: '100px' },  // Adjust the width as needed
-          style: { width: '100px' },  // Adjust the width as needed
+          headerStyle: { width: "100px" }, // Adjust the width as needed
+          style: { width: "100px" }, // Adjust the width as needed
         },
-        
+
         {
           dataField: "name",
           text: "Scheme Name",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: 'left' },
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    onChange={e => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -124,18 +122,16 @@ class ReagentsList extends Component {
           text: "Price",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: 'left' },
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.priceFilter}
-                    onChange={e => this.handleFilterChange('priceFilter', e)}
+                    onChange={e => this.handleFilterChange("priceFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -160,13 +156,13 @@ class ReagentsList extends Component {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.dateofadditionFilter}
-                    onChange={e => this.handleFilterChange('dateofadditionFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("dateofadditionFilter", e)
+                    }
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -183,13 +179,13 @@ class ReagentsList extends Component {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.noofanalytesFilter}
-                    onChange={e => this.handleFilterChange('noofanalytesFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("noofanalytesFilter", e)
+                    }
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -202,18 +198,16 @@ class ReagentsList extends Component {
           text: "Added By",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: 'left' },
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.addedbyFilter}
-                    onChange={e => this.handleFilterChange('addedbyFilter', e)}
+                    onChange={e => this.handleFilterChange("addedbyFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -232,7 +226,9 @@ class ReagentsList extends Component {
                 <div>
                   <select
                     value={this.state.analytetypeFilter}
-                    onChange={e => this.handleFilterChange('analytetypeFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("analytetypeFilter", e)
+                    }
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -256,7 +252,7 @@ class ReagentsList extends Component {
                 <div>
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -289,12 +285,16 @@ class ReagentsList extends Component {
           formatter: (cellContent, analyte) => (
             <div className="d-flex gap-3 ml-3">
               <Tooltip title="Add Analytes">
-                <Link to={`/add-analytes-scheme-page/${analyte.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
+                <Link
+                  to={`/add-analytes-scheme-page/${analyte.id}`}
+                  style={{ textDecoration: "underline", color: "#008000" }}
+                >
                   <i
                     className="mdi mdi-magnify font-size-18"
                     id="analyteIcon"
                   ></i>
-                </Link></Tooltip>
+                </Link>
+              </Tooltip>
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
@@ -302,11 +302,12 @@ class ReagentsList extends Component {
                     id="edittooltip"
                     onClick={e => this.handleReagentsClick(e, analyte)}
                   ></i>
-                </Link></Tooltip>
+                </Link>
+              </Tooltip>
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${analyte.id}`}
+                  to={`/databaseadmin-history/${analyte.id}?type=Scheme`}
                 ></Link>
               </Tooltip>
               {/* <Tooltip title="Delete">
@@ -370,11 +371,9 @@ class ReagentsList extends Component {
     this.setState({ deleteModal: true });
   };
 
-
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
   };
-
 
   toggle() {
     this.setState(prevState => ({
@@ -436,17 +435,17 @@ class ReagentsList extends Component {
     return new File([u8arr], filename, { type: mime });
   };
 
-    // handleDeletePathologist = () => {
-    //   const { onDeletePathologist, onGetScheme } = this.props;
-    //   const { ListUnit } = this.state;
-    //   if (ListUnit.id !== undefined) {
-    //     onDeletePathologist(ListUnit);
-    //     setTimeout(() => {
-    //       onGetScheme(this.state.user_id);
-    //     }, 1000);
-    //     this.setState({ deleteModal: false });
-    //   }
-    // };
+  // handleDeletePathologist = () => {
+  //   const { onDeletePathologist, onGetScheme } = this.props;
+  //   const { ListUnit } = this.state;
+  //   if (ListUnit.id !== undefined) {
+  //     onDeletePathologist(ListUnit);
+  //     setTimeout(() => {
+  //       onGetScheme(this.state.user_id);
+  //     }, 1000);
+  //     this.setState({ deleteModal: false });
+  //   }
+  // };
 
   handleReagentsClick = (e, arg) => {
     const analyte = arg;
@@ -469,17 +468,30 @@ class ReagentsList extends Component {
   render() {
     const { SearchBar } = Search;
     const { SchemeList } = this.props;
-    
-    const { idFilter, nameFilter, priceFilter, dateofadditionFilter, noofanalytesFilter, addedbyFilter, statusFilter, analytetypeFilter   } = this.state;
 
-    const filteredData = SchemeList.filter(entry => {   
+    const {
+      idFilter,
+      nameFilter,
+      priceFilter,
+      dateofadditionFilter,
+      noofanalytesFilter,
+      addedbyFilter,
+      statusFilter,
+      analytetypeFilter,
+    } = this.state;
+
+    const filteredData = SchemeList.filter(entry => {
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString() : "";
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const price = entry.price ? entry.price.toString().toLowerCase() : "";
-      const analytetype  = entry.analytetype ? entry.analytetype.toString() : "";
-      const date_of_addition = entry.date_of_addition ? entry.date_of_addition.toString() : "";
-      const noofanalytes = entry.noofanalytes ? entry.noofanalytes.toString() : "";
+      const analytetype = entry.analytetype ? entry.analytetype.toString() : "";
+      const date_of_addition = entry.date_of_addition
+        ? entry.date_of_addition.toString()
+        : "";
+      const noofanalytes = entry.noofanalytes
+        ? entry.noofanalytes.toString()
+        : "";
       const added_by = entry.added_by ? entry.added_by.toString() : "";
       const status = entry.status ? entry.status.toString() : "";
 
@@ -490,16 +502,13 @@ class ReagentsList extends Component {
         date_of_addition.includes(dateofadditionFilter) &&
         noofanalytes.includes(noofanalytesFilter.toLowerCase()) &&
         added_by.includes(addedbyFilter) &&
-        status.includes(statusFilter)   &&
-        analytetype.includes(analytetypeFilter)      
-   
+        status.includes(statusFilter) &&
+        analytetype.includes(analytetypeFilter)
       );
     });
 
-    
     const { isEdit, deleteModal } = this.state;
-    const { onAddNewScheme, onUpdateScheme, onGetScheme } =
-      this.props;
+    const { onAddNewScheme, onUpdateScheme, onGetScheme } = this.props;
     const analyte = this.state.analyte;
 
     const pageOptions = {
@@ -529,14 +538,12 @@ class ReagentsList extends Component {
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs
-              title="Scheme"
-              breadcrumbItem="Scheme List"
-            />
+            <Breadcrumbs title="Scheme" breadcrumbItem="Scheme List" />
             <Row className="justify-content-center">
-              {/* <p className="text-danger">Note: Pathologist Information will scale the rating of your lab.</p> */}
-
+            
               <Col lg="10">
+              <p><strong>Note:</strong> If Scheme Type <b className="text-danger">Qualitative</b> then there will be only that Analyte shown here, whose units will be <b className="text-danger">Pos/Ng/Aqi</b>.</p>
+
                 <Card>
                   <CardBody>
                     <PaginationProvider
@@ -600,24 +607,44 @@ class ReagentsList extends Component {
                                           enableReinitialize={true}
                                           initialValues={{
                                             hiddenEditFlag: isEdit,
-                                            name: (analyte && analyte.name) || "",
-                                            price: (analyte && analyte.price) || "",
-                                            analytetype: (analyte && analyte.analytetype) || "",
-                                            status: (analyte && analyte.status) || "",
-                                            added_by: localStorage.getItem("authUser")
-                                              ? JSON.parse(localStorage.getItem("authUser")).user_id
+                                            name:
+                                              (analyte && analyte.name) || "",
+                                            price:
+                                              (analyte && analyte.price) || "",
+                                            analytetype:
+                                              (analyte &&
+                                                analyte.analytetype) ||
+                                              "",
+                                            status:
+                                              (analyte && analyte.status) || "",
+                                            added_by: localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddenEditFlag: Yup.boolean(),
-                                            name: Yup.string().trim().required("Please enter name"),
-                                            price: Yup.string().trim().required("Please enter Price"),
+                                            name: Yup.string()
+                                              .trim()
+                                              .required("Please enter name"),
+                                            price: Yup.string()
+                                              .trim()
+                                              .required("Please enter Price"),
                                             analytetype: Yup.string()
-                                            .trim()
-                                            .required("Please select the Type from dropdown"),
+                                              .trim()
+                                              .required(
+                                                "Please select the Type from dropdown"
+                                              ),
                                             status: Yup.string()
                                               .trim()
-                                              .required("Please select the Status from dropdown"),
+                                              .required(
+                                                "Please select the Status from dropdown"
+                                              ),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -626,11 +653,12 @@ class ReagentsList extends Component {
                                                   id: analyte.id,
                                                   name: values.name,
                                                   price: values.price,
-                                                  analytetype: values.analytetype,
+                                                  analytetype:
+                                                    values.analytetype,
                                                   status: values.status,
                                                   added_by: values.added_by,
                                                 };
-                                              
+
                                                 onUpdateScheme(
                                                   updateSchemeList
                                                 );
@@ -659,9 +687,7 @@ class ReagentsList extends Component {
                                                 this.state.user_id
                                               );
                                               setTimeout(() => {
-                                                onGetScheme(
-                                                  this.state.user_id
-                                                );
+                                                onGetScheme(this.state.user_id);
                                               }, 1000);
                                             }
                                             this.setState({
@@ -683,7 +709,9 @@ class ReagentsList extends Component {
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Name
-                                                      <span className="text-danger">*</span>
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
                                                     </Label>
                                                     <Field
                                                       name="name"
@@ -691,23 +719,21 @@ class ReagentsList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.name &&
-                                                          touched.name
+                                                        touched.name
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                       value={
-                                                        this.state.analyte
-                                                          .name
+                                                        this.state.analyte.name
                                                       }
                                                       onChange={e =>
                                                         this.setState({
                                                           analyte: {
-
                                                             id: analyte.id,
                                                             name: e.target
                                                               .value,
                                                             // status:
-                                                              // analyte.status,
+                                                            // analyte.status,
                                                           },
                                                         })
                                                       }
@@ -718,41 +744,75 @@ class ReagentsList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                                    <div className="mb-3">
-                                                      <Label className="form-label">
-                                                        Price
-                                                        <span className="text-danger">*</span>
-                                                      </Label>
-                                                      <Field
-                                                        name="price"
-                                                        type="text"
-                                                        className={"form-control" + (errors.price && touched.price ? " is-invalid" : "")}
-                                                        value={this.state.analyte.price}
-                                                        onChange={e =>
-                                                          this.setState({
-                                                            analyte: { ...analyte, price: e.target.value },
-                                                          })
-                                                        }
-                                                      />
-                                                      <ErrorMessage name="price" component="div" className="invalid-feedback" />
-                                                    </div>
-                                                    <div className="mb-3">
+                                                  <div className="mb-3">
                                                     <Label className="form-label">
-                                                     Type
+                                                      Price
                                                       <span className="text-danger">
                                                         *
                                                       </span>
                                                     </Label>
-                                                    <Field as="select" name="analytetype" className={`form-control ${
-        errors.analytetype && touched.analytetype ? "is-invalid" : ""
-      }`}>
-        <option value="">----- Please select -----</option>
-        <option value="Qualitative">Qualitative</option>
-          <option value="Quantitative">Quantitative</option>
-      </Field>
-      <ErrorMessage name="analytetype" component="div" className="invalid-feedback" />
-
-                                                 
+                                                    <Field
+                                                      name="price"
+                                                      type="text"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.price &&
+                                                        touched.price
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                      value={
+                                                        this.state.analyte.price
+                                                      }
+                                                      onChange={e =>
+                                                        this.setState({
+                                                          analyte: {
+                                                            ...analyte,
+                                                            price:
+                                                              e.target.value,
+                                                          },
+                                                        })
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="price"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Type
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      as="select"
+                                                      name="analytetype"
+                                                      className={`form-control ${
+                                                        errors.analytetype &&
+                                                        touched.analytetype
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }`}
+                                                    >
+                                                      <option value="">
+                                                        ----- Please select
+                                                        -----
+                                                      </option>
+                                                      <option value="Qualitative">
+                                                        Qualitative
+                                                      </option>
+                                                      <option value="Quantitative">
+                                                        Quantitative
+                                                      </option>
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="analytetype"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
@@ -761,21 +821,49 @@ class ReagentsList extends Component {
                                                         *
                                                       </span>
                                                     </Label>
-                                                    <Field as="select" name="status" className={`form-control ${errors.status && touched.status ? "is-invalid" : ""
-                                                      }`}>
-                                                      <option value="">----- Please select -----</option>
-                                                      <option value="Active">Active</option>
-                                                      <option value="Inactive">Inactive</option>
+                                                    <Field
+                                                      as="select"
+                                                      name="status"
+                                                      className={`form-control ${
+                                                        errors.status &&
+                                                        touched.status
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }`}
+                                                    >
+                                                      <option value="">
+                                                        ----- Please select
+                                                        -----
+                                                      </option>
+                                                      <option value="Active">
+                                                        Active
+                                                      </option>
+                                                      <option value="Inactive">
+                                                        Inactive
+                                                      </option>
                                                     </Field>
-                                                    <ErrorMessage name="status" component="div" className="invalid-feedback" />
+                                                    <ErrorMessage
+                                                      name="status"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
                                                   </div>
                                                 </Col>
                                               </Row>
                                               <Row>
-                                              <Col>
+                                                <Col>
                                                   <div className="text-end">
-                                                    <button type="submit" className="btn btn-success save-user"
-                                                      style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#0000CD",
+                                                        borderColor: "#0000CD",
+                                                      }}
+                                                    >
+                                                      Save
+                                                    </button>
                                                   </div>
                                                 </Col>
                                               </Row>
@@ -819,7 +907,6 @@ ReagentsList.propTypes = {
   onAddNewScheme: PropTypes.func,
   onUpdateScheme: PropTypes.func,
   onDeleteScheme: PropTypes.func,
-
 };
 
 const mapStateToProps = ({ SchemeList }) => ({
@@ -827,11 +914,11 @@ const mapStateToProps = ({ SchemeList }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetScheme: id => dispatch(getSchemelist(id)), 
+  onGetScheme: id => dispatch(getSchemelist(id)),
   onAddNewScheme: (createInstrumentType, id) =>
     dispatch(addNewSchemeList(createInstrumentType, id)),
   onUpdateScheme: analyte => dispatch(updateSchemeList(analyte)),
-  onDeleteScheme: (id) => dispatch(deleteScheme(id)),
+  onDeleteScheme: id => dispatch(deleteScheme(id)),
 });
 
 export default connect(

@@ -188,7 +188,7 @@ class InstrumentType extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${instrumenttype.id}`}
+                  to={`/databaseadmin-history/${instrumenttype.id}?type=Instruments`}
                 ></Link>
               </Tooltip>
               <Tooltip title="Delete">

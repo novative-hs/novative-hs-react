@@ -35,6 +35,7 @@ export * from "./cycle/actions";
 export * from "./Payment/actions";
 // Registration Admin
 export * from "./rounds/actions";
+export * from  "./registerParticipantFile/actions";
 
 // carts
 export * from "./carts/actions";

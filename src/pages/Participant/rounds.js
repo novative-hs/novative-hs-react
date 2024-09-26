@@ -28,6 +28,7 @@ class Roundural extends Component {
     this.node = React.createRef();
     this.state = {
       SelectedSchemeList: [],
+      organization_name: '',
       modal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -45,9 +46,14 @@ class Roundural extends Component {
           dataField: "scheme_name",
           text: "Scheme Name",
           sort: true,
-          formatter: (cellContent, round) => (
-            <Link to={`/participantsResults/${round.id}`}>{round.scheme_name}</Link>
-          ),
+          formatter: (cellContent, round) => {
+            const { organization_name } = this.state; // Access organization_name from state
+            return (
+              <Link to={`/${organization_name}/${round.id}/participantsResults`}>
+                {round.scheme_name}
+              </Link>
+            );
+          },
         },
         {
           dataField: "rounds",
@@ -95,6 +101,9 @@ class Roundural extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    this.setState({ organization_name });
+    
     const { onGetRoundList } = this.props;
     onGetRoundList(this.state.user_id);
   }
@@ -105,7 +114,8 @@ class Roundural extends Component {
       SelectedSchemeList !== prevProps.SelectedSchemeList &&
       !isEmpty(SelectedSchemeList)
     ) {
-      const uniqueNames = uniq(SelectedSchemeList.map(item => item.scheme));
+      const uniqueNames = uniq(SelectedSchemeList.map(item => item.scheme_name));
+      // console.log("unique name filters", uniqueNames, item.scheme)
       this.setState({
         SelectedSchemeList,
         nameOptions: ["All", ...uniqueNames],
@@ -124,7 +134,7 @@ class Roundural extends Component {
     if (selectedName === "All") {
       return SelectedSchemeList;
     }
-    return SelectedSchemeList.filter(entry => entry.scheme === selectedName);
+    return SelectedSchemeList.filter(entry => entry.scheme_name === selectedName);
   }
 
   render() {
@@ -148,7 +158,6 @@ class Roundural extends Component {
     
     console.log("Final schemeName:", schemeName); // Logs the final array after map is complete
     
-
     return (
       <React.Fragment>
         <div className="page-content">

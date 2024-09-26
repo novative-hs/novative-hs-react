@@ -25,11 +25,12 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
   switch (action.type) {
     //get schemeAnalyte
     case SCHEMES_ANALYTES_SUCCESS:
-      // console.log("Data received in reducerrrr:", action.payload); // Log the action.payload
+      console.log("Data received in reducerrrr:", action.payload.rounds.sample); // Log the action.payload
       return {
         ...state,
         SchemeAnalytesList: action.payload.analytes,
         rounds: action.payload.round_no,
+        sample: action.payload.rounds.sample,
         issue_date: action.payload.round_issuedate,
         closing_date: action.payload.round_closingdate,
         schemeName: action.payload.scheme_name,

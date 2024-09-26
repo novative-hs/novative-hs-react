@@ -241,7 +241,7 @@ class Results extends Component {
             return (
               <div className="d-flex flex-row align-items-start">
                 {/* Check if round_status is "Open" and list.result_status is "Created" */}
-                {round_status &&
+                {round_status && list.result_status &&
                 (list.result_status === "Created" ||
                   list.result_status === null) &&
                 round_status === "Open" ? (
@@ -536,7 +536,7 @@ class Results extends Component {
       // console.log("participantResults", participantResults)
       // Check which of these results were submitted by the logged-in user
       const userResult = participantResults.find(result => {
-        return result.lab.account_id === user_id;
+        return result.lab.account_id === user_id && result.rounds === rounds ;
       });
       console.log("userResultuserResult", userResult);
 
@@ -880,15 +880,16 @@ class Results extends Component {
       custom: true,
     };
 
-    // if (!isDataLoaded) {
-    //   return <div>Loading...</div>;
-    // }
+    if (!isDataLoaded) {
+      // return <div>Loading...</div>;
+    }
     const defaultSorted = [
       {
         dataField: "id",
         order: "desc",
       },
     ];
+    const { organization_name } = this.props.match.params;
     return (
       <React.Fragment>
         {schemeType ? (
@@ -948,7 +949,7 @@ class Results extends Component {
                   Print
                 </Button>
                 {round_status === "Report Available" && (
-                  <Link to={`/report/${id}`} className="w-100">
+                  <Link to={`/${organization_name}/${id}/report`} className="w-100">
                     <Button className="mb-3 w-100 btn">Report</Button>
                   </Link>
                 )}
