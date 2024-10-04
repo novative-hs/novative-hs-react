@@ -35,6 +35,7 @@ class MsgsList extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
     const { onGetActivityLogUnits } = this.props;
 
     // Get 'id' from route params

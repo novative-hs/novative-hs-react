@@ -8,8 +8,8 @@ import { Card, CardBody, Col, Container, Row, Button } from "reactstrap";
 import { isEmpty, sample } from "lodash";
 import moment from "moment";
 import BootstrapTable from "react-bootstrap-table-next";
+import { Bar } from 'react-chartjs-2';
 import "assets/scss/table.scss";
-
 import { getSchemeAnalytesList } from "store/results/actions";
 import { getReport } from "store/resultsSubmit/actions";
 import "assets/scss/table.scss";
@@ -21,6 +21,7 @@ class Results extends Component {
     this.state = {
       SchemeAnalytesList: [],
       Report: [],
+      zScoresData: {}, // Store the fetched z-scores data
       combinedData: [], // Store the combined data here
       // analyte: "",
       // rounds: [],
@@ -78,6 +79,24 @@ class Results extends Component {
             <div className="text-start">{analyte.z_score}</div>
           ),
         },
+        {
+          text: "Evaluation",
+          sort: true,
+          formatter: (cellContent, analyte) => (
+            <>
+              {analyte.result_evaluation === "Reject" ? (
+                <div className="text-start text-danger">{analyte.result_evaluation}</div>
+              ) : analyte.result_evaluation === "Warning" ? (
+                <div className="text-start" style={{ backgroundColor: "orange", color: "white" }}>
+                  {analyte.result_evaluation}
+                </div>
+              ) : (
+                <div className="text-start">{analyte.result_evaluation}</div>
+              )}
+            </>
+          ),
+        },
+        
       ],
     };
   }
@@ -106,6 +125,9 @@ class Results extends Component {
 
       // Extract the z_score if the participant's entry is found
       const zScore = zScoreEntry ? zScoreEntry.z_score : 0;
+      const Evaluation = zScoreEntry ? zScoreEntry.result_avaluation : "Not Submitted";
+      console.log("evaluations", zScore, Evaluation, zScoresArray);
+      
 
       return {
         ...analyte,
@@ -116,6 +138,7 @@ class Results extends Component {
         mean: mean,
         CV: CV,
         z_score: zScore,
+        result_evaluation: Evaluation,
       };
     });
   };
@@ -148,9 +171,147 @@ class Results extends Component {
       }
     }
   }
+  // Function to fetch Z-Scores data from the API
+  fetchZScores = async (analyte_id) => {
+    const { user_id } = this.state;
+    const round_id = this.props.match.params.id; // Accessing round_id directly from params
+
+    console.log("Fetching Z-Scores with the following parameters:");
+    console.log("Analyte ID:", analyte_id);
+    console.log("User ID:", user_id);
+    console.log("Raw Round ID:", round_id); // Logging round_id to ensure it's correct
+
+    // Convert round_id to a number
+    const roundIdNumber = parseInt(round_id, 10); // or use +round_id
+
+    // Check if conversion was successful
+    if (isNaN(roundIdNumber)) {
+      console.error("Conversion to number failed. round_id:", round_id);
+      return []; // Handle this case as needed
+    }
+
+    console.log("Converted Round ID:", roundIdNumber); // This will now print as a number
+
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/lab/AnalyteZScoreChart`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ analyte_id, user_id, round_id: roundIdNumber }) // Use roundIdNumber here
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.text();
+        throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorResponse}`);
+      }
+
+      const data = await response.json();
+      console.log("API Response:", data);
+      return data.z_scores;
+    } catch (error) {
+      console.error("Error fetching z-scores:", error);
+      return [];
+    }
+  };
+
+  // Function to group Z-scores into ranges for chart display
+  groupZScores = (zScores) => {
+    // Define groups for Z-scores
+    const groups = {
+      '< -3': 0,
+      '-3 to -2.5': 0,
+      '-2.5 to -2': 0,
+      '-2 to -1.5': 0,
+      '-1.5 to -1': 0,
+      '-1 to -0.5': 0,
+      '-0.5 to 0': 0,
+      '0 to 0.5': 0,
+      '0.5 to 1': 0,
+      '1 to 1.5': 0,
+      '1.5 to 2': 0,
+      '2 to 2.5': 0,
+      '2.5 to 3': 0,
+      '> 3': 0
+    };
+
+    zScores.forEach(({ z_score }) => {
+      if (z_score < -3) {
+        groups['< -3'] += 1;
+      } else if (z_score >= -3 && z_score < -2.5) {
+        groups['-3 to -2.5'] += 1;
+      } else if (z_score >= -2.5 && z_score < -2) {
+        groups['-2.5 to -2'] += 1;
+      } else if (z_score >= -2 && z_score < -1.5) {
+        groups['-2 to -1.5'] += 1;
+      } else if (z_score >= -1.5 && z_score < -1) {
+        groups['-1.5 to -1'] += 1;
+      } else if (z_score >= -1 && z_score < -0.5) {
+        groups['-1 to -0.5'] += 1;
+      } else if (z_score >= -0.5 && z_score < 0) {
+        groups['-0.5 to 0'] += 1;
+      } else if (z_score >= 0 && z_score < 0.5) {
+        groups['0 to 0.5'] += 1;
+      } else if (z_score >= 0.5 && z_score < 1) {
+        groups['0.5 to 1'] += 1;
+      } else if (z_score >= 1 && z_score < 1.5) {
+        groups['1 to 1.5'] += 1;
+      } else if (z_score >= 1.5 && z_score < 2) {
+        groups['1.5 to 2'] += 1;
+      } else if (z_score >= 2 && z_score < 2.5) {
+        groups['2 to 2.5'] += 1;
+      } else if (z_score >= 2.5 && z_score < 3) {
+        groups['2.5 to 3'] += 1;
+      } else if (z_score >= 3) {
+        groups['> 3'] += 1;
+      }
+    });
+
+    return groups;
+  };
+
+
+  renderChart = (groups, combinedData) => {
+    const zScores = combinedData.map(analyte => analyte.z_score); // Create an array of z-scores for comparison
+
+    const data = {
+        labels: Object.keys(groups),
+        datasets: [{
+            label: 'Number of Participants',
+            data: Object.values(groups),
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        }],
+      
+    };
+    const options = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Participants',
+                },
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Z-Score Ranges',
+                },
+            }
+        }
+    };
+
+    return (
+        <>
+            <Bar data={data}  options={options} />
+        </>
+    );
+};
+
   render() {
     const { rounds, issue_date, closing_date } = this.props;
-    const { combinedData } = this.state; // Use the combined data
+    // const { combinedData } = this.state; // Use the combined data
+    const { combinedData, zScoresData } = this.state;
 
     const defaultSorted = [
       {
@@ -230,7 +391,7 @@ class Results extends Component {
                         }
                         data={combinedData}
                         columns={this.state.columnsList}
-                        // Remove pagination-related props
+                      // Remove pagination-related props
                       />
                     </div>
                   </CardBody>
@@ -240,32 +401,56 @@ class Results extends Component {
             {/* New Section for Separate Tables */}
             <Row className="justify-content-center">
               <Col lg="10">
-                {combinedData.map((analyte, index) => (
-                  <Card key={index} className="mb-4">
-                    <CardBody>
-                      <table className="table table-bordered table-striped table-hover text-left">
-                        <thead className="thead-dark">
-                          <tr>
-                            <th>Participant Number</th>
-                            <th>Test Result</th>
-                            <th>Analyte Name</th>
-                            <th>Z-Score</th>
-                            <th>Coefficient of Variance (CV)</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td >{this.state.user_id}</td>
-                            <td>{analyte.result}</td>
-                            <td>{analyte.name}</td>
-                            <td>{analyte.z_score}</td>
-                            <td>{analyte.CV}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </CardBody>
-                  </Card>
-                ))}
+                {combinedData.map((analyte, index) => {
+                  // Check if Z-Scores are already fetched for this analyte
+                  const zScores = zScoresData[analyte.id];
+
+                  // Fetch Z-Scores if they haven't been fetched yet
+                  if (!zScores) {
+                    this.fetchZScores(analyte.id, analyte.rounds).then(zScores => {
+                      // Update state with the fetched Z-Scores
+                      this.setState(prevState => ({
+                        zScoresData: { ...prevState.zScoresData, [analyte.id]: zScores }
+                      }));
+                    });
+                  }
+
+                  return (
+                    <Card key={index} className="mb-4">
+                      <CardBody>
+                        <table className="table table-bordered table-striped table-hover text-left">
+                          <thead className="thead-dark">
+                            <tr>
+                              <th>Participant Number</th>
+                              <th>Test Result</th>
+                              <th>Analyte Name</th>
+                              <th>Z-Score</th>
+                              <th>Coefficient of Variance (CV)</th>
+                              <th>Evaluation</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{this.state.user_id}</td>
+                              <td>{analyte.result}</td>
+                              <td>{analyte.name}</td>
+                              <td>{analyte.z_score}</td>
+                              <td>{analyte.CV}</td>
+                              <td>{analyte.result_evaluation}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        {/* Render Z-Scores chart if available */}
+                        {zScores ? (
+                          this.renderChart(this.groupZScores(zScores), combinedData)
+                        ) : (
+                          <p>Loading Z-Scores...</p> // Optionally show a loading message
+                        )}
+                      </CardBody>
+                    </Card>
+                  );
+                })}
               </Col>
             </Row>
           </Container>

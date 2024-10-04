@@ -21,7 +21,7 @@ import {
   ModalHeader,
   ModalBody,
   Label,
-  Alert
+  Alert,
 } from "reactstrap";
 
 import paginationFactory, {
@@ -37,7 +37,12 @@ import { getSamplelist } from "store/sample/actions";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
-import { getroundlist, addNewRoundList, updateRoundList, deleteRound } from "store/rounds/actions";
+import {
+  getroundlist,
+  addNewRoundList,
+  updateRoundList,
+  deleteRound,
+} from "store/rounds/actions";
 
 import { isEmpty, size } from "lodash";
 import DeleteModal from "components/Common/DeleteModal";
@@ -45,29 +50,28 @@ import "assets/scss/table.scss";
 import moment from "moment";
 class InstrumentType extends Component {
   constructor(props) {
-
     super(props);
     this.node = React.createRef();
     this.state = {
       selectedRound: null,
       isEdit: false,
-      organization_name: '',
-      idFilter: '',
-      roundsFilter: '',
-      schemenameFilter: '',
-      cyclenoFilter: '',
-      sampleFilter: '',
-      participantsFilter: '',
-      issuedateFilter: '',
-      closingdateFilter: '',
-      statusFilter: '',
-      errorMessage:"",
+      organization_name: "",
+      idFilter: "",
+      roundsFilter: "",
+      schemenameFilter: "",
+      cyclenoFilter: "",
+      sampleFilter: "",
+      participantsFilter: "",
+      issuedateFilter: "",
+      closingdateFilter: "",
+      statusFilter: "",
+      errorMessage: "",
       RoundList: [],
       round: [],
       SchemeList: [],
       CycleList: [],
       // sample: [],
-      ListUnitt:[],
+      ListUnitt: [],
       methodlist: "",
       modal: false,
       deleteModal: false,
@@ -90,7 +94,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    onChange={e => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -98,8 +102,8 @@ class InstrumentType extends Component {
               </>
             );
           },
-          headerStyle: { width: '100px' },  // Adjust the width as needed
-          style: { width: '100px' },  // Adjust the width as needed
+          headerStyle: { width: "100px" }, // Adjust the width as needed
+          style: { width: "100px" }, // Adjust the width as needed
         },
         {
           dataField: "rounds",
@@ -110,13 +114,11 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.roundsFilter}
-                    onChange={e => this.handleFilterChange('roundsFilter', e)}
+                    onChange={e => this.handleFilterChange("roundsFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -130,17 +132,16 @@ class InstrumentType extends Component {
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
-            
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.schemenameFilter}
-                    onChange={e => this.handleFilterChange('schemenameFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("schemenameFilter", e)
+                    }
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -157,13 +158,11 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.cyclenoFilter}
-                    onChange={e => this.handleFilterChange('cyclenoFilter', e)}
+                    onChange={e => this.handleFilterChange("cyclenoFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -180,13 +179,11 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.sampleFilter}
-                    onChange={e => this.handleFilterChange('sampleFilter', e)}
+                    onChange={e => this.handleFilterChange("sampleFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -203,13 +200,13 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.participantsFilter}
-                    onChange={e => this.handleFilterChange('participantsFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("participantsFilter", e)
+                    }
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -223,9 +220,7 @@ class InstrumentType extends Component {
           sort: true,
           formatter: (cellContent, methodlist) => (
             <>
-              <span>
-                {moment(methodlist.issue_date).format("DD MMM YYYY")}
-              </span>
+              <span>{moment(methodlist.issue_date).format("DD MMM YYYY")}</span>
             </>
           ),
           // filter: textFilter(),
@@ -233,13 +228,13 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.issuedateFilter}
-                    onChange={e => this.handleFilterChange('issuedateFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("issuedateFilter", e)
+                    }
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -256,19 +251,20 @@ class InstrumentType extends Component {
               <span>
                 {moment(methodlist.closing_date).format("DD MMM YYYY")}
               </span>
-            </>),
+            </>
+          ),
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.closingdateFilter}
-                    onChange={e => this.handleFilterChange('closingdateFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("closingdateFilter", e)
+                    }
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -303,7 +299,7 @@ class InstrumentType extends Component {
                 <div>
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -322,15 +318,15 @@ class InstrumentType extends Component {
         // {
         //   dataField: 'link',
         //   text: '',
-        //   formatter: (cellContent, round) => {
-        //     return (
-        //       <Link to={`/add-labs-round-page/${round.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+          // formatter: (cellContent, round) => {
+          //   return (
+          //     <Link to={`/add-labs-round-page/${round.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
 
-        //         <span>Add Participants</span>
-        //       </Link>
+          //       <span>Add Participants</span>
+          //     </Link>
 
-        //     );
-        //   }
+          //   );
+          // }
         // },
         {
           dataField: "menu",
@@ -338,12 +334,26 @@ class InstrumentType extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, round) => {
+            const { organization_name } = this.state;
             // const scheme = round.scheme ? round.scheme.toString() : ""; // Extract scheme from round object
+
             return (
               <div className="d-flex gap-3 ml-3">
                 <Tooltip title="Add Participants">
                   <Link
-                    to={`/add-labs-round-page/${round.id}`}
+                    to="#"
+                    onClick={e => {
+                      e.preventDefault(); // Prevent the default navigation
+
+                      // Check if organization_name is valid
+                      if (!this.state.organization_name) {
+                        return; // Prevent navigation if invalid
+                      }
+
+                      const url = `/${this.state.organization_name}/add-labs-round-page/${round.id}`;
+                      console.log("Navigating to:", url);
+                      this.props.history.push(url); // Navigate to the new URL
+                    }}
                     style={{ textDecoration: "underline", color: "#008000" }}
                   >
                     <i
@@ -352,7 +362,6 @@ class InstrumentType extends Component {
                     ></i>
                   </Link>
                 </Tooltip>
-
                 {/* Show the statistics icon only when the status is "closed" */}
                 {round.status === "Closed" && (
                   <Tooltip title="Statistics">
@@ -368,7 +377,7 @@ class InstrumentType extends Component {
                     </Link>
                   </Tooltip>
                 )}
-                          
+
                 <Tooltip title="Update">
                   <Link className="text-success" to="#">
                     <i
@@ -388,6 +397,26 @@ class InstrumentType extends Component {
                     ></i>
                   </Link>
                 </Tooltip>
+
+                <Tooltip title="History">
+                  <Link
+                    className="fas fa-comment font-size-18"
+                    to={`/${organization_name}/rounds-history/${round.id}`} // This will still provide the URL for navigation
+                    onClick={e => {
+                      e.preventDefault(); // Prevent the default navigation
+
+                      // Check if organization_name is valid
+                      if (!this.state.organization_name) {
+                        console.error("Invalid organization name");
+                        return; // Prevent navigation if invalid
+                      }
+
+                      const url = `/${this.state.organization_name}/rounds-history/${round.id}`;
+                      console.log("Navigating to:", url);
+                      this.props.history.push(url); // Navigate to the new URL
+                    }}
+                  ></Link>
+                </Tooltip>
               </div>
             );
           },
@@ -401,17 +430,24 @@ class InstrumentType extends Component {
   }
 
   componentDidMount() {
-    
     const { organization_name } = this.props.match.params;
-    this.setState({ organization_name });
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
 
-    const { onGetRoundList, onGetgetschemelist, onGetgetcyclelist, onGetgetSamplelistlist } = this.props;
+    const {
+      onGetRoundList,
+      onGetgetschemelist,
+      onGetgetcyclelist,
+      onGetgetSamplelistlist,
+    } = this.props;
     const userId = this.state.user_id;
 
     onGetRoundList(userId);
     onGetgetschemelist(userId);
     onGetgetcyclelist(userId);
-    onGetgetSamplelistlist(userId); 
+    onGetgetSamplelistlist(userId);
   }
 
   toggleDeleteModal = () => {
@@ -437,13 +473,12 @@ class InstrumentType extends Component {
   //   this.setState({ deleteModal: true });
   // };
 
-
-  onClickDelete = (RoundList) => {
-    if (RoundList.status === 'Open') {
+  onClickDelete = RoundList => {
+    if (RoundList.status === "Open") {
       this.setState({ errorMessage: "Cannot delete. Round is Open" });
       // Clear error message after 5 seconds
       setTimeout(() => {
-        this.setState({ errorMessage: '' });
+        this.setState({ errorMessage: "" });
       }, 2000);
     } else {
       this.setState({ RoundList: RoundList });
@@ -457,30 +492,32 @@ class InstrumentType extends Component {
     setTimeout(() => {
       this.setState({ successMessage: "", modal: false });
     }, 3000);
-  }
+  };
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
   };
 
-  onClickStatistics = (round) => {
+  onClickStatistics = round => {
     if (round && round.id) {
       // Update the round's status to "report available"
       const updatedRound = {
         ...round,
         status: "Report Available",
       };
-  
+
       // Dispatch the update action to save the new status
       this.props.onUpdateRound(round.id, updatedRound);
-      
+
       // Optionally, redirect to the statistics page
-      this.props.history.push(`/${this.state.organization_name}/statistics/${round.id}`);
+      this.props.history.push(
+        `/${this.state.organization_name}/statistics/${round.id}`
+      );
     }
   };
 
   toggle(round) {
-    console.log("data in case of update asjdhasdf", round)
+    console.log("data in case of update asjdhasdf", round);
     if (round && round.id) {
       this.setState({
         modal: true,
@@ -490,11 +527,11 @@ class InstrumentType extends Component {
           sample: round.sample,
           participants: round.participants,
           issue_date: round.issue_date
-          ? moment(round.issue_date).format("YYYY-MM-DD")
-          : "",
+            ? moment(round.issue_date).format("YYYY-MM-DD")
+            : "",
           closing_date: round.closing_date
-          ? moment(round.closing_date).format("YYYY-MM-DD")
-          : "",
+            ? moment(round.closing_date).format("YYYY-MM-DD")
+            : "",
           status: round.status,
           added_by: round.added_by,
         },
@@ -527,7 +564,10 @@ class InstrumentType extends Component {
     ) {
       this.setState({ CycleList: this.props.CycleList });
     }
-    if (!isEmpty(this.props.ListUnitt) && size(prevProps.ListUnitt) !== size(this.props.ListUnitt)) {
+    if (
+      !isEmpty(this.props.ListUnitt) &&
+      size(prevProps.ListUnitt) !== size(this.props.ListUnitt)
+    ) {
       this.setState({ ListUnitt: this.props.ListUnitt });
     }
   }
@@ -544,7 +584,7 @@ class InstrumentType extends Component {
   };
   closeModal = () => {
     this.setState({ modal: false });
-  }
+  };
 
   render() {
     const { SearchBar } = Search;
@@ -553,23 +593,47 @@ class InstrumentType extends Component {
 
     const { isEdit, deleteModal, errorMessage } = this.state;
     const round = this.state.round;
-    const { onGetRoundList, onGetgetschemelist, onGetgetcyclelist, onGetgetSamplelistlist, onAddNewRound, onUpdateRound } = this.props;
+    const {
+      onGetRoundList,
+      onGetgetschemelist,
+      onGetgetcyclelist,
+      onGetgetSamplelistlist,
+      onAddNewRound,
+      onUpdateRound,
+    } = this.props;
 
+    const {
+      idFilter,
+      roundsFilter,
+      schemenameFilter,
+      cyclenoFilter,
+      sampleFilter,
+      participantsFilter,
+      issuedateFilter,
+      closingdateFilter,
+      statusFilter,
+    } = this.state;
 
-    const { idFilter, roundsFilter, schemenameFilter, cyclenoFilter, sampleFilter, participantsFilter, issuedateFilter, closingdateFilter, statusFilter} = this.state;
-
-    const filteredData = RoundList.filter(entry => {   
+    const filteredData = RoundList.filter(entry => {
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString() : "";
       const rounds = entry.rounds ? entry.rounds.toString() : "";
-      const scheme_name = entry.scheme_name ? entry.scheme_name.toString().toLowerCase() : "";
-      const cycle_no = entry.cycle_no ? entry.cycle_no.toString().toLowerCase() : "";
+      const scheme_name = entry.scheme_name
+        ? entry.scheme_name.toString().toLowerCase()
+        : "";
+      const cycle_no = entry.cycle_no
+        ? entry.cycle_no.toString().toLowerCase()
+        : "";
       const sample = entry.sample ? entry.sample.toString() : "";
-      const participants = entry.participants ? entry.participants.toString() : "";
+      const participants = entry.participants
+        ? entry.participants.toString()
+        : "";
       const issue_date = entry.issue_date ? entry.issue_date.toString() : "";
-      const closing_date = entry.closing_date ? entry.closing_date.toString() : "";
+      const closing_date = entry.closing_date
+        ? entry.closing_date.toString()
+        : "";
       const status = entry.status ? entry.status.toString() : "";
-      
+
       return (
         id.includes(idFilter) &&
         rounds.includes(roundsFilter) &&
@@ -580,8 +644,8 @@ class InstrumentType extends Component {
         issue_date.includes(issuedateFilter) &&
         closing_date.includes(closingdateFilter) &&
         status.includes(statusFilter)
-    );
-  });
+      );
+    });
 
     const pageOptions = {
       sizePerPage: 10,
@@ -615,12 +679,10 @@ class InstrumentType extends Component {
               <Col lg="10">
                 <Card>
                   <CardBody>
-                  <Row>
+                    <Row>
                       <Col className="pagination pagination-rounded justify-content-center mb-2">
                         {errorMessage && (
-                          <Alert color="danger">
-                            {errorMessage}
-                          </Alert>
+                          <Alert color="danger">{errorMessage}</Alert>
                         )}
                       </Col>
                     </Row>
@@ -672,15 +734,31 @@ class InstrumentType extends Component {
                                           enableReinitialize={true}
                                           initialValues={{
                                             // hiddenEditFlag: isEdit,
-                                            rounds: this.state.selectedRound ? this.state.selectedRound.rounds : "",
-                                            sample: this.state.selectedRound ? this.state.selectedRound.sample : "",
-                                            participants: this.state.selectedRound ? this.state.selectedRound.participants : "",
-                                            issue_date: this.state.selectedRound ? this.state.selectedRound.issue_date : "",
-                                            closing_date: this.state.selectedRound ? this.state.selectedRound.closing_date : "",
+                                            rounds: this.state.selectedRound
+                                              ? this.state.selectedRound.rounds
+                                              : "",
+                                            sample: this.state.selectedRound
+                                              ? this.state.selectedRound.sample
+                                              : "",
+                                            participants: this.state
+                                              .selectedRound
+                                              ? this.state.selectedRound
+                                                  .participants
+                                              : "",
+                                            issue_date: this.state.selectedRound
+                                              ? this.state.selectedRound
+                                                  .issue_date
+                                              : "",
+                                            closing_date: this.state
+                                              .selectedRound
+                                              ? this.state.selectedRound
+                                                  .closing_date
+                                              : "",
                                             // notes: this.state.selectedRound ? this.state.selectedRound.notes : "",
-                                            status: this.state.selectedRound ? this.state.selectedRound.status : "Created",
+                                            status: this.state.selectedRound
+                                              ? this.state.selectedRound.status
+                                              : "Created",
                                             // added_by: this.state.selectedRound ? this.state.selectedRound.added_by : "",
-
                                           }}
                                           // validationSchema={Yup.object().shape({
                                           //   rounds: Yup.string().required("Select the number of rounds"),
@@ -696,9 +774,18 @@ class InstrumentType extends Component {
                                           //   notes: Yup.string().required("Notes are required"),
 
                                           // })}
-                                          onSubmit={async (values, { setSubmitting }) => {
-                                            const userId = localStorage.getItem("authUser")
-                                              ? JSON.parse(localStorage.getItem("authUser")).user_id
+                                          onSubmit={async (
+                                            values,
+                                            { setSubmitting }
+                                          ) => {
+                                            const userId = localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
                                               : "";
 
                                             const newround = {
@@ -713,19 +800,35 @@ class InstrumentType extends Component {
 
                                             try {
                                               if (this.state.isEdit) {
-                                                await this.props.onUpdateRound(this.state.selectedRound.id, newround);
-                                                this.displaySuccessMessage("Round updated successfully!");
+                                                await this.props.onUpdateRound(
+                                                  this.state.selectedRound.id,
+                                                  newround
+                                                );
+                                                this.displaySuccessMessage(
+                                                  "Round updated successfully!"
+                                                );
                                               } else {
-                                                await this.props.onAddNewRound(newround);
-                                                this.displaySuccessMessage("Round added successfully!");
+                                                await this.props.onAddNewRound(
+                                                  newround
+                                                );
+                                                this.displaySuccessMessage(
+                                                  "Round added successfully!"
+                                                );
                                               }
 
                                               // Refetch data and update local state
-                                              const updatedData = await this.props.onGetRoundList(this.state.user_id);
-                                              this.setState({ RoundList: updatedData });
-
+                                              const updatedData =
+                                                await this.props.onGetRoundList(
+                                                  this.state.user_id
+                                                );
+                                              this.setState({
+                                                RoundList: updatedData,
+                                              });
                                             } catch (error) {
-                                              console.error("Error updating/adding rounds:", error);
+                                              console.error(
+                                                "Error updating/adding rounds:",
+                                                error
+                                              );
                                             }
 
                                             setSubmitting(false);
@@ -741,7 +844,9 @@ class InstrumentType extends Component {
                                               <Row>
                                                 <Col className="col-12">
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">Number of Rounds</Label>
+                                                    <Label className="col-form-label">
+                                                      Number of Rounds
+                                                    </Label>
                                                     <Field
                                                       name="rounds"
                                                       type="number"
@@ -757,19 +862,44 @@ class InstrumentType extends Component {
                                                   </div>
 
                                                   <div className="mb-3">
-                                                    <Label for="sample">Sample</Label>
+                                                    <Label for="sample">
+                                                      Sample
+                                                    </Label>
                                                     <Field
                                                       as="select"
                                                       name="sample"
-                                                      className={"form-control" + (errors.sample && touched.sample ? " is-invalid" : "")}
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.sample &&
+                                                        touched.sample
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
                                                     >
-                                                      <option value="">Select Sample</option>
-                                                      {ListUnitt && ListUnitt.map(sample => (
-                                                        <option key={sample.id} value={sample.samplename}>{sample.
-                                                          samplename}</option>
-                                                      ))}
+                                                      <option value="">
+                                                        Select Sample
+                                                      </option>
+                                                      {ListUnitt &&
+                                                        ListUnitt.map(
+                                                          sample => (
+                                                            <option
+                                                              key={sample.id}
+                                                              value={
+                                                                sample.samplename
+                                                              }
+                                                            >
+                                                              {
+                                                                sample.samplename
+                                                              }
+                                                            </option>
+                                                          )
+                                                        )}
                                                     </Field>
-                                                    <ErrorMessage name="sample" component="div" className="invalid-feedback" />
+                                                    <ErrorMessage
+                                                      name="sample"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
@@ -831,16 +961,24 @@ class InstrumentType extends Component {
                                                     <Field
                                                       name="status"
                                                       as="select"
-
                                                       className="form-control"
                                                       multiple={false}
                                                     >
-                                                      <option value="Created">Created</option>
-                                                      <option value="Ready">Ready</option>
-                                                      <option value="Open">Open</option>
-                                                      <option value="Closed">Closed</option>
-                                                      <option value="Report Available">Report Available</option>
-
+                                                      <option value="Created">
+                                                        Created
+                                                      </option>
+                                                      <option value="Ready">
+                                                        Ready
+                                                      </option>
+                                                      <option value="Open">
+                                                        Open
+                                                      </option>
+                                                      <option value="Closed">
+                                                        Closed
+                                                      </option>
+                                                      <option value="Report Available">
+                                                        Report Available
+                                                      </option>
                                                     </Field>
                                                     <ErrorMessage
                                                       name="status"
@@ -936,13 +1074,18 @@ InstrumentType.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = ({ RoundList, SchemeList, CycleList, sample, ListUnitt }) => ({
+const mapStateToProps = ({
+  RoundList,
+  SchemeList,
+  CycleList,
+  sample,
+  ListUnitt,
+}) => ({
   RoundList: RoundList.RoundList,
   SchemeList: SchemeList.SchemeList,
   // sample: sample.sample,
   CycleList: CycleList.CycleList,
   ListUnitt: ListUnitt.ListUnitt,
-
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -950,7 +1093,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetgetcyclelist: id => dispatch(getcyclelist(id)),
   onGetgetSamplelistlist: id => dispatch(getSamplelist(id)),
   onGetRoundList: id => dispatch(getroundlist(id)),
-  onAddNewRound: (id, createround) => dispatch(addNewRoundList(id, createround)),
+  onAddNewRound: (id, createround) =>
+    dispatch(addNewRoundList(id, createround)),
   onUpdateRound: (id, round) => dispatch(updateRoundList({ id, ...round })),
   onDeleteRound: round => dispatch(deleteRound(round)),
 });

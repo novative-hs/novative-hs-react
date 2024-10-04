@@ -81,8 +81,8 @@ class Results extends Component {
       PostResult: [],
       ResultList: [],
       isDataLoaded: false, // Flag to track if all data is loaded
-      user_id: localStorage.getItem("authUser")
-        ? JSON.parse(localStorage.getItem("authUser")).user_id
+      participantID: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).participantID
         : "",
       // approvedLabListColumns: this.getApprovedLabListColumns(), // Initialize columns in state
 
@@ -234,36 +234,29 @@ class Results extends Component {
           ),
         },
         {
+          // text: "Actions",
           formatter: (cellContent, list) => {
-            const { round_status } = this.props; // Destructure round_status from props
-        
+            const { round_status } = this.props;
+
             return (
               <div className="d-flex flex-row align-items-start">
-                {/* Show buttons only if round_status is "Open" and result_status is not "Submit" */}
-                {round_status && list.result_status != "Submitted" && round_status === "Open" ? (
+                {/* Check if round_status is "Open" and list.result_status is "Created" */}
+                {round_status && 
+                round_status === "Open" ? (
                   <>
-                    {/* Edit Button */}
                     <button
-                      onClick={() => this.handleUpdate(list)} // Handle Edit action
-                      className="btn btn-primary me-2"
-                    >
-                      Edit
-                    </button>
-        
-                    {/* Submit Button */}
-                    <button
-                      onClick={() => this.handleSubmit(list)} // Handle Submit action
+                      onClick={() => this.handleSubmit(list)}
                       className="btn btn-success"
                     >
                       Submit
                     </button>
                   </>
-                ) : null} {/* Hide buttons if the conditions are not met */}
+                ) : null}{" "}
+                {/* If the status is "Closed", hide the buttons */}
               </div>
             );
           },
-        }
-        
+        },
       ];
     } else if (schemeType === "Qualitative") {
       return [
@@ -396,20 +389,18 @@ class Results extends Component {
         },
         {
           // text: "Actions",
+          text: "Actions",
+          dataField: "Actions",
+          sort: true,
           formatter: (cellContent, list) => {
             const { round_status } = this.props;
+
             return (
               <div className="d-flex flex-row align-items-start">
                 {/* Check if round_status is "Open" and list.result_status is "Created" */}
-                {round_status && list.result_status != "Submitted" && round_status === "Open" ? (
-
+                {round_status &&
+                round_status === "Open" ? (
                   <>
-                    <button
-                      onClick={() => this.handleUpdate(list)}
-                      className="btn btn-primary me-2"
-                    >
-                      Edit
-                    </button>
                     <button
                       onClick={() => this.handleSubmit(list)}
                       className="btn btn-success"
@@ -432,9 +423,9 @@ class Results extends Component {
 
   //   const { onGetSchemeAnalyte, onGetUnitsList } = this.props;
   //   const id = this.props.match.params.id;
-  //   const userId = this.state.user_id;
+  //   const participantID = this.state.participantID;
   //   onGetSchemeAnalyte(id);
-  //   onGetUnitsList(userId);
+  //   onGetUnitsList(participantID);
 
   //   setTimeout(() => {
   //     this.setState(
@@ -459,13 +450,16 @@ class Results extends Component {
     } = this.props;
 
     const id = this.props.match.params.id;
-    const userId = this.state.user_id;
+    console.log("props main id ", id, this.props.match.params.id)
+    // Extract participantID from the query string
+    const searchParams = new URLSearchParams(this.props.location.search);
+    const participantID = searchParams.get('participantID');    
 
     onGetSchemeAnalyte(id);
-    onGetUnitsList(userId);
-    onGetMethodsList(userId);
-    onGetReagents(userId);
-    onGetInstrumentList(userId);
+    onGetUnitsList(participantID);
+    onGetMethodsList(participantID);
+    onGetReagents(participantID);
+    onGetInstrumentList(participantID);
 
     onGetResultsList(id);
   }
@@ -522,7 +516,7 @@ class Results extends Component {
     } = this.state;
 
     const { participant_ids, rounds } = this.props;
-    const { user_id } = this.state;
+    const { participantID } = this.state;
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
       // console.log("SchemeAnalytesList", SchemeAnalytesList)
       // Filter ResultList where the analyte matches
@@ -532,9 +526,10 @@ class Results extends Component {
       // console.log("participantResults", participantResults)
       // Check which of these results were submitted by the logged-in user
       const userResult = participantResults.find(result => {
-        return result.lab.account_id === user_id && result.rounds === rounds ;
+        return console.log("lab account id",result.lab.account_id) === console.log("url account id", participantID) && result.rounds === rounds ;
       });
       console.log("userResultuserResult", userResult);
+
       return {
         id: analyte.id || index,
         analyte_id: analyte.id,
@@ -618,7 +613,7 @@ class Results extends Component {
     try {
       const response = await this.props.onPostResult(
         resultData,
-        this.state.user_id
+        this.state.participantID
       );
       console.log("Response:", response); // Check the response structure
 
@@ -683,7 +678,7 @@ class Results extends Component {
     try {
       const response = await this.props.onPostResult(
         resultData,
-        this.state.user_id
+        this.state.participantID
       );
       console.log("Response:", response); // Check the response structure
 
@@ -863,7 +858,7 @@ class Results extends Component {
     const id = this.props.match.params.id;
     const { SearchBar } = Search;
     const { combinedData, isDataLoaded } = this.state;
-    const { schemeName, scheme_id, schemeType, rounds, issue_date, closing_date, round_status } =
+    const { schemeName, schemeType, rounds, issue_date, closing_date, round_status } =
       this.props;
     console.log("scheme type", schemeType, schemeName)
     // Get the first round's details if available
@@ -900,7 +895,7 @@ class Results extends Component {
               <Col className="d-flex flex-wrap justify-content-md-around justify-content-sm-start  p-3">
                 <div className="d-flex flex-column flex-md-row align-items-start  mb-2 mb-md-0 p-2">
                   <span className="me-2">Participant No:</span>
-                  <span>{this.state.user_id}</span>
+                  <span>{this.state.participantID}</span>
                 </div>
                 <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
                   <span className="me-2">Scheme: </span>
@@ -924,7 +919,6 @@ class Results extends Component {
                 </div>
               </Col>
               </strong>
-              
             </Row>
             <Row className="justify-content-start" style={{marginLeft: "120px"}}>
               <Col
@@ -947,13 +941,10 @@ class Results extends Component {
                   Print
                 </Button>
                 {round_status === "Report Available" && (
-                  <Link to={`/${organization_name}/${id}/report`} className="w-100 me-2">
+                  <Link to={`/${organization_name}/${id}/report`} className="w-100">
                     <Button className="mb-3 w-100 btn">Report</Button>
                   </Link>
                 )}
-                <Link to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`} className="w-100">
-                    <Button className="mb-3 w-100 btn">History</Button>
-                  </Link>
               </Col>
             </Row>
             <Row className="justify-content-center align-item-center">
@@ -1057,6 +1048,8 @@ Results.propTypes = {
 
   onPostResult: PropTypes.func,
   onGetResultsList: PropTypes.func,
+  location: PropTypes.object,
+
 };
 
 const mapStateToProps = ({

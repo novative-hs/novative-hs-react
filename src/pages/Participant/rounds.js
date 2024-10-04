@@ -9,7 +9,7 @@ import paginationFactory, {
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-
+import Tooltip from "@material-ui/core/Tooltip";
 import {
   Card,
   CardBody,
@@ -94,6 +94,38 @@ class Roundural extends Component {
           dataField: "status",
           text: "Status",
           sort: true,
+        },
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, round) => {
+            const { organization_name } = this.state;
+            return (
+              <div className="d-flex justify-content-center gap-3 ml-3">
+                <Tooltip title="History">
+                  <Link
+                    className="fas fa-comment font-size-18 "
+                    to={`/${organization_name}/rounds-history/${round.id}`} // This will still provide the URL for navigation
+                    onClick={e => {
+                      e.preventDefault(); // Prevent the default navigation
+
+                      // Check if organization_name is valid
+                      if (!this.state.organization_name) {
+                        console.error("Invalid organization name");
+                        return; // Prevent navigation if invalid
+                      }
+
+                      const url = `/${this.state.organization_name}/rounds-history/participant/${round.id}`;
+                      console.log("Navigating to:", url);
+                      this.props.history.push(url); // Navigate to the new URL
+                    }}
+                  ></Link>
+                </Tooltip>
+              </div>
+            );
+          },
         },
       ],
     };
@@ -256,6 +288,9 @@ Roundural.propTypes = {
   onGetRoundList: PropTypes.func,
   error: PropTypes.any,
   success: PropTypes.any,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ SelectedSchemeList }) => ({

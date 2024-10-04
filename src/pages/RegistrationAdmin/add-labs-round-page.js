@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -18,6 +19,7 @@ import {
   updateRoundLablist 
 } from "store/participant-list/actions";
 import "assets/scss/table.scss";
+import { Hidden } from "@material-ui/core";
 
 class RoundAddParticipant extends Component {
   constructor(props) {
@@ -27,7 +29,11 @@ class RoundAddParticipant extends Component {
       idFilter: '',
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
+      LabRoundList: [],
       feedbackMessage: '',
+      user_id: localStorage.getItem("authUser")
+      ? JSON.parse(localStorage.getItem("authUser")).user_id
+      : "",
       feedbackListColumns: [
         {
           text: "id",
@@ -50,6 +56,14 @@ class RoundAddParticipant extends Component {
           style: { width: '100px' },
         },
         {
+          text: "ID",
+          dataField: "AccountID",
+          sort: true,
+          hidden: true,
+          formatter: (cellContent, round) => <>{round.AccountID}</>,
+         
+        },
+        {
           dataField: "name",
           text: "Participants",
           sort: true,
@@ -64,11 +78,25 @@ class RoundAddParticipant extends Component {
                 />
               </div>
               <div>{column.text}</div>
+
             </>
           ),
           headerAlign: 'center',
           align: 'left',
+          formatter: (cellContent, round) => {
+            return (
+              <Tooltip title="View Results">
+                <Link
+                  to={`/UpdateParticipantsResults/${this.props.match.params.id}?participantID=${round.AccountID}`}
+                  style={{ textDecoration: "underline", color: "#008000" }}
+                >
+                  <div>{round.name}</div> {/* Corrected to use round.name */}
+                </Link>
+              </Tooltip>
+            );
+          }
         },
+        
         {
           dataField: "checkbox",
           text: "Select",
@@ -104,18 +132,12 @@ class RoundAddParticipant extends Component {
   fetchData()  {
     const { ongetParticipantRoundlist, onGetRoundLabs } = this.props;
     const roundId = this.props.match.params.id;
-console.log("ffffffffffff", roundId)
+    console.log("ffffffffffff", roundId)
     if (roundId) {
       onGetRoundLabs(roundId);
     } else {
       console.error("round ID not found in URL parameters");
     }
-
-    // const authUser = localStorage.getItem("authUser")
-    //   ? JSON.parse(localStorage.getItem("authUser"))
-    //   : null;
-    // const user_id = authUser ? authUser.user_id : null;
-
     if (roundId) {
       console.log("User ID found:", roundId);
       ongetParticipantRoundlist(roundId);
@@ -234,7 +256,7 @@ console.log("ffffffffffff", roundId)
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Database Admin | Participantss List</title>
+            <title>Database Admin | Participants List</title>
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="List" breadcrumbItem="Participants List" />
@@ -314,7 +336,7 @@ RoundAddParticipant.propTypes = {
 
 const mapStateToProps = (state) => ({
   ParticipantList: state.ParticipantList?.ParticipantList,
-  LabRoundList: state.ParticipantList?.LabRoundList,
+  LabRoundList: state.ParticipantList?.LabRoundList || [],
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

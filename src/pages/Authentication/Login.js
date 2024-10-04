@@ -74,27 +74,7 @@ class Login extends Component {
 
   componentDidMount() {
     const url = window.location.href;
-    const queryString = url.includes("&")
-      ? url.substring(url.indexOf("&") + 1)
-      : "";
-    console.log(queryString);
-    const params = new URLSearchParams(queryString);
-    console.log("print params in app", url, queryString, params);
-    const latitudeFromUrl = params.get("lat");
-    const longitudeFromUrl = params.get("lon");
 
-    console.log("Latitude:", latitudeFromUrl);
-    console.log("Longitude:", longitudeFromUrl);
-    if (latitudeFromUrl && longitudeFromUrl) {
-      const url = `http://localhost:3000/nearby-labs/&lat=${latitudeFromUrl}&lon=${longitudeFromUrl}`;
-      const queryString = url.substring(url.indexOf("&") + 1);
-      const finalUrl = "&" + queryString; // Remove the leading question mark ('?')
-      this.setState({ finalUrl: finalUrl });
-      console.log("differ with the final url state:", this.state.finalUrl);
-
-      console.log(finalUrl);
-      console.log("whsuqi", this.props.match.params.uuid);
-    }
 
     // Removing attributes from the body
     const elem = document.getElementsByTagName("body")[0];
@@ -183,21 +163,7 @@ class Login extends Component {
                     zIndex: 1, // Keep it behind the text
                   }}
                 ></div>
-                <div className="h-100 w-100 position-absolute p-3 z-2 d-flex ">
-                  <img
-                    src={logo}
-                    alt="Logo"
-                    className="mr-3 align-self-end" // Add margin-right for spacing between the logo and text
-                    style={{ width: "30%", height: "15%" }} // Adjust logo size
-                  />
-                  {/* <p className="text-light position-absolute align-self-endalign-self-end">
-                    We have a two-step registration process for all types of
-                    accounts. We have a two-step registration process for all
-                    types of accounts. We have a two-step registration process
-                    for all types of accounts. We have a two-step registration
-                    process for all types of accounts.
-                  </p> */}
-                </div>
+                
               </Col>
               <Col className="bg-light " md={6} lg={6} xl={6}>
                 <div className="d-flex flex-column justify-content-center h-100 px-5 py-5">

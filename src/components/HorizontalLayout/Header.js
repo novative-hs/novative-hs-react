@@ -14,6 +14,8 @@ import logoLightSvg from "../../assets/images/neqas-logo.jpeg";
 
 //i18n
 import { withTranslation } from "react-i18next";
+import { getLabProfile } from "store/auth/labprofile/actions";
+import { getStaffProfile } from "store/auth/staffprofile/actions";
 
 // Redux Store
 import { toggleRightSidebar } from "../../store/actions";
@@ -29,11 +31,16 @@ class Header extends Component {
     super(props);
     this.state = {
       isSearch: false,
+      LabProfile: [],
+      StaffProfile: [],
       open: false,
       dropdownOpen: false,
       isSmallScreen: false,
       account_type: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).account_type
+        : "",
+      user_id: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       position: "right",
       isNavbarOpen: false,
@@ -82,6 +89,19 @@ class Header extends Component {
     if (window.innerWidth > 800) {
       this.setState({ isNavbarOpen: true });
     }
+    const { LabProfile, getLabProfile } = this.props;
+    getLabProfile(this.state.user_id);
+    this.setState({
+      LabProfile
+    });
+    console.log("state", this.state.LabProfile);
+
+    const { StaffProfile, getStaffProfile } = this.props;
+    getStaffProfile(this.state.user_id);
+    this.setState({
+      StaffProfile
+    });
+    console.log("state", this.state.StaffProfile);
   }
   
 
@@ -122,6 +142,29 @@ class Header extends Component {
   render() {
     const isSmallScreen = window.innerWidth < 800;
     const { isNavbarOpen } = this.state;
+    const { LabProfile } = this.props;
+    const {StaffProfile} = this.props;
+    const { getLabProfile } = this.props;
+    const { getStaffProfile } = this.props;
+    console.log("lab logo", this.props.LabProfile)
+    // Extract organization_logo from the LabProfile
+    // Assuming 'https://example.com' is your domain
+    const BASE_URL = "http://127.0.0.1:8000/";
+
+    // Append the base URL to the relative path if the logo exists
+    const laborganizationLogo = LabProfile?.success?.organization_logo
+      ? `${BASE_URL}${LabProfile.success.organization_logo}`
+      : logo;
+
+    console.log("lab organization logo", laborganizationLogo); // Debugging the logo URL
+
+    // Append the base URL to the relative path if the logo exists
+    const stafforganizationLogo = StaffProfile?.success?.organization_logo
+      ? `${BASE_URL}${StaffProfile.success.organization_logo}`
+      : logo;
+
+    console.log("lab organization logo", stafforganizationLogo); // Debugging the logo URL
+  
    
     return (
       <React.Fragment>
@@ -129,10 +172,30 @@ class Header extends Component {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box" style={{ background: "white" }}>
-
-                <span className="logo-sm">
+                {this.state.account_type == "superadmin" ? (
+                  <span className="logo-sm">
                   <img src={logo} alt="" height="60" />
-                </span>
+                  </span>
+                ) : this.state.account_type == "labowner" ? (
+                  <span className="logo-sm">
+                  <img
+                    src={laborganizationLogo}
+                    alt="Lab Logo"
+                    height="60"
+                  />
+                  </span>                
+                ) : this.state.account_type == "database-admin" || this.state.account_type == "registration-admin" || this.state.account_type == "CSR" ? (
+                  <span className="logo-sm">
+                  <img
+                    src={stafforganizationLogo}
+                    alt="Lab Logo"
+                    height="60"
+                  />
+                  </span>                
+                ) : null
+}
+
+               
               </div>
               <button
               type="button"
@@ -176,13 +239,20 @@ Header.propTypes = {
   toggleRightSidebar: PropTypes.func,
   openLeftMenuCallBack: PropTypes.func,
   toggleNavbarDropdown: PropTypes.func,
+  getLabProfile: PropTypes.func,
+  LabProfile: PropTypes.array,
+  getStaffProfile: PropTypes.func,
+  StaffProfile: PropTypes.array,
+
 };
 
 const mapStatetoProps = state => {
   const { layoutType, showRightSidebar } = state.Layout;
-  return { layoutType, showRightSidebar };
+  const LabProfile = state.LabProfile;
+  const StaffProfile = state.StaffProfile;
+  return { layoutType, showRightSidebar, LabProfile, StaffProfile};
 };
 
-export default connect(mapStatetoProps, { toggleRightSidebar })(
+export default connect(mapStatetoProps, { getStaffProfile, getLabProfile, toggleRightSidebar })(
   withTranslation()(Header)
 );

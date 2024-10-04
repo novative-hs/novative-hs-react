@@ -20,9 +20,9 @@ import {
   Label,
   FormGroup,
   Input,
-  Alert
+  Alert,
 } from "reactstrap";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 
 import paginationFactory, {
   PaginationProvider,
@@ -34,7 +34,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 // import DeleteModal from "components/Common/DeleteModal";
@@ -43,28 +43,28 @@ import {
   getAnalytelist,
   addNewAnalyteList,
   updateAnalyteList,
-  deleteAnalyte
+  deleteAnalyte,
 } from "store/databaseofunits/actions";
-
 
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
-import moment from 'moment';
+import moment from "moment";
 class AnalyteList extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      nameFilter: '',
-      methodsFilter: '',
-      equipmentFilter: '',
-      reagentsFilter: '',
-      masterunitFilter: '',
-      dateFilter: '',
-      codeFilter: '',
-      idFilter:'',
-      typeFilter:'',
-      statusFilter:'',
+      nameFilter: "",
+      organization_name: "",
+      methodsFilter: "",
+      equipmentFilter: "",
+      reagentsFilter: "",
+      masterunitFilter: "",
+      dateFilter: "",
+      codeFilter: "",
+      idFilter: "",
+      typeFilter: "",
+      statusFilter: "",
       ListUnit: [],
       analyte: "",
       errorMessage: "",
@@ -74,7 +74,6 @@ class AnalyteList extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       ReagentsListColumns: [
-
         {
           text: "ID",
           dataField: "id",
@@ -86,7 +85,7 @@ class AnalyteList extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    onChange={e => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -95,26 +94,24 @@ class AnalyteList extends Component {
             );
           },
 
-          headerStyle: { width: '100px' },  // Adjust the width as needed
-          style: { width: '100px' },  // Adjust the width as needed
+          headerStyle: { width: "100px" }, // Adjust the width as needed
+          style: { width: "100px" }, // Adjust the width as needed
         },
         {
           dataField: "code",
           text: "code",
           sort: true,
 
-          style: { textAlign: 'right' },
+          style: { textAlign: "right" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-
                   <input
                     type="text"
                     value={this.state.codeFilter}
-                    onChange={e => this.handleFilterChange('codeFilter', e)}
+                    onChange={e => this.handleFilterChange("codeFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -128,7 +125,7 @@ class AnalyteList extends Component {
           text: "Analyte",
           sort: true,
 
-          style: { textAlign: 'left' },
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -136,9 +133,8 @@ class AnalyteList extends Component {
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    onChange={e => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -157,7 +153,9 @@ class AnalyteList extends Component {
                   <input
                     type="text"
                     value={this.state.masterunitFilter}
-                    onChange={e => this.handleFilterChange('masterunitFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("masterunitFilter", e)
+                    }
                     className="form-control"
                   />
                 </div>
@@ -166,7 +164,7 @@ class AnalyteList extends Component {
             );
           },
         },
-        
+
         {
           dataField: "noofmethods",
           text: "No. of Methods",
@@ -179,9 +177,8 @@ class AnalyteList extends Component {
                   <input
                     type="text"
                     value={this.state.methodsFilter}
-                    onChange={e => this.handleFilterChange('methodsFilter', e)}
+                    onChange={e => this.handleFilterChange("methodsFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -201,9 +198,10 @@ class AnalyteList extends Component {
                   <input
                     type="text"
                     value={this.state.equipmentFilter}
-                    onChange={e => this.handleFilterChange('equipmentFilter', e)}
+                    onChange={e =>
+                      this.handleFilterChange("equipmentFilter", e)
+                    }
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -223,9 +221,8 @@ class AnalyteList extends Component {
                   <input
                     type="text"
                     value={this.state.reagentsFilter}
-                    onChange={e => this.handleFilterChange('reagentsFilter', e)}
+                    onChange={e => this.handleFilterChange("reagentsFilter", e)}
                     className="form-control"
-
                   />
                 </div>
                 <div>{column.text}</div>
@@ -233,7 +230,7 @@ class AnalyteList extends Component {
             );
           },
         },
-        
+
         {
           dataField: "status",
           text: "Status",
@@ -244,7 +241,7 @@ class AnalyteList extends Component {
                 <div>
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -266,37 +263,77 @@ class AnalyteList extends Component {
           formatter: (cellContent, analyte) => (
             <div className="d-flex gap-3 ml-3">
               <Tooltip title="Add Units">
-      <Link
-        to={
-            `/analyte-add-units/${analyte.id}`
-        }
-        style={{ textDecoration: "underline", color: "#008000" }}
-      >
-        <i className="mdi mdi-package-variant-closed font-size-18" id="unitIcon"></i>
-      </Link>
-    </Tooltip>
-
+                <Link
+                  className="mdi mdi-package-variant-closed font-size-18"
+                  to={`/${this.state.organization_name}/analyte-add-units/${analyte.id}`}
+                  style={{ textDecoration: "underline", color: "#008000" }}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/analyte-add-units/${analyte.id}`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
+                ></Link>
+              </Tooltip>
               <Tooltip title="Add Methods">
-                <Link to={`/analyte-add-methods/${analyte.id}`} style={{ textDecoration: 'underline', color: '#9400D3' }}>
-                  <i
-                    className="mdi mdi-beaker font-size-18"
-                    id="methodIcon"
-                  ></i>
-                </Link></Tooltip>
+                <Link
+                  className="mdi mdi-beaker font-size-18"
+                  to={`/${this.state.organization_name}/analyte-add-methods/${analyte.id}`}
+                  style={{ textDecoration: "underline", color: "#9400D3" }}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/analyte-add-methods/${analyte.id}`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
+                ></Link>
+              </Tooltip>
               <Tooltip title="Add Equipments">
-                <Link to={`/analyte-add-equipments/${analyte.id}`} style={{ textDecoration: 'underline', color: '#008080' }}>
-                  <i
-                    className="mdi mdi-microscope font-size-18"
-                    id="labIcon"
-                  ></i>
-                </Link></Tooltip>
+                <Link
+                  className="mdi mdi-beaker font-size-18"
+                  to={`/${this.state.organization_name}/analyte-add-equipments/${analyte.id}`}
+                  style={{ textDecoration: "underline", color: "#008080" }}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/analyte-add-equipments/${analyte.id}`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
+                ></Link>
+              </Tooltip>
               <Tooltip title="Add Reagents">
-                <Link to={`/analyte-add-reagents/${analyte.id}`} style={{ textDecoration: 'underline', color: '#1E90FF' }}>
-                  <i
-                    className="mdi mdi-flask-outline font-size-18"
-                    id="reagentIcon"
-                  ></i>
-                </Link></Tooltip>
+                <Link
+                  className="mdi mdi-beaker font-size-18"
+                  to={`/${this.state.organization_name}/analyte-add-reagents/${analyte.id}`}
+                  style={{ textDecoration: "underline", color: "#1E90FF" }}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/analyte-add-reagents/${analyte.id}`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
+                ></Link>
+              </Tooltip>
 
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
@@ -305,13 +342,27 @@ class AnalyteList extends Component {
                     id="edittooltip"
                     onClick={e => this.handleReagentsClick(e, analyte)}
                   ></i>
-                </Link></Tooltip>
+                </Link>
+              </Tooltip>
+
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${analyte.id}?type=Analyte`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${analyte.id}?type=Analyte`}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/databaseadmin-history/${analyte.id}?type=Analyte`;
+                    console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
                 ></Link>
               </Tooltip>
+
               <Tooltip title="Delete">
                 <Link className="text-danger" to="#">
                   <i
@@ -323,7 +374,6 @@ class AnalyteList extends Component {
               </Tooltip>
             </div>
           ),
-
         },
       ],
     };
@@ -347,6 +397,11 @@ class AnalyteList extends Component {
   };
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     const { ListUnit, onGetAnalyte } = this.props;
 
     onGetAnalyte(this.state.user_id);
@@ -359,18 +414,21 @@ class AnalyteList extends Component {
     }));
   };
 
-  onClickDelete = (analyte) => {
-    if (analyte.noofreagents === 0 && analyte.noofmethods === 0 && analyte.noofinstruments === 0) {
+  onClickDelete = analyte => {
+    if (
+      analyte.noofreagents === 0 &&
+      analyte.noofmethods === 0 &&
+      analyte.noofinstruments === 0
+    ) {
       this.setState({ ListUnit: analyte, deleteModal: true });
     } else {
       this.setState({ errorMessage: "Cannot delete. Values are assigned." });
       // Clear error message after 2 seconds
       setTimeout(() => {
-        this.setState({ errorMessage: '' });
+        this.setState({ errorMessage: "" });
       }, 2000);
     }
   };
-
 
   handleDeleteInstrumentType = () => {
     const { onDeleteInstrumentType } = this.props;
@@ -388,7 +446,6 @@ class AnalyteList extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
-
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -403,10 +460,7 @@ class AnalyteList extends Component {
   // eslint-disable-next-line no-unused-vars
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { ListUnit } = this.props;
-    if (
-      !isEmpty(ListUnit) &&
-      size(prevProps.ListUnit) !== size(ListUnit)
-    ) {
+    if (!isEmpty(ListUnit) && size(prevProps.ListUnit) !== size(ListUnit)) {
       this.setState({ ListUnit: {}, isEdit: false });
     }
   }
@@ -470,27 +524,29 @@ class AnalyteList extends Component {
   exportToExcel = () => {
     const { ListUnit } = this.props;
     const fileType =
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const fileExtension = '.xlsx';
-  
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+
     // Define fields to export
-    const fieldsToExport = ['id', 'name', 'code', 'status','date_of_addition'];
-  
+    const fieldsToExport = ["id", "name", "code", "status", "date_of_addition"];
+
     // Map each row to an object with only the desired fields
     const dataToExport = ListUnit.map(unit => ({
       id: unit.id,
       name: unit.name,
       code: unit.code,
       status: unit.status,
-      date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
+      date_of_addition: moment(unit.date_of_addition).format(
+        "DD MMM YYYY, h:mm A"
+      ),
     }));
-  
+
     // Convert data to Excel format and save as file
     const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const data = new Blob([excelBuffer], { type: fileType });
-    const fileName = 'Analyte_list' + fileExtension;
+    const fileName = "Analyte_list" + fileExtension;
     saveAs(data, fileName);
   };
 
@@ -502,7 +558,7 @@ class AnalyteList extends Component {
     }));
   };
 
-  handleFileChange = (e) => {
+  handleFileChange = e => {
     const file = e.target.files[0];
     this.setState({
       importFile: file,
@@ -513,29 +569,28 @@ class AnalyteList extends Component {
     const { importFile } = this.state;
     if (!importFile) {
       this.setState({
-        importError: 'Please select a file.',
+        importError: "Please select a file.",
       });
       return;
     }
 
     try {
       const reader = new FileReader();
-      reader.onload = async (e) => {
+      reader.onload = async e => {
         const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const workbook = XLSX.read(data, { type: "array" });
         // Assuming your data is in the first sheet
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
         // Convert to JSON format
         const jsonData = XLSX.utils.sheet_to_json(sheet);
-        
+
         // Process jsonData and save to the database
         // Example of processing:
         for (let i = 0; i < jsonData.length; i++) {
           const item = jsonData[i];
           // Dispatch an action to save item to the database
           await this.props.onAddNewAnalyte({
-
             name: item.name,
             code: item.code,
             status: item.status,
@@ -548,16 +603,16 @@ class AnalyteList extends Component {
 
         // Close the modal and show success message
         this.toggleImportModal();
-        this.displaySuccessMessage('Data imported successfully!');
+        this.displaySuccessMessage("Data imported successfully!");
         // Optionally, reload data from backend after import
         await this.props.onGetAnalyte(this.state.user_id);
       };
 
       reader.readAsArrayBuffer(importFile);
     } catch (error) {
-      console.error('Error importing data:', error);
+      console.error("Error importing data:", error);
       this.setState({
-        importError: 'Error importing data. Please try again.',
+        importError: "Error importing data. Please try again.",
       });
     }
   };
@@ -565,39 +620,56 @@ class AnalyteList extends Component {
     const { SearchBar } = Search;
     const { errorMessage } = this.state;
     const { ListUnit } = this.props;
-    const { nameFilter, dateFilter, statusFilter, codeFilter, idFilter,masterunitFilter,typeFilter,methodsFilter,equipmentFilter ,reagentsFilter} = this.state;
-    
-      const filteredData = ListUnit.filter(entry => {
-        // Modify accordingly for each filter condition
-        const name = entry.name ? entry.name.toString().toLowerCase() : "";
-        const master_unit_name = entry.master_unit_name ? entry.master_unit_name.toString().toLowerCase() : "";
-        const status = entry.status ? entry.status.toString() : "";
-        const id = entry.id ? entry.id.toString() : "";
-        const noofmethods = entry.noofmethods ? entry.noofmethods.toString() : "";
-        const noofreagents = entry.noofreagents ? entry.noofreagents.toString() : "";
-        const noofinstruments = entry.noofinstruments ? entry.noofinstruments.toString() : "";
-        const code = entry.code ? entry.code.toString() : "";
-        const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
-    
-        return (
-          name.includes(nameFilter.toLowerCase()) &&
-          master_unit_name.includes(masterunitFilter.toLowerCase()) &&
-          status.includes(statusFilter) &&
-          id.includes(idFilter) &&
-          noofmethods.includes(methodsFilter) &&
-          noofreagents.includes(reagentsFilter) &&
-          noofinstruments.includes(equipmentFilter) &&
-          code.includes(codeFilter) &&
-          date.includes(dateFilter)
-        );
-      });
+    const {
+      nameFilter,
+      dateFilter,
+      statusFilter,
+      codeFilter,
+      idFilter,
+      masterunitFilter,
+      typeFilter,
+      methodsFilter,
+      equipmentFilter,
+      reagentsFilter,
+    } = this.state;
 
+    const filteredData = ListUnit.filter(entry => {
+      // Modify accordingly for each filter condition
+      const name = entry.name ? entry.name.toString().toLowerCase() : "";
+      const master_unit_name = entry.master_unit_name
+        ? entry.master_unit_name.toString().toLowerCase()
+        : "";
+      const status = entry.status ? entry.status.toString() : "";
+      const id = entry.id ? entry.id.toString() : "";
+      const noofmethods = entry.noofmethods ? entry.noofmethods.toString() : "";
+      const noofreagents = entry.noofreagents
+        ? entry.noofreagents.toString()
+        : "";
+      const noofinstruments = entry.noofinstruments
+        ? entry.noofinstruments.toString()
+        : "";
+      const code = entry.code ? entry.code.toString() : "";
+      const date = entry.date_of_addition
+        ? entry.date_of_addition.toString()
+        : "";
+
+      return (
+        name.includes(nameFilter.toLowerCase()) &&
+        master_unit_name.includes(masterunitFilter.toLowerCase()) &&
+        status.includes(statusFilter) &&
+        id.includes(idFilter) &&
+        noofmethods.includes(methodsFilter) &&
+        noofreagents.includes(reagentsFilter) &&
+        noofinstruments.includes(equipmentFilter) &&
+        code.includes(codeFilter) &&
+        date.includes(dateFilter)
+      );
+    });
 
     const { isEdit } = this.state;
     const { deleteModal } = this.state;
 
-    const { onAddNewAnalyte, onUpdateAnalyte, onGetAnalyte } =
-      this.props;
+    const { onAddNewAnalyte, onUpdateAnalyte, onGetAnalyte } = this.props;
     const analyte = this.state.analyte;
 
     const pageOptions = {
@@ -612,7 +684,6 @@ class AnalyteList extends Component {
         order: "desc",
       },
     ];
-
 
     return (
       <React.Fragment>
@@ -629,22 +700,34 @@ class AnalyteList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Analyte" breadcrumbItem="Analyte List" />
             <Row className="justify-content-end">
-  <Col lg="auto" className="text-end">
-    <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
-  </Col>
-  <Col lg="auto" className="text-end">
-    <Button onClick={this.toggleImportModal} className="mb-3">Import from Excel</Button>
-  </Col>
-</Row>
-              <Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
-          <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
-          <ModalBody>
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.exportToExcel} className="mb-3">
+                  Export to Excel
+                </Button>
+              </Col>
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.toggleImportModal} className="mb-3">
+                  Import from Excel
+                </Button>
+              </Col>
+            </Row>
+            <Modal
+              isOpen={this.state.importModal}
+              toggle={this.toggleImportModal}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.toggleImportModal}>
+                Import from Excel
+              </ModalHeader>
+              <ModalBody>
                 <div className="mb-3 d-flex justify-content-center">
                   <button
                     className="btn btn-primary"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault(); // Prevent the default action
-                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/Analyte.xlsx";
+                      const downloadUrl =
+                        process.env.REACT_APP_BACKENDURL +
+                        "/media/public/Analyte.xlsx";
                       saveAs(downloadUrl, "Analyte.xlsx"); // Use the file-saver library to trigger the download
                     }}
                   >
@@ -653,20 +736,23 @@ class AnalyteList extends Component {
                   </button>
                 </div>
 
-
                 <div className="w-100">
-                  <h4><b>Instructions to fill the excel sheet:</b></h4>
+                  <h4>
+                    <b>Instructions to fill the excel sheet:</b>
+                  </h4>
                   <div>
                     <ol>
                       <li>
-                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods,
+                        .xml, .html, .txt, .dbf
                       </li>
                       <li>
-                        There should be a file of 3 column name, code, status (Active, Inactive)
+                        There should be a file of 3 column name, code, status
+                        (Active, Inactive)
                       </li>
                       <li>
-                        If you want to get more information, contact
-                        us at <strong>eternalqc@gmail.com</strong>
+                        If you want to get more information, contact us at{" "}
+                        <strong>eternalqc@gmail.com</strong>
                       </li>
                     </ol>
                   </div>
@@ -688,19 +774,32 @@ class AnalyteList extends Component {
                           *
                         </span>
                       </Label>
-                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
+                      <input
+                        type="file"
+                        className="form-control"
+                        onChange={this.handleFileChange}
+                        accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf"
+                      />
                     </FormGroup>
-                  </Col></div>
-
+                  </Col>
+                </div>
 
                 <Row className="mt-4">
                   <Col sm="12" className="d-flex justify-content-end">
-                    <Button color="primary" onClick={this.handleImport} className="me-2">Upload</Button>
-                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+                    <Button
+                      color="primary"
+                      onClick={this.handleImport}
+                      className="me-2"
+                    >
+                      Upload
+                    </Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>
+                      Cancel
+                    </Button>
                   </Col>
                 </Row>
               </ModalBody>
-        </Modal>
+            </Modal>
             <Row className="justify-content-center">
               {/* <p className="text-danger">Note: Pathologist Information will scale the rating of your lab.</p> */}
 
@@ -710,9 +809,7 @@ class AnalyteList extends Component {
                     <Row>
                       <Col className="pagination pagination-rounded justify-content-center mb-2">
                         {errorMessage && (
-                          <Alert color="danger">
-                            {errorMessage}
-                          </Alert>
+                          <Alert color="danger">{errorMessage}</Alert>
                         )}
                       </Col>
                     </Row>
@@ -732,7 +829,6 @@ class AnalyteList extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-4">
-
                                 <Col xl="12">
                                   <div className="text-sm-end">
                                     <Button
@@ -777,25 +873,43 @@ class AnalyteList extends Component {
                                       <ModalBody>
                                         <Formik
                                           enableReinitialize={true}
-
                                           initialValues={{
                                             hiddenEditFlag: isEdit,
-                                            name: (analyte && analyte.name) || "",
-                                            code: (analyte && analyte.code) || "",
-                                            status: (analyte && analyte.status) || "",
-                                            added_by: localStorage.getItem("authUser")
-                                              ? JSON.parse(localStorage.getItem("authUser")).user_id
+                                            name:
+                                              (analyte && analyte.name) || "",
+                                            code:
+                                              (analyte && analyte.code) || "",
+                                            status:
+                                              (analyte && analyte.status) || "",
+                                            added_by: localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             hiddenEditFlag: Yup.boolean(),
-                                            name: Yup.string().trim().required("Please enter name"),
-                                            code: Yup.string().trim().required("Please enter Valid Code").matches(/^[0-9]+$/, 'Please enter valid code (only integers are allowed)'),
+                                            name: Yup.string()
+                                              .trim()
+                                              .required("Please enter name"),
+                                            code: Yup.string()
+                                              .trim()
+                                              .required(
+                                                "Please enter Valid Code"
+                                              )
+                                              .matches(
+                                                /^[0-9]+$/,
+                                                "Please enter valid code (only integers are allowed)"
+                                              ),
                                             status: Yup.string()
                                               .trim()
-                                              .required("Please select the Status from dropdown"),
-                                           
-
+                                              .required(
+                                                "Please select the Status from dropdown"
+                                              ),
                                           })}
                                           onSubmit={values => {
                                             if (isEdit) {
@@ -824,10 +938,10 @@ class AnalyteList extends Component {
                                                   Math.floor(
                                                     Math.random() * (30 - 20)
                                                   ) + 20,
-                                                  name: values.name,
-                                                  code: values.code,
-                                                  status: values.status,
-                                                  added_by: values.added_by,
+                                                name: values.name,
+                                                code: values.code,
+                                                status: values.status,
+                                                added_by: values.added_by,
                                               };
 
                                               // save new Pathologist
@@ -870,26 +984,22 @@ class AnalyteList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.name &&
-                                                          touched.name
+                                                        touched.name
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                       value={
-                                                        this.state.analyte
-                                                          .name
+                                                        this.state.analyte.name
                                                       }
                                                       onChange={e =>
                                                         this.setState({
                                                           analyte: {
-
                                                             id: analyte.id,
                                                             name: e.target
                                                               .value,
                                                             status:
                                                               analyte.status,
-                                                            code:
-                                                              analyte.code,
-
+                                                            code: analyte.code,
                                                           },
                                                         })
                                                       }
@@ -914,13 +1024,12 @@ class AnalyteList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.code &&
-                                                          touched.code
+                                                        touched.code
                                                           ? " is-invalid"
                                                           : "")
                                                       }
                                                       value={
                                                         this.state.analyte.code
-
                                                       }
                                                       onChange={e =>
                                                         this.setState({
@@ -929,8 +1038,8 @@ class AnalyteList extends Component {
                                                             name: analyte.name,
                                                             status:
                                                               analyte.status,
-                                                            code:
-                                                              e.target.value,
+                                                            code: e.target
+                                                              .value,
                                                           },
                                                         })
                                                       }
@@ -941,8 +1050,7 @@ class AnalyteList extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                                  
-                                               
+
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Status
@@ -950,23 +1058,49 @@ class AnalyteList extends Component {
                                                         *
                                                       </span>
                                                     </Label>
-                                                    <Field as="select" name="status" className={`form-control ${errors.status && touched.status ? "is-invalid" : ""
-                                                      }`}>
-                                                      <option value="">----- Please select -----</option>
-                                                      <option value="Active">Active</option>
-                                                      <option value="Inactive">Inactive</option>
+                                                    <Field
+                                                      as="select"
+                                                      name="status"
+                                                      className={`form-control ${
+                                                        errors.status &&
+                                                        touched.status
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }`}
+                                                    >
+                                                      <option value="">
+                                                        ----- Please select
+                                                        -----
+                                                      </option>
+                                                      <option value="Active">
+                                                        Active
+                                                      </option>
+                                                      <option value="Inactive">
+                                                        Inactive
+                                                      </option>
                                                     </Field>
-                                                    <ErrorMessage name="status" component="div" className="invalid-feedback" />
-
-
+                                                    <ErrorMessage
+                                                      name="status"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
                                                   </div>
                                                 </Col>
                                               </Row>
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">
-                                                    <button type="submit" className="btn btn-success save-user"
-                                                      style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#0000CD",
+                                                        borderColor: "#0000CD",
+                                                      }}
+                                                    >
+                                                      Save
+                                                    </button>
                                                   </div>
                                                 </Col>
                                               </Row>
@@ -1010,12 +1144,14 @@ AnalyteList.propTypes = {
   onGetAnalyte: PropTypes.func,
   onAddNewAnalyte: PropTypes.func,
   onUpdateAnalyte: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ ListUnit }) => ({
   ListUnit: ListUnit?.ListUnit,
 });
-
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAnalyte: id => dispatch(getAnalytelist(id)),

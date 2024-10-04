@@ -22,6 +22,7 @@ import activitylogfinanceSaga from "./activtylogfinance/saga";
 import activitylogmarketerSaga from "./activtylogmarketer/saga";
 
 import regAdminNotificationSaga from "./regadminnotification/saga";
+import RoundsHistorySaga from "./registrationdmin-history/sagas";
 
 import cartsSaga from "./carts/saga";
 import quotesSaga from "./quotes/saga";
@@ -112,6 +113,7 @@ export  default function* rootSaga() {
     fork(UnitsListSaga),
     fork(regParticipantSaga),
     fork(UnitsHistorySaga),
+    fork(RoundsHistorySaga),
     fork(dashboardSaga),
     fork(LayoutSaga),
     fork(AccountSaga),

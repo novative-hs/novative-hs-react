@@ -93,11 +93,23 @@ class OrganizationRegister extends Component {
     const passwordInput = document.querySelector('input[name="password2"]');
     const eyeIcon2 = document.getElementById("eye-icon1");
 
-    if (passwordInput && passwordInput.type === "password") {
+    if (passwordInput && passwordInput.type === "password2") {
       passwordInput.type = "text";
       eyeIcon2.className = "mdi mdi-eye-off-outline";
     } else if (passwordInput) {
-      passwordInput.type = "password";
+      passwordInput.type = "password2";
+      eyeIcon2.className = "mdi mdi-eye-outline";
+    }
+  };
+  toggleEmailPassword1Visibility = () => {
+    const passwordInput = document.querySelector('input[name="password2"]');
+    const eyeIcon2 = document.getElementById("eye-icon1");
+
+    if (passwordInput && passwordInput.type === "password_for_particiepnts") {
+      passwordInput.type = "text";
+      eyeIcon2.className = "mdi mdi-eye-off-outline";
+    } else if (passwordInput) {
+      passwordInput.type = "password_for_particiepnts";
       eyeIcon2.className = "mdi mdi-eye-outline";
     }
   };
@@ -156,6 +168,8 @@ class OrganizationRegister extends Component {
                         initialValues={{
                           username: (this.state && this.state.username) || "",
                           password: (this.state && this.state.password) || "",
+                          email_for_particiepnts: (this.state && this.state.email_for_particiepnts) || "",
+                          password_for_particiepnts: (this.state && this.state.password_for_particiepnts) || "",
                           password2: (this.state && this.state.password2) || "",
                           account_type: "organization",
                           name: (this.state && this.state.name) || "",
@@ -186,6 +200,7 @@ class OrganizationRegister extends Component {
                               [Yup.ref("password")],
                               "Both passwords need to be the same"
                             ),
+                            
                           name: Yup.string()
                             .trim()
                             .required("Please enter name"),
@@ -442,6 +457,75 @@ class OrganizationRegister extends Component {
                                 className="invalid-feedback"
                               />
                             </div>
+
+
+                            <h4 className="text-danger">
+                              Please enter your Gmail ID and Password if you want to forword Emails from your own Email Address to Participants:
+                            </h4>
+
+                            <div className="mb-3">
+                              <Label className="form-label">Gmail</Label>
+                              <Field
+                                name="email_for_particiepnts"
+                                type="text"
+                                placeholder="Enter Gmail ID."
+                                className={
+                                  "form-control" +
+                                  (errors.email_for_particiepnts && touched.email_for_particiepnts
+                                    ? " is-invalid"
+                                    : "")
+                                }
+                              />
+                              <ErrorMessage
+                                name="email_for_particiepnts"
+                                component="div"
+                                className="invalid-feedback"
+                              />
+
+                              {this.state.emailError && (
+                                <div className="invalid-feedback d-block">
+                                  {this.state.emailError}
+                                </div>
+                              )}
+                            </div>
+                            <div className="mb-3">
+                              <Label className="form-label">Gmail Password</Label>
+                              <div className="input-group">
+                                <Field
+                                  name="password_for_particiepnts"
+                                  type="password_for_particiepnts"
+                                  placeholder="Enter Gmail Password."
+                                  autoComplete="on"
+                                  className={
+                                    "form-control" +
+                                    ((errors.password_for_particiepnts && touched.password_for_particiepnts) ||
+                                    this.state.passwordFieldError
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                />
+                                <div className="input-group-append">
+                                  <button
+                                    className="btn btn-light"
+                                    type="button"
+                                    id="password_for_particiepnts-addon"
+                                    onClick={this.toggleEmailPassword1Visibility}
+                                  >
+                                    <i
+                                      id="eye-icon"
+                                      className="mdi mdi-eye-outline"
+                                    ></i>
+                                  </button>
+                                </div>
+                              </div>
+                              <ErrorMessage
+                                name="password_for_particiepnts"
+                                component="div"
+                                className="invalid-feedback"
+                              />
+                              
+                            </div>
+
 
                             <h4 className="text-danger">
                               Please Enter Payment Details for Membership and

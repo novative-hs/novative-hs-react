@@ -93,6 +93,8 @@ import AllParticipant1 from "pages/Participant/all-participants1";
 import AllParticipant2 from "pages/Participant/all-participants1";
 import ParticipantsResult from "pages/Participant/results";
 import Report from "pages/Participant/report";
+import UpdateParticipantsResult from "pages/RegistrationAdmin/results"
+import ResultHistory from "pages/Participant/result-history";
 
 // Lab Componentsss
 
@@ -143,9 +145,7 @@ import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 import News from "pages/RegistrationAdmin/news";
 import Statistics from "pages/RegistrationAdmin/statics";
-
-
-
+import RoundsHistory from "pages/RegistrationAdmin/registrationadmin-history";
 import RegParticipant from "pages/Authentication/RegisterParticipant";
 
 
@@ -268,7 +268,6 @@ const labAuthProtectedRoutes = [
     path: "/lab-payments/:id",
     component: Payments,
   },
-
 ];
 
 const financeOfficerAuthProtectedRoutes = [
@@ -287,7 +286,7 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/:organization_name/database-of-manufactural", component: DatabaseOfManufactural },
   { path: "/:organization_name/database-of-method", component: DatabaseOfMethod },
   { path: "/:organization_name/database-of-analyte", component: DatabaseOfAnalyte },
-  { path: "/databaseadmin-history/:id", component: UnitsHistory },
+  { path: "/:organization_name/databaseadmin-history/:id", component: UnitsHistory },
 
   {path: "/:organization_name/scheme", component: Scheme},
   {path: "/:organization_name/cycle", component: Cycle},
@@ -296,11 +295,11 @@ const databaseAdminAuthProtectedRoutes = [
   {path: "/:organization_name/sample", component: Sample},
   {path: "/add-analytes-sample-page/:id", component: SampleAnalytes},
 
-  { path: "/analyte-add-methods/:id", component: AnalyteAddMethods }, 
-  { path: "/analyte-add-units/:id", component: AnalyteAddUnits },   
+  { path: "/:organization_name/analyte-add-methods/:id", component: AnalyteAddMethods }, 
+  { path: "/:organization_name/analyte-add-units/:id", component: AnalyteAddUnits },   
   { path: "/analyte-add-qualitative-units/:id", component: AnalyteAddQualitativeUnits }, 
-  { path: "/analyte-add-reagents/:id", component: AnalyteAddReagents }, 
-  { path: "/analyte-add-equipments/:id", component: AnalyteAddEuipments }, 
+  { path: "/:organization_name/analyte-add-reagents/:id", component: AnalyteAddReagents }, 
+  { path: "/:organization_name/analyte-add-equipments/:id", component: AnalyteAddEuipments }, 
   { path: "/units-analytes/:id", component: UnitsAnalytes }, 
   { path: "/methods-analyte/:id", component: MethodsAnalytes },
   { path: "/instruments-analyte/:id", component: InstrumentsAnalytes },  
@@ -328,16 +327,17 @@ const participantsAuthProtectedRoutes = [
   { path: "/email", component: Email},
   { path: "/:organization_name/:id/participantsResults", component: ParticipantsResult},
   { path: "/:organization_name/:id/report", component: Report},
+  { path: "/:organization_name/rounds-history/participant/:id", component: RoundsHistory},
+  { path: "/:organization_name/result-history/:id", component: ResultHistory},
   
 ];
 
-
-
 const registrationAdminAuthProtectedRoutes = [
   { path: "/:organization_name/dashboard-registrationadmin", component: Dashboardregistrationadmin },
+  { path: "/UpdateParticipantsResults/:id", component: UpdateParticipantsResult},
   { path: "/:organization_name/round", component: rounds },
   { path: "/:organization_name/all-participant", component: AllLabs },
-  {path: "/add-labs-round-page/:id", component: RoundLabs},
+  {path: "/:organization_name/add-labs-round-page/:id", component: RoundLabs},
   { path: "/:organization_name/pending-participant", component: PendingLabs },
   { path: "/labs-list-approved-fee", component: labsListApprovedFeeOffered },
   { path: "/labs-list-pending-fee", component: labsListPendingFeeOffered },
@@ -362,6 +362,7 @@ const registrationAdminAuthProtectedRoutes = [
   { path: "/:organization_name/all-participant1", component: AllParticipant1},
   {path: "/:organization_name/news", component: News},
   { path: "/:organization_name/statistics/:id", component: Statistics},
+  { path: "/:organization_name/rounds-history/:id", component: RoundsHistory},
   
 
 ];

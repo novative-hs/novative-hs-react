@@ -132,6 +132,8 @@ export const organizationRegister = user => {
   let formData = new FormData();
   formData.append("username", user.username);
   formData.append("password2", user.password2);
+  formData.append("email_for_particiepnts", user.email_for_particiepnts);
+  formData.append("password_for_particiepnts", user.password_for_particiepnts);
   formData.append("password", user.password);
   formData.append("country", user.country);
   formData.append("account_type", user.account_type);
@@ -606,6 +608,19 @@ export const getHistoryUnits = (id, type) => {
   return get(`${url.GET_HISTORY_LIST}/${id}`, {
     headers: getHeader(authHeader()),
     params: { type }, // Send type as a query parameter
+  });
+};
+
+export const getHistoryRounds = (id) => {
+  console.log("getHistoryRounds:", id);
+  return get(`${url.GET_HISTORY_LIST_ROUND}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const getResultHistory = (id, participantId, scheme_id) => {
+  return get(`${url.GET_RESULT_HISTORY}/${id}`, {
+    headers: getHeader(authHeader()),
+    params: { participantId, scheme_id },
   });
 };
 
@@ -2671,6 +2686,7 @@ export const addNewRound = (createUnit, id) => {
   formData.append("closing_date", createUnit.closing_date);
   formData.append("status", createUnit.status);
   formData.append("added_by", createUnit.added_by);
+  formData.append("participants", createUnit.participants);
   return axios
     .post(`${url.ADD_NEW_ROUND}`, formData, {
       headers: {

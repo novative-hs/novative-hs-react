@@ -110,7 +110,8 @@ import financeAdmin from "./finance-admin/reducer";
 import news from "./news/reducer";
 import ListMethods from "./methods/reducers";
 
-
+//REG
+import activitylogRounds from "./registrationdmin-history/reducers"
 
 //participant
 import ListCity from "./participantcity/reducers";
@@ -131,6 +132,7 @@ import ResultSubmit from "./resultsSubmit/reducer"
 
 const rootReducer = combineReducers({
   // public
+  activitylogRounds,
   ListQualitativeType,
   AddPayment,
   CycleList,
