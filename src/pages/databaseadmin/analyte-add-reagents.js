@@ -25,6 +25,7 @@ class AnalyteAddReagents extends Component {
     this.state = {
       nameFilter: '',
       idFilter: '',
+      organization_name: '',
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
       feedbackMessage: '',
@@ -90,6 +91,11 @@ class AnalyteAddReagents extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     // Fetch data when the component mounts
     this.fetchData();
   }
@@ -173,7 +179,7 @@ class AnalyteAddReagents extends Component {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
       setTimeout(() => {
-        this.props.history.push("/database-of-analyte");
+        this.props.history.push(`/${this.state.organization_name}/database-of-analyte`);
       }, 500); 
     });
   };
