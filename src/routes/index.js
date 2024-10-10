@@ -325,8 +325,8 @@ const participantsAuthProtectedRoutes = [
   { path: "/:organization_name/performance", component: Performance},
   { path: "/:organization_name/newspage", component: NewsPage},
   { path: "/email", component: Email},
-  { path: "/:organization_name/:id/participantsResults", component: ParticipantsResult},
-  { path: "/:organization_name/:id/report", component: Report},
+  { path: "/:organization_name/:id/:id1/participantsResults", component: ParticipantsResult},
+  { path: "/:organization_name/:id/:id1/report", component: Report},
   { path: "/:organization_name/rounds-history/participant/:id", component: RoundsHistory},
   { path: "/:organization_name/result-history/:id", component: ResultHistory},
   
@@ -334,7 +334,7 @@ const participantsAuthProtectedRoutes = [
 
 const registrationAdminAuthProtectedRoutes = [
   { path: "/:organization_name/dashboard-registrationadmin", component: Dashboardregistrationadmin },
-  { path: "/UpdateParticipantsResults/:id", component: UpdateParticipantsResult},
+  { path: "/:organization_name/UpdateParticipantsResults/:id", component: UpdateParticipantsResult},
   { path: "/:organization_name/round", component: rounds },
   { path: "/:organization_name/all-participant", component: AllLabs },
   {path: "/:organization_name/add-labs-round-page/:id", component: RoundLabs},
@@ -363,7 +363,7 @@ const registrationAdminAuthProtectedRoutes = [
   {path: "/:organization_name/news", component: News},
   { path: "/:organization_name/statistics/:id", component: Statistics},
   { path: "/:organization_name/rounds-history/:id", component: RoundsHistory},
-  
+  { path: "/:organization_name/:id/participant-report", component: Report},
 
 ];
 

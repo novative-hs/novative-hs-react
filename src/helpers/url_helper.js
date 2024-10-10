@@ -92,6 +92,7 @@ export const SELECTED_SCHEMES= `${API_ENDPOINT}/api/registration-admin/selectedS
 export const SCHEMES_ANALYTES= `${API_ENDPOINT}/api/registration-admin/analyteSpecificScheme-list`;
 export const POST_RESULT= `${API_ENDPOINT}/api/registration-admin/resultpost`;
 export const GET_RESULT= `${API_ENDPOINT}/api/registration-admin/getResultsData`;
+export const GET_STATISTICS= `${API_ENDPOINT}/api/registration-admin/getStatistics`;
 export const GET_RESULT_SUBMIT= `${API_ENDPOINT}/api/registration-admin/getAnalyteResultSubmit`;
 export const GET_REPORT= `${API_ENDPOINT}/api/registration-admin/getReport`;
 export const GET_HISTORY_LIST_ROUND = `${API_ENDPOINT}/api/registration-admin/history_list`;

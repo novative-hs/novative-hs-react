@@ -25,6 +25,7 @@ class RoundAddParticipant extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      organization_name: "",
       nameFilter: '',
       idFilter: '',
       selectedCheckboxes: {}, // Track checked checkboxes
@@ -87,7 +88,7 @@ class RoundAddParticipant extends Component {
             return (
               <Tooltip title="View Results">
                 <Link
-                  to={`/UpdateParticipantsResults/${this.props.match.params.id}?participantID=${round.AccountID}`}
+                  to={`/${this.state.organization_name}/UpdateParticipantsResults/${this.props.match.params.id}?participantID=${round.AccountID}`}
                   style={{ textDecoration: "underline", color: "#008000" }}
                 >
                   <div>{round.name}</div> {/* Corrected to use round.name */}
@@ -118,6 +119,8 @@ class RoundAddParticipant extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    this.setState({ organization_name });
     // Fetch data when the component mounts
     this.fetchData();
   }
@@ -189,7 +192,7 @@ class RoundAddParticipant extends Component {
         // this.props.onAddNewRoundLabs(payload, someOtherId); 
         this.setFeedbackMessage("Labs added successfully.");
       }
-      history.push('/rounds');
+      history.push(`/${this.state.organization_name}/round`);
     } else {
       console.error("Lab ID not found");
     }

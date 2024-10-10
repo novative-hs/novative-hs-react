@@ -4,7 +4,18 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import { Tooltip } from "@material-ui/core";
-import { Card, CardBody, Col, Container, Row, Button } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+} from "reactstrap";
 import { isEmpty } from "lodash";
 
 import paginationFactory, {
@@ -21,6 +32,8 @@ import "assets/scss/table.scss";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import { getSchemeAnalytesList } from "store/results/actions";
 import { getResultSubmit } from "store/resultsSubmit/actions";
+import { getStatisticsList } from "store/results/actions";
+import { updateRoundList } from "store/rounds/actions";
 import "assets/scss/table.scss";
 
 class Results extends Component {
@@ -29,13 +42,19 @@ class Results extends Component {
     this.node = React.createRef();
     this.state = {
       SchemeAnalytesList: [],
+      buttonText: "Calculate",
       ResultSubmit: [],
+      Statistics: [],
       combinedData: [], // Store the combined data here
       // analyte: "",
       // rounds: [],
+      isCalculated: false, // Flag to track calculation status
+      successMessage: "",
+      modal: false, // Modal state for visibility control
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
+
       columnsList: [
         {
           text: "Analyte",
@@ -128,46 +147,41 @@ class Results extends Component {
     });
   };
   componentDidMount() {
-    const {
-      onGetSchemeAnalyte,
-      onGetResultSubmit,
-      ResultSubmit,
-      SchemeAnalytesList,
-    } = this.props;
-    // console.log("dataaaa", ResultSubmit)
+    const { onGetSchemeAnalyte, onGetStatisticsList } = this.props;
     const id = this.props.match.params.id;
-    onGetSchemeAnalyte(id);
-    onGetResultSubmit(id);
+  
+    // Check if statistics data exists
+    // if (this.props.Statistics && !isEmpty(this.props.Statistics)) {
+      // If statistics data is available, fetch it along with SchemeAnalyte
+      onGetSchemeAnalyte(id);
+      onGetStatisticsList(id);
+    // }
+    // If no statistics data is present, show nothing (handled by not calling the API)
   }
 
   componentDidUpdate(prevProps) {
-    const { SchemeAnalytesList, ResultSubmit } = this.props;
-
-    console.log("aaaaaaaa", SchemeAnalytesList);
-    // console.log("bbbbbbbbbb",ResultSubmit )
-
+   
+    const { SchemeAnalytesList, ResultSubmit, Statistics } = this.props;
+  
     // Check if SchemeAnalytesList has changed and is not empty
     if (
       SchemeAnalytesList !== prevProps.SchemeAnalytesList &&
       !isEmpty(SchemeAnalytesList)
     ) {
-      const combinedData = this.combineData(
-        SchemeAnalytesList,
-        this.props.ResultSubmit
-      );
-      // console.log("schememanalyteeeee",SchemeAnalytesList )
-      // console.log("Combined data after SchemeAnalytesList update:", combinedData);
+      const combinedData = this.combineData(SchemeAnalytesList, this.props.ResultSubmit);
       this.setState({ SchemeAnalytesList: SchemeAnalytesList, combinedData });
     }
-
+  
     // Check if ResultSubmit has changed and is not empty
     if (ResultSubmit !== prevProps.ResultSubmit && !isEmpty(ResultSubmit)) {
-      const combinedData = this.combineData(
-        this.props.SchemeAnalytesList,
-        ResultSubmit
-      );
-      // console.log("reultttttttttttttt",ResultSubmit )
+      const combinedData = this.combineData(this.props.SchemeAnalytesList, ResultSubmit);
       this.setState({ ResultSubmitList: ResultSubmit, combinedData });
+    }
+  
+    // Check if Statistics has changed and is not empty
+    if (Statistics !== prevProps.Statistics && !isEmpty(Statistics)) {
+      const combinedData = this.combineData(this.props.SchemeAnalytesList, Statistics);
+      this.setState({ StatisticsList: Statistics, combinedData });
     }
   }
 
@@ -181,6 +195,49 @@ class Results extends Component {
     ) {
       this.node.current.props.pagination.options.onPageChange(page);
     }
+  };
+
+  handleCalculate = () => {
+    const { onGetSchemeAnalyte, onGetResultSubmit } = this.props;
+    const id = this.props.match.params.id;
+
+    // Call the necessary functions with the id
+    onGetSchemeAnalyte(id);
+    onGetResultSubmit(id);
+
+    // Change button text to "Recalculate"
+    this.setState({ buttonText: "Recalculate" });
+
+    // Combine data using ResultSubmit for calculation
+    this.setState(prevState => ({
+      combinedData: this.combineData(
+        prevState.SchemeAnalytesList,
+        this.props.ResultSubmit
+      ),
+    }));
+  };
+
+  handleReport = round => {
+    if (round && round.id) {
+      // Update the round's status to "report available"
+      const updatedRound = {
+        ...round,
+        status: "Report Available",
+        added_by: this.state.user_id,
+      };
+
+      // Dispatch the update action to save the new status
+      this.props.onUpdateRound(round.id, updatedRound);
+      this.displaySuccessMessage("Round Status is changed to Report Available");
+    }
+  };
+  // Function to display the success message
+  displaySuccessMessage = message => {
+    this.setState({ successMessage: message, modal: true }); // Open the modal
+
+    setTimeout(() => {
+      this.setState({ successMessage: "", modal: false }); // Close the modal after 2 seconds
+    }, 3000);
   };
 
   render() {
@@ -208,7 +265,7 @@ class Results extends Component {
         order: "desc",
       },
     ];
-
+    const { rounds_instance } = this.props;
     return (
       <React.Fragment>
         <div className="page-content">
@@ -216,6 +273,52 @@ class Results extends Component {
             <title>Unapproved Participant | NEQAS</title>
           </MetaTags>
           <Container fluid>
+            <Row
+              className="mb-3 justify-content-start"
+              style={{ marginLeft: "120px" }}
+            >
+              <Col>
+                <Button
+                  color="primary"
+                  onClick={() => this.handleCalculate()}
+                  className="me-2"
+                >
+                  {this.state.buttonText}
+                </Button>
+                {/* Show the "Report" button only when the button text is "Recalculate" */}
+                {this.state.buttonText === "Recalculate" && (
+                  <Button
+                    color="secondary"
+                    onClick={() => this.handleReport(rounds_instance)}
+                    className=""
+                  >
+                    Report
+                  </Button>
+                )}
+              </Col>
+            </Row>
+
+            {/* Modal for displaying success message */}
+            <Modal
+              isOpen={this.state.modal}
+              toggle={() => this.setState({ modal: !this.state.modal })}
+            >
+              <ModalHeader
+                toggle={() => this.setState({ modal: !this.state.modal })}
+              >
+                Success
+              </ModalHeader>
+              <ModalBody>{this.state.successMessage}</ModalBody>
+              <ModalFooter>
+                <Button
+                  color="primary"
+                  onClick={() => this.setState({ modal: false })}
+                >
+                  OK
+                </Button>
+              </ModalFooter>
+            </Modal>
+
             <Row className="mb-3">
               <Col className="d-flex  justify-content-around">
                 <div className="d-flex  align-items-center">
@@ -289,23 +392,31 @@ Results.propTypes = {
 
   SchemeAnalytesList: PropTypes.array,
   ResultSubmit: PropTypes.array,
+  Statistics: PropTypes.array,
   rounds: PropTypes.string,
+  rounds_instance: PropTypes.object,
 
   closing_date: PropTypes.string,
   onGetSchemeAnalyte: PropTypes.func,
   onGetResultSubmit: PropTypes.func,
+  onGetStatisticsList: PropTypes.func,
+  onUpdateRound: PropTypes.func,
 };
 
 const mapStateToProps = ({ SchemeAnalytesList, ResultSubmit }) => ({
   SchemeAnalytesList: SchemeAnalytesList.SchemeAnalytesList,
   ResultSubmit: ResultSubmit.ResultSubmit,
   rounds: SchemeAnalytesList.rounds,
+  rounds_instance: SchemeAnalytesList.rounds_instance,
   closing_date: SchemeAnalytesList.closing_date,
+  Statistics: SchemeAnalytesList.Statistics,
 });
 
 const mapDispatchToProps = dispatch => ({
   onGetSchemeAnalyte: id => dispatch(getSchemeAnalytesList(id)),
   onGetResultSubmit: id => dispatch(getResultSubmit(id)),
+  onGetStatisticsList: id => dispatch(getStatisticsList(id)),
+  onUpdateRound: (id, round) => dispatch(updateRoundList({ id, ...round })),
 });
 
 export default connect(

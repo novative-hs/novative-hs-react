@@ -11,6 +11,10 @@ import {
   GET_RESULT_SUCCESS,
   GET_RESULT_FAIL,
 
+  GET_STATISTICS,
+  GET_STATISTICS_SUCCESS,
+  GET_STATISTICS_FAIL,
+
 } from "./actionTypes";
 
 export const getSchemeAnalytesList = (id) => ({
@@ -67,6 +71,26 @@ export const getSchemeAnalytesList = (id) => ({
   export const getResultsListFail = (error) => {
     return {
       type: GET_RESULT_FAIL,
+      payload: error,
+    };
+  };
+  ////////////////////////////////
+  export const getStatisticsList = id => ({
+    type: GET_STATISTICS,
+    payload: id,
+  });
+  
+  export const getStatisticsListSuccess = ResultList => {
+  
+    return {
+      type: GET_STATISTICS_SUCCESS,
+      payload: ResultList,
+    };
+  };
+  
+  export const getStatisticsListFail = (error) => {
+    return {
+      type: GET_STATISTICS_FAIL,
       payload: error,
     };
   };

@@ -81,9 +81,9 @@ class Results extends Component {
       PostResult: [],
       ResultList: [],
       isDataLoaded: false, // Flag to track if all data is loaded
-      participantID: localStorage.getItem("authUser")
-        ? JSON.parse(localStorage.getItem("authUser")).participantID
-        : "",
+      // participantID: localStorage.getItem("authUser")
+      //   ? JSON.parse(localStorage.getItem("authUser")).participantID
+      //   : "",
       // approvedLabListColumns: this.getApprovedLabListColumns(), // Initialize columns in state
 
     
@@ -438,6 +438,8 @@ class Results extends Component {
   //   }, 1000); // Adjust the timeout as needed
   // }
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    this.setState({ organization_name });
     const {
       onGetSchemeAnalyte,
       onGetUnitsList,
@@ -453,7 +455,9 @@ class Results extends Component {
     console.log("props main id ", id, this.props.match.params.id)
     // Extract participantID from the query string
     const searchParams = new URLSearchParams(this.props.location.search);
-    const participantID = searchParams.get('participantID');    
+    const participantID = searchParams.get('participantID'); 
+
+    console.log("props main id ", participantID)
 
     onGetSchemeAnalyte(id);
     onGetUnitsList(participantID);
@@ -462,6 +466,12 @@ class Results extends Component {
     onGetInstrumentList(participantID);
 
     onGetResultsList(id);
+    this.setState(
+      {
+        participantID
+      },
+      this.combineData
+    );
   }
   componentDidUpdate(prevProps) {
     const {
@@ -517,6 +527,7 @@ class Results extends Component {
 
     const { participant_ids, rounds } = this.props;
     const { participantID } = this.state;
+
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
       // console.log("SchemeAnalytesList", SchemeAnalytesList)
       // Filter ResultList where the analyte matches
@@ -923,9 +934,9 @@ class Results extends Component {
             <Row className="justify-content-start" style={{marginLeft: "120px"}}>
               <Col
                 sm="12"
-                md="7"
-                lg="4"
-                xl="4"
+                md="12"
+                lg="5"
+                xl="5"
                 className="d-flex justify-content-between "
               >
                 <Button
@@ -941,7 +952,7 @@ class Results extends Component {
                   Print
                 </Button>
                 {round_status === "Report Available" && (
-                  <Link to={`/${organization_name}/${id}/report`} className="w-100">
+                  <Link to={`/${organization_name}/${id}/participant-report`} className="w-100">
                     <Button className="mb-3 w-100 btn">Report</Button>
                   </Link>
                 )}

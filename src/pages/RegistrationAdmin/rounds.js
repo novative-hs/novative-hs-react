@@ -363,7 +363,7 @@ class InstrumentType extends Component {
                   </Link>
                 </Tooltip>
                 {/* Show the statistics icon only when the status is "closed" */}
-                {round.status === "Closed" && (
+                {(round.status === "Closed" || round.status === "Report Available")&& (
                   <Tooltip title="Statistics">
                     <Link
                       to="#"
@@ -501,13 +501,13 @@ class InstrumentType extends Component {
   onClickStatistics = round => {
     if (round && round.id) {
       // Update the round's status to "report available"
-      const updatedRound = {
-        ...round,
-        status: "Report Available",
-      };
+      // const updatedRound = {
+      //   ...round,
+      //   status: "Report Available",
+      // };
 
-      // Dispatch the update action to save the new status
-      this.props.onUpdateRound(round.id, updatedRound);
+      // // Dispatch the update action to save the new status
+      // this.props.onUpdateRound(round.id, updatedRound);
 
       // Optionally, redirect to the statistics page
       this.props.history.push(

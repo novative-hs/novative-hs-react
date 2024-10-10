@@ -96,6 +96,22 @@ class Results extends Component {
             </>
           ),
         },
+        {
+          text: "Accepted Results",
+          dataField: "accepted_results",  // New field for accepted results
+          sort: true,
+          formatter: (cellContent, analyte) => (
+              <div className="text-start">{analyte.accepted_results}</div>
+          ),
+      },
+      {
+          text: "Rejected Results",
+          dataField: "rejected_results",  // New field for rejected results
+          sort: true,
+          formatter: (cellContent, analyte) => (
+              <div className="text-start">{analyte.rejected_results}</div>
+          ),
+      },
         
       ],
     };
@@ -108,38 +124,70 @@ class Results extends Component {
           result.analyte_id === analyte.id &&
           result.account_id === this.state.user_id
       );
+  
       const labCount = resultEntry?.lab_count || 0;
       const unit = resultEntry?.unit || 0;
       const instrument = resultEntry?.instrument || 0;
       const result = resultEntry?.result || 0;
       const mean = resultEntry?.mean || 0;
       const CV = resultEntry?.CV || 0;
-
+  
       // Get the z_scores_with_lab array
       const zScoresArray = resultEntry?.z_scores_with_lab || [];
-
+      // Initialize counts for accepted and rejected results
+      let acceptedCount = 0;
+      let rejectedCount = 0;
+  
       // Find the z_score for the specific participant (based on participant_id)
       const zScoreEntry = zScoresArray.find(
-        zScore => zScore.lab_id === resultEntry.participant_id
+        zScore => zScore.lab_id === resultEntry?.participant_id
       );
-
-      // Extract the z_score if the participant's entry is found
-      const zScore = zScoreEntry ? zScoreEntry.z_score : 0;
-      const Evaluation = zScoreEntry ? zScoreEntry.result_avaluation : "Not Submitted";
-      console.log("evaluations", zScore, Evaluation, zScoresArray);
-      
-
-      return {
-        ...analyte,
-        lab_count: labCount,
-        unit: unit,
-        instrument: instrument,
-        result: result,
-        mean: mean,
-        CV: CV,
-        z_score: zScore,
-        result_evaluation: Evaluation,
-      };
+  
+      // Check if zScoreEntry is valid and an array
+      if (Array.isArray(zScoresArray) && zScoreEntry) {
+        // Check the result evaluation for each zScoreEntry directly
+        zScoresArray.forEach(item => {
+          // Count based on result_evaluation
+          if (item.result_evaluation === "Accepted") {
+            acceptedCount++;
+          } else if (item.result_evaluation === "Reject") {
+            rejectedCount++;
+          }
+        });
+        
+        // Extract the z_score if the participant's entry is found
+        const zScore = zScoreEntry.z_score || 0;
+        const Evaluation = zScoreEntry.result_evaluation || "Not Submitted";
+        
+        return {
+          ...analyte,
+          lab_count: labCount,
+          unit: unit,
+          instrument: instrument,
+          result: result,
+          mean: mean,
+          CV: CV,
+          z_score: zScore,
+          result_evaluation: Evaluation,
+          accepted_results: acceptedCount, 
+          rejected_results: rejectedCount, 
+        };
+      } else {
+        // Handle the case where zScoreEntry is not valid
+        return {
+          ...analyte,
+          lab_count: labCount,
+          unit: unit,
+          instrument: instrument,
+          result: result,
+          mean: mean,
+          CV: CV,
+          z_score: 0,
+          result_evaluation: "Not Submitted",
+          accepted_results: acceptedCount, 
+          rejected_results: rejectedCount, 
+        };
+      }
     });
   };
   componentDidMount() {
@@ -313,6 +361,7 @@ class Results extends Component {
     // const { combinedData } = this.state; // Use the combined data
     const { combinedData, zScoresData } = this.state;
 
+    const participant_id = this.props.match.params.id1
     const defaultSorted = [
       {
         dataField: "analyte_name",
@@ -362,7 +411,7 @@ class Results extends Component {
                 </div>
                 <div className="d-flex flex-column flex-md-row align-items-start  mb-2 mb-md-0 p-2">
                   <span className="me-2">Participant No:</span>
-                  <span>{this.state.user_id}</span>
+                  <span>{participant_id}</span>
                 </div>
               </Col>
             </Row>
@@ -432,7 +481,7 @@ class Results extends Component {
                           </thead>
                           <tbody>
                             <tr>
-                              <td>{this.state.user_id}</td>
+                              <td>{participant_id}</td>
                               <td>{analyte.result}</td>
                               <td>{analyte.name}</td>
                               <td>{analyte.z_score}</td>

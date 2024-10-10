@@ -49,7 +49,8 @@ class Roundural extends Component {
           formatter: (cellContent, round) => {
             const { organization_name } = this.state; // Access organization_name from state
             return (
-              <Link to={`/${organization_name}/${round.id}/participantsResults`}>
+              <Link to={`/${organization_name}/${round.id}/${round.participant_id
+              }/participantsResults`}>
                 {round.scheme_name}
               </Link>
             );

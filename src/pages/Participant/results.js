@@ -85,8 +85,6 @@ class Results extends Component {
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
       // approvedLabListColumns: this.getApprovedLabListColumns(), // Initialize columns in state
-
-    
     };
   }
   getApprovedLabListColumns = () => {
@@ -199,7 +197,8 @@ class Results extends Component {
                 <option value="" disabled hidden>
                   Select Reagent
                 </option>
-                {Array.isArray(this.state.ReagentList) && this.state.ReagentList.length > 0 ? (
+                {Array.isArray(this.state.ReagentList) &&
+                this.state.ReagentList.length > 0 ? (
                   <>
                     {/* Add an empty option for the default selection */}
                     <option value="" disabled>
@@ -216,8 +215,8 @@ class Results extends Component {
                 )}
               </select>
             </div>
-          ),          
-        },        
+          ),
+        },
         {
           text: "Result Value",
           dataField: "result",
@@ -236,11 +235,13 @@ class Results extends Component {
         {
           formatter: (cellContent, list) => {
             const { round_status } = this.props; // Destructure round_status from props
-        
+
             return (
               <div className="d-flex flex-row align-items-start">
                 {/* Show buttons only if round_status is "Open" and result_status is not "Submit" */}
-                {round_status && list.result_status != "Submitted" && round_status === "Open" ? (
+                {round_status &&
+                list.result_status != "Submitted" &&
+                round_status === "Open" ? (
                   <>
                     {/* Edit Button */}
                     <button
@@ -249,7 +250,7 @@ class Results extends Component {
                     >
                       Edit
                     </button>
-        
+
                     {/* Submit Button */}
                     <button
                       onClick={() => this.handleSubmit(list)} // Handle Submit action
@@ -258,12 +259,12 @@ class Results extends Component {
                       Submit
                     </button>
                   </>
-                ) : null} {/* Hide buttons if the conditions are not met */}
+                ) : null}{" "}
+                {/* Hide buttons if the conditions are not met */}
               </div>
             );
           },
-        }
-        
+        },
       ];
     } else if (schemeType === "Qualitative") {
       return [
@@ -343,7 +344,8 @@ class Results extends Component {
                 <option value="" disabled hidden>
                   Select Reagent
                 </option>
-                {Array.isArray(this.state.ReagentList) && this.state.ReagentList.length > 0 ? (
+                {Array.isArray(this.state.ReagentList) &&
+                this.state.ReagentList.length > 0 ? (
                   this.state.ReagentList.map((reagent, index) => (
                     <option key={index} value={reagent.id}>
                       {reagent.name}
@@ -356,8 +358,7 @@ class Results extends Component {
             </div>
           ),
         },
-        
-        
+
         {
           text: "Result Type",
           dataField: "result_type",
@@ -366,7 +367,7 @@ class Results extends Component {
             <div className="text-start">
               <select
                 value={list.result_type || ""} // Ensure this is set properly
-                onChange={(e) => this.handleResultTypeChange(e, list)} // Handle the change event
+                onChange={e => this.handleResultTypeChange(e, list)} // Handle the change event
               >
                 <option value="" disabled hidden>
                   Select Result Type
@@ -378,7 +379,7 @@ class Results extends Component {
             </div>
           ),
         },
-        
+
         {
           text: "Result Value",
           dataField: "result",
@@ -401,8 +402,9 @@ class Results extends Component {
             return (
               <div className="d-flex flex-row align-items-start">
                 {/* Check if round_status is "Open" and list.result_status is "Created" */}
-                {round_status && list.result_status != "Submitted" && round_status === "Open" ? (
-
+                {round_status &&
+                list.result_status != "Submitted" &&
+                round_status === "Open" ? (
                   <>
                     <button
                       onClick={() => this.handleUpdate(list)}
@@ -460,7 +462,6 @@ class Results extends Component {
 
     const id = this.props.match.params.id;
     const userId = this.state.user_id;
-
     onGetSchemeAnalyte(id);
     onGetUnitsList(userId);
     onGetMethodsList(userId);
@@ -481,7 +482,12 @@ class Results extends Component {
       result_status,
       result_type,
     } = this.props;
-    console.log("STATUSS", this.props.round_status, this.props.result_status, this.props.result_type)
+    console.log(
+      "STATUSS",
+      this.props.round_status,
+      this.props.result_status,
+      this.props.result_type
+    );
     const dataChanged = [
       prevProps.SchemeAnalytesList !== SchemeAnalytesList,
       prevProps.ListUnits !== ListUnits,
@@ -492,7 +498,13 @@ class Results extends Component {
       prevProps.round_status !== round_status,
     ].some(Boolean);
 
-    if (dataChanged) {
+    if (
+      dataChanged &&
+      SchemeAnalytesList !== undefined &&
+      ListUnits !== undefined &&
+      ListMethods !== undefined &&
+      Instrument !== undefined
+    ) {
       this.setState(
         {
           SchemeAnalytesList,
@@ -522,7 +534,7 @@ class Results extends Component {
     } = this.state;
 
     const { participant_ids, rounds } = this.props;
-    const { user_id } = this.state;
+    const { user_id, ParticipantNo } = this.state;
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
       // console.log("SchemeAnalytesList", SchemeAnalytesList)
       // Filter ResultList where the analyte matches
@@ -532,9 +544,10 @@ class Results extends Component {
       // console.log("participantResults", participantResults)
       // Check which of these results were submitted by the logged-in user
       const userResult = participantResults.find(result => {
-        return result.lab.account_id === user_id && result.rounds === rounds ;
+        return result.lab.account_id === user_id && result.rounds === rounds;
       });
       console.log("userResultuserResult", userResult);
+
       return {
         id: analyte.id || index,
         analyte_id: analyte.id,
@@ -598,6 +611,15 @@ class Results extends Component {
       alert("Please fill out all required fields.");
       return; // Prevent form submission
     }
+    // Show confirmation prompt to the user
+    const confirmation = window.confirm(
+      "Are you sure you want to update the result? "
+    );
+
+    if (!confirmation) {
+      // If user clicks 'Cancel', exit the function
+      return;
+    }
     const resultData = {
       round_id: id,
       analyte_id: analyteData ? analyteData.analyte_id : "", // Ensure analyte_id is included
@@ -624,7 +646,8 @@ class Results extends Component {
 
       // Handle success
       if (response.type === "POST_RESULT") {
-        alert("Result submitted successfully.");
+        alert("Result updated successfully.");
+        // window.location.reload(); // This will reload the page
         // Optionally, you might want to refresh data or redirect
         // this.props.onRefreshData(); // Example method to refresh data
         // this.props.history.push('/success-page'); // Example redirection
@@ -664,6 +687,15 @@ class Results extends Component {
       alert("Please fill out all required fields.");
       return; // Prevent form submission
     }
+    // Show confirmation prompt to the user
+    const confirmation = window.confirm(
+      "Are you sure you want to Submit the result? This action cannot be undone."
+    );
+
+    if (!confirmation) {
+      // If user clicks 'Cancel', exit the function
+      return;
+    }
     const resultData = {
       round_id: id,
       analyte_id: analyteData ? analyteData.analyte_id : "", // Ensure analyte_id is included
@@ -690,6 +722,7 @@ class Results extends Component {
       // Handle success
       if (response.type === "POST_RESULT") {
         alert("Result submitted successfully.");
+        window.location.reload();
         // Optionally, you might want to refresh data or redirect
         // this.props.onRefreshData(); // Example method to refresh data
         // this.props.history.push('/success-page'); // Example redirection
@@ -768,7 +801,6 @@ class Results extends Component {
       return item;
     });
     this.setState({ combinedData: updatedData });
-
   };
 
   handleReagentChange = (event, list) => {
@@ -857,15 +889,21 @@ class Results extends Component {
     }
   };
 
-
   render() {
     const approvedLabListColumns = this.getApprovedLabListColumns(); // Get the columns in render
     const id = this.props.match.params.id;
     const { SearchBar } = Search;
     const { combinedData, isDataLoaded } = this.state;
-    const { schemeName, scheme_id, schemeType, rounds, issue_date, closing_date, round_status } =
-      this.props;
-    console.log("scheme type", schemeType, schemeName)
+    const {
+      schemeName,
+      scheme_id,
+      schemeType,
+      rounds,
+      issue_date,
+      closing_date,
+      round_status,
+    } = this.props;
+    console.log("scheme type", schemeType, schemeName);
     // Get the first round's details if available
     // const firstRound = rounds && rounds.length > 0 ? rounds[0] : null;
 
@@ -885,97 +923,102 @@ class Results extends Component {
       },
     ];
     const { organization_name } = this.props.match.params;
+    const participant_id = this.props.match.params.id1;
     return (
       <React.Fragment>
         {schemeType ? (
-
-        <div className="page-content">
-          <MetaTags>
-            <title>Unapproved Participant | NEQAS</title>
-          </MetaTags>
-          <Container fluid>
-            {/* <Breadcrumbs title="Participant" breadcrumbItem="Unapproved" /> */}
-            <Row className="mb-3 text-danger">
-              <strong>
-              <Col className="d-flex flex-wrap justify-content-md-around justify-content-sm-start  p-3">
-                <div className="d-flex flex-column flex-md-row align-items-start  mb-2 mb-md-0 p-2">
-                  <span className="me-2">Participant No:</span>
-                  <span>{this.state.user_id}</span>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
-                  <span className="me-2">Scheme: </span>
-                  <span>{schemeName}</span>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
-                  <span className="me-2">Round No: </span>
-                  <span>{rounds}</span>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
-                  <span className="me-2">Issue Date:</span>
-                  <span>
-                    {moment(issue_date).format("DD MMM YYYY, h:mm A")}
-                  </span>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-start p-2">
-                  <span className="me-2">Closing Date: </span>
-                  <span>
-                    {moment(closing_date).format("DD MMM YYYY, h:mm A")}
-                  </span>
-                </div>
-              </Col>
-              </strong>
-              
-            </Row>
-            <Row className="justify-content-start" style={{marginLeft: "120px"}}>
-              <Col
-                sm="12"
-                md="7"
-                lg="4"
-                xl="4"
-                className="d-flex justify-content-between "
+          <div className="page-content">
+            <MetaTags>
+              <title>Unapproved Participant | NEQAS</title>
+            </MetaTags>
+            <Container fluid>
+              {/* <Breadcrumbs title="Participant" breadcrumbItem="Unapproved" /> */}
+              <Row className="mb-3 text-danger">
+                <strong>
+                  <Col className="d-flex flex-wrap justify-content-md-around justify-content-sm-start  p-3">
+                    <div className="d-flex flex-column flex-md-row align-items-start  mb-2 mb-md-0 p-2">
+                      <span className="me-2">Participant No:</span>
+                      <span>{participant_id}</span>
+                    </div>
+                    <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
+                      <span className="me-2">Scheme: </span>
+                      <span>{schemeName}</span>
+                    </div>
+                    <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
+                      <span className="me-2">Round No: </span>
+                      <span>{rounds}</span>
+                    </div>
+                    <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
+                      <span className="me-2">Issue Date:</span>
+                      <span>
+                        {moment(issue_date).format("DD MMM YYYY, h:mm A")}
+                      </span>
+                    </div>
+                    <div className="d-flex flex-column flex-md-row align-items-start p-2">
+                      <span className="me-2">Closing Date: </span>
+                      <span>
+                        {moment(closing_date).format("DD MMM YYYY, h:mm A")}
+                      </span>
+                    </div>
+                  </Col>
+                </strong>
+              </Row>
+              <Row
+                className="justify-content-start"
+                style={{ marginLeft: "120px" }}
               >
-                <Button
-                  onClick={this.exportToExcel}
-                  className="mb-3 w-100 btn  me-2"
+                <Col
+                  sm="12"
+                  md="12"
+                  lg="6"
+                  xl="6"
+                  className=""
                 >
-                  Download Results
-                </Button>
-                <Button
-                  onClick={this.handlePrint}
-                  className="mb-3 w-100 btn me-2"
-                >
-                  Print
-                </Button>
-                {round_status === "Report Available" && (
-                  <Link to={`/${organization_name}/${id}/report`} className="w-100 me-2">
-                    <Button className="mb-3 w-100 btn">Report</Button>
-                  </Link>
-                )}
-                <Link to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`} className="w-100">
-                    <Button className="mb-3 w-100 btn">History</Button>
-                  </Link>
-              </Col>
-            </Row>
-            <Row className="justify-content-center align-item-center">
-              <Col lg="10">
-                <Card>
-                  <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
-                      keyField="id"
-                      columns={approvedLabListColumns}
-                      data={combinedData}
+                  <Button
+                    onClick={this.exportToExcel}
+                    className="mb-3 btn me-2"
+                  >
+                    Download Results
+                  </Button>
+                  <Button onClick={this.handlePrint} className="mb-3 btn me-2" style={{ width: "15%" }}>
+                    Print
+                  </Button>
+                  {round_status === "Report Available" && (
+                    <Link
+                      to={`/${organization_name}/${id}/${participant_id}/report`}
+                      className="me-2" 
                     >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={approvedLabListColumns}
-                          data={combinedData}
-                          search
-                        >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              {/* <Row className="mb-4">
+                      <Button className="mb-3 btn" style={{ width: "15%" }}>Report</Button>
+                    </Link>
+                  )}
+                  <Link
+                    to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}
+                  >
+                    <Button className="mb-3 btn" style={{ width: "15%" }}>History</Button>
+                  </Link>
+                </Col>
+              </Row>
+
+              <Row className="justify-content-center align-item-center">
+                <Col lg="10">
+                  <Card>
+                    <CardBody>
+                      <PaginationProvider
+                        pagination={paginationFactory(pageOptions)}
+                        keyField="id"
+                        columns={approvedLabListColumns}
+                        data={combinedData}
+                      >
+                        {({ paginationProps, paginationTableProps }) => (
+                          <ToolkitProvider
+                            keyField="id"
+                            columns={approvedLabListColumns}
+                            data={combinedData}
+                            search
+                          >
+                            {toolkitprops => (
+                              <React.Fragment>
+                                {/* <Row className="mb-4">
                                 <Col xl="4" lg="4" md="4" sm="4">
                                   <div className="search-box me-2 mb-2 d-inline-block">
                                     <div className="position-relative">
@@ -987,37 +1030,37 @@ class Results extends Component {
                                   </div>
                                 </Col>
                               </Row> */}
-                              <div className="table-responsive">
-                                <BootstrapTable
-                                  id="printable-table" // Added ID here
-                                  keyField="id"
-                                  ref={this.node}
-                                  responsive
-                                  bordered={false}
-                                  striped={false}
-                                  defaultSorted={defaultSorted}
-                                  classes={"table table-bordered table-hover"}
-                                  {...toolkitprops.baseProps}
-                                  {...paginationTableProps}
-                                />
-                                <div className="float-end">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                    onPageChange={this.onPaginationPageChange}
+                                <div className="table-responsive">
+                                  <BootstrapTable
+                                    id="printable-table" // Added ID here
+                                    keyField="id"
+                                    ref={this.node}
+                                    responsive
+                                    bordered={false}
+                                    striped={false}
+                                    defaultSorted={defaultSorted}
+                                    classes={"table table-bordered table-hover"}
+                                    {...toolkitprops.baseProps}
+                                    {...paginationTableProps}
                                   />
+                                  <div className="float-end">
+                                    <PaginationListStandalone
+                                      {...paginationProps}
+                                      onPageChange={this.onPaginationPageChange}
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                            </React.Fragment>
-                          )}
-                        </ToolkitProvider>
-                      )}
-                    </PaginationProvider>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+                              </React.Fragment>
+                            )}
+                          </ToolkitProvider>
+                        )}
+                      </PaginationProvider>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+            </Container>
+          </div>
         ) : (
           <div>No scheme type available</div>
         )}
@@ -1031,7 +1074,6 @@ Results.propTypes = {
   schemeType: PropTypes.string,
   participant_ids: PropTypes.array,
   SchemeAnalytesList: PropTypes.array,
-
   rounds: PropTypes.number,
   round_status: PropTypes.string,
   result_status: PropTypes.string,

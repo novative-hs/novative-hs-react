@@ -736,6 +736,11 @@ export const getResultsList = id =>
   get(`${url.GET_RESULT}/${id}`, {
     headers: getHeader(authHeader()),
   });
+//Get STATISTICS list
+export const getStatisticsList = id =>
+  get(`${url.GET_STATISTICS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
 //submit result lab count 
 export const getResultSubmit = id =>

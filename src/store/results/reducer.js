@@ -5,7 +5,10 @@ import {
   POST_RESULT_FAIL,
 
   GET_RESULT_SUCCESS,
-  GET_RESULT_FAIL
+  GET_RESULT_FAIL,
+
+  GET_STATISTICS_SUCCESS,
+  GET_STATISTICS_FAIL
   
 } from "./actionTypes";
 
@@ -13,10 +16,12 @@ const INIT_STATE = {
   SchemeAnalytesList: [],
   PostResult: [],
   ResultList: [],
+  Statistics:[],
   schemeName: '',
   rounds:'',
   error: {},
   round_status:'', 
+  rounds_instance:'', 
   result_status:'', 
   scheme_id: ''
 };
@@ -25,12 +30,13 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
   switch (action.type) {
     //get schemeAnalyte
     case SCHEMES_ANALYTES_SUCCESS:
-      console.log("Data received in reducerrrr:", action.payload.rounds.sample); // Log the action.payload
+      console.log("Data received in reducerrrr:", action.payload.rounds); // Log the action.payload
       return {
         ...state,
         SchemeAnalytesList: action.payload.analytes,
         rounds: action.payload.round_no,
         sample: action.payload.rounds.sample,
+        rounds_instance: action.payload.rounds,
         issue_date: action.payload.round_issuedate,
         closing_date: action.payload.round_closingdate,
         schemeName: action.payload.scheme_name,
@@ -66,6 +72,17 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
         ResultList: action.payload,
       };
     case GET_RESULT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    ///////////////////////////////
+    case GET_STATISTICS_SUCCESS:
+      return {
+        ...state,
+        Statistics: action.payload,
+      };
+    case GET_STATISTICS_FAIL:
       return {
         ...state,
         error: action.payload,
