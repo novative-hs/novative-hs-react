@@ -26,13 +26,12 @@ export const postRegister = user => {
   formData.append("name", user.name);
   formData.append("email", user.email);
   formData.append("phone", user.phone);
+  formData.append("photo", user.photo);
   formData.append("type", user.type);
   formData.append("sector", user.sector);
   formData.append("designation", user.designation);
   formData.append("address", user.address);
-  formData.append("added_by", user.added_by);
-  formData.append("password", user.password);
-  formData.append("password2", user.password2);
+  formData.append("cnic", user.cnic);
   formData.append("email_participant", user.email_participant);
   formData.append("city", user.city);
   formData.append("country", user.country);
