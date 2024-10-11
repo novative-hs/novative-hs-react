@@ -107,7 +107,7 @@ class InstrumentType extends Component {
         },
         {
           dataField: "rounds",
-          text: "Number of Rounds",
+          text: "Round No",
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
@@ -849,9 +849,9 @@ class InstrumentType extends Component {
                                                     </Label>
                                                     <Field
                                                       name="rounds"
-                                                      type="number"
-                                                      min={0}
-                                                      max={36}
+                                                      type="text"
+                                                      // min={0}
+                                                      // max={36}
                                                       className="form-control"
                                                     ></Field>
                                                     <ErrorMessage
