@@ -775,7 +775,11 @@ export const postResult = (result, id) => {
   formData.append("round_status", result.round_status);
   formData.append("scheme_id", result.scheme_id);
   formData.append("result_status", result.result_status);
-  formData.append("result_type", result.result_type);
+  
+  // Only append `result_type` if it is not null or undefined
+  if (result.result_type !== null && result.result_type !== undefined) {
+    formData.append("result_type", result.result_type);
+  }
 
   return axios.post(`${url.POST_RESULT}/${id}`, formData, {
     headers: getHeader(authHeader()),
