@@ -19,14 +19,9 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import { connect } from "react-redux";
 import Select from "react-select";
 import { getApprovedLabs } from "store/registration-admin/actions";
-import {
-  getcyclelist
-} from "store/cycle/actions";
+import { getcyclelist } from "store/cycle/actions";
 
-import {
-  addNewPayment,
-
-} from "store/Payment/actions";
+import { addNewPayment } from "store/Payment/actions";
 class Payment extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +41,6 @@ class Payment extends Component {
     const { ongetApprovedLabs, ongetcyclelist } = this.props;
     ongetApprovedLabs(this.state.user_id);
     ongetcyclelist(this.state.user_id);
-
   }
   componentDidUpdate(prevProps) {
     if (prevProps.approvedLabs !== this.props.approvedLabs) {
@@ -55,7 +49,6 @@ class Payment extends Component {
     if (prevProps.CycleList !== this.props.CycleList) {
       this.setState({ CycleList: this.props.CycleList });
     }
-
   }
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
@@ -63,7 +56,7 @@ class Payment extends Component {
     setTimeout(() => {
       this.setState({ successMessage: "", modal: false });
     }, 3000);
-  }
+  };
   handleFileChange = (event, setFieldValue) => {
     const file = event.currentTarget.files[0];
     setFieldValue("photo", file);
@@ -78,10 +71,9 @@ class Payment extends Component {
       label: participant.name,
     }));
 
-    const schemeOptions = CycleList.map((scheme) => ({
+    const schemeOptions = CycleList.map(scheme => ({
       value: scheme.id, // Use scheme ID instead of scheme name
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
-
     }));
 
     const customStyles = {
@@ -111,147 +103,205 @@ class Payment extends Component {
                           {this.state.successMessage}
                         </Alert>
                       )}
-           <Formik
-  enableReinitialize={true}
-  initialValues={{
-    photo: "",
-    participant: (this.state && this.state.participant) || "",
-    paydate: (this.state && this.state.paydate) || "",
-    paymentmethod: (this.state && this.state.paymentmethod) || "",
-    scheme: [],
-    price: "",
-    discount: 0, 
-    added_by: localStorage.getItem("authUser")
-      ? JSON.parse(localStorage.getItem("authUser")).user_id
-      : "",
-  }}
-  validationSchema={Yup.object().shape({
-    participant: Yup.string().required("Participant is required"),
-    scheme: Yup.string().required("Scheme is required"),
-    paydate: Yup.string().required("Date is required"),
-    photo: Yup.string().required("Deposit Slip is required"),
-    paymentmethod: Yup.string().required("Payment Method is required"),
-    discount: Yup.number()
-      .min(0, "Discount must be at least 0%")
-      .max(100, "Discount cannot be more than 100%")
-      .required("Discount is required"),
-  })}
-  onSubmit={async (values, { setSubmitting, resetForm }) => {
-    const userId = localStorage.getItem("authUser")
-      ? JSON.parse(localStorage.getItem("authUser")).user_id
-      : "";
+                      <Formik
+                        enableReinitialize={true}
+                        initialValues={{
+                          photo: "",
+                          participant:
+                            (this.state && this.state.participant) || "",
+                          paydate: (this.state && this.state.paydate) || "",
+                          paymentmethod:
+                            (this.state && this.state.paymentmethod) || "",
+                          scheme: [],
+                          price: "",
+                          discount: 0,
+                          added_by: localStorage.getItem("authUser")
+                            ? JSON.parse(localStorage.getItem("authUser"))
+                                .user_id
+                            : "",
+                        }}
+                        validationSchema={Yup.object().shape({
+                          participant: Yup.string().required(
+                            "Participant is required"
+                          ),
+                          scheme: Yup.string().required("Scheme is required"),
+                          price: Yup.string().required("price is required"),
+                          paydate: Yup.string().required("Date is required"),
+                          photo: Yup.string().required(
+                            "Deposit Slip is required"
+                          ),
+                          paymentmethod: Yup.string().required(
+                            "Payment Method is required"
+                          ),
+                          discount: Yup.number()
+                            .min(0, "Discount must be at least 0%")
+                            .max(100, "Discount cannot be more than 100%")
+                            .required("Discount is required"),
+                        })}
+                        onSubmit={async (
+                          values,
+                          { setSubmitting, resetForm }
+                        ) => {
+                          const userId = localStorage.getItem("authUser")
+                            ? JSON.parse(localStorage.getItem("authUser"))
+                                .user_id
+                            : "";
 
-    // Ensure roundedPrice is defined before use
-    const roundedPrice = Math.round(parseFloat(values.price));
+                          // Ensure roundedPrice is defined before use
+                          const roundedPrice = Math.round(
+                            parseFloat(values.price)
+                          );
 
-    const AddPayment = {
-      participant: values.participant,
-      scheme: values.scheme,
-      price: roundedPrice, // Use rounded price
-      discount: values.discount,
-      paydate: values.paydate,
-      photo: values.photo,
-      paymentmethod: values.paymentmethod,
-      added_by: userId,
-    };
+                          const AddPayment = {
+                            participant: values.participant,
+                            scheme: values.scheme,
+                            price: roundedPrice, // Use rounded price
+                            discount: values.discount,
+                            paydate: values.paydate,
+                            photo: values.photo,
+                            paymentmethod: values.paymentmethod,
+                            added_by: userId,
+                          };
 
-    console.log("data in page before submit", AddPayment);
+                          console.log("data in page before submit", AddPayment);
 
-    try {
-      await this.props.onAddNewPayment(userId, AddPayment);
-      resetForm();
-      this.displaySuccessMessage("Payment added successfully!");
-    } catch (error) {
-      console.error("Error adding payment:", error);
-    }
-    setTimeout(() => {
-      this.props.ongetApprovedLabs(this.state.user_id);
-    }, 1000);
-    setTimeout(() => {
-      this.props.ongetcyclelist(this.state.user_id);
-    }, 1000);
+                          try {
+                            await this.props.onAddNewPayment(
+                              userId,
+                              AddPayment
+                            );
+                            resetForm();
+                            this.displaySuccessMessage(
+                              "Payment added successfully!"
+                            );
+                          } catch (error) {
+                            console.error("Error adding payment:", error);
+                          }
+                          setTimeout(() => {
+                            this.props.ongetApprovedLabs(this.state.user_id);
+                          }, 1000);
+                          setTimeout(() => {
+                            this.props.ongetcyclelist(this.state.user_id);
+                          }, 1000);
 
-    setSubmitting(false);
-  }}
->
-  {({
-    values,
-    errors,
-    touched,
-    isSubmitting,
-    setFieldValue,
-  }) => {
-    const handleSchemeChange = (selectedOption) => {
-      setFieldValue(
-        "scheme",
-        selectedOption ? selectedOption.value : null  // Handle single selection
-      );
-    
-      const selectedScheme = CycleList.find((scheme) => scheme.id === selectedOption?.value);
-    
-      if (selectedScheme) {
-        const cycle_no = selectedScheme.cycle_no;
-        const total_price = parseFloat(selectedScheme.price);
-    
-        let roundedPrice = Math.round(total_price);
-    
-        setFieldValue("cycle_no", cycle_no);
-        setFieldValue("price", roundedPrice.toFixed(2));
-    
-        if (values.discount) {
-          const discountPrice = roundedPrice - (roundedPrice * parseFloat(values.discount) / 100);
-          roundedPrice = Math.round(discountPrice);
-          setFieldValue("price", roundedPrice.toFixed(2));
-        } else {
-          setFieldValue("price", roundedPrice.toFixed(2));
-        }
-      }
-    };
-    
+                          setSubmitting(false);
+                        }}
+                      >
+                        {({
+                          values,
+                          errors,
+                          touched,
+                          isSubmitting,
+                          setFieldValue,
+                        }) => {
+                          const handleSchemeChange = selectedOption => {
+                            setFieldValue(
+                              "scheme",
+                              selectedOption ? selectedOption.value : null // Handle single selection
+                            );
 
-    const handleDiscountChange = (e) => {
-      let discountValue = parseFloat(e.target.value);
+                            const selectedScheme = CycleList.find(
+                              scheme => scheme.id === selectedOption?.value
+                            );
 
-      if (isNaN(discountValue) || !discountValue) {
-        discountValue = 0;
-      }
+                            if (selectedScheme) {
+                              const cycle_no = selectedScheme.cycle_no;
+                              const total_price = parseFloat(
+                                selectedScheme.price
+                              );
 
-      setFieldValue("discount", discountValue);
+                              let roundedPrice = Math.round(total_price);
 
-      const total_price = values.scheme.reduce((sum, scheme_id) => {
-        const scheme = CycleList.find((scheme) => scheme.id === scheme_id);
-        return sum + (scheme ? parseFloat(scheme.price) : 0);
-      }, 0);
+                              setFieldValue("cycle_no", cycle_no);
+                              setFieldValue("price", roundedPrice.toFixed(2));
 
-      let roundedPrice = Math.round(total_price);
+                              if (values.discount) {
+                                const discountPrice =
+                                  roundedPrice -
+                                  (roundedPrice * parseFloat(values.discount)) /
+                                    100;
+                                roundedPrice = Math.round(discountPrice);
+                                setFieldValue("price", roundedPrice.toFixed(2));
+                              } else {
+                                setFieldValue("price", roundedPrice.toFixed(2));
+                              }
+                            }
+                          };
 
-      if (!isNaN(discountValue) && roundedPrice) {
-        const discountPrice = roundedPrice - (roundedPrice * discountValue / 100);
-        roundedPrice = Math.round(discountPrice);
-        setFieldValue("price", roundedPrice.toFixed(2));
-      } else {
-        setFieldValue("price", roundedPrice.toFixed(2));
-      }
-    };
+                          const handleDiscountChange = e => {
+                            let discountValue = parseFloat(e.target.value);
+
+                            if (isNaN(discountValue) || !discountValue) {
+                              discountValue = 0;
+                            }
+
+                            setFieldValue("discount", discountValue);
+
+                            const total_price = values.scheme.reduce(
+                              (sum, scheme_id) => {
+                                const scheme = CycleList.find(
+                                  scheme => scheme.id === scheme_id
+                                );
+                                return (
+                                  sum + (scheme ? parseFloat(scheme.price) : 0)
+                                );
+                              },
+                              0
+                            );
+
+                            let roundedPrice = Math.round(total_price);
+
+                            if (!isNaN(discountValue) && roundedPrice) {
+                              const discountPrice =
+                                roundedPrice -
+                                (roundedPrice * discountValue) / 100;
+                              roundedPrice = Math.round(discountPrice);
+                              setFieldValue("price", roundedPrice.toFixed(2));
+                            } else {
+                              setFieldValue("price", roundedPrice.toFixed(2));
+                            }
+                          };
                           return (
                             <Form className="form-horizontal">
                               <Row>
                                 <Col>
                                   <div className="mb-3">
-                                    <Label for="participant" className="form-label">
+                                    <Label
+                                      for="participant"
+                                      className="form-label"
+                                    >
                                       Participant
                                     </Label>
                                     <Select
                                       name="participant"
                                       options={participantOptions}
-                                      className={errors.participant && touched.participant ? "is-invalid" : ""}
+                                      className={
+                                        errors.participant &&
+                                        touched.participant
+                                          ? "is-invalid"
+                                          : ""
+                                      }
                                       onChange={selectedOption => {
-                                        setFieldValue("participant", selectedOption ? selectedOption.value : "");
+                                        setFieldValue(
+                                          "participant",
+                                          selectedOption
+                                            ? selectedOption.value
+                                            : ""
+                                        );
                                         setFieldValue("scheme", []); // Clear schemes when participant changes
                                       }}
-                                      value={participantOptions.find(option => option.value === values.participant) || null}
+                                      value={
+                                        participantOptions.find(
+                                          option =>
+                                            option.value === values.participant
+                                        ) || null
+                                      }
                                     />
-                                    <ErrorMessage name="participant" component="div" className="invalid-feedback" />
+                                    <ErrorMessage
+                                      name="participant"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
                                   </div>
                                 </Col>
                               </Row>
@@ -260,17 +310,33 @@ class Payment extends Component {
                                 <Row>
                                   <Col>
                                     <div className="mb-3">
-                                      <Label for="scheme" className="form-label">
+                                      <Label
+                                        for="scheme"
+                                        className="form-label"
+                                      >
                                         Scheme
                                       </Label>
                                       <Select
                                         name="scheme"
                                         options={schemeOptions}
-                                        className={errors.scheme && touched.scheme ? "is-invalid" : ""}
+                                        className={
+                                          errors.scheme && touched.scheme
+                                            ? "is-invalid"
+                                            : ""
+                                        }
                                         onChange={handleSchemeChange}
-                                        value={schemeOptions.find(option => option.value === values.scheme) || null}  // Single selection
+                                        value={
+                                          schemeOptions.find(
+                                            option =>
+                                              option.value === values.scheme
+                                          ) || null
+                                        } // Single selection
                                       />
-                                      <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
+                                      <ErrorMessage
+                                        name="scheme"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
                                     </div>
                                   </Col>
                                 </Row>
@@ -313,7 +379,9 @@ class Payment extends Component {
                                       placeholder="Enter price"
                                       className={
                                         "form-control" +
-                                        (errors.price && touched.price ? " is-invalid" : "")
+                                        (errors.price && touched.price
+                                          ? " is-invalid"
+                                          : "")
                                       }
                                       readOnly
                                     />
@@ -329,7 +397,10 @@ class Payment extends Component {
                               <Row>
                                 <Col>
                                   <div className="mb-3">
-                                    <Label for="discount" className="form-label">
+                                    <Label
+                                      for="discount"
+                                      className="form-label"
+                                    >
                                       Discount (%)
                                     </Label>
                                     <Field
@@ -338,7 +409,9 @@ class Payment extends Component {
                                       placeholder="Enter discount"
                                       className={
                                         "form-control" +
-                                        (errors.discount && touched.discount ? " is-invalid" : "")
+                                        (errors.discount && touched.discount
+                                          ? " is-invalid"
+                                          : "")
                                       }
                                       onChange={handleDiscountChange}
                                     />
@@ -387,7 +460,12 @@ class Payment extends Component {
                                       type="file"
                                       multiple={false}
                                       accept=".jpg,.jpeg,.png"
-                                      onChange={(event) => this.handleFileChange(event, setFieldValue)}
+                                      onChange={event =>
+                                        this.handleFileChange(
+                                          event,
+                                          setFieldValue
+                                        )
+                                      }
                                       className={
                                         "form-control" +
                                         (errors.photo && touched.photo
@@ -406,23 +484,42 @@ class Payment extends Component {
                               <Row>
                                 <Col>
                                   <div className="mb-3">
-                                    <Label for="paymentmethod" className="form-label">
+                                    <Label
+                                      for="paymentmethod"
+                                      className="form-label"
+                                    >
                                       Payment Method
                                     </Label>
                                     <Select
                                       id="paymentmethod"
                                       name="paymentmethod"
                                       options={[
-                                        { value: 'Online', label: 'Online' },
-                                        { value: 'Cheque', label: 'Cheque' },
-                                        { value: 'Cash', label: 'Cash' },
-
+                                        { value: "Online", label: "Online" },
+                                        { value: "Cheque", label: "Cheque" },
+                                        { value: "Cash", label: "Cash" },
                                       ]}
-                                      onChange={(selectedOption) => {
-                                        setFieldValue('paymentmethod', selectedOption ? selectedOption.value : '');
+                                      onChange={selectedOption => {
+                                        setFieldValue(
+                                          "paymentmethod",
+                                          selectedOption
+                                            ? selectedOption.value
+                                            : ""
+                                        );
                                       }}
-                                      value={values.paymentmethod ? { value: values.paymentmethod, label: values.paymentmethod } : null}
-                                      className={errors.paymentmethod && touched.paymentmethod ? 'is-invalid' : ''}
+                                      value={
+                                        values.paymentmethod
+                                          ? {
+                                              value: values.paymentmethod,
+                                              label: values.paymentmethod,
+                                            }
+                                          : null
+                                      }
+                                      className={
+                                        errors.paymentmethod &&
+                                        touched.paymentmethod
+                                          ? "is-invalid"
+                                          : ""
+                                      }
                                     />
                                     <ErrorMessage
                                       name="paymentmethod"
@@ -436,8 +533,16 @@ class Payment extends Component {
                               <Row>
                                 <Col>
                                   <div className="text-end">
-                                    <button type="submit" className="btn btn-success save-user"
-                                      style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+                                    <button
+                                      type="submit"
+                                      className="btn btn-success save-user"
+                                      style={{
+                                        backgroundColor: "#0000CD",
+                                        borderColor: "#0000CD",
+                                      }}
+                                    >
+                                      Save
+                                    </button>
                                   </div>
                                 </Col>
                               </Row>
@@ -468,11 +573,7 @@ Payment.propTypes = {
   ongetcyclelist: PropTypes.func,
   onAddNewPayment: PropTypes.func,
 };
-const mapStateToProps = ({
-  Account,
-  registrationAdmin,
-  CycleList,
-}) => ({
+const mapStateToProps = ({ Account, registrationAdmin, CycleList }) => ({
   userID: Account.userID,
 
   approvedLabs: registrationAdmin.approvedLabs,

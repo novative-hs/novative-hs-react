@@ -77,6 +77,7 @@ class Results extends Component {
       rounds: "",
       issue_date: "",
       closing_date: "",
+      participantID: "",
       participant_ids: [],
       PostResult: [],
       ResultList: [],
@@ -85,7 +86,9 @@ class Results extends Component {
       //   ? JSON.parse(localStorage.getItem("authUser")).participantID
       //   : "",
       // approvedLabListColumns: this.getApprovedLabListColumns(), // Initialize columns in state
-
+      user_id: localStorage.getItem("authUser")
+      ? JSON.parse(localStorage.getItem("authUser")).user_id
+      : "",
     
     };
   }
@@ -109,6 +112,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+               className="form-select me-2"
                 value={list.unit_name || ""} // Default to an empty string if unit_name is not provided
                 onChange={e => this.handleUnitChange(e, list)}
               >
@@ -137,6 +141,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.instrument_name || ""}
                 onChange={e => this.handleInstrumentChange(e, list)}
               >
@@ -165,6 +170,7 @@ class Results extends Component {
             <div className="text-start">
               {" "}
               <select
+                className="form-select me-2"
                 value={list.method_name || ""}
                 onChange={e => this.handleMethodChange(e, list)}
               >
@@ -192,6 +198,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.reagent_name || ""}
                 onChange={e => this.handleReagentChange(e, list)}
               >
@@ -240,19 +247,12 @@ class Results extends Component {
 
             return (
               <div className="d-flex flex-row align-items-start">
-                {/* Check if round_status is "Open" and list.result_status is "Created" */}
-                {round_status && 
-                round_status === "Open" ? (
-                  <>
-                    <button
+                <button
                       onClick={() => this.handleSubmit(list)}
                       className="btn btn-success"
                     >
                       Submit
-                    </button>
-                  </>
-                ) : null}{" "}
-                {/* If the status is "Closed", hide the buttons */}
+                </button>
               </div>
             );
           },
@@ -275,6 +275,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.instrument_name || ""}
                 onChange={e => this.handleInstrumentChange(e, list)}
               >
@@ -303,6 +304,7 @@ class Results extends Component {
             <div className="text-start">
               {" "}
               <select
+                className="form-select me-2"
                 value={list.method_name || ""}
                 onChange={e => this.handleMethodChange(e, list)}
               >
@@ -330,6 +332,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.reagent_name || ""}
                 onChange={e => this.handleReagentChange(e, list)}
               >
@@ -350,7 +353,6 @@ class Results extends Component {
           ),
         },
         
-        
         {
           text: "Result Type",
           dataField: "result_type",
@@ -358,6 +360,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.result_type || ""} // Ensure this is set properly
                 onChange={(e) => this.handleResultTypeChange(e, list)} // Handle the change event
               >
@@ -397,19 +400,12 @@ class Results extends Component {
 
             return (
               <div className="d-flex flex-row align-items-start">
-                {/* Check if round_status is "Open" and list.result_status is "Created" */}
-                {round_status &&
-                round_status === "Open" ? (
-                  <>
-                    <button
+                  <button
                       onClick={() => this.handleSubmit(list)}
                       className="btn btn-success"
                     >
                       Submit
-                    </button>
-                  </>
-                ) : null}{" "}
-                {/* If the status is "Closed", hide the buttons */}
+                  </button>
               </div>
             );
           },
@@ -452,7 +448,7 @@ class Results extends Component {
     } = this.props;
 
     const id = this.props.match.params.id;
-    console.log("props main id ", id, this.props.match.params.id)
+    // console.log("props main id ", id, this.props.match.params.id)
     // Extract participantID from the query string
     const searchParams = new URLSearchParams(this.props.location.search);
     const participantID = searchParams.get('participantID'); 
@@ -482,10 +478,9 @@ class Results extends Component {
       ReagentList,
       ResultList,
       round_status,
-      result_status,
       result_type,
     } = this.props;
-    console.log("STATUSS", this.props.round_status, this.props.result_status, this.props.result_type)
+    // console.log("combineData..............", this.state.combinedData)
     const dataChanged = [
       prevProps.SchemeAnalytesList !== SchemeAnalytesList,
       prevProps.ListUnits !== ListUnits,
@@ -506,7 +501,6 @@ class Results extends Component {
           ReagentList,
           ResultList,
           round_status,
-          result_status,
           result_type,
           isDataLoaded: true, // Data is now loaded
         },
@@ -523,13 +517,12 @@ class Results extends Component {
       Instrument,
       ReagentList,
       ResultList, // This array contains the previously submitted values
+      participantID,
     } = this.state;
 
-    const { participant_ids, rounds } = this.props;
-    const { participantID } = this.state;
-
+    const { rounds } = this.props;
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
-      // console.log("SchemeAnalytesList", SchemeAnalytesList)
+      // console.log("ResultList", ResultList)
       // Filter ResultList where the analyte matches
       const participantResults = ResultList.filter(result => {
         return result.analyte === analyte.id;
@@ -537,9 +530,11 @@ class Results extends Component {
       // console.log("participantResults", participantResults)
       // Check which of these results were submitted by the logged-in user
       const userResult = participantResults.find(result => {
-        return console.log("lab account id",result.lab.account_id) === console.log("url account id", participantID) && result.rounds === rounds ;
+        // console.log("Comparing user_id:", Number(participantID), "with lab.id:", result.lab.account_id);
+        // console.log("Comparing rounds:", rounds, "with result.rounds:", result.rounds);
+        return (result.lab.account_id === Number(participantID) && result.rounds === rounds);
       });
-      console.log("userResultuserResult", userResult);
+      // console.log("userResult", userResult);
 
       return {
         id: analyte.id || index,
@@ -1036,7 +1031,6 @@ Results.propTypes = {
 
   rounds: PropTypes.number,
   round_status: PropTypes.string,
-  result_status: PropTypes.string,
   result_type: PropTypes.string,
   scheme_id: PropTypes.number,
   issue_date: PropTypes.string,
@@ -1077,7 +1071,6 @@ const mapStateToProps = ({
   rounds: SchemeAnalytesList.rounds,
   scheme_id: SchemeAnalytesList.scheme_id,
   round_status: SchemeAnalytesList.round_status,
-  result_status: SchemeAnalytesList.result_status,
   result_type: SchemeAnalytesList.result_type,
   issue_date: SchemeAnalytesList.issue_date,
   closing_date: SchemeAnalytesList.closing_date,

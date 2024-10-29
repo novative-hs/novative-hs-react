@@ -318,15 +318,15 @@ class InstrumentType extends Component {
         // {
         //   dataField: 'link',
         //   text: '',
-          // formatter: (cellContent, round) => {
-          //   return (
-          //     <Link to={`/add-labs-round-page/${round.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+        // formatter: (cellContent, round) => {
+        //   return (
+        //     <Link to={`/add-labs-round-page/${round.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
 
-          //       <span>Add Participants</span>
-          //     </Link>
+        //       <span>Add Participants</span>
+        //     </Link>
 
-          //   );
-          // }
+        //   );
+        // }
         // },
         {
           dataField: "menu",
@@ -336,7 +336,6 @@ class InstrumentType extends Component {
           formatter: (cellContent, round) => {
             const { organization_name } = this.state;
             // const scheme = round.scheme ? round.scheme.toString() : ""; // Extract scheme from round object
-
             return (
               <div className="d-flex gap-3 ml-3">
                 <Tooltip title="Add Participants">
@@ -351,7 +350,7 @@ class InstrumentType extends Component {
                       }
 
                       const url = `/${this.state.organization_name}/add-labs-round-page/${round.id}`;
-                      console.log("Navigating to:", url);
+                      // console.log("Navigating to:", url);
                       this.props.history.push(url); // Navigate to the new URL
                     }}
                     style={{ textDecoration: "underline", color: "#008000" }}
@@ -362,8 +361,22 @@ class InstrumentType extends Component {
                     ></i>
                   </Link>
                 </Tooltip>
+                
+                {(round.scheme_type === "Qualitative" && round.status === "Report Available") && (
+                  <Tooltip title="Report">
+                    <Link
+                      to="#"
+                      onClick={() => this.onClickReport(round.id)}
+                      style={{ textDecoration: "underline", color: "#008000" }}
+                    >
+                     <i className="mdi mdi-file-chart font-size-18" id="reportIcon"></i>
+                    </Link>
+                  </Tooltip>
+                )}
+
                 {/* Show the statistics icon only when the status is "closed" */}
-                {(round.status === "Closed" || round.status === "Report Available")&& (
+                {(round.status === "Closed" ||
+                  round.status === "Report Available") && (
                   <Tooltip title="Statistics">
                     <Link
                       to="#"
@@ -431,6 +444,7 @@ class InstrumentType extends Component {
 
   componentDidMount() {
     const { organization_name } = this.props.match.params;
+    
     // Only set state if organization_name is empty
     if (!this.state.organization_name) {
       this.setState({ organization_name });
@@ -515,6 +529,11 @@ class InstrumentType extends Component {
       );
     }
   };
+  onClickReport = id =>{
+    this.props.history.push(
+      `/${this.state.organization_name}/slectValues/${id}`
+    );
+  }
 
   toggle(round) {
     console.log("data in case of update asjdhasdf", round);
@@ -546,6 +565,7 @@ class InstrumentType extends Component {
     }
   }
   componentDidUpdate(prevProps) {
+    
     if (
       !isEmpty(this.props.RoundList) &&
       size(prevProps.RoundList) !== size(this.props.RoundList)
@@ -633,7 +653,8 @@ class InstrumentType extends Component {
         ? entry.closing_date.toString()
         : "";
       const status = entry.status ? entry.status.toString() : "";
-
+      const scheme_type = entry.scheme_type ? entry.scheme_type.toString() : "";
+      
       return (
         id.includes(idFilter) &&
         rounds.includes(roundsFilter) &&
@@ -644,6 +665,7 @@ class InstrumentType extends Component {
         issue_date.includes(issuedateFilter) &&
         closing_date.includes(closingdateFilter) &&
         status.includes(statusFilter)
+        // scheme_type 
       );
     });
 
@@ -760,20 +782,25 @@ class InstrumentType extends Component {
                                               : "Created",
                                             // added_by: this.state.selectedRound ? this.state.selectedRound.added_by : "",
                                           }}
-                                          // validationSchema={Yup.object().shape({
-                                          //   rounds: Yup.string().required("Select the number of rounds"),
-                                          //   sample: Yup.string().required("Sample is required"),
-                                          //   participants: Yup.string().required("Participants is required"),
-                                          //   scheme: Yup.string().required("Scheme is required"),
-                                          //   cycle_no: Yup.string()
-                                          //     .required("Cycle number is required")
-                                          //     .matches(/^[0-9]+$/, "It must be a number"),
-                                          //   sample: Yup.string().required("Sample is required"),
-                                          //   issue_date: Yup.string().required("Start Date is required"),
-                                          //   closing_date: Yup.string().required("End Date is required"),
-                                          //   notes: Yup.string().required("Notes are required"),
-
-                                          // })}
+                                          validationSchema={Yup.object().shape({
+                                            rounds: Yup.string().required(
+                                              "Round number is required"
+                                            ),
+                                            sample:
+                                              Yup.string().required(
+                                                "Sample is required"
+                                              ),
+                                            issue_date: Yup.string().required(
+                                              "Issue date is required"
+                                            ),
+                                            closing_date: Yup.string().required(
+                                              "Closing date is required"
+                                            ),
+                                            status:
+                                              Yup.string().required(
+                                                "Status is required"
+                                              ),
+                                          })}
                                           onSubmit={async (
                                             values,
                                             { setSubmitting }
@@ -817,13 +844,15 @@ class InstrumentType extends Component {
                                               }
 
                                               // Refetch data and update local state
-                                              const updatedData =
-                                                await this.props.onGetRoundList(
-                                                  this.state.user_id
-                                                );
-                                              this.setState({
-                                                RoundList: updatedData,
-                                              });
+                                              setTimeout(async () => {
+                                                const updatedData =
+                                                  await this.props.onGetRoundList(
+                                                    this.state.user_id
+                                                  );
+                                                this.setState({
+                                                  RoundList: updatedData,
+                                                });
+                                              }, 300); 
                                             } catch (error) {
                                               console.error(
                                                 "Error updating/adding rounds:",
@@ -845,7 +874,7 @@ class InstrumentType extends Component {
                                                 <Col className="col-12">
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
-                                                      Number of Rounds
+                                                      Round Number
                                                     </Label>
                                                     <Field
                                                       name="rounds"

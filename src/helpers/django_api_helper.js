@@ -746,19 +746,20 @@ export const getResultSubmit = id =>
   get(`${url.GET_RESULT_SUBMIT}/${id}`, {
     headers: getHeader(authHeader()),
   });
-// export const getReport = id =>
-//   get(`${url.GET_REPORT}/${id}`, {
-//     headers: getHeader(authHeader()),
-//   });
 export const getReport = id => 
   get(`${url.GET_REPORT}/${id}`, {
     headers: getHeader(authHeader()),
   }).then(response => {
-    console.log("API Raw Response:", response); // Log the raw response
+    // console.log("API Raw Response:", response); // Log the raw response
     return response; // Ensure response is being returned correctly
   }).catch(error => {
     console.error("Error in API Call:", error);
   });
+////////
+export const getSereologyResult = id =>
+  get(`${url.GET_SERELOGY_RESULT}/${id}`, {
+    headers: getHeader(authHeader()),
+  })
   
 //Participant result POST
 export const postResult = (result, id) => {
@@ -2679,6 +2680,7 @@ export const getRoundlist = id =>
   get(`${url.GET_ROUND_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
 export const addNewRound = (createUnit, id) => {
   console.log("Adding New Round", createUnit, id);
   let formData = new FormData();
@@ -2734,6 +2736,37 @@ export const deleteRound = round =>
     headers: getHeader(authHeader()),
   });
 
+///////////////////////////////
+export const addSereologyValues = (value, id) => {
+  // console.log("Adding Sereology Values", value);
+  let formData = new FormData();
+  formData.append("type", value.type);
+  formData.append("analyte_id", value.analyte_id);
+  formData.append("value", value.value);
+  formData.append("account_id", value.account_id); 
+  return axios
+    .post(`${url.POST_SERELOGY_VALUES}/${id}`, formData, {
+      headers: {
+        ...getHeader(authHeader()),
+        "Content-Type": "multipart/form-data", 
+      },
+    })
+    .then(response => {
+      console.log("Sereology values added successfully:", response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error("Error adding sereology values:", error.response ? error.response.data : error.message);
+      throw error;
+    });
+};
+
+export const getSereologyValues = (id, round_id) => {
+  return get(`${url.GET_SERELOGY_VALUES}/${id}`, {
+    headers: getHeader(authHeader()),
+    params: { round_id }  // Ensure round_id is included in the params object correctly
+  });
+};
 
 // ------------- Registration Admin requests START -------------
 

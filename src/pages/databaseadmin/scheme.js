@@ -666,7 +666,7 @@ class ReagentsList extends Component {
                                                   onGetScheme(
                                                     this.state.user_id
                                                   );
-                                                }, 1000);
+                                                }, 2000);
                                               }
                                             } else {
                                               const newReagent = {

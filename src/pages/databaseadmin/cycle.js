@@ -598,15 +598,14 @@ render() {
                                             end_date: this.state.selectedCycle ? this.state.selectedCycle.end_date : "",
                                       
                                           }}
-                                          // validationSchema={Yup.object().shape({
-                                          //   scheme_name: Yup.string().required("Name is required"),
-                                          //   rounds: Yup.string().required("Select the number of rounds"),
-                                          //   cycle_no: Yup.string()
-                                          //     .required("Cycle number is required")
-                                          //     .matches(/^[0-9]+$/, "It must be a number"),
-                                          //   start_date: Yup.string().required("Start Date is required"),
-                                          //   end_date: Yup.string().required("End Date is required"),
-                                          // })}
+                                          validationSchema={Yup.object().shape({
+                                            scheme_name: Yup.string().required("Name is required"),
+                                            rounds: Yup.string().required("Select the number of rounds"),
+                                            cycle_no: Yup.string().required("Cycle number is required"),
+                                            start_date: Yup.string().required("Start Date is required"),
+                                            end_date: Yup.string().required("End Date is required"),
+                                            status: Yup.string().required("status is required"),
+                                          })}
                                           onSubmit={async (values, { setSubmitting }) => {
                                             const userId = localStorage.getItem("authUser")
                                                 ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -631,18 +630,22 @@ render() {
                                                     await this.props.onAddNewType(newround);
                                                     this.displaySuccessMessage("Cycle added successfully!");
                                                 }
-                                        
                                                 // Refetch data and update local state
-                                                const updatedData = await this.props.onGetInstrumentTypeList(this.state.user_id);
+                                              setTimeout(async () => {
+                                                const updatedData =
+                                                  await this.props.onGetInstrumentTypeList(this.state.user_id);
                                                 this.setState({ CycleList: updatedData });
-                                        
+                                              }, 300); 
+                                              
                                             } catch (error) {
-                                                console.error("Error updating/adding rounds:", error);
+                                              console.error(
+                                                "Error updating/adding rounds:",
+                                                error
+                                              );
                                             }
-                                        
+
                                             setSubmitting(false);
-                                        }}
-                                          
+                                          }}
                                         >
                                           {({ errors, touched, values, setFieldValue }) => (
                                             <Form>

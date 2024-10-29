@@ -15,6 +15,13 @@ import {
   GET_STATISTICS_SUCCESS,
   GET_STATISTICS_FAIL,
 
+  POST_SERELOGY_VALUES,
+  POST_SERELOGY_VALUES_SUCCESS,
+  POST_SERELOGY_VALUES_FAIL,
+  GET_SERELOGY_VALUES,
+  GET_SERELOGY_VALUES_SUCCESS,
+  GET_SERELOGY_VALUES_FAIL,
+
 } from "./actionTypes";
 
 export const getSchemeAnalytesList = (id) => ({
@@ -91,6 +98,46 @@ export const getSchemeAnalytesList = (id) => ({
   export const getStatisticsListFail = (error) => {
     return {
       type: GET_STATISTICS_FAIL,
+      payload: error,
+    };
+  };
+
+  export const postValues = (result, id) => {
+    return {
+      type: POST_SERELOGY_VALUES,
+      payload: { result, id },
+    };
+  };
+  
+  export const postValuesSuccess = result => ({
+    type: POST_SERELOGY_VALUES_SUCCESS,
+    payload: result,
+  });
+  
+  export const postValuesFail = error => ({
+    type: POST_SERELOGY_VALUES_FAIL,
+    payload: error,
+  });
+
+  export const getResultValues = (id, round_id) => {
+    // console.log("Fetching result values for ID:", id, "and round_id:", round_id);
+    return {
+      type: GET_SERELOGY_VALUES,
+      payload: { id, round_id },
+    };
+  };
+  
+  export const getResultValuesSuccess = ResultList => {
+  
+    return {
+      type: GET_SERELOGY_VALUES_SUCCESS,
+      payload: ResultList,
+    };
+  };
+  
+  export const getResultValuesFail = (error) => {
+    return {
+      type: GET_SERELOGY_VALUES_FAIL,
       payload: error,
     };
   };

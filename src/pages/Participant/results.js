@@ -77,7 +77,6 @@ class Results extends Component {
       rounds: "",
       issue_date: "",
       closing_date: "",
-      participant_ids: [],
       PostResult: [],
       ResultList: [],
       isDataLoaded: false, // Flag to track if all data is loaded
@@ -107,6 +106,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.unit_name || ""} // Default to an empty string if unit_name is not provided
                 onChange={e => this.handleUnitChange(e, list)}
               >
@@ -135,6 +135,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.instrument_name || ""}
                 onChange={e => this.handleInstrumentChange(e, list)}
               >
@@ -163,6 +164,7 @@ class Results extends Component {
             <div className="text-start">
               {" "}
               <select
+                className="form-select me-2"
                 value={list.method_name || ""}
                 onChange={e => this.handleMethodChange(e, list)}
               >
@@ -190,6 +192,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.reagent_name || ""}
                 onChange={e => this.handleReagentChange(e, list)}
               >
@@ -283,6 +286,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.instrument_name || ""}
                 onChange={e => this.handleInstrumentChange(e, list)}
               >
@@ -311,6 +315,7 @@ class Results extends Component {
             <div className="text-start">
               {" "}
               <select
+                className="form-select me-2"
                 value={list.method_name || ""}
                 onChange={e => this.handleMethodChange(e, list)}
               >
@@ -338,6 +343,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.reagent_name || ""}
                 onChange={e => this.handleReagentChange(e, list)}
               >
@@ -366,6 +372,7 @@ class Results extends Component {
           formatter: (cellContent, list) => (
             <div className="text-start">
               <select
+                className="form-select me-2"
                 value={list.result_type || ""} // Ensure this is set properly
                 onChange={e => this.handleResultTypeChange(e, list)} // Handle the change event
               >
@@ -479,14 +486,14 @@ class Results extends Component {
       ReagentList,
       ResultList,
       round_status,
-      result_status,
+      // result_status,
       result_type,
     } = this.props;
     console.log(
-      "STATUSS",
-      this.props.round_status,
-      this.props.result_status,
-      this.props.result_type
+      "combinedData............",
+      this.state.combinedData
+      // this.props.round_status,
+      // this.props.result_type
     );
     const dataChanged = [
       prevProps.SchemeAnalytesList !== SchemeAnalytesList,
@@ -514,7 +521,6 @@ class Results extends Component {
           ReagentList,
           ResultList,
           round_status,
-          result_status,
           result_type,
           isDataLoaded: true, // Data is now loaded
         },
@@ -533,10 +539,10 @@ class Results extends Component {
       ResultList, // This array contains the previously submitted values
     } = this.state;
 
-    const { participant_ids, rounds } = this.props;
+    const { rounds } = this.props;
     const { user_id, ParticipantNo } = this.state;
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
-      // console.log("SchemeAnalytesList", SchemeAnalytesList)
+      // console.log("ResultList", ResultList)
       // Filter ResultList where the analyte matches
       const participantResults = ResultList.filter(result => {
         return result.analyte === analyte.id;
@@ -544,9 +550,16 @@ class Results extends Component {
       // console.log("participantResults", participantResults)
       // Check which of these results were submitted by the logged-in user
       const userResult = participantResults.find(result => {
+        console.log(
+          "Comparing user_id:",
+          user_id,
+          "with lab.id:",
+          result.lab.account_id
+        );
+        // console.log("Comparing rounds:", rounds, "with result.rounds:", result.rounds);
         return result.lab.account_id === user_id && result.rounds === rounds;
       });
-      console.log("userResultuserResult", userResult);
+      // console.log("userResult", userResult);
 
       return {
         id: analyte.id || index,
@@ -903,7 +916,7 @@ class Results extends Component {
       closing_date,
       round_status,
     } = this.props;
-    console.log("scheme type", schemeType, schemeName);
+    // console.log("scheme type", schemeType, schemeName);
     // Get the first round's details if available
     // const firstRound = rounds && rounds.length > 0 ? rounds[0] : null;
 
@@ -967,34 +980,41 @@ class Results extends Component {
                 className="justify-content-start"
                 style={{ marginLeft: "120px" }}
               >
-                <Col
-                  sm="12"
-                  md="12"
-                  lg="6"
-                  xl="6"
-                  className=""
-                >
+                <Col sm="12" md="12" lg="6" xl="6">
                   <Button
                     onClick={this.exportToExcel}
-                    className="mb-3 btn me-2"
+                    className="mb-3 me-2"
+                    style={{ minWidth: "120px" }} // Ensures a minimum width but allows for expansion
                   >
                     Download Results
                   </Button>
-                  <Button onClick={this.handlePrint} className="mb-3 btn me-2" style={{ width: "15%" }}>
+                  <Button
+                    onClick={this.handlePrint}
+                    className="mb-3 me-2"
+                    style={{ minWidth: "120px" }}
+                  >
                     Print
                   </Button>
                   {round_status === "Report Available" && (
                     <Link
-                      to={`/${organization_name}/${id}/${participant_id}/report`}
-                      className="me-2" 
+                      to={
+                        schemeType === "Quantitative"
+                          ? `/${organization_name}/${id}/${participant_id}/report`
+                          : `/${organization_name}/${id}/${participant_id}/sereology-report` // Change this URL as needed
+                      }
+                      className="me-2"
                     >
-                      <Button className="mb-3 btn" style={{ width: "15%" }}>Report</Button>
+                      <Button className="mb-3" style={{ minWidth: "120px" }}>
+                        Report
+                      </Button>
                     </Link>
                   )}
                   <Link
                     to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}
                   >
-                    <Button className="mb-3 btn" style={{ width: "15%" }}>History</Button>
+                    <Button className="mb-3" style={{ minWidth: "120px" }}>
+                      History
+                    </Button>
                   </Link>
                 </Col>
               </Row>
@@ -1072,11 +1092,9 @@ Results.propTypes = {
   match: PropTypes.object,
   schemeName: PropTypes.string, // Add this line
   schemeType: PropTypes.string,
-  participant_ids: PropTypes.array,
   SchemeAnalytesList: PropTypes.array,
-  rounds: PropTypes.number,
+  rounds: PropTypes.string,
   round_status: PropTypes.string,
-  result_status: PropTypes.string,
   result_type: PropTypes.string,
   scheme_id: PropTypes.number,
   issue_date: PropTypes.string,
@@ -1115,11 +1133,9 @@ const mapStateToProps = ({
   rounds: SchemeAnalytesList.rounds,
   scheme_id: SchemeAnalytesList.scheme_id,
   round_status: SchemeAnalytesList.round_status,
-  result_status: SchemeAnalytesList.result_status,
   result_type: SchemeAnalytesList.result_type,
   issue_date: SchemeAnalytesList.issue_date,
   closing_date: SchemeAnalytesList.closing_date,
-  participant_ids: SchemeAnalytesList.participant_ids,
   ListUnits: ListUnits.ListUnits,
   ListMethods: ListMethods.ListMethods,
   Instrument: Instrument.Instrument,

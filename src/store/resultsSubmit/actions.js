@@ -8,6 +8,10 @@ import {
   GET_REPORT_SUCCESS,
   GET_REPORT_FAIL,
 
+  GET_SERELOGY_RESULT,
+  GET_SERELOGY_RESULT_SUCCESS,
+  GET_SERELOGY_RESULT_FAIL,
+
 } from "./actionTypes";
 
 
@@ -38,7 +42,7 @@ import {
   });
   
   export const getReportSuccess = Report => {
-    console.log("Dispatching GET_REPORT_SUCCESS with data:", Report);
+    // console.log("Dispatching GET_REPORT_SUCCESS with data:", Report);
     return {
       type: GET_REPORT_SUCCESS,
       payload: Report,
@@ -48,6 +52,25 @@ import {
   export const getReportFail = (error) => {
     return {
       type: GET_REPORT_FAIL,
+      payload: error,
+    };
+  };
+  ///////////////////////
+  export const getSereologyResult = id => ({
+    type: GET_SERELOGY_RESULT,
+    payload: id,
+  });
+  
+  export const getSereologyResultSuccess = Result => {
+    return {
+      type: GET_SERELOGY_RESULT_SUCCESS,
+      payload: Result,
+    };
+  };
+  
+  export const getSereologyResultFail = (error) => {
+    return {
+      type: GET_SERELOGY_RESULT_FAIL,
       payload: error,
     };
   };

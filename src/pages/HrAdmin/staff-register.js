@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
-  Card, CardBody, Col, Container, Row, Label, Input, Alert 
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Label,
+  Input,
+  Alert,
 } from "reactstrap";
 import MetaTags from "react-meta-tags";
-import { Formik, Field, Form, ErrorMessage} from "formik";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Select from "react-select";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 // action
@@ -14,6 +22,7 @@ import {
   registerUser,
   registerUserFailed,
 } from "../../store/actions";
+import { getcitylist } from "store/participantcity/actions";
 // Redux
 import { connect } from "react-redux";
 
@@ -26,12 +35,20 @@ class StaffRegister extends Component {
       incompleteRegistrationError: null,
       submittedMessage: null,
       emailError: null,
+      ListCity: [],
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
     };
   }
+  componentDidMount() {
+    const { onGetCityList } = this.props;
+    onGetCityList(this.state.user_id);
+  }
   componentDidUpdate(prevProps) {
+    if (prevProps.ListCity !== this.props.ListCity) {
+      this.setState({ ListCity: this.props.ListCity });
+    }
     if (prevProps.emailError !== this.props.emailError) {
       this.setState({ emailError: this.props.emailError });
     }
@@ -53,32 +70,50 @@ class StaffRegister extends Component {
   }
   togglePasswordVisibility = () => {
     const passwordInput = document.querySelector('input[name="password"]');
-    const eyeIcon = document.getElementById('eye-icon');
+    const eyeIcon = document.getElementById("eye-icon");
 
-    if (passwordInput && passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      eyeIcon.className = 'mdi mdi-eye-off-outline';
+    if (passwordInput && passwordInput.type === "password") {
+      passwordInput.type = "text";
+      eyeIcon.className = "mdi mdi-eye-off-outline";
     } else if (passwordInput) {
-      passwordInput.type = 'password';
-      eyeIcon.className = 'mdi mdi-eye-outline';
+      passwordInput.type = "password";
+      eyeIcon.className = "mdi mdi-eye-outline";
     }
   };
   togglePassword1Visibility = () => {
     const passwordInput = document.querySelector('input[name="password2"]');
-    const eyeIcon2 = document.getElementById('eye-icon1');
+    const eyeIcon2 = document.getElementById("eye-icon1");
 
-    if (passwordInput && passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      eyeIcon2.className = 'mdi mdi-eye-off-outline';
+    if (passwordInput && passwordInput.type === "password") {
+      passwordInput.type = "text";
+      eyeIcon2.className = "mdi mdi-eye-off-outline";
     } else if (passwordInput) {
-      passwordInput.type = 'password';
-      eyeIcon2.className = 'mdi mdi-eye-outline';
+      passwordInput.type = "password";
+      eyeIcon2.className = "mdi mdi-eye-outline";
     }
   };
-
+  // Scroll to top function
+  scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Adds smooth scrolling
+    });
+  };
   render() {
     console.log("Email error received:", this.props.emailError);
-
+    const { ListCity } = this.state;
+    const cityOptions = ListCity.map(city => ({
+      value: city.name,
+      label: city.name,
+    }));
+    const customStyles = {
+      menuList: provided => ({
+        ...provided,
+        maxHeight: 200, // Maximum height for the menu list
+        overflowY: "auto", // Enable vertical scrolling
+        // WebkitOverflowScrolling: "touch", // Smooth scrolling for mobile devices
+      }),
+    };
     return (
       <React.Fragment>
         <div className="page-content">
@@ -93,7 +128,7 @@ class StaffRegister extends Component {
                 <Card>
                   <CardBody>
                     <div className="mt-4">
-                    {this.state.submittedMessage && (
+                      {this.state.submittedMessage && (
                         <Alert color="success" style={{ marginTop: "13px" }}>
                           {this.state.submittedMessage}
                         </Alert>
@@ -101,21 +136,22 @@ class StaffRegister extends Component {
                       <Formik
                         enableReinitialize={true}
                         initialValues={{
-                          username: (this.state && this.state.username) || '',
-                          email: (this.state && this.state.email) || '',
-                          password: (this.state && this.state.password) || '',
-                          password2: (this.state && this.state.password2) || '',
-                          account_type: (this.state && this.state.account_type) || 'CSR',
-                          name: (this.state && this.state.name) || '',
-                          cnic: (this.state && this.state.cnic) || '',
-                          phone: (this.state && this.state.phone) || '',
-                          city: (this.state && this.state.city) || '',
-                          photo: (this.state && this.state.photo) || '',
+                          username: (this.state && this.state.username) || "",
+                          email: (this.state && this.state.email) || "",
+                          password: (this.state && this.state.password) || "",
+                          password2: (this.state && this.state.password2) || "",
+                          account_type:
+                            (this.state && this.state.account_type) || "CSR",
+                          name: (this.state && this.state.name) || "",
+                          cnic: (this.state && this.state.cnic) || "",
+                          phone: (this.state && this.state.phone) || "",
+                          city: (this.state && this.state.city) || "",
+                          photo: (this.state && this.state.photo) || "",
                           added_by: localStorage.getItem("authUser")
-                          ? JSON.parse(localStorage.getItem("authUser")).user_id
-                          : '',
+                            ? JSON.parse(localStorage.getItem("authUser"))
+                                .user_id
+                            : "",
                         }}
-                        
                         validationSchema={Yup.object().shape({
                           username: Yup.string()
                             .trim()
@@ -151,11 +187,15 @@ class StaffRegister extends Component {
                                 "Both password need to be the same"
                               ),
                             }),
-                            city: Yup.string().trim().required('Please enter city'),
+                          city: Yup.string()
+                            .trim()
+                            .required("Please enter city"),
                         })}
                         onSubmit={(values, { resetForm }) => {
-                          this.props.registerUser(values)
-                        
+                          // Trigger scroll to top
+                          this.scrollToTop();
+                          this.props.registerUser(values);
+
                           setTimeout(() => {
                             if (
                               !this.state.usernameFieldError &&
@@ -163,22 +203,18 @@ class StaffRegister extends Component {
                               !this.state.incompleteRegistrationError
                             ) {
                               this.setState({
-                                submittedMessage:
-                                  'Staff added  successfully.',
+                                submittedMessage: "Staff added  successfully.",
                               });
                               setTimeout(() => {
-                                this.setState({ submittedMessage: '' });
+                                this.setState({ submittedMessage: "" });
                                 resetForm(); // Reset form fields after the success message disappears
                               }, 2000);
                             }
                           }, 1000); // Initial 1 second delay
                         }}
-                    
                       >
-                      
-                       {({ setFieldValue, errors, touched }) => (
+                        {({ setFieldValue, errors, touched,values }) => (
                           <Form className="form-horizontal">
-                            
                             <div className="mb-3">
                               <Label for="account_type" className="form-label">
                                 Account type
@@ -189,11 +225,12 @@ class StaffRegister extends Component {
                                 className="form-select"
                               >
                                 <option value="CSR">CSR</option>
-                                <option value="database-admin">Database Admin</option>
+                                <option value="database-admin">
+                                  Database Admin
+                                </option>
                                 <option value="registration-admin">
                                   Registration Admin
                                 </option>
-
                               </Field>
                             </div>
                             {/* Username field */}
@@ -205,10 +242,17 @@ class StaffRegister extends Component {
                                 type="text"
                                 placeholder="Enter name"
                                 className={
-                                  'form-control' + (errors.name && touched.name ? ' is-invalid' : '')
+                                  "form-control" +
+                                  (errors.name && touched.name
+                                    ? " is-invalid"
+                                    : "")
                                 }
                               />
-                              <ErrorMessage name="name" component="div" className="invalid-feedback" />
+                              <ErrorMessage
+                                name="name"
+                                component="div"
+                                className="invalid-feedback"
+                              />
                             </div>
 
                             <div className="mb-3">
@@ -218,20 +262,23 @@ class StaffRegister extends Component {
                                 type="text"
                                 placeholder="Enter email"
                                 className={
-                                  'form-control' +
-                                  ((errors.email && touched.email)
-                                    ? ' is-invalid'
-                                    : '')
+                                  "form-control" +
+                                  (errors.email && touched.email
+                                    ? " is-invalid"
+                                    : "")
                                 }
                               />
-                              <ErrorMessage name="email" component="div" className="invalid-feedback" />
-                         
+                              <ErrorMessage
+                                name="email"
+                                component="div"
+                                className="invalid-feedback"
+                              />
+
                               {this.state.emailError && (
                                 <div className="invalid-feedback d-block">
                                   {this.state.emailError}
                                 </div>
                               )}
-        
                             </div>
 
                             <div className="mb-3">
@@ -241,10 +288,17 @@ class StaffRegister extends Component {
                                 type="text"
                                 placeholder="Enter mobile no."
                                 className={
-                                  'form-control' + (errors.phone && touched.phone ? ' is-invalid' : '')
+                                  "form-control" +
+                                  (errors.phone && touched.phone
+                                    ? " is-invalid"
+                                    : "")
                                 }
                               />
-                              <ErrorMessage name="phone" component="div" className="invalid-feedback" />
+                              <ErrorMessage
+                                name="phone"
+                                component="div"
+                                className="invalid-feedback"
+                              />
                             </div>
                             <div className="mb-3">
                               <Label className="form-label">CNIC</Label>
@@ -253,7 +307,10 @@ class StaffRegister extends Component {
                                 type="text"
                                 placeholder="Enter mobile no."
                                 className={
-                                  'form-control' + (errors.cnic && touched.cnic ? ' is-invalid' : '')
+                                  "form-control" +
+                                  (errors.cnic && touched.cnic
+                                    ? " is-invalid"
+                                    : "")
                                 }
                               />
                               <ErrorMessage
@@ -272,27 +329,54 @@ class StaffRegister extends Component {
                                 placeholder="Choose image"
                                 type="file"
                                 accept=".jpg,.jpeg,.png"
-                                onChange={(e) => setFieldValue('photo', e.target.files[0])}
+                                onChange={e =>
+                                  setFieldValue("photo", e.target.files[0])
+                                }
                                 className={
-                                  'form-control' + (errors.photo && touched.photo ? ' is-invalid' : '')
+                                  "form-control" +
+                                  (errors.photo && touched.photo
+                                    ? " is-invalid"
+                                    : "")
                                 }
                               />
-                              <ErrorMessage name="photo" component="div" className="invalid-feedback" />
+                              <ErrorMessage
+                                name="photo"
+                                component="div"
+                                className="invalid-feedback"
+                              />
                             </div>
 
                             <div className="mb-3">
                               <Label for="city" className="form-label">
                                 City
                               </Label>
-                              <Field
-                                name="city"
-                                type="text"
-                                placeholder="Enter city"
+                              <Select
+                                name="city" 
+                                // isMulti // Enable multi-select
+                                options={cityOptions} // Options for the select
+                                styles={customStyles}
                                 className={
-                                  'form-control' + (errors.city && touched.city ? ' is-invalid' : '')
+                                  errors.city && touched.city
+                                    ? " is-invalid"
+                                    : "" // Conditional class based on validation
                                 }
+                                onChange={selectedOption => {
+                                  setFieldValue(
+                                    "city",
+                                    selectedOption ? selectedOption.value : ""
+                                  ); // Update Formik state with string value
+                                }}
+                                value={
+                                  cityOptions.find(
+                                    option => option.value === values.city
+                                  ) || null
+                                } 
                               />
-                              <ErrorMessage name="city" component="div" className="invalid-feedback" />
+                              <ErrorMessage
+                                name="city" // Error for the city field
+                                component="div"
+                                className="invalid-feedback"
+                              />
                             </div>
 
                             <div className="mb-3">
@@ -312,7 +396,7 @@ class StaffRegister extends Component {
                                 className={
                                   "form-control" +
                                   ((errors.username && touched.username) ||
-                                    this.state.usernameFieldError
+                                  this.state.usernameFieldError
                                     ? " is-invalid"
                                     : "")
                                 }
@@ -337,10 +421,11 @@ class StaffRegister extends Component {
                                   placeholder="Enter password"
                                   autoComplete="on"
                                   className={
-                                    'form-control' +
-                                    ((errors.password && touched.password) || this.state.passwordFieldError
-                                      ? ' is-invalid'
-                                      : '')
+                                    "form-control" +
+                                    ((errors.password && touched.password) ||
+                                    this.state.passwordFieldError
+                                      ? " is-invalid"
+                                      : "")
                                   }
                                 />
                                 <div className="input-group-append">
@@ -350,11 +435,18 @@ class StaffRegister extends Component {
                                     id="password-addon"
                                     onClick={this.togglePasswordVisibility}
                                   >
-                                    <i id="eye-icon" className="mdi mdi-eye-outline"></i>
+                                    <i
+                                      id="eye-icon"
+                                      className="mdi mdi-eye-outline"
+                                    ></i>
                                   </button>
                                 </div>
                               </div>
-                              <ErrorMessage name="password" component="div" className="invalid-feedback" />
+                              <ErrorMessage
+                                name="password"
+                                component="div"
+                                className="invalid-feedback"
+                              />
                               <div className="invalid-feedback">
                                 {this.state.passwordFieldError}
                               </div>
@@ -366,8 +458,10 @@ class StaffRegister extends Component {
                                   placeholder="Re-enter password"
                                   autoComplete="on"
                                   className={
-                                    'form-control' +
-                                    (errors.password2 && touched.password2 ? ' is-invalid' : '')
+                                    "form-control" +
+                                    (errors.password2 && touched.password2
+                                      ? " is-invalid"
+                                      : "")
                                   }
                                 />
                                 <div className="input-group-append">
@@ -377,13 +471,19 @@ class StaffRegister extends Component {
                                     id="password-addon"
                                     onClick={this.togglePassword1Visibility}
                                   >
-                                    <i id="eye-icon1" className="mdi mdi-eye-outline"></i>
+                                    <i
+                                      id="eye-icon1"
+                                      className="mdi mdi-eye-outline"
+                                    ></i>
                                   </button>
                                 </div>
                               </div>
-                              <ErrorMessage name="password2" component="div" className="invalid-feedback" />
+                              <ErrorMessage
+                                name="password2"
+                                component="div"
+                                className="invalid-feedback"
+                              />
                             </div>
-
 
                             <Row>
                               <Col>
@@ -392,7 +492,7 @@ class StaffRegister extends Component {
                                     type="submit"
                                     className="btn btn-primary save-user"
                                   >
-                                    Save 
+                                    Save
                                   </button>
                                 </div>
                               </Col>
@@ -424,8 +524,10 @@ StaffRegister.propTypes = {
   userAccountType: PropTypes.any,
   className: PropTypes.any,
   emailError: PropTypes.any,
+  ListCity: PropTypes.array,
+  onGetCityList: PropTypes.func,
 };
-const mapStateToProps = ({ Account }) => ({
+const mapStateToProps = ({ Account, ListCity }) => ({
   emailError: Account.emailError,
   userAccountType: Account.userAccountType,
   loading: Account.loading,
@@ -433,13 +535,14 @@ const mapStateToProps = ({ Account }) => ({
   passwordError: Account.passwordError,
   userID: Account.userID,
   usernameError: Account.usernameError,
+  ListCity: ListCity.ListCity,
 });
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    apiError: (error) => dispatch(apiError(error)),
-    registerUser: (user) => dispatch(registerUser(user)),
-    registerUserFailed: (error) => dispatch(registerUserFailed(error)),
-
+    apiError: error => dispatch(apiError(error)),
+    registerUser: user => dispatch(registerUser(user)),
+    registerUserFailed: error => dispatch(registerUserFailed(error)),
+    onGetCityList: id => dispatch(getcitylist(id))
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(StaffRegister);

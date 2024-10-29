@@ -295,7 +295,7 @@ class OrganizationRegister extends Component {
                               <Field
                                 name="website"
                                 type="text"
-                                placeholder="Enter mobile no."
+                                placeholder="Enter website"
                                 className={
                                   "form-control" +
                                   (errors.website && touched.website

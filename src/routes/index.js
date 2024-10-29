@@ -93,6 +93,7 @@ import AllParticipant1 from "pages/Participant/all-participants1";
 import AllParticipant2 from "pages/Participant/all-participants1";
 import ParticipantsResult from "pages/Participant/results";
 import Report from "pages/Participant/report";
+import SereologyReport from "pages/Participant/sereologyReport";
 import UpdateParticipantsResult from "pages/RegistrationAdmin/results"
 import ResultHistory from "pages/Participant/result-history";
 
@@ -145,6 +146,8 @@ import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 import News from "pages/RegistrationAdmin/news";
 import Statistics from "pages/RegistrationAdmin/statics";
+import SelectValues from "pages/RegistrationAdmin/reportValues";
+import DisplayValues from "pages/RegistrationAdmin/analteTypeValues";
 import RoundsHistory from "pages/RegistrationAdmin/registrationadmin-history";
 import RegParticipant from "pages/Authentication/RegisterParticipant";
 
@@ -327,6 +330,7 @@ const participantsAuthProtectedRoutes = [
   { path: "/email", component: Email},
   { path: "/:organization_name/:id/:id1/participantsResults", component: ParticipantsResult},
   { path: "/:organization_name/:id/:id1/report", component: Report},
+  { path: "/:organization_name/:id/:id1/sereology-report", component: SereologyReport},
   { path: "/:organization_name/rounds-history/participant/:id", component: RoundsHistory},
   { path: "/:organization_name/result-history/:id", component: ResultHistory},
   
@@ -362,6 +366,8 @@ const registrationAdminAuthProtectedRoutes = [
   { path: "/:organization_name/all-participant1", component: AllParticipant1},
   {path: "/:organization_name/news", component: News},
   { path: "/:organization_name/statistics/:id", component: Statistics},
+  { path: "/:organization_name/slectValues/:id", component: SelectValues},
+  { path: "/:organization_name/displayValues/:id", component: DisplayValues},
   { path: "/:organization_name/rounds-history/:id", component: RoundsHistory},
   { path: "/:organization_name/:id/participant-report", component: Report},
 

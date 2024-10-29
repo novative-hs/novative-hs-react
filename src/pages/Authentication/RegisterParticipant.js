@@ -252,6 +252,12 @@ class StaffRegister extends Component {
       });
     }
   };
+  scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Adds smooth scrolling
+    });
+  };
   render() {
     // console.log("Email error received:", this.props.emailError);
     const { ListType, ListSector } = this.state;
@@ -620,7 +626,9 @@ class StaffRegister extends Component {
                           // website: Yup.string().url("Invalid URL"),
                           // .required("Website is required"),
                         })}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(values, { setSubmitting, resetForm }) => {
+                          // Trigger scroll to top
+                          this.scrollToTop();
                           // for multiple selection
                           // const cityIds = values.city
                           //   .map(city => city.value)
@@ -643,6 +651,10 @@ class StaffRegister extends Component {
                                 submittedMessage:
                                   "Participant added successfully.",
                               });
+                              setTimeout(() => {
+                                this.setState({ submittedMessage: '' });
+                                resetForm(); // Reset form fields after the success message disappears
+                              }, 2000);
                             }
                           }, 1000); // Initial 1 second delay
                         }}

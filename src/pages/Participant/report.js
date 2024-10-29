@@ -517,7 +517,7 @@ Results.propTypes = {
   Report: PropTypes.array,
 
   rounds: PropTypes.number,
-  sample: PropTypes.string,
+  sample: PropTypes.string, 
   issue_date: PropTypes.string,
   closing_date: PropTypes.string,
   onGetSchemeAnalyte: PropTypes.func,

@@ -146,7 +146,7 @@ class Header extends Component {
     const {StaffProfile} = this.props;
     const { getLabProfile } = this.props;
     const { getStaffProfile } = this.props;
-    console.log("lab logo", this.props.LabProfile)
+    // console.log("lab logo", this.props.LabProfile)
     // Extract organization_logo from the LabProfile
     // Assuming 'https://example.com' is your domain
     const BASE_URL = "http://127.0.0.1:8000/";
@@ -156,14 +156,14 @@ class Header extends Component {
       ? `${BASE_URL}${LabProfile.success.organization_logo}`
       : logo;
 
-    console.log("lab organization logo", laborganizationLogo); // Debugging the logo URL
+    // console.log("lab organization logo", laborganizationLogo); // Debugging the logo URL
 
     // Append the base URL to the relative path if the logo exists
     const stafforganizationLogo = StaffProfile?.success?.organization_logo
       ? `${BASE_URL}${StaffProfile.success.organization_logo}`
       : logo;
 
-    console.log("lab organization logo", stafforganizationLogo); // Debugging the logo URL
+    // console.log("lab organization logo", stafforganizationLogo); // Debugging the logo URL
   
    
     return (

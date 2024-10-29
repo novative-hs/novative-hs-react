@@ -511,6 +511,9 @@ export const ADD_NEW_ROUND = `${API_ENDPOINT}/api/registration-admin/post-round`
 export const UPDATE_ROUND = `${API_ENDPOINT}/api/registration-admin/update-round-list`;
 export const DELETE_ROUND = `${API_ENDPOINT}/api/registration-admin/delete-round`;
 export const UPDATE_MEMBERSHIP_STATUS = `${API_ENDPOINT}/api/registration-admin/update-membership-status`;
+export const POST_SERELOGY_VALUES = `${API_ENDPOINT}/api/registration-admin/sereology-report-add`;
+export const GET_SERELOGY_VALUES = `${API_ENDPOINT}/api/registration-admin/sereology-report-getValues`;
+export const GET_SERELOGY_RESULT = `${API_ENDPOINT}/api/registration-admin/sereology-report-getResult`;
 
 export const GET_PENDING_CORPORATE = `${API_ENDPOINT}/api/registration-admin/pending-corporate`;
 export const GET_APPROVED_CORPORATE = `${API_ENDPOINT}/api/registration-admin/approved-corporate`;

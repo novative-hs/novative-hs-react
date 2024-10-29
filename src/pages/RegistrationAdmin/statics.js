@@ -146,44 +146,79 @@ class Results extends Component {
       };
     });
   };
+  isAllFieldsZero = data => {
+    // Check if all the relevant fields in the data are equal to 0
+    return data.every(item => 
+      item.lab_count === 0 &&
+      item.mean_result === 0 &&
+      item.median_result === 0 &&
+      item.robust_mean === 0 &&
+      item.std_deviation === 0 &&
+      item.uncertainty === 0 &&
+      item.cv_percentage === 0
+    );
+  };
+  
   componentDidMount() {
     const { onGetSchemeAnalyte, onGetStatisticsList } = this.props;
     const id = this.props.match.params.id;
   
-    // Check if statistics data exists
-    // if (this.props.Statistics && !isEmpty(this.props.Statistics)) {
-      // If statistics data is available, fetch it along with SchemeAnalyte
-      onGetSchemeAnalyte(id);
-      onGetStatisticsList(id);
-    // }
-    // If no statistics data is present, show nothing (handled by not calling the API)
+    // Fetch SchemeAnalytesList and ResultSubmit concurrently
+    Promise.all([onGetSchemeAnalyte(id), onGetStatisticsList(id)])
+      .then(() => {
+        const { SchemeAnalytesList, Statistics } = this.props;
+        // Combine data after both API calls succeed
+        const combinedData = this.combineData(SchemeAnalytesList, Statistics);
+        
+        // Check if all fields are 0 and set buttonText accordingly
+        const isZero = this.isAllFieldsZero(combinedData);
+        this.setState({ 
+          combinedData,
+          buttonText: isZero ? "Calculate" : "Recalculate" // Set button text based on data
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching data: ", error);
+      });
   }
-
   componentDidUpdate(prevProps) {
-   
     const { SchemeAnalytesList, ResultSubmit, Statistics } = this.props;
   
-    // Check if SchemeAnalytesList has changed and is not empty
     if (
       SchemeAnalytesList !== prevProps.SchemeAnalytesList &&
       !isEmpty(SchemeAnalytesList)
     ) {
       const combinedData = this.combineData(SchemeAnalytesList, this.props.ResultSubmit);
-      this.setState({ SchemeAnalytesList: SchemeAnalytesList, combinedData });
+      const isZero = this.isAllFieldsZero(combinedData);
+      this.setState({
+        SchemeAnalytesList: SchemeAnalytesList,
+        combinedData,
+        buttonText: isZero ? "Calculate" : "Recalculate"
+      });
     }
   
-    // Check if ResultSubmit has changed and is not empty
     if (ResultSubmit !== prevProps.ResultSubmit && !isEmpty(ResultSubmit)) {
       const combinedData = this.combineData(this.props.SchemeAnalytesList, ResultSubmit);
-      this.setState({ ResultSubmitList: ResultSubmit, combinedData });
+      const isZero = this.isAllFieldsZero(combinedData);
+      this.setState({
+        ResultSubmitList: ResultSubmit,
+        combinedData,
+        buttonText: isZero ? "Calculate" : "Recalculate"
+      });
     }
   
-    // Check if Statistics has changed and is not empty
     if (Statistics !== prevProps.Statistics && !isEmpty(Statistics)) {
       const combinedData = this.combineData(this.props.SchemeAnalytesList, Statistics);
-      this.setState({ StatisticsList: Statistics, combinedData });
+      const isZero = this.isAllFieldsZero(combinedData);
+      this.setState({
+        StatisticsList: Statistics,
+        combinedData,
+        buttonText: isZero ? "Calculate" : "Recalculate"
+      });
     }
   }
+  
+  
 
   onPaginationPageChange = page => {
     if (
@@ -204,9 +239,6 @@ class Results extends Component {
     // Call the necessary functions with the id
     onGetSchemeAnalyte(id);
     onGetResultSubmit(id);
-
-    // Change button text to "Recalculate"
-    this.setState({ buttonText: "Recalculate" });
 
     // Combine data using ResultSubmit for calculation
     this.setState(prevState => ({
@@ -241,18 +273,10 @@ class Results extends Component {
   };
 
   render() {
-    // const { SchemeAnalytesList } = this.props; // Destructure from props
-
-    // const pageOptions = {
-    //   sizePerPage: 10,
-    //   totalSize: SchemeAnalytesList.length, // Fix here
-    //   custom: true,
     // };
     const { closing_date, rounds } = this.props;
 
     const { combinedData } = this.state; // Use the combined data
-    // Assuming all entries have the same rounds value
-    // const rounds = combinedData.length > 0 ? combinedData[0].rounds : null;
     const pageOptions = {
       sizePerPage: 10,
       totalSize: combinedData.length, // Adjust totalSize for combined data

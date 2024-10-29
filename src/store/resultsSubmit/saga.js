@@ -1,18 +1,20 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import {  GET_RESULT_SUBMIT, GET_REPORT } from "./actionTypes";
+import {  GET_RESULT_SUBMIT, GET_REPORT, GET_SERELOGY_RESULT } from "./actionTypes";
 
 import {
   getResultSubmitSuccess,
   getResultSubmitFail,
   getReportSuccess,
   getReportFail,
+  getSereologyResultSuccess,
+  getSereologyResultFail
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import {
-  getResultSubmit,getReport
+  getResultSubmit,getReport, getSereologyResult
 } from "../../helpers/django_api_helper";
 
 ////////////////
@@ -36,10 +38,20 @@ function* fetchReport(object) {
     yield put(getReportFail(error));
   }
 }
+function* fetchSerologReport(object) {
+  try {
+    const response = yield call(getSereologyResult, object.payload);
+    // console.log("SAGAAAA...", response)
+    yield put(getSereologyResultSuccess(response));
+  } catch (error) {
+    yield put(getSereologyResultFail(error));
+  }
+}
 
 function* ResultSubmitSaga() {
   yield takeEvery(GET_RESULT_SUBMIT, fetchResultList);
   yield takeEvery(GET_REPORT, fetchReport);
+  yield takeEvery(GET_SERELOGY_RESULT, fetchSerologReport);
 }
 
 export default ResultSubmitSaga;

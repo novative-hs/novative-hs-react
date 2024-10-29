@@ -182,7 +182,7 @@ class SampleList extends Component {
               <>
                 <div>
                   <select
-                    value={this.state.statusFilter}
+                  
                     onChange={e => this.handleFilterChange('statusFilter', e)}
                     className="form-control"
                   >
@@ -487,12 +487,16 @@ class SampleList extends Component {
                                                 await this.props.onAddSampleList(newSample);
                                                 this.displaySuccessMessage("Sample added successfully!");
                                               }
-
-                                              await this.props.onGetSampleList(this.state.user_id);
+                                                // Refetch data and update local state
+                                            setTimeout(async () => {
+                                              const updatedData =
+                                                await this.props.onGetSampleList(this.state.user_id);
+                                              this.setState({ sample: updatedData });
+                                            }, 300); 
+                                            
                                             } catch (error) {
                                               console.error("Error updating/adding :", error);
                                             }
-
                                             setSubmitting(false);
                                           }}
                                         >
