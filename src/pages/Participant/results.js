@@ -556,7 +556,7 @@ class Results extends Component {
           "with lab.id:",
           result.lab.account_id
         );
-        // console.log("Comparing rounds:", rounds, "with result.rounds:", result.rounds);
+        console.log("Comparing rounds:", rounds, "with result.rounds:", result.rounds);
         return result.lab.account_id === user_id && result.rounds === rounds;
       });
       // console.log("userResult", userResult);
