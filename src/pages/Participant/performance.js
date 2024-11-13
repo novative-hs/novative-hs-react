@@ -126,14 +126,14 @@ class ReagentsList extends Component {
         .then(response => {
           const { rounds, z_scores } = response.data;
           const chartData = {
-            labels: rounds,
-            datasets: [
-              {
-                label: "Z-scores",
-                data: z_scores,
-                backgroundColor: "green",
-              },
-            ],
+            labels: rounds.map(round => `${round.round_id}`),
+              datasets: [
+                {
+                  label: "Total Participants",
+                  data: rounds.map(round => round.total_participants),
+                  backgroundColor: "green",
+                },
+              ],
           };
           this.setState({ chartData });
         })
@@ -159,14 +159,14 @@ class ReagentsList extends Component {
         .then(response => {
           const { rounds, z_scores } = response.data;
           const chartData = {
-            labels: rounds,
-            datasets: [
-              {
-                label: "Z-scores",
-                data: z_scores,
-                backgroundColor: "green",
-              },
-            ],
+            labels: rounds.map(round => `Round ${round.round_id}`),
+              datasets: [
+                {
+                  label: "Total Participants",
+                  data: rounds.map(round => round.total_participants),
+                  backgroundColor: "green",
+                },
+              ],
           };
           this.setState({ chartData });
         })
@@ -202,38 +202,49 @@ renderSecondDropdown = () => {
   );
 };
   render() {
-    const {
-      CycleList,
-      selectedAnalyte,
-      selectedCycle,
-      analyteOptions,
-      cycleOptions,
-      chartData,
-      selectedType
-    } = this.state;
+    const { selectedAnalyte, selectedCycle, analyteOptions, cycleOptions, chartData, selectedType, roundsData } = this.state;
 
-    // Chart.js options to set Y-axis limits (-5 to +5)
     const chartOptions = {
       scales: {
         y: {
-          beginAtZero: true, // Ensures the y-axis starts at zero
-          min: -5, // Set minimum value for Y-axis (below zero for negative values)
-          max: 5, // Set maximum value for Y-axis (above zero for positive values)
+          beginAtZero: true,
+          min: 0,
+          max: 100,
           ticks: {
-            stepSize: 1, // Steps of 1 unit
-            callback: function (value) {
-              return value.toFixed(0); // Display whole numbers
+            stepSize: 100,
+            callback: function(value) {
+              return value >= 100 ? "100+" : value;
             },
           },
         },
-        x: {
-          ticks: {
-            autoSkip: false, // Ensure all rounds are displayed
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            title: (tooltipItems) => `Round ${tooltipItems[0].label.split(" ")[1]}`,
+            label: (tooltipItem) => {
+              const round = roundsData[tooltipItem.dataIndex];
+              
+              return `{
+                "total_participants": ${round.total_participants},
+              }`;
+            },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            title: (tooltipItems) => `Round ${tooltipItems[0].label.split(" ")[1]}`,
+            label: (tooltipItem) => {
+              const round = roundsData[tooltipItem.dataIndex];
+              
+              return `{
+                "total_participants": ${round.total_participants},
+              }`;
+            },
           },
         },
       },
     };
-
     return (
       <React.Fragment>
         <div className="page-content">

@@ -88,7 +88,7 @@ class Payment extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Payment | Lab Hazir</title>
+            <title>Payment | External QC</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
