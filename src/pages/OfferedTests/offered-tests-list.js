@@ -450,7 +450,7 @@ class OfferedTestsList extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Offered Tests List | Lab Hazir</title>
+            <title>Offered Tests List | External QC</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
