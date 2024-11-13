@@ -241,7 +241,7 @@ class Results extends Component {
     console.log("Converted Round ID:", roundIdNumber); // This will now print as a number
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/lab/AnalyteZScoreChart`, {
+      const response = await fetch(`https://externalqcapi.com/api/lab/AnalyteZScoreChart`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
