@@ -32,10 +32,11 @@ export function register(config) {
     }
 
     window.addEventListener("load", () => {
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.
-        checkValidServiceWorker(config)
+        checkValidServiceWorker(swUrl, config)
 
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
@@ -47,14 +48,15 @@ export function register(config) {
         })
       } else {
         // Is not localhost. Just register service worker
-        registerValidSW(config)
+        registerValidSW(swUrl, config)
       }
     })
   }
 }
 
-function registerValidSW(config) {
+function registerValidSW(swUrl, config) {
   navigator.serviceWorker
+    .register(swUrl)
     .then(registration => {
       registration.onupdatefound = () => {
         const installingWorker = registration.installing
@@ -96,9 +98,9 @@ function registerValidSW(config) {
     })
 }
 
-function checkValidServiceWorker(config) {
+function checkValidServiceWorker(swUrl, config) {
   // Check if the service worker can be found. If it can't reload the page.
-  fetch(swUrls, {
+  fetch(swUrl, {
     headers: { "Service-Worker": "script" },
   })
     .then(response => {
@@ -116,7 +118,7 @@ function checkValidServiceWorker(config) {
         })
       } else {
         // Service worker found. Proceed as normal.
-        registerValidSW(swUrls, config)
+        registerValidSW(swUrl, config)
       }
     })
     .catch(() => {

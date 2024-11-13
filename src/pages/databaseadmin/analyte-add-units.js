@@ -6,8 +6,6 @@ import { withRouter } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
-import { PaginationProvider, PaginationListStandalone } from "react-bootstrap-table2-paginator";
-
 
 // Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -110,7 +108,7 @@ class AnalyteAddUnits extends Component {
   }
 
   componentDidMount() {
-    const { organization_name} = this.props.match.params;
+    const { organization_name } = this.props.match.params;
     // Only set state if organization_name is empty
     if (!this.state.organization_name) {
       this.setState({ organization_name });
@@ -249,57 +247,22 @@ class AnalyteAddUnits extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
-  // handleCheckboxChange = (id, column) => {
-  //   this.setState(prevState => {
-  //     let selectedCheckboxes = { ...prevState.selectedCheckboxes };
-
-  //     if (column === "masterUnit") {
-  //       // Uncheck all other checkboxes in the "Master Unit" column
-  //       Object.keys(selectedCheckboxes).forEach(key => {
-  //         if (selectedCheckboxes[key]?.masterUnit && key !== id.toString()) {
-  //           selectedCheckboxes[key].masterUnit = false;
-  //         }
-  //       });
-
-  //       // Toggle the selected checkbox in the "Master Unit" column
-  //       selectedCheckboxes[id] = {
-  //         ...selectedCheckboxes[id],
-  //         masterUnit: !selectedCheckboxes[id]?.masterUnit
-  //       };
-  //     } else if (column === "allowedUnit") {
-  //       // Toggle the selected checkbox in the "Allowed Unit" column
-  //       selectedCheckboxes[id] = {
-  //         ...selectedCheckboxes[id],
-  //         allowedUnit: !selectedCheckboxes[id]?.allowedUnit
-  //       };
-  //     }
-
-  //     return { selectedCheckboxes };
-  //   }, () => {
-  //     // Force table re-render by updating the key
-  //     this.setState(prevState => ({ tableKey: prevState.tableKey + 1 }));
-  //   });
-  // };
-
   handleCheckboxChange = (id, column) => {
     this.setState(prevState => {
       let selectedCheckboxes = { ...prevState.selectedCheckboxes };
-  
+
       if (column === "masterUnit") {
         // Uncheck all other checkboxes in the "Master Unit" column
         Object.keys(selectedCheckboxes).forEach(key => {
           if (selectedCheckboxes[key]?.masterUnit && key !== id.toString()) {
             selectedCheckboxes[key].masterUnit = false;
-            selectedCheckboxes[key].allowedUnit = false; // Uncheck corresponding allowed unit
           }
         });
-  
+
         // Toggle the selected checkbox in the "Master Unit" column
-        const isChecked = !selectedCheckboxes[id]?.masterUnit;
         selectedCheckboxes[id] = {
           ...selectedCheckboxes[id],
-          masterUnit: isChecked,
-          allowedUnit: isChecked, // Also check the allowed unit
+          masterUnit: !selectedCheckboxes[id]?.masterUnit
         };
       } else if (column === "allowedUnit") {
         // Toggle the selected checkbox in the "Allowed Unit" column
@@ -308,14 +271,14 @@ class AnalyteAddUnits extends Component {
           allowedUnit: !selectedCheckboxes[id]?.allowedUnit
         };
       }
-  
+
       return { selectedCheckboxes };
     }, () => {
       // Force table re-render by updating the key
       this.setState(prevState => ({ tableKey: prevState.tableKey + 1 }));
     });
   };
-  
+
   filterData = () => {
     const { ListUnits } = this.props;
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
@@ -360,11 +323,11 @@ class AnalyteAddUnits extends Component {
   };
 
   render() {
-    const { ListUnits} = this.props;
+    const { ListUnits } = this.props;
     const { SearchBar } = Search;
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     const { errorMessage, feedbackMessage } = this.state;
-    const{name} = this.props.match.params
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -373,13 +336,6 @@ class AnalyteAddUnits extends Component {
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="List" breadcrumbItem="Unit List" />
-            <Row >
-              <Col className="text-center" >
-              <div className="fw-bold">
-                {name}
-              </div>
-              </Col>
-            </Row>
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>

@@ -120,7 +120,7 @@ class Manufactural extends Component {
           // filter: textFilter(),
         },
         {
-          text: "News Description",
+          text: "Description",
           dataField: "description",
           sort: true,
           hidden: true,

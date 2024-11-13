@@ -278,7 +278,7 @@ class TestsList extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Corporate Medical Tests | External QC</title>
+            <title>Corporate Medical Tests | Lab Hazir</title>
           </MetaTags>
 
           <Container fluid>

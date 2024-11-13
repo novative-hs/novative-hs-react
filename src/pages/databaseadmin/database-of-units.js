@@ -19,9 +19,9 @@ import {
   ModalBody,
   Label,
   FormGroup,
-  Button,
+  Button
 } from "reactstrap";
-import { saveAs } from "file-saver";
+import { saveAs } from 'file-saver';
 import * as XLSX from "xlsx";
 import paginationFactory, {
   PaginationProvider,
@@ -36,17 +36,17 @@ import { getunitlist, addNewUnit, updateUnits } from "store/units/actions";
 import { isEmpty, size } from "lodash";
 
 import "assets/scss/table.scss";
-import moment from "moment";
+import moment from 'moment';
 
 class LabsRating extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
-      nameFilter: "",
-      dateFilter: "",
+      nameFilter: '',
+      dateFilter: '',
       organization_name: "",
-      idFilter: "",
+      idFilter: '',
       selectedUnit: null,
       isEdit: false,
       ListUnits: [],
@@ -68,7 +68,7 @@ class LabsRating extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange("idFilter", e)}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
                     className="form-control"
                   />
                 </div>
@@ -76,14 +76,14 @@ class LabsRating extends Component {
               </>
             );
           },
-          headerStyle: { width: "150px" }, // Adjust the width as needed
-          style: { width: "150px" }, // Adjust the width as needed
+          headerStyle: { width: '150px' },  // Adjust the width as needed
+  style: { width: '150px' },  // Adjust the width as needed
         },
         {
           dataField: "name",
           text: "Unit",
           sort: true,
-          style: { textAlign: "left" },
+          style: { textAlign: 'left' },
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -91,7 +91,7 @@ class LabsRating extends Component {
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange("nameFilter", e)}
+                    onChange={e => this.handleFilterChange('nameFilter', e)}
                     className="form-control"
                   />
                 </div>
@@ -112,7 +112,7 @@ class LabsRating extends Component {
                   <input
                     type="text"
                     value={this.state.dateFilter}
-                    onChange={e => this.handleFilterChange("dateFilter", e)}
+                    onChange={e => this.handleFilterChange('dateFilter', e)}
                     className="form-control"
                   />
                 </div>
@@ -129,18 +129,16 @@ class LabsRating extends Component {
           ),
         },
         {
-          dataField: "link1",
-          text: "",
+          dataField: 'link1',
+          text: '',
           formatter: (cellContent, unit) => {
             return (
-              <Link
-                to={`/units-analytes/${unit.id}`}
-                style={{ textDecoration: "underline", color: "#0000CD" }}
-              >
+              <Link to={`/units-analytes/${unit.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
+                
                 <span>List of Analytes</span>
               </Link>
             );
-          },
+          }
         },
         {
           dataField: "menu",
@@ -176,6 +174,7 @@ class LabsRating extends Component {
                   }}
                 ></Link>
               </Tooltip>
+
             </div>
           ),
         },
@@ -206,7 +205,7 @@ class LabsRating extends Component {
     setTimeout(() => {
       this.setState({ successMessage: "", modal: false });
     }, 3000);
-  };
+  }
 
   toggle(unit) {
     if (unit && unit.id) {
@@ -245,31 +244,29 @@ class LabsRating extends Component {
 
   closeModal = () => {
     this.setState({ modal: false });
-  };
+  }
   exportToExcel = () => {
     const { ListUnits } = this.props;
     const fileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
 
     // Define fields to export
-    const fieldsToExport = ["id", "name", "date_of_addition"];
+    const fieldsToExport = ['id', 'name', 'date_of_addition'];
 
     // Map each row to an object with only the desired fields
     const dataToExport = ListUnits.map(unit => ({
       id: unit.id,
       name: unit.name,
-      date_of_addition: moment(unit.date_of_addition).format(
-        "DD MMM YYYY, h:mm A"
-      ),
+      date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
     }));
 
     // Convert data to Excel format and save as file
     const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     const data = new Blob([excelBuffer], { type: fileType });
-    const fileName = "Unit_list" + fileExtension;
+    const fileName = 'Unit_list' + fileExtension;
     saveAs(data, fileName);
   };
 
@@ -281,7 +278,7 @@ class LabsRating extends Component {
     }));
   };
 
-  handleFileChange = e => {
+  handleFileChange = (e) => {
     const file = e.target.files[0];
     this.setState({
       importFile: file,
@@ -292,16 +289,16 @@ class LabsRating extends Component {
     const { importFile } = this.state;
     if (!importFile) {
       this.setState({
-        importError: "Please select a file.",
+        importError: 'Please select a file.',
       });
       return;
     }
 
     try {
       const reader = new FileReader();
-      reader.onload = async e => {
+      reader.onload = async (e) => {
         const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
+        const workbook = XLSX.read(data, { type: 'array' });
         // Assuming your data is in the first sheet
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
@@ -324,7 +321,7 @@ class LabsRating extends Component {
 
         // Close the modal and show success message
         this.toggleImportModal();
-        this.displaySuccessMessage("Data imported successfully!");
+        this.displaySuccessMessage('Data imported successfully!');
         // Optionally, reload data from backend after import
         setTimeout(() => {
           this.props.onGetUnitsList(this.state.user_id);
@@ -333,9 +330,9 @@ class LabsRating extends Component {
 
       reader.readAsArrayBuffer(importFile);
     } catch (error) {
-      console.error("Error importing data:", error);
+      console.error('Error importing data:', error);
       this.setState({
-        importError: "Error importing data. Please try again.",
+        importError: 'Error importing data. Please try again.',
       });
     }
   };
@@ -349,9 +346,7 @@ class LabsRating extends Component {
     const filteredUnits = ListUnits.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const id = entry.id ? entry.id.toString() : "";
-      const date = entry.date_of_addition
-        ? entry.date_of_addition.toString()
-        : "";
+      const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
 
       return (
         name.includes(nameFilter.toLowerCase()) &&
@@ -372,7 +367,7 @@ class LabsRating extends Component {
         order: "desc",
       },
     ];
-    const iconStyle = { color: "red" };
+    const iconStyle = { color: 'red' };
 
     return (
       <React.Fragment>
@@ -384,34 +379,22 @@ class LabsRating extends Component {
             <Breadcrumbs title="Units" breadcrumbItem="Unit List" />
             <Row className="justify-content-end">
               <Col lg="auto" className="text-end">
-                <Button onClick={this.exportToExcel} className="mb-3">
-                  Export to Excel
-                </Button>
+                <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
               </Col>
               <Col lg="auto" className="text-end">
-                <Button onClick={this.toggleImportModal} className="mb-3">
-                  Import from Excel
-                </Button>
+                <Button onClick={this.toggleImportModal} className="mb-3">Import from Excel</Button>
               </Col>
             </Row>
 
-            <Modal
-              isOpen={this.state.importModal}
-              toggle={this.toggleImportModal}
-              className={this.props.className}
-            >
-              <ModalHeader toggle={this.toggleImportModal}>
-                Import from Excel
-              </ModalHeader>
+            <Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
+              <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
               <ModalBody>
                 <div className="mb-3 d-flex justify-content-center">
                   <button
                     className="btn btn-primary"
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault(); // Prevent the default action
-                      const downloadUrl =
-                        process.env.REACT_APP_BACKENDURL +
-                        "/media/public/Unit.xlsx";
+                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/Unit.xlsx";
                       saveAs(downloadUrl, "Unit.xlsx"); // Use the file-saver library to trigger the download
                     }}
                   >
@@ -420,20 +403,20 @@ class LabsRating extends Component {
                   </button>
                 </div>
 
+
                 <div className="w-100">
-                  <h4>
-                    <b>Instructions to fill the excel sheet:</b>
-                  </h4>
+                  <h4><b>Instructions to fill the excel sheet:</b></h4>
                   <div>
                     <ol>
                       <li>
-                        Create a file whose format is, .xlsx, .xls, .csv, .ods,
-                        .xml, .html, .txt, .dbf
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
                       </li>
-                      <li>There should be a file of 1 column, name</li>
                       <li>
-                        If you want to get more information, contact us at{" "}
-                        <strong>eternalqc@gmail.com</strong>
+                        There should be a file of 1 column, name
+                      </li>
+                      <li>
+                        If you want to get more information, contact
+                        us at <strong>eternalqc@gmail.com</strong>
                       </li>
                     </ol>
                   </div>
@@ -455,33 +438,20 @@ class LabsRating extends Component {
                           *
                         </span>
                       </Label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        onChange={this.handleFileChange}
-                        accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf"
-                      />
+                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
                     </FormGroup>
-                  </Col>
-                </div>
+                  </Col></div>
+
 
                 <Row className="mt-4">
                   <Col sm="12" className="d-flex justify-content-end">
-                    <Button
-                      color="primary"
-                      onClick={this.handleImport}
-                      className="me-2"
-                    >
-                      Upload
-                    </Button>
-                    <Button color="secondary" onClick={this.toggleImportModal}>
-                      Cancel
-                    </Button>
+                    <Button color="primary" onClick={this.handleImport} className="me-2">Upload</Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
                   </Col>
                 </Row>
               </ModalBody>
             </Modal>
-
+            
             <Row className="justify-content-center">
               <Col lg="6">
                 <Card>
@@ -534,17 +504,11 @@ class LabsRating extends Component {
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            name: this.state.selectedUnit
-                                              ? this.state.selectedUnit.name
-                                              : "",
-                                            added_by: this.state.selectedUnit
-                                              ? this.state.selectedUnit.added_by
-                                              : "",
+                                            name: this.state.selectedUnit ? this.state.selectedUnit.name : "",
+                                            added_by: this.state.selectedUnit ? this.state.selectedUnit.added_by : "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            name: Yup.string().required(
-                                              "Name is required"
-                                            ),
+                                            name: Yup.string().required("Name is required"),
                                             added_by: Yup.string(),
                                           })}
                                           onSubmit={async (
@@ -578,9 +542,7 @@ class LabsRating extends Component {
                                                 );
 
                                                 setTimeout(() => {
-                                                  this.props.onGetUnitsList(
-                                                    this.state.user_id
-                                                  );
+                                                  this.props.onGetUnitsList(this.state.user_id);
                                                 }, 1000);
 
                                                 // resetForm();
@@ -602,9 +564,7 @@ class LabsRating extends Component {
                                                 );
 
                                                 setTimeout(() => {
-                                                  this.props.onGetUnitsList(
-                                                    this.state.user_id
-                                                  );
+                                                  this.props.onGetUnitsList(this.state.user_id);
                                                 }, 1000);
                                               } catch (error) {
                                                 console.error(
@@ -639,22 +599,13 @@ class LabsRating extends Component {
                                                 </Col>
                                               </Row>
                                               <Row>
-                                                <Col>
-                                                  <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                      style={{
-                                                        backgroundColor:
-                                                          "#0000CD",
-                                                        borderColor: "#0000CD",
-                                                      }}
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
+        <Col>
+          <div className="text-end">
+            <button type="submit" className="btn btn-success save-user"
+              style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+          </div>
+        </Col>
+      </Row>
                                             </Form>
                                           )}
                                         </Formik>
@@ -734,8 +685,9 @@ const mapStateToProps = ({ ListUnits }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetUnitsList: id => dispatch(getunitlist(id)),
-  onAddNewUnit: (createUnit, id) => dispatch(addNewUnit(createUnit, id)),
+  onGetUnitsList: (id) => dispatch(getunitlist(id)),
+  onAddNewUnit: (createUnit, id) =>
+    dispatch(addNewUnit(createUnit, id)),
   onUpdateUnit: (id, unitlist) => dispatch(updateUnits({ id, ...unitlist })),
 });
 

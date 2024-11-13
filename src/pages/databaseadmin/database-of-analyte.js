@@ -265,7 +265,7 @@ class AnalyteList extends Component {
               <Tooltip title="Add Units">
                 <Link
                   className="mdi mdi-package-variant-closed font-size-18"
-                  to={`/${this.state.organization_name}/analyte-add-units/${analyte.id}/${analyte.name}`}
+                  to={`/${this.state.organization_name}/analyte-add-units/${analyte.id}`}
                   style={{ textDecoration: "underline", color: "#008000" }}
                   onClick={e => {
                     e.preventDefault();
@@ -274,7 +274,7 @@ class AnalyteList extends Component {
                       // console.error("Invalid organization name");
                       return; // Prevent navigation if invalid
                     }
-                    const url = `/${this.state.organization_name}/analyte-add-units/${analyte.id}/${analyte.name}`;
+                    const url = `/${this.state.organization_name}/analyte-add-units/${analyte.id}`;
                     // console.log("Navigating to:", url);
                     this.props.history.push(url); // Navigate to the new URL
                   }}

@@ -389,7 +389,7 @@ class PendingLabs extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Pending Labs | External QC</title>
+            <title>Pending Labs | Lab Hazir</title>
           </MetaTags>
 
            <ApproveUnapproveModal

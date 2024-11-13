@@ -299,7 +299,7 @@ const databaseAdminAuthProtectedRoutes = [
   {path: "/add-analytes-sample-page/:id", component: SampleAnalytes},
 
   { path: "/:organization_name/analyte-add-methods/:id", component: AnalyteAddMethods }, 
-  { path: "/:organization_name/analyte-add-units/:id/:name", component: AnalyteAddUnits },   
+  { path: "/:organization_name/analyte-add-units/:id", component: AnalyteAddUnits },   
   { path: "/analyte-add-qualitative-units/:id", component: AnalyteAddQualitativeUnits }, 
   { path: "/:organization_name/analyte-add-reagents/:id", component: AnalyteAddReagents }, 
   { path: "/:organization_name/analyte-add-equipments/:id", component: AnalyteAddEuipments }, 
