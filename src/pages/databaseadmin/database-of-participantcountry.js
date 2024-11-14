@@ -47,6 +47,7 @@ class ParticipantCountry extends Component {
     this.state = {
       nameFilter: '',
       dateFilter: '',
+      organization_name: "",
       idFilter: '',
       selectedCountry: null,
       isEdit: false,
@@ -148,7 +149,18 @@ class ParticipantCountry extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${countrylist.id}?type=ParticipantCountry`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${countrylist.id}?type=ParticipantCountry`}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/databaseadmin-history/${countrylist.id}?type=ParticipantCountry`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
                 ></Link>
               </Tooltip>
             </div>
@@ -160,6 +172,11 @@ class ParticipantCountry extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     const { ListCountry, onGetCountryList } = this.props;
     onGetCountryList(this.state.user_id);
     this.setState({ ListCountry });
@@ -602,6 +619,9 @@ ParticipantCountry.propTypes = {
   success: PropTypes.any,
   onAddNewCountry: PropTypes.func,
   onUpdateCountry: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ ListCountry }) => ({

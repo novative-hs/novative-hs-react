@@ -26,6 +26,7 @@ export const postRegister = user => {
   formData.append("name", user.name);
   formData.append("email", user.email);
   formData.append("phone", user.phone);
+  formData.append("lab_code", user.lab_code); 
   formData.append("photo", user.photo);
   formData.append("type", user.type);
   formData.append("sector", user.sector);
@@ -456,6 +457,7 @@ export const addParticipants = register => {
   formData.append("email", register.email);
   formData.append("phone", register.phone);
   formData.append("type", register.type);
+  formData.append("lab_code", register.lab_code);
   formData.append("sector", register.sector);
   formData.append("designation", register.designation);
   formData.append("address", register.address);

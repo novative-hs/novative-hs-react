@@ -44,6 +44,7 @@ class ParticipantSector extends Component {
       dateFilter: '',
       idFilter: '',
       selectedSector: null,
+      organization_name: "",
       isEdit: false,
       ListSector: [],
       sectorlist: "",
@@ -143,7 +144,18 @@ class ParticipantSector extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${sectorlist.id}?type=ParticipantSector`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${sectorlist.id}?type=ParticipantSector`}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/databaseadmin-history/${sectorlist.id}?type=ParticipantSector`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
                 ></Link>
               </Tooltip>
             </div>
@@ -155,6 +167,11 @@ class ParticipantSector extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     const { ListSector, onGetSectorList } = this.props;
     onGetSectorList(this.state.user_id);
     this.setState({ ListSector });
@@ -432,6 +449,9 @@ ParticipantSector.propTypes = {
   success: PropTypes.any,
   onAddnewSector: PropTypes.func,
   onUpdateSector: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ ListSector }) => ({

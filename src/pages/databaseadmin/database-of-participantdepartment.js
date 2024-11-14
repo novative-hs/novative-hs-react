@@ -49,6 +49,7 @@ class ParticipantDepartment extends Component {
       dateFilter: '',
       idFilter: '',
       selectedDepartment: null,
+      organization_name: "",
       isEdit: false,
       ListDepartment: [],
       departmentlist: "",
@@ -148,7 +149,18 @@ class ParticipantDepartment extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${departmentlist.id}?type=Department`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${departmentlist.id}?type=Department`}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/databaseadmin-history/${departmentlist.id}?type=Department`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
                 ></Link>
               </Tooltip>
             </div>
@@ -160,6 +172,11 @@ class ParticipantDepartment extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     const { ListDepartment, onGetDepartmentList } = this.props;
     onGetDepartmentList(this.state.user_id);
     this.setState({ ListDepartment });
@@ -602,6 +619,9 @@ ParticipantDepartment.propTypes = {
   success: PropTypes.any,
   onAddNewDepartment: PropTypes.func,
   onUpdateDepartment: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ ListDepartment }) => ({

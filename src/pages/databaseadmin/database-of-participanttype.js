@@ -45,6 +45,7 @@ class ParticipantType extends Component {
       idFilter: '',
       selectedType: null,
       isEdit: false,
+      organization_name: "",
       ListType: [],
       typelist: "",
       modal: false,
@@ -141,9 +142,20 @@ class ParticipantType extends Component {
                 </Link>
               </Tooltip>
               <Tooltip title="History">
-                <Link
+                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${typelist.id}?type=ParticipantType`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${typelist.id}?type=ParticipantType`}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/databaseadmin-history/${typelist.id}?type=ParticipantType`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
                 ></Link>
               </Tooltip>
             </div>
@@ -155,6 +167,11 @@ class ParticipantType extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     const { ListType, onGetTypeList } = this.props;
     onGetTypeList(this.state.user_id);
     this.setState({ ListType });
@@ -432,6 +449,9 @@ ParticipantType.propTypes = {
   success: PropTypes.any,
   onAddNewType: PropTypes.func,
   onUpdateType: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ ListType }) => ({

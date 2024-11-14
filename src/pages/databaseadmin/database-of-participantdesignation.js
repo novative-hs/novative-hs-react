@@ -49,6 +49,7 @@ class ParticipantDesignation extends Component {
       dateFilter: '',
       idFilter: '',
       selectedDesignation: null,
+      organization_name: "",
       isEdit: false,
       ListDesignation: [],
       designationlist: "",
@@ -148,7 +149,18 @@ class ParticipantDesignation extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${designationlist.id}?type=Designation`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${designationlist.id}?type=Designation`}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/databaseadmin-history/${designationlist.id}?type=Designation`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
                 ></Link>
               </Tooltip>
             </div>
@@ -160,6 +172,11 @@ class ParticipantDesignation extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     const { ListDesignation, onGetdesignationlist } = this.props;
     onGetdesignationlist(this.state.user_id);
     this.setState({ ListDesignation });
@@ -602,6 +619,9 @@ ParticipantDesignation.propTypes = {
   success: PropTypes.any,
   onAddNewDesignation: PropTypes.func,
   onUpdateDesignation: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ ListDesignation }) => ({

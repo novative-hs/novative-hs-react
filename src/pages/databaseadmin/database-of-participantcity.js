@@ -48,6 +48,7 @@ class ParticipantCity extends Component {
       nameFilter: '',
       dateFilter: '',
       idFilter: '',
+      organization_name: "",
       selectedCity: null,
       isEdit: false,
       ListCity: [],
@@ -148,7 +149,18 @@ class ParticipantCity extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${citylist.id}?type=City`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${citylist.id}?type=City`}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/databaseadmin-history/${citylist.id}?type=City`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
                 ></Link>
               </Tooltip>
             </div>
@@ -160,6 +172,11 @@ class ParticipantCity extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     const { ListCity, onGetCityList } = this.props;
     onGetCityList(this.state.user_id);
     this.setState({ ListCity });
@@ -602,6 +619,9 @@ ParticipantCity.propTypes = {
   success: PropTypes.any,
   onAddNewCity: PropTypes.func,
   onUpdateCity: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ ListCity }) => ({

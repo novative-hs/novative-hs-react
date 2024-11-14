@@ -219,10 +219,11 @@ class StaffRegister extends Component {
             password2: item.password2,
             city: item.city,
             phone: item.phone,
+            lab_code: item.lab_code,
             type: item.type,
             sector: item.sector,
-            designation: item.designation,
             address: item.address,
+            designation: item.designation,
             country: item.country,
             province: item.province,
             billing_address: item.billing_address,
@@ -251,6 +252,12 @@ class StaffRegister extends Component {
         importError: "Error importing data. Please try again.",
       });
     }
+  };
+  scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Adds smooth scrolling
+    });
   };
   render() {
     // console.log("Email error received:", this.props.emailError);
@@ -462,6 +469,9 @@ class StaffRegister extends Component {
                           phone:
                             (this.state && this.state.phone) ||
                             "",
+                          lab_code:
+                            (this.state && this.state.lab_code) ||
+                            "",
                           type:
                             (this.state && this.state.type) ||
                             "",
@@ -527,12 +537,8 @@ class StaffRegister extends Component {
 
                           city: Yup.string().required("City is required"),
 
-                          // landline: Yup.string()
-                          //   .required("Telephone number is required")
-                          //   .matches(
-                          //     /^\d{7,15}$/,
-                          //     "Telephone number must be between 7 and 15 digits"
-                          //   ),
+                          lab_code: Yup.string()
+                            .required("Lab Code is required"),
 
                           province: Yup.string()
                             .required("province  is required")
@@ -620,7 +626,9 @@ class StaffRegister extends Component {
                           // website: Yup.string().url("Invalid URL"),
                           // .required("Website is required"),
                         })}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(values, { setSubmitting, resetForm }) => {
+                          // Trigger scroll to top
+                          this.scrollToTop();
                           // for multiple selection
                           // const cityIds = values.city
                           //   .map(city => city.value)
@@ -643,6 +651,10 @@ class StaffRegister extends Component {
                                 submittedMessage:
                                   "Participant added successfully.",
                               });
+                              setTimeout(() => {
+                                this.setState({ submittedMessage: '' });
+                                resetForm(); // Reset form fields after the success message disappears
+                              }, 2000);
                             }
                           }, 1000); // Initial 1 second delay
                         }}
@@ -1353,6 +1365,33 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col>
+                            </Row>
+
+                            <Row>
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label for="lab_code" className="form-label">
+                                    Lab Code
+                                  </Label>
+                                  <Field
+                                    name="lab_code"
+                                    type="text"
+                                    placeholder="Enter Lab Code"
+                                    className={
+                                      "form-control" +
+                                      (errors.lab_code && touched.lab_code
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="lab_code"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                             
                             </Row>
 
                             {/* Username field */}

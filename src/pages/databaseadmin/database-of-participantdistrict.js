@@ -49,6 +49,7 @@ class ParticipantDistrict extends Component {
       dateFilter: '',
       idFilter: '',
       selectedDistrict: null,
+      organization_name: "",
       isEdit: false,
       ListDistrict: [],
       districtlist: "",
@@ -148,7 +149,18 @@ class ParticipantDistrict extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${districtlist.id}?type=District`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${districtlist.id}?type=District`}
+                  onClick={e => {
+                    e.preventDefault();
+                    // Check if organization_name is valid
+                    if (!this.state.organization_name) {
+                      // console.error("Invalid organization name");
+                      return; // Prevent navigation if invalid
+                    }
+                    const url = `/${this.state.organization_name}/databaseadmin-history/${districtlist.id}?type=District`;
+                    // console.log("Navigating to:", url);
+                    this.props.history.push(url); // Navigate to the new URL
+                  }}
                 ></Link>
               </Tooltip>
             </div>
@@ -160,6 +172,11 @@ class ParticipantDistrict extends Component {
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
+    // Only set state if organization_name is empty
+    if (!this.state.organization_name) {
+      this.setState({ organization_name });
+    }
     const { ListDistrict, onGetDistrictList } = this.props;
     onGetDistrictList(this.state.user_id);
     this.setState({ ListDistrict });
@@ -603,6 +620,9 @@ ParticipantDistrict.propTypes = {
   success: PropTypes.any,
   onAddNewDistrict: PropTypes.func,
   onUpdateDistrict: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ ListDistrict }) => ({
