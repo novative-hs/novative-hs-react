@@ -531,8 +531,8 @@ class Results extends Component {
       // Check which of these results were submitted by the logged-in user
       const userResult = participantResults.find(result => {
         // console.log("Comparing user_id:", Number(participantID), "with lab.id:", result.lab.account_id);
-        // console.log("Comparing rounds:", rounds, "with result.rounds:", result.rounds);
-        return (result.lab.account_id === Number(participantID) && result.rounds === rounds);
+        // console.log("Comparing rounds:", rounds, "with result.round_name:", result.round_name);
+        return (result.lab.account_id === Number(participantID) && result.round_name === rounds);
       });
       // console.log("userResult", userResult);
 
