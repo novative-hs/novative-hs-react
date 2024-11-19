@@ -25,8 +25,8 @@ export const postRegister = user => {
   let formData = new FormData();
   formData.append("name", user.name);
   formData.append("email", user.email);
+  formData.append("lab_code", user.lab_code);
   formData.append("phone", user.phone);
-  formData.append("lab_code", user.lab_code); 
   formData.append("photo", user.photo);
   formData.append("type", user.type);
   formData.append("sector", user.sector);
@@ -456,8 +456,8 @@ export const addParticipants = register => {
   formData.append("user_name", register.user_name);
   formData.append("email", register.email);
   formData.append("phone", register.phone);
-  formData.append("type", register.type);
   formData.append("lab_code", register.lab_code);
+  formData.append("type", register.type);
   formData.append("sector", register.sector);
   formData.append("designation", register.designation);
   formData.append("address", register.address);
@@ -476,6 +476,7 @@ export const addParticipants = register => {
   formData.append("lab_staff_name", register.lab_staff_name);
   formData.append("landline_registered_by", register.landline_registered_by);
   formData.append("website", register.website);
+  formData.append("account_type", register.account_type);
   return axios.post(`${url.REGISTER_PARTICIPANT_LIST}`, formData, {
     headers: getHeader(authHeader()),
   });
@@ -956,6 +957,7 @@ export const addNewAnalyteUnitlist = createAnalyteUnit => {
   formData.append("units", createAnalyteUnit.units);
   formData.append("added_by", createAnalyteUnit.added_by);
   formData.append("masterUnit", createAnalyteUnit.masterUnit);
+  formData.append("conversion_formula", createAnalyteUnit.conversion_formula);
 
   return axios.post(`${url.ADD_NEW_ANALYTESUNITS}`, formData, {
     headers: getHeader(authHeader()),
@@ -966,6 +968,8 @@ export const updateAnalyteUnitlist = analytesunit => {
   let formData = new FormData();
   formData.append("units", analytesunit.units);
   formData.append("masterUnit", analytesunit.masterUnit);
+  formData.append("conversion_formula", analytesunit.conversion_formula);
+
   return axios.put(
     `${url.UPDATE_ANALYTESUNITS}/${analytesunit.id}`,
     formData,

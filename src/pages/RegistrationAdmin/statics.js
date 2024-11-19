@@ -310,7 +310,7 @@ class Results extends Component {
                   {this.state.buttonText}
                 </Button>
                 {/* Show the "Report" button only when the button text is "Recalculate" */}
-                {this.state.buttonText === "Recalculate" && (
+                {/* {this.state.buttonText === "Recalculate" && (
                   <Button
                     color="secondary"
                     onClick={() => this.handleReport(rounds_instance)}
@@ -318,7 +318,7 @@ class Results extends Component {
                   >
                     Report
                   </Button>
-                )}
+                )} */}
               </Col>
             </Row>
 

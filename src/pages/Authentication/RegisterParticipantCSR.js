@@ -59,6 +59,7 @@ class StaffRegister extends Component {
       usernameFieldError: null,
       passwordFieldError: null,
       incompleteRegistrationError: null,
+      account_type: "labowner",
       submittedMessage: null,
       emailError: null,
       user_id: localStorage.getItem("authUser")
@@ -233,8 +234,7 @@ class StaffRegister extends Component {
             lab_staff_name: item.lab_staff_name,
             landline_registered_by: item.landline_registered_by,
             website: item.website,
-            account_type: (this.state && this.state.account_type) ||
-            "labowner",
+            account_type: this.state.account_type,
             added_by: localStorage.getItem("authUser")
               ? JSON.parse(localStorage.getItem("authUser")).user_id
               : "",

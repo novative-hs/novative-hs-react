@@ -7,7 +7,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
 import { PaginationProvider, PaginationListStandalone } from "react-bootstrap-table2-paginator";
-
+import Tooltip from "@material-ui/core/Tooltip";
 
 // Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
@@ -23,6 +23,7 @@ class AnalyteAddUnits extends Component {
       nameFilter: '',
       idFilter: '',
       organization_name: "",
+      conversionFormulaValues: {}, // Tracks conversion formula values for each row
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
       UnitAnalyteList: [],
@@ -105,12 +106,41 @@ class AnalyteAddUnits extends Component {
             );
           },
         },
+        {
+          dataField: "conversion_formula",
+          text: "Master Unit Conversion Formula",
+          formatter: (cellContent, row) => {
+            const isMasterUnitSelected = this.state.selectedCheckboxes[row.id]?.masterUnit;
+            return (
+              <div>
+                
+                {isMasterUnitSelected ? (
+                  <Tooltip title="Please Enter Correct Formet.....
+                  Eample:  mmol/L=newunit3×0.0259">
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={this.state.conversionFormulaValues[row.id]?.conversion_formula || ""}
+                    onChange={e => this.handleConversionFormulaChange(row.id, e.target.value)}
+                    placeholder="Enter Master Unit Conversion formula."
+                  />
+                  </Tooltip>
+                ) : (
+                  <span className="text-muted">-</span>
+                )}
+                
+              </div>
+            );
+          },
+        },
+        
+        
       ],
     };
   }
 
   componentDidMount() {
-    const { organization_name} = this.props.match.params;
+    const { organization_name } = this.props.match.params;
     // Only set state if organization_name is empty
     if (!this.state.organization_name) {
       this.setState({ organization_name });
@@ -159,83 +189,56 @@ class AnalyteAddUnits extends Component {
   }
 
   updateSelectedCheckboxes() {
-    const { units, master_unit } = this.props.UnitAnalyteList;
+    const { units, master_unit, conversion_formula } = this.props.UnitAnalyteList;
     const selectedCheckboxes = {};
+    const conversionFormulaValues = {};
   
-    // Ensure units is initialized and an array
     if (Array.isArray(units)) {
-      units.forEach(id => {
-        selectedCheckboxes[id] = {
-          allowedUnit: true,
-          masterUnit: false,
-        };
+      units.forEach(unit => {
+        selectedCheckboxes[unit] = { allowedUnit: true, masterUnit: false };
       });
-    } else {
-      console.warn('UnitAnalyteList.units is not an array or is undefined/null.');
-      // Handle this case based on your application logic
     }
   
-    // Handle master_unit separately
     if (master_unit) {
       selectedCheckboxes[master_unit] = {
         ...selectedCheckboxes[master_unit],
         masterUnit: true,
       };
-    } else {
-      console.warn('master_unit is not defined or is falsy.');
-      // Handle this case based on your application logic
+      conversionFormulaValues[master_unit] = { conversion_formula: conversion_formula || "" };
     }
   
-    this.setState({ selectedCheckboxes });
+    this.setState({ selectedCheckboxes, conversionFormulaValues });
   }
-
+  
   handleSave = () => {
-    const { selectedCheckboxes } = this.state;
+    const { selectedCheckboxes, conversionFormulaValues } = this.state;
     const { onUpdateAnalyteUnits, match, ListUnits } = this.props;
     const analyteId = match.params.id;
-
-    // Check if at least one Allowed Unit is selected
+  
     const selectedUnits = ListUnits.filter(unit => selectedCheckboxes[unit.id]?.allowedUnit);
     if (selectedUnits.length === 0) {
       this.setState({ errorMessage: "Please select at least one Allowed Unit." });
-      setTimeout(() => {
-        this.setState({ errorMessage: '' });
-      }, 1000);
       return;
     }
-
-    // Check if Master Unit is selected
+  
     const masterUnit = Object.keys(selectedCheckboxes).find(key => selectedCheckboxes[key]?.masterUnit);
     if (!masterUnit) {
       this.setState({ errorMessage: "Please select a Master Unit." });
-      setTimeout(() => {
-        this.setState({ errorMessage: '' });
-      }, 1000);
       return;
     }
-
+  
     const payload = {
       id: analyteId,
-      units: selectedUnits.map(unit => unit.id), // Map to only unit IDs
-      masterUnit: masterUnit ? parseInt(masterUnit) : null
+      units: selectedUnits.map(unit => unit.id),
+      masterUnit: parseInt(masterUnit),
+      conversion_formula: conversionFormulaValues[masterUnit]?.conversion_formula || "",
     };
-
-    // Determine if we are adding or updating based on analyteId presence
-    if (analyteId) {
-      // If analyteId exists, we are updating
-      onUpdateAnalyteUnits(payload);
-      this.setFeedbackMessage("Units updated successfully.");
-    } else {
-      // Otherwise, we are adding new
-      // Call your add new method here if needed
-      // this.props.onAddNewAnalyteUnits(payload, someOtherId); 
-      this.setFeedbackMessage("Units added successfully.");
-    }
-
-    // Clear error message after successful save
-    this.setState({ errorMessage: '' });
+  
+    onUpdateAnalyteUnits(payload);
+    this.setFeedbackMessage("Units updated successfully.");
   };
-
+  
+  
   setFeedbackMessage = (message) => {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
@@ -281,25 +284,31 @@ class AnalyteAddUnits extends Component {
   //   });
   // };
 
+  handleConversionFormulaChange = (id, value) => {
+    this.setState(prevState => ({
+      conversionFormulaValues: {
+        ...prevState.conversionFormulaValues,
+        [id]: { conversion_formula: value },
+      },
+    }));
+  };  
+
   handleCheckboxChange = (id, column) => {
     this.setState(prevState => {
       let selectedCheckboxes = { ...prevState.selectedCheckboxes };
-  
+
       if (column === "masterUnit") {
         // Uncheck all other checkboxes in the "Master Unit" column
         Object.keys(selectedCheckboxes).forEach(key => {
           if (selectedCheckboxes[key]?.masterUnit && key !== id.toString()) {
             selectedCheckboxes[key].masterUnit = false;
-            selectedCheckboxes[key].allowedUnit = false; // Uncheck corresponding allowed unit
           }
         });
-  
+
         // Toggle the selected checkbox in the "Master Unit" column
-        const isChecked = !selectedCheckboxes[id]?.masterUnit;
         selectedCheckboxes[id] = {
           ...selectedCheckboxes[id],
-          masterUnit: isChecked,
-          allowedUnit: isChecked, // Also check the allowed unit
+          masterUnit: !selectedCheckboxes[id]?.masterUnit
         };
       } else if (column === "allowedUnit") {
         // Toggle the selected checkbox in the "Allowed Unit" column
@@ -308,14 +317,14 @@ class AnalyteAddUnits extends Component {
           allowedUnit: !selectedCheckboxes[id]?.allowedUnit
         };
       }
-  
+
       return { selectedCheckboxes };
     }, () => {
       // Force table re-render by updating the key
       this.setState(prevState => ({ tableKey: prevState.tableKey + 1 }));
     });
   };
-  
+
   filterData = () => {
     const { ListUnits } = this.props;
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
@@ -360,11 +369,11 @@ class AnalyteAddUnits extends Component {
   };
 
   render() {
-    const { ListUnits} = this.props;
+    const { ListUnits } = this.props;
     const { SearchBar } = Search;
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     const { errorMessage, feedbackMessage } = this.state;
-    const{name} = this.props.match.params
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -376,12 +385,12 @@ class AnalyteAddUnits extends Component {
             <Row >
               <Col className="text-center" >
               <div className="fw-bold">
-                {name}
+                <strong className="text-danger">Analyte Name: </strong>{name}
               </div>
               </Col>
             </Row>
             <Row className="justify-content-center">
-              <Col lg="5">
+              <Col lg="10">
                 <Card>
                   <CardBody>
                     <Row>

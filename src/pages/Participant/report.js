@@ -66,6 +66,13 @@ class Results extends Component {
           ),
         },
         {
+          text: "Result After Conversion",
+          sort: true,
+          formatter: (cellContent, analyte) => (
+            <div className="text-start">{analyte.result_afterconversion}</div>
+          ),
+        },
+        {
           text: "Mean",
           sort: true,
           formatter: (cellContent, analyte) => (
@@ -129,6 +136,7 @@ class Results extends Component {
       const unit = resultEntry?.unit || 0;
       const instrument = resultEntry?.instrument || 0;
       const result = resultEntry?.result || 0;
+      const result_afterconversion = resultEntry?.result_afterconversion || 0;
       const mean = resultEntry?.mean || 0;
       const CV = resultEntry?.CV || 0;
   
@@ -166,6 +174,7 @@ class Results extends Component {
           instrument: instrument,
           result: result,
           mean: mean,
+          result_afterconversion: result_afterconversion,
           CV: CV,
           z_score: zScore,
           result_evaluation: Evaluation,
@@ -181,6 +190,7 @@ class Results extends Component {
           instrument: instrument,
           result: result,
           mean: mean,
+          result_afterconversion: result_afterconversion,
           CV: CV,
           z_score: 0,
           result_evaluation: "Not Submitted",

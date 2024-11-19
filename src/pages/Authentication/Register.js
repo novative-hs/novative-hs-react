@@ -328,8 +328,8 @@ class Register extends Component {
                         password: Yup.string()
                           .required("Please enter your password")
                           .matches(
-                            /^(?=.*\d).{8,}$/, // Regex to enforce at least 8 characters in password
-                            "Password must contain at least 8 characters and one numeric digit."
+                            /^(?=.*\d).{5,}$/, // Regex to enforce at least 8 characters in password
+                            "Password must contain at least 5 characters and one numeric digit."
                           ),
                         password2: Yup.string()
                           .required("Please re-enter your password")
