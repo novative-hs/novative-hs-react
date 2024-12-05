@@ -74,6 +74,7 @@ class ReagentList extends Component {
       errorMessage:"",
       reagent: "",
       modal: false,
+      importModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -440,6 +441,91 @@ class ReagentList extends Component {
   closeModal = () => {
     this.setState({ modal: false });
   }
+  exportToExcel = () => {
+    const { ReagentList } = this.props;
+    const fileType =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+
+    // Define fields to export
+    const fieldsToExport = ['id', 'name', 'code','date_of_addition'];
+
+    // Map each row to an object with only the desired fields
+    const dataToExport = ReagentList.map(reagent => ({
+      id: reagent.id,
+      name: reagent.name,
+      code: reagent.code,
+      date_of_addition: moment(reagent.date_of_addition).format('DD MMM YYYY, h:mm A'),
+    }));
+
+    // Convert data to Excel format and save as file
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: fileType });
+    const fileName = 'Reagent_list' + fileExtension;
+    saveAs(data, fileName);
+  };
+
+  toggleImportModal = () => {
+    this.setState(prevState => ({
+      importModal: !prevState.importModal,
+      importFile: null,
+      importError: null,
+    }));
+  };
+
+  handleImport = async () => {
+    const { importFile } = this.state;
+    if (!importFile) {
+      this.setState({
+        importError: 'Please select a file.',
+      });
+      return;
+    }
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        // Assuming your data is in the first sheet
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        // Convert to JSON format
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        // Process jsonData and save to the database
+        // Example of processing:
+        for (let i = 0; i < jsonData.length; i++) {
+          const item = jsonData[i];
+          // Dispatch an action to save item to the database
+          await this.props.onAddNewReagent({
+            name: item.name,
+            added_by: localStorage.getItem("authUser")
+              ? JSON.parse(localStorage.getItem("authUser")).user_id
+              : "",
+            // Add other fields as required based on your schema
+          });
+        }
+
+        // Close the modal and show success message
+        this.toggleImportModal();
+        this.displaySuccessMessage('Data imported successfully!');
+        // Optionally, reload data from backend after import
+        setTimeout(() => {
+          this.props.onGetReagents(this.state.user_id);
+        }, 1000);
+      };
+
+      reader.readAsArrayBuffer(importFile);
+    } catch (error) {
+      console.error('Error importing data:', error);
+      this.setState({
+        importError: 'Error importing data. Please try again.',
+      });
+    }
+  };
   render() {
     const {deleteModal } = this.state;
     const { errorMessage } = this.state;
