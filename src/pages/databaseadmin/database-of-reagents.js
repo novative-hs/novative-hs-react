@@ -474,7 +474,13 @@ class ReagentList extends Component {
       importError: null,
     }));
   };
-
+  handleFileChange = (e) => {
+    const file = e.target.files[0];
+    this.setState({
+      importFile: file,
+    });
+  };
+  
   handleImport = async () => {
     const { importFile } = this.state;
     if (!importFile) {
