@@ -74,7 +74,6 @@ class ReagentList extends Component {
       errorMessage:"",
       reagent: "",
       modal: false,
-      importModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -441,7 +440,7 @@ class ReagentList extends Component {
   closeModal = () => {
     this.setState({ modal: false });
   }
-  exportToExcel = () => {
+    exportToExcel = () => {
     const { ReagentList } = this.props;
     const fileType =
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -451,11 +450,11 @@ class ReagentList extends Component {
     const fieldsToExport = ['id', 'name', 'code','date_of_addition'];
 
     // Map each row to an object with only the desired fields
-    const dataToExport = ReagentList.map(reagent => ({
-      id: reagent.id,
-      name: reagent.name,
-      code: reagent.code,
-      date_of_addition: moment(reagent.date_of_addition).format('DD MMM YYYY, h:mm A'),
+    const dataToExport = ReagentList.map(unit => ({
+      id: unit.id,
+      name: unit.name,
+      code: unit.code,
+      date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
     }));
 
     // Convert data to Excel format and save as file
@@ -466,7 +465,6 @@ class ReagentList extends Component {
     const fileName = 'Reagent_list' + fileExtension;
     saveAs(data, fileName);
   };
-
   toggleImportModal = () => {
     this.setState(prevState => ({
       importModal: !prevState.importModal,
@@ -480,7 +478,6 @@ class ReagentList extends Component {
       importFile: file,
     });
   };
-  
   handleImport = async () => {
     const { importFile } = this.state;
     if (!importFile) {
@@ -500,14 +497,17 @@ class ReagentList extends Component {
         const sheet = workbook.Sheets[sheetName];
         // Convert to JSON format
         const jsonData = XLSX.utils.sheet_to_json(sheet);
-
+        
         // Process jsonData and save to the database
         // Example of processing:
         for (let i = 0; i < jsonData.length; i++) {
           const item = jsonData[i];
           // Dispatch an action to save item to the database
           await this.props.onAddNewReagent({
+
             name: item.name,
+            code: item.code,
+            status: item.status,
             added_by: localStorage.getItem("authUser")
               ? JSON.parse(localStorage.getItem("authUser")).user_id
               : "",
@@ -519,9 +519,7 @@ class ReagentList extends Component {
         this.toggleImportModal();
         this.displaySuccessMessage('Data imported successfully!');
         // Optionally, reload data from backend after import
-        setTimeout(() => {
-          this.props.onGetReagents(this.state.user_id);
-        }, 1000);
+        await this.props.onGetReagents(this.state.user_id);
       };
 
       reader.readAsArrayBuffer(importFile);
