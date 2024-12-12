@@ -820,7 +820,7 @@ class Instrument extends Component {
       .required("Model Number is required"),
     instrument_type: Yup.mixed().required("Equipment Type is required"),
     manufactural: Yup.mixed().required("Manufacturer is required"),
-    country: Yup.mixed().required("Country is required"),
+    // country: Yup.mixed().required("Country is required"),
   })}
   onSubmit={async (values, { setSubmitting }) => {
     const userId = localStorage.getItem("authUser")
@@ -927,7 +927,7 @@ class Instrument extends Component {
   </Field>
   <ErrorMessage name="manufactural" component="div" className="text-danger" />
 </div>
-<div className="mb-3">
+{/* <div className="mb-3">
   <Label className="col-form-label">Country</Label>
   <Field
     name="country" // Ensure the name matches the field name
@@ -943,7 +943,7 @@ class Instrument extends Component {
     ))}
   </Field>
   <ErrorMessage name="country" component="div" className="text-danger" />
-</div>
+</div> */}
 
           <div className="mb-3">
             <Label className="col-form-label">Status</Label>
