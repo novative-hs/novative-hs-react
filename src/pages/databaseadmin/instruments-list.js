@@ -835,7 +835,7 @@ class Instrument extends Component {
         added_by: userId,
         instrument_type: values.instrument_type,
         manufactural: values.manufactural,     
-        country: values.country,     
+        // country: values.country,     
       };
       
 
