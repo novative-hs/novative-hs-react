@@ -806,7 +806,7 @@ class Manufactural extends Component {
                                         : "Add New Manufacturer"}
                                     </ModalHeader>
                                     <ModalBody>
-<Formik
+    <Formik
                                         enableReinitialize={true}
                                         
                                         initialValues={{
@@ -1000,14 +1000,14 @@ class Manufactural extends Component {
                                              
                                                 </Col>
                                               </Row>
-                                              <Row>
-                                                <Col>
-                                                <div className="text-end">
-                                                <button type="submit" className="btn btn-success save-user"
-                                                    style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
-</div>
-                                                </Col>
-                                              </Row>
+                                                <Row>
+                                                  <Col>
+                                                  <div className="text-end">
+                                                  <button type="submit" className="btn btn-success save-user"
+                                                      style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+                                                  </div>
+                                                  </Col>
+                                                </Row>
                                             </Form>
                                           )}
                                         </Formik>

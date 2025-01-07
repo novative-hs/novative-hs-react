@@ -115,6 +115,8 @@ import activitylogRounds from "./registrationdmin-history/reducers"
 
 //participant
 import ListCity from "./participantcity/reducers";
+import cityReducer from "./cityupdate/reducer";
+
 import ListCountry from "./participantcountry/reducers";
 import ListProvince from "./participantprovince/reducers";
 import ListDistrict from "./participantdistrict/reducers";
@@ -148,6 +150,7 @@ const rootReducer = combineReducers({
   ListDesignation,
   ListDistrict,
   ListCity,
+  cityReducer,
   ReagentList,
   ListUnits,
   regParticipant,

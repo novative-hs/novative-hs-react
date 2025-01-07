@@ -84,7 +84,14 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'left', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.idFilter}
                     onChange={e => this.handleFilterChange('idFilter', e)}
@@ -105,12 +112,20 @@ class InstrumentType extends Component {
           text: "Scheme Name",
           sort: true,
           // filter: textFilter(),
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
 
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.schemenameFilter}
                     onChange={e => this.handleFilterChange('schemenameFilter', e)}
@@ -132,7 +147,14 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.cyclenoFilter}
                     onChange={e => this.handleFilterChange('cyclenoFilter', e)}
@@ -158,7 +180,14 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.cycleFilter}
                     onChange={e => this.handleFilterChange('cycleFilter', e)}
@@ -188,7 +217,14 @@ class InstrumentType extends Component {
               <>
                 <div>
 
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.startdateFilter}
                     onChange={e => this.handleFilterChange('startdateFilter', e)}
@@ -218,7 +254,14 @@ class InstrumentType extends Component {
               <>
                 <div>
 
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.enddateFilter}
                     onChange={e => this.handleFilterChange('enddateFilter', e)}
@@ -241,7 +284,14 @@ class InstrumentType extends Component {
               <>
                 <div>
 
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.roundsFilter}
                     onChange={e => this.handleFilterChange('roundsFilter', e)}
@@ -264,7 +314,14 @@ class InstrumentType extends Component {
               <>
                 <div>
 
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.noofanalytesFilter}
                     onChange={e => this.handleFilterChange('noofanalytesFilter', e)}
@@ -307,7 +364,14 @@ class InstrumentType extends Component {
             return (
               <>
                 <div>
-                  <select
+                  <select style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     value={this.state.statusFilter}
                     onChange={e => this.handleFilterChange('statusFilter', e)}
                     className="form-control"

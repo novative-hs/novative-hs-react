@@ -58,208 +58,217 @@ class ApprovedLabs extends Component {
           hidden: true,
           formatter: (cellContent, approvedLabs) => <>{approvedLabs.id}</>,
         },
-        {
-          dataField: "district",
-          text: "Participant District",
-          sort: true,
-          formatter: (cellContent, approvedLabs) => (
-            <>
-              <span style={{
-                 width: '200px', // Set your desired width here
-                fontSize: '14px',
-              
-                textOverflow: 'ellipsis',
-                whiteSpace: 'prewrap',
-                textAlign: 'center', // Align text to the left
-                display: 'block',
-              }}>
-              {approvedLabs.district}
-
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "city",
-          text: "Participant City",
-          sort: true,
-          formatter: (cellContent, approvedLabs) => (
-            <>
-              <span style={{
-                 width: '200px', // Set your desired width here
-                fontSize: '14px',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'prewrap',
-                textAlign: 'center', // Align text to the left
-                display: 'block',
-              }}>
-              {approvedLabs.city}
-
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "name",
-          text: "Participant name",
-          sort: true,
-          formatter: (cellContent, approvedLabs) => (
-            <>
-              <span style={{
-                 width: '200px', // Set your desired width here
-                fontSize: '14px',
-              
-                textOverflow: 'ellipsis',
-                whiteSpace: 'prewrap',
-                textAlign: 'left', // Align text to the left
-                display: 'block',
-              }}>
-                  <Link
-                    to="#"
-                    // onClick={e => this.openLabModal(e, approvedLabs)}
-                    onMouseEnter={e => this.openLabModal(e, approvedLabs)}
-                    onPointerLeave={this.handleMouseExit()}
-                  >
-                   {approvedLabs.name}
-                  </Link>
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "lab_staff_name",
-          text: "Name of Notification Person",
-          sort: true,
-          formatter: (cellContent, approvedLabs) => (
-            <>
-              <span>
-                {approvedLabs.lab_staff_name}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "email_participant",
-          text: "Email of Notification Person",
-          sort: true,
-          formatter: (cellContent, approvedLabs) => (
-            <>
-              <span>
-                {approvedLabs.email_participant}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "landline_registered_by",
-          text: "Contact No of Notification Person",
-          sort: true,
-          formatter: (cellContent, approvedLabs) => (
-            <>
-              <span>
-                {approvedLabs.landline_registered_by}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "membership_status",
-          text: "Membership Status",
-          sort: true,
-          formatter: (cellContent, approvedLabs) => (
-            <>
-              <span>
-                {approvedLabs.membership_status}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        // {
-        //   dataField: "menu",
-        //   isDummyField: true,
-        //   editable: false,
-        //   text: "Action",
-        //   formatter: (cellContent, methodlist) => (
-        //     <div>
-        //       <Tooltip title="Update Membership Status">
-        //         <Link className="text-success" to="#">
-        //           <i
-        //             className="mdi mdi-pencil font-size-18"
-        //             id="edittooltip"
-        //             onClick={() => this.toggle(methodlist)}
-        //             // onClick={e => this.handleCSRClick(e, CSR)}
-        //           ></i>
-        //         </Link>
-        //       </Tooltip>
-        //       {/* <Tooltip title="History">
-        //         <Link
-        //           className="fas fa-comment font-size-18"
-        //           to={`/databaseadmin-history/${methodlist.id}`}
-        //         ></Link>
-        //       </Tooltip> */}
-        //     </div>
-        //   ),
-        // },
-        // {
-        //   dataField: "registered_by",
-        //   text: "Registered by",
-        //   sort: true,
-        //   formatter: (cellContent, approvedLabs) => (
-        //     <>
-        //       {approvedLabs.registered_by == 'Lab' ? (
-        //         <span>
-                 
-        //           <Link
-        //         to="#"
-                
-        //         onMouseEnter={e =>  this.openLabModal(e, approvedLabs)}
-        //         onPointerLeave={this.handleMouseExit()}
-        //       >
-        //        {approvedLabs.registered_by}
-        //       </Link>
-        //       </span>
-        //       ) : (
-        //         <span>
-        //           <Link
-        //         to="#"
-        //         // onClick={e => this.openMarketerModal(e, approvedLabs)}
-        //         onMouseEnter={e =>   this.openMarketerModal(e, approvedLabs)}
-        //         onPointerLeave={this.handleMouseExit()}
-        //       >
-        //        {approvedLabs.registered_by}
-        //       </Link>
-        //         </span>
-        //       )}
-        //     </>
-        //   ),filter: textFilter(),
-        // },
-        // {
-        //   dataField: "email",
-        //   text: "Email",
-        //   // sort: true,
-        //   formatter: (cellContent, approvedLab) => (
-        //     <>
-        //       <span className="float-start">
-        //         {approvedLab.email}
-        //       </span>
-        //     </>
-        //   ),
-        //   filter: textFilter(),
-        // },
-        // {
-        //   dataField: "lab_phone",
-        //   text: "Phone",
-        //   // sort: true,
-        //   formatter: (cellContent, approvedLab) => (
-        //     <>
-        //       <span className="float-end">
-        //         {approvedLab.lab_phone}
-        //       </span>
-        //     </>
-        //   ),
-        //   filter: textFilter(),
-        // },
-      ],
+          {
+                  dataField: "district",
+                  text: "Participant District",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span style={{
+                         width: '150px', // Set your desired width here
+                        fontSize: '14px',
+                      
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'prewrap',
+                        textAlign: 'center', // Align text to the left
+                        display: 'block',
+                      }}>
+                      {AllLabs.district}
+        
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "city",
+                  text: "Participant City",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span style={{
+                         width: '150px', // Set your desired width here
+                        fontSize: '14px',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'prewrap',
+                        textAlign: 'center', // Align text to the left
+                        display: 'block',
+                      }}>
+                      {AllLabs.city}
+        
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "name",
+                  text: "Participant name",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span style={{
+                         width: '150px', // Set your desired width here
+                        fontSize: '14px',
+                      
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'prewrap',
+                        textAlign: 'left', // Align text to the left
+                        display: 'block',
+                      }}>
+                          <Link
+                            to="#"
+                            // onClick={e => this.openLabModal(e, AllLabs)}
+                            onMouseEnter={e => this.openLabModal(e, AllLabs)}
+                            onPointerLeave={this.handleMouseExit()}
+                          >
+                           {AllLabs.name}
+                          </Link>
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "lab_staff_name",
+                  text: "Name",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span style={{
+                         width: '150px', // Set your desired width here
+                        fontSize: '14px',
+                      
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'prewrap',
+                        textAlign: 'left', // Align text to the left
+                        display: 'block',
+                      }}>
+                        {AllLabs.lab_staff_name}
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "email_participant",
+                  text: "Email",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span style={{
+                         width: '150px', // Set your desired width here
+                        fontSize: '14px',
+                      
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'prewrap',
+                        textAlign: 'left', // Align text to the left
+                        display: 'block',
+                      }}>
+                        {AllLabs.email_participant}
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "landline_registered_by",
+                  text: "Contact No.",
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  sort: true,
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span style={{
+                         width: '150px', // Set your desired width here
+                        fontSize: '14px',
+                      
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'prewrap',
+                        textAlign: 'left', // Align text to the left
+                        display: 'block',
+                      }}>
+                        {AllLabs.landline_registered_by}
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "membership_status",
+                  text: "Membership Status",
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  sort: true,
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span style={{
+                         width: '150px', // Set your desired width here
+                        fontSize: '14px',
+                      
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'prewrap',
+                        textAlign: 'left', // Align text to the left
+                        display: 'block',
+                      }}>
+                        {AllLabs.membership_status}
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "data",
+                  text: "id",
+                  isDummyField: true,
+                  editable: false,
+                  text: "Action",
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                    <div style={{
+                      width: '150px',        // Fixed width
+                      display: 'flex',       // Flexbox for alignment
+                      justifyContent: 'center', // Center content horizontally
+                      gap: '10px',           // Space between the buttons
+                    }}>
+                    <Tooltip title="Update">
+                      <Link
+                        className="btn btn-success btn-rounded"
+                        to="#"
+                        onClick={e => this.handleApprovedEvent(AllLabs.id)}
+                        
+                      >
+                        <i className="mdi mdi-check-circle font-size-14"></i>
+                      </Link>
+                      </Tooltip>
+                      {" "}
+                      <Tooltip title="Delete">
+                      <Link
+                        className="btn btn-danger btn-rounded"
+                        to="#"
+                        onClick={() => this.handleUnapprovedEvent(AllLabs.id)}
+                      >
+                        <i className="mdi mdi-close-circle font-size-14"></i>
+                      </Link>
+                      </Tooltip>
+                      </div>
+                    </>
+                  ),
+                },
+              ],
     };
     this.toggle = this.toggle.bind(this);
     this.handlePatientFeedbackClick =
@@ -576,7 +585,7 @@ class ApprovedLabs extends Component {
                                   <div className="ms-2 mb-4">
                                     <div>
                                       <Label for="main_lab_appointments" className="form-label">
-                                      <strong>Select Pending, Approved, Unapproved and All Participant</strong>
+                                      <strong></strong>
                                       </Label>
                                       <select
                                         className="form-control select2"

@@ -65,10 +65,13 @@ class PendingLabs extends Component {
           dataField: "district",
           text: "Participant District",
           sort: true,
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
               <span style={{
-                 width: '200px', // Set your desired width here
+                 width: '150px', // Set your desired width here
                 fontSize: '14px',
               
                 textOverflow: 'ellipsis',
@@ -86,10 +89,13 @@ class PendingLabs extends Component {
           dataField: "city",
           text: "Participant City",
           sort: true,
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
               <span style={{
-                 width: '200px', // Set your desired width here
+                 width: '150px', // Set your desired width here
                 fontSize: '14px',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'prewrap',
@@ -106,10 +112,13 @@ class PendingLabs extends Component {
           dataField: "name",
           text: "Participant name",
           sort: true,
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
               <span style={{
-                 width: '200px', // Set your desired width here
+                 width: '150px', // Set your desired width here
                 fontSize: '14px',
               
                 textOverflow: 'ellipsis',
@@ -131,11 +140,22 @@ class PendingLabs extends Component {
         },
         {
           dataField: "lab_staff_name",
-          text: "Name of Notification Person",
+          text: "Name",
           sort: true,
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
-              <span>
+              <span style={{
+                 width: '150px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
                 {AllLabs.lab_staff_name}
               </span>
             </>
@@ -143,11 +163,22 @@ class PendingLabs extends Component {
         },
         {
           dataField: "email_participant",
-          text: "Email of Notification Person",
+          text: "Email",
           sort: true,
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
-              <span>
+              <span style={{
+                 width: '150px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
                 {AllLabs.email_participant}
               </span>
             </>
@@ -155,11 +186,22 @@ class PendingLabs extends Component {
         },
         {
           dataField: "landline_registered_by",
-          text: "Contact No of Notification Person",
+          text: "Contact No.",
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           sort: true,
           formatter: (cellContent, AllLabs) => (
             <>
-              <span>
+              <span style={{
+                 width: '150px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
                 {AllLabs.landline_registered_by}
               </span>
             </>
@@ -168,10 +210,21 @@ class PendingLabs extends Component {
         {
           dataField: "membership_status",
           text: "Membership Status",
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           sort: true,
           formatter: (cellContent, AllLabs) => (
             <>
-              <span>
+              <span style={{
+                 width: '150px', // Set your desired width here
+                fontSize: '14px',
+              
+                textOverflow: 'ellipsis',
+                whiteSpace: 'prewrap',
+                textAlign: 'left', // Align text to the left
+                display: 'block',
+              }}>
                 {AllLabs.membership_status}
               </span>
             </>
@@ -183,8 +236,17 @@ class PendingLabs extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
+            <div style={{
+              width: '150px',        // Fixed width
+              display: 'flex',       // Flexbox for alignment
+              justifyContent: 'center', // Center content horizontally
+              gap: '10px',           // Space between the buttons
+            }}>
             <Tooltip title="Update">
               <Link
                 className="btn btn-success btn-rounded"
@@ -205,6 +267,7 @@ class PendingLabs extends Component {
                 <i className="mdi mdi-close-circle font-size-14"></i>
               </Link>
               </Tooltip>
+              </div>
             </>
           ),
         },
@@ -425,7 +488,7 @@ class PendingLabs extends Component {
                                   <div className="ms-2 mb-4">
                                     <div>
                                       <Label for="main_lab_appointments" className="form-label">
-                                      <strong>Select Pending, Approved, Unapproved and All Participant</strong>
+                                      <strong> </strong>
                                       </Label>
                                       <select
                                         className="form-control select2"

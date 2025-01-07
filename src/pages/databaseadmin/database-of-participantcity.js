@@ -188,9 +188,7 @@ class ParticipantCity extends Component {
 
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
-
-    setTimeout(() => {
-      this.setState({ successMessage: "", modal: false });
+    setTimeout(() => {this.setState({ successMessage: "", modal: false });
     }, 3000);
   }
 

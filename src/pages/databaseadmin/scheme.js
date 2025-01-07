@@ -20,6 +20,9 @@ import {
   Input,
 } from "reactstrap";
 
+import Icon from "@mdi/react";
+import { mdiTestTube } from '@mdi/js';
+
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -79,7 +82,14 @@ class ReagentsList extends Component {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'left', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.idFilter}
                     onChange={e => this.handleFilterChange("idFilter", e)}
@@ -91,8 +101,8 @@ class ReagentsList extends Component {
             );
           },
 
-          headerStyle: { width: "100px" }, // Adjust the width as needed
-          style: { width: "100px" }, // Adjust the width as needed
+          headerStyle: { width: "120px" }, // Adjust the width as needed
+          style: { width: "120px" }, // Adjust the width as needed
         },
 
         {
@@ -100,12 +110,19 @@ class ReagentsList extends Component {
           text: "Scheme Name",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: "left" },
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.nameFilter}
                     onChange={e => this.handleFilterChange("nameFilter", e)}
@@ -122,16 +139,23 @@ class ReagentsList extends Component {
           text: "Price",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: "left" },
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.priceFilter}
                     onChange={e => this.handleFilterChange("priceFilter", e)}
-                    className="form-control"
+                    className="form-control"  
                   />
                 </div>
                 <div>{column.text}</div>
@@ -139,7 +163,7 @@ class ReagentsList extends Component {
             );
           },
         },
-        {
+        {/*{
           text: "Date of Addition",
           dataField: "date_of_addition",
           sort: true,
@@ -156,7 +180,14 @@ class ReagentsList extends Component {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'left', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.dateofadditionFilter}
                     onChange={e =>
@@ -169,17 +200,27 @@ class ReagentsList extends Component {
               </>
             );
           },
-        },
+        },*/},
         {
           dataField: "noofanalytes",
-          text: "No of Analytes in this Scheme",
+          text: "No of Analytes",
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.noofanalytesFilter}
                     onChange={e =>
@@ -193,7 +234,7 @@ class ReagentsList extends Component {
             );
           },
         },
-        {
+        {/*{
           dataField: "added_by",
           text: "Added By",
           sort: true,
@@ -214,7 +255,7 @@ class ReagentsList extends Component {
               </>
             );
           },
-        },
+        }*/},
         {
           dataField: "analytetype",
           text: "Type",
@@ -224,7 +265,14 @@ class ReagentsList extends Component {
             return (
               <>
                 <div>
-                  <select
+                  <select style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     value={this.state.analytetypeFilter}
                     onChange={e =>
                       this.handleFilterChange("analytetypeFilter", e)
@@ -250,7 +298,14 @@ class ReagentsList extends Component {
             return (
               <>
                 <div>
-                  <select
+                  <select style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     value={this.state.statusFilter}
                     onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
@@ -289,10 +344,12 @@ class ReagentsList extends Component {
                   to={`/add-analytes-scheme-page/${analyte.id}`}
                   style={{ textDecoration: "underline", color: "#008000" }}
                 >
-                  <i
-                    className="mdi mdi-magnify font-size-18"
-                    id="analyteIcon"
-                  ></i>
+                  <Icon 
+                    path={mdiTestTube} 
+                    size={1}  // Adjust size as needed
+                    color="#28a745"  // Change color if desired
+                    id="analyteIcon" 
+                  />
                 </Link>
               </Tooltip>
               <Tooltip title="Update">
@@ -329,6 +386,9 @@ class ReagentsList extends Component {
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
+  
+  handleFilterChange
+
   // The code for converting "Base64" to javascript "File Object"
   dataURLtoFile = (dataurl, filename) => {
     var arr = dataurl.split(","),
@@ -361,7 +421,7 @@ class ReagentsList extends Component {
       onDeleteScheme(SchemeList);
       setTimeout(() => {
         onGetScheme(this.state.user_id);
-      }, 1000);
+      }, 1200);
       this.setState({ deleteModal: false });
     }
   };
@@ -372,6 +432,9 @@ class ReagentsList extends Component {
   };
 
   handleFilterChange = (filterName, e) => {
+    const inputValue = event.target.value;
+    const formattedValue = this.formatPrice(inputValue);
+    this.setState({ [filterName]: formattedValue });
     this.setState({ [filterName]: e.target.value });
   };
 
@@ -442,7 +505,7 @@ class ReagentsList extends Component {
   //     onDeletePathologist(ListUnit);
   //     setTimeout(() => {
   //       onGetScheme(this.state.user_id);
-  //     }, 1000);
+  //     }, 1200);
   //     this.setState({ deleteModal: false });
   //   }
   // };
@@ -688,7 +751,7 @@ class ReagentsList extends Component {
                                               );
                                               setTimeout(() => {
                                                 onGetScheme(this.state.user_id);
-                                              }, 1000);
+                                              }, 1200);
                                             }
                                             this.setState({
                                               selectedPathologist: null,
@@ -875,7 +938,7 @@ class ReagentsList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              <Row className="align-items-md-left mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}

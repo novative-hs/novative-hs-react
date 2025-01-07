@@ -136,6 +136,13 @@ export const GET_REAGENTSINMANUFACTURER = `${API_ENDPOINT}/api/database-admin/re
 export const GET_CITY_LIST = `${API_ENDPOINT}/api/database-admin/city_list`;
 export const ADD_NEW_CITY = `${API_ENDPOINT}/api/database-admin/city_create`;
 export const UPDATE_CITY = `${API_ENDPOINT}/api/database-admin/city_update`;
+export const DELETE_CITY = `${API_ENDPOINT}/api/database-admin/city_delete`;
+
+////newTable
+export const GET_DATA = `${API_ENDPOINT}/api/database-admin/newtable_list`;
+export const ADD_DATA = `${API_ENDPOINT}/api/database-admin/newtable_create`;
+
+
 
 export const GET_COUNTRY_LIST = `${API_ENDPOINT}/api/database-admin/country_list`;
 export const ADD_NEW_COUNTRY = `${API_ENDPOINT}/api/database-admin/country_create`;

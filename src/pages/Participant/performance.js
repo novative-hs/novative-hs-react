@@ -122,7 +122,7 @@ class ReagentsList extends Component {
 
     // Scenario 1: If Type is not selected, call the first API
     if (!selectedType) {
-      axios.post("https://externalqcapi.com/api/lab/AnalyteChart", requestData)
+      axios.post("http://127.0.0.1:8000/api/lab/AnalyteChart", requestData)
         .then(response => {
           const { rounds, z_scores } = response.data;
           const chartData = {
@@ -155,7 +155,7 @@ class ReagentsList extends Component {
         selectedItemId: selectedItemId.value
       };
 
-      axios.post("https://externalqcapi.com/api/lab/AnalytePeerChart", requestDataWithType) // Replace with the correct endpoint
+      axios.post("http://127.0.0.1:8000/api/lab/AnalytePeerChart", requestDataWithType) // Replace with the correct endpoint
         .then(response => {
           const { rounds, z_scores } = response.data;
           const chartData = {

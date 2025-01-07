@@ -149,7 +149,7 @@ class Header extends Component {
     // console.log("lab logo", this.props.LabProfile)
     // Extract organization_logo from the LabProfile
     // Assuming 'https://example.com' is your domain
-    const BASE_URL = "https://externalqcapi.com/";
+    const BASE_URL = "http://127.0.0.1:8000/";
 
     // Append the base URL to the relative path if the logo exists
     const laborganizationLogo = LabProfile?.success?.organization_logo
