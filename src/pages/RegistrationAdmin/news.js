@@ -44,7 +44,7 @@ class NewsList extends Component {
             <title>Database Admin | News</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="News" breadcrumbItem="NewsSSSSSSSSSSSSSSSSSSSS List" />
+            <Breadcrumbs title="News" breadcrumbItem="News List" />
             <Row className="mb-2 d-flex justify-content-center">
               <Col lg="8">
                 <Card>
