@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import Icon from "@mdi/react";
-import { mdiTestTube } from '@mdi/js';
+
 
 import {
   Card,
@@ -236,12 +235,10 @@ class ReagentsList extends Component {
                   to={`/add-analytes-scheme-page/${analyte.id}`}
                   style={{ textDecoration: "underline", color: "#008000" }}
                 >
-                  <Icon 
-                    path={mdiTestTube} 
-                    size={1}  // Adjust size as needed
-                    color="#28a745"  // Change color if desired
-                    id="analyteIcon" 
-                  />
+                 <i
+                    className="mdi mdi-magnify font-size-18"
+                    id="analyteIcon"
+                  ></i>
                 </Link>
               </Tooltip>
               <Tooltip title="Update">
