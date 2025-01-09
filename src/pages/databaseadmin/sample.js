@@ -35,8 +35,10 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 import { getSamplelist, addNewSampleList, updateSampleList, deleteSampleList } from "store/sample/actions";
 
 import { getcyclelist } from "store/cycle/actions";
+import { getSchemelist } from "store/scheme/actions";
 import "assets/scss/table.scss";
 import ListUnitt from "store/sample/reducer";
+import SchemeList from "store/scheme/reducer";
 // import { List } from "antd/es/form/Form";
 
 class SampleList extends Component {
@@ -47,6 +49,7 @@ class SampleList extends Component {
       ListUnitt: [],
       sample: [],
       CycleList: [],
+      SchemeList: [],
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -65,12 +68,19 @@ class SampleList extends Component {
           dataField: "id",
           text: "Sample ID",
           sort: true,
-          style: { textAlign: 'left' },
+          style: { textAlign: 'center' },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.idFilter}
                     onChange={e => this.handleFilterChange('idFilter', e)}
@@ -87,12 +97,19 @@ class SampleList extends Component {
           dataField: "samplename",
           text: "Sample Name",
           sort: true,
-          style: { textAlign: 'left' },
+          style: { textAlign: 'center' },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.nameFilter}
                     onChange={e => this.handleFilterChange('nameFilter', e)}
@@ -114,7 +131,14 @@ class SampleList extends Component {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '150px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.schemeFilter}
                     onChange={e => this.handleFilterChange('schemeFilter', e)}
@@ -137,7 +161,14 @@ class SampleList extends Component {
             return (
               <>
                 <div>
-                  <input
+                  <input style={{
+                      width: '150px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.cycleFilter}
                     onChange={e => this.handleFilterChange('cycleFilter', e)}
@@ -154,13 +185,20 @@ class SampleList extends Component {
         },
         {
           dataField: "noofanalytes",
-          text: "No of Analytes for the Scheme",
+          text: "No of Analytes",
           sort: true,
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <input
+                  <input  style={{
+                      width: '150px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                     type="text"
                     value={this.state.analyteFilter}
                     onChange={e => this.handleFilterChange('analyteFilter', e)}
@@ -181,7 +219,14 @@ class SampleList extends Component {
             return (
               <>
                 <div>
-                  <select
+                  <select style={{
+                      width: '120px', // Set your desired width here
+                      fontSize: '14px',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'prewrap',
+                      textAlign: 'center', // Align text to the left
+                      display: 'block',
+                    }}
                   
                     onChange={e => this.handleFilterChange('statusFilter', e)}
                     className="form-control"
@@ -242,13 +287,14 @@ class SampleList extends Component {
 
   componentDidMount() {
 
-    const { ListUnitt, onGetSampleList, onGetcyclelist } = this.props;
+    const { ListUnitt, onGetSampleList, onGetcyclelist, onGetScheme} = this.props;
 
     // Ensure user_id is available before fetching data
     onGetSampleList(this.state.user_id);
     this.setState({ ListUnitt });
 
     onGetcyclelist(this.state.user_id);
+    onGetScheme(this.state.user_id);
   }
 
   handleFilterChange = (filterName, e) => {
@@ -312,7 +358,9 @@ class SampleList extends Component {
     if (!isEmpty(CycleList) && size(prevProps.CycleList) !== size(CycleList)) {
       this.setState({ CycleList: {}, isEdit: false });
     }
-
+    if (!isEmpty(SchemeList) && size(prevProps.SchemeList) !== size(SchemeList)) {
+      this.setState({ SchemeList: {}, isEdit: false });
+    }
   }
 
   onPaginationPageChange = page => {
@@ -349,10 +397,10 @@ class SampleList extends Component {
   render() {
     const { deleteModal } = this.state;
     const { SearchBar } = Search;
-    const { onAddSampleList, onUpdateSampleList, onGetSampleList, onDeleteSampleList, onGetcyclelist } = this.props;
+    const { onAddSampleList, onUpdateSampleList, onGetSampleList, onDeleteSampleList, onGetcyclelist, onGetScheme } = this.props;
     const { idFilter, nameFilter, schemeFilter, cycleFilter, analyteFilter,statusFilter} = this.state;
     
-    const { ListUnitt, CycleList } = this.props;
+    const { ListUnitt, CycleList, SchemeList } = this.props;
 
     const filteredData = ListUnitt.filter(entry => {
       // Modify accordingly for each filter condition
@@ -523,6 +571,22 @@ class SampleList extends Component {
                                                     <ErrorMessage name="sampleno" component="div" className="text-danger" />
                                                   </div>
                                                   <div className="mb-3">
+                                                    <Label for="scheme">Select Scheme</Label>
+                                                    <Field
+                                                      as="select"
+                                                      name="scheme"
+                                                      className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
+                                                    >
+                                                      <option value="">Select Scheme</option>
+                                                      {SchemeList && SchemeList.map(scheme => (
+                                                        <option key={scheme.id} value={scheme.id}>
+                                                          {scheme.name} 
+                                                        </option>
+                                                      ))}
+                                                    </Field>
+                                                    <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
+                                                  </div>
+                                                  {/* <div className="mb-3">
                                                     <Label for="scheme">Select Cycle No</Label>
                                                     <Field
                                                       as="select"
@@ -537,7 +601,8 @@ class SampleList extends Component {
                                                       ))}
                                                     </Field>
                                                     <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
-                                                  </div>
+                                                  </div> */}
+                                               
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">Details</Label>
                                                     <Field
@@ -633,6 +698,7 @@ SampleList.propTypes = {
   sample: PropTypes.array,
   ListUnitt: PropTypes.array,
   CycleList: PropTypes.array,
+  SchemeList: PropTypes.array,
   className: PropTypes.any,
   error: PropTypes.any,
   success: PropTypes.any,
@@ -641,11 +707,13 @@ SampleList.propTypes = {
   onUpdateSampleList: PropTypes.func,
   onDeleteSampleList: PropTypes.func,
   onGetcyclelist: PropTypes.func,
+  onGetScheme: PropTypes.func,
   id: PropTypes.string,
 };
 
-const mapStateToProps = ({ ListUnitt, CycleList}) => ({
+const mapStateToProps = ({ ListUnitt, CycleList, SchemeList}) => ({
   CycleList: CycleList.CycleList,
+  SchemeList:SchemeList.SchemeList,
   ListUnitt: ListUnitt.ListUnitt,
 
 });
@@ -655,6 +723,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddSampleList: (sample) => { dispatch(addNewSampleList(sample)); },
   onUpdateSampleList: (id, sample) => dispatch(updateSampleList(id, sample)),
   onGetcyclelist: id => dispatch(getcyclelist(id)),
+  onGetScheme: id => dispatch(getSchemelist(id)),
   onDeleteSampleList: (sample) => {dispatch(deleteSampleList(sample));
     
   },

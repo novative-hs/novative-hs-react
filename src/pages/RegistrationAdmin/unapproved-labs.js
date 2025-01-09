@@ -57,122 +57,156 @@ class UnapprovedLabs extends Component {
           hidden: true,
           formatter: (cellContent, unapprovedLabs) => <>{unapprovedLabs.id}</>,
         },
-        {
-          dataField: "district",
-          text: "Participant District",
-          sort: true,
-          formatter: (cellContent, unapprovedLabs) => (
-            <>
-              <span style={{
-                 width: '200px', // Set your desired width here
-                fontSize: '14px',
-              
-                textOverflow: 'ellipsis',
-                whiteSpace: 'prewrap',
-                textAlign: 'center', // Align text to the left
-                display: 'block',
-              }}>
-              {unapprovedLabs.district}
-
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "city",
-          text: "Participant City",
-          sort: true,
-          formatter: (cellContent, unapprovedLabs) => (
-            <>
-              <span style={{
-                 width: '200px', // Set your desired width here
-                fontSize: '14px',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'prewrap',
-                textAlign: 'center', // Align text to the left
-                display: 'block',
-              }}>
-              {unapprovedLabs.city}
-
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "name",
-          text: "Participant name",
-          sort: true,
-          formatter: (cellContent, unapprovedLabs) => (
-            <>
-              <span style={{
-                 width: '200px', // Set your desired width here
-                fontSize: '14px',
-              
-                textOverflow: 'ellipsis',
-                whiteSpace: 'prewrap',
-                textAlign: 'left', // Align text to the left
-                display: 'block',
-              }}>
-                  <Link
-                    to="#"
-                    // onClick={e => this.openLabModal(e, unapprovedLabs)}
-                    onMouseEnter={e => this.openLabModal(e, unapprovedLabs)}
-                    onPointerLeave={this.handleMouseExit()}
-                  >
-                   {unapprovedLabs.name}
-                  </Link>
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "lab_staff_name",
-          text: "Name of Notification Person",
-          sort: true,
-          formatter: (cellContent, unapprovedLabs) => (
-            <>
-              <span>
-                {unapprovedLabs.lab_staff_name}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "email_participant",
-          text: "Email of Notification Person",
-          sort: true,
-          formatter: (cellContent, unapprovedLabs) => (
-            <>
-              <span>
-                {unapprovedLabs.email_participant}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "landline_registered_by",
-          text: "Contact No of Notification Person",
-          sort: true,
-          formatter: (cellContent, unapprovedLabs) => (
-            <>
-              <span>
-                {unapprovedLabs.landline_registered_by}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
-        {
-          dataField: "membership_status",
-          text: "Membership Status",
-          sort: true,
-          formatter: (cellContent, unapprovedLabs) => (
-            <>
-              <span>
-                {unapprovedLabs.membership_status}
-              </span>
-            </>
-          ),filter: textFilter(),
-        },
+          {
+                  dataField: "district",
+                  text: "Participant District",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                      {AllLabs.district}
+        
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "city",
+                  text: "Participant City",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                      {AllLabs.city}
+        
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "name",
+                  text: "Participant name",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                          <Link
+                            to="#"
+                            // onClick={e => this.openLabModal(e, AllLabs)}
+                            onMouseEnter={e => this.openLabModal(e, AllLabs)}
+                            onPointerLeave={this.handleMouseExit()}
+                          >
+                           {AllLabs.name}
+                          </Link>
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "lab_staff_name",
+                  text: "Name",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        {AllLabs.lab_staff_name}
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "email_participant",
+                  text: "Email",
+                  sort: true,
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        {AllLabs.email_participant}
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "landline_registered_by",
+                  text: "Contact No.",
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  sort: true,
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        {AllLabs.landline_registered_by}
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "membership_status",
+                  text: "Membership Status",
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  sort: true,
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        {AllLabs.membership_status}
+                      </span>
+                    </>
+                  ),filter: textFilter(),
+                },
+                {
+                  dataField: "data",
+                  text: "id",
+                  isDummyField: true,
+                  editable: false,
+                  text: "Action",
+                  headerStyle: { textAlign: 'center' }, 
+                  style: { textAlign: 'center' },        
+                  filter: textFilter(),
+                  formatter: (cellContent, AllLabs) => (
+                    <>
+                    <div  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                    <Tooltip title="Update">
+                      <Link
+                        className="btn btn-success btn-rounded"
+                        to="#"
+                        onClick={e => this.handleApprovedEvent(AllLabs.id)}
+                        
+                      >
+                        <i className="mdi mdi-check-circle font-size-14"></i>
+                      </Link>
+                      </Tooltip>
+                      {" "}
+                      <Tooltip title="Delete">
+                      <Link
+                        className="btn btn-danger btn-rounded"
+                        to="#"
+                        onClick={() => this.handleUnapprovedEvent(AllLabs.id)}
+                      >
+                        <i className="mdi mdi-close-circle font-size-14"></i>
+                      </Link>
+                      </Tooltip>
+                      </div>
+                    </>
+                  ),
+                },
       ],
     };
     this.toggle = this.toggle.bind(this);
@@ -353,9 +387,7 @@ class UnapprovedLabs extends Component {
                                 <Col sm="4">
                                   <div className="ms-2 mb-4">
                                     <div>
-                                      <Label for="main_lab_appointments" className="form-label">
-                                        <strong>Select Pending, Approved, Unapproved and All Participant</strong>
-                                      </Label>
+                                    
                                       <select
                                         className="form-control select2"
                                         title="main_lab_appointments"

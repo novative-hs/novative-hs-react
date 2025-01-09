@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import Icon from "@mdi/react";
+import { mdiTestTube } from '@mdi/js';
 
 import {
   Card,
@@ -78,21 +80,20 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.idFilter}
                     onChange={e => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
 
-          headerStyle: { width: "100px" }, // Adjust the width as needed
-          style: { width: "100px" }, // Adjust the width as needed
+          
         },
 
         {
@@ -100,11 +101,11 @@ class ReagentsList extends Component {
           text: "Scheme Name",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: "left" },
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.nameFilter}
@@ -112,7 +113,7 @@ class ReagentsList extends Component {
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -122,64 +123,36 @@ class ReagentsList extends Component {
           text: "Price",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: "left" },
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.priceFilter}
                     onChange={e => this.handleFilterChange("priceFilter", e)}
-                    className="form-control"
+                    className="form-control"  
                   />
                 </div>
-                <div>{column.text}</div>
-              </>
-            );
-          },
-        },
-        {
-          text: "Date of Addition",
-          dataField: "date_of_addition",
-          sort: true,
-          hidden: false,
-          formatter: (cellContent, analyte) => (
-            <>
-              <span>
-                {moment(analyte.date_of_addition).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-          // filter: textFilter(),
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div>
-                  <input
-                    type="text"
-                    value={this.state.dateofadditionFilter}
-                    onChange={e =>
-                      this.handleFilterChange("dateofadditionFilter", e)
-                    }
-                    className="form-control"
-                  />
-                </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
         },
         {
           dataField: "noofanalytes",
-          text: "No of Analytes in this Scheme",
+          text: "No of Analytes",
+          headerStyle: { textAlign: 'center' }, 
+          style: { textAlign: 'center' },        
+          filter: textFilter(),
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.noofanalytesFilter}
                     onChange={e =>
@@ -188,29 +161,7 @@ class ReagentsList extends Component {
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
-              </>
-            );
-          },
-        },
-        {
-          dataField: "added_by",
-          text: "Added By",
-          sort: true,
-          // filter: textFilter(),
-          style: { textAlign: "left" },
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div>
-                  <input
-                    type="text"
-                    value={this.state.addedbyFilter}
-                    onChange={e => this.handleFilterChange("addedbyFilter", e)}
-                    className="form-control"
-                  />
-                </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -223,20 +174,24 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <select
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <select 
                     value={this.state.analytetypeFilter}
                     onChange={e =>
                       this.handleFilterChange("analytetypeFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   >
                     <option value="">All</option>
                     <option value="Qualitative">Qualitative</option>
                     <option value="Quantitative">Quantitative</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -249,34 +204,26 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <select
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <select 
                     value={this.state.statusFilter}
                     onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   >
                     <option value="">All</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
         },
-        // {
-        //   dataField: 'link',
-        //   text: '',
-        //   formatter: (cellContent, scheme) => {
-        //     return (
-        //       <Link to={`/add-analytes-scheme-page/${scheme.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
-
-        //         <span>Add Analytes</span>
-        //       </Link>
-        //     );
-        //   }
-        // },
         {
           dataField: "menu",
           isDummyField: true,
@@ -289,10 +236,12 @@ class ReagentsList extends Component {
                   to={`/add-analytes-scheme-page/${analyte.id}`}
                   style={{ textDecoration: "underline", color: "#008000" }}
                 >
-                  <i
-                    className="mdi mdi-magnify font-size-18"
-                    id="analyteIcon"
-                  ></i>
+                  <Icon 
+                    path={mdiTestTube} 
+                    size={1}  // Adjust size as needed
+                    color="#28a745"  // Change color if desired
+                    id="analyteIcon" 
+                  />
                 </Link>
               </Tooltip>
               <Tooltip title="Update">
@@ -307,17 +256,9 @@ class ReagentsList extends Component {
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${analyte.id}?type=Scheme`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${analyte.id}?type=Scheme`}
                 ></Link>
               </Tooltip>
-              {/* <Tooltip title="Delete">
-              <Link className="text-danger" to="#">
-                <i
-                  className="mdi mdi-delete font-size-18"
-                  id="deletetooltip"
-                  onClick={() => this.onClickDelete(analyte)}
-                ></i>
-              </Link></Tooltip> */}
             </div>
           ),
         },
@@ -540,9 +481,13 @@ class ReagentsList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Scheme" breadcrumbItem="Scheme List" />
             <Row className="justify-content-center">
-            
               <Col lg="10">
-              <p><strong>Note:</strong> If Scheme Type <b className="text-danger">Qualitative</b> then there will be only that Analyte shown here, whose units will be <b className="text-danger">Pos/Ng/Aqi</b>.</p>
+                <p>
+                  <strong>Note:</strong> If Scheme Type{" "}
+                  <b className="text-danger">Qualitative</b> then there will be
+                  only that Analyte shown here, whose units will be{" "}
+                  <b className="text-danger">Pos/Ng/Aqi</b>.
+                </p>
 
                 <Card>
                   <CardBody>
@@ -764,16 +709,32 @@ class ReagentsList extends Component {
                                                       value={
                                                         this.state.analyte.price
                                                       }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          analyte: {
-                                                            ...analyte,
-                                                            price:
-                                                              e.target.value,
-                                                          },
-                                                        })
-                                                      }
+                                                      onChange={e => {
+                                                        const rawValue =
+                                                          e.target.value.replace(
+                                                            /,/g,
+                                                            ""
+                                                          ); // Remove commas to handle raw number
+                                                        if (!isNaN(rawValue)) {
+                                                          // Check if the input is a valid number
+                                                          const formattedValue =
+                                                            Number(
+                                                              rawValue
+                                                            ).toLocaleString(
+                                                              "en-US"
+                                                            ); // Add commas
+                                                          this.setState({
+                                                            analyte: {
+                                                              ...this.state
+                                                                .analyte,
+                                                              price:
+                                                                formattedValue,
+                                                            },
+                                                          });
+                                                        }
+                                                      }}
                                                     />
+
                                                     <ErrorMessage
                                                       name="price"
                                                       component="div"

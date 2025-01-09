@@ -88,7 +88,7 @@ class Manufactural extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.idFilter}
@@ -96,7 +96,7 @@ class Manufactural extends Component {
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -110,7 +110,7 @@ class Manufactural extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>              
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>              
                 <input
                   type="text"
                   value={this.state.nameFilter}
@@ -119,7 +119,7 @@ class Manufactural extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -132,7 +132,7 @@ class Manufactural extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>              
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>              
                   <input
                     type="text"
                     value={this.state.websiteFilter}
@@ -140,7 +140,7 @@ class Manufactural extends Component {
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -169,7 +169,7 @@ class Manufactural extends Component {
               );
             }
           },
-          style: { textAlign: 'left' }
+         
         },
         
         
@@ -180,7 +180,7 @@ class Manufactural extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>              
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>              
                 <input
                   type="text"
                   value={this.state.countryFilter}
@@ -189,11 +189,11 @@ class Manufactural extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
-          style: { textAlign: 'left' }
+          
         },
         {
           dataField: 'instrument_count',
@@ -201,15 +201,19 @@ class Manufactural extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.countFilter}
                     onChange={(e) => this.handleFilterChange('countFilter', e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '150px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -232,21 +236,25 @@ class Manufactural extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.countrFilter}
                     onChange={(e) => this.handleFilterChange('countrFilter', e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '150px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
           formatter: (cellContent, unitlist) => {
             return (
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                 <Link
                   to={`/reagents-in-manufacturer/${unitlist.id}`}
                   style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
@@ -266,17 +274,21 @@ class Manufactural extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
                   value={this.state.dateFilter}
                   onChange={e => this.handleFilterChange('dateFilter', e)}
                   className="form-control"
+                  style={{
+                    textAlign: 'center',
+                    width: '150px',
+                  }}
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -294,7 +306,7 @@ class Manufactural extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, manufacturtal) => (
-            <div className="d-flex gap-3 ml-3">
+            <div className="d-flex gap-3 ml-3" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               <Tooltip title="Update">
               <Link className="text-success" to="#">
                 <i
