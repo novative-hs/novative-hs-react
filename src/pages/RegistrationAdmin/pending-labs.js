@@ -429,9 +429,9 @@ class PendingLabs extends Component {
                                 <Col sm="4">
                                   <div className="ms-2 mb-4">
                                     <div>
-                                      <Label for="main_lab_appointments" className="form-label">
+                                      {/* <Label for="main_lab_appointments" className="form-label">
                                     <strong>Select Pending, Approved, Unapproved and All Participant</strong>
-                                      </Label>
+                                      </Label> */}
                                       <select
                                         className="form-control select2"
                                         title="main_lab_appointments"

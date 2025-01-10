@@ -1,1154 +1,559 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import MetaTags from "react-meta-tags";
-import { withRouter, Link } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
-import DeleteModal from "components/Common/DeleteModal";
-
 import {
   Card,
   CardBody,
-  CardImg,
   Col,
   Container,
   Row,
-  Modal,
-  Button,
-  ModalHeader,
-  ModalBody,
   Label,
-  FormGroup,
   Input,
   Alert,
 } from "reactstrap";
-import { saveAs } from "file-saver";
-
-import paginationFactory, {
-  PaginationProvider,
-  PaginationListStandalone,
-} from "react-bootstrap-table2-paginator";
-
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import BootstrapTable from "react-bootstrap-table-next";
-
+import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-// import DeleteModal from "components/Common/DeleteModal";
-import * as XLSX from "xlsx";
-import {
-  getAnalytelist,
-  addNewAnalyteList,
-  updateAnalyteList,
-  deleteAnalyte,
-} from "store/databaseofunits/actions";
+// Redux
+import { connect } from "react-redux";
+import Select from "react-select";
+import { getApprovedLabs } from "store/registration-admin/actions";
+import { getcyclelist } from "store/cycle/actions";
 
-import { isEmpty, size } from "lodash";
-import "assets/scss/table.scss";
-import moment from "moment";
-class AnalyteList extends Component {
+import { addNewPayment } from "store/Payment/actions";
+class Payment extends Component {
   constructor(props) {
     super(props);
-    this.node = React.createRef();
     this.state = {
-      nameFilter: "",
-      organization_name: "",
-      methodsFilter: "",
-      equipmentFilter: "",
-      reagentsFilter: "",
-      masterunitFilter: "",
-      dateFilter: "",
-      codeFilter: "",
-      idFilter: "",
-      typeFilter: "",
-      statusFilter: "",
-      ListUnit: [],
-      analyte: "",
-      errorMessage: "",
-      modal: false,
-      //   deleteModal: false,
+      approvedLabs: [],
+      CycleList: [],
+
+      submittedMessage: null,
+      emailError: null,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      ReagentsListColumns: [
-        {
-          text: "ID",
-          dataField: "id",
-          sort: true,
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input
-                    type="text"
-                    value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange("idFilter", e)}
-                    className="form-control"
-                    style={{
-                      textAlign: 'center',
-                      width: '100px',
-                    }}
-                  />
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }} >{column.text}</div>
-              </>
-            );
-          },
-        },
-        {
-          dataField: "code",
-          text: "code",
-          sort: true,
-
-          style: { textAlign: "center" },
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input
-                    type="text"
-                    value={this.state.codeFilter}
-                    onChange={e => this.handleFilterChange("codeFilter", e)}
-                    className="form-control"
-                    style={{
-                      textAlign: 'center',
-                      width: '100px',
-                    }}
-                  />
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-              </>
-            );
-          },
-        },
-
-        {
-          dataField: "name",
-          text: "Analyte",
-          sort: true,
-
-          style: { textAlign: "center" },
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input
-                    type="text"
-                    value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange("nameFilter", e)}
-                    className="form-control"
-                    style={{
-                      textAlign: 'center',
-                      width: '100px',
-                    }}
-                  />
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-              </>
-            );
-          },
-        },
-        {
-          dataField: "master_unit_name",
-          text: "Master Unit",
-          sort: true,
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input
-                    type="text"
-                    value={this.state.masterunitFilter}
-                    onChange={e =>
-                      this.handleFilterChange("masterunitFilter", e)
-                    }
-                    className="form-control"
-                    style={{
-                      textAlign: 'center',
-                      width: '100px',
-                    }}
-                  />
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-              </>
-            );
-          },
-        },
-
-        {
-          dataField: "noofmethods",
-          text: "No. of Methods",
-          sort: true,
-
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input
-                    type="text"
-                    value={this.state.methodsFilter}
-                    onChange={e => this.handleFilterChange("methodsFilter", e)}
-                    className="form-control"
-                    style={{
-                      textAlign: 'center',
-                      width: '100px',
-                    }}
-                  />
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-              </>
-            );
-          },
-        },
-        {
-          dataField: "noofinstruments",
-          text: "No. of Equipments",
-          sort: true,
-
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input
-                    type="text"
-                    value={this.state.equipmentFilter}
-                    onChange={e =>
-                      this.handleFilterChange("equipmentFilter", e)
-                    }
-                    className="form-control"
-                    style={{
-                      textAlign: 'center',
-                      width: '120px',
-                    }}
-                  />
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-              </>
-            );
-          },
-        },
-        {
-          dataField: "noofreagents",
-          text: "No. of Reagents",
-          sort: true,
-
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input
-                    type="text"
-                    value={this.state.reagentsFilter}
-                    onChange={e => this.handleFilterChange("reagentsFilter", e)}
-                    className="form-control"
-                    style={{
-                      textAlign: 'center',
-                      width: '150px',
-                    }}
-                  />
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-              </>
-            );
-          },
-        },
-
-        {
-          dataField: "status",
-          text: "Status",
-          sort: true,
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <select
-                    value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange("statusFilter", e)}
-                    className="form-control"
-                  >
-                    <option value="">All</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-              </>
-            );
-          },
-        },
-
-        {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, analyte) => (
-            <div className="d-flex gap-3 ml-3" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-              <Tooltip title="Add Units">
-                <Link
-                  className="mdi mdi-package-variant-closed font-size-18"
-                  to={`/${this.state.organization_name}/analyte-add-units/${analyte.id}`}
-                  style={{ textDecoration: "underline", color: "#008000" }}
-                  onClick={e => {
-                    e.preventDefault();
-                    // Check if organization_name is valid
-                    if (!this.state.organization_name) {
-                      // console.error("Invalid organization name");
-                      return; // Prevent navigation if invalid
-                    }
-                    const url = `/${this.state.organization_name}/analyte-add-units/${analyte.id}`;
-                    // console.log("Navigating to:", url);
-                    this.props.history.push(url); // Navigate to the new URL
-                  }}
-                ></Link>
-              </Tooltip>
-              <Tooltip title="Add Methods">
-                <Link
-                  className="mdi mdi-beaker font-size-18"
-                  to={`/${this.state.organization_name}/analyte-add-methods/${analyte.id}`}
-                  style={{ textDecoration: "underline", color: "#9400D3" }}
-                  onClick={e => {
-                    e.preventDefault();
-                    // Check if organization_name is valid
-                    if (!this.state.organization_name) {
-                      // console.error("Invalid organization name");
-                      return; // Prevent navigation if invalid
-                    }
-                    const url = `/${this.state.organization_name}/analyte-add-methods/${analyte.id}`;
-                    // console.log("Navigating to:", url);
-                    this.props.history.push(url); // Navigate to the new URL
-                  }}
-                ></Link>
-              </Tooltip>
-              <Tooltip title="Add Equipments">
-                <Link
-                  className="mdi mdi-beaker font-size-18"
-                  to={`/${this.state.organization_name}/analyte-add-equipments/${analyte.id}`}
-                  style={{ textDecoration: "underline", color: "#008080" }}
-                  onClick={e => {
-                    e.preventDefault();
-                    // Check if organization_name is valid
-                    if (!this.state.organization_name) {
-                      // console.error("Invalid organization name");
-                      return; // Prevent navigation if invalid
-                    }
-                    const url = `/${this.state.organization_name}/analyte-add-equipments/${analyte.id}`;
-                    // console.log("Navigating to:", url);
-                    this.props.history.push(url); // Navigate to the new URL
-                  }}
-                ></Link>
-              </Tooltip>
-              <Tooltip title="Add Reagents">
-                <Link
-                  className="mdi mdi-beaker font-size-18"
-                  to={`/${this.state.organization_name}/analyte-add-reagents/${analyte.id}`}
-                  style={{ textDecoration: "underline", color: "#1E90FF" }}
-                  onClick={e => {
-                    e.preventDefault();
-                    // Check if organization_name is valid
-                    if (!this.state.organization_name) {
-                      // console.error("Invalid organization name");
-                      return; // Prevent navigation if invalid
-                    }
-                    const url = `/${this.state.organization_name}/analyte-add-reagents/${analyte.id}`;
-                    // console.log("Navigating to:", url);
-                    this.props.history.push(url); // Navigate to the new URL
-                  }}
-                ></Link>
-              </Tooltip>
-
-              <Tooltip title="Update">
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={e => this.handleReagentsClick(e, analyte)}
-                  ></i>
-                </Link>
-              </Tooltip>
-
-              <Tooltip title="History">
-                <Link
-                  className="fas fa-comment font-size-18"
-                  to={`/${this.state.organization_name}/databaseadmin-history/${analyte.id}?type=Analyte`}
-                  onClick={e => {
-                    e.preventDefault();
-                    // Check if organization_name is valid
-                    if (!this.state.organization_name) {
-                      console.error("Invalid organization name");
-                      return; // Prevent navigation if invalid
-                    }
-                    const url = `/${this.state.organization_name}/databaseadmin-history/${analyte.id}?type=Analyte`;
-                    console.log("Navigating to:", url);
-                    this.props.history.push(url); // Navigate to the new URL
-                  }}
-                ></Link>
-              </Tooltip>
-
-              <Tooltip title="Delete">
-                <Link className="text-danger" to="#">
-                  <i
-                    className="mdi mdi-delete font-size-18"
-                    id="deletetooltip"
-                    onClick={() => this.onClickDelete(analyte)}
-                  ></i>
-                </Link>
-              </Tooltip>
-            </div>
-          ),
-        },
-      ],
     };
-    this.handleReagentsClick = this.handleReagentsClick.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.handleReagentsClicks = this.handleReagentsClicks.bind(this);
-    this.onClickDelete = this.onClickDelete.bind(this);
   }
-
-  // The code for converting "Base64" to javascript "File Object"
-  dataURLtoFile = (dataurl, filename) => {
-    var arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  };
 
   componentDidMount() {
-    const { organization_name } = this.props.match.params;
-    // Only set state if organization_name is empty
-    if (!this.state.organization_name) {
-      this.setState({ organization_name });
-    }
-    const { ListUnit, onGetAnalyte } = this.props;
-
-    onGetAnalyte(this.state.user_id);
-    this.setState({ ListUnit });
+    const { ongetApprovedLabs, ongetcyclelist } = this.props;
+    ongetApprovedLabs(this.state.user_id);
+    ongetcyclelist(this.state.user_id);
   }
-
-  toggleDeleteModal = () => {
-    this.setState(prevState => ({
-      deleteModal: !prevState.deleteModal,
-    }));
-  };
-
-  onClickDelete = analyte => {
-    if (
-      analyte.noofreagents === 0 &&
-      analyte.noofmethods === 0 &&
-      analyte.noofinstruments === 0
-    ) {
-      this.setState({ ListUnit: analyte, deleteModal: true });
-    } else {
-      this.setState({ errorMessage: "Cannot delete. Values are assigned." });
-      // Clear error message after 2 seconds
-      setTimeout(() => {
-        this.setState({ errorMessage: "" });
-      }, 2000);
+  componentDidUpdate(prevProps) {
+    if (prevProps.approvedLabs !== this.props.approvedLabs) {
+      this.setState({ approvedLabs: this.props.approvedLabs });
     }
-  };
-
-  handleDeleteInstrumentType = () => {
-    const { onDeleteInstrumentType } = this.props;
-    const { ListUnit } = this.state;
-    if (ListUnit.id !== undefined) {
-      onDeleteInstrumentType(ListUnit);
-      setTimeout(() => {
-        this.props.onGetAnalyte(this.state.user_id);
-      }, 1000);
-      this.setState({ deleteModal: false });
-    }
-  };
-
-  handleFilterChange = (filterName, e) => {
-    this.setState({ [filterName]: e.target.value });
-  };
-
-  toggle() {
-    this.setState(prevState => ({
-      modal: !prevState.modal,
-    }));
-  }
-
-  handleReagentsClicks = () => {
-    this.setState({ analyte: "", isEdit: false });
-    this.toggle();
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { ListUnit } = this.props;
-    if (!isEmpty(ListUnit) && size(prevProps.ListUnit) !== size(ListUnit)) {
-      this.setState({ ListUnit: {}, isEdit: false });
+    if (prevProps.CycleList !== this.props.CycleList) {
+      this.setState({ CycleList: this.props.CycleList });
     }
   }
+  displaySuccessMessage = message => {
+    this.setState({ successMessage: message });
 
-  onPaginationPageChange = page => {
-    if (
-      this.node &&
-      this.node.current &&
-      this.node.current.props &&
-      this.node.current.props.pagination &&
-      this.node.current.props.pagination.options
-    ) {
-      this.node.current.props.pagination.options.onPageChange(page);
-    }
+    setTimeout(() => {
+      this.setState({ successMessage: "", modal: false });
+    }, 3000);
   };
-
-  toDataURL = url =>
-    fetch(url)
-      .then(response => response.blob())
-      .then(
-        blob =>
-          new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(blob);
-          })
-      );
-
-  // The code for converting "Base64" to javascript "File Object"
-  dataURLtoFile = (dataurl, filename) => {
-    var arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  };
-
-  handleReagentsClick = (e, arg) => {
-    const analyte = arg;
-
-    this.setState({
-      analyte: {
-        id: analyte.id,
-        name: analyte.name,
-        status: analyte.status,
-        code: analyte.code,
-        added_by: analyte.added_by,
-      },
-      isEdit: true,
-    });
-
-    this.toggle();
-  };
-
-  // IMPORT AND EXPORT THE DATA IN EXCEL FILE
-  exportToExcel = () => {
-    const { ListUnit } = this.props;
-    const fileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-
-    // Define fields to export
-    const fieldsToExport = ["id", "name", "code", "status", "date_of_addition"];
-
-    // Map each row to an object with only the desired fields
-    const dataToExport = ListUnit.map(unit => ({
-      id: unit.id,
-      name: unit.name,
-      code: unit.code,
-      status: unit.status,
-      date_of_addition: moment(unit.date_of_addition).format(
-        "DD MMM YYYY, h:mm A"
-      ),
-    }));
-
-    // Convert data to Excel format and save as file
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: fileType });
-    const fileName = "Analyte_list" + fileExtension;
-    saveAs(data, fileName);
-  };
-
-  toggleImportModal = () => {
-    this.setState(prevState => ({
-      importModal: !prevState.importModal,
-      importFile: null,
-      importError: null,
-    }));
-  };
-
-  handleFileChange = e => {
-    const file = e.target.files[0];
-    this.setState({
-      importFile: file,
-    });
-  };
-
-  handleImport = async () => {
-    const { importFile } = this.state;
-    if (!importFile) {
-      this.setState({
-        importError: "Please select a file.",
-      });
-      return;
-    }
-
-    try {
-      const reader = new FileReader();
-      reader.onload = async e => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
-        // Assuming your data is in the first sheet
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        // Convert to JSON format
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-        // Process jsonData and save to the database
-        // Example of processing:
-        for (let i = 0; i < jsonData.length; i++) {
-          const item = jsonData[i];
-          // Dispatch an action to save item to the database
-          await this.props.onAddNewAnalyte({
-            name: item.name,
-            code: item.code,
-            status: item.status,
-            added_by: localStorage.getItem("authUser")
-              ? JSON.parse(localStorage.getItem("authUser")).user_id
-              : "",
-            // Add other fields as required based on your schema
-          });
-        }
-
-        // Close the modal and show success message
-        this.toggleImportModal();
-        this.displaySuccessMessage("Data imported successfully!");
-        // Optionally, reload data from backend after import
-        await this.props.onGetAnalyte(this.state.user_id);
-      };
-
-      reader.readAsArrayBuffer(importFile);
-    } catch (error) {
-      console.error("Error importing data:", error);
-      this.setState({
-        importError: "Error importing data. Please try again.",
-      });
-    }
+  handleFileChange = (event, setFieldValue) => {
+    const file = event.currentTarget.files[0];
+    setFieldValue("photo", file);
   };
   render() {
-    const { SearchBar } = Search;
-    const { errorMessage } = this.state;
-    const { ListUnit } = this.props;
-    const {
-      nameFilter,
-      dateFilter,
-      statusFilter,
-      codeFilter,
-      idFilter,
-      masterunitFilter,
-      typeFilter,
-      methodsFilter,
-      equipmentFilter,
-      reagentsFilter,
-    } = this.state;
+    // console.log("Email error received:", this.props.emailError);
 
-    const filteredData = ListUnit.filter(entry => {
-      // Modify accordingly for each filter condition
-      const name = entry.name ? entry.name.toString().toLowerCase() : "";
-      const master_unit_name = entry.master_unit_name
-        ? entry.master_unit_name.toString().toLowerCase()
-        : "";
-      const status = entry.status ? entry.status.toString() : "";
-      const id = entry.id ? entry.id.toString() : "";
-      const noofmethods = entry.noofmethods ? entry.noofmethods.toString() : "";
-      const noofreagents = entry.noofreagents
-        ? entry.noofreagents.toString()
-        : "";
-      const noofinstruments = entry.noofinstruments
-        ? entry.noofinstruments.toString()
-        : "";
-      const code = entry.code ? entry.code.toString() : "";
-      const date = entry.date_of_addition
-        ? entry.date_of_addition.toString()
-        : "";
+    const { approvedLabs, CycleList } = this.state;
 
-      return (
-        name.includes(nameFilter.toLowerCase()) &&
-        master_unit_name.includes(masterunitFilter.toLowerCase()) &&
-        status.includes(statusFilter) &&
-        id.includes(idFilter) &&
-        noofmethods.includes(methodsFilter) &&
-        noofreagents.includes(reagentsFilter) &&
-        noofinstruments.includes(equipmentFilter) &&
-        code.includes(codeFilter) &&
-        date.includes(dateFilter)
-      );
-    });
+    const participantOptions = approvedLabs.map(participant => ({
+      value: participant.id,
+      label: participant.name,
+    }));
 
-    const { isEdit } = this.state;
-    const { deleteModal } = this.state;
+    const schemeOptions = CycleList.map(scheme => ({
+      value: scheme.id, // Use scheme ID instead of scheme name
+      label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
+    }));
 
-    const { onAddNewAnalyte, onUpdateAnalyte, onGetAnalyte } = this.props;
-    const analyte = this.state.analyte;
-
-    const pageOptions = {
-      sizePerPage: 10,
-      totalSize: filteredData.length,
-      custom: true,
+    const customStyles = {
+      menuList: provided => ({
+        ...provided,
+        maxHeight: 200, // Maximum height for the menu list
+        overflowY: "auto", // Enable vertical scrolling
+        // WebkitOverflowScrolling: "touch", // Smooth scrolling for mobile devices
+      }),
     };
-
-    const defaultSorted = [
-      {
-        dataField: "id",
-        order: "desc",
-      },
-    ];
-
     return (
       <React.Fragment>
-        <DeleteModal
-          show={deleteModal}
-          onDeleteClick={this.handleDeleteInstrumentType}
-          onCloseClick={() => this.setState({ deleteModal: false })}
-        />
         <div className="page-content">
           <MetaTags>
-            <title>Analyte List | NEQAS</title>
+            <title>Payment | External QC</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Analyte" breadcrumbItem="Analyte List" />
-            <Row className="justify-content-end">
-              <Col lg="auto" className="text-end">
-                <Button onClick={this.exportToExcel} className="mb-3">
-                  Export to Excel
-                </Button>
-              </Col>
-              <Col lg="auto" className="text-end">
-                <Button onClick={this.toggleImportModal} className="mb-3">
-                  Import from Excel
-                </Button>
-              </Col>
-            </Row>
-            <Modal
-              isOpen={this.state.importModal}
-              toggle={this.toggleImportModal}
-              className={this.props.className}
-            >
-              <ModalHeader toggle={this.toggleImportModal}>
-                Import from Excel
-              </ModalHeader>
-              <ModalBody>
-                <div className="mb-3 d-flex justify-content-center">
-                  <button
-                    className="btn btn-primary"
-                    onClick={e => {
-                      e.preventDefault(); // Prevent the default action
-                      const downloadUrl =
-                        process.env.REACT_APP_BACKENDURL +
-                        "/media/public/Analyte.xlsx";
-                      saveAs(downloadUrl, "Analyte.xlsx"); // Use the file-saver library to trigger the download
-                    }}
-                  >
-                    <i className="mdi mdi-download me-1" />
-                    Download File Format
-                  </button>
-                </div>
-
-                <div className="w-100">
-                  <h4>
-                    <b>Instructions to fill the excel sheet:</b>
-                  </h4>
-                  <div>
-                    <ol>
-                      <li>
-                        Create a file whose format is, .xlsx, .xls, .csv, .ods,
-                        .xml, .html, .txt, .dbf
-                      </li>
-                      <li>
-                        There should be a file of 3 column name, code, status
-                        (Active, Inactive)
-                      </li>
-                      <li>
-                        If you want to get more information, contact us at{" "}
-                        <strong>eternalqc@gmail.com</strong>
-                      </li>
-                    </ol>
-                  </div>
-                </div>
-                <div>
-                  {this.state.importError && (
-                    <div className="alert alert-danger" role="alert">
-                      {this.state.importError}
-                    </div>
-                  )}
-                  <Col lg="10">
-                    <FormGroup className=" mt-4 mb-0">
-                      <Label htmlFor="expirydateInput" className="fw-bolder">
-                        Upload File
-                        <span
-                          style={{ color: "#f46a6a" }}
-                          className="font-size-18"
-                        >
-                          *
-                        </span>
-                      </Label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        onChange={this.handleFileChange}
-                        accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf"
-                      />
-                    </FormGroup>
-                  </Col>
-                </div>
-
-                <Row className="mt-4">
-                  <Col sm="12" className="d-flex justify-content-end">
-                    <Button
-                      color="primary"
-                      onClick={this.handleImport}
-                      className="me-2"
-                    >
-                      Upload
-                    </Button>
-                    <Button color="secondary" onClick={this.toggleImportModal}>
-                      Cancel
-                    </Button>
-                  </Col>
-                </Row>
-              </ModalBody>
-            </Modal>
+            <Breadcrumbs title="Payment" breadcrumbItem="Payment" />
             <Row className="justify-content-center">
-              {/* <p className="text-danger">Note: Pathologist Information will scale the rating of your lab.</p> */}
-
-              <Col lg="10">
+              <Col lg="5">
                 <Card>
                   <CardBody>
-                    <Row>
-                      <Col className="pagination pagination-rounded justify-content-center mb-2">
-                        {errorMessage && (
-                          <Alert color="danger">{errorMessage}</Alert>
-                        )}
-                      </Col>
-                    </Row>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
-                      keyField="id"
-                      columns={this.state.ReagentsListColumns}
-                      data={filteredData}
-                    >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.ReagentsListColumns}
-                          data={filteredData}
-                          search
-                        >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <div className="text-sm-end">
-                                    <Button
-                                      style={{ background: "#0000CD" }}
-                                      className="font-16 btn-block btn btn-primary"
-                                      onClick={this.handleReagentsClicks}
-                                    >
-                                      <i className="mdi mdi-plus-circle-outline me-1" />
-                                      Add New Analyte
-                                    </Button>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
-                                      bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      ref={this.node}
-                                      filter={filterFactory()}
-                                    />
-
-                                    <Modal
-                                      isOpen={this.state.modal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.toggle}
-                                        tag="h4"
-                                      >
-                                        {!!isEdit
-                                          ? "Edit Analyte"
-                                          : "Add New Analyte"}
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        <Formik
-                                          enableReinitialize={true}
-                                          initialValues={{
-                                            hiddenEditFlag: isEdit,
-                                            name:
-                                              (analyte && analyte.name) || "",
-                                            code:
-                                              (analyte && analyte.code) || "",
-                                            status:
-                                              (analyte && analyte.status) || "",
-                                            added_by: localStorage.getItem(
-                                              "authUser"
-                                            )
-                                              ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
-                                              : "",
-                                          }}
-                                          validationSchema={Yup.object().shape({
-                                            hiddenEditFlag: Yup.boolean(),
-                                            name: Yup.string()
-                                              .trim()
-                                              .required("Please enter name"),
-                                            code: Yup.string()
-                                              .trim()
-                                              .required(
-                                                "Please enter Valid Code"
-                                              )
-                                              .matches(
-                                                /^[0-9]+$/,
-                                                "Please enter valid code (only integers are allowed)"
-                                              ),
-                                            status: Yup.string()
-                                              .trim()
-                                              .required(
-                                                "Please select the Status from dropdown"
-                                              ),
-                                          })}
-                                          onSubmit={values => {
-                                            if (isEdit) {
-                                              {
-                                                const updateAnalyteList = {
-                                                  id: analyte.id,
-                                                  name: values.name,
-                                                  code: values.code,
-                                                  status: values.status,
-                                                  added_by: values.added_by,
-                                                };
-
-                                                // update Pathologist
-                                                onUpdateAnalyte(
-                                                  updateAnalyteList
-                                                );
-                                                setTimeout(() => {
-                                                  onGetAnalyte(
-                                                    this.state.user_id
-                                                  );
-                                                }, 1000);
-                                              }
-                                            } else {
-                                              const newReagent = {
-                                                id:
-                                                  Math.floor(
-                                                    Math.random() * (30 - 20)
-                                                  ) + 20,
-                                                name: values.name,
-                                                code: values.code,
-                                                status: values.status,
-                                                added_by: values.added_by,
-                                              };
-
-                                              // save new Pathologist
-                                              onAddNewAnalyte(
-                                                newReagent,
-                                                this.state.user_id
-                                              );
-                                              setTimeout(() => {
-                                                onGetAnalyte(
-                                                  this.state.user_id
-                                                );
-                                              }, 1000);
-                                            }
-                                            this.setState({
-                                              selectedPathologist: null,
-                                            });
-                                            this.toggle();
-                                          }}
-                                        >
-                                          {({ errors, status, touched }) => (
-                                            <Form>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  <Field
-                                                    type="hidden"
-                                                    className="form-control"
-                                                    name="hiddenEditFlag"
-                                                    value={isEdit}
-                                                  />
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Name
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="name"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.name &&
-                                                        touched.name
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.analyte.name
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          analyte: {
-                                                            id: analyte.id,
-                                                            name: e.target
-                                                              .value,
-                                                            status:
-                                                              analyte.status,
-                                                            code: analyte.code,
-                                                          },
-                                                        })
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Code
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      name="code"
-                                                      type="text"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.code &&
-                                                        touched.code
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                      value={
-                                                        this.state.analyte.code
-                                                      }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          analyte: {
-                                                            id: analyte.id,
-                                                            name: analyte.name,
-                                                            status:
-                                                              analyte.status,
-                                                            code: e.target
-                                                              .value,
-                                                          },
-                                                        })
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="code"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Status
-                                                      <span className="text-danger">
-                                                        *
-                                                      </span>
-                                                    </Label>
-                                                    <Field
-                                                      as="select"
-                                                      name="status"
-                                                      className={`form-control ${
-                                                        errors.status &&
-                                                        touched.status
-                                                          ? "is-invalid"
-                                                          : ""
-                                                      }`}
-                                                    >
-                                                      <option value="">
-                                                        ----- Please select
-                                                        -----
-                                                      </option>
-                                                      <option value="Active">
-                                                        Active
-                                                      </option>
-                                                      <option value="Inactive">
-                                                        Inactive
-                                                      </option>
-                                                    </Field>
-                                                    <ErrorMessage
-                                                      name="status"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col>
-                                                  <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                      style={{
-                                                        backgroundColor:
-                                                          "#0000CD",
-                                                        borderColor: "#0000CD",
-                                                      }}
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
-                                          )}
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row>
-                            </React.Fragment>
-                          )}
-                        </ToolkitProvider>
+                    <div className="mt-4">
+                      {this.state.successMessage && (
+                        <Alert color="success" style={{ marginTop: "13px" }}>
+                          {this.state.successMessage}
+                        </Alert>
                       )}
-                    </PaginationProvider>
+                      <Formik
+                        enableReinitialize={true}
+                        initialValues={{
+                          photo: "",
+                          participant:
+                            (this.state && this.state.participant) || "",
+                          paydate: (this.state && this.state.paydate) || "",
+                          paymentmethod:
+                            (this.state && this.state.paymentmethod) || "",
+                          scheme: [],
+                          price: "",
+                          discount: 0,
+                          added_by: localStorage.getItem("authUser")
+                            ? JSON.parse(localStorage.getItem("authUser"))
+                                .user_id
+                            : "",
+                        }}
+                        validationSchema={Yup.object().shape({
+                          participant: Yup.string().required(
+                            "Participant is required"
+                          ),
+                          scheme: Yup.string().required("Scheme is required"),
+                          price: Yup.string().required("price is required"),
+                          paydate: Yup.string().required("Date is required"),
+                          photo: Yup.string().required(
+                            "Deposit Slip is required"
+                          ),
+                          paymentmethod: Yup.string().required(
+                            "Payment Method is required"
+                          ),
+                          discount: Yup.number()
+                            .min(0, "Discount must be at least 0%")
+                            .max(100, "Discount cannot be more than 100%")
+                            .required("Discount is required"),
+                        })}
+                        onSubmit={async (
+                          values,
+                          { setSubmitting, resetForm }
+                        ) => {
+                          const userId = localStorage.getItem("authUser")
+                            ? JSON.parse(localStorage.getItem("authUser"))
+                                .user_id
+                            : "";
+
+                          // Ensure roundedPrice is defined before use
+                          const roundedPrice = Math.round(
+                            parseFloat(values.price)
+                          );
+
+                          const AddPayment = {
+                            participant: values.participant,
+                            scheme: values.scheme,
+                            price: roundedPrice, // Use rounded price
+                            discount: values.discount,
+                            paydate: values.paydate,
+                            photo: values.photo,
+                            paymentmethod: values.paymentmethod,
+                            added_by: userId,
+                          };
+
+                          console.log("data in page before submit", AddPayment);
+
+                          try {
+                            await this.props.onAddNewPayment(
+                              userId,
+                              AddPayment
+                            );
+                            resetForm();
+                            this.displaySuccessMessage(
+                              "Payment added successfully!"
+                            );
+                          } catch (error) {
+                            console.error("Error adding payment:", error);
+                          }
+                          setTimeout(() => {
+                            this.props.ongetApprovedLabs(this.state.user_id);
+                          }, 1000);
+                          setTimeout(() => {
+                            this.props.ongetcyclelist(this.state.user_id);
+                          }, 1000);
+
+                          setSubmitting(false);
+                        }}
+                      >
+                        {({
+                          values,
+                          errors,
+                          touched,
+                          isSubmitting,
+                          setFieldValue,
+                        }) => {
+                          const handleSchemeChange = selectedOption => {
+                            setFieldValue(
+                              "scheme",
+                              selectedOption ? selectedOption.value : null // Handle single selection
+                            );
+
+                            const selectedScheme = CycleList.find(
+                              scheme => scheme.id === selectedOption?.value
+                            );
+
+                            if (selectedScheme) {
+                              const cycle_no = selectedScheme.cycle_no;
+                              const total_price = parseFloat(
+                                selectedScheme.price
+                              );
+
+                              let roundedPrice = Math.round(total_price);
+
+                              setFieldValue("cycle_no", cycle_no);
+                              setFieldValue("price", roundedPrice.toFixed(2));
+
+                              if (values.discount) {
+                                const discountPrice =
+                                  roundedPrice -
+                                  (roundedPrice * parseFloat(values.discount)) /
+                                    100;
+                                roundedPrice = Math.round(discountPrice);
+                                setFieldValue("price", roundedPrice.toFixed(2));
+                              } else {
+                                setFieldValue("price", roundedPrice.toFixed(2));
+                              }
+                            }
+                          };
+
+                          const handleDiscountChange = e => {
+                            let discountValue = parseFloat(e.target.value);
+
+                            if (isNaN(discountValue) || !discountValue) {
+                              discountValue = 0;
+                            }
+
+                            setFieldValue("discount", discountValue);
+
+                            const total_price = values.scheme.reduce(
+                              (sum, scheme_id) => {
+                                const scheme = CycleList.find(
+                                  scheme => scheme.id === scheme_id
+                                );
+                                return (
+                                  sum + (scheme ? parseFloat(scheme.price) : 0)
+                                );
+                              },
+                              0
+                            );
+
+                            let roundedPrice = Math.round(total_price);
+
+                            if (!isNaN(discountValue) && roundedPrice) {
+                              const discountPrice =
+                                roundedPrice -
+                                (roundedPrice * discountValue) / 100;
+                              roundedPrice = Math.round(discountPrice);
+                              setFieldValue("price", roundedPrice.toFixed(2));
+                            } else {
+                              setFieldValue("price", roundedPrice.toFixed(2));
+                            }
+                          };
+                          return (
+                            <Form className="form-horizontal">
+                              <Row>
+                                <Col>
+                                  <div className="mb-3">
+                                    <Label
+                                      for="participant"
+                                      className="form-label"
+                                    >
+                                      Participant
+                                    </Label>
+                                    <Select
+                                      name="participant"
+                                      options={participantOptions}
+                                      className={
+                                        errors.participant &&
+                                        touched.participant
+                                          ? "is-invalid"
+                                          : ""
+                                      }
+                                      onChange={selectedOption => {
+                                        setFieldValue(
+                                          "participant",
+                                          selectedOption
+                                            ? selectedOption.value
+                                            : ""
+                                        );
+                                        setFieldValue("scheme", []); // Clear schemes when participant changes
+                                      }}
+                                      value={
+                                        participantOptions.find(
+                                          option =>
+                                            option.value === values.participant
+                                        ) || null
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="participant"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
+
+                              {values.participant && ( // Render schemes only if participant is selected
+                                <Row>
+                                  <Col>
+                                    <div className="mb-3">
+                                      <Label
+                                        for="scheme"
+                                        className="form-label"
+                                      >
+                                        Scheme
+                                      </Label>
+                                      <Select
+                                        name="scheme"
+                                        options={schemeOptions}
+                                        className={
+                                          errors.scheme && touched.scheme
+                                            ? "is-invalid"
+                                            : ""
+                                        }
+                                        onChange={handleSchemeChange}
+                                        value={
+                                          schemeOptions.find(
+                                            option =>
+                                              option.value === values.scheme
+                                          ) || null
+                                        } // Single selection
+                                      />
+                                      <ErrorMessage
+                                        name="scheme"
+                                        component="div"
+                                        className="invalid-feedback"
+                                      />
+                                    </div>
+                                  </Col>
+                                </Row>
+                              )}
+
+                              {/* <Row>
+          <Col>
+            <div className="mb-3">
+              <Label for="cycle_no" className="form-label">
+                Cycle
+              </Label>
+              <Field
+                name="cycle_no"
+                type="text"
+                placeholder="Enter cycle number"
+                className={
+                  "form-control" +
+                  (errors.cycle_no && touched.cycle_no ? " is-invalid" : "")
+                }
+                readOnly
+              />
+              <ErrorMessage
+                name="cycle_no"
+                component="div"
+                className="invalid-feedback"
+              />
+            </div>
+          </Col> */}
+                              {/* </Row> */}
+
+                              <Row>
+                                <Col>
+                                  <div className="mb-3">
+                                    <Label for="price" className="form-label">
+                                      Price
+                                    </Label>
+                                    <Field
+                                      name="price"
+                                      type="text"
+                                      placeholder="Enter price"
+                                      className={
+                                        "form-control" +
+                                        (errors.price && touched.price
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                      value={new Intl.NumberFormat(
+                                        "en-US"
+                                      ).format(values.price || 0)} // Format the value
+                                      readOnly
+                                    />
+                                    <ErrorMessage
+                                      name="price"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
+
+                              <Row>
+                                <Col>
+                                  <div className="mb-3">
+                                    <Label
+                                      for="discount"
+                                      className="form-label"
+                                    >
+                                      Discount (%)
+                                    </Label>
+                                    <Field
+                                      name="discount"
+                                      type="text"
+                                      placeholder="Enter discount"
+                                      className={
+                                        "form-control" +
+                                        (errors.discount && touched.discount
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                      onChange={handleDiscountChange}
+                                    />
+                                    <ErrorMessage
+                                      name="discount"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col>
+                                  <div className="mb-3">
+                                    <Label for="name" className="form-label">
+                                      Pay Date
+                                    </Label>
+                                    <Field
+                                      name="paydate"
+                                      type="date"
+                                      id="paydate"
+                                      className={
+                                        "form-control" +
+                                        (errors.paydate && touched.paydate
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="paydate"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col>
+                                  <div className="mb-3">
+                                    <Label for="name" className="form-label">
+                                      Pay Copy
+                                    </Label>
+                                    <Input
+                                      id="formFile"
+                                      name="photo"
+                                      type="file"
+                                      multiple={false}
+                                      accept=".jpg,.jpeg,.png"
+                                      onChange={event =>
+                                        this.handleFileChange(
+                                          event,
+                                          setFieldValue
+                                        )
+                                      }
+                                      className={
+                                        "form-control" +
+                                        (errors.photo && touched.photo
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="photo"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col>
+                                  <div className="mb-3">
+                                    <Label
+                                      for="paymentmethod"
+                                      className="form-label"
+                                    >
+                                      Payment Method
+                                    </Label>
+                                    <Select
+                                      id="paymentmethod"
+                                      name="paymentmethod"
+                                      options={[
+                                        { value: "Online", label: "Online" },
+                                        { value: "Cheque", label: "Cheque" },
+                                        { value: "Cash", label: "Cash" },
+                                      ]}
+                                      onChange={selectedOption => {
+                                        setFieldValue(
+                                          "paymentmethod",
+                                          selectedOption
+                                            ? selectedOption.value
+                                            : ""
+                                        );
+                                      }}
+                                      value={
+                                        values.paymentmethod
+                                          ? {
+                                              value: values.paymentmethod,
+                                              label: values.paymentmethod,
+                                            }
+                                          : null
+                                      }
+                                      className={
+                                        errors.paymentmethod &&
+                                        touched.paymentmethod
+                                          ? "is-invalid"
+                                          : ""
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="paymentmethod"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
+
+                              <Row>
+                                <Col>
+                                  <div className="text-end">
+                                    <button
+                                      type="submit"
+                                      className="btn btn-success save-user"
+                                      style={{
+                                        backgroundColor: "#0000CD",
+                                        borderColor: "#0000CD",
+                                      }}
+                                    >
+                                      Save
+                                    </button>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </Form>
+                          );
+                        }}
+                      </Formik>
+                    </div>
                   </CardBody>
                 </Card>
               </Col>
@@ -1159,34 +564,28 @@ class AnalyteList extends Component {
     );
   }
 }
-
-AnalyteList.propTypes = {
+Payment.propTypes = {
+  history: PropTypes.any,
   match: PropTypes.object,
-  ListUnit: PropTypes.array,
-  onDeleteInstrumentType: PropTypes.func,
+  userID: PropTypes.any,
+  userAccountType: PropTypes.any,
   className: PropTypes.any,
-  createInstrumentType: PropTypes.array,
-  onGetAnalyte: PropTypes.func,
-  onAddNewAnalyte: PropTypes.func,
-  onUpdateAnalyte: PropTypes.func,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
+  approvedLabs: PropTypes.array,
+  CycleList: PropTypes.array,
+  ongetApprovedLabs: PropTypes.func,
+  ongetcyclelist: PropTypes.func,
+  onAddNewPayment: PropTypes.func,
 };
+const mapStateToProps = ({ Account, registrationAdmin, CycleList }) => ({
+  userID: Account.userID,
 
-const mapStateToProps = ({ ListUnit }) => ({
-  ListUnit: ListUnit?.ListUnit,
+  approvedLabs: registrationAdmin.approvedLabs,
+  CycleList: CycleList.CycleList,
+});
+const mapDispatchToProps = dispatch => ({
+  onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
+  ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetAnalyte: id => dispatch(getAnalytelist(id)),
-  onAddNewAnalyte: (createInstrumentType, id) =>
-    dispatch(addNewAnalyteList(createInstrumentType, id)),
-  onUpdateAnalyte: analyte => dispatch(updateAnalyteList(analyte)),
-  onDeleteInstrumentType: analyte => dispatch(deleteAnalyte(analyte)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(AnalyteList));
+export default connect(mapStateToProps, mapDispatchToProps)(Payment);
