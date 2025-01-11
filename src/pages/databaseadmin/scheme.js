@@ -236,7 +236,7 @@ class ReagentsList extends Component {
                   style={{ textDecoration: "underline", color: "#008000" }}
                 >
                  <i
-                    className="mdi mdi-magnify font-size-18"
+                    className="mdi mdi-test-tube font-size-18"
                     id="analyteIcon"
                   ></i>
                 </Link>
