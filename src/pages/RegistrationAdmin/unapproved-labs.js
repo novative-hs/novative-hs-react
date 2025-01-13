@@ -130,16 +130,26 @@ class UnapprovedLabs extends Component {
                   dataField: "email_participant",
                   text: "Email",
                   sort: true,
-                  headerStyle: { textAlign: 'center' }, 
-                  style: { textAlign: 'center' },        
+                  headerStyle: { textAlign: 'center', width: '200px' },
+                  style: { textAlign: 'center'  },
                   filter: textFilter(),
                   formatter: (cellContent, AllLabs) => (
                     <>
-                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                      <span
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          width: '200px',
+                          gap: '30px',
+                          wordBreak: 'break-word',   // Breaks long words if necessary
+                          overflowWrap: 'break-word' // Ensures text wraps properly
+                        }}
+                      >
                         {AllLabs.email_participant}
                       </span>
                     </>
-                  ),filter: textFilter(),
+                  ),
+                  filter: textFilter()
                 },
                 {
                   dataField: "landline_registered_by",

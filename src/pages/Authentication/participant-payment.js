@@ -124,7 +124,7 @@ class Payment extends Component {
                           participant: Yup.string().required(
                             "Participant is required"
                           ),
-                          scheme: Yup.string().required("Scheme is required"),
+                          scheme: Yup.array().min(1, "At least one scheme must be selected"), 
                           price: Yup.string().required("price is required"),
                           paydate: Yup.string().required("Date is required"),
                           photo: Yup.string().required(
@@ -230,37 +230,20 @@ class Payment extends Component {
 
                           const handleDiscountChange = e => {
                             let discountValue = parseFloat(e.target.value);
-
                             if (isNaN(discountValue) || !discountValue) {
                               discountValue = 0;
                             }
-
                             setFieldValue("discount", discountValue);
-
-                            const total_price = values.scheme.reduce(
-                              (sum, scheme_id) => {
-                                const scheme = CycleList.find(
-                                  scheme => scheme.id === scheme_id
-                                );
-                                return (
-                                  sum + (scheme ? parseFloat(scheme.price) : 0)
-                                );
-                              },
-                              0
-                            );
-
-                            let roundedPrice = Math.round(total_price);
-
-                            if (!isNaN(discountValue) && roundedPrice) {
-                              const discountPrice =
-                                roundedPrice -
-                                (roundedPrice * discountValue) / 100;
-                              roundedPrice = Math.round(discountPrice);
-                              setFieldValue("price", roundedPrice.toFixed(2));
-                            } else {
-                              setFieldValue("price", roundedPrice.toFixed(2));
-                            }
+                          
+                            const totalPrice = values.scheme.reduce((sum, schemeId) => {
+                              const scheme = CycleList.find(scheme => scheme.id === schemeId);
+                              return sum + (scheme ? parseFloat(scheme.price) : 0);
+                            }, 0);
+                          
+                            let discountedPrice = totalPrice - (totalPrice * discountValue) / 100;
+                            setFieldValue("price", discountedPrice.toFixed(2));
                           };
+                          
                           return (
                             <Form className="form-horizontal">
                               <Row>
@@ -307,39 +290,41 @@ class Payment extends Component {
                               </Row>
 
                               {values.participant && ( // Render schemes only if participant is selected
-                                <Row>
-                                  <Col>
-                                    <div className="mb-3">
-                                      <Label
-                                        for="scheme"
-                                        className="form-label"
-                                      >
-                                        Scheme
-                                      </Label>
-                                      <Select
-                                        name="scheme"
-                                        options={schemeOptions}
-                                        className={
-                                          errors.scheme && touched.scheme
-                                            ? "is-invalid"
-                                            : ""
-                                        }
-                                        onChange={handleSchemeChange}
-                                        value={
-                                          schemeOptions.find(
-                                            option =>
-                                              option.value === values.scheme
-                                          ) || null
-                                        } // Single selection
-                                      />
-                                      <ErrorMessage
-                                        name="scheme"
-                                        component="div"
-                                        className="invalid-feedback"
-                                      />
-                                    </div>
-                                  </Col>
-                                </Row>
+                               <Row>
+                               <Col>
+                                 <div className="mb-3">
+                                   <Label for="scheme" className="form-label">
+                                     Scheme
+                                   </Label>
+                                   <Select
+                                     name="scheme"
+                                     isMulti // Enable multiple selection
+                                     options={schemeOptions}
+                                     className={errors.scheme && touched.scheme ? "is-invalid" : ""}
+                                     onChange={selectedOptions => {
+                                       // Update the value in Formik
+                                       const selectedValues = selectedOptions
+                                         ? selectedOptions.map(option => option.value)
+                                         : [];
+                                       setFieldValue("scheme", selectedValues);
+                                       
+                                       // Update price based on selected schemes
+                                       const totalPrice = selectedValues.reduce((sum, schemeId) => {
+                                         const scheme = CycleList.find(s => s.id === schemeId);
+                                         return sum + (scheme ? parseFloat(scheme.price) : 0);
+                                       }, 0);
+                             
+                                       setFieldValue("price", totalPrice.toFixed(2));
+                                     }}
+                                     value={schemeOptions.filter(option =>
+                                       values.scheme.includes(option.value)
+                                     )} // Set selected values
+                                   />
+                                   <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
+                                 </div>
+                               </Col>
+                             </Row>
+                             
                               )}
 
                               {/* <Row>
