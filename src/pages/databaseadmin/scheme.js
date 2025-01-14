@@ -5,7 +5,6 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 
-
 import {
   Card,
   CardBody,
@@ -79,20 +78,26 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input 
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange("idFilter", e)}
+                    onChange={(e) => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
-
-          
         },
 
         {
@@ -104,15 +109,23 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange("nameFilter", e)}
+                    onChange={(e) => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -126,15 +139,23 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input 
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
                     type="text"
                     value={this.state.priceFilter}
-                    onChange={e => this.handleFilterChange("priceFilter", e)}
-                    className="form-control"  
+                    onChange={(e) => this.handleFilterChange("priceFilter", e)}
+                    className="form-control"
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -142,26 +163,57 @@ class ReagentsList extends Component {
         {
           dataField: "noofanalytes",
           text: "No of Analytes",
-          headerStyle: { textAlign: 'center' }, 
-          style: { textAlign: 'center' },        
+          headerStyle: { textAlign: "center" },
+          style: { textAlign: "center" },
           filter: textFilter(),
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input 
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
                     type="text"
                     value={this.state.noofanalytesFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("noofanalytesFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
+            );
+          },
+
+          formatter: (cellContent, unitlist) => {
+            const { organization_name } = this.state; // Ensure `organization_name` is defined in your component's state
+            return (
+              <div>
+                <Link
+                  to={`/add-analytes-scheme-page/${unitlist.id}`} // Use `unitlist.cycle_id` directly
+                  style={{
+                    textDecoration: "underline",
+                    color: "#0000CD",
+                    display: "block",
+                    marginTop: "5px",
+                  }}
+                >
+                  {unitlist.noofanalytes}
+                </Link>
+              </div>
             );
           },
         },
@@ -173,16 +225,22 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <select 
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <select
                     value={this.state.analytetypeFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("analytetypeFilter", e)
                     }
                     className="form-control"
                     style={{
-                      textAlign: 'center',
-                      width: '100px',
+                      textAlign: "center",
+                      width: "100px",
                     }}
                   >
                     <option value="">All</option>
@@ -190,7 +248,9 @@ class ReagentsList extends Component {
                     <option value="Quantitative">Quantitative</option>
                   </select>
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -203,14 +263,20 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <select 
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange("statusFilter", e)}
+                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                     style={{
-                      textAlign: 'center',
-                      width: '100px',
+                      textAlign: "center",
+                      width: "100px",
                     }}
                   >
                     <option value="">All</option>
@@ -218,7 +284,9 @@ class ReagentsList extends Component {
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -235,7 +303,7 @@ class ReagentsList extends Component {
                   to={`/add-analytes-scheme-page/${analyte.id}`}
                   style={{ textDecoration: "underline", color: "#008000" }}
                 >
-                 <i
+                  <i
                     className="mdi mdi-test-tube font-size-18"
                     id="analyteIcon"
                   ></i>
@@ -246,7 +314,7 @@ class ReagentsList extends Component {
                   <i
                     className="mdi mdi-pencil font-size-18"
                     id="edittooltip"
-                    onClick={e => this.handleReagentsClick(e, analyte)}
+                    onClick={(e) => this.handleReagentsClick(e, analyte)}
                   ></i>
                 </Link>
               </Tooltip>
@@ -287,7 +355,7 @@ class ReagentsList extends Component {
   }
 
   toggleDeleteModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
@@ -304,7 +372,7 @@ class ReagentsList extends Component {
     }
   };
 
-  onClickDelete = SchemeList => {
+  onClickDelete = (SchemeList) => {
     this.setState({ SchemeList: SchemeList });
     this.setState({ deleteModal: true });
   };
@@ -314,7 +382,7 @@ class ReagentsList extends Component {
   };
 
   toggle() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       modal: !prevState.modal,
     }));
   }
@@ -335,7 +403,7 @@ class ReagentsList extends Component {
     }
   }
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -347,11 +415,11 @@ class ReagentsList extends Component {
     }
   };
 
-  toDataURL = url =>
+  toDataURL = (url) =>
     fetch(url)
-      .then(response => response.blob())
+      .then((response) => response.blob())
       .then(
-        blob =>
+        (blob) =>
           new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onloadend = () => resolve(reader.result);
@@ -418,7 +486,7 @@ class ReagentsList extends Component {
       analytetypeFilter,
     } = this.state;
 
-    const filteredData = SchemeList.filter(entry => {
+    const filteredData = SchemeList.filter((entry) => {
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString() : "";
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
@@ -501,7 +569,7 @@ class ReagentsList extends Component {
                           data={filteredData}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -588,7 +656,7 @@ class ReagentsList extends Component {
                                                 "Please select the Status from dropdown"
                                               ),
                                           })}
-                                          onSubmit={values => {
+                                          onSubmit={(values) => {
                                             if (isEdit) {
                                               {
                                                 const updateSchemeList = {
@@ -668,7 +736,7 @@ class ReagentsList extends Component {
                                                       value={
                                                         this.state.analyte.name
                                                       }
-                                                      onChange={e =>
+                                                      onChange={(e) =>
                                                         this.setState({
                                                           analyte: {
                                                             id: analyte.id,
@@ -706,7 +774,7 @@ class ReagentsList extends Component {
                                                       value={
                                                         this.state.analyte.price
                                                       }
-                                                      onChange={e => {
+                                                      onChange={(e) => {
                                                         const rawValue =
                                                           e.target.value.replace(
                                                             /,/g,
@@ -872,11 +940,11 @@ const mapStateToProps = ({ SchemeList }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetScheme: id => dispatch(getSchemelist(id)),
+  onGetScheme: (id) => dispatch(getSchemelist(id)),
   onAddNewScheme: (createInstrumentType, id) =>
     dispatch(addNewSchemeList(createInstrumentType, id)),
-  onUpdateScheme: analyte => dispatch(updateSchemeList(analyte)),
-  onDeleteScheme: id => dispatch(deleteScheme(id)),
+  onUpdateScheme: (analyte) => dispatch(updateSchemeList(analyte)),
+  onDeleteScheme: (id) => dispatch(deleteScheme(id)),
 });
 
 export default connect(
