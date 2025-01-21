@@ -502,9 +502,15 @@ class StaffRegister extends Component {
                               100,
                               "Username can't be longer than 100 characters"
                             ),
-                          password: Yup.string().required(
-                            "Please enter your password"
-                          ),
+                          // password: Yup.string().required(
+                          //   "Please enter your password"
+                          // ),
+                          password: Yup.string()
+                            .required("Please enter your password")
+                            .min(
+                              6,
+                              "Password must be at least 6 characters long"
+                            ),
                           name: Yup.string()
                             .trim()
                             .required("Please enter name")
