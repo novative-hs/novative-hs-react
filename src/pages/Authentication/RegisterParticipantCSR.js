@@ -499,8 +499,8 @@ class StaffRegister extends Component {
                             .required("Username is required")
                             .min(3, "Username must be at least 3 characters")
                             .max(
-                              50,
-                              "Username can't be longer than 50 characters"
+                              100,
+                              "Username can't be longer than 100 characters"
                             ),
                           password: Yup.string().required(
                             "Please enter your password"
@@ -509,7 +509,7 @@ class StaffRegister extends Component {
                             .trim()
                             .required("Please enter name")
                             .min(3, "Name must be at least 3 characters")
-                            .max(50, "Name can't be longer than 50 characters"),
+                            .max(100, "Name can't be longer than 100 characters"),
 
                           email: Yup.string()
                             .required("Please enter your email")
