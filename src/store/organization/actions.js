@@ -12,9 +12,9 @@ import {
   UPDATE_ORGANIZATION_LIST_SUCCESS,
   UPDATE_ORGANIZATION_LIST_FAIL,
 
-  DELETE_ORGANIZATION_LIST,
-  DELETE_ORGANIZATION_LIST_SUCCESS,
-  DELETE_ORGANIZATION_LIST_FAIL,
+  // DELETE_ORGANIZATION_LIST,
+  // DELETE_ORGANIZATION_LIST_SUCCESS,
+  // DELETE_ORGANIZATION_LIST_FAIL,
 } from "./actionTypes"
 
 export const getOrganizationlist = () => ({
@@ -61,20 +61,20 @@ export const updateOrganizationListFail = error => {
 
 
 
-export const deleteOrganizationList = organization => ({
-  type: DELETE_ORGANIZATION_LIST,
-  payload: organization,
-});
+// export const deleteOrganizationList = organization => ({
+//   type: DELETE_ORGANIZATION_LIST,
+//   payload: organization,
+// });
 
-export const deleteOrganizationListSuccess = organization => ({
-  type: DELETE_ORGANIZATION_LIST_SUCCESS,
-  payload: organization,
-});
+// export const deleteOrganizationListSuccess = organization => ({
+//   type: DELETE_ORGANIZATION_LIST_SUCCESS,
+//   payload: organization,
+// });
 
-export const deleteOrganizationListFail = error => ({
-  type: DELETE_ORGANIZATION_LIST_FAIL,
-  payload: error,
-});
+// export const deleteOrganizationListFail = error => ({
+//   type: DELETE_ORGANIZATION_LIST_FAIL,
+//   payload: error,
+// });
 
 export const registerOrganization = user => {
   return {

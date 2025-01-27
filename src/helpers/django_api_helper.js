@@ -230,10 +230,10 @@ export const updateOrganizationList = async organization => {
     });
 };
 
-export const deleteOrganizationList = organization =>
-  del(`${url.DELETE_ORGANIZATION_LIST}/${organization.id}`, {
-    headers: getHeader(authHeader()),
-  });
+// export const deleteOrganizationList = organization =>
+//   del(`${url.DELETE_ORGANIZATION_LIST}/${organization.id}`, {
+//     headers: getHeader(authHeader()),
+//   });
 
 
 

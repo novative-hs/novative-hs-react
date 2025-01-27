@@ -190,7 +190,7 @@ export const GET_ANALYTESCYCLES = `${API_ENDPOINT}/api/database-admin/analyte-cy
 export const ORGANIZATION_REGISTER = `${API_ENDPOINT}/api/account/register/`;
 export const GET_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/organization-list`;
 export const UPDATE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/update-organization-list`;
-export const DELETE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/delete-organization-list`;
+// export const DELETE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/delete-organization-list`;
 // LAB LIST
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;

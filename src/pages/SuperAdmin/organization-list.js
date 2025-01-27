@@ -33,11 +33,11 @@ import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import DeleteModal from "components/Common/DeleteModal";
+// import DeleteModal from "components/Common/DeleteModal";
 import {
   getOrganizationlist,
   updateOrganizationList,
-  deleteOrganizationList,
+  // deleteOrganizationList,
 } from "store/organization/actions";
 
 import { isEmpty, size } from "lodash";
@@ -63,7 +63,7 @@ class OrganizationList extends Component {
       modal: false,
       photo: null, // Store the photo file if needed
 
-      deleteModal: false,
+      // deleteModal: false,
       modal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -135,7 +135,7 @@ class OrganizationList extends Component {
                   ></i>
                 </Link>
               </Tooltip>
-              <Tooltip title="Delete">
+              {/* <Tooltip title="Delete">
                 <Link className="text-danger" to="#">
                   <i
                     className="mdi mdi-delete font-size-18"
@@ -143,7 +143,7 @@ class OrganizationList extends Component {
                     onClick={() => this.onClickDelete(organization)}
                   ></i>
                 </Link>
-              </Tooltip>
+              </Tooltip> */}
             </div>
           ),
         },
@@ -174,11 +174,11 @@ class OrganizationList extends Component {
     onGetOrganizationList();
     this.setState({ OrganizationList: this.props.OrganizationList });
   }
-  toggleDeleteModal = () => {
-    this.setState(prevState => ({
-      deleteModal: !prevState.deleteModal,
-    }));
-  };
+  // toggleDeleteModal = () => {
+  //   this.setState(prevState => ({
+  //     deleteModal: !prevState.deleteModal,
+  //   }));
+  // };
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
@@ -201,7 +201,7 @@ class OrganizationList extends Component {
   }
   onClickDelete = organization => {
     this.setState({ organization: organization });
-    this.setState({ deleteModal: true });
+    // this.setState({ deleteModal: true });
   };
 
   onPaginationPageChange = page => {
@@ -215,17 +215,19 @@ class OrganizationList extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-  handleDeleteOrganizationList = () => {
-    const { ondeleteOrganization, onGetOrganizationList } = this.props;
-    const { organization } = this.state;
-    if (organization.id !== undefined) {
-      ondeleteOrganization(organization);
-      setTimeout(() => {
-        onGetOrganizationList();
-      }, 1000);
-      this.setState({ deleteModal: false });
-    }
-  };
+  // handleDeleteOrganizationList = () => {
+  //   const {
+  //     //  ondeleteOrganization,
+  //       onGetOrganizationList } = this.props;
+  //   const { organization } = this.state;
+  //   if (organization.id !== undefined) {
+  //     ondeleteOrganization(organization);
+  //     setTimeout(() => {
+  //       onGetOrganizationList();
+  //     }, 1000);
+  //     this.setState({ deleteModal: false });
+  //   }
+  // };
   handleReagentsClick = (e, arg) => {
     const organization = arg;
     console.log("data in case of update ssd", organization);
@@ -253,11 +255,13 @@ class OrganizationList extends Component {
   render() {
     // const { SearchBar } = Search;
     const { OrganizationList } = this.props;
-    const { isEdit, deleteModal, organization } = this.state;
+    const { isEdit, 
+      // deleteModal, 
+      organization } = this.state;
     const {
       onUpdateOrganizationList,
       onGetOrganizationList,
-      ondeleteOrganization,
+      // ondeleteOrganization,
     } = this.props;
     // const organization = this.state.organization;
 
@@ -276,11 +280,11 @@ class OrganizationList extends Component {
     const iconStyle = { color: "red" };
     return (
       <React.Fragment>
-        <DeleteModal
+        {/* <DeleteModal
           show={deleteModal}
           onDeleteClick={this.handleDeleteOrganizationList}
           onCloseClick={() => this.setState({ deleteModal: false })}
-        />
+        /> */}
 
         <div className="page-content">
           <MetaTags>
@@ -1090,7 +1094,7 @@ OrganizationList.propTypes = {
   className: PropTypes.any,
   onGetOrganizationList: PropTypes.func,
   onUpdateOrganizationList: PropTypes.func,
-  ondeleteOrganization: PropTypes.func,
+  // ondeleteOrganization: PropTypes.func,
 };
 const mapStateToProps = ({ organizationaccount }) => ({
   OrganizationList: organizationaccount.OrganizationList,
@@ -1099,7 +1103,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetOrganizationList: () => dispatch(getOrganizationlist()),
   onUpdateOrganizationList: organization =>
     dispatch(updateOrganizationList(organization)),
-  ondeleteOrganization: organization =>
-    dispatch(deleteOrganizationList(organization)),
+  // ondeleteOrganization: organization =>
+  //   dispatch(deleteOrganizationList(organization)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(OrganizationList);
