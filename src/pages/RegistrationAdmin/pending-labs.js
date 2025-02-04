@@ -233,25 +233,34 @@ class PendingLabs extends Component {
 
   componentDidMount() {
     const { organization_name } = this.props.match.params;
-    this.setState({ organization_name });
+    this.setState({ organization_name }, () => {
+      // Call this function inside the setState callback to ensure organization_name is updated first
+      this.setInitialDropdownValue();
+    });
 
     const { pendingLabs, onGetPendingLabs } = this.props;
     onGetPendingLabs(this.state.user_id);
-    this.setState({ pendingLabs });
-    this.setInitialDropdownValue();
+    //this.setState({ pendingLabs });
+    //this.setInitialDropdownValue();
   }
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
-    let selectedValue = '';
+    const { organization_name } = this.state; // Now it's properly updated
 
-    if (pathname.includes(`/${this.state.organization_name}/pending-participant`)) {
-      selectedValue = 'Pending Participant';
-    } else if (pathname.includes(`/${this.state.organization_name}/approved-participant`)) {
-      selectedValue = 'Approved Participant';
-    } else if (pathname.includes(`/${this.state.organization_name}/unapproved-participant`)) {
-      selectedValue = 'Unapproved Participant';
-    } else if (pathname.includes(`/${this.state.organization_name}/all-participant`)) {
-      selectedValue = 'All Participant';
+    let selectedValue = "Pending Participant"; // Default
+
+    if (pathname.includes(`/${organization_name}/pending-participant`)) {
+      selectedValue = "Pending Participant";
+    } else if (
+      pathname.includes(`/${organization_name}/approved-participant`)
+    ) {
+      selectedValue = "Approved Participant";
+    } else if (
+      pathname.includes(`/${organization_name}/unapproved-participant`)
+    ) {
+      selectedValue = "Unapproved Participant";
+    } else if (pathname.includes(`/${organization_name}/all-participant`)) {
+      selectedValue = "All Participant";
     }
 
     this.setState({ selectedValue });
@@ -363,20 +372,22 @@ class PendingLabs extends Component {
   handleSelectChange = (event) => {
     const selectedValue = event.target.value;
 
+    // Update the state
     this.setState({ selectedValue });
 
-    // Perform navigation based on the selected value
-    if (selectedValue === 'Pending Participant') {
-      this.props.history.push(`/${this.state.organization_name}/pending-participant`);
+    // Perform navigation immediately using the selectedValue
+    const { organization_name } = this.state; // Extract from state
+    if (selectedValue === "Pending Participant") {
+      this.props.history.push(`/${organization_name}/pending-participant`);
     }
-    if (selectedValue === 'Approved Participant') {
-      this.props.history.push(`/${this.state.organization_name}/approved-participant`);
+    if (selectedValue === "Approved Participant") {
+      this.props.history.push(`/${organization_name}/approved-participant`);
     }
-    if (selectedValue === 'Unapproved Participant') {
-      this.props.history.push(`/${this.state.organization_name}/unapproved-participant`);
+    if (selectedValue === "Unapproved Participant") {
+      this.props.history.push(`/${organization_name}/unapproved-participant`);
     }
-    if (selectedValue === 'All Participant') {
-      this.props.history.push(`/${this.state.organization_name}/all-participant`);
+    if (selectedValue === "All Participant") {
+      this.props.history.push(`/${organization_name}/all-participant`);
     }
   };
   render() {
@@ -439,9 +450,7 @@ class PendingLabs extends Component {
                                 <Col sm="4">
                                   <div className="ms-2 mb-4">
                                     <div>
-                                      {/* <Label for="main_lab_appointments" className="form-label">
-                                    <strong>Select Pending, Approved, Unapproved and All Participant</strong>
-                                      </Label> */}
+                                      
                                       <select
                                         className="form-control select2"
                                         title="main_lab_appointments"

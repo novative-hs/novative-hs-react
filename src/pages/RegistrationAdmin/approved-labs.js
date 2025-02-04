@@ -319,13 +319,38 @@ class ApprovedLabs extends Component {
 
   componentDidMount() {
     const { organization_name } = this.props.match.params;
-    this.setState({ organization_name });
+    this.setState({ organization_name }, () => {
+      // Call this function inside the setState callback to ensure organization_name is updated first
+      this.setInitialDropdownValue();
+    });
 
     const { onGetApprovedLabs } = this.props;
     onGetApprovedLabs(this.state.user_id);
     // Set the initial dropdown value based on the URL
-    this.setInitialDropdownValue();
+    //this.setInitialDropdownValue();
   }
+  setInitialDropdownValue = () => {
+    const { pathname } = this.props.history.location;
+    const { organization_name } = this.state; // Now it's properly updated
+
+    let selectedValue = "Pending Participant"; // Default
+
+    if (pathname.includes(`/${organization_name}/pending-participant`)) {
+      selectedValue = "Pending Participant";
+    } else if (
+      pathname.includes(`/${organization_name}/approved-participant`)
+    ) {
+      selectedValue = "Approved Participant";
+    } else if (
+      pathname.includes(`/${organization_name}/unapproved-participant`)
+    ) {
+      selectedValue = "Unapproved Participant";
+    } else if (pathname.includes(`/${organization_name}/all-participant`)) {
+      selectedValue = "All Participant";
+    }
+
+    this.setState({ selectedValue });
+  };
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     let selectedValue = '';
@@ -429,20 +454,22 @@ class ApprovedLabs extends Component {
   handleSelectChange = (event) => {
     const selectedValue = event.target.value;
 
+    // Update the state
     this.setState({ selectedValue });
 
-    // Perform navigation based on the selected value
-    if (selectedValue === 'Pending Participant') {
-      this.props.history.push(`/${this.state.organization_name}/pending-participant`);
+    // Perform navigation immediately using the selectedValue
+    const { organization_name } = this.state; // Extract from state
+    if (selectedValue === "Pending Participant") {
+      this.props.history.push(`/${organization_name}/pending-participant`);
     }
-    if (selectedValue === 'Approved Participant') {
-      this.props.history.push(`/${this.state.organization_name}/approved-participant`);
+    if (selectedValue === "Approved Participant") {
+      this.props.history.push(`/${organization_name}/approved-participant`);
     }
-    if (selectedValue === 'Unapproved Participant') {
-      this.props.history.push(`/${this.state.organization_name}/unapproved-participant`);
+    if (selectedValue === "Unapproved Participant") {
+      this.props.history.push(`/${organization_name}/unapproved-participant`);
     }
-    if (selectedValue === 'All Participant') {
-      this.props.history.push(`/${this.state.organization_name}/all-participant`);
+    if (selectedValue === "All Participant") {
+      this.props.history.push(`/${organization_name}/all-participant`);
     }
   };
 
