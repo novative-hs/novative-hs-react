@@ -2798,6 +2798,23 @@ export const getAllLabs = id =>
   get(`${url.GET_ALL_PARTICIPANT}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
+  export const updateAllLabs = AllLabs => {
+    let formData = new FormData();
+    formData.append("name", AllLabs.name);
+    formData.append("email", AllLabs.email);
+    formData.append("address", AllLabs.address);
+    formData.append("district", AllLabs.district);
+    formData.append("city", AllLabs.city);
+    formData.append("shipping_address", AllLabs.shipping_address);
+    formData.append("billing_address", AllLabs.billing_address);
+    formData.append("lab_staff_name", AllLabs.lab_staff_name);
+    formData.append("email_participant", AllLabs.email_participant);
+    formData.append("landline_registered_by", AllLabs.landline_registered_by);
+    return axios.put(`${url.UPDATE_LABS}${AllLabs.id}/`, formData, {
+      headers: getHeader(authHeader()), 
+    });
+  };
 export const getPendingLabs = id =>
   get(`${url.GET_PENDING_LABS}/${id}`, {
     headers: getHeader(authHeader()),

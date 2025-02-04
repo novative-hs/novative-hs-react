@@ -380,7 +380,7 @@ export const GET_TEST_DESCRIPTIONS = `${API_ENDPOINT}/api/medicaltest/test`;
 export const GET_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 export const UPDATE_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 
-
+export const UPDATE_LABS = `${API_ENDPOINT}/api/lab/update-lab-list/`;
 // ADD CORPORATE EMPLOYEE DATA
 export const ADD_NEW_CEMPLOYEE_DATA = `${API_ENDPOINT}/api/corporate/employee-data`;
 export const GET_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-list`;

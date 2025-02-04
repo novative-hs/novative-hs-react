@@ -20,6 +20,8 @@ import {
   GET_ALL_PARTICIPANT_FAIL,
   UPDATE_MEMBERSHIP_STATUS_SUCCESS,
   UPDATE_MEMBERSHIP_STATUS_FAIL,
+  UPDATE_LABS_SUCCESS,
+  UPDATE_LABS_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -65,7 +67,21 @@ const registrationAdmin = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-    
+      case UPDATE_LABS_SUCCESS:
+        return {
+          ...state,
+          updateAllLabs: state.updateAllLabs.map(status =>
+            status.id.toString() === action.payload.id.toString()
+              ? { status, ...action.payload }
+              : status
+          ),
+        };
+  
+      case UPDATE_LABS_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
     case GET_PENDING_LABS_SUCCESS:
       return {
         ...state,

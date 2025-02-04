@@ -29,7 +29,9 @@ import {
   UPDATE_MEMBERSHIP_STATUS,
   UPDATE_MEMBERSHIP_STATUS_SUCCESS,
   UPDATE_MEMBERSHIP_STATUS_FAIL,
-
+  UPDATE_LABS,
+  UPDATE_LABS_SUCCESS,
+  UPDATE_LABS_FAIL
 } from "./actionTypes";
   //Update  Membership Status Action
   export const updateMembershipStatus = status => {
@@ -64,7 +66,22 @@ export const getAllLabsFail = error => ({
   type: GET_ALL_PARTICIPANT_FAIL,
   payload: error,
 });
+export const updateAllLabs = status => {
+  return {
+    type: UPDATE_LABS,
+    payload: status,
+  };
+};
 
+export const updateAllLabsSuccess = status => ({
+  type: UPDATE_LABS_SUCCESS,
+  payload: status,
+});
+
+export const updateAllLabsFail = error => ({
+  type: UPDATE_LABS_FAIL,
+  payload: error,
+});
 
 export const getPendingLabs = id => ({
   type: GET_PENDING_LABS,

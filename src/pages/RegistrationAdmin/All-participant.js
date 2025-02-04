@@ -31,6 +31,7 @@ import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import {
   getAllLabs,
+  updateAllLabs,
   approveUnapproveLab,
 } from "store/registration-admin/actions";
 
@@ -191,32 +192,39 @@ class PendingLabs extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          headerStyle: { textAlign: 'center' }, 
-          style: { textAlign: 'center' },        
+          headerStyle: { textAlign: "center" },
+          style: { textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
-            <div  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-            <Tooltip title="Update">
-              <Link
-                className="btn btn-success btn-rounded"
-                to="#"
-                onClick={e => this.handleApprovedEvent(AllLabs.id)}
-                
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
               >
-                <i className="mdi mdi-check-circle font-size-14"></i>
-              </Link>
-              </Tooltip>
-              {" "}
-              <Tooltip title="Delete">
-              <Link
-                className="btn btn-danger btn-rounded"
-                to="#"
-                onClick={() => this.handleUnapprovedEvent(AllLabs.id)}
-              >
-                <i className="mdi mdi-close-circle font-size-14"></i>
-              </Link>
-              </Tooltip>
+                {/* {/ Update Button /} */}
+                <Tooltip title="Update">
+                  <Link
+                    className="btn btn-success btn-rounded"
+                    to="#"
+                    onClick={() => this.toggleEditModal(AllLabs)} // Pass the AllLabs object
+                  >
+                    <i className="mdi mdi-check-circle font-size-14"></i>
+                  </Link>
+                </Tooltip>
+
+                {/* {/ Delete Button /} */}
+                <Tooltip title="Delete">
+                  <Link
+                    className="btn btn-danger btn-rounded"
+                    to="#"
+                    onClick={() => this.handleUnapprovedEvent(AllLabs.id)} // Opens the Approved/Unapproved modal
+                  >
+                    <i className="mdi mdi-close-circle font-size-14"></i>
+                  </Link>
+                </Tooltip>
               </div>
             </>
           ),
@@ -227,8 +235,29 @@ class PendingLabs extends Component {
     this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
     this.toggleMarketerModal = this.toggleMarketerModal.bind(this);
-
-    
+    this.handleEditSubmit = this.handleEditSubmit.bind(this);
+    this.handleEditSubmit = this.handleEditSubmit.bind(this);
+  }
+  handleEditSubmit(values) {
+    console.log("Form values:", values);  // Check if the form is submitting correctly
+    const updatedData = {
+      id: values.id,
+      name: values.name,
+      email: values.email,
+      address: values.address,
+      shipping_address: values.shipping_address,
+      billing_address: values.billing_address,
+      marketer_name: values.marketer_name,
+      city: values.city,
+      district: values.district,
+      lab_staff_name: values.lab_staff_name,
+      email_participant: values.email_participant,
+      landline_registered_by: values.landline_registered_by,
+    };
+  
+    this.props.onupdateAllLabs(updatedData); // Dispatch update action
+  
+    this.toggleEditModal(); // Close the modal
   }
 
   componentDidMount() {
@@ -287,6 +316,23 @@ class PendingLabs extends Component {
       email: arg.email,
       landline_registered_by: arg.landline_registered_by,
 
+    });
+  };
+  toggleEditModal = data => {
+    this.setState({
+      editModal: !this.state.editModal,
+      id: data.id, 
+      name: data.name,
+      email: data.email,
+      address: data.address,
+      district: data.district,
+      city: data.city,
+      shipping_address: data.shipping_address,
+      billing_address: data.billing_address,
+      lab_staff_name: data.lab_staff_name,
+      marketer_name: data.marketer_name,
+      email_participant: data.email_participant,
+      landline_registered_by: data.landline_registered_by,
     });
   };
   toggleLabModal = () => {
@@ -735,7 +781,180 @@ class PendingLabs extends Component {
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
+                                    <Modal isOpen={this.state.editModal} toggle={this.toggleEditModal} className={this.props.className}>
+  <ModalHeader toggle={this.toggleEditModal}>Edit Lab Details</ModalHeader>
+  <ModalBody>
+    <Formik
+      initialValues={{
+        id: this.state.id, 
+        name: this.state.name,
+        email: this.state.email,
+        address: this.state.address,
+        district: this.state.district,
+        city: this.state.city,
+        shipping_address: this.state.shipping_address,
+        billing_address: this.state.billing_address,
+        lab_staff_name: this.state.lab_staff_name,
+        email_participant: this.state.email_participant,
+        landline_registered_by: this.state.landline_registered_by,
+      }}
+      onSubmit={this.handleEditSubmit}
+    >
+      {({ values, handleChange, handleSubmit }) => (
+        <Form onSubmit={handleSubmit}>
+          <Row>
+            <Col className="col-12">
+              {/* {/ Name Field /} */}
+              <div className="mb-3">
+                <Label className="form-label">Name</Label>
+                <input
+                  type="text"
+                  value={values.name}
+                  name="name"
+                  className="form-control"
+                  placeholder="Enter Name"
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* {/ Email Field /} */}
+              <div className="mb-3">
+                <Label className="form-label">Email</Label>
+                <input
+                  type="email"
+                  value={values.email}
+                  name="email"
+                  className="form-control"
+                  placeholder="Enter Email"
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* {/ Address Field /} */}
+              <div className="mb-3">
+                <Label className="form-label">Address</Label>
+                <input
+                  type="text"
+                  value={values.address}
+                  name="address"
+                  className="form-control"
+                  placeholder="Enter Address"
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* {/ District and City in one row /} */}
+          
+
+              {/* {/ Shipping Address Field /} */}
+              <div className="mb-3">
+                <Label className="form-label">Shipping Address</Label>
+                <input
+                  type="text"
+                  value={values.shipping_address}
+                  name="shipping_address"
+                  className="form-control"
+                  placeholder="Enter Shipping Address"
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* / Billing Address Field / */}
+              <div className="mb-3">
+                <Label className="form-label">Billing Address</Label>
+                <input
+                  type="text"
+                  value={values.billing_address}
+                  name="billing_address"
+                  className="form-control"
+                  placeholder="Enter Billing Address"
+                  onChange={handleChange}
+                />
+              </div>
+                 {/* {/ Email of Notification Person /} */}
+                 <div className="mb-3">
+                <Label className="form-label">Email of Notification Person</Label>
+                <input
+                  type="email"
+                  value={values.email_participant}
+                  name="email_participant"
+                  className="form-control"
+                  placeholder="Enter Email"
+                  onChange={handleChange}
+                />
+              </div>
+              <Row>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <Label className="form-label">District</Label>
+                    <input
+                      type="text"
+                      value={values.district}
+                      name="district"
+                      className="form-control"
+                      placeholder="Enter District"
+                      onChange={handleChange}
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <Label className="form-label">City</Label>
+                    <input
+                      type="text"
+                      value={values.city}
+                      name="city"
+                      className="form-control"
+                      placeholder="Enter City"
+                      onChange={handleChange}
+                    />
+                  </div>
+                </Col>
+              </Row>
+              {/* {/ Name and Contact No of Notification Person in one row /} */}
+              <Row>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <Label className="form-label">Name of Notification Person</Label>
+                    <input
+                      type="text"
+                      value={values.lab_staff_name}
+                      name="lab_staff_name"
+                      className="form-control"
+                      placeholder="Enter Name"
+                      onChange={handleChange}
+                    />
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <div className="mb-3">
+                    <Label className="form-label">Contact No of Notification Person</Label>
+                    <input
+                      type="text"
+                      value={values.landline_registered_by}
+                      name="landline_registered_by"
+                      className="form-control"
+                      placeholder="Enter Contact No"
+                      onChange={handleChange}
+                    />
+                  </div>
+                </Col>
+                
+              </Row>
+             
            
+
+              {/* {/ Submit Button /} */}
+              <div className="mb-3 text-end">
+                <button type="submit" className="btn btn-primary">Save</button>
+              </div>
+            </Col>
+          </Row>
+        </Form>
+      )}
+    </Formik>
+  </ModalBody>
+</Modal>
                                   </div>
                                 </Col>
                               </Row>
@@ -769,6 +988,7 @@ PendingLabs.propTypes = {
   onGetPendingLabs: PropTypes.func,
   onApproveUnapproveLab: PropTypes.func,
   history: PropTypes.any,
+  onupdateAllLabs: PropTypes.any,
 };
 const mapStateToProps = ({ registrationAdmin }) => ({
   AllLabs: registrationAdmin.AllLabs,
@@ -782,6 +1002,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   onAddNewType: (id, createUnit) =>
     dispatch(addNewSchemeList(id, createUnit)),
   onUpdateType: (id, methodlist) => dispatch(updateSchemeList({ id, ...methodlist })),
+  onupdateAllLabs: (updatedData) => {
+    console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
+    dispatch(updateAllLabs(updatedData));
+  },
 });
 
 export default connect(
