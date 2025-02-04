@@ -496,7 +496,7 @@ class InstrumentType extends Component {
           text: "Action",
           formatter: (cellContent, round) => {
             const { organization_name } = this.state;
-            // const scheme = round.scheme ? round.scheme.toString() : ""; // Extract scheme from round object
+        
             return (
               <div
                 className="d-flex gap-3 ml-3"
@@ -509,63 +509,52 @@ class InstrumentType extends Component {
                 <Tooltip title="Add Participants">
                   <Link
                     to="#"
-                    onClick={e => {
-                      e.preventDefault(); // Prevent the default navigation
-
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default navigation
+        
                       // Check if organization_name is valid
                       if (!this.state.organization_name) {
                         return; // Prevent navigation if invalid
                       }
-
+        
                       const url = `/${this.state.organization_name}/add-labs-round-page/${round.id}`;
-                      // console.log("Navigating to:", url);
                       this.props.history.push(url); // Navigate to the new URL
                     }}
                     style={{ textDecoration: "underline", color: "#008000" }}
                   >
-                    <i
-                      className="mdi mdi-account-plus-outline font-size-18"
-                      id="participantsIcon"
-                    ></i>
+                    <i className="mdi mdi-account-plus-outline font-size-18" id="participantsIcon"></i>
                   </Link>
                 </Tooltip>
-
-                {round.scheme_type === "Qualitative" &&
-                  round.status === "Report Available" && (
-                    <Tooltip title="Report">
-                      <Link
-                        to="#"
-                        onClick={() => this.onClickReport(round.id)}
-                        style={{
-                          textDecoration: "underline",
-                          color: "#008000",
-                        }}
-                      >
-                        <i
-                          className="mdi mdi-file-chart font-size-18"
-                          id="reportIcon"
-                        ></i>
-                      </Link>
-                    </Tooltip>
-                  )}
-
-                {/* {/ *Show the statistics icon only when the status is "closed" */}
-                {(round.status === "Closed" ||
-                  round.status === "Report Available") && (
+        
+                {round.scheme_type === "Qualitative" && round.status === "Report Available" && (
+                  <Tooltip title="Report">
+                    <Link
+                      to="#"
+                      onClick={() => this.onClickReport(round.id)}
+                      style={{
+                        textDecoration: "underline",
+                        color: "#008000",
+                      }}
+                    >
+                      <i className="mdi mdi-file-chart font-size-18" id="reportIcon"></i>
+                    </Link>
+                  </Tooltip>
+                )}
+        
+                {/* {/ Show statistics icon only when the status is "Closed" or "Report Available" /} */}
+                {(round.status === "Closed" || round.status === "Report Available") && (
                   <Tooltip title="Statistics">
                     <Link
                       to="#"
                       onClick={() => this.onClickStatistics(round)}
                       style={{ textDecoration: "underline", color: "#008000" }}
                     >
-                      <i
-                        className="mdi mdi-chart-bar font-size-18"
-                        id="statisticsIcon"
-                      ></i>
+                      <i className="mdi mdi-chart-bar font-size-18" id="statisticsIcon"></i>
                     </Link>
                   </Tooltip>
                 )}
-
+        
+                {/* {/ Show update icon always /} */}
                 <Tooltip title="Update">
                   <Link className="text-success" to="#">
                     <i
@@ -575,32 +564,34 @@ class InstrumentType extends Component {
                     ></i>
                   </Link>
                 </Tooltip>
-
-                <Tooltip title="Delete">
-                  <Link className="text-danger" to="#">
-                    <i
-                      className="mdi mdi-delete font-size-18"
-                      id="deletetooltip"
-                      onClick={() => this.onClickDelete(round)}
-                    ></i>
-                  </Link>
-                </Tooltip>
-
+        
+                {/* {/ Show delete button only for "Created" or "Ready" status /} */}
+                {(round.status === "Created" || round.status === "Ready") && (  // Changed condition here
+                  <Tooltip title="Delete">
+                    <Link className="text-danger" to="#">
+                      <i
+                        className="mdi mdi-delete font-size-18"
+                        id="deletetooltip"
+                        onClick={() => this.onClickDelete(round)}
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                )}
+        
                 <Tooltip title="History">
                   <Link
                     className="fas fa-comment font-size-18"
-                    to={`/${organization_name}/rounds-history/${round.id}`} // This will still provide the URL for navigation
-                    onClick={e => {
+                    to={`/${organization_name}/rounds-history/${round.id}`}
+                    onClick={(e) => {
                       e.preventDefault(); // Prevent the default navigation
-
+        
                       // Check if organization_name is valid
                       if (!this.state.organization_name) {
                         console.error("Invalid organization name");
                         return; // Prevent navigation if invalid
                       }
-
+        
                       const url = `/${this.state.organization_name}/rounds-history/${round.id}`;
-                      console.log("Navigating to:", url);
                       this.props.history.push(url); // Navigate to the new URL
                     }}
                   ></Link>
@@ -608,7 +599,7 @@ class InstrumentType extends Component {
               </div>
             );
           },
-        },
+        }
       ],
     };
 
@@ -662,10 +653,13 @@ class InstrumentType extends Component {
   //   this.setState({ deleteModal: true });
   // };
 
-  onClickDelete = RoundList => {
-    if (RoundList.status === "Open") {
-      this.setState({ errorMessage: "Cannot delete. Round is Open" });
-      // Clear error message after 5 seconds
+  onClickDelete = (RoundList) => {
+    // Allowed statuses for deletion
+    const allowedStatuses = ["Open", "Closed", "Report Available"];
+  
+    if (allowedStatuses.includes(RoundList.status)) {
+      this.setState({ errorMessage: `Cannot delete. Round status is ${RoundList.status}` });
+      // Clear error message after 2 seconds
       setTimeout(() => {
         this.setState({ errorMessage: "" });
       }, 2000);
@@ -674,7 +668,6 @@ class InstrumentType extends Component {
       this.setState({ deleteModal: true });
     }
   };
-
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
