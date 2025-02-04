@@ -2700,6 +2700,7 @@ export const addNewRound = (createUnit, id) => {
   formData.append("sample", createUnit.sample);
   formData.append("issue_date", createUnit.issue_date);
   formData.append("closing_date", createUnit.closing_date);
+  formData.append("note", createUnit.note);
   formData.append("status", createUnit.status);
   formData.append("added_by", createUnit.added_by);
   formData.append("participants", createUnit.participants);
