@@ -22,7 +22,7 @@ class CycleAnalyte extends Component {
       idFilter: '',
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
-      CycleAnalyte: [],
+      CycleAnalyte: [], // Initialize as empty array
       feedbackMessage: '',
       errorMessage: '', // State for error message
       feedbackListColumns: [
@@ -75,6 +75,19 @@ class CycleAnalyte extends Component {
     this.fetchData();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.CycleAnalyte !== prevProps.CycleAnalyte) {
+      // Transform data into the format required for the table
+      const transformedData = this.props.CycleAnalyte.map((analyte, index) => ({
+        id: index + 1,  // or any other unique id
+        name: analyte,
+      }));
+
+      // Set transformed data in state
+      this.setState({ CycleAnalyte: transformedData });
+    }
+  }
+
   fetchData() {
     const { onGetUnitAnalyteList } = this.props;
     const unitanalyteId = this.props.match.params.id;
@@ -90,12 +103,13 @@ class CycleAnalyte extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
- 
-
   filterData = () => {
-    const { CycleAnalyte } = this.props;
+    const { CycleAnalyte } = this.state;  // Now using the state instead of props
+    const { nameFilter, idFilter } = this.state;
 
-    const { nameFilter, idFilter} = this.state;
+    if (!Array.isArray(CycleAnalyte)) {
+      return []; // Return empty array if not an array
+    }
 
     const filteredData = CycleAnalyte.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
@@ -111,8 +125,8 @@ class CycleAnalyte extends Component {
   };
 
   render() {
-    const { CycleAnalyte } = this.props;
-    console.log("CycleAnalyte",CycleAnalyte);
+    const { CycleAnalyte } = this.state;
+    console.log("Transformed CycleAnalyte", CycleAnalyte);
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     return (
       <React.Fragment>
@@ -175,15 +189,16 @@ CycleAnalyte.propTypes = {
 const mapStateToProps = (state) => {
   console.log('Redux State:', state); // Log entire Redux state to see structure and contents
   return {
-    CycleAnalyte: state.CycleAnalyte.CycleAnalyte || []
+    CycleAnalyte: Array.isArray(state.CycleAnalyte.CycleAnalyte) ? state.CycleAnalyte.CycleAnalyte : [], 
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getAnalyteCycle(id)),
-}); 
+});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(CycleAnalyte));
+

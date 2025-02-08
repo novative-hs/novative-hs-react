@@ -81,28 +81,26 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'left', // Align text to the left
-                      display: 'block',
-                    }}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange("idFilter", e)}
+                    onChange={(e) => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
-
-          headerStyle: { width: "120px" }, // Adjust the width as needed
-          style: { width: "120px" }, // Adjust the width as needed
         },
 
         {
@@ -114,22 +112,23 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange("nameFilter", e)}
+                    onChange={(e) => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -143,119 +142,84 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
                     type="text"
                     value={this.state.priceFilter}
-                    onChange={e => this.handleFilterChange("priceFilter", e)}
-                    className="form-control"  
+                    onChange={(e) => this.handleFilterChange("priceFilter", e)}
+                    className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
         },
-        {/*{
-          text: "Date of Addition",
-          dataField: "date_of_addition",
-          sort: true,
-          hidden: false,
-          formatter: (cellContent, analyte) => (
-            <>
-              <span>
-                {moment(analyte.date_of_addition).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-          // filter: textFilter(),
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'left', // Align text to the left
-                      display: 'block',
-                    }}
-                    type="text"
-                    value={this.state.dateofadditionFilter}
-                    onChange={e =>
-                      this.handleFilterChange("dateofadditionFilter", e)
-                    }
-                    className="form-control"
-                  />
-                </div>
-                <div>{column.text}</div>
-              </>
-            );
-          },
-        },*/},
         {
           dataField: "noofanalytes",
           text: "No of Analytes",
-          headerStyle: { textAlign: 'center' }, 
-          style: { textAlign: 'center' },        
+          headerStyle: { textAlign: "center" },
+          style: { textAlign: "center" },
           filter: textFilter(),
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
                     type="text"
                     value={this.state.noofanalytesFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("noofanalytesFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
+            );
+          },
+
+          formatter: (cellContent, unitlist) => {
+            const { organization_name } = this.state; // Ensure `organization_name` is defined in your component's state
+            return (
+              <div>
+                <Link
+                  to={`/add-analytes-scheme-page/${unitlist.id}`} // Use `unitlist.cycle_id` directly
+                  style={{
+                    textDecoration: "underline",
+                    color: "#0000CD",
+                    display: "block",
+                    marginTop: "5px",
+                  }}
+                >
+                  {unitlist.noofanalytes}
+                </Link>
+              </div>
             );
           },
         },
-        {/*{
-          dataField: "added_by",
-          text: "Added By",
-          sort: true,
-          // filter: textFilter(),
-          style: { textAlign: "left" },
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div>
-                  <input
-                    type="text"
-                    value={this.state.addedbyFilter}
-                    onChange={e => this.handleFilterChange("addedbyFilter", e)}
-                    className="form-control"
-                  />
-                </div>
-                <div>{column.text}</div>
-              </>
-            );
-          },
-        }*/},
         {
           dataField: "analytetype",
           text: "Type",
@@ -264,27 +228,32 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <select style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <select
                     value={this.state.analytetypeFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("analytetypeFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   >
                     <option value="">All</option>
                     <option value="Qualitative">Qualitative</option>
                     <option value="Quantitative">Quantitative</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -297,41 +266,34 @@ class ReagentsList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <select style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange("statusFilter", e)}
+                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   >
                     <option value="">All</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
         },
-        // {
-        //   dataField: 'link',
-        //   text: '',
-        //   formatter: (cellContent, scheme) => {
-        //     return (
-        //       <Link to={`/add-analytes-scheme-page/${scheme.id}`} style={{ textDecoration: 'underline', color: '#0000CD' }}>
-
-        //         <span>Add Analytes</span>
-        //       </Link>
-        //     );
-        //   }
-        // },
         {
           dataField: "menu",
           isDummyField: true,
@@ -344,12 +306,10 @@ class ReagentsList extends Component {
                   to={`/add-analytes-scheme-page/${analyte.id}`}
                   style={{ textDecoration: "underline", color: "#008000" }}
                 >
-                  <Icon 
-                    path={mdiTestTube} 
-                    size={1}  // Adjust size as needed
-                    color="#28a745"  // Change color if desired
-                    id="analyteIcon" 
-                  />
+                  <i
+                    className="mdi mdi-test-tube font-size-18"
+                    id="analyteIcon"
+                  ></i>
                 </Link>
               </Tooltip>
               <Tooltip title="Update">
@@ -357,24 +317,16 @@ class ReagentsList extends Component {
                   <i
                     className="mdi mdi-pencil font-size-18"
                     id="edittooltip"
-                    onClick={e => this.handleReagentsClick(e, analyte)}
+                    onClick={(e) => this.handleReagentsClick(e, analyte)}
                   ></i>
                 </Link>
               </Tooltip>
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
-                  to={`/databaseadmin-history/${analyte.id}?type=Scheme`}
+                  to={`/${this.state.organization_name}/databaseadmin-history/${analyte.id}?type=Scheme`}
                 ></Link>
               </Tooltip>
-              {/* <Tooltip title="Delete">
-              <Link className="text-danger" to="#">
-                <i
-                  className="mdi mdi-delete font-size-18"
-                  id="deletetooltip"
-                  onClick={() => this.onClickDelete(analyte)}
-                ></i>
-              </Link></Tooltip> */}
             </div>
           ),
         },
@@ -409,7 +361,7 @@ class ReagentsList extends Component {
   }
 
   toggleDeleteModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
@@ -426,7 +378,7 @@ class ReagentsList extends Component {
     }
   };
 
-  onClickDelete = SchemeList => {
+  onClickDelete = (SchemeList) => {
     this.setState({ SchemeList: SchemeList });
     this.setState({ deleteModal: true });
   };
@@ -439,7 +391,7 @@ class ReagentsList extends Component {
   };
 
   toggle() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       modal: !prevState.modal,
     }));
   }
@@ -460,7 +412,7 @@ class ReagentsList extends Component {
     }
   }
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -472,11 +424,11 @@ class ReagentsList extends Component {
     }
   };
 
-  toDataURL = url =>
+  toDataURL = (url) =>
     fetch(url)
-      .then(response => response.blob())
+      .then((response) => response.blob())
       .then(
-        blob =>
+        (blob) =>
           new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onloadend = () => resolve(reader.result);
@@ -543,7 +495,7 @@ class ReagentsList extends Component {
       analytetypeFilter,
     } = this.state;
 
-    const filteredData = SchemeList.filter(entry => {
+    const filteredData = SchemeList.filter((entry) => {
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString() : "";
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
@@ -603,9 +555,13 @@ class ReagentsList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Scheme" breadcrumbItem="Scheme List" />
             <Row className="justify-content-center">
-            
               <Col lg="10">
-              <p><strong>Note:</strong> If Scheme Type <b className="text-danger">Qualitative</b> then there will be only that Analyte shown here, whose units will be <b className="text-danger">Pos/Ng/Aqi</b>.</p>
+                <p>
+                  <strong>Note:</strong> If Scheme Type{" "}
+                  <b className="text-danger">Qualitative</b> then there will be
+                  only that Analyte shown here, whose units will be{" "}
+                  <b className="text-danger">Pos/Ng/Aqi</b>.
+                </p>
 
                 <Card>
                   <CardBody>
@@ -622,7 +578,7 @@ class ReagentsList extends Component {
                           data={filteredData}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -709,7 +665,7 @@ class ReagentsList extends Component {
                                                 "Please select the Status from dropdown"
                                               ),
                                           })}
-                                          onSubmit={values => {
+                                          onSubmit={(values) => {
                                             if (isEdit) {
                                               {
                                                 const updateSchemeList = {
@@ -789,7 +745,7 @@ class ReagentsList extends Component {
                                                       value={
                                                         this.state.analyte.name
                                                       }
-                                                      onChange={e =>
+                                                      onChange={(e) =>
                                                         this.setState({
                                                           analyte: {
                                                             id: analyte.id,
@@ -827,16 +783,32 @@ class ReagentsList extends Component {
                                                       value={
                                                         this.state.analyte.price
                                                       }
-                                                      onChange={e =>
-                                                        this.setState({
-                                                          analyte: {
-                                                            ...analyte,
-                                                            price:
-                                                              e.target.value,
-                                                          },
-                                                        })
-                                                      }
+                                                      onChange={(e) => {
+                                                        const rawValue =
+                                                          e.target.value.replace(
+                                                            /,/g,
+                                                            ""
+                                                          ); // Remove commas to handle raw number
+                                                        if (!isNaN(rawValue)) {
+                                                          // Check if the input is a valid number
+                                                          const formattedValue =
+                                                            Number(
+                                                              rawValue
+                                                            ).toLocaleString(
+                                                              "en-US"
+                                                            ); // Add commas
+                                                          this.setState({
+                                                            analyte: {
+                                                              ...this.state
+                                                                .analyte,
+                                                              price:
+                                                                formattedValue,
+                                                            },
+                                                          });
+                                                        }
+                                                      }}
                                                     />
+
                                                     <ErrorMessage
                                                       name="price"
                                                       component="div"
@@ -977,11 +949,11 @@ const mapStateToProps = ({ SchemeList }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetScheme: id => dispatch(getSchemelist(id)),
+  onGetScheme: (id) => dispatch(getSchemelist(id)),
   onAddNewScheme: (createInstrumentType, id) =>
     dispatch(addNewSchemeList(createInstrumentType, id)),
-  onUpdateScheme: analyte => dispatch(updateSchemeList(analyte)),
-  onDeleteScheme: id => dispatch(deleteScheme(id)),
+  onUpdateScheme: (analyte) => dispatch(updateSchemeList(analyte)),
+  onDeleteScheme: (id) => dispatch(deleteScheme(id)),
 });
 
 export default connect(

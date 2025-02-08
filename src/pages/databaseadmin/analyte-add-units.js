@@ -68,7 +68,7 @@ class AnalyteAddUnits extends Component {
             </>
           ),
           headerAlign: 'center',
-          align: 'left',
+          align: 'center',
         },
         {
           dataField: "checkbox",
@@ -382,15 +382,10 @@ class AnalyteAddUnits extends Component {
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="List" breadcrumbItem="Unit List" />
-            <Row >
-              <Col className="text-center" >
-              <div className="fw-bold">
-                <strong className="text-danger">Analyte Name: </strong>{name}
-              </div>
-              </Col>
-            </Row>
+           
             <Row className="justify-content-center">
               <Col lg="10">
+              <p><strong>Note:</strong> <b className="text-danger">Analytes</b> will not be active unless <b className="text-danger">Master Unit</b> is selected. The user must select <b className="text-danger">Master Unit</b> before selecting <b className="text-danger">Allowed Unit</b>. </p>
                 <Card>
                   <CardBody>
                     <Row>

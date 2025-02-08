@@ -499,17 +499,23 @@ class StaffRegister extends Component {
                             .required("Username is required")
                             .min(3, "Username must be at least 3 characters")
                             .max(
-                              50,
-                              "Username can't be longer than 50 characters"
+                              100,
+                              "Username can't be longer than 100 characters"
                             ),
-                          password: Yup.string().required(
-                            "Please enter your password"
-                          ),
+                          // password: Yup.string().required(
+                          //   "Please enter your password"
+                          // ),
+                          password: Yup.string()
+                            .required("Please enter your password")
+                            .min(
+                              6,
+                              "Password must be at least 6 characters long"
+                            ),
                           name: Yup.string()
                             .trim()
                             .required("Please enter name")
                             .min(3, "Name must be at least 3 characters")
-                            .max(50, "Name can't be longer than 50 characters"),
+                            .max(100, "Name can't be longer than 100 characters"),
 
                           email: Yup.string()
                             .required("Please enter your email")
@@ -545,8 +551,8 @@ class StaffRegister extends Component {
                           province: Yup.string()
                             .required("province  is required")
                             .max(
-                              100,
-                              "province name can't be longer than 100 characters"
+                              50,
+                              "province name can't be longer than 50 characters"
                             ),
 
                           country: Yup.string()

@@ -67,15 +67,7 @@ class ApprovedLabs extends Component {
                   filter: textFilter(),
                   formatter: (cellContent, AllLabs) => (
                     <>
-                      <span style={{
-                         width: '150px', // Set your desired width here
-                        fontSize: '14px',
-                      
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'prewrap',
-                        textAlign: 'center', // Align text to the left
-                        display: 'block',
-                      }}>
+                      <span style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                       {AllLabs.district}
         
                       </span>
@@ -91,14 +83,7 @@ class ApprovedLabs extends Component {
                   filter: textFilter(),
                   formatter: (cellContent, AllLabs) => (
                     <>
-                      <span style={{
-                         width: '150px', // Set your desired width here
-                        fontSize: '14px',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'prewrap',
-                        textAlign: 'center', // Align text to the left
-                        display: 'block',
-                      }}>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                       {AllLabs.city}
         
                       </span>
@@ -114,15 +99,7 @@ class ApprovedLabs extends Component {
                   filter: textFilter(),
                   formatter: (cellContent, AllLabs) => (
                     <>
-                      <span style={{
-                         width: '150px', // Set your desired width here
-                        fontSize: '14px',
-                      
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'prewrap',
-                        textAlign: 'left', // Align text to the left
-                        display: 'block',
-                      }}>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                           <Link
                             to="#"
                             // onClick={e => this.openLabModal(e, AllLabs)}
@@ -144,15 +121,7 @@ class ApprovedLabs extends Component {
                   filter: textFilter(),
                   formatter: (cellContent, AllLabs) => (
                     <>
-                      <span style={{
-                         width: '150px', // Set your desired width here
-                        fontSize: '14px',
-                      
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'prewrap',
-                        textAlign: 'left', // Align text to the left
-                        display: 'block',
-                      }}>
+                      <span style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                         {AllLabs.lab_staff_name}
                       </span>
                     </>
@@ -162,24 +131,26 @@ class ApprovedLabs extends Component {
                   dataField: "email_participant",
                   text: "Email",
                   sort: true,
-                  headerStyle: { textAlign: 'center' }, 
-                  style: { textAlign: 'center' },        
+                  headerStyle: { textAlign: 'center', width: '200px' },
+                  style: { textAlign: 'center'  },
                   filter: textFilter(),
                   formatter: (cellContent, AllLabs) => (
                     <>
-                      <span style={{
-                         width: '150px', // Set your desired width here
-                        fontSize: '14px',
-                      
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'prewrap',
-                        textAlign: 'left', // Align text to the left
-                        display: 'block',
-                      }}>
+                      <span
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          width: '200px',
+                          gap: '30px',
+                          wordBreak: 'break-word',   // Breaks long words if necessary
+                          overflowWrap: 'break-word' // Ensures text wraps properly
+                        }}
+                      >
                         {AllLabs.email_participant}
                       </span>
                     </>
-                  ),filter: textFilter(),
+                  ),
+                  filter: textFilter()
                 },
                 {
                   dataField: "landline_registered_by",
@@ -190,15 +161,7 @@ class ApprovedLabs extends Component {
                   sort: true,
                   formatter: (cellContent, AllLabs) => (
                     <>
-                      <span style={{
-                         width: '150px', // Set your desired width here
-                        fontSize: '14px',
-                      
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'prewrap',
-                        textAlign: 'left', // Align text to the left
-                        display: 'block',
-                      }}>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                         {AllLabs.landline_registered_by}
                       </span>
                     </>
@@ -213,15 +176,7 @@ class ApprovedLabs extends Component {
                   sort: true,
                   formatter: (cellContent, AllLabs) => (
                     <>
-                      <span style={{
-                         width: '150px', // Set your desired width here
-                        fontSize: '14px',
-                      
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'prewrap',
-                        textAlign: 'left', // Align text to the left
-                        display: 'block',
-                      }}>
+                      <span  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                         {AllLabs.membership_status}
                       </span>
                     </>
@@ -238,12 +193,7 @@ class ApprovedLabs extends Component {
                   filter: textFilter(),
                   formatter: (cellContent, AllLabs) => (
                     <>
-                    <div style={{
-                      width: '150px',        // Fixed width
-                      display: 'flex',       // Flexbox for alignment
-                      justifyContent: 'center', // Center content horizontally
-                      gap: '10px',           // Space between the buttons
-                    }}>
+                    <div  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                     <Tooltip title="Update">
                       <Link
                         className="btn btn-success btn-rounded"
@@ -268,7 +218,92 @@ class ApprovedLabs extends Component {
                     </>
                   ),
                 },
-              ],
+        // {
+        //   dataField: "menu",
+        //   isDummyField: true,
+        //   editable: false,
+        //   text: "Action",
+        //   formatter: (cellContent, methodlist) => (
+        //     <div>
+        //       <Tooltip title="Update Membership Status">
+        //         <Link className="text-success" to="#">
+        //           <i
+        //             className="mdi mdi-pencil font-size-18"
+        //             id="edittooltip"
+        //             onClick={() => this.toggle(methodlist)}
+        //             // onClick={e => this.handleCSRClick(e, CSR)}
+        //           ></i>
+        //         </Link>
+        //       </Tooltip>
+        //       {/* <Tooltip title="History">
+        //         <Link
+        //           className="fas fa-comment font-size-18"
+        //           to={`/databaseadmin-history/${methodlist.id}`}
+        //         ></Link>
+        //       </Tooltip> */}
+        //     </div>
+        //   ),
+        // },
+        // {
+        //   dataField: "registered_by",
+        //   text: "Registered by",
+        //   sort: true,
+        //   formatter: (cellContent, approvedLabs) => (
+        //     <>
+        //       {approvedLabs.registered_by == 'Lab' ? (
+        //         <span>
+                 
+        //           <Link
+        //         to="#"
+                
+        //         onMouseEnter={e =>  this.openLabModal(e, approvedLabs)}
+        //         onPointerLeave={this.handleMouseExit()}
+        //       >
+        //        {approvedLabs.registered_by}
+        //       </Link>
+        //       </span>
+        //       ) : (
+        //         <span>
+        //           <Link
+        //         to="#"
+        //         // onClick={e => this.openMarketerModal(e, approvedLabs)}
+        //         onMouseEnter={e =>   this.openMarketerModal(e, approvedLabs)}
+        //         onPointerLeave={this.handleMouseExit()}
+        //       >
+        //        {approvedLabs.registered_by}
+        //       </Link>
+        //         </span>
+        //       )}
+        //     </>
+        //   ),filter: textFilter(),
+        // },
+        // {
+        //   dataField: "email",
+        //   text: "Email",
+        //   // sort: true,
+        //   formatter: (cellContent, approvedLab) => (
+        //     <>
+        //       <span className="float-start">
+        //         {approvedLab.email}
+        //       </span>
+        //     </>
+        //   ),
+        //   filter: textFilter(),
+        // },
+        // {
+        //   dataField: "lab_phone",
+        //   text: "Phone",
+        //   // sort: true,
+        //   formatter: (cellContent, approvedLab) => (
+        //     <>
+        //       <span className="float-end">
+        //         {approvedLab.lab_phone}
+        //       </span>
+        //     </>
+        //   ),
+        //   filter: textFilter(),
+        // },
+      ],
     };
     this.toggle = this.toggle.bind(this);
     this.handlePatientFeedbackClick =
@@ -284,13 +319,38 @@ class ApprovedLabs extends Component {
 
   componentDidMount() {
     const { organization_name } = this.props.match.params;
-    this.setState({ organization_name });
+    this.setState({ organization_name }, () => {
+      // Call this function inside the setState callback to ensure organization_name is updated first
+      this.setInitialDropdownValue();
+    });
 
     const { onGetApprovedLabs } = this.props;
     onGetApprovedLabs(this.state.user_id);
     // Set the initial dropdown value based on the URL
-    this.setInitialDropdownValue();
+    //this.setInitialDropdownValue();
   }
+  setInitialDropdownValue = () => {
+    const { pathname } = this.props.history.location;
+    const { organization_name } = this.state; // Now it's properly updated
+
+    let selectedValue = "Pending Participant"; // Default
+
+    if (pathname.includes(`/${organization_name}/pending-participant`)) {
+      selectedValue = "Pending Participant";
+    } else if (
+      pathname.includes(`/${organization_name}/approved-participant`)
+    ) {
+      selectedValue = "Approved Participant";
+    } else if (
+      pathname.includes(`/${organization_name}/unapproved-participant`)
+    ) {
+      selectedValue = "Unapproved Participant";
+    } else if (pathname.includes(`/${organization_name}/all-participant`)) {
+      selectedValue = "All Participant";
+    }
+
+    this.setState({ selectedValue });
+  };
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     let selectedValue = '';
@@ -394,20 +454,22 @@ class ApprovedLabs extends Component {
   handleSelectChange = (event) => {
     const selectedValue = event.target.value;
 
+    // Update the state
     this.setState({ selectedValue });
 
-    // Perform navigation based on the selected value
-    if (selectedValue === 'Pending Participant') {
-      this.props.history.push(`/${this.state.organization_name}/pending-participant`);
+    // Perform navigation immediately using the selectedValue
+    const { organization_name } = this.state; // Extract from state
+    if (selectedValue === "Pending Participant") {
+      this.props.history.push(`/${organization_name}/pending-participant`);
     }
-    if (selectedValue === 'Approved Participant') {
-      this.props.history.push(`/${this.state.organization_name}/approved-participant`);
+    if (selectedValue === "Approved Participant") {
+      this.props.history.push(`/${organization_name}/approved-participant`);
     }
-    if (selectedValue === 'Unapproved Participant') {
-      this.props.history.push(`/${this.state.organization_name}/unapproved-participant`);
+    if (selectedValue === "Unapproved Participant") {
+      this.props.history.push(`/${organization_name}/unapproved-participant`);
     }
-    if (selectedValue === 'All Participant') {
-      this.props.history.push(`/${this.state.organization_name}/all-participant`);
+    if (selectedValue === "All Participant") {
+      this.props.history.push(`/${organization_name}/all-participant`);
     }
   };
 
@@ -584,9 +646,6 @@ class ApprovedLabs extends Component {
                                 <Col sm="4">
                                   <div className="ms-2 mb-4">
                                     <div>
-                                      <Label for="main_lab_appointments" className="form-label">
-                                      <strong></strong>
-                                      </Label>
                                       <select
                                         className="form-control select2"
                                         title="main_lab_appointments"

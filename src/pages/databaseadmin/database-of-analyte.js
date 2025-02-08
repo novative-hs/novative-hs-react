@@ -81,40 +81,45 @@ class AnalyteList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.idFilter}
                     onChange={e => this.handleFilterChange("idFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }} >{column.text}</div>
               </>
             );
           },
-
-          headerStyle: { width: "100px" }, // Adjust the width as needed
-          style: { width: "100px" }, // Adjust the width as needed
         },
         {
           dataField: "code",
           text: "code",
           sort: true,
 
-          style: { textAlign: "right" },
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.codeFilter}
                     onChange={e => this.handleFilterChange("codeFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -125,19 +130,23 @@ class AnalyteList extends Component {
           text: "Analyte",
           sort: true,
 
-          style: { textAlign: "left" },
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.nameFilter}
                     onChange={e => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -149,7 +158,7 @@ class AnalyteList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.masterunitFilter}
@@ -157,9 +166,13 @@ class AnalyteList extends Component {
                       this.handleFilterChange("masterunitFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -173,15 +186,19 @@ class AnalyteList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.methodsFilter}
                     onChange={e => this.handleFilterChange("methodsFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -194,7 +211,7 @@ class AnalyteList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.equipmentFilter}
@@ -202,9 +219,13 @@ class AnalyteList extends Component {
                       this.handleFilterChange("equipmentFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '120px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -217,15 +238,19 @@ class AnalyteList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.reagentsFilter}
                     onChange={e => this.handleFilterChange("reagentsFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '150px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -238,7 +263,7 @@ class AnalyteList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <select
                     value={this.state.statusFilter}
                     onChange={e => this.handleFilterChange("statusFilter", e)}
@@ -249,7 +274,7 @@ class AnalyteList extends Component {
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -261,7 +286,7 @@ class AnalyteList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, analyte) => (
-            <div className="d-flex gap-3 ml-3">
+            <div className="d-flex gap-3 ml-3" style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               <Tooltip title="Add Units">
                 <Link
                   className="mdi mdi-package-variant-closed font-size-18"

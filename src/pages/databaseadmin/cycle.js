@@ -79,94 +79,78 @@ class InstrumentType extends Component {
           sort: true,
           hidden: false,
           formatter: (cellContent, cycle) => <>{cycle.id}</>,
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'left', // Align text to the left
-                      display: 'block',
-                    }}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.idFilter}
                     onChange={e => this.handleFilterChange('idFilter', e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
-
-          headerStyle: { width: '100px' },  // Adjust the width as needed
-          style: { width: '100px' },  // Adjust the width as needed
-        
+          
         },
         {
           dataField: "scheme_name",
           text: "Scheme Name",
           sort: true,
-          // filter: textFilter(),
-          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.schemenameFilter}
                     onChange={e => this.handleFilterChange('schemenameFilter', e)}
                     className="form-control"
-
+                    style={{
+                      textAlign: 'center',
+                      width: '120px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+         
         },
         {
           dataField: "cycle_no",
-          text: "Cycle Name / Number",
+          text: "Cycle Number",
           sort: true,
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.cyclenoFilter}
                     onChange={e => this.handleFilterChange('cyclenoFilter', e)}
                     className="form-control"
-
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+         
         },
+        
         {
           dataField: "cycle",
           text: "Cycle Duration",
@@ -179,25 +163,28 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.cycleFilter}
                     onChange={e => this.handleFilterChange('cycleFilter', e)}
                     className="form-control"
-
+                    style={{
+                      textAlign: 'center',
+                      width: '120px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
+          },
+          headerStyle: { 
+            textAlign: 'center' 
+          },
+          style: { 
+            textAlign: 'center', 
+            whiteSpace: 'normal' 
           },
         },
         {
@@ -215,27 +202,24 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
 
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                  <input 
                     type="text"
                     value={this.state.startdateFilter}
                     onChange={e => this.handleFilterChange('startdateFilter', e)}
                     className="form-control"
-
+                    style={{
+                      textAlign: 'center',
+                      width: '120px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+          
         },
         {
           dataField: "end_date",
@@ -252,87 +236,79 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
 
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                  <input 
                     type="text"
                     value={this.state.enddateFilter}
                     onChange={e => this.handleFilterChange('enddateFilter', e)}
                     className="form-control"
 
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+         
         },
         {
           dataField: "rounds",
-          text: "Number of Rounds in Cycle",
+          text: "No. of Rounds",
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
 
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                  <input 
                     type="text"
                     value={this.state.roundsFilter}
                     onChange={e => this.handleFilterChange('roundsFilter', e)}
                     className="form-control"
-
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+          
         },
         {
           dataField: "noofanalytes",
-          text: "No of Analytes for this Cycle",
+          text: "No of Analytes",
           sort: true,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
 
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                  <input 
                     type="text"
                     value={this.state.noofanalytesFilter}
                     onChange={e => this.handleFilterChange('noofanalytesFilter', e)}
                     className="form-control"
-
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+         
           formatter: (cellContent, unitlist) => {
             const { organization_name } = this.state;
             return (
@@ -354,37 +330,36 @@ class InstrumentType extends Component {
           formatter: (cellContent, cycle) => (
             <>
               {cycle.status === "Active" ? (
-                <span>Active</span>
+                <span style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>Active</span>
               ) : (
-                <span>Inactive</span>
+                <span style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>Inactive</span>
               )}
             </>
           ),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
-                  <select style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
-                    }}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <select 
                     value={this.state.statusFilter}
                     onChange={e => this.handleFilterChange('statusFilter', e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
+
                   >
                     <option value="">All</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+        
         },
         // {
         //   dataField: 'link',
@@ -612,6 +587,7 @@ render() {
           <Breadcrumbs title="List" breadcrumbItem="Cycle List" />
           <Row className="justify-content-center">
             <Col lg="10">
+            <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
               <Card>
                 <CardBody>
                   <PaginationProvider

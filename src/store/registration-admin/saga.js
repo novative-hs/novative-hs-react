@@ -9,6 +9,7 @@ import {
   APPROVE_UNAPPROVE_LAB,
   GET_ALL_PARTICIPANT,
   UPDATE_MEMBERSHIP_STATUS,
+  UPDATE_LABS,
 } from "./actionTypes";
 
 import {
@@ -23,7 +24,9 @@ import {
   getAllLabsSuccess,
   getAllLabsFail,
   updateMembershipStatusSuccess,
-  updateMembershipStatusFail
+  updateMembershipStatusFail,
+  updateAllLabsSuccess,
+  updateAllLabsFail
 } from "./actions";
 
 //Include Both Helper File with needed methods
@@ -33,7 +36,8 @@ import {
   getApprovedLabs,
   getUnapprovedLabs,
   getAllLabs,
-  updateMembershipstatus
+  updateMembershipstatus,
+  updateAllLabs
 } from "../../helpers/django_api_helper";
 
 function* onupdateMembershipStatus({ payload: status }) {
@@ -53,7 +57,14 @@ function* fetchAllLabs(action) {
     yield put(getAllLabsFail(error));
   }
 }
-
+function* onupdateAllLabs({ payload: status }) {
+  try {
+    const response = yield call(updateAllLabs, status);
+    yield put(updateAllLabsSuccess(response));
+  } catch (error) {
+    yield put(getAllLabsFail(error));
+  }
+}
 function* fetchPendingLabs(action) {
   try {
     const response = yield call(getPendingLabs, action.payload);
@@ -91,8 +102,6 @@ function* onApproveUnapproveLab(object) {
 }
 
 
-
-
 function* registrationAdminSaga() {
   yield takeEvery(UPDATE_MEMBERSHIP_STATUS, onupdateMembershipStatus);
   yield takeEvery(GET_ALL_PARTICIPANT, fetchAllLabs);
@@ -100,6 +109,7 @@ function* registrationAdminSaga() {
   yield takeEvery(GET_APPROVED_LABS, fetchApprovedLabs);
   yield takeEvery(GET_UNAPPROVED_LABS, fetchUnapprovedLabs);
   yield takeEvery(APPROVE_UNAPPROVE_LAB, onApproveUnapproveLab);
+  yield takeEvery(UPDATE_LABS, onupdateAllLabs);
 
  
 }

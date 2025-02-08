@@ -81,7 +81,7 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.idFilter}
@@ -89,12 +89,11 @@ class Instrument extends Component {
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
-          headerStyle: { width: '100px' },  // Adjust the width as needed
-  style: { width: '100px' },  // Adjust the width as needed
+          
         },
         {
           dataField: "name",
@@ -104,7 +103,7 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.nameFilter}
@@ -112,7 +111,7 @@ class Instrument extends Component {
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -124,21 +123,25 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.countFilter}
                     onChange={(e) => this.handleFilterChange('countFilter', e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
           formatter: (cellContent, unitlist) => {
             return (
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                 <Link
                   to={`/instruments-analyte/${unitlist.id}`}
                   style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
@@ -148,8 +151,7 @@ class Instrument extends Component {
               </div>
             );
           },
-          headerStyle: { width: '120px' },  // Adjust the width as needed
-  style: { width: '120px' },
+          
         },
         {
           dataField: "code",
@@ -159,7 +161,7 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
@@ -169,7 +171,7 @@ class Instrument extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -182,17 +184,21 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
                   value={this.state.instypeFilter}
                   onChange={e => this.handleFilterChange('instypeFilter', e)}
                   className="form-control"
+                  style={{
+                    textAlign: 'center',
+                    width: '120px',
+                  }}
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -205,7 +211,7 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
@@ -215,7 +221,7 @@ class Instrument extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -238,7 +244,7 @@ class Instrument extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -251,7 +257,7 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
@@ -261,7 +267,7 @@ class Instrument extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -273,7 +279,7 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <select
                     value={this.state.statusFilter}
                     onChange={e => this.handleFilterChange('statusFilter', e)}
@@ -284,7 +290,7 @@ class Instrument extends Component {
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -298,15 +304,19 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.dateFilter}
                     onChange={e => this.handleFilterChange('dateFilter', e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '140px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -325,7 +335,7 @@ class Instrument extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, methodlist) => (
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
@@ -752,6 +762,7 @@ class Instrument extends Component {
         
             <Row className="justify-content-center">
               <Col lg="10">
+              <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
                 <Card>
                   <CardBody>                  
                     
@@ -820,7 +831,7 @@ class Instrument extends Component {
       .required("Model Number is required"),
     instrument_type: Yup.mixed().required("Equipment Type is required"),
     manufactural: Yup.mixed().required("Manufacturer is required"),
-    country: Yup.mixed().required("Country is required"),
+    // country: Yup.mixed().required("Country is required"),
   })}
   onSubmit={async (values, { setSubmitting }) => {
     const userId = localStorage.getItem("authUser")
@@ -835,7 +846,7 @@ class Instrument extends Component {
         added_by: userId,
         instrument_type: values.instrument_type,
         manufactural: values.manufactural,     
-        country: values.country,     
+        // country: values.country,     
       };
       
 
@@ -927,7 +938,7 @@ class Instrument extends Component {
   </Field>
   <ErrorMessage name="manufactural" component="div" className="text-danger" />
 </div>
-<div className="mb-3">
+{/* <div className="mb-3">
   <Label className="col-form-label">Country</Label>
   <Field
     name="country" // Ensure the name matches the field name
@@ -943,7 +954,7 @@ class Instrument extends Component {
     ))}
   </Field>
   <ErrorMessage name="country" component="div" className="text-danger" />
-</div>
+</div> */}
 
           <div className="mb-3">
             <Label className="col-form-label">Status</Label>

@@ -64,6 +64,7 @@ class InstrumentType extends Component {
       participantsFilter: "",
       issuedateFilter: "",
       closingdateFilter: "",
+      notesFilter: "",
       statusFilter: "",
       errorMessage: "",
       RoundList: [],
@@ -90,7 +91,13 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.idFilter}
@@ -98,12 +105,12 @@ class InstrumentType extends Component {
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
-          headerStyle: { width: "100px" }, // Adjust the width as needed
-          style: { width: "100px" }, // Adjust the width as needed
         },
         {
           dataField: "rounds",
@@ -113,15 +120,27 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.roundsFilter}
                     onChange={e => this.handleFilterChange("roundsFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -134,7 +153,13 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.schemenameFilter}
@@ -142,9 +167,15 @@ class InstrumentType extends Component {
                       this.handleFilterChange("schemenameFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -157,15 +188,27 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.cyclenoFilter}
                     onChange={e => this.handleFilterChange("cyclenoFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -178,15 +221,27 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.sampleFilter}
                     onChange={e => this.handleFilterChange("sampleFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -199,7 +254,13 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.participantsFilter}
@@ -207,9 +268,15 @@ class InstrumentType extends Component {
                       this.handleFilterChange("participantsFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "160px",
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -220,14 +287,28 @@ class InstrumentType extends Component {
           sort: true,
           formatter: (cellContent, methodlist) => (
             <>
-              <span>{moment(methodlist.issue_date).format("DD MMM YYYY")}</span>
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                {moment(methodlist.issue_date).format("DD MMM YYYY")}
+              </span>
             </>
           ),
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.issuedateFilter}
@@ -235,9 +316,15 @@ class InstrumentType extends Component {
                       this.handleFilterChange("issuedateFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -248,7 +335,13 @@ class InstrumentType extends Component {
           sort: true,
           formatter: (cellContent, methodlist) => (
             <>
-              <span>
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
                 {moment(methodlist.closing_date).format("DD MMM YYYY")}
               </span>
             </>
@@ -257,7 +350,13 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.closingdateFilter}
@@ -265,9 +364,63 @@ class InstrumentType extends Component {
                       this.handleFilterChange("closingdateFilter", e)
                     }
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
+              </>
+            );
+          },
+        },
+        {
+          dataField: "note",
+          text: "Note",
+          sort: true,
+          formatter: (cellContent, methodlist) => (
+            <>
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                {moment(methodlist.note).format("DD MMM YYYY")}
+              </span>
+            </>
+          ),
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={this.state.notesFilter}
+                    onChange={e =>
+                      this.handleFilterChange("notesFilter", e)
+                    }
+                    className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
+                  />
+                </div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -296,7 +449,13 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <select
                     value={this.state.statusFilter}
                     onChange={e => this.handleFilterChange("statusFilter", e)}
@@ -310,7 +469,9 @@ class InstrumentType extends Component {
                     <option value="Report Available">Report Available</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -335,62 +496,65 @@ class InstrumentType extends Component {
           text: "Action",
           formatter: (cellContent, round) => {
             const { organization_name } = this.state;
-            // const scheme = round.scheme ? round.scheme.toString() : ""; // Extract scheme from round object
+        
             return (
-              <div className="d-flex gap-3 ml-3">
+              <div
+                className="d-flex gap-3 ml-3"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
                 <Tooltip title="Add Participants">
                   <Link
                     to="#"
-                    onClick={e => {
-                      e.preventDefault(); // Prevent the default navigation
-
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default navigation
+        
                       // Check if organization_name is valid
                       if (!this.state.organization_name) {
                         return; // Prevent navigation if invalid
                       }
-
+        
                       const url = `/${this.state.organization_name}/add-labs-round-page/${round.id}`;
-                      // console.log("Navigating to:", url);
                       this.props.history.push(url); // Navigate to the new URL
                     }}
                     style={{ textDecoration: "underline", color: "#008000" }}
                   >
-                    <i
-                      className="mdi mdi-account-plus-outline font-size-18"
-                      id="participantsIcon"
-                    ></i>
+                    <i className="mdi mdi-account-plus-outline font-size-18" id="participantsIcon"></i>
                   </Link>
                 </Tooltip>
-                
-                {(round.scheme_type === "Qualitative" && round.status === "Report Available") && (
+        
+                {round.scheme_type === "Qualitative" && round.status === "Report Available" && (
                   <Tooltip title="Report">
                     <Link
                       to="#"
                       onClick={() => this.onClickReport(round.id)}
-                      style={{ textDecoration: "underline", color: "#008000" }}
+                      style={{
+                        textDecoration: "underline",
+                        color: "#008000",
+                      }}
                     >
-                     <i className="mdi mdi-file-chart font-size-18" id="reportIcon"></i>
+                      <i className="mdi mdi-file-chart font-size-18" id="reportIcon"></i>
                     </Link>
                   </Tooltip>
                 )}
-
-                {/* Show the statistics icon only when the status is "closed" */}
-                {(round.status === "Closed" ||
-                  round.status === "Report Available") && (
+        
+                {/* {/ Show statistics icon only when the status is "Closed" or "Report Available" /} */}
+                {(round.status === "Closed" || round.status === "Report Available") && (
                   <Tooltip title="Statistics">
                     <Link
                       to="#"
                       onClick={() => this.onClickStatistics(round)}
                       style={{ textDecoration: "underline", color: "#008000" }}
                     >
-                      <i
-                        className="mdi mdi-chart-bar font-size-18"
-                        id="statisticsIcon"
-                      ></i>
+                      <i className="mdi mdi-chart-bar font-size-18" id="statisticsIcon"></i>
                     </Link>
                   </Tooltip>
                 )}
-
+        
+                {/* {/ Show update icon always /} */}
                 <Tooltip title="Update">
                   <Link className="text-success" to="#">
                     <i
@@ -400,32 +564,34 @@ class InstrumentType extends Component {
                     ></i>
                   </Link>
                 </Tooltip>
-
-                <Tooltip title="Delete">
-                  <Link className="text-danger" to="#">
-                    <i
-                      className="mdi mdi-delete font-size-18"
-                      id="deletetooltip"
-                      onClick={() => this.onClickDelete(round)}
-                    ></i>
-                  </Link>
-                </Tooltip>
-
+        
+                {/* {/ Show delete button only for "Created" or "Ready" status /} */}
+                {(round.status === "Created" || round.status === "Ready") && (  // Changed condition here
+                  <Tooltip title="Delete">
+                    <Link className="text-danger" to="#">
+                      <i
+                        className="mdi mdi-delete font-size-18"
+                        id="deletetooltip"
+                        onClick={() => this.onClickDelete(round)}
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                )}
+        
                 <Tooltip title="History">
                   <Link
                     className="fas fa-comment font-size-18"
-                    to={`/${organization_name}/rounds-history/${round.id}`} // This will still provide the URL for navigation
-                    onClick={e => {
+                    to={`/${organization_name}/rounds-history/${round.id}`}
+                    onClick={(e) => {
                       e.preventDefault(); // Prevent the default navigation
-
+        
                       // Check if organization_name is valid
                       if (!this.state.organization_name) {
                         console.error("Invalid organization name");
                         return; // Prevent navigation if invalid
                       }
-
+        
                       const url = `/${this.state.organization_name}/rounds-history/${round.id}`;
-                      console.log("Navigating to:", url);
                       this.props.history.push(url); // Navigate to the new URL
                     }}
                   ></Link>
@@ -433,7 +599,7 @@ class InstrumentType extends Component {
               </div>
             );
           },
-        },
+        }
       ],
     };
 
@@ -444,7 +610,7 @@ class InstrumentType extends Component {
 
   componentDidMount() {
     const { organization_name } = this.props.match.params;
-    
+
     // Only set state if organization_name is empty
     if (!this.state.organization_name) {
       this.setState({ organization_name });
@@ -487,10 +653,13 @@ class InstrumentType extends Component {
   //   this.setState({ deleteModal: true });
   // };
 
-  onClickDelete = RoundList => {
-    if (RoundList.status === "Open") {
-      this.setState({ errorMessage: "Cannot delete. Round is Open" });
-      // Clear error message after 5 seconds
+  onClickDelete = (RoundList) => {
+    // Allowed statuses for deletion
+    const allowedStatuses = ["Open", "Closed", "Report Available"];
+  
+    if (allowedStatuses.includes(RoundList.status)) {
+      this.setState({ errorMessage: `Cannot delete. Round status is ${RoundList.status}` });
+      // Clear error message after 2 seconds
       setTimeout(() => {
         this.setState({ errorMessage: "" });
       }, 2000);
@@ -499,7 +668,6 @@ class InstrumentType extends Component {
       this.setState({ deleteModal: true });
     }
   };
-
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
@@ -529,11 +697,11 @@ class InstrumentType extends Component {
       );
     }
   };
-  onClickReport = id =>{
+  onClickReport = id => {
     this.props.history.push(
       `/${this.state.organization_name}/slectValues/${id}`
     );
-  }
+  };
 
   toggle(round) {
     console.log("data in case of update asjdhasdf", round);
@@ -543,6 +711,7 @@ class InstrumentType extends Component {
         selectedRound: {
           id: round.id,
           rounds: round.rounds,
+          cycle_no: round.cycle_no,
           sample: round.sample,
           participants: round.participants,
           issue_date: round.issue_date
@@ -551,6 +720,7 @@ class InstrumentType extends Component {
           closing_date: round.closing_date
             ? moment(round.closing_date).format("YYYY-MM-DD")
             : "",
+            note: round.note,
           status: round.status,
           added_by: round.added_by,
         },
@@ -565,7 +735,6 @@ class InstrumentType extends Component {
     }
   }
   componentDidUpdate(prevProps) {
-    
     if (
       !isEmpty(this.props.RoundList) &&
       size(prevProps.RoundList) !== size(this.props.RoundList)
@@ -631,6 +800,7 @@ class InstrumentType extends Component {
       participantsFilter,
       issuedateFilter,
       closingdateFilter,
+      notesFilter,
       statusFilter,
     } = this.state;
 
@@ -652,9 +822,10 @@ class InstrumentType extends Component {
       const closing_date = entry.closing_date
         ? entry.closing_date.toString()
         : "";
+      const note = entry.note ? entry.note.toString() : "";
       const status = entry.status ? entry.status.toString() : "";
       const scheme_type = entry.scheme_type ? entry.scheme_type.toString() : "";
-      
+
       return (
         id.includes(idFilter) &&
         rounds.includes(roundsFilter) &&
@@ -664,8 +835,9 @@ class InstrumentType extends Component {
         participants.includes(participantsFilter) &&
         issue_date.includes(issuedateFilter) &&
         closing_date.includes(closingdateFilter) &&
+        note.includes(notesFilter) &&
         status.includes(statusFilter)
-        // scheme_type 
+        // scheme_type
       );
     });
 
@@ -759,6 +931,9 @@ class InstrumentType extends Component {
                                             rounds: this.state.selectedRound
                                               ? this.state.selectedRound.rounds
                                               : "",
+                                            scheme: this.state.selectedRound
+                                              ? this.state.selectedRound.scheme
+                                              : "",
                                             sample: this.state.selectedRound
                                               ? this.state.selectedRound.sample
                                               : "",
@@ -766,6 +941,10 @@ class InstrumentType extends Component {
                                               .selectedRound
                                               ? this.state.selectedRound
                                                   .participants
+                                              : "",
+                                            cycle_no: this.state.selectedCycle
+                                              ? this.state.selectedCycle
+                                                  .cycle_no
                                               : "",
                                             issue_date: this.state.selectedRound
                                               ? this.state.selectedRound
@@ -776,7 +955,7 @@ class InstrumentType extends Component {
                                               ? this.state.selectedRound
                                                   .closing_date
                                               : "",
-                                            // notes: this.state.selectedRound ? this.state.selectedRound.notes : "",
+                                            notes: this.state.selectedRound ? this.state.selectedRound.notes : "",
                                             status: this.state.selectedRound
                                               ? this.state.selectedRound.status
                                               : "Created",
@@ -786,15 +965,25 @@ class InstrumentType extends Component {
                                             rounds: Yup.string().required(
                                               "Round number is required"
                                             ),
+                                            scheme:
+                                              Yup.string().required(
+                                                "Scheme is required"
+                                              ),
                                             sample:
                                               Yup.string().required(
                                                 "Sample is required"
                                               ),
+                                            cycle_no: Yup.string().required(
+                                              "Cycle number is required"
+                                            ),
                                             issue_date: Yup.string().required(
                                               "Issue date is required"
                                             ),
                                             closing_date: Yup.string().required(
                                               "Closing date is required"
+                                            ),
+                                            note: Yup.string().required(
+                                              "Note is required"
                                             ),
                                             status:
                                               Yup.string().required(
@@ -817,10 +1006,13 @@ class InstrumentType extends Component {
 
                                             const newround = {
                                               rounds: values.rounds,
+                                              scheme: values.scheme,
                                               sample: values.sample,
+                                              cycle_no: values.cycle_no,
                                               participants: values.participants,
                                               issue_date: values.issue_date,
                                               closing_date: values.closing_date,
+                                              note: values.note,
                                               status: values.status,
                                               added_by: userId,
                                             };
@@ -852,7 +1044,7 @@ class InstrumentType extends Component {
                                                 this.setState({
                                                   RoundList: updatedData,
                                                 });
-                                              }, 300); 
+                                              }, 300);
                                             } catch (error) {
                                               console.error(
                                                 "Error updating/adding rounds:",
@@ -872,6 +1064,42 @@ class InstrumentType extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
+                                                <div className="mb-3">
+                                                    <Label for="scheme">
+                                                      Select Scheme
+                                                    </Label>
+                                                    <Field
+                                                      as="select"
+                                                      name="scheme"
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.scheme &&
+                                                        touched.scheme
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    >
+                                                      <option value="">
+                                                        Select Scheme
+                                                      </option>
+                                                      {this.state.SchemeList &&
+                                                        this.state.SchemeList.map(
+                                                          (scheme) => (
+                                                            <option
+                                                              key={scheme.id}
+                                                              value={scheme.id}
+                                                            >
+                                                              {scheme.name}
+                                                            </option>
+                                                          )
+                                                        )}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="scheme"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
                                                       Round Number
@@ -889,7 +1117,44 @@ class InstrumentType extends Component {
                                                       className="text-danger"
                                                     />
                                                   </div>
-
+                                                  <div className="mb-3">
+                                                    <label htmlFor="cycle_no">
+                                                      Cycle No
+                                                    </label>
+                                                    <Field
+                                                      as="select"
+                                                      name="cycle_no"
+                                                      className={`form-control${
+                                                        errors.cycle_no &&
+                                                        touched.cycle_no
+                                                          ? " is-invalid"
+                                                          : ""
+                                                      }`}
+                                                    >
+                                                      <option value="">
+                                                        Select Cycle
+                                                      </option>
+                                                      {CycleList.filter(
+                                                        cycle =>
+                                                          cycle.status ===
+                                                          "Active"
+                                                      ).map(cycle => (
+                                                        <option
+                                                          key={cycle.id}
+                                                          value={String(
+                                                            cycle.id
+                                                          )}
+                                                        >
+                                                          {cycle.cycle_no}
+                                                        </option>
+                                                      ))}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="cycle_no"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
                                                   <div className="mb-3">
                                                     <Label for="sample">
                                                       Sample
@@ -974,15 +1239,15 @@ class InstrumentType extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </div>
-                                                  {/* <div className="mb-3">
+                                                  <div className="mb-3">
                                                     <Label className="col-form-label">Notes</Label>
                                                     <Field
-                                                      name="notes"
+                                                      name="note"
                                                       type="text"
                                                       className="form-control"
                                                     />
-                                                    <ErrorMessage name="notes" component="div" className="text-danger" />
-                                                  </div> */}
+                                                    <ErrorMessage name="note" component="div" className="text-danger" />
+                                                  </div>
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
                                                       Status

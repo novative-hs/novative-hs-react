@@ -3,7 +3,7 @@
 The first thing to do is to clone the repository:
 
 ```sh
-git clone https://github.com/labhazir/ilaaj4u-reactjs.git
+https://github.com/novative-hs/novative-hs-react.git
 cd ilaaj4u-reactjs
 ```
 

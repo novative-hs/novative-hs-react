@@ -507,7 +507,7 @@ class MsgsList extends Component {
                                   .
                                 </div>
                               )}
-                              {activitylogUnits.actions === "Updated" && activitylogUnits.type === "ParticipantCountry" && (
+                              {activitylogUnits.actions === "Updated" && activitylogUnits.type === "ParticipantProvince" && (
 
                                 <div>
                                   <b>{`${activitylogUnits.added_by}`}</b> Updated  {" "}
@@ -526,7 +526,7 @@ class MsgsList extends Component {
                                   .
                                 </div>
                               )}
-                              {activitylogUnits.actions === "Added" && activitylogUnits.type === "ParticipantCountry" && (
+                              {activitylogUnits.actions === "Added" && activitylogUnits.type === "ParticipantProvince" && (
 
                                 <div>
                                   <b>{`${activitylogUnits.added_by}`}</b> Added a Country {" "}

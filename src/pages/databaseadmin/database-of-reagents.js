@@ -74,7 +74,6 @@ class ReagentList extends Component {
       errorMessage:"",
       reagent: "",
       modal: false,
-      importModal: false,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -87,30 +86,29 @@ class ReagentList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
-                    type="text"
+                    type="text" 
                     value={this.state.idFilter}
                     onChange={e => this.handleFilterChange('idFilter', e)}
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
-          headerStyle: { width: '150px' },  // Adjust the width as needed
-  style: { width: '150px' },  // Adjust the width as needed
+      
         },
         {
           dataField: "name",
           text: "Reagent",
           sort: true,
-          style: { textAlign: 'left' },
+          style: { textAlign: 'center' },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.nameFilter}
@@ -118,7 +116,7 @@ class ReagentList extends Component {
                     className="form-control"
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -129,21 +127,25 @@ class ReagentList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <input
                     type="text"
                     value={this.state.countFilter}
                     onChange={(e) => this.handleFilterChange('countFilter', e)}
                     className="form-control"
+                    style={{
+                      textAlign: 'center',
+                      width: '100px',
+                    }}
                   />
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
           formatter: (cellContent, unitlist) => {
             return (
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                 <Link
                   to={`/reagents-analyte/${unitlist.id}`}
                   style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
@@ -162,7 +164,7 @@ class ReagentList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
@@ -172,7 +174,7 @@ class ReagentList extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -185,7 +187,7 @@ class ReagentList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
@@ -195,7 +197,7 @@ class ReagentList extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -208,7 +210,7 @@ class ReagentList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
@@ -218,7 +220,7 @@ class ReagentList extends Component {
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -230,7 +232,7 @@ class ReagentList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                   <select
                     value={this.state.statusFilter}
                     onChange={e => this.handleFilterChange('statusFilter', e)}
@@ -241,7 +243,7 @@ class ReagentList extends Component {
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
@@ -255,17 +257,21 @@ class ReagentList extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
               
                 <input
                   type="text"
                   value={this.state.dateFilter}
                   onChange={e => this.handleFilterChange('dateFilter', e)}
                   className="form-control"
+                  style={{
+                    textAlign: 'center',
+                    width: '120px',
+                  }}
                
                 />
               </div>
-                <div>{column.text}</div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
                 </>
             );
           },
@@ -283,7 +289,7 @@ class ReagentList extends Component {
           editable: false,
           text: "Action",
           formatter: (cellContent, reagent) => (
-            <div className="d-flex gap-3 ml-3">
+            <div className="d-flex gap-3 ml-3"  style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
 
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
@@ -441,7 +447,7 @@ class ReagentList extends Component {
   closeModal = () => {
     this.setState({ modal: false });
   }
-  exportToExcel = () => {
+    exportToExcel = () => {
     const { ReagentList } = this.props;
     const fileType =
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -451,11 +457,11 @@ class ReagentList extends Component {
     const fieldsToExport = ['id', 'name', 'code','date_of_addition'];
 
     // Map each row to an object with only the desired fields
-    const dataToExport = ReagentList.map(reagent => ({
-      id: reagent.id,
-      name: reagent.name,
-      code: reagent.code,
-      date_of_addition: moment(reagent.date_of_addition).format('DD MMM YYYY, h:mm A'),
+    const dataToExport = ReagentList.map(unit => ({
+      id: unit.id,
+      name: unit.name,
+      code: unit.code,
+      date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
     }));
 
     // Convert data to Excel format and save as file
@@ -466,7 +472,6 @@ class ReagentList extends Component {
     const fileName = 'Reagent_list' + fileExtension;
     saveAs(data, fileName);
   };
-
   toggleImportModal = () => {
     this.setState(prevState => ({
       importModal: !prevState.importModal,
@@ -480,7 +485,6 @@ class ReagentList extends Component {
       importFile: file,
     });
   };
-  
   handleImport = async () => {
     const { importFile } = this.state;
     if (!importFile) {
@@ -500,14 +504,17 @@ class ReagentList extends Component {
         const sheet = workbook.Sheets[sheetName];
         // Convert to JSON format
         const jsonData = XLSX.utils.sheet_to_json(sheet);
-
+        
         // Process jsonData and save to the database
         // Example of processing:
         for (let i = 0; i < jsonData.length; i++) {
           const item = jsonData[i];
           // Dispatch an action to save item to the database
           await this.props.onAddNewReagent({
+
             name: item.name,
+            code: item.code,
+            status: item.status,
             added_by: localStorage.getItem("authUser")
               ? JSON.parse(localStorage.getItem("authUser")).user_id
               : "",
@@ -519,9 +526,7 @@ class ReagentList extends Component {
         this.toggleImportModal();
         this.displaySuccessMessage('Data imported successfully!');
         // Optionally, reload data from backend after import
-        setTimeout(() => {
-          this.props.onGetReagents(this.state.user_id);
-        }, 1000);
+        await this.props.onGetReagents(this.state.user_id);
       };
 
       reader.readAsArrayBuffer(importFile);
@@ -689,6 +694,7 @@ class ReagentList extends Component {
         </Modal>
             <Row className="justify-content-center">
               <Col lg="10">
+              <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
                 <Card>
                   <CardBody>                  
                     

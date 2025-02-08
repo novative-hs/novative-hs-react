@@ -610,6 +610,7 @@ class InstrumentType extends Component {
             </Modal>
             <Row className="justify-content-center">
               <Col lg="10">
+              <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
                 <Card>
                   <CardBody>
                     

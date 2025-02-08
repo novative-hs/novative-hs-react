@@ -197,7 +197,7 @@ export const GET_ANALYTESCYCLES = `${API_ENDPOINT}/api/database-admin/analyte-cy
 export const ORGANIZATION_REGISTER = `${API_ENDPOINT}/api/account/register/`;
 export const GET_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/organization-list`;
 export const UPDATE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/update-organization-list`;
-export const DELETE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/delete-organization-list`;
+// export const DELETE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/delete-organization-list`;
 // LAB LIST
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;
@@ -387,7 +387,7 @@ export const GET_TEST_DESCRIPTIONS = `${API_ENDPOINT}/api/medicaltest/test`;
 export const GET_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 export const UPDATE_LAB_PROFILE = `${API_ENDPOINT}/api/lab/lab-profile`;
 
-
+export const UPDATE_LABS = `${API_ENDPOINT}/api/lab/update-lab-list/`;
 // ADD CORPORATE EMPLOYEE DATA
 export const ADD_NEW_CEMPLOYEE_DATA = `${API_ENDPOINT}/api/corporate/employee-data`;
 export const GET_CEMPLOYEE = `${API_ENDPOINT}/api/corporate/employee-list`;
