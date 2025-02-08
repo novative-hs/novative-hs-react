@@ -1,5 +1,5 @@
 /**
- * SimpleBar.js - v5.3.6
+ * SimpleBar.js - v5.3.9
  * Scrollbars, simpler.
  * https://grsmto.github.io/simplebar/
  *
@@ -7,26 +7,25 @@
  * Under MIT License
  */
 
-import 'core-js/modules/es.array.for-each';
-import 'core-js/modules/web.dom-collections.for-each';
+import 'core-js/modules/es.object.to-string.js';
+import 'core-js/modules/web.dom-collections.for-each.js';
 import canUseDOM from 'can-use-dom';
-import 'core-js/modules/es.array.filter';
-import 'core-js/modules/es.array.iterator';
-import 'core-js/modules/es.object.assign';
-import 'core-js/modules/es.object.to-string';
-import 'core-js/modules/es.parse-int';
-import 'core-js/modules/es.string.iterator';
-import 'core-js/modules/es.weak-map';
-import 'core-js/modules/web.dom-collections.iterator';
+import 'core-js/modules/es.parse-int.js';
+import 'core-js/modules/es.object.assign.js';
+import 'core-js/modules/es.array.filter.js';
+import 'core-js/modules/es.array.iterator.js';
+import 'core-js/modules/es.string.iterator.js';
+import 'core-js/modules/es.weak-map.js';
+import 'core-js/modules/web.dom-collections.iterator.js';
 import throttle from 'lodash.throttle';
 import debounce from 'lodash.debounce';
 import memoize from 'lodash.memoize';
 import { ResizeObserver } from '@juggle/resize-observer';
-import 'core-js/modules/es.array.reduce';
-import 'core-js/modules/es.function.name';
-import 'core-js/modules/es.regexp.exec';
-import 'core-js/modules/es.string.match';
-import 'core-js/modules/es.string.replace';
+import 'core-js/modules/es.array.reduce.js';
+import 'core-js/modules/es.regexp.exec.js';
+import 'core-js/modules/es.string.match.js';
+import 'core-js/modules/es.function.name.js';
+import 'core-js/modules/es.string.replace.js';
 
 // Helper function to retrieve options from element attributes
 var getOptions = function getOptions(obj) {
@@ -108,9 +107,7 @@ function scrollbarWidth(el) {
   return cachedScrollbarWidth;
 }
 
-var SimpleBar =
-/*#__PURE__*/
-function () {
+var SimpleBar = /*#__PURE__*/function () {
   function SimpleBar(element, options) {
     var _this = this;
 
@@ -308,8 +305,8 @@ function () {
 
     this.el = element;
     this.minScrollbarWidth = 20;
-    this.options = Object.assign({}, SimpleBar.defaultOptions, {}, options);
-    this.classNames = Object.assign({}, SimpleBar.defaultOptions.classNames, {}, this.options.classNames);
+    this.options = Object.assign({}, SimpleBar.defaultOptions, options);
+    this.classNames = Object.assign({}, SimpleBar.defaultOptions.classNames, this.options.classNames);
     this.axis = {
       x: {
         scrollOffsetAttr: 'scrollLeft',
@@ -519,11 +516,15 @@ function () {
     elWindow.addEventListener('resize', this.onWindowResize); // Hack for https://github.com/WICG/ResizeObserver/issues/38
 
     var resizeObserverStarted = false;
+    var resizeAnimationFrameId = null;
     var resizeObserver = elWindow.ResizeObserver || ResizeObserver;
     this.resizeObserver = new resizeObserver(function () {
-      if (!resizeObserverStarted) return;
+      if (!resizeObserverStarted || resizeAnimationFrameId !== null) return;
+      resizeAnimationFrameId = elWindow.requestAnimationFrame(function () {
+        _this3.recalculate();
 
-      _this3.recalculate();
+        resizeAnimationFrameId = null;
+      });
     });
     this.resizeObserver.observe(this.el);
     this.resizeObserver.observe(this.contentEl);

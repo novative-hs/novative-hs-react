@@ -60,6 +60,8 @@ import SampleAnalytes from "pages/databaseadmin/add-analytes-sample-page";
 import AnalyteAddReagents from "pages/databaseadmin/analyte-add-reagents";
 import AnalyteAddEuipments from "pages/databaseadmin/analyte-add-equipments";
 import DatabaseOfParticipantCity from "pages/databaseadmin/database-of-participantcity";
+import DatabaseOfNewdb from "pages/databaseadmin/database-of-newdb";
+import DatabaseOfCityUpdate from "pages/databaseadmin/database-of-cityupdate";
 import DatabaseOfParticipantCountry from "pages/databaseadmin/database-of-participantcountry";
 import DatabaseOfParticipantProvince from "pages/databaseadmin/database-of-participantprovince";
 
@@ -313,6 +315,8 @@ const databaseAdminAuthProtectedRoutes = [
   
   //participant data
   { path: "/:organization_name/database-of-participantcity", component: DatabaseOfParticipantCity },
+  { path: "/:organization_name/database-of-newdb", component: DatabaseOfNewdb },
+  { path: "/:organization_name/database-of-cityupdate", component: DatabaseOfCityUpdate },
   { path: "/:organization_name/database-of-participantcountry", component: DatabaseOfParticipantCountry },
   { path: "/:organization_name/database-of-participantprovince", component: DatabaseOfParticipantProvince },
   { path: "/:organization_name/database-of-participantdistrict", component: DatabaseOfParticipantDistrict },

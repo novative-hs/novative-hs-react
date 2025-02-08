@@ -1337,6 +1337,30 @@ export const deleteAnalyte = Analyte =>
     headers: getHeader(authHeader()),
   });
 
+  ////newTable Data
+  export const getData = id =>
+    get(`${url.GET_DATA}/${id}`, {
+      headers: getHeader(authHeader()),
+    });
+
+  
+    export const addData = async (tablecreate) => {
+      try {
+          console.log("Sending tablecreate to backend:", tablecreate);
+          const response = await axios.post(`${url.ADD_DATA}`, tablecreate);
+          console.log("Backend response:", response.tablecreate); // Debug log
+          return response;
+      } catch (error) {
+          console.error("API error:", error.message); // Debug log
+          throw error;
+      }
+  };
+  
+    
+    
+  
+  
+
 ////participant city
 export const getCityList = id =>
   get(`${url.GET_CITY_LIST}/${id}`, {
@@ -1362,6 +1386,14 @@ export const updateCity = city => {
     headers: getHeader(authHeader()),
   });
 };
+
+// Delete City API Call
+export const deleteCity = (cityId) => {
+  return del(`${url.DELETE_CITY}/${cityId}`, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 
 ////participant country
 export const getCountryList = id =>
@@ -3870,3 +3902,40 @@ export const getAuditorSouthList = () =>
 //   get(`${url.GET_AUDITOR_NORTH_TERRITORY_LIST}`, {
 //     headers: getHeader(authHeader()),
 //   });
+
+// django_api_helper.js
+
+const API_ENDPOINT = "http://localhost:8000"; // Adjust this to your backend's base URL
+
+export const fetchData = async (url) => {
+  try {
+    const response = await fetch(`${API_ENDPOINT}${url}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const saveData = async (url, data) => {
+  try {
+    const response = await fetch(`${API_ENDPOINT}${url}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to save data");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error saving data:", error);
+    throw error;
+  }
+};
+

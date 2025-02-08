@@ -39,26 +39,42 @@ export const getSchemelistFail = (error) => {
   };
 };
 
-//////////////Add New Scheme////////////
-export const addNewSchemeList = (createUnit, id) => ({
-  type: ADD_NEW_SCHEME_LIST,
-  payload: { createUnit, id },
-});
+// Add New Scheme Action
+export const addNewSchemeList = (createUnit, id) => {
+  console.log("addNewSchemeList - createUnit:", createUnit); // Log the 'createUnit' argument
+  console.log("addNewSchemeList - id:", id); // Log the 'id' argument
+  
+  return {
+    type: ADD_NEW_SCHEME_LIST,
+    payload: { createUnit, id },
+  };
+};
 
-export const addNewSchemeListSuccess = createUnit => ({
-  type: ADD_NEW_SCHEME_LIST_SUCCESS,
-  payload: createUnit,
-});
+// Add New Scheme Success Action
+export const addNewSchemeListSuccess = createUnit => {
+  console.log("addNewSchemeListSuccess - createUnit:", createUnit); // Log the 'createUnit' payload
+  
+  return {
+    type: ADD_NEW_SCHEME_LIST_SUCCESS,
+    payload: createUnit,
+  };
+};
 
-export const addNewSchemeListFail = error => ({
-  type: ADD_NEW_SCHEME_LIST_FAIL,
-  payload: error,
-});
+// Add New Scheme Failure Action
+export const addNewSchemeListFail = error => {
+  console.log("addNewSchemeListFail - error:", error); // Log the 'error' payload
+  
+  return {
+    type: ADD_NEW_SCHEME_LIST_FAIL,
+    payload: error,
+  };
+};
 
 //////////////Update Scheme////////////
 export const updateSchemeList = unit => ({
   type: UPDATE_NEW_SCHEME_LIST,
   payload: unit,
+  active: true,
 });
 
 export const updateSchemeListSuccess = unit => ({

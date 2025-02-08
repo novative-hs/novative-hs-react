@@ -139,6 +139,14 @@ class Header extends Component {
 
   render() {
     const { isNavbarOpen } = this.state;
+    const { LabProfile } = this.props;
+    const {StaffProfile} = this.props;
+    const { getLabProfile } = this.props;
+    const { getStaffProfile } = this.props;
+    // console.log("lab logo", this.props.LabProfile)
+    // Extract organization_logo from the LabProfile
+    // Assuming 'https://example.com' is your domain
+    const BASE_URL = "http://127.0.0.1:8000/";
     const isSmallScreen = window.innerWidth < 800;
     const shouldShowNavbar = isNavbarOpen && !isSmallScreen;
 

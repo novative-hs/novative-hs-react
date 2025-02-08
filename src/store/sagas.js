@@ -77,6 +77,7 @@ import NewsSaga from "./news/saga";
 import MethodsListSaga from "./methods/sagas";
 
 import CityListSaga from "./participantcity/sagas";
+import CityUpdateSaga from "./cityupdate/saga";
 import CountryListSaga from "./participantcountry/sagas";
 import ProvinceListSaga from "./participantprovince/sagas";
 import DistrictListSaga from "./participantdistrict/sagas";
@@ -118,6 +119,7 @@ export  default function* rootSaga() {
     fork(LayoutSaga),
     fork(AccountSaga),
     fork(ManufacturalListSaga),
+    fork(CityUpdateSaga),
     fork(SchemeListSaga),
     fork(SelectedSchemeListSaga),
     fork(AnalyteSchemeSaga),

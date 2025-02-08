@@ -110,6 +110,9 @@ export * from "./chat-box/actions";
 //participant
 
 export * from "./participantcity/actions";
+export * from "./newdb/actions";
+export * from "./cityupdate/actions";
+
 export * from "./participantcountry/actions";
 export * from "./participantdistrict/actions";
 export * from "./participantdepartment/actions";

@@ -646,7 +646,6 @@ class ApprovedLabs extends Component {
                                 <Col sm="4">
                                   <div className="ms-2 mb-4">
                                     <div>
-
                                       <select
                                         className="form-control select2"
                                         title="main_lab_appointments"

@@ -20,6 +20,9 @@ import {
   Input,
 } from "reactstrap";
 
+import Icon from "@mdi/react";
+import { mdiTestTube } from '@mdi/js';
+
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -335,6 +338,9 @@ class ReagentsList extends Component {
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
+  
+  handleFilterChange
+
   // The code for converting "Base64" to javascript "File Object"
   dataURLtoFile = (dataurl, filename) => {
     var arr = dataurl.split(","),
@@ -367,7 +373,7 @@ class ReagentsList extends Component {
       onDeleteScheme(SchemeList);
       setTimeout(() => {
         onGetScheme(this.state.user_id);
-      }, 1000);
+      }, 1200);
       this.setState({ deleteModal: false });
     }
   };
@@ -378,6 +384,9 @@ class ReagentsList extends Component {
   };
 
   handleFilterChange = (filterName, e) => {
+    const inputValue = event.target.value;
+    const formattedValue = this.formatPrice(inputValue);
+    this.setState({ [filterName]: formattedValue });
     this.setState({ [filterName]: e.target.value });
   };
 
@@ -448,7 +457,7 @@ class ReagentsList extends Component {
   //     onDeletePathologist(ListUnit);
   //     setTimeout(() => {
   //       onGetScheme(this.state.user_id);
-  //     }, 1000);
+  //     }, 1200);
   //     this.setState({ deleteModal: false });
   //   }
   // };
@@ -698,7 +707,7 @@ class ReagentsList extends Component {
                                               );
                                               setTimeout(() => {
                                                 onGetScheme(this.state.user_id);
-                                              }, 1000);
+                                              }, 1200);
                                             }
                                             this.setState({
                                               selectedPathologist: null,
@@ -901,7 +910,7 @@ class ReagentsList extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="align-items-md-center mt-30">
+                              <Row className="align-items-md-left mt-30">
                                 <Col className="pagination pagination-rounded justify-content-end mb-2">
                                   <PaginationListStandalone
                                     {...paginationProps}
