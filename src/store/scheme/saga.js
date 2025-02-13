@@ -1,15 +1,15 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_SCHEME_LIST, ADD_NEW_SCHEME_LIST,  UPDATE_NEW_SCHEME_LIST, DELETE_SCHEME
+import { GET_SCHEME_LIST,  GET_SCHEMEANALYTE, GET_SCHEMENAME, ADD_NEW_SCHEME_LIST,  UPDATE_NEW_SCHEME_LIST, DELETE_SCHEME
 } from "./actionTypes";
 
-import { addNewSchemeListFail, addNewSchemeListSuccess, updateSchemeListSuccess,updateSchemeListFail,getSchemelistFail, getSchemelistSuccess, deleteSchemeSuccess,
+import { addNewSchemeListFail, addNewSchemeListSuccess, getSchemeAnalyteSuccess, getSchemeAnalyteFail, getSchemeNameSuccess, getSchemeNameFail,  updateSchemeListSuccess,updateSchemeListFail,getSchemelistFail, getSchemelistSuccess, deleteSchemeSuccess,
   deleteSchemeFail
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { getSchemelist, updateScheme , addNewScheme, deleteScheme} from "../../helpers/django_api_helper";
+import { getSchemelist, getSchemeName, getSchemeAnalyte, updateScheme , addNewScheme, deleteScheme} from "../../helpers/django_api_helper";
 
 
 function* fetchSchemeList(object) {
@@ -21,12 +21,44 @@ function* fetchSchemeList(object) {
     yield put(getSchemelistFail(error));
   }
 }
-function* fetchCorporateTestsList(object) {
+function* fetchSchemeAnalyte(action) {
   try {
-    const response = yield call(getCorporateTestsList, object.payload);
-    yield put(getCorporateTestsListSuccess(response));
+    console.log("Fetching scheme analyte with payload:", action.payload);
+    const response = yield call(getSchemeAnalyte, action.payload);
+    
+    // Log the full response to inspect its structure
+    console.log("Saga Full Response:", response);
+    
+    // Validate the response structure
+    if (response.data?.status === "success" && Array.isArray(response.data?.data?.analytes)) {
+      // Dispatch action with the analytes data
+      yield put({ 
+        type: 'GET_SCHEMEANALYTE_SUCCESS', 
+        payload: response.data.data.analytes 
+      });
+    } else {
+      // Handle unexpected response structure
+      yield put({
+        type: 'GET_SCHEMEANALYTE_FAIL',
+        payload: 'Unexpected response structure.'
+      });
+    }
   } catch (error) {
-    yield put(getCorporateTestsListFail(error));
+    console.error("Saga Error:", error.message);
+    yield put({
+      type: 'GET_SCHEMEANALYTE_FAIL',
+      payload: error.message || "Failed to fetch scheme analyte."
+    });
+  }
+}
+
+
+function* fetchSchemeName(object) {
+  try {
+    const response = yield call(getSchemeName, object.payload);
+    yield put(getSchemeNameSuccess(response.data));
+  } catch (error) {
+    yield put(getSchemeNameFail(error));
   }
 }
 function* onAddNewScheme(object) {
@@ -62,6 +94,8 @@ function* onDeleteScheme({ payload: unit }) {
 function* InstrumentTypeListSaga() {
 
   yield takeEvery( GET_SCHEME_LIST, fetchSchemeList);
+  yield takeEvery(GET_SCHEMEANALYTE, fetchSchemeAnalyte);
+  yield takeEvery(GET_SCHEMENAME, fetchSchemeName);
   yield takeEvery( ADD_NEW_SCHEME_LIST, onAddNewScheme);
   yield takeEvery( UPDATE_NEW_SCHEME_LIST, onUpdateScheme);
   yield takeEvery(DELETE_SCHEME, onDeleteScheme);

@@ -60,6 +60,8 @@ export const UPDATE_METHOD = `${API_ENDPOINT}/api/database-admin/update-method-l
 
 export const GET_SCHEME_LIST = `${API_ENDPOINT}/api/database-admin/scheme-list`;
 export const ADD_NEW_SCHEME = `${API_ENDPOINT}/api/database-admin/scheme-list`;
+export const GET_SCHEMEANALYTE = `${API_ENDPOINT}/api/database-admin/scheme-analytename-list`;
+export const GET_SCHEMENAME = `${API_ENDPOINT}/api/database-admin/scheme-list`;
 export const UPDATE_SCHEME = `${API_ENDPOINT}/api/database-admin/update-scheme`;
 export const DELETE_SCHEME = `${API_ENDPOINT}/api/database-admin/delete-scheme`;
 export const DELETE_METHOD = `${API_ENDPOINT}/api/database-admin/delete-method`;

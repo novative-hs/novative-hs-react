@@ -7,6 +7,9 @@ import {
 
   UPDATE_NEW_SAMPLE_LIST_SUCCESS,
   UPDATE_NEW_SAMPLE_LIST_FAIL,
+
+  UPDATE_SAMPLE_LIST_SUCCESS,
+  UPDATE_SAMPLE_LIST_FAIL,
   
   DELETE_NEW_SAMPLE_LIST_SUCCESS,
   DELETE_NEW_SAMPLE_LIST_FAIL,
@@ -44,24 +47,43 @@ const ListUnitt = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-    case UPDATE_NEW_SAMPLE_LIST_SUCCESS:
-      console.log("Data received in UPDATE_NEW_SAMPLE_LIST_SUCCESS:", action.payload); // Log the action.payload
-      return {
-        ...state,
-          ListUnitt: state.ListUnitt.map(sample =>
-            sample.id.toString() === action.payload.id.toString()
-              ? { sample, ...action.payload }
-              : sample
-          ),
-      };
-    
-    case UPDATE_NEW_SAMPLE_LIST_FAIL:
-      console.log("Error in UPDATE_NEW_SAMPLE_LIST_FAIL:", action.payload); // Log the action.payload
-      return {
-        ...state,
-        error: action.payload,
-      };
-
+      case UPDATE_NEW_SAMPLE_LIST_SUCCESS:
+        console.log("Data received in UPDATE_NEW_SAMPLE_LIST_SUCCESS:", action.payload); // Log the action.payload
+        return {
+          ...state,
+            ListUnitt: state.ListUnitt.map(sample =>
+              sample.id.toString() === action.payload.id.toString()
+                ? { sample, ...action.payload }
+                : sample
+            ),
+        };
+      
+      case UPDATE_NEW_SAMPLE_LIST_FAIL:
+        console.log("Error in UPDATE_NEW_SAMPLE_LIST_FAIL:", action.payload); // Log the action.payload
+        return {
+          ...state,
+          error: action.payload,
+        };
+  
+  
+      case UPDATE_SAMPLE_LIST_SUCCESS:
+        console.log("Data received in UPDATE_SAMPLE_LIST_SUCCESS:", action.payload); // Log the action.payload
+          return {
+            ...state,
+              ListUnitt: state.ListUnitt.map(sample =>
+                sample.id.toString() === action.payload.id.toString()
+                  ? { sample, ...action.payload }
+                  : sample
+              ),
+        };
+        
+      case UPDATE_SAMPLE_LIST_FAIL:
+          console.log("Error in UPDATE_SAMPLE_LIST_FAIL:", action.payload); // Log the action.payload
+          return {
+            ...state,
+            error: action.payload,
+          };
+  
 
   
 

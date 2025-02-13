@@ -50,6 +50,8 @@ class SampleList extends Component {
       sample: [],
       CycleList: [],
       SchemeList: [],
+      analyte: "",
+      analytetypeFilter: "",
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -63,6 +65,7 @@ class SampleList extends Component {
       cycleFilter:'',
       analyteFilter:'',
       statusFilter:'',
+      analytetypeFilter: '',
       feedbackListColumns: [
         {
           dataField: "id",
@@ -123,6 +126,7 @@ class SampleList extends Component {
         },
 
         },
+
         {
           dataField: "scheme",
           text: "Scheme Name",
@@ -212,6 +216,44 @@ class SampleList extends Component {
 
         },
         {
+          dataField: "analytetype",
+          text: "Type",
+          sort: true,
+          // filter: textFilter(),
+          headerFormatter: (column, colIndex) => {
+            return (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <select
+                    value={this.state.analytetypeFilter}
+                    onChange={(e) =>
+                      this.handleFilterChange("analytetypeFilter", e)
+                    }
+                    className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                    }}
+                  >
+                    <option value="">All</option>
+                    <option value="Qualitative">Qualitative</option>
+                    <option value="Quantitative">Quantitative</option>
+                  </select>
+                </div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
+              </>
+            );
+          },
+        },
+        {
           dataField: "status",
           text: "Sample Status",
           sort: true,
@@ -241,43 +283,50 @@ class SampleList extends Component {
             );
           },
         },
+{
+  dataField: "menu",
+  isDummyField: true,
+  editable: false,
+  text: "Action",
+  formatter: (cellContent, sample) => (
+    <div className="d-flex gap-3 ml-3">
+      {/* Always allow adding analytes */}
+      <Tooltip title="Add Analytes">
+        <Link to={`/add-analytes-sample-page/${sample.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
+          <i className="mdi mdi-magnify font-size-18" id="analyteIcon"></i>
+        </Link>
+      </Tooltip>
 
-        {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, sample) => (
-            <div className="d-flex gap-3 ml-3">
-              {/* <Tooltip title="Add Analytes">
-                <Link to={`/add-analytes-sample-page/${sample.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
-                  <i
-                    className="mdi mdi-magnify font-size-18"
-                    id="analyteIcon"
-                  ></i>
-                </Link></Tooltip> */}
-              <Tooltip title="Update">
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={() => this.toggle(sample)}
-                  // onClick={e => this.handleCSRClick(e, CSR)}
-                  ></i>
-                </Link>
-              </Tooltip>
-              {/* <Tooltip title="Delete">
-                <Link className="text-danger" to="#">
-                  <i
-                    className="mdi mdi-delete font-size-18"
-                    id="deletetooltip"
-                    onClick={() => this.onClickDelete(sample)}
-                  ></i>
-                </Link>
-              </Tooltip> */}
-            </div>
-          ),
-        },
+      {/* Show Edit and Delete only if status is "Created" */}
+      {sample.status === "Created" ? (
+        <>
+          <Tooltip title="Update">
+            <Link className="text-success" to="#">
+              <i
+                className="mdi mdi-pencil font-size-18"
+                id="edittooltip"
+                onClick={() => this.toggle(sample)}
+              ></i>
+            </Link>
+          </Tooltip>
+
+          <Tooltip title="Delete">
+            <Link className="text-danger" to="#">
+              <i
+                className="mdi mdi-delete font-size-18"
+                id="deletetooltip"
+                onClick={() => this.onClickDelete(sample)}
+              ></i>
+            </Link>
+          </Tooltip>
+        </>
+      ) : (
+        <span className="text-muted">Actions Disabled</span>
+      )}
+    </div>
+  ),
+},
+
       ],
     };
     this.toggle = this.toggle.bind(this);
@@ -334,9 +383,10 @@ class SampleList extends Component {
           samplename: sample.samplename,
           sampleno: sample.sampleno,
           scheme: sample.scheme,
+          analytetype: analyte.analytetype,
           detail: sample.detail,
           notes: sample.notes,
-          // status: sample.status,
+          status: sample.status,
         },
         isEdit: true,
       });
@@ -398,7 +448,7 @@ class SampleList extends Component {
     const { deleteModal } = this.state;
     const { SearchBar } = Search;
     const { onAddSampleList, onUpdateSampleList, onGetSampleList, onDeleteSampleList, onGetcyclelist, onGetScheme } = this.props;
-    const { idFilter, nameFilter, schemeFilter, cycleFilter, analyteFilter,statusFilter} = this.state;
+    const { idFilter, nameFilter, schemeFilter, cycleFilter,analytetypeFilter, analyteFilter,statusFilter} = this.state;
     
     const { ListUnitt, CycleList, SchemeList } = this.props;
 
@@ -410,6 +460,7 @@ class SampleList extends Component {
       // const id = entry.id ? entry.id.toString() : "";
       const cycle_no = entry.cycle_no ? entry.cycle_no.toString() : "";
       const noofanalytes = entry.noofanalytes ? entry.noofanalytes.toString() : "";
+      const analytetype = entry.analytetype ? entry.analytetype.toString() : "";
       const status= entry.status ? entry.status.toString() : "";
       return (
         id.includes(idFilter.toLowerCase()) &&
@@ -418,6 +469,7 @@ class SampleList extends Component {
         scheme.includes(schemeFilter) &&
         cycle_no.includes(cycleFilter) &&
         noofanalytes.includes(analyteFilter) &&
+        analytetype.includes(analytetypeFilter) &&
         status.includes(statusFilter)
         
       );
@@ -503,6 +555,7 @@ class SampleList extends Component {
                                             scheme: this.state.selectedSample ? this.state.selectedSample.scheme : "",
                                             detail: this.state.selectedSample ? this.state.selectedSample.detail : "",
                                             notes: this.state.selectedSample ? this.state.selectedSample.notes : "",
+                                            analytetype: this.state.selectedSample ? this.state.selectedSample.analytetype : "",
                                             // status: this.state.selectedSample ? this.state.selectedSample.status : "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -511,43 +564,47 @@ class SampleList extends Component {
                                             scheme: Yup.string().required("Scheme is required"),
                                             detail: Yup.string().required("Details is required"),
                                             notes: Yup.string().required("Notes are required"),
+                                            analytetype: Yup.string().trim().required("Please select the Type from dropdown"), 
                                             // status: Yup.string().required("Please select the Status from dropdown"),
                                           })}
-
                                           onSubmit={async (values, { setSubmitting }) => {
                                             const userId = localStorage.getItem("authUser")
                                               ? JSON.parse(localStorage.getItem("authUser")).user_id
                                               : "";
-
+                                          
                                             const newSample = {
                                               samplename: values.samplename,
                                               sampleno: values.sampleno,
                                               scheme: values.scheme,
                                               detail: values.detail,
                                               notes: values.notes,
-                                              added_by: userId, // Ensure you have userId defined properly
+                                              added_by: userId,
+                                              analytetype: values.analytetype, 
                                             };
+                                          
                                             try {
-                                              if (this.state.isEdit) {
-                                                await this.props.onUpdateSampleList(console.log("sample id 2", this.state.selectedSample.id), newSample);
+                                              if (this.state.isEdit && this.state.selectedSample) {
+                                                console.log("Updating sample with ID:", this.state.selectedSample.id);
+                                                await this.props.onUpdateSampleList(this.state.selectedSample.id, newSample);
                                                 this.displaySuccessMessage("Sample updated successfully!");
-                                                console.log("In case of update", this.state.selectedSample.id)
                                               } else {
                                                 await this.props.onAddSampleList(newSample);
                                                 this.displaySuccessMessage("Sample added successfully!");
                                               }
-                                                // Refetch data and update local state
-                                            setTimeout(async () => {
-                                              const updatedData =
-                                                await this.props.onGetSampleList(this.state.user_id);
-                                              this.setState({ sample: updatedData });
-                                            }, 300); 
-                                            
+                                          
+                                              // Refetch data and update local state
+                                              setTimeout(async () => {
+                                                const updatedData = await this.props.onGetSampleList(this.state.user_id);
+                                                this.setState({ sample: updatedData });
+                                              }, 300);
+                                          
                                             } catch (error) {
-                                              console.error("Error updating/adding :", error);
+                                              console.error("Error updating/adding sample:", error);
                                             }
+                                          
                                             setSubmitting(false);
                                           }}
+                                          
                                         >
                                           {({ errors, status, touched }) => (
                                             <Form>
@@ -603,7 +660,39 @@ class SampleList extends Component {
                                                     </Field>
                                                     <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
                                                   </div> */}
-                                               
+                                               <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Type
+                                                      <span className="text-danger">
+                                                        *
+                                                      </span>
+                                                    </Label>
+                                                    <Field
+                                                      as="select"
+                                                      name="analytetype"
+                                                      className={`form-control ${errors.analytetype &&
+                                                        touched.analytetype
+                                                        ? "is-invalid"
+                                                        : ""
+                                                        }`}
+                                                    >
+                                                      <option value="">
+                                                        ----- Please select
+                                                        -----
+                                                      </option>
+                                                      <option value="Qualitative">
+                                                        Qualitative
+                                                      </option>
+                                                      <option value="Quantitative">
+                                                        Quantitative
+                                                      </option>
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="analytetype"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </div>
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">Details</Label>
                                                     <Field
@@ -722,7 +811,8 @@ const mapStateToProps = ({ ListUnitt, CycleList, SchemeList}) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetSampleList: (id) => { dispatch(getSamplelist(id)); },
   onAddSampleList: (sample) => { dispatch(addNewSampleList(sample)); },
-  onUpdateSampleList: (id, sample) => dispatch(updateSampleList(id, sample)),
+  onUpdateSampleList: (id, sample) => dispatch(updateSampleList({ id, ...sample })),
+
   onGetcyclelist: id => dispatch(getcyclelist(id)),
   onGetScheme: id => dispatch(getSchemelist(id)),
   onDeleteSampleList: (sample) => {dispatch(deleteSampleList(sample));

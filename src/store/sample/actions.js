@@ -11,6 +11,10 @@ import {
   UPDATE_NEW_SAMPLE_LIST_SUCCESS,
   UPDATE_NEW_SAMPLE_LIST_FAIL,
 
+  UPDATE_SAMPLE_LIST,
+  UPDATE_SAMPLE_LIST_SUCCESS,
+  UPDATE_SAMPLE_LIST_FAIL,
+
   DELETE_NEW_SAMPLE_LIST,
   DELETE_NEW_SAMPLE_LIST_SUCCESS,
   DELETE_NEW_SAMPLE_LIST_FAIL,
@@ -57,18 +61,33 @@ export const addNewSampleListFail = error => {
     payload: error,
   };
 };
-export const updateSampleList = sample => ({
+export const updateNewSampleList = sample => ({
   type: UPDATE_NEW_SAMPLE_LIST,
   payload: sample,
 });
 
-export const updateSampleListSuccess = sample => ({
+export const updateNewSampleListSuccess = sample => ({
   type: UPDATE_NEW_SAMPLE_LIST_SUCCESS,
   payload: sample,
 });
 
-export const updateSampleListFail = error => ({
+export const updateNewSampleListFail = error => ({
   type: UPDATE_NEW_SAMPLE_LIST_FAIL,
+  payload: error,
+});
+
+export const updateSampleList = sample => ({
+  type: UPDATE_SAMPLE_LIST,
+  payload: sample,
+});
+
+export const updateSampleListSuccess = sample => ({
+  type: UPDATE_SAMPLE_LIST_SUCCESS,
+  payload: sample,
+});
+
+export const updateSampleListFail = error => ({
+  type: UPDATE_SAMPLE_LIST_FAIL,
   payload: error,
 });
 

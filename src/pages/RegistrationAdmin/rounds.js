@@ -33,9 +33,10 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
 import { getSchemelist } from "store/scheme/actions";
 import { getcyclelist } from "store/cycle/actions";
-import { getSamplelist } from "store/sample/actions";
+// import { getSamplelist } from "store/sample/actions";
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
+import { getSamplelist, updateSampleList } from "store/sample/actions";
 
 import {
   getroundlist,
@@ -554,7 +555,6 @@ class InstrumentType extends Component {
                   </Tooltip>
                 )}
         
-                {/* {/ Show update icon always /} */}
                 <Tooltip title="Update">
                   <Link className="text-success" to="#">
                     <i
@@ -565,7 +565,7 @@ class InstrumentType extends Component {
                   </Link>
                 </Tooltip>
         
-                {/* {/ Show delete button only for "Created" or "Ready" status /} */}
+              
                 {(round.status === "Created" || round.status === "Ready") && (  // Changed condition here
                   <Tooltip title="Delete">
                     <Link className="text-danger" to="#">
@@ -668,6 +668,7 @@ class InstrumentType extends Component {
       this.setState({ deleteModal: true });
     }
   };
+
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
@@ -1032,9 +1033,39 @@ class InstrumentType extends Component {
                                                 );
                                                 this.displaySuccessMessage(
                                                   "Round added successfully!"
-                                                );
-                                              }
 
+                                                );
+                                                if (newround.sample) {
+                                                  const updatedSample = {
+                                                    ...values.sample,
+                                                    status: "Rounded", // Update the sample status
+                                                    // Any other fields needed to be updated can go here
+                                                  };
+                                                  await this.props.onUpdateSampleList(
+                                                    newround.sample,
+                                                    updatedSample
+                                                  ); // Update sample in the store
+                                                }
+                                              
+                                              }
+                                              if (values.sample) {
+                                                const sampleToUpdate =
+                                                  this.props.ListUnitt.find(
+                                                    (sample) =>
+                                                      sample.samplename ===
+                                                      values.sample
+                                                  );
+                                                if (sampleToUpdate) {
+                                                  const updatedSample = {
+                                                    ...sampleToUpdate,
+                                                    status: "Rounded",
+                                                  };
+                                                  await this.props.onUpdateSampleList(
+                                                    sampleToUpdate.id,
+                                                    updatedSample
+                                                  );
+                                                }
+                                              }
                                               // Refetch data and update local state
                                               setTimeout(async () => {
                                                 const updatedData =
@@ -1362,7 +1393,7 @@ InstrumentType.propTypes = {
   onAddNewRound: PropTypes.func,
   onUpdateRound: PropTypes.func,
   onDeleteRound: PropTypes.func,
-
+  onUpdateSampleList: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
@@ -1391,6 +1422,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(addNewRoundList(id, createround)),
   onUpdateRound: (id, round) => dispatch(updateRoundList({ id, ...round })),
   onDeleteRound: round => dispatch(deleteRound(round)),
+  onUpdateSampleList: (id, sample) => dispatch(updateSampleList(id, sample)),
 });
 
 export default connect(

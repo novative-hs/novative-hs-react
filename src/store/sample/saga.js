@@ -2,6 +2,7 @@ import { takeEvery, put, call } from "redux-saga/effects";
 import { 
   GET_SAMPLE_LIST,
   ADD_NEW_SAMPLE_LIST,
+  UPDATE_SAMPLE_LIST,
   UPDATE_NEW_SAMPLE_LIST,
   DELETE_NEW_SAMPLE_LIST,
 } from "./actionTypes";
@@ -13,13 +14,17 @@ import {
   addNewSampleListSuccess, 
   addNewSampleListFail,
 
+  updateNewSampleListSuccess,
+  updateNewSampleListFail,
+
   updateSampleListSuccess,
   updateSampleListFail,
+
 
   deleteSampleListSuccess,
   deleteSampleListFail,
 } from "./actions";
-import { getSamplelist, addNewSampleList, updateSampleList, deleteSampleList  } from "../../helpers/django_api_helper";
+import { getSamplelist, addNewSampleList, updateNewSampleList, updateSampleList, deleteSampleList  } from "../../helpers/django_api_helper";
 
 function* fetchSampleList(action) {
   try {
@@ -48,7 +53,15 @@ function* onAddSampleList(action) {
   }
 }
 
-
+function* onUpdateNewSampleList({ payload: sample }) {
+  try {
+    const response = yield call(updateNewSampleList, sample);
+    yield put(updateNewSampleListSuccess(response));
+  } catch (error) {
+    yield put(updateNewSampleListFail (error));
+  }
+}
+//// on update samplelist  status to rounded
 function* onUpdateSampleList({ payload: sample }) {
   try {
     const response = yield call(updateSampleList, sample);
@@ -57,6 +70,8 @@ function* onUpdateSampleList({ payload: sample }) {
     yield put(updateSampleListFail (error));
   }
 }
+
+
 function* onDeleteSampleList(action) {
   try {
     const response = yield call(deleteSampleList, action.payload);
@@ -71,7 +86,8 @@ function* onDeleteSampleList(action) {
 function* SampleSaga() {
   yield takeEvery(GET_SAMPLE_LIST, fetchSampleList);
   yield takeEvery(ADD_NEW_SAMPLE_LIST, onAddSampleList);
-  yield takeEvery(UPDATE_NEW_SAMPLE_LIST, onUpdateSampleList);
+  yield takeEvery(UPDATE_NEW_SAMPLE_LIST, onUpdateNewSampleList);
+  yield takeEvery(UPDATE_SAMPLE_LIST, onUpdateSampleList);
   yield takeEvery(DELETE_NEW_SAMPLE_LIST, onDeleteSampleList);
 }
 

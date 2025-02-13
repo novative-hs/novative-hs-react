@@ -2,6 +2,12 @@ import {
   GET_SCHEME_LIST,
   GET_SCHEME_LIST_SUCCESS,
   GET_SCHEME_LIST_FAIL,
+  GET_SCHEMENAME,
+  GET_SCHEMENAME_SUCCESS,
+  GET_SCHEMENAME_FAIL,
+  GET_SCHEMEANALYTE,
+  GET_SCHEMEANALYTE_SUCCESS,
+  GET_SCHEMEANALYTE_FAIL,
   ADD_NEW_SCHEME_LIST,
   ADD_NEW_SCHEME_LIST_SUCCESS,
   ADD_NEW_SCHEME_LIST_FAIL,
@@ -38,6 +44,37 @@ export const getSchemelistFail = (error) => {
     payload: error,
   };
 };
+///get analytes associated with unit
+  export const getSchemeAnalyte = (id) => ({
+    type: GET_SCHEMEANALYTE,
+    payload: id,
+  });
+  
+  export const getSchemeAnalyteSuccess = SchemeAnalyte => ({
+    type: GET_SCHEMEANALYTE_SUCCESS,
+    payload: SchemeAnalyte,
+  });
+  
+  export const getSchemeAnalyteFail = error => ({
+    type: GET_SCHEMEANALYTE_FAIL,
+    payload: error,
+  });
+
+  ///get analytes associated with unit
+  export const getSchemeName = (id) => ({
+    type: GET_SCHEMENAME,
+    payload: id,
+  });
+  
+  export const getSchemeNameSuccess = UnitAnalyte => ({
+    type: GET_SCHEMENAME_SUCCESS,
+    payload: UnitAnalyte,
+  });
+  
+  export const getSchemeNameFail = error => ({
+    type: GET_SCHEMENAME_FAIL,
+    payload: error,
+  });
 
 //////////////Add New Scheme////////////
 export const addNewSchemeList = (createUnit, id) => ({

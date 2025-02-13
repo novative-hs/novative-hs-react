@@ -6,7 +6,16 @@ export const GET_SCHEME_LIST_SUCCESS =
   "GET_SCHEME_LIST_SUCCESS";
 export const GET_SCHEME_LIST_FAIL = "GET_SCHEME_LIST_FAIL";
 
+/////////////////////////////
+///get analytes associated with unit
+export const GET_SCHEMEANALYTE = "GET_SCHEMEANALYTE";
+export const GET_SCHEMEANALYTE_SUCCESS ="GET_SCHEMEANALYTE_SUCCESS";
+export const GET_SCHEMEANALYTE_FAIL = "GET_SCHEMEANALYTE_FAIL";
 
+///get analytes associated with unit
+export const GET_SCHEMENAME = "GET_SCHEMENAME";
+export const GET_SCHEMENAME_SUCCESS ="GET_SCHEMENAME_SUCCESS";
+export const GET_SCHEMENAME_FAIL = "GET_SCHEMENAME_FAIL";
 ///adding new Scheme
 export const ADD_NEW_SCHEME_LIST = "ADD_NEW_SCHEME_LIST";
 export const ADD_NEW_SCHEME_LIST_SUCCESS = "ADD_NEW_SCHEME_LIST_SUCCESS";

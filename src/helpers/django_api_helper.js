@@ -732,7 +732,39 @@ export const getSchemeAnalytesList = id =>
   get(`${url.SCHEMES_ANALYTES}/${id}`, {
     headers: getHeader(authHeader()),
   });
+///////analytes associated with unit
+export const getSchemeAnalyte = id =>
+  get(`${url.GET_SCHEMEANALYTE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
+///////analytes associated with unit
+export const getSchemeName = id =>
+  get(`${url.GET_SCHEMENAME}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const addNewScheme = (createUnit, id) => {
+  let formData = new FormData();
+  formData.append("name", createUnit.name);
+  formData.append("price", createUnit.price);
+  formData.append("analytetype", createUnit.analytetype);
+  formData.append("added_by", createUnit.added_by);
+  formData.append("status", createUnit.status);
+  return axios.post(`${url.ADD_NEW_SCHEME}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const updateScheme = unit => {
+  let formData = new FormData();
+  formData.append("name", unit.name);
+  formData.append("price", unit.price);
+  formData.append("added_by", unit.added_by);
+  formData.append("analytetype", unit.analytetype);
+  formData.append("status", unit.status);
+  return axios.put(`${url.UPDATE_SCHEME}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
 //Get result list
 export const getResultsList = id =>
   get(`${url.GET_RESULT}/${id}`, {
@@ -1146,28 +1178,28 @@ export const getSchemelist = id =>
   get(`${url.GET_SCHEME_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const addNewScheme = (createUnit, id) => {
-  let formData = new FormData();
-  formData.append("name", createUnit.name);
-  formData.append("price", createUnit.price);
-  formData.append("analytetype", createUnit.analytetype);
-  formData.append("added_by", createUnit.added_by);
-  formData.append("status", createUnit.status);
-  return axios.post(`${url.ADD_NEW_SCHEME}`, formData, {
-    headers: getHeader(authHeader()),
-  });
-};
-export const updateScheme = unit => {
-  let formData = new FormData();
-  formData.append("name", unit.name);
-  formData.append("price", unit.price);
-  formData.append("added_by", unit.added_by);
-  formData.append("analytetype", unit.analytetype);
-  formData.append("status", unit.status);
-  return axios.put(`${url.UPDATE_SCHEME}/${unit.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
-};
+// export const addNewScheme = (createUnit, id) => {
+//   let formData = new FormData();
+//   formData.append("name", createUnit.name);
+//   formData.append("price", createUnit.price);
+//   formData.append("analytetype", createUnit.analytetype);
+//   formData.append("added_by", createUnit.added_by);
+//   formData.append("status", createUnit.status);
+//   return axios.post(`${url.ADD_NEW_SCHEME}`, formData, {
+//     headers: getHeader(authHeader()),
+//   });
+// };
+// export const updateScheme = unit => {
+//   let formData = new FormData();
+//   formData.append("name", unit.name);
+//   formData.append("price", unit.price);
+//   formData.append("added_by", unit.added_by);
+//   formData.append("analytetype", unit.analytetype);
+//   formData.append("status", unit.status);
+//   return axios.put(`${url.UPDATE_SCHEME}/${unit.id}`, formData, {
+//     headers: getHeader(authHeader()),
+//   });
+// };
 
 export const deleteScheme = unit =>
   del(`${url.DELETE_SCHEME}/${unit.id}`, {

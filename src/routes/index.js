@@ -53,7 +53,7 @@ import Scheme from "pages/databaseadmin/scheme";
 import Cycle from "pages/databaseadmin/cycle";
 import CycleAnalytes from "pages/databaseadmin/cycle-analyte";
 import SchemeAnalytes from "pages/databaseadmin/add-analytes-scheme-page";
-
+import SchemeListAnalyte from "pages/databaseadmin/scheme-analytelist";
 import Sample from "pages/databaseadmin/sample";
 import SampleAnalytes from "pages/databaseadmin/add-analytes-sample-page";
 
@@ -297,7 +297,7 @@ const databaseAdminAuthProtectedRoutes = [
   {path: "/add-analytes-scheme-page/:id", component: SchemeAnalytes},
   {path: "/:organization_name/sample", component: Sample},
   {path: "/add-analytes-sample-page/:id", component: SampleAnalytes},
-
+  {path: "/scheme-analytelist/:id", component: SchemeListAnalyte},
   { path: "/:organization_name/analyte-add-methods/:id", component: AnalyteAddMethods }, 
   { path: "/:organization_name/analyte-add-units/:id", component: AnalyteAddUnits },   
   { path: "/analyte-add-qualitative-units/:id", component: AnalyteAddQualitativeUnits }, 
