@@ -20,6 +20,7 @@ export const POST_CORPORATE_INFORMATION = `${API_ENDPOINT}/api/corporate/corpora
 export const GET_SAMPLE_LIST = `${API_ENDPOINT}/api/database-admin/sample-list`;
 export const ADD_NEW_SAMPLE_LIST = `${API_ENDPOINT}/api/database-admin/post-sample-list`;
 export const UPDATE_NEW_SAMPLE_LIST  = `${API_ENDPOINT}/api/database-admin/update-sample-list`;
+export const UPDATE_SAMPLE_LIST  = `${API_ENDPOINT}/api/database-admin/update-sample-list`;
 export const DELETE_NEW_SAMPLE_LIST = `${API_ENDPOINT}/api/database-admin/delete-sample`;
 
 // Sample Analyte
