@@ -640,6 +640,7 @@ export const getResultHistory = (id, participantId, scheme_id) => {
     formData.append("sampleno", sample.sampleno);
     formData.append("scheme", sample.scheme);
     formData.append("detail", sample.detail);
+    formData.append("analytetype", sample.analytetype); 
     formData.append("notes", sample.notes);
     formData.append("status", sample.status);
     return axios.post(`${url.ADD_NEW_SAMPLE_LIST}`, formData, {
@@ -654,6 +655,7 @@ export const getResultHistory = (id, participantId, scheme_id) => {
     formData.append("cycle", sample.cycle);
     formData.append("round", sample.round);
     formData.append("detail", sample.detail);
+    formData.append("analytetype", sample.analytetype); 
     formData.append("notes", sample.notes);
     formData.append("added_by", sample.added_by);
     
