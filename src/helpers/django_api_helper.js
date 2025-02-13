@@ -646,6 +646,25 @@ export const getResultHistory = (id, participantId, scheme_id) => {
       headers: getHeader(authHeader()),
     });
   };
+  export const updateNewSampleList = sample => {
+    let formData = new FormData();
+    formData.append("samplename", sample.samplename);
+    formData.append("sampleno", sample.sampleno);
+    formData.append("scheme", sample.scheme);
+    formData.append("cycle", sample.cycle);
+    formData.append("round", sample.round);
+    formData.append("detail", sample.detail);
+    formData.append("notes", sample.notes);
+    formData.append("added_by", sample.added_by);
+    
+    return axios.put(
+      `${url.UPDATE_NEW_SAMPLE_LIST}/${sample.id}`,
+        formData,
+        {
+            headers: getHeader(authHeader()),
+        }
+    );
+};
 //////////////////////////////////////
 export const updateSampleList = sample => {
     let formData = new FormData();
