@@ -155,36 +155,50 @@ class InstrumentType extends Component {
           dataField: "cycle",
           text: "Cycle Duration",
           sort: true,
-          formatter: (cellContent, cycle) => (
-            <>
-              {cycle.cycle}
-            </>
-          ),
+          formatter: (cellContent, cycle) => {
+            const startDate = new Date(cycle.start_date); // Ensure your data has start_date
+            const endDate = new Date(cycle.end_date); // Ensure your data has end_date
+
+            // Calculate the total months, including the end month
+            const yearDiff = endDate.getFullYear() - startDate.getFullYear();
+            const monthDiff = endDate.getMonth() - startDate.getMonth();
+            const totalMonths = yearDiff * 12 + monthDiff + 1; // Add 1 to include the end month
+
+            return <>{totalMonths} months</>;
+          },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-                  <input 
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
                     type="text"
                     value={this.state.cycleFilter}
-                    onChange={e => this.handleFilterChange('cycleFilter', e)}
+                    onChange={(e) => this.handleFilterChange("cycleFilter", e)}
                     className="form-control"
                     style={{
-                      textAlign: 'center',
-                      width: '120px',
+                      textAlign: "center",
+                      width: "120px",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
-          headerStyle: { 
-            textAlign: 'center' 
+          headerStyle: {
+            textAlign: "center",
           },
-          style: { 
-            textAlign: 'center', 
-            whiteSpace: 'normal' 
+          style: {
+            textAlign: "center",
+            whiteSpace: "normal",
           },
         },
         {

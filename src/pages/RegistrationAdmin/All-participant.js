@@ -138,7 +138,7 @@ class PendingLabs extends Component {
                 <Link
                   to="#"
                   // onClick={e => this.openLabModal(e, AllLabs)}
-                  onMouseEnter={e => this.openLabModal(e, AllLabs)}
+                  onMouseEnter={(e) => this.openLabModal(e, AllLabs)}
                   onPointerLeave={this.handleMouseExit} // Pass the function reference instead of calling it immediately
                 >
                   {AllLabs.name}
@@ -301,7 +301,7 @@ class PendingLabs extends Component {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
-  isPaymentModalOpen = id => {
+  isPaymentModalOpen = (id) => {
     this.setState(
       {
         isPaymentModalOpen: true,
@@ -318,7 +318,7 @@ class PendingLabs extends Component {
   };
   togglePaymentModal = () => {
     this.setState(
-      prevState => ({
+      (prevState) => ({
         isPaymentModalOpen: !prevState.isPaymentModalOpen,
       }),
       () => {
@@ -434,7 +434,7 @@ class PendingLabs extends Component {
     });
   };
 
-  toggleEditModal = data => {
+  toggleEditModal = (data) => {
     this.setState({
       editModal: !this.state.editModal,
       id: data.id,
@@ -452,7 +452,7 @@ class PendingLabs extends Component {
     });
   };
   toggleLabModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       LabModal: !prevState.LabModal,
     }));
     this.state.btnText === "Copy"
@@ -460,7 +460,7 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggleModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isModalOpen: !prevState.isModalOpen,
     }));
   };
@@ -481,7 +481,7 @@ class PendingLabs extends Component {
     });
   };
   togglePatientModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       PatientModal: !prevState.PatientModal,
     }));
     this.state.btnText === "Copy"
@@ -496,7 +496,7 @@ class PendingLabs extends Component {
     });
   };
   toggleMarketerModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       MarketerModal: !prevState.MarketerModal,
     }));
     this.state.btnText === "Copy"
@@ -504,16 +504,16 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggle() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       modal: !prevState.modal,
     }));
   }
 
-  handleApprovedEvent = id => {
+  handleApprovedEvent = (id) => {
     this.setState({ id: id, isApproved: true, unapprovedModal: true });
   };
 
-  handleUnapprovedEvent = id => {
+  handleUnapprovedEvent = (id) => {
     this.setState({ id: id, isApproved: false, unapprovedModal: true });
   };
 
@@ -537,7 +537,7 @@ class PendingLabs extends Component {
     this.setState({ unapprovedModal: false });
   };
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -548,7 +548,7 @@ class PendingLabs extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-  handleSelectChange = event => {
+  handleSelectChange = (event) => {
     const selectedValue = event.target.value;
 
     // Update the state
@@ -586,12 +586,12 @@ class PendingLabs extends Component {
     const { approvedLabs, CycleList } = this.state;
 
     const participantOptions = (this.props.approvedLabs || []).map(
-      participant => ({
+      (participant) => ({
         value: participant.id, // ensure this is the correct unique identifier
         label: participant.name, // or any other field you'd like to display
       })
     );
-    const schemeOptions = CycleList.map(scheme => ({
+    const schemeOptions = CycleList.map((scheme) => ({
       value: scheme.id, // Use scheme ID instead of scheme name
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
     }));
@@ -638,7 +638,7 @@ class PendingLabs extends Component {
                           data={AllLabs}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
@@ -1284,77 +1284,26 @@ class PendingLabs extends Component {
                                             touched,
                                             setFieldValue,
                                           }) => {
-                                            const handleSchemeChange =
-                                              selectedOption => {
-                                                setFieldValue(
-                                                  "scheme",
-                                                  selectedOption
-                                                    ? selectedOption.value
-                                                    : null
-                                                );
-                                                const selectedScheme =
-                                                  CycleList.find(
-                                                    scheme =>
-                                                      scheme.id ===
-                                                      selectedOption?.value
-                                                  );
-                                                if (selectedScheme) {
-                                                  const cycle_no =
-                                                    selectedScheme.cycle_no;
-                                                  let total_price = parseFloat(
-                                                    selectedScheme.price
-                                                  );
-                                                  let roundedPrice =
-                                                    Math.round(total_price);
-                                                  setFieldValue(
-                                                    "cycle_no",
-                                                    cycle_no
-                                                  );
-                                                  setFieldValue(
-                                                    "price",
-                                                    roundedPrice.toFixed(2)
-                                                  );
-
-                                                  if (values.discount) {
-                                                    const discountPrice =
-                                                      roundedPrice -
-                                                      (roundedPrice *
-                                                        parseFloat(
-                                                          values.discount
-                                                        )) /
-                                                        100;
-                                                    roundedPrice =
-                                                      Math.round(discountPrice);
-                                                    setFieldValue(
-                                                      "price",
-                                                      roundedPrice.toFixed(2)
-                                                    );
-                                                  }
-                                                }
-                                              };
-
-                                            const handleDiscountChange = e => {
-                                              let discountValue = parseFloat(
-                                                e.target.value
-                                              );
-                                              if (
-                                                isNaN(discountValue) ||
-                                                !discountValue
-                                              ) {
-                                                discountValue = 0;
-                                              }
+                                            const handleSchemeChange = (
+                                              selectedOptions
+                                            ) => {
+                                              const selectedValues =
+                                                selectedOptions
+                                                  ? selectedOptions.map(
+                                                      (option) => option.value
+                                                    )
+                                                  : [];
                                               setFieldValue(
-                                                "discount",
-                                                discountValue
+                                                "scheme",
+                                                selectedValues
                                               );
 
                                               const totalPrice =
-                                                values.scheme.reduce(
+                                                selectedValues.reduce(
                                                   (sum, schemeId) => {
                                                     const scheme =
                                                       CycleList.find(
-                                                        scheme =>
-                                                          scheme.id === schemeId
+                                                        (s) => s.id === schemeId
                                                       );
                                                     return (
                                                       sum +
@@ -1368,14 +1317,90 @@ class PendingLabs extends Component {
                                                   0
                                                 );
 
-                                              let discountedPrice =
-                                                totalPrice -
-                                                (totalPrice * discountValue) /
+                                              // Set priceBeforeDiscount only once when schemes are selected
+                                              if (
+                                                !values.priceBeforeDiscount ||
+                                                values.scheme.length === 0
+                                              ) {
+                                                setFieldValue(
+                                                  "priceBeforeDiscount",
+                                                  totalPrice.toFixed(2)
+                                                );
+                                              }
+
+                                              // Update the price to reflect the total (will be modified later by discount)
+                                              setFieldValue(
+                                                "price",
+                                                totalPrice.toFixed(2)
+                                              );
+                                            };
+
+                                            const handleDiscountChange = (
+                                              e
+                                            ) => {
+                                              let discountValue = parseFloat(
+                                                e.target.value
+                                              );
+
+                                              // Ensure discountValue is valid, if not set to 0
+                                              if (
+                                                isNaN(discountValue) ||
+                                                discountValue < 0
+                                              ) {
+                                                discountValue = 0;
+                                              }
+
+                                              // Update the discount field
+                                              setFieldValue(
+                                                "discount",
+                                                discountValue
+                                              );
+
+                                              // Use priceBeforeDiscount for calculations
+                                              const priceBeforeDiscount =
+                                                parseFloat(
+                                                  values.priceBeforeDiscount
+                                                ) || 0;
+
+                                              // Calculate the discounted price
+                                              const discountedPrice =
+                                                priceBeforeDiscount -
+                                                (priceBeforeDiscount *
+                                                  discountValue) /
                                                   100;
+
+                                              // Calculate the discount amount in rupees
+                                              const discountAmount =
+                                                (priceBeforeDiscount *
+                                                  discountValue) /
+                                                100;
+
+                                              // Update the price (price after discount) and discount amount
                                               setFieldValue(
                                                 "price",
                                                 discountedPrice.toFixed(2)
                                               );
+                                              setFieldValue(
+                                                "discountAmount",
+                                                discountAmount.toFixed(2)
+                                              );
+
+                                              console.log(
+                                                "Discount Value:",
+                                                discountValue
+                                              ); // Debugging
+                                              console.log(
+                                                "Price Before Discount:",
+                                                priceBeforeDiscount
+                                              ); // Debugging
+                                              console.log(
+                                                "Price After Discount:",
+                                                discountedPrice
+                                              ); // Debugging
+                                              console.log(
+                                                "Discount Amount:",
+                                                discountAmount
+                                              ); // Debugging
                                             };
 
                                             return (
@@ -1401,7 +1426,9 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={selectedOption => {
+                                                      onChange={(
+                                                        selectedOption
+                                                      ) => {
                                                         setFieldValue(
                                                           "participant",
                                                           selectedOption?.value ||
@@ -1410,7 +1437,7 @@ class PendingLabs extends Component {
                                                       }}
                                                       value={
                                                         participantOptions.find(
-                                                          option =>
+                                                          (option) =>
                                                             option.value ===
                                                             values.participant
                                                         ) || null
@@ -1437,11 +1464,13 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={selectedOptions => {
+                                                      onChange={(
+                                                        selectedOptions
+                                                      ) => {
                                                         const selectedValues =
                                                           selectedOptions
                                                             ? selectedOptions.map(
-                                                                option =>
+                                                                (option) =>
                                                                   option.value
                                                               )
                                                             : [];
@@ -1460,7 +1489,7 @@ class PendingLabs extends Component {
                                                             (sum, schemeId) => {
                                                               const scheme =
                                                                 this.props.CycleList.find(
-                                                                  s =>
+                                                                  (s) =>
                                                                     s.id ===
                                                                     schemeId
                                                                 );
@@ -1480,13 +1509,20 @@ class PendingLabs extends Component {
                                                           "Total Price:",
                                                           totalPrice
                                                         ); // Debugging
+
+                                                        // Update the priceBeforeDiscount field
+                                                        setFieldValue(
+                                                          "priceBeforeDiscount",
+                                                          totalPrice.toFixed(2)
+                                                        );
+
                                                         setFieldValue(
                                                           "price",
                                                           totalPrice.toFixed(2)
                                                         );
                                                       }}
                                                       value={schemeOptions.filter(
-                                                        option =>
+                                                        (option) =>
                                                           values.scheme.includes(
                                                             option.value
                                                           )
@@ -1498,10 +1534,108 @@ class PendingLabs extends Component {
                                                   <Col>
                                                     <div className="mb-3">
                                                       <Label
+                                                        for="priceBeforeDiscount"
+                                                        className="form-label"
+                                                      >
+                                                        Price before Discount
+                                                      </Label>
+                                                      <Field
+                                                        name="priceBeforeDiscount"
+                                                        type="text"
+                                                        placeholder="Enter price"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.priceBeforeDiscount &&
+                                                          touched.priceBeforeDiscount
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        value={new Intl.NumberFormat(
+                                                          "en-US"
+                                                        ).format(
+                                                          values.priceBeforeDiscount ||
+                                                            0
+                                                        )} // Format the value
+                                                        readOnly
+                                                      />
+                                                      <ErrorMessage
+                                                        name="priceBeforeDiscount"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+
+                                                <Row>
+                                                  <Col>
+                                                    <Label>
+                                                      Discount in (%)
+                                                    </Label>
+                                                    <Field
+                                                      name="discount"
+                                                      type="number"
+                                                      className="form-control"
+                                                      onChange={
+                                                        handleDiscountChange
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="discount"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col>
+                                                    <div className="mb-3">
+                                                      <Label
+                                                        for="discountAmount"
+                                                        className="form-label"
+                                                      >
+                                                        Discount Amount (Rs)
+                                                      </Label>
+                                                      <Field
+                                                        name="discountAmount"
+                                                        type="text"
+                                                        placeholder="Discount amount"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.discountAmount &&
+                                                          touched.discountAmount
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        value={new Intl.NumberFormat(
+                                                          "en-US",
+                                                          {
+                                                            style: "currency",
+                                                            currency: "PKR",
+                                                          }
+                                                        ).format(
+                                                          values.discountAmount ||
+                                                            0
+                                                        )} // Format the value as currency
+                                                        readOnly
+                                                      />
+                                                      <ErrorMessage
+                                                        name="discountAmount"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+
+                                                <Row>
+                                                  <Col>
+                                                    <div className="mb-3">
+                                                      <Label
                                                         for="price"
                                                         className="form-label"
                                                       >
-                                                        Price
+                                                        Price after Discount
                                                       </Label>
                                                       <Field
                                                         name="price"
@@ -1527,24 +1661,6 @@ class PendingLabs extends Component {
                                                         className="invalid-feedback"
                                                       />
                                                     </div>
-                                                  </Col>
-                                                </Row>
-                                                <Row>
-                                                  <Col>
-                                                    <Label>Discount (%)</Label>
-                                                    <Field
-                                                      name="discount"
-                                                      type="number"
-                                                      className="form-control"
-                                                      onChange={
-                                                        handleDiscountChange
-                                                      }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="discount"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
                                                   </Col>
                                                 </Row>
 
@@ -1573,7 +1689,7 @@ class PendingLabs extends Component {
                                                       type="file"
                                                       multiple={false}
                                                       accept=".jpg,.jpeg,.png"
-                                                      onChange={event =>
+                                                      onChange={(event) =>
                                                         this.handleFileChange(
                                                           event,
                                                           setFieldValue
@@ -1616,7 +1732,9 @@ class PendingLabs extends Component {
                                                           label: "Cash",
                                                         },
                                                       ]}
-                                                      onChange={selectedOption =>
+                                                      onChange={(
+                                                        selectedOption
+                                                      ) =>
                                                         setFieldValue(
                                                           "paymentmethod",
                                                           selectedOption?.value ||
@@ -1716,18 +1834,18 @@ const mapStateToProps = ({ Account, registrationAdmin, CycleList }) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
-  onGetPendingLabs: id => dispatch(getAllLabs(id)),
-  onGetInstrumentTypeList: id => dispatch(getSchemelist(id)),
+  onApproveUnapproveLab: (data) => dispatch(approveUnapproveLab(data)),
+  onGetPendingLabs: (id) => dispatch(getAllLabs(id)),
+  onGetInstrumentTypeList: (id) => dispatch(getSchemelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewSchemeList(id, createUnit)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateSchemeList({ id, ...methodlist })),
-  onupdateAllLabs: updatedData => {
+  onupdateAllLabs: (updatedData) => {
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
-  ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
-  ongetcyclelist: id => dispatch(getcyclelist(id)),
+  ongetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
+  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
 });
 
