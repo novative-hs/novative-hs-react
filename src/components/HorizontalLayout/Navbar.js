@@ -207,7 +207,7 @@ class Navbar extends Component {
                           className="dropdown-item"
                         >
                           <span className="pt-4 font-size-12">
-                            Database Review
+                            Reports
                           </span>
                           {/* {this.props.t("Tests")} */}
                         </Link>

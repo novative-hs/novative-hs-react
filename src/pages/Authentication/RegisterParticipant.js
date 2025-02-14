@@ -1379,7 +1379,7 @@ class StaffRegister extends Component {
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
                                   <Label for="lab_code" className="form-label">
-                                    Lab Code
+                                    Lab Number
                                   </Label>
                                   <Field
                                     name="lab_code"
