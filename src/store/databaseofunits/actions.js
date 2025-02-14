@@ -54,7 +54,11 @@ import {
   ADD_NEW_SAMPLE_ANALYTE_FAIL,
   UPDATE_SAMPLE_ANALYTE,
   UPDATE_SAMPLE_ANALYTE_SUCCESS,
-  UPDATE_SAMPLE_ANALYTE_FAIL
+  UPDATE_SAMPLE_ANALYTE_FAIL, 
+
+  GET_ANALYTESSAMPLE,
+  GET_ANALYTESSAMPLE_SUCCESS,
+  GET_ANALYTESSAMPLE_FAIL,
 } from "./actionTypes";
 
 
@@ -356,3 +360,17 @@ export const updateSampleAnalytelistFail = error => ({
   payload: error,
 });
 
+export const getAnalyteSampleList = (id)=> ({
+  type: GET_ANALYTESSAMPLE,
+  payload: id,
+});
+
+export const getAnalyteSampleSuccess = SampleListAnalyte => ({
+  type: GET_ANALYTESSAMPLE_SUCCESS,
+  payload: SampleListAnalyte,
+});
+
+export const getAnalyteSampleFail = error => ({
+  type: GET_ANALYTESSAMPLE_FAIL,
+  payload: error,
+});

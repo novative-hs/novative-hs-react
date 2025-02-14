@@ -38,7 +38,10 @@ import {
   ADD_NEW_SAMPLE_ANALYTE_SUCCESS,
   ADD_NEW_SAMPLE_ANALYTE_FAIL,
   UPDATE_SAMPLE_ANALYTE_SUCCESS,
-  UPDATE_SAMPLE_ANALYTE_FAIL
+  UPDATE_SAMPLE_ANALYTE_FAIL, 
+
+  GET_ANALYTESSAMPLE_SUCCESS,
+  GET_ANALYTESSAMPLE_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -48,6 +51,7 @@ const INIT_STATE = {
   SampleAnalyteList:[],
   CycleAnalyte:[],
   EquipmentData:[],
+  SampleListAnalytes:[],
   ListUnit: [],
   AddUnits: [],  
   unit: [],
@@ -310,6 +314,19 @@ const ListUnit = (state = INIT_STATE, action) => {
                           error: action.payload,
                         };
                       
+
+                        case GET_ANALYTESSAMPLE_SUCCESS:
+                          console.log("Reducer - SampleListAnalyte:", action.payload);
+                          return {
+                              ...state,
+                              SampleListAnalyte: action.payload,
+                          };
+                      case GET_ANALYTESSAMPLE_FAIL:
+                          console.error("Reducer - Error fetching sample analytes:", action.payload);
+                          return {
+                              ...state,
+                              error: action.payload,
+                          };
     default:
       return state;
   }

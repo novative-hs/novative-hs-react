@@ -1,14 +1,14 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { DELETE_ANALYTE,DELETE_INSTRUMENT_TYPE,GET_INSTRUMENT_TYPE_LIST, ADD_NEW_INSTRUMENT_TYPE, UPDATE_NEW_INSTRUMENT_TYPE, GET_ANALYTE_LIST, GET_ANALYTEFORSCHEME_LIST, ADD_NEW_ANALYTE_LIST,  UPDATE_NEW_ANALYTE_LIST, GET_SCHEMEANALYTE_LIST,ADD_NEW_SCHEMEANALYTE,UPDATE_SCHEMEANALYTE, GET_ANALYTESCYCLES, GET_SAMPLE_ANALYTE_LIST,ADD_NEW_SAMPLE_ANALYTE,UPDATE_SAMPLE_ANALYTE, ADD_EQUIPMENTTYPE_FILE
+import { DELETE_ANALYTE,DELETE_INSTRUMENT_TYPE,GET_INSTRUMENT_TYPE_LIST, ADD_NEW_INSTRUMENT_TYPE, UPDATE_NEW_INSTRUMENT_TYPE, GET_ANALYTE_LIST, GET_ANALYTEFORSCHEME_LIST, ADD_NEW_ANALYTE_LIST,  UPDATE_NEW_ANALYTE_LIST, GET_SCHEMEANALYTE_LIST,ADD_NEW_SCHEMEANALYTE,UPDATE_SCHEMEANALYTE, GET_ANALYTESCYCLES, GET_SAMPLE_ANALYTE_LIST,ADD_NEW_SAMPLE_ANALYTE,UPDATE_SAMPLE_ANALYTE, ADD_EQUIPMENTTYPE_FILE, GET_ANALYTESSAMPLE,
 } from "./actionTypes";
 
-import { deleteAnalyteSuccess,deleteAnalyteFail,getinstrumenttypelistSuccess, getinstrumenttypelistFail,addNewInstrumentTypeSuccess,addNewInstrumentTypeFail ,updateNewInstrumentTypeSuccess,updateNewInstrumentTypeFail, addNewAnalyteListFail, addNewAnalyteListSuccess, updateAnalyteListSuccess,updateAnalyteListFail,getAnalytelistFail, getAnalyteforSchemelistSuccess, getAnalyteforSchemelistFail, getAnalytelistSuccess,deleteInstrumentTypeSuccess,deleteInstrumentTypeFail, getSchemeAnalytelistSuccess,getSchemeAnalytelistFail,addNewSchemeAnalytelistSuccess,addNewSchemeAnalytelistFail,updateSchemeAnalytelistSuccess,updateSchemeAnalytelistFail, getAnalyteCycleFail,getAnalyteCycleSuccess, getSampleAnalytelistSuccess,getSampleAnalytelistFail,addNewSampleAnalytelistSuccess,addNewSampleAnalytelistFail,updateSampleAnalytelistSuccess,updateSampleAnalytelistFail,addEquipmentTypefileFail
+import { deleteAnalyteSuccess,deleteAnalyteFail,getinstrumenttypelistSuccess, getinstrumenttypelistFail,addNewInstrumentTypeSuccess,addNewInstrumentTypeFail ,updateNewInstrumentTypeSuccess,updateNewInstrumentTypeFail, addNewAnalyteListFail, addNewAnalyteListSuccess, updateAnalyteListSuccess,updateAnalyteListFail,getAnalytelistFail, getAnalyteforSchemelistSuccess, getAnalyteforSchemelistFail, getAnalytelistSuccess,deleteInstrumentTypeSuccess,deleteInstrumentTypeFail, getSchemeAnalytelistSuccess,getSchemeAnalytelistFail,addNewSchemeAnalytelistSuccess,addNewSchemeAnalytelistFail,updateSchemeAnalytelistSuccess,updateSchemeAnalytelistFail, getAnalyteCycleFail,getAnalyteCycleSuccess, getSampleAnalytelistSuccess,getSampleAnalytelistFail,addNewSampleAnalytelistSuccess,addNewSampleAnalytelistFail,updateSampleAnalytelistSuccess,updateSampleAnalytelistFail,addEquipmentTypefileFail, getAnalyteSampleFail, getAnalyteSampleSuccess
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { deleteAnalyte,deleteInstrumentType,getInstrumenttypelist ,addNewInstrumentType,updateNewInstrumentType, getAnalytelist, updateAnalyte , addNewAnalyte, getSchemeAnalytelist, getAnalyteforSchemelist, addNewSchemeAnalytelist,updateSchemeAnalytelist, getAnalyteCycle, addEquipmentTypefile, getSampleAnalytelist,addNewSampleAnalytelist,updateSampleAnalytelist} from "../../helpers/django_api_helper";
+import { deleteAnalyte,deleteInstrumentType,getInstrumenttypelist ,addNewInstrumentType,updateNewInstrumentType, getAnalytelist, updateAnalyte , addNewAnalyte, getSchemeAnalytelist, getAnalyteforSchemelist, addNewSchemeAnalytelist,updateSchemeAnalytelist, getAnalyteCycle, addEquipmentTypefile, getSampleAnalytelist,addNewSampleAnalytelist,updateSampleAnalytelist, getAnalyteSampleList} from "../../helpers/django_api_helper";
 
 // ADD EQUIPMENT TYPE FILE
 
@@ -186,6 +186,15 @@ function* onDeleteAnalyte({ payload: Analyte }) {
   }
 }
 
+function* fetchAnalyteSample(object) {
+  try {
+    const response = yield call(getAnalyteSampleList, object.payload);
+    yield put(getAnalyteSampleSuccess(response.data));
+  } catch (error) {
+    yield put(getAnalyteSampleFail(error));
+  }
+}
+
 function* InstrumentTypeListSaga() {
   yield takeEvery(GET_INSTRUMENT_TYPE_LIST, fetchInstrumentTypeList);
   yield takeEvery(ADD_NEW_INSTRUMENT_TYPE, onAddNewInstrumentType);
@@ -204,7 +213,7 @@ function* InstrumentTypeListSaga() {
   yield takeEvery(UPDATE_SCHEMEANALYTE, onUpdateSchemeAnalyte);
 
   yield takeEvery(GET_ANALYTESCYCLES, fetchAnalyteCycles);
-
+  yield takeEvery(GET_ANALYTESSAMPLE, fetchAnalyteSample);
   yield takeEvery(GET_SAMPLE_ANALYTE_LIST, fetchSampleAnalyteList);
   yield takeEvery(ADD_NEW_SAMPLE_ANALYTE, onAddNewSampleAnalyte );
   yield takeEvery(UPDATE_SAMPLE_ANALYTE, onUpdateSampleAnalyte);

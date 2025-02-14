@@ -251,7 +251,7 @@ export const GET_SAMPLE_COLLECTORS = `${API_ENDPOINT}/api/lab/sample-collector-l
 export const ADD_NEW_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector`;
 export const UPDATE_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector`;
 export const DELETE_SAMPLE_COLLECTOR = `${API_ENDPOINT}/api/lab/sample-collector`;
-
+export const GET_ANALYTESSAMPLE = `${API_ENDPOINT}/api/database-admin/analyte-samples`;
 // QUALITY CERTIFICATES
 export const ADD_NEW_COLLECTIONPOINT_QUALITY = `${API_ENDPOINT}/api/lab/quality-certificate-collectionpoint-list`;
 export const GET_QUALITY_CERTIFICATES = `${API_ENDPOINT}/api/lab/quality-certificate-list`;

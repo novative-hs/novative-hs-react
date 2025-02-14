@@ -38,7 +38,7 @@ import DashboardOrganization from "../pages/Dashboard-Organization";
 import DashboardatabaseAdmin from "pages/Dashboard-DatabaseAdmin";
 import DatabaseOfUnitsPage from "pages/databaseadmin/database-of-units";
 import DatabaseOfQualitativeTypePage from "pages/databaseadmin/database-of-qualitativetype";
-
+import SampleListAnalytes from "pages/databaseadmin/sample-analyte";
 import DatabaseOfReagentsPage from "pages/databaseadmin/database-of-reagents";
 import DatabaseOfManufactural from "pages/databaseadmin/database-of-manufactural";
 import DatabaseOfMethod from "pages/databaseadmin/method-list";
@@ -290,7 +290,7 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/:organization_name/database-of-method", component: DatabaseOfMethod },
   { path: "/:organization_name/database-of-analyte", component: DatabaseOfAnalyte },
   { path: "/:organization_name/databaseadmin-history/:id", component: UnitsHistory },
-
+  {path: "/:organization_name/sample-analyte/:id", component: SampleListAnalytes},
   {path: "/:organization_name/scheme", component: Scheme},
   {path: "/:organization_name/cycle", component: Cycle},
   {path: "/:organization_name/cycle-analyte/:id", component: CycleAnalytes},

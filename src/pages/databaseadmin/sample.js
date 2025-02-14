@@ -213,7 +213,19 @@ class SampleList extends Component {
               </>
             );
         },
-
+ formatter: (cellContent, unitlist) => {
+            const { organization_name } = this.state;
+            return (
+              <div>
+                <Link
+                  to={`/${organization_name}/sample-analyte/${unitlist.id}`}
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                >
+                  {unitlist.noofanalytes}
+                </Link>
+              </div>
+            );
+          }
         },
         {
           dataField: "analytetype",

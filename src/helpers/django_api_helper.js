@@ -682,6 +682,14 @@ export const deleteSampleList = sample =>
   del(`${url.DELETE_NEW_SAMPLE_LIST}/${sample.id}`, {
     headers: getHeader(authHeader()),
   });
+
+  export const getAnalyteSampleList = (id) => {
+    console.log("Making API request to get analyte sample list for ID:", id);
+    return get(`${url.GET_ANALYTESSAMPLE}/${id}`, {
+        headers: getHeader(authHeader()),
+    });
+  };
+  
   
 /////////Analyte Sample List
 export const getSampleAnalytelist = (id) =>
