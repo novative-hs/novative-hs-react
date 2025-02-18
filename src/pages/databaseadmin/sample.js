@@ -305,7 +305,7 @@ class SampleList extends Component {
       {/* Always allow adding analytes */}
       <Tooltip title="Add Analytes">
         <Link to={`/add-analytes-sample-page/${sample.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
-          <i className="mdi mdi-magnify font-size-18" id="analyteIcon"></i>
+          <i className="mdi mdi-test-tube font-size-18" id="analyteIcon"></i>
         </Link>
       </Tooltip>
 

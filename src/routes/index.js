@@ -201,7 +201,7 @@ import { components } from "react-select/dist/react-select.cjs.prod";
 // import RegParticipant from "pages/Authentication/RegisterParticipant";
 import RegistrationAdminList from "pages/HrAdmin/registration-admin-list";
 import RegParticipantCSR from "pages/Authentication/RegisterParticipantCSR";
-import ParticipantPayment from "pages/Authentication/participant-payment";
+import ParticipantPayments from "pages/Authentication/participant-payment";
 
 import csrList from "pages/HrAdmin/csr-list";
 import organizationList from "pages/HrAdmin/organizationList";
@@ -350,7 +350,7 @@ const registrationAdminAuthProtectedRoutes = [
   },
   
   { path: "/:organization_name/register-participant", component: RegParticipant},
-  { path: "/:organization_name/participant-payment", component: ParticipantPayment},
+  { path: "/:organization_name/participant-payment", component: ParticipantPayments},
   {
     path: "/:organization_name/shared-percentage-approved-Fee/:id", component: sharedPercentageApprovedFeeTests,
   },

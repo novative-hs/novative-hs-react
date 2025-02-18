@@ -1177,6 +1177,7 @@ class PendingLabs extends Component {
                                             scheme: [],
                                             price: "",
                                             discount: 0,
+                                            receivedby: "",
                                             added_by: localStorage.getItem(
                                               "authUser"
                                             )
@@ -1205,6 +1206,9 @@ class PendingLabs extends Component {
                                               ),
                                             photo: Yup.string().required(
                                               "Deposit Slip is required"
+                                            ),
+                                            receivedby: Yup.string().required(
+                                              "Received By is required"
                                             ),
                                             paymentmethod:
                                               Yup.string().required(
@@ -1244,6 +1248,7 @@ class PendingLabs extends Component {
                                               discount: values.discount,
                                               paydate: values.paydate,
                                               photo: values.photo,
+                                              receivedby: values.receivedby,
                                               paymentmethod:
                                                 values.paymentmethod,
                                               added_by: userId,
@@ -1765,7 +1770,21 @@ class PendingLabs extends Component {
                                                     />
                                                   </Col>
                                                 </Row>
-
+                                                <Row>
+                                                  <Col>
+                                                    <Label>Received By</Label>
+                                                    <Field
+                                                      name="receivedby"
+                                                      type="text"
+                                                      className="form-control"
+                                                    />
+                                                    <ErrorMessage
+                                                      name="receivedby"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
                                                 <ModalFooter>
                                                   <Button
                                                     color="primary"

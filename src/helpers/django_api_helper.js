@@ -21,6 +21,14 @@ function getHeader(token) {
     };
   }
 }
+
+export const getParticipantPayment = id => {
+  console.log("Calling API:", `${url.GET_PARTICIPANT_PAYMENT}/${id}`);
+  return get(`${url.GET_PARTICIPANT_PAYMENT}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 export const postRegister = user => {
   let formData = new FormData();
   formData.append("name", user.name);
