@@ -53,7 +53,10 @@ class InstrumentType extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
+    this.handleSchemeChange = this.handleSchemeChange.bind(this);
     this.state = {
+      filteredCycleList: this.props.CycleList,
+      filteredSampleList: this.props.ListUnitt,
       selectedRound: null,
       isEdit: false,
       organization_name: "",
@@ -618,6 +621,27 @@ class InstrumentType extends Component {
     this.onClickStatistics = this.onClickStatistics.bind(this);
   }
 
+  handleSchemeChange = (e) => {
+    const selectedSchemeId = e.target.value;
+  
+    // Filter CycleList and SampleList based on the selected scheme
+    const filteredCycleList = this.props.CycleList.filter(
+      (cycle) => cycle.scheme_id === parseInt(selectedSchemeId)
+    );
+  
+    const filteredSampleList = this.props.ListUnitt.filter(
+      (sample) => sample.scheme_id === parseInt(selectedSchemeId)
+    );
+  
+    // Update the state with filtered lists
+    this.setState({
+      selectedSchemeId,
+      filteredCycleList,
+      filteredSampleList,
+    });
+  };
+  
+
   componentDidMount() {
     const { organization_name } = this.props.match.params;
 
@@ -1009,7 +1033,7 @@ class InstrumentType extends Component {
                                           })}
                                           onSubmit={async (
                                             values,
-                                            { setSubmitting }
+                                            { setSubmitting, setFieldValue, handleChange, errors, touched }
                                           ) => {
                                             const userId = localStorage.getItem(
                                               "authUser"
@@ -1103,42 +1127,35 @@ class InstrumentType extends Component {
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
-                                                  <div className="mb-3">
-                                                    <Label for="scheme">
-                                                      Select Scheme
-                                                    </Label>
-                                                    <Field
-                                                      as="select"
-                                                      name="scheme"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.scheme &&
-                                                        touched.scheme
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    >
-                                                      <option value="">
-                                                        Select Scheme
-                                                      </option>
-                                                      {this.state.SchemeList &&
-                                                        this.state.SchemeList.map(
-                                                          (scheme) => (
-                                                            <option
-                                                              key={scheme.id}
-                                                              value={scheme.id}
-                                                            >
-                                                              {scheme.name}
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </Field>
-                                                    <ErrorMessage
-                                                      name="scheme"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
+                                                <Field name="scheme">
+  {({ field, form }) => (
+    <div className="mb-3">
+      <label htmlFor="scheme">Select Scheme</label>
+      <select
+        {...field}
+        className={`form-control${
+          form.errors.scheme && form.touched.scheme ? " is-invalid" : ""
+        }`}
+        onChange={(e) => {
+          const { value } = e.target;
+          form.setFieldValue("scheme", value); // Update Formik value
+          this.handleSchemeChange(e); // Custom filtering logic
+        }}
+      >
+        <option value="">Select Scheme</option>
+        {this.state.SchemeList.map((scheme) => (
+          <option key={scheme.id} value={scheme.id}>
+            {scheme.name}
+          </option>
+        ))}
+      </select>
+      <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
+    </div>
+  )}
+</Field>
+
+<ErrorMessage name="scheme" component="div" className="invalid-feedback" />
+
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
                                                       Round Number
@@ -1155,43 +1172,23 @@ class InstrumentType extends Component {
                                                     />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <label htmlFor="cycle_no">
-                                                      Cycle No
-                                                    </label>
-                                                    <Field
-                                                      as="select"
-                                                      name="cycle_no"
-                                                      className={`form-control${
-                                                        errors.cycle_no &&
-                                                        touched.cycle_no
-                                                          ? " is-invalid"
-                                                          : ""
-                                                      }`}
-                                                    >
-                                                      <option value="">
-                                                        Select Cycle
-                                                      </option>
-                                                      {CycleList.filter(
-                                                        (cycle) =>
-                                                          cycle.status ===
-                                                          "Active"
-                                                      ).map((cycle) => (
-                                                        <option
-                                                          key={cycle.id}
-                                                          value={String(
-                                                            cycle.id
-                                                          )}
-                                                        >
-                                                          {cycle.cycle_no}
-                                                        </option>
-                                                      ))}
-                                                    </Field>
-                                                    <ErrorMessage
-                                                      name="cycle_no"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
+  <label htmlFor="cycle_no">Cycle No</label>
+  <Field
+    as="select"
+    name="cycle_no"
+    className={`form-control${
+      errors.cycle_no && touched.cycle_no ? " is-invalid" : ""
+    }`}
+  >
+    <option value="">Select Cycle</option>
+    {this.state.filteredCycleList.map((cycle) => (
+      <option key={cycle.id} value={String(cycle.id)}>
+        {cycle.cycle_no}
+      </option>
+    ))}
+  </Field>
+  <ErrorMessage name="cycle_no" component="div" className="invalid-feedback" />
+</div>
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
                                                       Issue Date
@@ -1255,47 +1252,23 @@ class InstrumentType extends Component {
                                                   {this.state.isEdit && (
                                                     <>
                                                       <div className="mb-3">
-                                                        <Label for="sample">
-                                                          Sample
-                                                        </Label>
-                                                        <Field
-                                                          as="select"
-                                                          name="sample"
-                                                          className={
-                                                            "form-control" +
-                                                            (errors.sample &&
-                                                            touched.sample
-                                                              ? " is-invalid"
-                                                              : "")
-                                                          }
-                                                        >
-                                                          <option value="">
-                                                            Select Sample
-                                                          </option>
-                                                          {ListUnitt &&
-                                                            ListUnitt.map(
-                                                              (sample) => (
-                                                                <option
-                                                                  key={
-                                                                    sample.id
-                                                                  }
-                                                                  value={
-                                                                    sample.samplename
-                                                                  }
-                                                                >
-                                                                  {
-                                                                    sample.samplename
-                                                                  }
-                                                                </option>
-                                                              )
-                                                            )}
-                                                        </Field>
-                                                        <ErrorMessage
-                                                          name="sample"
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
-                                                      </div>
+  <Label for="sample">Sample</Label>
+  <Field
+    as="select"
+    name="sample"
+    className={`form-control${
+      errors.sample && touched.sample ? " is-invalid" : ""
+    }`}
+  >
+    <option value="">Select Sample</option>
+    {this.state.filteredSampleList.map((sample) => (
+      <option key={sample.id} value={sample.samplename}>
+        {sample.samplename}
+      </option>
+    ))}
+  </Field>
+  <ErrorMessage name="sample" component="div" className="invalid-feedback" />
+</div>
 
                                                       <div className="mb-3">
                                                         <Label className="col-form-label">
