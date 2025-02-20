@@ -47,15 +47,10 @@ class Roundural extends Component {
           text: "Scheme Name",
           sort: true,
           formatter: (cellContent, round) => {
-            const { organization_name } = this.state; // Access organization_name from state
-            return (
-              <Link to={`/${organization_name}/${round.id}/${round.participant_id
-              }/participantsResults`}>
-                {round.scheme_name}
-              </Link>
-            );
+            return round.scheme_name; // Display only the scheme name without a link
           },
         },
+        
         {
           dataField: "rounds",
           text: "Rounds",
@@ -105,29 +100,49 @@ class Roundural extends Component {
             const { organization_name } = this.state;
             return (
               <div className="d-flex justify-content-center gap-3 ml-3">
+     <Tooltip title="Results">
+  <Link
+    className="fas fa-file-alt font-size-18 text-success"
+    to={`/${organization_name}/${round.id}/${round.participant_id}/participantsResults`}
+    onClick={(e) => {
+      e.preventDefault();
+      if (!organization_name) {
+        console.error("Invalid organization name");
+        return;
+      }
+      const url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
+      console.log("Navigating to:", url);
+      this.props.history.push(url);
+    }}
+  ></Link>
+</Tooltip>
+
+
+                {/* History Icon */}
                 <Tooltip title="History">
                   <Link
-                    className="fas fa-comment font-size-18 "
-                    to={`/${organization_name}/rounds-history/${round.id}`} // This will still provide the URL for navigation
-                    onClick={e => {
-                      e.preventDefault(); // Prevent the default navigation
-
-                      // Check if organization_name is valid
-                      if (!this.state.organization_name) {
+                    className="fas fa-comment font-size-18"
+                    to={`/${organization_name}/rounds-history/${round.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (!organization_name) {
                         console.error("Invalid organization name");
-                        return; // Prevent navigation if invalid
+                        return;
                       }
-
-                      const url = `/${this.state.organization_name}/rounds-history/participant/${round.id}`;
+                      const url = `/${organization_name}/rounds-history/participant/${round.id}`;
                       console.log("Navigating to:", url);
-                      this.props.history.push(url); // Navigate to the new URL
+                      this.props.history.push(url);
                     }}
                   ></Link>
                 </Tooltip>
+        
+                {/* Add Result Icon */}
+              
               </div>
             );
           },
-        },
+        }
+        
       ],
     };
     this.handleNameFilterChange = this.handleNameFilterChange.bind(this);
