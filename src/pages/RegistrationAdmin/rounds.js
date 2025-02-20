@@ -102,7 +102,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange("idFilter", e)}
+                    onChange={(e) => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -131,7 +131,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.roundsFilter}
-                    onChange={e => this.handleFilterChange("roundsFilter", e)}
+                    onChange={(e) => this.handleFilterChange("roundsFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -164,7 +164,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.schemenameFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("schemenameFilter", e)
                     }
                     className="form-control"
@@ -199,7 +199,9 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.cyclenoFilter}
-                    onChange={e => this.handleFilterChange("cyclenoFilter", e)}
+                    onChange={(e) =>
+                      this.handleFilterChange("cyclenoFilter", e)
+                    }
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -232,7 +234,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.sampleFilter}
-                    onChange={e => this.handleFilterChange("sampleFilter", e)}
+                    onChange={(e) => this.handleFilterChange("sampleFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -265,7 +267,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.participantsFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("participantsFilter", e)
                     }
                     className="form-control"
@@ -313,7 +315,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.issuedateFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("issuedateFilter", e)
                     }
                     className="form-control"
@@ -361,7 +363,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.closingdateFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("closingdateFilter", e)
                     }
                     className="form-control"
@@ -409,9 +411,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.notesFilter}
-                    onChange={e =>
-                      this.handleFilterChange("notesFilter", e)
-                    }
+                    onChange={(e) => this.handleFilterChange("notesFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -459,7 +459,7 @@ class InstrumentType extends Component {
                 >
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange("statusFilter", e)}
+                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -497,7 +497,7 @@ class InstrumentType extends Component {
           text: "Action",
           formatter: (cellContent, round) => {
             const { organization_name } = this.state;
-        
+
             return (
               <div
                 className="d-flex gap-3 ml-3"
@@ -512,49 +512,60 @@ class InstrumentType extends Component {
                     to="#"
                     onClick={(e) => {
                       e.preventDefault(); // Prevent default navigation
-        
+
                       // Check if organization_name is valid
                       if (!this.state.organization_name) {
                         return; // Prevent navigation if invalid
                       }
-        
+
                       const url = `/${this.state.organization_name}/add-labs-round-page/${round.id}`;
                       this.props.history.push(url); // Navigate to the new URL
                     }}
                     style={{ textDecoration: "underline", color: "#008000" }}
                   >
-                    <i className="mdi mdi-account-plus-outline font-size-18" id="participantsIcon"></i>
+                    <i
+                      className="mdi mdi-account-plus-outline font-size-18"
+                      id="participantsIcon"
+                    ></i>
                   </Link>
                 </Tooltip>
-        
-                {round.scheme_type === "Qualitative" && round.status === "Report Available" && (
-                  <Tooltip title="Report">
-                    <Link
-                      to="#"
-                      onClick={() => this.onClickReport(round.id)}
-                      style={{
-                        textDecoration: "underline",
-                        color: "#008000",
-                      }}
-                    >
-                      <i className="mdi mdi-file-chart font-size-18" id="reportIcon"></i>
-                    </Link>
-                  </Tooltip>
-                )}
-        
+
+                {round.scheme_type === "Qualitative" &&
+                  round.status === "Report Available" && (
+                    <Tooltip title="Report">
+                      <Link
+                        to="#"
+                        onClick={() => this.onClickReport(round.id)}
+                        style={{
+                          textDecoration: "underline",
+                          color: "#008000",
+                        }}
+                      >
+                        <i
+                          className="mdi mdi-file-chart font-size-18"
+                          id="reportIcon"
+                        ></i>
+                      </Link>
+                    </Tooltip>
+                  )}
+
                 {/* {/ Show statistics icon only when the status is "Closed" or "Report Available" /} */}
-                {(round.status === "Closed" || round.status === "Report Available") && (
+                {(round.status === "Closed" ||
+                  round.status === "Report Available") && (
                   <Tooltip title="Statistics">
                     <Link
                       to="#"
                       onClick={() => this.onClickStatistics(round)}
                       style={{ textDecoration: "underline", color: "#008000" }}
                     >
-                      <i className="mdi mdi-chart-bar font-size-18" id="statisticsIcon"></i>
+                      <i
+                        className="mdi mdi-chart-bar font-size-18"
+                        id="statisticsIcon"
+                      ></i>
                     </Link>
                   </Tooltip>
                 )}
-        
+
                 <Tooltip title="Update">
                   <Link className="text-success" to="#">
                     <i
@@ -564,9 +575,8 @@ class InstrumentType extends Component {
                     ></i>
                   </Link>
                 </Tooltip>
-        
-              
-                {(round.status === "Created" || round.status === "Ready") && (  // Changed condition here
+
+                {(round.status === "Created" || round.status === "Ready") && ( // Changed condition here
                   <Tooltip title="Delete">
                     <Link className="text-danger" to="#">
                       <i
@@ -577,20 +587,20 @@ class InstrumentType extends Component {
                     </Link>
                   </Tooltip>
                 )}
-        
+
                 <Tooltip title="History">
                   <Link
                     className="fas fa-comment font-size-18"
                     to={`/${organization_name}/rounds-history/${round.id}`}
                     onClick={(e) => {
                       e.preventDefault(); // Prevent the default navigation
-        
+
                       // Check if organization_name is valid
                       if (!this.state.organization_name) {
                         console.error("Invalid organization name");
                         return; // Prevent navigation if invalid
                       }
-        
+
                       const url = `/${this.state.organization_name}/rounds-history/${round.id}`;
                       this.props.history.push(url); // Navigate to the new URL
                     }}
@@ -599,7 +609,7 @@ class InstrumentType extends Component {
               </div>
             );
           },
-        }
+        },
       ],
     };
 
@@ -631,7 +641,7 @@ class InstrumentType extends Component {
   }
 
   toggleDeleteModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
@@ -656,9 +666,11 @@ class InstrumentType extends Component {
   onClickDelete = (RoundList) => {
     // Allowed statuses for deletion
     const allowedStatuses = ["Open", "Closed", "Report Available"];
-  
+
     if (allowedStatuses.includes(RoundList.status)) {
-      this.setState({ errorMessage: `Cannot delete. Round status is ${RoundList.status}` });
+      this.setState({
+        errorMessage: `Cannot delete. Round status is ${RoundList.status}`,
+      });
       // Clear error message after 2 seconds
       setTimeout(() => {
         this.setState({ errorMessage: "" });
@@ -669,7 +681,7 @@ class InstrumentType extends Component {
     }
   };
 
-  displaySuccessMessage = message => {
+  displaySuccessMessage = (message) => {
     this.setState({ successMessage: message });
 
     setTimeout(() => {
@@ -681,7 +693,7 @@ class InstrumentType extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
-  onClickStatistics = round => {
+  onClickStatistics = (round) => {
     if (round && round.id) {
       // Update the round's status to "report available"
       // const updatedRound = {
@@ -698,7 +710,7 @@ class InstrumentType extends Component {
       );
     }
   };
-  onClickReport = id => {
+  onClickReport = (id) => {
     this.props.history.push(
       `/${this.state.organization_name}/slectValues/${id}`
     );
@@ -721,7 +733,7 @@ class InstrumentType extends Component {
           closing_date: round.closing_date
             ? moment(round.closing_date).format("YYYY-MM-DD")
             : "",
-            note: round.note,
+          note: round.note,
           status: round.status,
           added_by: round.added_by,
         },
@@ -761,7 +773,7 @@ class InstrumentType extends Component {
       this.setState({ ListUnitt: this.props.ListUnitt });
     }
   }
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -805,7 +817,7 @@ class InstrumentType extends Component {
       statusFilter,
     } = this.state;
 
-    const filteredData = RoundList.filter(entry => {
+    const filteredData = RoundList.filter((entry) => {
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString() : "";
       const rounds = entry.rounds ? entry.rounds.toString() : "";
@@ -894,7 +906,7 @@ class InstrumentType extends Component {
                           data={filteredData}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -928,7 +940,6 @@ class InstrumentType extends Component {
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            // hiddenEditFlag: isEdit,
                                             rounds: this.state.selectedRound
                                               ? this.state.selectedRound.rounds
                                               : "",
@@ -956,11 +967,13 @@ class InstrumentType extends Component {
                                               ? this.state.selectedRound
                                                   .closing_date
                                               : "",
-                                            notes: this.state.selectedRound ? this.state.selectedRound.notes : "",
+                                            // Use the same key "note" as in the Field and validation schema.
+                                            note: this.state.selectedRound
+                                              ? this.state.selectedRound.notes
+                                              : "",
                                             status: this.state.selectedRound
                                               ? this.state.selectedRound.status
                                               : "Created",
-                                            // added_by: this.state.selectedRound ? this.state.selectedRound.added_by : "",
                                           }}
                                           validationSchema={Yup.object().shape({
                                             rounds: Yup.string().required(
@@ -969,10 +982,6 @@ class InstrumentType extends Component {
                                             scheme:
                                               Yup.string().required(
                                                 "Scheme is required"
-                                              ),
-                                            sample:
-                                              Yup.string().required(
-                                                "Sample is required"
                                               ),
                                             cycle_no: Yup.string().required(
                                               "Cycle number is required"
@@ -986,10 +995,17 @@ class InstrumentType extends Component {
                                             note: Yup.string().required(
                                               "Note is required"
                                             ),
-                                            status:
-                                              Yup.string().required(
-                                                "Status is required"
-                                              ),
+                                            // Only require these fields when editing
+                                            sample: this.state.isEdit
+                                              ? Yup.string().required(
+                                                  "Sample is required"
+                                                )
+                                              : Yup.string(),
+                                            status: this.state.isEdit
+                                              ? Yup.string().required(
+                                                  "Status is required"
+                                                )
+                                              : Yup.string(),
                                           })}
                                           onSubmit={async (
                                             values,
@@ -1033,20 +1049,17 @@ class InstrumentType extends Component {
                                                 );
                                                 this.displaySuccessMessage(
                                                   "Round added successfully!"
-
                                                 );
                                                 if (newround.sample) {
                                                   const updatedSample = {
                                                     ...values.sample,
-                                                    status: "Rounded", // Update the sample status
-                                                    // Any other fields needed to be updated can go here
+                                                    status: "Rounded", // Update sample status as needed
                                                   };
                                                   await this.props.onUpdateSampleList(
                                                     newround.sample,
                                                     updatedSample
-                                                  ); // Update sample in the store
+                                                  );
                                                 }
-                                              
                                               }
                                               if (values.sample) {
                                                 const sampleToUpdate =
@@ -1086,16 +1099,11 @@ class InstrumentType extends Component {
                                             setSubmitting(false);
                                           }}
                                         >
-                                          {({
-                                            errors,
-                                            status,
-                                            round,
-                                            touched,
-                                          }) => (
+                                          {({ errors, touched }) => (
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
-                                                <div className="mb-3">
+                                                  <div className="mb-3">
                                                     <Label for="scheme">
                                                       Select Scheme
                                                     </Label>
@@ -1138,10 +1146,8 @@ class InstrumentType extends Component {
                                                     <Field
                                                       name="rounds"
                                                       type="text"
-                                                      // min={0}
-                                                      // max={36}
                                                       className="form-control"
-                                                    ></Field>
+                                                    />
                                                     <ErrorMessage
                                                       name="rounds"
                                                       component="div"
@@ -1166,10 +1172,10 @@ class InstrumentType extends Component {
                                                         Select Cycle
                                                       </option>
                                                       {CycleList.filter(
-                                                        cycle =>
+                                                        (cycle) =>
                                                           cycle.status ===
                                                           "Active"
-                                                      ).map(cycle => (
+                                                      ).map((cycle) => (
                                                         <option
                                                           key={cycle.id}
                                                           value={String(
@@ -1182,46 +1188,6 @@ class InstrumentType extends Component {
                                                     </Field>
                                                     <ErrorMessage
                                                       name="cycle_no"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label for="sample">
-                                                      Sample
-                                                    </Label>
-                                                    <Field
-                                                      as="select"
-                                                      name="sample"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.sample &&
-                                                        touched.sample
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
-                                                    >
-                                                      <option value="">
-                                                        Select Sample
-                                                      </option>
-                                                      {ListUnitt &&
-                                                        ListUnitt.map(
-                                                          sample => (
-                                                            <option
-                                                              key={sample.id}
-                                                              value={
-                                                                sample.samplename
-                                                              }
-                                                            >
-                                                              {
-                                                                sample.samplename
-                                                              }
-                                                            </option>
-                                                          )
-                                                        )}
-                                                    </Field>
-                                                    <ErrorMessage
-                                                      name="sample"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
@@ -1271,46 +1237,97 @@ class InstrumentType extends Component {
                                                     />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">Notes</Label>
+                                                    <Label className="col-form-label">
+                                                      Notes
+                                                    </Label>
                                                     <Field
                                                       name="note"
                                                       type="text"
                                                       className="form-control"
                                                     />
-                                                    <ErrorMessage name="note" component="div" className="text-danger" />
-                                                  </div>
-                                                  <div className="mb-3">
-                                                    <Label className="col-form-label">
-                                                      Status
-                                                    </Label>
-                                                    <Field
-                                                      name="status"
-                                                      as="select"
-                                                      className="form-control"
-                                                      multiple={false}
-                                                    >
-                                                      <option value="Created">
-                                                        Created
-                                                      </option>
-                                                      <option value="Ready">
-                                                        Ready
-                                                      </option>
-                                                      <option value="Open">
-                                                        Open
-                                                      </option>
-                                                      <option value="Closed">
-                                                        Closed
-                                                      </option>
-                                                      <option value="Report Available">
-                                                        Report Available
-                                                      </option>
-                                                    </Field>
                                                     <ErrorMessage
-                                                      name="status"
+                                                      name="note"
                                                       component="div"
                                                       className="text-danger"
                                                     />
                                                   </div>
+                                                  {/* Only render Sample and Status fields if editing */}
+                                                  {this.state.isEdit && (
+                                                    <>
+                                                      <div className="mb-3">
+                                                        <Label for="sample">
+                                                          Sample
+                                                        </Label>
+                                                        <Field
+                                                          as="select"
+                                                          name="sample"
+                                                          className={
+                                                            "form-control" +
+                                                            (errors.sample &&
+                                                            touched.sample
+                                                              ? " is-invalid"
+                                                              : "")
+                                                          }
+                                                        >
+                                                          <option value="">
+                                                            Select Sample
+                                                          </option>
+                                                          {ListUnitt &&
+                                                            ListUnitt.map(
+                                                              (sample) => (
+                                                                <option
+                                                                  key={
+                                                                    sample.id
+                                                                  }
+                                                                  value={
+                                                                    sample.samplename
+                                                                  }
+                                                                >
+                                                                  {
+                                                                    sample.samplename
+                                                                  }
+                                                                </option>
+                                                              )
+                                                            )}
+                                                        </Field>
+                                                        <ErrorMessage
+                                                          name="sample"
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
+                                                      </div>
+
+                                                      <div className="mb-3">
+                                                        <Label className="col-form-label">
+                                                          Status
+                                                        </Label>
+                                                        <Field
+                                                          name="status"
+                                                          as="select"
+                                                          className="form-control"
+                                                          multiple={false}
+                                                        >
+                                                          <option value="Ready">
+                                                            Ready
+                                                          </option>
+                                                          <option value="Open">
+                                                            Open
+                                                          </option>
+                                                          <option value="Closed">
+                                                            Closed
+                                                          </option>
+                                                          <option value="Report Available">
+                                                            Report Available
+                                                          </option>
+                                                        </Field>
+                                                        <ErrorMessage
+                                                          name="status"
+                                                          component="div"
+                                                          className="text-danger"
+                                                        />
+                                                      </div>
+                                                    </>
+                                                  )}
                                                 </Col>
                                               </Row>
                                               <Row>
@@ -1414,14 +1431,14 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetgetschemelist: id => dispatch(getSchemelist(id)),
-  onGetgetcyclelist: id => dispatch(getcyclelist(id)),
-  onGetgetSamplelistlist: id => dispatch(getSamplelist(id)),
-  onGetRoundList: id => dispatch(getroundlist(id)),
+  onGetgetschemelist: (id) => dispatch(getSchemelist(id)),
+  onGetgetcyclelist: (id) => dispatch(getcyclelist(id)),
+  onGetgetSamplelistlist: (id) => dispatch(getSamplelist(id)),
+  onGetRoundList: (id) => dispatch(getroundlist(id)),
   onAddNewRound: (id, createround) =>
     dispatch(addNewRoundList(id, createround)),
   onUpdateRound: (id, round) => dispatch(updateRoundList({ id, ...round })),
-  onDeleteRound: round => dispatch(deleteRound(round)),
+  onDeleteRound: (round) => dispatch(deleteRound(round)),
   onUpdateSampleList: (id, sample) => dispatch(updateSampleList(id, sample)),
 });
 

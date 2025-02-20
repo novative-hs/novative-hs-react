@@ -2752,56 +2752,56 @@ export const getRoundlist = id =>
     headers: getHeader(authHeader()),
   });
 
-export const addNewRound = (createUnit, id) => {
-  console.log("Adding New Round", createUnit, id);
-  let formData = new FormData();
-  formData.append("rounds", createUnit.rounds);
-  formData.append("scheme", createUnit.scheme);
-  formData.append("cycle_no", createUnit.cycle_no);
-  formData.append("sample", createUnit.sample);
-  formData.append("issue_date", createUnit.issue_date);
-  formData.append("closing_date", createUnit.closing_date);
-  formData.append("note", createUnit.note);
-  formData.append("status", createUnit.status);
-  formData.append("added_by", createUnit.added_by);
-  formData.append("participants", createUnit.participants);
-  return axios
-    .post(`${url.ADD_NEW_ROUND}`, formData, {
-      headers: {
-        ...getHeader(authHeader()),
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then(response => {
-      console.log("Round added successfully:", response.data);
-      return response.data;
-    })
-    .catch(error => {
-      console.error(
-        "Error adding roound:",
-        error.response ? error.response.data : error.message
-      );
-      throw error;
-    });
-};
-
-export const updateRound = unit => {
-  let formData = new FormData();
-  formData.append("rounds", unit.rounds);
-  formData.append("sample", unit.sample);
-  formData.append("issue_date", unit.issue_date);
-  formData.append("closing_date", unit.closing_date);
-  // formData.append("notes", unit.notes);
-  formData.append("status", unit.status);
-  formData.append("added_by", unit.added_by);
-  return axios.put(
-    `${url.UPDATE_ROUND}/${unit.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
-};
+  export const addNewRound = (createUnit, id) => {
+    console.log("Adding New Round", createUnit, id);
+    let formData = new FormData();
+    formData.append("rounds", createUnit.rounds);
+    formData.append("scheme", createUnit.scheme);
+    formData.append("cycle_no", createUnit.cycle_no);
+    //formData.append("sample", createUnit.sample);
+    formData.append("issue_date", createUnit.issue_date);
+    formData.append("closing_date", createUnit.closing_date);
+    //formData.append("status", createUnit.status);
+    formData.append("note", createUnit.note);
+    formData.append("added_by", createUnit.added_by);
+    formData.append("participants", createUnit.participants);
+    return axios
+      .post(`${url.ADD_NEW_ROUND}`, formData, {
+        headers: {
+          ...getHeader(authHeader()),
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(response => {
+        console.log("Round added successfully:", response.data);
+        return response.data;
+      })
+      .catch(error => {
+        console.error(
+          "Error adding roound:",
+          error.response ? error.response.data : error.message
+        );
+        throw error;
+      });
+  };
+  
+  export const updateRound = unit => {
+    let formData = new FormData();
+    formData.append("rounds", unit.rounds);
+    formData.append("sample", unit.sample);
+    formData.append("issue_date", unit.issue_date);
+    formData.append("closing_date", unit.closing_date);
+    // formData.append("notes", unit.notes);
+    formData.append("status", unit.status);
+    formData.append("added_by", unit.added_by);
+    return axios.put(
+      `${url.UPDATE_ROUND}/${unit.id}`,
+      formData,
+      {
+        headers: getHeader(authHeader()),
+      }
+    );
+  };
 
 export const deleteRound = round =>
   del(`${url.DELETE_ROUND}/${round.id}`, {
