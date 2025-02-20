@@ -387,19 +387,23 @@ class InstrumentType extends Component {
           dataField: "note",
           text: "Note",
           sort: true,
-          formatter: (cellContent, methodlist) => (
-            <>
-              <span
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                {moment(methodlist.note).format("DD MMM YYYY")}
-              </span>
-            </>
-          ),
+          formatter: (cellContent, methodlist) => {
+            console.log("Debug methodlist.note:", methodlist.note); // Check note value
+            return (
+              <>
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  {methodlist.note || "No note provided"}
+                </span>
+              </>
+            );
+          },
+
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
@@ -428,7 +432,7 @@ class InstrumentType extends Component {
               </>
             );
           },
-        },
+        }, 
         {
           dataField: "status",
           text: "Status",
