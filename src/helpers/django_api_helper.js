@@ -1183,12 +1183,16 @@ export const updateMethod = unit => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateMembershipstatus = status => {
+export const updateMembershipstatus = (status) => {
+  console.log("Status object passed to updateMembershipstatus:", status);
+
   let formData = new FormData();
   formData.append("membership_status", status.membership_status);
+  formData.append("participant", status.participant); // Include participant_id
   formData.append("added_by", status.added_by);
+
   return axios.put(
-    `${url.UPDATE_MEMBERSHIP_STATUS}/${status.id}`,
+    `${url.UPDATE_MEMBERSHIP_STATUS}/${status.id}`, // Ensure the `id` is correct
     formData,
     {
       headers: getHeader(authHeader()),

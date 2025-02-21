@@ -12,6 +12,7 @@ import { Alert } from "reactstrap"; // For Alert component
 import Select from "react-select"; // For Select component
 // import PaymentModal from "../Authentication/participant-payment"; // Adjust the path based on where PaymentModal is located
 import { addNewPayment } from "store/Payment/actions";
+
 import {
   Card,
   CardBody,
@@ -26,7 +27,10 @@ import {
   Button,
   Input,
 } from "reactstrap";
-import { getApprovedLabs } from "store/registration-admin/actions";
+import {
+  getApprovedLabs,
+  updateMembershipStatus,
+} from "store/registration-admin/actions";
 import { getcyclelist } from "store/cycle/actions";
 import paginationFactory, {
   PaginationProvider,
@@ -51,6 +55,7 @@ import "assets/scss/table.scss";
 class PendingLabs extends Component {
   constructor(props) {
     super(props);
+    //this.displaySuccessMessage = this.displaySuccessMessage.bind(this);
     this.node = React.createRef();
     this.state = {
       AllLabs: [],
@@ -59,6 +64,7 @@ class PendingLabs extends Component {
       id: "",
       btnText: "Copy",
       isPaymentModalOpen: false,
+      isMembershipModalOpen: false,
       organization_name: "",
       isApproved: false,
       unapprovedModal: false,
@@ -269,20 +275,20 @@ class PendingLabs extends Component {
                 </Tooltip>
 
                 {/* {/ Revert Status Button /} */}
-                {/* <Tooltip title="Revert Status">
+                <Tooltip title="Membership Status">
                   <Link
-                    className="btn btn-danger btn-rounded"
+                    className=""
                     to="#"
-                    onClick={() => this.handleUnapprovedEvent(AllLabs.id)} // Opens the Approved/Unapproved modal
+                    onClick={() => this.isMembershipModalOpen(AllLabs)} // Opens the Approved/Unapproved modal
                   >
                     <i className="mdi mdi-refresh font-size-14"></i>
                   </Link>
-                </Tooltip> */}
+                </Tooltip>
                 <Tooltip title="Payment">
                   <Link
                     className=""
                     to="#"
-                    onClick={() => this.isPaymentModalOpen(AllLabs.id)} // Pass the ID of the lab for later use
+                    onClick={() => this.isPaymentModalOpen(AllLabs)} // Pass the ID of the lab for later use
                   >
                     <i className="fas fa-money-bill-wave"></i>{" "}
                     {/* Payment Icon */}
@@ -301,20 +307,52 @@ class PendingLabs extends Component {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
-  isPaymentModalOpen = (id) => {
+
+  // displaySuccessMessage(message) {
+  //  alert(message); // Replace this with your desired success message logic
+  // }
+
+  isPaymentModalOpen = (participant) => {
     this.setState(
       {
         isPaymentModalOpen: true,
-        selectedLabId: id,
+        selectedParticipant: participant, // Store full participant object
       },
-      () => {
-        console.log("Modal State Updated:", this.state.isPaymentModalOpen); // Check if state updates correctly
-      }
+      () => console.log("Modal State Updated:", this.state.selectedParticipant)
     );
   };
+
+  isMembershipModalOpen = (participant) => {
+    console.log("Opening Membership Modal for Participant:", participant); // Debug log
+    this.setState(
+      {
+        isMembershipModalOpen: true,
+        selectedParticipant: participant, // Store the correct participant
+      },
+      () =>
+        console.log(
+          "Membership Modal Opened for:",
+          this.state.selectedParticipant
+        )
+    );
+  };
+
   handleFileChange = (event, setFieldValue) => {
     const file = event.currentTarget.files[0];
     setFieldValue("photo", file);
+  };
+  toggleMembershipModal = () => {
+    this.setState(
+      (prevState) => ({
+        isMembershipModalOpen: !prevState.isMembershipModalOpen,
+      }),
+      () => {
+        console.log(
+          "Modal Toggled, New State:",
+          this.state.isMembershipModalOpen
+        );
+      }
+    );
   };
   togglePaymentModal = () => {
     this.setState(
@@ -352,6 +390,10 @@ class PendingLabs extends Component {
   componentDidMount() {
     const { organization_name } = this.props.match.params;
     const { ongetApprovedLabs, ongetcyclelist } = this.props;
+    this.setState({ organization_name }, () => {
+      // Call this function inside the setState callback to ensure organization_name is updated first
+      this.setInitialDropdownValue();
+    });
 
     console.log("Fetching cycle list for user:", this.state.user_id);
     ongetApprovedLabs(this.state.user_id);
@@ -576,6 +618,7 @@ class PendingLabs extends Component {
     const data = this.state.data;
     const { onApproveUnapproveLab, onGetPendingLabs } = this.props;
     const { isPaymentModalOpen, togglePaymentModal } = this.props;
+    const { isMembershipModalOpen, toggleMembershipModal } = this.props;
 
     const pageOptions = {
       sizePerPage: 10,
@@ -1164,14 +1207,18 @@ class PendingLabs extends Component {
                                       <ModalHeader
                                         toggle={this.togglePaymentModal}
                                       >
-                                        Payment
+                                        Payment for{" "}
+                                        {this.state.selectedParticipant?.name ||
+                                          "Unknown"}
                                       </ModalHeader>
                                       <ModalBody>
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
                                             photo: "",
-                                            participant: "",
+                                            participant:
+                                              this.state.selectedParticipant
+                                                ?.id || "",
                                             paydate: "",
                                             paymentmethod: "",
                                             scheme: [],
@@ -1273,13 +1320,14 @@ class PendingLabs extends Component {
                                               this.props.ongetApprovedLabs(
                                                 this.state.user_id
                                               );
+                                              
                                             }, 1000);
                                             setTimeout(() => {
                                               this.props.ongetcyclelist(
                                                 this.state.user_id
                                               );
                                             }, 1000);
-
+                                            this.setState({ isPaymentModalOpen: false });
                                             setSubmitting(false);
                                           }}
                                         >
@@ -1416,15 +1464,17 @@ class PendingLabs extends Component {
                                                   </Alert>
                                                 )}
 
-                                                <Row>
+                                                {/* <Row>
                                                   <Col>
                                                     <Label>Participant</Label>
                                                     <Select
                                                       name="participant"
-                                                      options={
-                                                        participantOptions
+                                                      value={
+                                                        this.state
+                                                          .selectedParticipant
+                                                          ?.name || "Unknown"
                                                       }
-                                                      placeholder="Select Participant" // Optional: adds a placeholder
+                                                      readOnly
                                                       className={
                                                         errors.participant &&
                                                         touched.participant
@@ -1440,13 +1490,13 @@ class PendingLabs extends Component {
                                                             ""
                                                         );
                                                       }}
-                                                      value={
-                                                        participantOptions.find(
-                                                          (option) =>
-                                                            option.value ===
-                                                            values.participant
-                                                        ) || null
-                                                      }
+                                                      // value={
+                                                      //   participantOptions.find(
+                                                      //     (option) =>
+                                                      //       option.value ===
+                                                      //       values.participant
+                                                      //   ) || null
+                                                      // }
                                                     />
                                                     <ErrorMessage
                                                       name="participant"
@@ -1454,7 +1504,7 @@ class PendingLabs extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </Col>
-                                                </Row>
+                                                </Row> */}
 
                                                 <Row>
                                                   <Col>
@@ -1785,6 +1835,194 @@ class PendingLabs extends Component {
                                                     />
                                                   </Col>
                                                 </Row>
+
+                                                <ModalFooter>
+                                                  <Button
+                                                    color="primary"
+                                                    type="submit"
+                                                  >
+                                                    Save
+                                                  </Button>
+                                                </ModalFooter>
+                                              </Form>
+                                            );
+                                          }}
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+                                    <Modal
+                                      isOpen={this.state.isMembershipModalOpen}
+                                      toggle={this.toggleMembershipModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleMembershipModal}
+                                      >
+                                        Updating Membership for{" "}
+                                        {this.state.selectedParticipant?.name ||
+                                          "Unknown"}
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik
+                                          enableReinitialize={true}
+                                          initialValues={{
+                                            membership: "", // Default empty value
+                                            participant:
+                                              this.state.selectedParticipant
+                                                ?.id || "",
+                                            // Participant ID passed as prop
+                                            added_by: localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
+                                              : "",
+                                          }}
+                                          validationSchema={Yup.object().shape({
+                                            membership:
+                                              Yup.string().required(
+                                                "Status required"
+                                              ),
+                                          })}
+                                          onSubmit={async (
+                                            values,
+                                            { setSubmitting, resetForm }
+                                          ) => {
+                                            console.log(
+                                              "Form Values Submitted:",
+                                              values
+                                            );
+                                            console.log(
+                                              "Form Values Submitted:",
+                                              values
+                                            );
+                                            console.log(
+                                              "Participant ID:",
+                                              values.participant
+                                            );
+
+                                            if (!values.participant) {
+                                              console.error(
+                                                "Error: Lab ID (participant) is missing!"
+                                              );
+                                              return;
+                                            }
+
+                                            const userId = localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
+                                              : "";
+
+                                            const UpdateMembership = {
+                                              membership_status:
+                                                values.membership, // Correct key
+                                              added_by: userId, // This should match the logged-in user's ID
+                                              participant: values.participant, // Participant ID should come here
+                                            };
+                                            console.log(
+                                              "Selected Participant ID:",
+                                              this.state.selectedParticipant?.id
+                                            );
+
+                                            console.log(
+                                              "Payload being sent to API:",
+                                              UpdateMembership
+                                            );
+
+                                            try {
+                                              await this.props.onupdateMembershipStatus(
+                                                this.state.user_id,
+                                                UpdateMembership
+                                              );
+                                              this.props.ongetApprovedLabs(this.state.user_id);
+                                              this.props.onupdateMembershipStatus(this.state.user_id);
+                                              resetForm();
+                                              this.displaySuccessMessage(
+                                                "Membership status updated successfully!"
+                                              );
+                                            } catch (error) {
+                                              console.error(
+                                                "Error updating membership status:",
+                                                error
+                                              );
+                                            }
+                                            this.setState({ isMembershipModalOpen: false });
+                                            setSubmitting(false);
+                                          }}
+                                        >
+                                          {({
+                                            values,
+                                            errors,
+                                            touched,
+                                            setFieldValue,
+                                          }) => {
+                                            const membershipOptions = [
+                                              {
+                                                value: "Active",
+                                                label: "Active",
+                                              },
+                                              {
+                                                value: "Inactive",
+                                                label: "Inactive",
+                                              },
+                                              {
+                                                value: "Suspended",
+                                                label: "Suspended",
+                                              },
+                                            ];
+
+                                            return (
+                                              <Form>
+                                                <Row>
+                                                  <Col>
+                                                    <Label>
+                                                      Membership Status
+                                                    </Label>
+                                                    <Select
+                                                      name="membership"
+                                                      options={
+                                                        membershipOptions
+                                                      }
+                                                      placeholder="Select Status"
+                                                      className={
+                                                        errors.participant &&
+                                                        touched.participant
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }
+                                                      onChange={(
+                                                        selectedOption
+                                                      ) => {
+                                                        setFieldValue(
+                                                          "membership",
+                                                          selectedOption?.value ||
+                                                            ""
+                                                        );
+                                                      }}
+                                                      value={
+                                                        membershipOptions.find(
+                                                          (option) =>
+                                                            option.value ===
+                                                            values.membership
+                                                        ) || null
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="membership"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
+
                                                 <ModalFooter>
                                                   <Button
                                                     color="primary"
@@ -1834,12 +2072,17 @@ PendingLabs.propTypes = {
   history: PropTypes.any,
   onupdateAllLabs: PropTypes.any,
   onAddNewPayment: PropTypes.func,
+  onupdateMembershipStatus: PropTypes.func,
+  participantId: PropTypes.func,
   ongetApprovedLabs: PropTypes.func,
   ongetcyclelist: PropTypes.func,
   approvedLabs: PropTypes.array,
+
   CycleList: PropTypes.array,
   isPaymentModalOpen: PropTypes.array,
   togglePaymentModal: PropTypes.array,
+  isMembershipModalOpen: PropTypes.array,
+  toggleMembershipModal: PropTypes.array,
 };
 const mapStateToProps = ({ Account, registrationAdmin, CycleList }) => {
   const cycleList = registrationAdmin.CycleList || [];
@@ -1866,6 +2109,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   ongetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
   ongetcyclelist: (id) => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
+  onupdateMembershipStatus: (id, status) => {
+    console.log("Updating Membership Status - ID:", id, "Status:", status);
+    dispatch(updateMembershipStatus({ id, ...status }));
+  },
 });
 
 export default connect(
