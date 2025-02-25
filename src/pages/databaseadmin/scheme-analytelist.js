@@ -11,7 +11,7 @@ import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 // Import actions
-import { getSchemeAnalyte, getSchemeName } from "store/scheme/actions";
+// import { getSchemeAnalyte } from "store/scheme/actions";
 import { 
   getSchemeAnalytelist
 } from "store/databaseofunits/actions";
@@ -25,7 +25,7 @@ class SchemeListAnalyte extends Component {
       idFilter: '',
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
-      SchemeAnalyte: [],
+      SchemeAnalyteList: [],
       feedbackMessage: '',
       errorMessage: '', // State for error message
       feedbackListColumns: [
@@ -50,9 +50,10 @@ class SchemeListAnalyte extends Component {
           style: { width: '100px' },
         },
         {
-          dataField: "name",  // Make sure to use the 'name' field now
+          dataField: "name",
           text: "Analyte",
           sort: true,
+          formatter: (cell, row) => (typeof cell === "string" ? cell : "Unknown"), // Fallback for invalid data
           headerFormatter: (column, colIndex) => (
             <>
               <div>
@@ -66,11 +67,11 @@ class SchemeListAnalyte extends Component {
               <div>{column.text}</div>
             </>
           ),
-          headerAlign: 'center',
-          align: 'left',
-        },
+          headerAlign: "center",
+          align: "left",
+        }
+        ,
       ],
-      
     };
   }
 
@@ -78,13 +79,32 @@ class SchemeListAnalyte extends Component {
     // Fetch data when the component mounts
     this.fetchData();
   }
+  componentDidUpdate(prevProps) {
+    if (this.props.SchemeAnalyteList !== prevProps.SchemeAnalyteList) {
+      console.log("New Props SchemeAnalyte:", this.props.SchemeAnalyteList);
+      
+      if (Array.isArray(this.props.SchemeAnalyteList) && this.props.SchemeAnalyteList.length > 0) {
+        const transformedData = this.props.SchemeAnalyteList.map((analyte, index) => ({
+          id: index + 1,
+          name: typeof analyte === "object" ? analyte.name : analyte, // Handle objects or strings
+          
+        }));
+
+        console.log("SchemeAnalyteList in Props:", this.props.SchemeAnalyteList);
+
+  
+        console.log("Transformed Data:", transformedData); // Debugging log
+        this.setState({ SchemeAnalyteList: transformedData, tableKey: this.state.tableKey + 1 });
+      }
+    }
+  }
 
   fetchData() {
-    const { onGetSchemeAnalyte } = this.props;
-    const schemeanalyteId = this.props.match.params.id;
-    console.log("Fetching data for ID:", schemeanalyteId);
-    if (schemeanalyteId) {
-      onGetSchemeAnalyte(schemeanalyteId);
+    const { onGetUnitAnalyteList } = this.props;
+    const unitanalyteId = this.props.match.params.id;
+    console.log("Fetching data for ID:", unitanalyteId);
+    if (unitanalyteId) {
+      onGetUnitAnalyteList(unitanalyteId);
     } else {
       console.error("Analyte ID not found in URL parameters");
     }
@@ -97,12 +117,15 @@ class SchemeListAnalyte extends Component {
  
 
   filterData = () => {
-    const { SchemeAnalyte } = this.props;
+    const { SchemeAnalyteList } = this.state;  // Now using the state instead of props
+    const { nameFilter, idFilter } = this.state;
 
-    const { nameFilter, idFilter} = this.state;
+    if (!Array.isArray(SchemeAnalyteList)) {
+      return []; // Return empty array if not an array
+    }
 
-    const filteredData = SchemeAnalyte.filter(entry => {
-      const name = entry.name ? entry.name.toString().toLowerCase() : "";
+    const filteredData = SchemeAnalyteList.filter(entry => {
+      const name = typeof entry.name === "string" ? entry.name.toLowerCase() : "";
       const id = entry.id ? entry.id.toString() : "";
 
       return (
@@ -115,8 +138,8 @@ class SchemeListAnalyte extends Component {
   };
 
   render() {
-    const { SchemeAnalyte } = this.props;
-    console.log("SchemeAnalyte",SchemeAnalyte);
+    const { SchemeAnalyteList } = this.state;
+    console.log("SchemeAnalyteeeeeeeeeeeeeeeeeee",SchemeAnalyteList);
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     return (
       <React.Fragment>
@@ -133,7 +156,7 @@ class SchemeListAnalyte extends Component {
                     <ToolkitProvider
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={SchemeAnalyte}
+                      data={SchemeAnalyteList}
                       search
                     >
                       {toolkitprops => (
@@ -171,21 +194,23 @@ class SchemeListAnalyte extends Component {
 
 SchemeListAnalyte.propTypes = {
   match: PropTypes.object,
-  SchemeAnalyte: PropTypes.array,
+  SchemeAnalyteList: PropTypes.array,
   history: PropTypes.object,
-  onGetSchemeAnalyte: PropTypes.func,
+  // onGetSchemeAnalyte: PropTypes.func,
+  onGetUnitAnalyteList: PropTypes.func,
 };
 const mapStateToProps = (state) => {
-    console.log('Redux State:', state); // Log entire Redux state to see structure and contents
-    return {
-      SchemeAnalyte: state.ListUnits.SchemeAnalyte || []  // Now will contain id and name
-    };
+  const SchemeAnalyteList = state.ListUnit?.SchemeAnalyteList || [];
+  console.log('SchemeAnalyteList from Redux State:', SchemeAnalyteList); // Log only SchemeAnalyte
+  return {
+    SchemeAnalyteList,
   };
-  
+};
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetSchemeAnalyte: (id) => dispatch(getSchemeAnalyte(id)),
-  onGetSchemeAnalytelist: (id) => dispatch(getSchemeAnalytelist(id)),
+  onGetUnitAnalyteList: (id) => dispatch(getSchemeAnalytelist(id)),
+  // onGetSchemeAnalytelist: (id) => dispatch(getSchemeAnalytelist(id)),
 });
 
 export default connect(
