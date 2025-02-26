@@ -22,14 +22,14 @@ function getHeader(token) {
   }
 }
 
-export const getParticipantPayment = id => {
+export const getParticipantPayment = (id) => {
   console.log("Calling API:", `${url.GET_PARTICIPANT_PAYMENT}/${id}`);
   return get(`${url.GET_PARTICIPANT_PAYMENT}/${id}`, {
     headers: getHeader(authHeader()),
   });
 };
 
-export const postRegister = user => {
+export const postRegister = (user) => {
   let formData = new FormData();
   formData.append("name", user.name);
   formData.append("email", user.email);
@@ -64,13 +64,13 @@ export const postRegister = user => {
     .post(`${url.POST_REGISTER}`, formData, {
       headers: getHeader(authHeader()),
     })
-    .then(response => {
+    .then((response) => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
 
-    .catch(err => {
+    .catch((err) => {
       let message;
       if (err.response && err.response.status) {
         switch (err.response.status) {
@@ -136,7 +136,7 @@ export const postRegister = user => {
 //     );
 // };
 
-export const organizationRegister = user => {
+export const organizationRegister = (user) => {
   let formData = new FormData();
   formData.append("username", user.username);
   formData.append("password2", user.password2);
@@ -160,13 +160,13 @@ export const organizationRegister = user => {
     .post(`${url.ORGANIZATION_REGISTER}`, formData, {
       headers: getHeader(authHeader()),
     })
-    .then(response => {
+    .then((response) => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
 
-    .catch(err => {
+    .catch((err) => {
       let message;
       if (err.response && err.response.status) {
         switch (err.response.status) {
@@ -197,11 +197,11 @@ export const getOrganizationlist = () => {
     .get(url.GET_ORGANIZATION_LIST, {
       headers: getHeader(authHeader()),
     })
-    .then(response => {
+    .then((response) => {
       console.log("getOrganizationList response:", response); // Log the entire response for debugging
       return response; // Return the response to the caller
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error fetching organization list:", error); // Log any errors that occur
       throw error; // Re-throw the error for handling in the calling code
     });
@@ -209,7 +209,7 @@ export const getOrganizationlist = () => {
 
 // helper.js
 
-export const updateOrganizationList = async organization => {
+export const updateOrganizationList = async (organization) => {
   let formData = new FormData();
   formData.append("id", organization.id); // Include the organization ID in the form data
   formData.append("name", organization.name);
@@ -228,11 +228,11 @@ export const updateOrganizationList = async organization => {
     .put(`${url.UPDATE_ORGANIZATION_LIST}/${organization.id}`, formData, {
       headers: getHeader(authHeader()),
     })
-    .then(response => {
+    .then((response) => {
       console.log("updateNewOrganization response:", response); // Log the entire response for debugging
       return response; // Return the response to the caller
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error updating organization:", error); // Log any errors that occur
       throw error; // Re-throw the error for handling in the calling code
     });
@@ -242,8 +242,6 @@ export const updateOrganizationList = async organization => {
 //   del(`${url.DELETE_ORGANIZATION_LIST}/${organization.id}`, {
 //     headers: getHeader(authHeader()),
 //   });
-
-
 
 // Post Lab Information
 export const postLabInformation = (id, lab) => {
@@ -303,12 +301,12 @@ export const postLabInformation = (id, lab) => {
     .post(`${url.POST_LAB_INFORMATION}/${id}`, formData, {
       headers: getHeader(authHeader()),
     })
-    .then(response => {
+    .then((response) => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
-    .catch(err => {
+    .catch((err) => {
       let message;
       if (err.response && err.response.status) {
         switch (err.response.status) {
@@ -345,12 +343,12 @@ export const postCorporateInformation = (id, corporate) => {
     .post(`${url.POST_CORPORATE_INFORMATION}/${id}`, formData, {
       headers: getHeader(authHeader()),
     })
-    .then(response => {
+    .then((response) => {
       if (response.status >= 200 || response.status <= 299)
         return response.data;
       throw response.data;
     })
-    .catch(err => {
+    .catch((err) => {
       let message;
       if (err.response && err.response.status) {
         switch (err.response.status) {
@@ -377,7 +375,7 @@ export const postCorporateInformation = (id, corporate) => {
 };
 
 // Login Method
-export const postLogin = user => {
+export const postLogin = (user) => {
   let formData = new FormData();
   formData.append("username", user.username);
   formData.append("password", user.password);
@@ -389,7 +387,7 @@ export const postLogin = user => {
   });
 };
 //////////////////////////
-export const getNews = id =>
+export const getNews = (id) =>
   get(`${url.GET_NEWS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -410,7 +408,7 @@ export const getNews = id =>
 //     headers: getHeader(authHeader()),
 //   });
 //******************************* */
-export const addNews = news => {
+export const addNews = (news) => {
   console.log("Calling addNews function with data:", news);
   let formData = new FormData();
   formData.append("title", news.title);
@@ -458,7 +456,7 @@ export const addNews = news => {
 //   });
 // };
 
-export const addParticipants = register => {
+export const addParticipants = (register) => {
   let formData = new FormData();
   formData.append("name", register.name);
   formData.append("user_name", register.user_name);
@@ -492,11 +490,11 @@ export const addParticipants = register => {
 
 //---------------database admin get units list-------
 ///////////instrumentlist/////////////
-export const getInstrumentlist = id =>
+export const getInstrumentlist = (id) =>
   get(`${url.GET_INSTRUMENT_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const addNewInstrument = createUnit => {
+export const addNewInstrument = (createUnit) => {
   let formData = new FormData();
   formData.append("name", createUnit.name);
   formData.append("added_by", createUnit.added_by);
@@ -506,44 +504,40 @@ export const addNewInstrument = createUnit => {
   formData.append("instrument_type", createUnit.instrument_type);
   formData.append("manufactural", createUnit.manufactural);
   formData.append("country", createUnit.country);
-    return axios.post(`${url.ADD_NEW_INSTRUMENT}`, formData, {
-      headers: getHeader(authHeader()),
-    });
-  };
-  export const addEquipmentTypefile = (EquipmentData) => {
-    let formData = new FormData();
-    formData.append("excel_file", EquipmentData.excel_file);
+  return axios.post(`${url.ADD_NEW_INSTRUMENT}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const addEquipmentTypefile = (EquipmentData) => {
+  let formData = new FormData();
+  formData.append("excel_file", EquipmentData.excel_file);
 
-    console.log("django api helper", EquipmentData)
-  
-    return axios.post(`${url.ADD_EQUIPMENTTYPE_FILE}`, formData, {
-      headers: getHeader(authHeader()),
-    });
-  };
-  export const updateInstrument = unit => {
-    let formData = new FormData();
-    formData.append("name", unit.name);
-    formData.append("added_by", unit.added_by);
-    formData.append("code", unit.code);
-    formData.append("model", unit.model);
-    formData.append("status", unit.status);
-    formData.append("instrument_type", unit.instrument_type);
-    formData.append("manufactural", unit.manufactural);
-    formData.append("country", unit.country);
-    return axios.put(
-      `${url.UPDATE_NEW_INSTRUMENT}/${unit.id}`,
-      formData,
-      {
-        headers: getHeader(authHeader()),
-      }
-    );
-  };
-  export const deleteInstrument = Instrument =>
-    del(`${url.DELETE_INSTRUMENT}/${Instrument.id}`, {
-      headers: getHeader(authHeader()),
-    });
+  console.log("django api helper", EquipmentData);
 
-export const getUnitsList = id => {
+  return axios.post(`${url.ADD_EQUIPMENTTYPE_FILE}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const updateInstrument = (unit) => {
+  let formData = new FormData();
+  formData.append("name", unit.name);
+  formData.append("added_by", unit.added_by);
+  formData.append("code", unit.code);
+  formData.append("model", unit.model);
+  formData.append("status", unit.status);
+  formData.append("instrument_type", unit.instrument_type);
+  formData.append("manufactural", unit.manufactural);
+  formData.append("country", unit.country);
+  return axios.put(`${url.UPDATE_NEW_INSTRUMENT}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const deleteInstrument = (Instrument) =>
+  del(`${url.DELETE_INSTRUMENT}/${Instrument.id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const getUnitsList = (id) => {
   if (id) {
     return get(`${url.GET_UNITS_LIST}/${id}`, {
       headers: getHeader(authHeader()),
@@ -554,7 +548,7 @@ export const getUnitsList = id => {
   }
 };
 
-export const addNewCreateUnits = createUnit => {
+export const addNewCreateUnits = (createUnit) => {
   let formData = new FormData();
   formData.append("name", createUnit.name);
   formData.append("added_by", createUnit.added_by);
@@ -562,7 +556,7 @@ export const addNewCreateUnits = createUnit => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateUnits = unit => {
+export const updateUnits = (unit) => {
   let formData = new FormData();
   // Make sure 'unit' object contains 'id' field
   console.log("id received is ", unit.id);
@@ -574,44 +568,42 @@ export const updateUnits = unit => {
   });
 };
 
-export const getQualitativeTypeList = id => {
+export const getQualitativeTypeList = (id) => {
   if (id) {
-      return get(`${url.GET_QualitativeType_LIST}/${id}`, {
-          headers: getHeader(authHeader()),
-      });
+    return get(`${url.GET_QualitativeType_LIST}/${id}`, {
+      headers: getHeader(authHeader()),
+    });
   } else {
-      console.error('Invalid id:', id);
-      return Promise.reject('Invalid id');
+    console.error("Invalid id:", id);
+    return Promise.reject("Invalid id");
   }
 };
 
 export const addNewCreateQualitativeType = (createQualitativeType) => {
-let formData = new FormData();
-formData.append("name", createQualitativeType.name);
-formData.append("number", createQualitativeType.number);
-formData.append("added_by", createQualitativeType.added_by);
-return axios.post(`${url.ADD_NEW_QualitativeType}`, formData, {
-  headers: getHeader(authHeader()),
-});
-};
-export const updateQualitativeType = qualitativetype => {
-let formData = new FormData();
-// Make sure 'qualitativetype' object contains 'id' field
-console.log("id received is ", qualitativetype.id)
-formData.append("id", qualitativetype.id);
-formData.append("name", qualitativetype.name);
-formData.append("number", qualitativetype.number);
-formData.append("added_by", qualitativetype.added_by);
-return axios.put(
-  `${url.UPDATE_QualitativeType}/${qualitativetype.id}`,
-  formData,
-  {
+  let formData = new FormData();
+  formData.append("name", createQualitativeType.name);
+  formData.append("number", createQualitativeType.number);
+  formData.append("added_by", createQualitativeType.added_by);
+  return axios.post(`${url.ADD_NEW_QualitativeType}`, formData, {
     headers: getHeader(authHeader()),
-  }
-);
+  });
 };
-
-
+export const updateQualitativeType = (qualitativetype) => {
+  let formData = new FormData();
+  // Make sure 'qualitativetype' object contains 'id' field
+  console.log("id received is ", qualitativetype.id);
+  formData.append("id", qualitativetype.id);
+  formData.append("name", qualitativetype.name);
+  formData.append("number", qualitativetype.number);
+  formData.append("added_by", qualitativetype.added_by);
+  return axios.put(
+    `${url.UPDATE_QualitativeType}/${qualitativetype.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};
 
 export const getHistoryUnits = (id, type) => {
   console.log("ID and type passed to getHistoryUnits:", id, type);
@@ -634,71 +626,61 @@ export const getResultHistory = (id, participantId, scheme_id) => {
   });
 };
 
-
 // Sample
- export const getSamplelist = (id) =>
-    get(`${url.GET_SAMPLE_LIST}/${id}`, {
-      headers: getHeader(authHeader()),
-    });
+export const getSamplelist = (id) =>
+  get(`${url.GET_SAMPLE_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 /////////////////////////////////
-  export const addNewSampleList = sample => {
-    let formData = new FormData();
-    formData.append("samplename", sample.samplename);
-    formData.append("added_by", sample.added_by);
-    formData.append("sampleno", sample.sampleno);
-    formData.append("scheme", sample.scheme);
-    formData.append("detail", sample.detail);
-    formData.append("analytetype", sample.analytetype); 
-    formData.append("notes", sample.notes);
-    formData.append("status", sample.status);
-    return axios.post(`${url.ADD_NEW_SAMPLE_LIST}`, formData, {
-      headers: getHeader(authHeader()),
-    });
-  };
-  export const updateNewSampleList = sample => {
-    let formData = new FormData();
-    formData.append("samplename", sample.samplename);
-    formData.append("sampleno", sample.sampleno);
-    formData.append("scheme", sample.scheme);
-    formData.append("cycle", sample.cycle);
-    formData.append("round", sample.round);
-    formData.append("detail", sample.detail);
-    formData.append("notes", sample.notes);
-    formData.append("added_by", sample.added_by);
-    formData.append("analytetype", sample.analytetype); 
-    
-    return axios.put(
-      `${url.UPDATE_NEW_SAMPLE_LIST}/${sample.id}`,
-        formData,
-        {
-            headers: getHeader(authHeader()),
-        }
-    );
+export const addNewSampleList = (sample) => {
+  let formData = new FormData();
+  formData.append("samplename", sample.samplename);
+  formData.append("added_by", sample.added_by);
+  formData.append("sampleno", sample.sampleno);
+  formData.append("scheme", sample.scheme);
+  formData.append("detail", sample.detail);
+  formData.append("analytetype", sample.analytetype);
+  formData.append("notes", sample.notes);
+  formData.append("status", sample.status);
+  return axios.post(`${url.ADD_NEW_SAMPLE_LIST}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const updateNewSampleList = (sample) => {
+  let formData = new FormData();
+  formData.append("samplename", sample.samplename);
+  formData.append("sampleno", sample.sampleno);
+  formData.append("scheme", sample.scheme);
+  formData.append("cycle", sample.cycle);
+  formData.append("round", sample.round);
+  formData.append("detail", sample.detail);
+  formData.append("notes", sample.notes);
+  formData.append("added_by", sample.added_by);
+  formData.append("analytetype", sample.analytetype);
+
+  return axios.put(`${url.UPDATE_NEW_SAMPLE_LIST}/${sample.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 //////////////////////////////////////
-export const updateSampleList = (id, sample) => async dispatch => {
-  return axios.put(
-    `${url.UPDATE_SAMPLE_LIST}/${sample.id}`,
-      formData,
-      {
-          headers: getHeader(authHeader()),
-      }
-  );
+export const updateSampleList = (id, sample) => async (dispatch) => {
+  return axios.put(`${url.UPDATE_SAMPLE_LIST}/${sample.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 ///////////////////////
-export const deleteSampleList = sample =>
+export const deleteSampleList = (sample) =>
   del(`${url.DELETE_NEW_SAMPLE_LIST}/${sample.id}`, {
     headers: getHeader(authHeader()),
   });
 
-  export const getAnalyteSampleList = (id) => {
-    console.log("Making API request to get analyte sample list for ID:", id);
-    return get(`${url.GET_ANALYTESSAMPLE}/${id}`, {
-        headers: getHeader(authHeader()),
-    });
-  };
-  
-  
+export const getAnalyteSampleList = (id) => {
+  console.log("Making API request to get analyte sample list for ID:", id);
+  return get(`${url.GET_ANALYTESSAMPLE}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+};
+
 /////////Analyte Sample List
 export const getSampleAnalytelist = (id) =>
   get(`${url.GET_SAMPLE_ANALYTE_LIST}/${id}`, {
@@ -714,7 +696,7 @@ export const addNewSampleAnalytelist = (createSchemeAnalyte) => {
   });
 };
 
-export const updateSampleAnalytelist = schemeanalyte => {
+export const updateSampleAnalytelist = (schemeanalyte) => {
   let formData = new FormData();
   formData.append("analytes", schemeanalyte.analytes);
   return axios.put(
@@ -727,46 +709,46 @@ export const updateSampleAnalytelist = schemeanalyte => {
 };
 
 //---------------database admin get Reagents list-------
-export const getReagentsList = id =>
+export const getReagentsList = (id) =>
   get(`${url.GET_REAGENTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 //---------------Get Participant List-------
-export const getParticipantList = id =>
+export const getParticipantList = (id) =>
   get(`${url.GET_PARTICIPANT_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 //---------------Get ParticipantRound List-------
-export const getParticipantRoundList = id =>
+export const getParticipantRoundList = (id) =>
   get(`${url.GET_PARTICIPANTROUND_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 //---------------Round add Labs-------
-export const getRoundLablist = id =>
+export const getRoundLablist = (id) =>
   get(`${url.GET_ROUND_LABS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getSelectedSchemesList = id =>
+export const getSelectedSchemesList = (id) =>
   get(`${url.SELECTED_SCHEMES}/${id}`, {
     headers: getHeader(authHeader()),
   });
 //------------- results page
-export const getSchemeAnalytesList = id =>
+export const getSchemeAnalytesList = (id) =>
   get(`${url.SCHEMES_ANALYTES}/${id}`, {
     headers: getHeader(authHeader()),
   });
 ///////analytes associated with unit
-export const getSchemeAnalyte = id =>
+export const getSchemeAnalyte = (id) =>
   get(`${url.GET_SCHEMEANALYTE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 ///////analytes associated with unit
-export const getSchemeName = id =>
+export const getSchemeName = (id) =>
   get(`${url.GET_SCHEMENAME}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -781,7 +763,7 @@ export const addNewScheme = (createUnit, id) => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateScheme = unit => {
+export const updateScheme = (unit) => {
   let formData = new FormData();
   formData.append("name", unit.name);
   formData.append("price", unit.price);
@@ -793,36 +775,38 @@ export const updateScheme = unit => {
   });
 };
 //Get result list
-export const getResultsList = id =>
+export const getResultsList = (id) =>
   get(`${url.GET_RESULT}/${id}`, {
     headers: getHeader(authHeader()),
   });
 //Get STATISTICS list
-export const getStatisticsList = id =>
+export const getStatisticsList = (id) =>
   get(`${url.GET_STATISTICS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-//submit result lab count 
-export const getResultSubmit = id =>
+//submit result lab count
+export const getResultSubmit = (id) =>
   get(`${url.GET_RESULT_SUBMIT}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getReport = id => 
+export const getReport = (id) =>
   get(`${url.GET_REPORT}/${id}`, {
     headers: getHeader(authHeader()),
-  }).then(response => {
-    // console.log("API Raw Response:", response); // Log the raw response
-    return response; // Ensure response is being returned correctly
-  }).catch(error => {
-    console.error("Error in API Call:", error);
-  });
+  })
+    .then((response) => {
+      // console.log("API Raw Response:", response); // Log the raw response
+      return response; // Ensure response is being returned correctly
+    })
+    .catch((error) => {
+      console.error("Error in API Call:", error);
+    });
 ////////
-export const getSereologyResult = id =>
+export const getSereologyResult = (id) =>
   get(`${url.GET_SERELOGY_RESULT}/${id}`, {
     headers: getHeader(authHeader()),
-  })
-  
+  });
+
 //Participant result POST
 export const postResult = (result, id) => {
   let formData = new FormData();
@@ -837,7 +821,7 @@ export const postResult = (result, id) => {
   formData.append("round_status", result.round_status);
   formData.append("scheme_id", result.scheme_id);
   formData.append("result_status", result.result_status);
-  
+
   // Only append `result_type` if it is not null or undefined
   if (result.result_type !== null && result.result_type !== undefined) {
     formData.append("result_type", result.result_type);
@@ -863,7 +847,7 @@ export const postResult = (result, id) => {
 //     throw error; // Rethrow the error to be handled by the caller
 //   });
 // };
-export const addNewRoundLablist = createRoundLab => {
+export const addNewRoundLablist = (createRoundLab) => {
   let formData = new FormData();
   formData.append("participants", createRoundLab.participants);
   formData.append("added_by", createRoundLab.added_by);
@@ -872,7 +856,7 @@ export const addNewRoundLablist = createRoundLab => {
   });
 };
 
-export const updateRoundLablist = roundslab => {
+export const updateRoundLablist = (roundslab) => {
   let formData = new FormData();
   formData.append("participants", roundslab.participants);
   return axios.put(`${url.UPDATE_ROUNDLABS}/${roundslab.id}`, formData, {
@@ -880,7 +864,7 @@ export const updateRoundLablist = roundslab => {
   });
 };
 
-export const addNewReagents = createReagent => {
+export const addNewReagents = (createReagent) => {
   let formData = new FormData();
   formData.append("name", createReagent.name);
   formData.append("code", createReagent.code);
@@ -893,7 +877,7 @@ export const addNewReagents = createReagent => {
   });
 };
 
-export const updateReagents = reagent => {
+export const updateReagents = (reagent) => {
   let formData = new FormData();
 
   console.log("id received is ", reagent.id);
@@ -908,18 +892,18 @@ export const updateReagents = reagent => {
     headers: getHeader(authHeader()),
   });
 };
-export const deleteReagent = Reagent =>
+export const deleteReagent = (Reagent) =>
   del(`${url.DELETE_REAGENT}/${Reagent.id}`, {
     headers: getHeader(authHeader()),
   });
 
 //---------------Analyte add Reagents-------
-export const getAnalyteReagentlist = id =>
+export const getAnalyteReagentlist = (id) =>
   get(`${url.GET_ANALYTE_REAGENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewAnalyteReagentlist = createAnalyteReagent => {
+export const addNewAnalyteReagentlist = (createAnalyteReagent) => {
   let formData = new FormData();
   formData.append("reagents", createAnalyteReagent.reagents);
   formData.append("added_by", createAnalyteReagent.added_by);
@@ -928,7 +912,7 @@ export const addNewAnalyteReagentlist = createAnalyteReagent => {
   });
 };
 
-export const updateAnalyteReagentlist = analytesreagent => {
+export const updateAnalyteReagentlist = (analytesreagent) => {
   let formData = new FormData();
   formData.append("reagents", analytesreagent.reagents);
   return axios.put(
@@ -955,7 +939,7 @@ export const addNewAnalyteQualitativelist = (createAnalyteReagent) => {
   });
 };
 
-export const updateAnalyteQualitativelist = analytesreagent => {
+export const updateAnalyteQualitativelist = (analytesreagent) => {
   let formData = new FormData();
   formData.append("qualitativetype", analytesreagent.reagents);
   return axios.put(
@@ -967,51 +951,51 @@ export const updateAnalyteQualitativelist = analytesreagent => {
   );
 };
 ///////analytes associated with unit
-export const getAnalyteUnit = id =>
+export const getAnalyteUnit = (id) =>
   get(`${url.GET_ANALYTESUNITS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 ///////analytes associated with REAGENT
-export const getAnalyteReagent = id =>
+export const getAnalyteReagent = (id) =>
   get(`${url.GET_ANALYTESREAGENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 ///////analytes associated with INSTRUMENT
-export const getAnalyteInstrument = id =>
+export const getAnalyteInstrument = (id) =>
   get(`${url.GET_ANALYTESINSTRUMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 ///////analytes associated with METHOD
-export const getAnalyteMethod = id =>
+export const getAnalyteMethod = (id) =>
   get(`${url.GET_ANALYTESMETHODS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const instrumentsintype = id =>
+export const instrumentsintype = (id) =>
   get(`${url.GET_INSTRUMENTSINTYPE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const instrumentsinmaufacturer = id =>
+export const instrumentsinmaufacturer = (id) =>
   get(`${url.GET_INSTRUMENTSINMANUFACTURER}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const reagentsinmaufacturer = id =>
+export const reagentsinmaufacturer = (id) =>
   get(`${url.GET_REAGENTSINMANUFACTURER}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 //---------------Analyte add Units-------
-export const getAnalyteUnitlist = id =>
+export const getAnalyteUnitlist = (id) =>
   get(`${url.GET_ANALYTESUNITS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewAnalyteUnitlist = createAnalyteUnit => {
+export const addNewAnalyteUnitlist = (createAnalyteUnit) => {
   let formData = new FormData();
   formData.append("units", createAnalyteUnit.units);
   formData.append("added_by", createAnalyteUnit.added_by);
@@ -1023,28 +1007,24 @@ export const addNewAnalyteUnitlist = createAnalyteUnit => {
   });
 };
 
-export const updateAnalyteUnitlist = analytesunit => {
+export const updateAnalyteUnitlist = (analytesunit) => {
   let formData = new FormData();
   formData.append("units", analytesunit.units);
   formData.append("masterUnit", analytesunit.masterUnit);
   formData.append("conversion_formula", analytesunit.conversion_formula);
 
-  return axios.put(
-    `${url.UPDATE_ANALYTESUNITS}/${analytesunit.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_ANALYTESUNITS}/${analytesunit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 
 //---------------Analyte add Methods-------
-export const getAnalytemethodlist = id =>
+export const getAnalytemethodlist = (id) =>
   get(`${url.GET_ANALYTESMETHODS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewAnalytemethodlist = createAnalyteMethod => {
+export const addNewAnalytemethodlist = (createAnalyteMethod) => {
   let formData = new FormData();
   formData.append("methods", createAnalyteMethod.methods);
   formData.append("added_by", createAnalyteMethod.added_by);
@@ -1053,7 +1033,7 @@ export const addNewAnalytemethodlist = createAnalyteMethod => {
   });
 };
 
-export const updateAnalytemethodlist = analytesmethod => {
+export const updateAnalytemethodlist = (analytesmethod) => {
   let formData = new FormData();
   formData.append("methods", analytesmethod.methods);
   return axios.put(
@@ -1066,12 +1046,12 @@ export const updateAnalytemethodlist = analytesmethod => {
 };
 
 //---------------Analyte add Equipments-------
-export const getAnalyteEquipmentlist = id =>
+export const getAnalyteEquipmentlist = (id) =>
   get(`${url.GET_ANALYTESEQUIPMENTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewAnalyteEquipmentlist = createAnalyteEquipment => {
+export const addNewAnalyteEquipmentlist = (createAnalyteEquipment) => {
   let formData = new FormData();
   formData.append("equipments", createAnalyteEquipment.equipments);
   formData.append("added_by", createAnalyteEquipment.added_by);
@@ -1080,7 +1060,7 @@ export const addNewAnalyteEquipmentlist = createAnalyteEquipment => {
   });
 };
 
-export const updateAnalyteEquipmentlist = analytesequipment => {
+export const updateAnalyteEquipmentlist = (analytesequipment) => {
   let formData = new FormData();
   formData.append("equipments", analytesequipment.equipments);
   return axios.put(
@@ -1092,12 +1072,12 @@ export const updateAnalyteEquipmentlist = analytesequipment => {
   );
 };
 //---------------database admin get Manufactural list-------
-export const getManufacturalList = id =>
+export const getManufacturalList = (id) =>
   get(`${url.GET_MANUFACTURAL_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewManufactural = createManufactural => {
+export const addNewManufactural = (createManufactural) => {
   let formData = new FormData();
   formData.append("name", createManufactural.name);
   formData.append("website", createManufactural.website);
@@ -1108,7 +1088,7 @@ export const addNewManufactural = createManufactural => {
   });
 };
 
-export const updateManufactural = manufactural => {
+export const updateManufactural = (manufactural) => {
   let formData = new FormData();
 
   console.log("id received is ", manufactural);
@@ -1122,12 +1102,12 @@ export const updateManufactural = manufactural => {
   });
 };
 
-export const deleteManufacturer = Analyte =>
+export const deleteManufacturer = (Analyte) =>
   del(`${url.DELETE_MANUFACTURER}/${Analyte.id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getInstrumenttypelist = id =>
+export const getInstrumenttypelist = (id) =>
   get(`${url.GET_INSTRUMENT_TYPE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1137,7 +1117,7 @@ export const getInstrumenttypelist = id =>
 //     headers: getHeader(authHeader()),
 //   });
 
-export const addNewInstrumentType = createUnit => {
+export const addNewInstrumentType = (createUnit) => {
   let formData = new FormData();
   formData.append("name", createUnit.name);
   formData.append("added_by", createUnit.added_by);
@@ -1145,7 +1125,7 @@ export const addNewInstrumentType = createUnit => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateNewInstrumentType = unit => {
+export const updateNewInstrumentType = (unit) => {
   let formData = new FormData();
   formData.append("name", unit.name);
   formData.append("added_by", unit.added_by);
@@ -1153,17 +1133,17 @@ export const updateNewInstrumentType = unit => {
     headers: getHeader(authHeader()),
   });
 };
-export const deleteInstrumentType = InstrumentType =>
+export const deleteInstrumentType = (InstrumentType) =>
   del(`${url.DELETE_INSTRUMENT_TYPE}/${InstrumentType.id}`, {
     headers: getHeader(authHeader()),
   });
 
 ///////////methodlist/////////////n
-export const getMethodlist = id =>
+export const getMethodlist = (id) =>
   get(`${url.GET_METHOD_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const addNewMethod = createUnit => {
+export const addNewMethod = (createUnit) => {
   let formData = new FormData();
   formData.append("name", createUnit.name);
   formData.append("added_by", createUnit.added_by);
@@ -1173,7 +1153,7 @@ export const addNewMethod = createUnit => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateMethod = unit => {
+export const updateMethod = (unit) => {
   let formData = new FormData();
   formData.append("name", unit.name);
   formData.append("added_by", unit.added_by);
@@ -1200,12 +1180,12 @@ export const updateMembershipstatus = (status) => {
   );
 };
 
-export const deleteMethod = Method =>
+export const deleteMethod = (Method) =>
   del(`${url.DELETE_METHOD}/${Method.id}`, {
     headers: getHeader(authHeader()),
   });
 ///////////Scheme list/////////////
-export const getSchemelist = id =>
+export const getSchemelist = (id) =>
   get(`${url.GET_SCHEME_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1232,13 +1212,13 @@ export const getSchemelist = id =>
 //   });
 // };
 
-export const deleteScheme = unit =>
+export const deleteScheme = (unit) =>
   del(`${url.DELETE_SCHEME}/${unit.id}`, {
     headers: getHeader(authHeader()),
   });
 
 //////////Cycle List/////////////
-export const getCyclelist = id =>
+export const getCyclelist = (id) =>
   get(`${url.GET_CYCLE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1261,11 +1241,11 @@ export const addNewCycle = (createUnit, id) => {
         "Content-Type": "multipart/form-data",
       },
     })
-    .then(response => {
+    .then((response) => {
       console.log("Cycle added successfully:", response.data);
       return response.data;
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(
         "Error adding cycle:",
         error.response ? error.response.data : error.message
@@ -1274,7 +1254,7 @@ export const addNewCycle = (createUnit, id) => {
     });
 };
 
-export const updateCycle = cycle => {
+export const updateCycle = (cycle) => {
   let formData = new FormData();
   formData.append("id", cycle.id);
   formData.append("scheme_name", cycle.scheme_name);
@@ -1286,16 +1266,12 @@ export const updateCycle = cycle => {
   // formData.append("added_by", unit.added_by);
   // formData.append("analytes", cycle.analytes);
   formData.append("status", cycle.status);
-  return axios.put(
-    `${url.UPDATE_CYCLE}/${cycle.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_CYCLE}/${cycle.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 
-export const deleteCycle = unit =>
+export const deleteCycle = (unit) =>
   del(`${url.DELETE_CYCLE}/${unit.id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1323,12 +1299,12 @@ export const addNewPayment = (payment, id) => {
   });
 };
 // ---------------Scheme add Analytes-------
-export const getSchemeAnalytelist = id =>
+export const getSchemeAnalytelist = (id) =>
   get(`${url.GET_SCHEME_ANALYTE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewSchemeAnalytelist = createSchemeAnalyte => {
+export const addNewSchemeAnalytelist = (createSchemeAnalyte) => {
   let formData = new FormData();
   formData.append("analytes", createSchemeAnalyte.analytes);
   formData.append("added_by", createSchemeAnalyte.added_by);
@@ -1337,7 +1313,7 @@ export const addNewSchemeAnalytelist = createSchemeAnalyte => {
   });
 };
 
-export const updateSchemeAnalytelist = schemeanalyte => {
+export const updateSchemeAnalytelist = (schemeanalyte) => {
   let formData = new FormData();
   formData.append("analytes", schemeanalyte.analytes);
   return axios.put(
@@ -1349,7 +1325,6 @@ export const updateSchemeAnalytelist = schemeanalyte => {
   );
 };
 
-
 /////// Analytes Associated With Cycle
 export const getAnalyteCycle = (id) =>
   get(`${url.GET_ANALYTESCYCLES}/${id}`, {
@@ -1357,29 +1332,29 @@ export const getAnalyteCycle = (id) =>
   });
 
 ///////////Analyte list/////////////
-export const getAnalytelist = id =>
+export const getAnalytelist = (id) =>
   get(`${url.GET_ANALYTE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 ///////////Analyte FOR Scheme/////////////
-export const getAnalyteforSchemelist = id =>
+export const getAnalyteforSchemelist = (id) =>
   get(`${url.GET_ANALYTEFORSCHEME_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 export const addNewAnalyte = (createUnit) => {
-    let formData = new FormData();
-    formData.append("name", createUnit.name);
-    formData.append("added_by", createUnit.added_by);
-    formData.append("code", createUnit.code);
-    formData.append("status", createUnit.status);
-    return axios.post(`${url.ADD_NEW_ANALYTE}`, formData, {
-      headers: getHeader(authHeader()),
-    });
-  };
-  
-export const updateAnalyte = unit => {
+  let formData = new FormData();
+  formData.append("name", createUnit.name);
+  formData.append("added_by", createUnit.added_by);
+  formData.append("code", createUnit.code);
+  formData.append("status", createUnit.status);
+  return axios.post(`${url.ADD_NEW_ANALYTE}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const updateAnalyte = (unit) => {
   let formData = new FormData();
   formData.append("name", unit.name);
   formData.append("added_by", unit.added_by);
@@ -1397,18 +1372,18 @@ export const updateAnalyte = unit => {
     headers: getHeader(authHeader()),
   });
 };
-export const deleteAnalyte = Analyte =>
+export const deleteAnalyte = (Analyte) =>
   del(`${url.DELETE_ANALYTE}/${Analyte.id}`, {
     headers: getHeader(authHeader()),
   });
 
 ////participant city
-export const getCityList = id =>
+export const getCityList = (id) =>
   get(`${url.GET_CITY_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateCity = createCity => {
+export const addNewCreateCity = (createCity) => {
   let formData = new FormData();
   formData.append("name", createCity.name);
   formData.append("added_by", createCity.added_by);
@@ -1416,7 +1391,7 @@ export const addNewCreateCity = createCity => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateCity = city => {
+export const updateCity = (city) => {
   let formData = new FormData();
   // Make sure 'city' object contains 'id' field
   console.log("id received is ", city.id);
@@ -1429,12 +1404,12 @@ export const updateCity = city => {
 };
 
 ////participant country
-export const getCountryList = id =>
+export const getCountryList = (id) =>
   get(`${url.GET_COUNTRY_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateCountry = createCountry => {
+export const addNewCreateCountry = (createCountry) => {
   let formData = new FormData();
   formData.append("name", createCountry.name);
   formData.append("added_by", createCountry.added_by);
@@ -1442,7 +1417,7 @@ export const addNewCreateCountry = createCountry => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateCountry = country => {
+export const updateCountry = (country) => {
   let formData = new FormData();
   // Make sure 'country' object contains 'id' field
   console.log("id received is ", country.id);
@@ -1455,12 +1430,12 @@ export const updateCountry = country => {
 };
 
 ////participant Province
-export const getProvinceList = id =>
+export const getProvinceList = (id) =>
   get(`${url.GET_PROVINCE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateProvince = createProvince => {
+export const addNewCreateProvince = (createProvince) => {
   let formData = new FormData();
   formData.append("name", createProvince.name);
   formData.append("added_by", createProvince.added_by);
@@ -1468,7 +1443,7 @@ export const addNewCreateProvince = createProvince => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateProvince = province => {
+export const updateProvince = (province) => {
   let formData = new FormData();
   // Make sure 'province' object contains 'id' field
   console.log("id received is ", province.id);
@@ -1481,12 +1456,12 @@ export const updateProvince = province => {
 };
 
 ///participant district
-export const getDistrictList = id =>
+export const getDistrictList = (id) =>
   get(`${url.GET_DISTRICT_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateDistrict = createDistrict => {
+export const addNewCreateDistrict = (createDistrict) => {
   let formData = new FormData();
   formData.append("name", createDistrict.name);
   formData.append("added_by", createDistrict.added_by);
@@ -1494,7 +1469,7 @@ export const addNewCreateDistrict = createDistrict => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateDistrict = district => {
+export const updateDistrict = (district) => {
   let formData = new FormData();
   console.log("id received is ", district.id);
   formData.append("id", district.id);
@@ -1506,12 +1481,12 @@ export const updateDistrict = district => {
 };
 
 ///participant department
-export const getDepartmentList = id =>
+export const getDepartmentList = (id) =>
   get(`${url.GET_DEPARTMENT_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateDepartment = createDepartment => {
+export const addNewCreateDepartment = (createDepartment) => {
   let formData = new FormData();
   formData.append("name", createDepartment.name);
   formData.append("added_by", createDepartment.added_by);
@@ -1519,7 +1494,7 @@ export const addNewCreateDepartment = createDepartment => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateDepartment = department => {
+export const updateDepartment = (department) => {
   let formData = new FormData();
   console.log("id received is ", department.id);
   formData.append("id", department.id);
@@ -1531,12 +1506,12 @@ export const updateDepartment = department => {
 };
 
 ///participant Designation
-export const getDesignationList = id =>
+export const getDesignationList = (id) =>
   get(`${url.GET_DESIGNATION_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateDesignation = createDesignation => {
+export const addNewCreateDesignation = (createDesignation) => {
   let formData = new FormData();
   formData.append("name", createDesignation.name);
   formData.append("added_by", createDesignation.added_by);
@@ -1544,7 +1519,7 @@ export const addNewCreateDesignation = createDesignation => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateDesignation = designation => {
+export const updateDesignation = (designation) => {
   let formData = new FormData();
   console.log("id received is ", designation.id);
   formData.append("id", designation.id);
@@ -1556,12 +1531,12 @@ export const updateDesignation = designation => {
 };
 
 ///participant type
-export const getTypeList = id =>
+export const getTypeList = (id) =>
   get(`${url.GET_TYPE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateType = createType => {
+export const addNewCreateType = (createType) => {
   let formData = new FormData();
   formData.append("name", createType.name);
   formData.append("added_by", createType.added_by);
@@ -1569,7 +1544,7 @@ export const addNewCreateType = createType => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateType = type => {
+export const updateType = (type) => {
   let formData = new FormData();
   console.log("id received is ", type.id);
   formData.append("id", type.id);
@@ -1581,12 +1556,12 @@ export const updateType = type => {
 };
 
 ///participant sector
-export const getSectorList = id =>
+export const getSectorList = (id) =>
   get(`${url.GET_SECTOR_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCreateSector = createSector => {
+export const addNewCreateSector = (createSector) => {
   let formData = new FormData();
   formData.append("name", createSector.name);
   formData.append("added_by", createSector.added_by);
@@ -1594,7 +1569,7 @@ export const addNewCreateSector = createSector => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateSector = sector => {
+export const updateSector = (sector) => {
   let formData = new FormData();
   console.log("id received is ", sector.id);
   formData.append("id", sector.id);
@@ -1626,17 +1601,17 @@ export const getUnits = () =>
     headers: getHeader(authHeader()),
   });
 
-export const getOfferedTests = id =>
+export const getOfferedTests = (id) =>
   get(`${url.GET_OFFERED_TESTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getCorporateTests = id =>
+export const getCorporateTests = (id) =>
   get(`${url.GET_CORPORATE_TESTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 // List of Corporate
-export const getLabCorporate = id =>
+export const getLabCorporate = (id) =>
   get(`${url.GET_LABCORPORATE}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1653,7 +1628,7 @@ export const getRFeeCorporate = () =>
     headers: getHeader(authHeader()),
   });
 
-export const updateACorporateStatus = offeredTest => {
+export const updateACorporateStatus = (offeredTest) => {
   let formData = new FormData();
   formData.append("plateform_charges", offeredTest.plateform_charges);
   // formData.append("is_active", offeredTest.is_active);
@@ -1668,49 +1643,49 @@ export const updateACorporateStatus = offeredTest => {
 };
 
 // List of Accepted Corporate
-export const getALabCorporate = id =>
+export const getALabCorporate = (id) =>
   get(`${url.GET_ALABCORPORATE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 // List of Corporate Employee
-export const getEmployeeCorporate = id =>
+export const getEmployeeCorporate = (id) =>
   get(`${url.GET_EMPLOYEECORPORATE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getLabsCorporate = id =>
+export const getLabsCorporate = (id) =>
   get(`${url.GET_LABSCORPORATE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getOfferedTestsReferrel = id =>
+export const getOfferedTestsReferrel = (id) =>
   get(`${url.GET_OFFEREDTEST_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getCOfferedTestsReferrel = id =>
+export const getCOfferedTestsReferrel = (id) =>
   get(`${url.GET_COFFEREDTEST_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getCOfferedProfilesReferrel = id =>
+export const getCOfferedProfilesReferrel = (id) =>
   get(`${url.GET_COFFEREDPROFILE_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getCOfferedPackagesReferrel = id =>
+export const getCOfferedPackagesReferrel = (id) =>
   get(`${url.GET_COFFEREDPACKAGE_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getCOfferedRadiologysReferrel = id =>
+export const getCOfferedRadiologysReferrel = (id) =>
   get(`${url.GET_COFFEREDRADIOLOGY_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getOfferedProfilesReferrel = id =>
+export const getOfferedProfilesReferrel = (id) =>
   get(`${url.GET_OFFEREDPROFILE_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getOfferedPackagesReferrel = id =>
+export const getOfferedPackagesReferrel = (id) =>
   get(`${url.GET_OFFEREDPACKAGE_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getOfferedRadiologysReferrel = id =>
+export const getOfferedRadiologysReferrel = (id) =>
   get(`${url.GET_OFFEREDRADIOLOGY_REFERRELFEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1764,7 +1739,7 @@ export const addNewOfferedMainTest = (offeredTest, id) => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateOfferedTest = offeredTest => {
+export const updateOfferedTest = (offeredTest) => {
   let formData = new FormData();
   formData.append("id", offeredTest.id);
   formData.append("test_id", offeredTest.test_id);
@@ -1786,7 +1761,7 @@ export const updateOfferedTest = offeredTest => {
   });
 };
 
-export const updateCorporateTest = offeredTest => {
+export const updateCorporateTest = (offeredTest) => {
   let formData = new FormData();
   formData.append("id", offeredTest.id);
   formData.append("test_id", offeredTest.test_id);
@@ -1799,7 +1774,7 @@ export const updateCorporateTest = offeredTest => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateCorporateStatus = offeredTest => {
+export const updateCorporateStatus = (offeredTest) => {
   let formData = new FormData();
   formData.append("status", offeredTest.status);
   formData.append("shared_percentage", offeredTest.shared_percentage);
@@ -1814,13 +1789,13 @@ export const updateCorporateStatus = offeredTest => {
   );
 };
 
-export const deleteOfferedTest = offeredTest =>
+export const deleteOfferedTest = (offeredTest) =>
   del(`${url.DELETE_OFFERED_TEST}/${offeredTest.id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Home Sample Collector Requests START -------------
-export const getSampleCollectors = id =>
+export const getSampleCollectors = (id) =>
   get(`${url.GET_SAMPLE_COLLECTORS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1839,7 +1814,7 @@ export const addNewSampleCollector = (sampleCollector, id) => {
   });
 };
 
-export const updateSampleCollector = sampleCollector => {
+export const updateSampleCollector = (sampleCollector) => {
   let formData = new FormData();
   formData.append("id", sampleCollector.id);
   formData.append("name", sampleCollector.name);
@@ -1857,13 +1832,13 @@ export const updateSampleCollector = sampleCollector => {
   );
 };
 
-export const deleteSampleCollector = sampleCollector =>
+export const deleteSampleCollector = (sampleCollector) =>
   del(`${url.DELETE_SAMPLE_COLLECTOR}/${sampleCollector.id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Live chat for csr and csr admin complaints -------------
-export const getNotesComplaint = id =>
+export const getNotesComplaint = (id) =>
   get(`${url.GET_NOTES_COMPLAINT}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1880,7 +1855,7 @@ export const addNewNoteComplaint = (note, id) => {
 };
 
 // ------------- Test Certificate Requests START -------------
-export const getNotes = id =>
+export const getNotes = (id) =>
   get(`${url.GET_NOTES}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1895,7 +1870,7 @@ export const addNewNote = (note, id) => {
     headers: getHeader(authHeader()),
   });
 };
-export const getMsgs = id =>
+export const getMsgs = (id) =>
   get(`${url.GET_MSGS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1922,7 +1897,7 @@ export const addNewCollectionPointQuality = (qualityCertificate, id) => {
   });
 };
 
-export const getQualityCertificates = id =>
+export const getQualityCertificates = (id) =>
   get(`${url.GET_QUALITY_CERTIFICATES}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -1946,7 +1921,7 @@ export const addNewQualityCertificate = (qualityCertificate, id) => {
   });
 };
 
-export const updateQualityCertificate = qualityCertificate => {
+export const updateQualityCertificate = (qualityCertificate) => {
   let formData = new FormData();
   formData.append("id", qualityCertificate.id);
   formData.append("name", qualityCertificate.name);
@@ -1966,12 +1941,12 @@ export const updateQualityCertificate = qualityCertificate => {
   );
 };
 
-export const deleteQualityCertificate = qualityCertificate =>
+export const deleteQualityCertificate = (qualityCertificate) =>
   del(`${url.DELETE_QUALITY_CERTIFICATE}/${qualityCertificate.id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getActivityLog = id =>
+export const getActivityLog = (id) =>
   get(`${url.GET_ACTIVITY_LOG}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2041,7 +2016,7 @@ export const getCsrOfficerNotification = (id, previousApiCallTime) => {
 };
 // ------------- Finanace START Activity Log-------------
 
-export const getActivityLogFinance = id =>
+export const getActivityLogFinance = (id) =>
   get(`${url.GET_ACTIVITY_LOG_FINANCE}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2056,19 +2031,19 @@ export const getCorporateList = () =>
   });
 // ------------- Corporate START Activity Log-------------
 
-export const getCorporateCommit = id =>
+export const getCorporateCommit = (id) =>
   get(`${url.GET_CORPORATE_COMMIT}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Marketer Admin Activity Log -------------
 
-export const getActivityLogMarketer = id =>
+export const getActivityLogMarketer = (id) =>
   get(`${url.GET_ACTIVITY_LOG_MARKETER}/${id}`, {
     headers: getHeader(authHeader()),
   });
 // ------------- Pathologists START -------------
-export const getPathologists = id =>
+export const getPathologists = (id) =>
   get(`${url.GET_PATHOLOGISTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2099,7 +2074,7 @@ export const addNewPathologist = (pathologist, id) => {
   });
 };
 
-export const updatePathologist = pathologist => {
+export const updatePathologist = (pathologist) => {
   let formData = new FormData();
   formData.append("id", pathologist.id);
   formData.append("name", pathologist.name);
@@ -2126,13 +2101,13 @@ export const updatePathologist = pathologist => {
   });
 };
 
-export const deletePathologist = pathologist =>
+export const deletePathologist = (pathologist) =>
   del(`${url.DELETE_PATHOLOGIST}/${pathologist.id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Forget Password Requests START -------------
-export const postForgetPwd = data => {
+export const postForgetPwd = (data) => {
   let formData = new FormData();
   formData.append("email", data.email);
 
@@ -2151,7 +2126,7 @@ export const postConfirmPwd = (user, token) => {
   });
 };
 
-export const postChangePwd = user => {
+export const postChangePwd = (user) => {
   let formData = new FormData();
   formData.append("old_password", user.old_password);
   formData.append("new_password", user.new_password);
@@ -2162,7 +2137,7 @@ export const postChangePwd = user => {
 };
 
 // ------------- Lab Profile Requests START -------------
-export const getLabProfile = id =>
+export const getLabProfile = (id) =>
   get(`${url.GET_LAB_PROFILE}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2183,7 +2158,7 @@ export const updateLabProfile = (labProfile, id) => {
 };
 
 // ------------- Lab Settings Requests START -------------
-export const getLabSettings = id =>
+export const getLabSettings = (id) =>
   get(`${url.GET_LAB_SETTINGS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2238,7 +2213,7 @@ export const updateLabSettings = (labSettings, id) => {
   });
 };
 
-export const getLabPayments = id =>
+export const getLabPayments = (id) =>
   get(`${url.GET_LAB_PAYMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2256,7 +2231,7 @@ export const updateLabPayments = (labPayments, id) => {
 };
 
 // Get Region Wise Advertisement
-export const getRegionWiseAdvertisement = locationDetails => {
+export const getRegionWiseAdvertisement = (locationDetails) => {
   let formData = new FormData();
   formData.append("latitude", locationDetails.latitude);
   formData.append("longitude", locationDetails.longitude);
@@ -2288,22 +2263,22 @@ export const getRadiology = () =>
   get(url.GET_RADIOLOGY, {
     headers: getHeader(authHeader()),
   });
-export const getTestsList = id =>
+export const getTestsList = (id) =>
   get(`${url.GET_TESTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getCorporateTestsList = id =>
+export const getCorporateTestsList = (id) =>
   get(`${url.GET_CORPORATE_TESTS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Corporate Profile Requests START -------------
-export const getCorporateProfile = id =>
+export const getCorporateProfile = (id) =>
   get(`${url.GET_CORPORATE_PROFILE}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getCorporateProfileforpayment = id =>
+export const getCorporateProfileforpayment = (id) =>
   get(`${url.GET_CORPORATE_PROFILE}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2331,7 +2306,7 @@ export const updateCorporateProfile = (CorporateProfile, id) => {
 };
 
 // ----------------- Complaints -----------------
-export const addNewComplaint = complaint => {
+export const addNewComplaint = (complaint) => {
   let formData = new FormData();
   formData.append("complainant", complaint.complainant);
   formData.append("complainee", complaint.complainee);
@@ -2349,12 +2324,12 @@ export const addNewComplaint = complaint => {
   });
 };
 
-export const getUnhandledComplaints = id =>
+export const getUnhandledComplaints = (id) =>
   get(`${url.GET_UNHANDLED_COMPLAINTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const updateUnhandledComplaints = data => {
+export const updateUnhandledComplaints = (data) => {
   let formData = new FormData();
   formData.append("status", data.status);
   console.log("Form data: ", formData);
@@ -2371,17 +2346,17 @@ export const updateUnhandledComplaints = data => {
 //   });
 // };
 
-export const getHandledComplaints = id =>
+export const getHandledComplaints = (id) =>
   get(`${url.GET_HANDLED_COMPLAINTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getCsrAppointments = id =>
+export const getCsrAppointments = (id) =>
   get(`${url.GET_CSR_APPOINTMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const updateCsrAppointments = csrAppointment => {
+export const updateCsrAppointments = (csrAppointment) => {
   let formData = new FormData();
   // formData.append("comment", data.comment);
   formData.append("status", csrAppointment.status);
@@ -2399,12 +2374,12 @@ export const updateCsrAppointments = csrAppointment => {
   );
 };
 
-export const getCsrComplaints = id =>
+export const getCsrComplaints = (id) =>
   get(`${url.GET_CSR_COMPLAINTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const updateCsrComplaints = csrcomplaint => {
+export const updateCsrComplaints = (csrcomplaint) => {
   let formData = new FormData();
   // formData.append("comment", data.comment);
   formData.append(
@@ -2459,17 +2434,17 @@ export const getQuotes = (
   });
 };
 // ------------- Cart START -------------
-export const getCarts = id =>
+export const getCarts = (id) =>
   get(`${url.GET_CARTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const emptyCart = id =>
+export const emptyCart = (id) =>
   del(`${url.EMPTY_CART}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const deleteCart = cart =>
+export const deleteCart = (cart) =>
   del(`${url.DELETE_CART}/${cart.id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2497,13 +2472,13 @@ export const addToCart = (cart, id) => {
 };
 
 // Get Invoice Detail
-export const getInvoiceDetail = id =>
+export const getInvoiceDetail = (id) =>
   get(`${url.GET_INVOICE_DETAIL}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 // FEEDBACK
-export const getFeedbacks = id =>
+export const getFeedbacks = (id) =>
   get(`${url.GET_FEEDBACKS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2522,12 +2497,12 @@ export const getLabsRating = () =>
 // };
 
 // Get Test Description
-export const getTestDescriptions = id =>
+export const getTestDescriptions = (id) =>
   get(`${url.GET_TEST_DESCRIPTIONS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 // Get Nearby Labs
-export const getNearbyLabs = locationDetails => {
+export const getNearbyLabs = (locationDetails) => {
   let formData = new FormData();
   formData.append("latitude", locationDetails.latitude);
   formData.append("longitude", locationDetails.longitude);
@@ -2559,12 +2534,12 @@ export const addNewCemployeeData = (cemployeeData, id) => {
     headers: getHeader(authHeader()),
   });
 };
-export const deletecedata = cemployee =>
+export const deletecedata = (cemployee) =>
   del(`${url.DELETE_CEDATA}/${cemployee.id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const addNewCemployeefile = cemployeeData => {
+export const addNewCemployeefile = (cemployeeData) => {
   let formData = new FormData();
   formData.append("excel_file", cemployeeData.excel_file);
 
@@ -2575,7 +2550,7 @@ export const addNewCemployeefile = cemployeeData => {
   });
 };
 
-export const updateCemployee = cemployeeData => {
+export const updateCemployee = (cemployeeData) => {
   let formData = new FormData();
   formData.append("name", cemployeeData.name);
   formData.append("employee_code", cemployeeData.employee_code);
@@ -2587,13 +2562,13 @@ export const updateCemployee = cemployeeData => {
 };
 
 // ------------- ACCOUNT STATEMENTS -------------
-export const getAccountStatements = id =>
+export const getAccountStatements = (id) =>
   get(`${url.GET_ACCOUNT_STATEMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Staff Profile Requests START -------------
-export const getStaffProfile = id =>
+export const getStaffProfile = (id) =>
   get(`${url.GET_STAFF_PROFILE}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2624,13 +2599,13 @@ export const addStaff = (userID, staff) => {
     .post(`${url.ADD_STAFF}/${userID}`, formData, {
       headers: getHeader(authHeader()),
     })
-    .then(response => {
+    .then((response) => {
       if (response.status >= 200 && response.status <= 299) {
         return response.data;
       }
       throw response.data;
     })
-    .catch(err => {
+    .catch((err) => {
       let message;
       if (err.response && err.response.status) {
         switch (err.response.status) {
@@ -2659,7 +2634,7 @@ export const addStaff = (userID, staff) => {
     });
 };
 
-export const updateStaff = staff => {
+export const updateStaff = (staff) => {
   let formData = new FormData();
   formData.append("name", staff.name);
   formData.append("cnic", staff.cnic);
@@ -2677,13 +2652,13 @@ export const updateStaff = staff => {
   });
 };
 
-export const deleteStaff = staff =>
+export const deleteStaff = (staff) =>
   del(`${url.DELETE_STAFF}/${staff.id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Sample Collector Profile Requests START -------------
-export const getSampleCollectorProfile = id =>
+export const getSampleCollectorProfile = (id) =>
   get(`${url.GET_SAMPLE_COLLECTOR_PROFILE}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2701,17 +2676,17 @@ export const updateSampleCollectorProfile = (sampleCollectorProfile, id) => {
 };
 
 // ------------- Sample Collector Test Appointment Requests START -------------
-export const getSampleCollectionInProcessList = id =>
+export const getSampleCollectionInProcessList = (id) =>
   get(`${url.GET_SAMPLE_COLLECTION_IN_PROCESS_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getSampleCollectionCompletedList = id =>
+export const getSampleCollectionCompletedList = (id) =>
   get(`${url.GET_SAMPLE_COLLECTION_COMPLETED_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const updateSampleCollectionStatus = data => {
+export const updateSampleCollectionStatus = (data) => {
   let formData = new FormData();
   formData.append("id", data.id);
   formData.append("collection_status", data.collection_status);
@@ -2729,12 +2704,12 @@ export const updateSampleCollectionStatus = data => {
 };
 
 // ------------- STAFF Requests START -------------
-export const getCSRList = id =>
+export const getCSRList = (id) =>
   get(`${url.GET_CSR_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getAuditorList = id =>
+export const getAuditorList = (id) =>
   get(`${url.GET_AUDITOR_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2744,70 +2719,65 @@ export const getOrganizationList = () =>
     headers: getHeader(authHeader()),
   });
 
-export const getRegistrationAdminList = id =>
+export const getRegistrationAdminList = (id) =>
   get(`${url.GET_FINANCE_OFFICER_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-  
 
 //          Registration Admin
-export const getRoundlist = id =>
+export const getRoundlist = (id) =>
   get(`${url.GET_ROUND_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-  export const addNewRound = (createUnit, id) => {
-    console.log("Adding New Round", createUnit, id);
-    let formData = new FormData();
-    formData.append("rounds", createUnit.rounds);
-    formData.append("scheme", createUnit.scheme);
-    formData.append("cycle_no", createUnit.cycle_no);
-    //formData.append("sample", createUnit.sample);
-    formData.append("issue_date", createUnit.issue_date);
-    formData.append("closing_date", createUnit.closing_date);
-    //formData.append("status", createUnit.status);
-    formData.append("note", createUnit.note);
-    formData.append("added_by", createUnit.added_by);
-    formData.append("participants", createUnit.participants);
-    return axios
-      .post(`${url.ADD_NEW_ROUND}`, formData, {
-        headers: {
-          ...getHeader(authHeader()),
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then(response => {
-        console.log("Round added successfully:", response.data);
-        return response.data;
-      })
-      .catch(error => {
-        console.error(
-          "Error adding roound:",
-          error.response ? error.response.data : error.message
-        );
-        throw error;
-      });
-  };
-  
-  export const updateRound = unit => {
-    let formData = new FormData();
-    formData.append("rounds", unit.rounds);
-    formData.append("sample", unit.sample);
-    formData.append("issue_date", unit.issue_date);
-    formData.append("closing_date", unit.closing_date);
-    // formData.append("notes", unit.notes);
-    formData.append("status", unit.status);
-    formData.append("added_by", unit.added_by);
-    return axios.put(
-      `${url.UPDATE_ROUND}/${unit.id}`,
-      formData,
-      {
-        headers: getHeader(authHeader()),
-      }
-    );
-  };
+export const addNewRound = (createUnit, id) => {
+  console.log("Adding New Round", createUnit, id);
+  let formData = new FormData();
+  formData.append("rounds", createUnit.rounds);
+  formData.append("scheme", createUnit.scheme);
+  formData.append("cycle_no", createUnit.cycle_no);
+  //formData.append("sample", createUnit.sample);
+  formData.append("issue_date", createUnit.issue_date);
+  formData.append("closing_date", createUnit.closing_date);
+  //formData.append("status", createUnit.status);
+  formData.append("note", createUnit.note);
+  formData.append("added_by", createUnit.added_by);
+  formData.append("participants", createUnit.participants);
+  return axios
+    .post(`${url.ADD_NEW_ROUND}`, formData, {
+      headers: {
+        ...getHeader(authHeader()),
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      console.log("Round added successfully:", response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(
+        "Error adding roound:",
+        error.response ? error.response.data : error.message
+      );
+      throw error;
+    });
+};
 
-export const deleteRound = round =>
+export const updateRound = (unit) => {
+  let formData = new FormData();
+  formData.append("rounds", unit.rounds);
+  formData.append("sample", unit.sample);
+  formData.append("issue_date", unit.issue_date);
+  formData.append("closing_date", unit.closing_date);
+  // formData.append("notes", unit.notes);
+  formData.append("status", unit.status);
+  formData.append("added_by", unit.added_by);
+  return axios.put(`${url.UPDATE_ROUND}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const deleteRound = (round) =>
   del(`${url.DELETE_ROUND}/${round.id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2819,20 +2789,23 @@ export const addSereologyValues = (value, id) => {
   formData.append("type", value.type);
   formData.append("analyte_id", value.analyte_id);
   formData.append("value", value.value);
-  formData.append("account_id", value.account_id); 
+  formData.append("account_id", value.account_id);
   return axios
     .post(`${url.POST_SERELOGY_VALUES}/${id}`, formData, {
       headers: {
         ...getHeader(authHeader()),
-        "Content-Type": "multipart/form-data", 
+        "Content-Type": "multipart/form-data",
       },
     })
-    .then(response => {
+    .then((response) => {
       console.log("Sereology values added successfully:", response.data);
       return response.data;
     })
-    .catch(error => {
-      console.error("Error adding sereology values:", error.response ? error.response.data : error.message);
+    .catch((error) => {
+      console.error(
+        "Error adding sereology values:",
+        error.response ? error.response.data : error.message
+      );
       throw error;
     });
 };
@@ -2840,7 +2813,7 @@ export const addSereologyValues = (value, id) => {
 export const getSereologyValues = (id, round_id) => {
   return get(`${url.GET_SERELOGY_VALUES}/${id}`, {
     headers: getHeader(authHeader()),
-    params: { round_id }  // Ensure round_id is included in the params object correctly
+    params: { round_id }, // Ensure round_id is included in the params object correctly
   });
 };
 
@@ -2859,43 +2832,43 @@ export const getUnapprovedCorporate = () =>
     headers: getHeader(authHeader()),
   });
 
-export const getAllLabs = id =>
+export const getAllLabs = (id) =>
   get(`${url.GET_ALL_PARTICIPANT}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-  export const updateAllLabs = AllLabs => {
-    let formData = new FormData();
-    formData.append("name", AllLabs.name);
-    formData.append("email", AllLabs.email);
-    formData.append("address", AllLabs.address);
-    formData.append("district", AllLabs.district);
-    formData.append("city", AllLabs.city);
-    formData.append("shipping_address", AllLabs.shipping_address);
-    formData.append("billing_address", AllLabs.billing_address);
-    formData.append("lab_staff_name", AllLabs.lab_staff_name);
-    formData.append("email_participant", AllLabs.email_participant);
-    formData.append("landline_registered_by", AllLabs.landline_registered_by);
-    return axios.put(`${url.UPDATE_LABS}${AllLabs.id}/`, formData, {
-      headers: getHeader(authHeader()), 
-    });
-  };
-export const getPendingLabs = id =>
+export const updateAllLabs = (AllLabs) => {
+  let formData = new FormData();
+  formData.append("name", AllLabs.name);
+  formData.append("email", AllLabs.email);
+  formData.append("address", AllLabs.address);
+  formData.append("district", AllLabs.district);
+  formData.append("city", AllLabs.city);
+  formData.append("shipping_address", AllLabs.shipping_address);
+  formData.append("billing_address", AllLabs.billing_address);
+  formData.append("lab_staff_name", AllLabs.lab_staff_name);
+  formData.append("email_participant", AllLabs.email_participant);
+  formData.append("landline_registered_by", AllLabs.landline_registered_by);
+  return axios.put(`${url.UPDATE_LABS}${AllLabs.id}/`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const getPendingLabs = (id) =>
   get(`${url.GET_PENDING_LABS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getApprovedLabs = id =>
+export const getApprovedLabs = (id) =>
   get(`${url.GET_APPROVED_LABS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getUnapprovedLabs = id =>
+export const getUnapprovedLabs = (id) =>
   get(`${url.GET_UNAPPROVED_LABS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const approveUnapproveCorporate = data => {
+export const approveUnapproveCorporate = (data) => {
   let formData = new FormData();
   formData.append("corporate_id", data.corporate_id);
   formData.append("is_approved", data.isApproved);
@@ -2904,7 +2877,7 @@ export const approveUnapproveCorporate = data => {
     headers: getHeader(authHeader()),
   });
 };
-export const approveUnapproveLab = data => {
+export const approveUnapproveLab = (data) => {
   let formData = new FormData();
   formData.append("lab_id", data.labId);
   formData.append("is_approved", data.isApproved);
@@ -2925,15 +2898,15 @@ export const getLabsListApprovedFee = () =>
     headers: getHeader(authHeader()),
   });
 
-export const getSharedPercentagePendingFeeTests = id =>
+export const getSharedPercentagePendingFeeTests = (id) =>
   get(`${url.GET_SHARED_PERCENTAGE_PENDING_FEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getSharedPercentageApprovedFeeTests = id =>
+export const getSharedPercentageApprovedFeeTests = (id) =>
   get(`${url.GET_SHARED_PERCENTAGE_APPROVED_FEE}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const updateSharedPercentagePendingFeeTest = data => {
+export const updateSharedPercentagePendingFeeTest = (data) => {
   let formData = new FormData();
 
   formData.append("shared_percentage", data.shared_percentage);
@@ -2947,7 +2920,7 @@ export const updateSharedPercentagePendingFeeTest = data => {
   );
 };
 
-export const updateSharedPercentageAllPendingFeeTest = data => {
+export const updateSharedPercentageAllPendingFeeTest = (data) => {
   let formData = new FormData();
   // formData.append("account_id", id);
   formData.append("shared_percentage", data.shared_percentage);
@@ -3054,7 +3027,7 @@ export const getResolvedComplaintsLabhazir = () =>
     headers: getHeader(authHeader()),
   });
 
-export const assignComplaint = data => {
+export const assignComplaint = (data) => {
   let formData = new FormData();
   formData.append("id", data.id);
   // formData.append("office", data.office);
@@ -3086,7 +3059,7 @@ export const getFailedAudits = () =>
     headers: getHeader(authHeader()),
   });
 
-export const assignAudit = data => {
+export const assignAudit = (data) => {
   let formData = new FormData();
   formData.append("id", data.id);
   formData.append("assigned_to", data.assignedTo);
@@ -3125,7 +3098,7 @@ export const addNewAdvertisement = (advertisement, id) => {
   });
 };
 
-export const updateAdvertisement = advertisement => {
+export const updateAdvertisement = (advertisement) => {
   let formData = new FormData();
   formData.append("id", advertisement.id);
   formData.append("title", advertisement.title);
@@ -3146,18 +3119,18 @@ export const updateAdvertisement = advertisement => {
   );
 };
 
-export const deleteAdvertisement = advertisement =>
+export const deleteAdvertisement = (advertisement) =>
   del(`${url.DELETE_ADVERTISEMENT}/${advertisement.id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Discount LabHazir Requests START -------------
-export const getDiscountLabHazirs = id =>
+export const getDiscountLabHazirs = (id) =>
   get(`${url.GET_DISCOUNT_LABHAZIR}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const updateDiscountLabHazir = data => {
+export const updateDiscountLabHazir = (data) => {
   let formData = new FormData();
 
   formData.append("discount", data.discount);
@@ -3172,7 +3145,7 @@ export const updateDiscountLabHazir = data => {
   });
 };
 
-export const updateDiscountAllLabHazir = data => {
+export const updateDiscountAllLabHazir = (data) => {
   let formData = new FormData();
   // formData.append("account_id", id);
   formData.append("discount", data.discount);
@@ -3198,20 +3171,20 @@ export const getClList = () =>
   get(`${url.GET_CL_LIST}`, {
     headers: getHeader(authHeader()),
   })
-    .then(response => {
+    .then((response) => {
       console.log("Dataaaaaaaaaaaa in helper:", response); // Logging the response data
       return response;
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error:", error); // Logging the error
       throw error; // Re-throwing the error for the caller to handle
     });
 
-export const getDiscountLabHazirToLabs = id =>
+export const getDiscountLabHazirToLabs = (id) =>
   get(`${url.GET_DISCOUNT_LABHAZIRTOLABS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const updateDiscountLabHazirToLab = data => {
+export const updateDiscountLabHazirToLab = (data) => {
   let formData = new FormData();
 
   formData.append("discount_by_labhazir", data.discount_by_labhazir);
@@ -3230,7 +3203,7 @@ export const updateDiscountLabHazirToLab = data => {
   );
 };
 
-export const updateDiscountAllLabHazirToLab = data => {
+export const updateDiscountAllLabHazirToLab = (data) => {
   let formData = new FormData();
   // formData.append("account_id", id);
   formData.append("discount_by_labhazir", data.discount_by_labhazir);
@@ -3260,7 +3233,7 @@ export const updateDiscountAllLabHazirToLab = data => {
 //   });
 // Get Nearby Labs
 
-export const getPutReferrelFeeLabs = data => {
+export const getPutReferrelFeeLabs = (data) => {
   let formData = new FormData();
 
   formData.append("test_name", data.test_name);
@@ -3276,7 +3249,7 @@ export const getReferrelFeeLabs = () =>
     headers: getHeader(authHeader()),
   });
 
-export const updateReferrelFeeLab = referrelLabFee => {
+export const updateReferrelFeeLab = (referrelLabFee) => {
   let formData = new FormData();
 
   formData.append("shared_percentage", referrelLabFee.shared_percentage);
@@ -3289,7 +3262,7 @@ export const updateReferrelFeeLab = referrelLabFee => {
     }
   );
 };
-export const updateReferrelAllFeeLab = referrelLabFee => {
+export const updateReferrelAllFeeLab = (referrelLabFee) => {
   let formData = new FormData();
   // formData.append("account_id", id);
   formData.append("shared_percentage", referrelLabFee.shared_percentage);
@@ -3304,11 +3277,11 @@ export const updateReferrelAllFeeLab = referrelLabFee => {
 };
 
 //discount lab
-export const getDiscountLab = id =>
+export const getDiscountLab = (id) =>
   get(`${url.GET_DISCOUNT_LAB}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const updateDiscountLab = data => {
+export const updateDiscountLab = (data) => {
   let formData = new FormData();
 
   formData.append("discount", data.discount);
@@ -3323,7 +3296,7 @@ export const updateDiscountLab = data => {
   });
 };
 
-export const updateDiscountAllLab = data => {
+export const updateDiscountAllLab = (data) => {
   let formData = new FormData();
   // formData.append("account_id", id);
   formData.append("discount", data.discount);
@@ -3339,12 +3312,12 @@ export const updateDiscountAllLab = data => {
 };
 
 // ------------- Assigned Audits Requests START -------------
-export const getAssignedAudits = id =>
+export const getAssignedAudits = (id) =>
   get(`${url.GET_ASSIGNED_AUDITS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const updateAssignedAudits = data => {
+export const updateAssignedAudits = (data) => {
   let formData = new FormData();
   formData.append("audit_report", data.auditReport);
   formData.append("audit_status", data.audit_status);
@@ -3355,7 +3328,7 @@ export const updateAssignedAudits = data => {
     headers: getHeader(authHeader()),
   });
 };
-export const getLabAudits = id =>
+export const getLabAudits = (id) =>
   get(`${url.GET_LAB_AUDITS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -3370,17 +3343,17 @@ export const addNewAudit = (audit, id) => {
   });
 };
 
-export const getAuditorsCompletedAudits = id =>
+export const getAuditorsCompletedAudits = (id) =>
   get(`${url.GET_AUDITORS_COMPLETED_AUDITS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getInPayment = id =>
+export const getInPayment = (id) =>
   get(`${url.GET_IN_PAYMENT}/${id}`, {
     headers: getHeader(authHeader()),
   });
 // ------------- Lab Advertisements Requests START -------------
-export const getLabAdvertisements = id =>
+export const getLabAdvertisements = (id) =>
   get(`${url.GET_LAB_ADVERTISEMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -3405,7 +3378,7 @@ export const addNewLabAdvertisement = (advertisement, id) => {
   });
 };
 
-export const updateLabAdvertisement = advertisement => {
+export const updateLabAdvertisement = (advertisement) => {
   let formData = new FormData();
   formData.append("id", advertisement.id);
   formData.append("title", advertisement.title);
@@ -3459,7 +3432,7 @@ export const addNewInPayment = (inPayment, id) => {
 };
 
 // ------------- PAYMENT IN STATUS---------------------
-export const updatePaymentStatus = paymentStatus => {
+export const updatePaymentStatus = (paymentStatus) => {
   let formData = new FormData();
   formData.append("id", paymentStatus.id);
   formData.append("deposit_at", paymentStatus.deposit_at);
@@ -3475,7 +3448,7 @@ export const updatePaymentStatus = paymentStatus => {
   );
 };
 
-export const updatePaymentInStatus = paymentInStatus => {
+export const updatePaymentInStatus = (paymentInStatus) => {
   let formData = new FormData();
   formData.append("is_cleared", paymentInStatus.is_cleared);
   formData.append("cleared_at", paymentInStatus.cleared_at);
@@ -3487,7 +3460,7 @@ export const updatePaymentInStatus = paymentInStatus => {
     }
   );
 };
-export const updatePaymentInBouncedStatus = paymentInBouncedStatus => {
+export const updatePaymentInBouncedStatus = (paymentInBouncedStatus) => {
   let formData = new FormData();
   // formData.append("id", paymentInBouncedStatus.id);
   formData.append("deposit_at", paymentInBouncedStatus.deposit_at);
@@ -3506,46 +3479,46 @@ export const updatePaymentInBouncedStatus = paymentInBouncedStatus => {
 };
 
 // ------------- Lab Advertisements Requests START -------------
-export const deleteLabAdvertisement = advertisement =>
+export const deleteLabAdvertisement = (advertisement) =>
   del(`${url.DELETE_LAB_ADVERTISEMENT}/${advertisement.id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getPaymentStatuss = id =>
+export const getPaymentStatuss = (id) =>
   get(`${url.GET_PAYMENT_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getDepositStatuss = id =>
+export const getDepositStatuss = (id) =>
   get(`${url.GET_DEPOSIT_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getClearStatuss = id =>
+export const getClearStatuss = (id) =>
   get(`${url.GET_CLEAR_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getPaymentOutClearStatuss = id =>
+export const getPaymentOutClearStatuss = (id) =>
   get(`${url.GET_PAYMENTOUT_CLEAR_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Registration Admin requests START -------------
 
-export const getClearedInPayments = id =>
+export const getClearedInPayments = (id) =>
   get(`${url.GET_CLEARED_IN_PAYMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getApprovedInPayments = id =>
+export const getApprovedInPayments = (id) =>
   get(`${url.GET_APPROVED_IN_PAYMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getUnapprovedInPayments = id =>
+export const getUnapprovedInPayments = (id) =>
   get(`${url.GET_UNAPPROVED_IN_PAYMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const updateApproveUnapproveInPayment = data => {
+export const updateApproveUnapproveInPayment = (data) => {
   let formData = new FormData();
   formData.append("id", data.id);
   formData.append("is_approved", data.is_approved);
@@ -3577,12 +3550,12 @@ export const addNewAdvertisementPriceList = (advertisementPriceList, id) => {
 };
 
 // Donation Appointments
-export const getAllDonationAppointments = id =>
+export const getAllDonationAppointments = (id) =>
   get(`${url.GET_ALL_DONATION_APPOINTMENTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getOutPayment = id =>
+export const getOutPayment = (id) =>
   get(`${url.GET_OUT_PAYMENT}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -3591,7 +3564,7 @@ export const getLabsMof = () =>
     headers: getHeader(authHeader()),
   });
 
-export const getLabsc = id =>
+export const getLabsc = (id) =>
   get(`${url.GET_LABS_C}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -3663,7 +3636,7 @@ export const addNewCorporatePayment = (outPayment, id) => {
 };
 
 // update corporate out payment
-export const updatePaymentOutCCreatedStatuss = paymentOutCreatedStatuss => {
+export const updatePaymentOutCCreatedStatuss = (paymentOutCreatedStatuss) => {
   let formData = new FormData();
   // formData.append("payment_for",  paymentOutCreatedStatuss.payment_for);
   // formData.append("lab_id",   paymentOutCreatedStatuss.lab_id);
@@ -3705,16 +3678,16 @@ export const addNewInvoiceAdjustment = (outPayment, id) => {
   });
 };
 
-export const getPaymentOutStatuss = id =>
+export const getPaymentOutStatuss = (id) =>
   get(`${url.GET_PAYMENTOUT_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getBouncedStatuss = id =>
+export const getBouncedStatuss = (id) =>
   get(`${url.GET_BOUNCED_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const getBouncedInStatuss = id =>
+export const getBouncedInStatuss = (id) =>
   get(`${url.GET_BOUNCEDIN_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -3724,25 +3697,25 @@ export const getBouncedInStatuss = id =>
 //   get(`${url.GET_CCREATEDOUT_STATUSS}/${id}`, {
 //     headers: getHeader(authHeader()),
 //   });
-export const getCCreatedOutStatuss = id =>
+export const getCCreatedOutStatuss = (id) =>
   get(`${url.GET_CCREATEDOUT_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   })
-    .then(response => {
+    .then((response) => {
       console.log("api response is :", response); // Log the response to the console
       return response; // Optionally return the response if needed
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error fetching API:", error); // Log any errors to the console
       throw error; // Optionally rethrow the error if needed
     });
 
-export const getCreatedOutStatuss = id =>
+export const getCreatedOutStatuss = (id) =>
   get(`${url.GET_CREATEDOUT_STATUSS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 // ------------- PAYMENT IN STATUS---------------------
-export const updatePaymentOutStatus = paymentOutStatus => {
+export const updatePaymentOutStatus = (paymentOutStatus) => {
   let formData = new FormData();
   formData.append("is_cleared", paymentOutStatus.is_cleared);
   formData.append("cleared_at", paymentOutStatus.cleared_at);
@@ -3755,7 +3728,7 @@ export const updatePaymentOutStatus = paymentOutStatus => {
   );
 };
 
-export const updatePaymentOutCreatedStatuss = paymentOutCreatedStatuss => {
+export const updatePaymentOutCreatedStatuss = (paymentOutCreatedStatuss) => {
   let formData = new FormData();
   // formData.append("payment_for",  paymentOutCreatedStatuss.payment_for);
   // formData.append("lab_id",   paymentOutCreatedStatuss.lab_id);
@@ -3779,7 +3752,7 @@ export const updatePaymentOutCreatedStatuss = paymentOutCreatedStatuss => {
   );
 };
 
-export const updateAdvertisementPriceList = advertisementPriceList => {
+export const updateAdvertisementPriceList = (advertisementPriceList) => {
   let formData = new FormData();
   formData.append("amount", advertisementPriceList.amount);
   formData.append("number_of_days", advertisementPriceList.number_of_days);
@@ -3794,18 +3767,18 @@ export const updateAdvertisementPriceList = advertisementPriceList => {
   );
 };
 
-export const deleteAdvertisementPriceList = advertisementPriceList =>
+export const deleteAdvertisementPriceList = (advertisementPriceList) =>
   del(`${url.DELETE_ADVERTISEMENT_PRICE_LIST}/${advertisementPriceList.id}`, {
     headers: getHeader(authHeader()),
   });
 
 // ------------- Lab Advertisements Requests TO labhazir START -------------
-export const getLabAdvertisementRequests = id =>
+export const getLabAdvertisementRequests = (id) =>
   get(`${url.GET_LAB_ADVERTISEMENT_REQUESTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-export const updateLabAdvertisementRequest = advertisement => {
+export const updateLabAdvertisementRequest = (advertisement) => {
   let formData = new FormData();
   formData.append("id", advertisement.id);
   formData.append("request_status", advertisement.request_status);
@@ -3823,7 +3796,7 @@ export const updateLabAdvertisementRequest = advertisement => {
   );
 };
 
-export const deletePaymentout = paymentout =>
+export const deletePaymentout = (paymentout) =>
   del(`${url.DELETE_PAYMENTOUT}/${paymentout.id}`, {
     headers: getHeader(authHeader()),
   });
@@ -3846,7 +3819,7 @@ export const getAdvertisementLives = () =>
 //     headers: getHeader(authHeader()),
 //   });
 // Get Region Wise Advertisement
-export const getAdvLive = locationDetails => {
+export const getAdvLive = (locationDetails) => {
   let formData = new FormData();
   formData.append("latitude", locationDetails.latitude);
   formData.append("longitude", locationDetails.longitude);
@@ -3862,7 +3835,7 @@ export const getAdvLive = locationDetails => {
 };
 
 //------------ Get Advertisement Invoice Detail-------------
-export const getAdvInvoice = id =>
+export const getAdvInvoice = (id) =>
   get(
     `${url.GET_ADV_INVOICE}/${id}`,
     {
@@ -3935,7 +3908,35 @@ export const getAuditorSouthList = () =>
 //   get(`${url.GET_AUDITOR_NORTH_TERRITORY_LIST}`, {
 //     headers: getHeader(authHeader()),
 //   });
-export const getInstrumentDetail = (id)=>
+export const getInstrumentDetail = (id) =>
   get(`${url.GET_INSTRUMENT_DETAIL}/${id}`, {
     headers: getHeader(authHeader()),
   });
+export const getInstrumentAnalytelist = (id) =>
+  get(`${url.GET_INSTRUMENT_ANALYTE_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const addNewInstrumentAnalytelist = (addInstrumentAnalyte, id) => {
+  let formData = new FormData();
+  formData.append("id", addInstrumentAnalyte.id);
+  formData.append("analytes", addInstrumentAnalyte.analytes);
+
+  return axios.post(
+    `${url.ADD_INSTRUMENT_ANALYTE_LIST}/${id}`, // <-- Add ID to the URL
+    formData,
+    { headers: getHeader(authHeader()) }
+  );
+};
+
+export const updateInstrumentAnalytelist = (schemeanalyte) => {
+  let formData = new FormData();
+  formData.append("analytes", schemeanalyte.analytes);
+  return axios.put(
+    `${url.UPDATE_INSTRUMENT_ANALYTE_LIST}/${schemeanalyte.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};

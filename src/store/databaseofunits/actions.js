@@ -63,6 +63,16 @@ import {
   GET_INSTRUMENT_DETAIL,
   GET_INSTRUMENT_DETAIL_SUCCESS,
   GET_INSTRUMENT_DETAIL_FAIL,
+
+  GET_INSTRUMENT_ANALYTE_LIST,
+  GET_INSTRUMENT_ANALYTE_LIST_SUCCESS,
+  GET_INSTRUMENT_ANALYTE_LIST_FAIL,
+  ADD_NEW_INSTRUMENT_ANALYTE,
+  ADD_NEW_INSTRUMENT_ANALYTE_SUCCESS,
+  ADD_NEW_INSTRUMENT_ANALYTE_FAIL,
+  UPDATE_INSTRUMENT_ANALYTE,
+  UPDATE_INSTRUMENT_ANALYTE_SUCCESS,
+  UPDATE_INSTRUMENT_ANALYTE_FAIL,
 } from "./actionTypes";
 
 
@@ -391,5 +401,57 @@ export const getInstrumentDetailSuccess = InstrumentDetail => ({
 
 export const getInstrumentDetailFail = error => ({
   type: GET_INSTRUMENT_DETAIL_FAIL,
+  payload: error,
+});
+export const getInstrumentAnalytelist = (id) => ({
+  type: GET_INSTRUMENT_ANALYTE_LIST,
+  payload: id,
+});
+
+export const getInstrumentAnalytelistSuccess = InstrumentAnalyteList => (
+  console.log("data IN sUCCESS ", InstrumentAnalyteList ),
+  {
+  type: GET_INSTRUMENT_ANALYTE_LIST_SUCCESS,
+  payload: InstrumentAnalyteList,
+});
+
+export const getInstrumentAnalytelistFail = error => (
+  console.log("data IN sUCCESS ", error ),
+  {
+  type: GET_INSTRUMENT_ANALYTE_LIST_FAIL,
+  payload: error,
+});
+
+export const addNewInstrumentAnalytelist = (addInstrumentAnalyte, id) => (
+  console.log("data IN addInstrumentAnalyte ", addInstrumentAnalyte ),
+  {
+  type: ADD_NEW_INSTRUMENT_ANALYTE,
+  payload: { addInstrumentAnalyte, id },
+});
+
+export const addNewInstrumentAnalytelistSuccess = addInstrumentAnalyte => ({
+  type: ADD_NEW_INSTRUMENT_ANALYTE_SUCCESS,
+  payload: addInstrumentAnalyte,
+});
+
+export const addNewInstrumentAnalytelistFail = error => ({
+  type: ADD_NEW_INSTRUMENT_ANALYTE_FAIL,
+  payload: error,
+});
+//Update  Sample Analyte
+export const updateInstrumentAnalytelist = schemeanalyte => {
+  console.log('action creator called with schemeanalyte:', schemeanalyte);
+  return {
+    type: UPDATE_INSTRUMENT_ANALYTE,
+    payload: schemeanalyte,
+  };
+};
+export const updateInstrumentAnalytelistSuccess = schemeanalyte => ({
+  type: UPDATE_INSTRUMENT_ANALYTE_SUCCESS,
+  payload: schemeanalyte,
+});
+
+export const updateInstrumentAnalytelistFail = error => ({
+  type: UPDATE_INSTRUMENT_ANALYTE_FAIL,
   payload: error,
 });

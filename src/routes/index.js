@@ -46,7 +46,7 @@ import DatabaseOfAnalyte from "pages/databaseadmin/database-of-analyte";
 import AnalyteAddMethods from "pages/databaseadmin/analyte-add-methods";
 import AnalyteAddUnits from "pages/databaseadmin/analyte-add-units";
 import AnalyteAddQualitativeUnits from "pages/databaseadmin/analyte-add-qualitative-units";
-
+import InstrumentAddAnalyte from "pages/databaseadmin/instrument-add-analyte";
 import DatabaseOfinsrumentType from "pages/databaseadmin/instrument-type-list";
 import InstrumentList from "pages/databaseadmin/instruments-list";
 import Scheme from "pages/databaseadmin/scheme";
@@ -286,6 +286,7 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/:organization_name/database-of-reagents", component: DatabaseOfReagentsPage },
   { path: "/:organization_name/equipment-list", component: InstrumentList },
   { path: "/:organization_name/database-of-equipmentType", component: DatabaseOfinsrumentType },
+  { path: "/instrument-add-analyte/:id", component: InstrumentAddAnalyte},
   { path: "/instrument-list-detail/:id", component: InstrumentDetail},
   { path: "/:organization_name/database-of-manufactural", component: DatabaseOfManufactural },
   { path: "/:organization_name/database-of-method", component: DatabaseOfMethod },

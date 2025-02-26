@@ -1,14 +1,16 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { DELETE_ANALYTE,DELETE_INSTRUMENT_TYPE,GET_INSTRUMENT_TYPE_LIST, ADD_NEW_INSTRUMENT_TYPE, UPDATE_NEW_INSTRUMENT_TYPE, GET_ANALYTE_LIST, GET_ANALYTEFORSCHEME_LIST, ADD_NEW_ANALYTE_LIST,  UPDATE_NEW_ANALYTE_LIST, GET_SCHEMEANALYTE_LIST,ADD_NEW_SCHEMEANALYTE,UPDATE_SCHEMEANALYTE, GET_ANALYTESCYCLES, GET_SAMPLE_ANALYTE_LIST,ADD_NEW_SAMPLE_ANALYTE,UPDATE_SAMPLE_ANALYTE, ADD_EQUIPMENTTYPE_FILE, GET_ANALYTESSAMPLE, GET_INSTRUMENT_DETAIL
+import { DELETE_ANALYTE,DELETE_INSTRUMENT_TYPE,GET_INSTRUMENT_TYPE_LIST, ADD_NEW_INSTRUMENT_TYPE, UPDATE_NEW_INSTRUMENT_TYPE, GET_ANALYTE_LIST, GET_ANALYTEFORSCHEME_LIST, ADD_NEW_ANALYTE_LIST,  UPDATE_NEW_ANALYTE_LIST, GET_SCHEMEANALYTE_LIST,ADD_NEW_SCHEMEANALYTE,UPDATE_SCHEMEANALYTE, GET_ANALYTESCYCLES, GET_SAMPLE_ANALYTE_LIST,ADD_NEW_SAMPLE_ANALYTE,UPDATE_SAMPLE_ANALYTE, ADD_EQUIPMENTTYPE_FILE, GET_ANALYTESSAMPLE, GET_INSTRUMENT_DETAIL,
+GET_INSTRUMENT_ANALYTE_LIST, ADD_NEW_INSTRUMENT_ANALYTE, UPDATE_INSTRUMENT_ANALYTE
 } from "./actionTypes";
 
 import { deleteAnalyteSuccess,deleteAnalyteFail,getinstrumenttypelistSuccess, getinstrumenttypelistFail,addNewInstrumentTypeSuccess,addNewInstrumentTypeFail ,updateNewInstrumentTypeSuccess,updateNewInstrumentTypeFail, addNewAnalyteListFail, addNewAnalyteListSuccess, updateAnalyteListSuccess,updateAnalyteListFail,getAnalytelistFail, getAnalyteforSchemelistSuccess, getAnalyteforSchemelistFail, getAnalytelistSuccess,deleteInstrumentTypeSuccess,deleteInstrumentTypeFail, getSchemeAnalytelistSuccess,getSchemeAnalytelistFail,addNewSchemeAnalytelistSuccess,addNewSchemeAnalytelistFail,updateSchemeAnalytelistSuccess,updateSchemeAnalytelistFail, getAnalyteCycleFail,getAnalyteCycleSuccess, getSampleAnalytelistSuccess,getSampleAnalytelistFail,addNewSampleAnalytelistSuccess,addNewSampleAnalytelistFail,updateSampleAnalytelistSuccess,updateSampleAnalytelistFail,addEquipmentTypefileFail, getAnalyteSampleFail, getAnalyteSampleSuccess, getInstrumentDetailSuccess, getInstrumentDetailFail, 
+  addNewInstrumentAnalytelistSuccess, addNewInstrumentAnalytelistFail,getInstrumentAnalytelistFail, updateInstrumentAnalytelistSuccess, updateInstrumentAnalytelistFail, getInstrumentAnalytelistSuccess
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { deleteAnalyte,deleteInstrumentType,getInstrumenttypelist ,addNewInstrumentType,updateNewInstrumentType, getAnalytelist, updateAnalyte , addNewAnalyte, getSchemeAnalytelist, getAnalyteforSchemelist, addNewSchemeAnalytelist,updateSchemeAnalytelist, getAnalyteCycle, addEquipmentTypefile, getSampleAnalytelist,addNewSampleAnalytelist,updateSampleAnalytelist, getAnalyteSampleList,  getInstrumentDetail,} from "../../helpers/django_api_helper";
+import { deleteAnalyte,deleteInstrumentType,getInstrumenttypelist ,addNewInstrumentType,updateNewInstrumentType, getAnalytelist, updateAnalyte , addNewAnalyte, getSchemeAnalytelist, getAnalyteforSchemelist, addNewSchemeAnalytelist,updateSchemeAnalytelist, getAnalyteCycle, addEquipmentTypefile, getSampleAnalytelist,addNewSampleAnalytelist,updateSampleAnalytelist, getAnalyteSampleList,  getInstrumentDetail, getInstrumentAnalytelist, addNewInstrumentAnalytelist, updateInstrumentAnalytelist,} from "../../helpers/django_api_helper";
 
 // ADD EQUIPMENT TYPE FILE
 
@@ -202,6 +204,35 @@ function* fetchInstrumentDetail(object) {
     yield put(getInstrumentDetailFail(error));
   }
 }
+function* fetchInstrumentAnalyteList(object) {
+  try {
+    const response = yield call(getInstrumentAnalytelist, object.payload);
+    yield put(getInstrumentAnalytelistSuccess(response.data));
+  } catch (error) {
+    yield put(getInstrumentAnalytelistFail(error));
+  }
+}
+
+function* onAddNewInstrumentAnalyte(object) {
+  try {
+    const response = yield call(
+      addNewInstrumentAnalytelist,
+      object.payload.addInstrumentAnalyte,
+      object.payload.id
+    );
+    yield put(addNewInstrumentAnalytelistSuccess(response));
+  } catch (error) {
+    yield put(addNewInstrumentAnalytelistFail(error));
+  }
+}
+function* onUpdateInstrumentAnalyte({ payload: schemeanalyte }) {
+  try {
+    const response = yield call(updateInstrumentAnalytelist, schemeanalyte);
+    yield put(updateInstrumentAnalytelistSuccess(response));
+  } catch (error) {
+    yield put(updateInstrumentAnalytelistFail (error));
+  }
+}
 function* InstrumentTypeListSaga() {
   yield takeEvery(GET_INSTRUMENT_TYPE_LIST, fetchInstrumentTypeList);
   yield takeEvery(ADD_NEW_INSTRUMENT_TYPE, onAddNewInstrumentType);
@@ -226,6 +257,10 @@ function* InstrumentTypeListSaga() {
   yield takeEvery(UPDATE_SAMPLE_ANALYTE, onUpdateSampleAnalyte);
   
   yield takeEvery(GET_INSTRUMENT_DETAIL, fetchInstrumentDetail);
+  
+  yield takeEvery(GET_INSTRUMENT_ANALYTE_LIST, fetchInstrumentAnalyteList);
+  yield takeEvery(ADD_NEW_INSTRUMENT_ANALYTE, onAddNewInstrumentAnalyte );
+  yield takeEvery(UPDATE_INSTRUMENT_ANALYTE, onUpdateInstrumentAnalyte);
 }
 
 export default InstrumentTypeListSaga;

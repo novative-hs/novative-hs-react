@@ -434,6 +434,17 @@ class Instrument extends Component {
                   ></i>
                 </Link>
               </Tooltip>
+              <Tooltip title="Add Analytes">
+                <Link
+                  to={`/instrument-add-analyte/${methodlist.id}`}
+                  style={{ textDecoration: "underline", color: "#008000" }}
+                >
+                  <i
+                    className="mdi mdi-test-tube font-size-18"
+                    id="analyteIcon"
+                  ></i>
+                </Link>
+              </Tooltip>
               <Tooltip title="Detail">
                 <Link to={`/instrument-list-detail/${methodlist.id}`}>
                   <i className="fas fa-file-alt font-size-14"></i>

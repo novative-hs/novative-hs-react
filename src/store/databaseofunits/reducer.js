@@ -41,6 +41,12 @@ import {
   GET_ANALYTESSAMPLE_FAIL,
   GET_INSTRUMENT_DETAIL_SUCCESS,
   GET_INSTRUMENT_DETAIL_FAIL,
+  GET_INSTRUMENT_ANALYTE_LIST_SUCCESS,
+  GET_INSTRUMENT_ANALYTE_LIST_FAIL,
+  ADD_NEW_INSTRUMENT_ANALYTE_SUCCESS,
+  ADD_NEW_INSTRUMENT_ANALYTE_FAIL,
+  UPDATE_INSTRUMENT_ANALYTE_SUCCESS,
+  UPDATE_INSTRUMENT_ANALYTE_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -340,6 +346,50 @@ const ListUnit = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+
+    case GET_INSTRUMENT_ANALYTE_LIST_SUCCESS:
+      return {
+        ...state,
+        InstrumentAnalyteList: action.payload.analytes, // Update to handle reagents array
+      };
+
+    case GET_INSTRUMENT_ANALYTE_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case ADD_NEW_INSTRUMENT_ANALYTE_SUCCESS:
+      return {
+        ...state,
+        AddInstrumentAnalyte: [
+          ...state.AddInstrumentAnalyte,
+          action.payload.data,
+        ],
+      };
+
+    case ADD_NEW_INSTRUMENT_ANALYTE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case UPDATE_INSTRUMENT_ANALYTE_SUCCESS:
+      return {
+        ...state,
+        InstrumentAnalyteList: state.InstrumentAnalyteList.map(
+          (schemeanalyte) =>
+            schemeanalyte.id.toString() === action.payload.id.toString()
+              ? { schemeanalyte, ...action.payload }
+              : schemeanalyte
+        ),
+      };
+
+    case UPDATE_INSTRUMENT_ANALYTE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
     default:
       return state;
   }
