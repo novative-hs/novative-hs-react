@@ -4,8 +4,11 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import DeleteModal from "components/Common/DeleteModal";
-import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, { textFilter ,selectFilter} from 'react-bootstrap-table2-filter';
+import BootstrapTable from "react-bootstrap-table-next";
+import filterFactory, {
+  textFilter,
+  selectFilter,
+} from "react-bootstrap-table2-filter";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -22,9 +25,8 @@ import {
   Label,
   FormGroup,
   Button,
-  Alert
+  Alert,
 } from "reactstrap";
-
 
 import paginationFactory, {
   PaginationProvider,
@@ -35,38 +37,43 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getInstrumentlist, addNewInstrument, updateInstrument,deleteInstrument } from "store/instrument/actions";
-import {getManufacturalList} from "store/manufactural/actions";
-import {getinstrumenttypelist} from "store/databaseofunits/actions"
-import { getcountrylist} from "store/participantcountry/actions";
+import {
+  getInstrumentlist,
+  addNewInstrument,
+  updateInstrument,
+  deleteInstrument,
+} from "store/instrument/actions";
+import { getManufacturalList } from "store/manufactural/actions";
+import { getinstrumenttypelist } from "store/databaseofunits/actions";
+import { getcountrylist } from "store/participantcountry/actions";
 import { isEmpty, size } from "lodash";
 import * as XLSX from "xlsx";
 import "assets/scss/table.scss";
-import moment from 'moment';
+import moment from "moment";
 class Instrument extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
     this.state = {
       selectedUnit: null,
-      nameFilter: '',
+      nameFilter: "",
       organization_name: "",
-      dateFilter: '',
-      instypeFilter: '',
-      manufacturerFilter:'',
-      codeFilter: '',
-      modelFilter: '',
-      statusFilter:'',
-      idFilter: '',
-      countFilter:'',
-      countryFilter:'',
+      dateFilter: "",
+      instypeFilter: "",
+      manufacturerFilter: "",
+      codeFilter: "",
+      modelFilter: "",
+      statusFilter: "",
+      idFilter: "",
+      countFilter: "",
+      countryFilter: "",
       deleteModal: false,
       isEdit: false,
       Instrument: [],
-      ListUnit:[],
+      ListUnit: [],
       ManufacturalList: [],
-      ListCountry:[],
-      errorMessage:"",
+      ListCountry: [],
+      errorMessage: "",
       methodlist: "",
       modal: false,
       user_id: localStorage.getItem("authUser")
@@ -81,77 +88,110 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    onChange={(e) => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
-          
         },
         {
           dataField: "name",
           text: "Equipment",
           sort: true,
-          style: { textAlign: 'left' },
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    onChange={(e) => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
         },
-        
+
         {
-          dataField: 'analytes_count',
-          text: 'No of Analytes',
+          dataField: "analytes_count",
+          text: "No of Analytes",
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.countFilter}
-                    onChange={(e) => this.handleFilterChange('countFilter', e)}
+                    onChange={(e) => this.handleFilterChange("countFilter", e)}
                     className="form-control"
                     style={{
-                      textAlign: 'center',
-                      width: '100px',
+                      textAlign: "center",
+                      width: "100px",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
           formatter: (cellContent, unitlist) => {
             return (
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
                 <Link
                   to={`/instruments-analyte/${unitlist.id}`}
-                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                  style={{
+                    textDecoration: "underline",
+                    color: "#0000CD",
+                    display: "block",
+                    marginTop: "5px",
+                  }}
                 >
                   {unitlist.analytes_count}
                 </Link>
               </div>
             );
           },
-          
         },
         {
           dataField: "code",
@@ -161,18 +201,24 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-              
-                <input
-                  type="text"
-                  value={this.state.codeFilter}
-                  onChange={e => this.handleFilterChange('codeFilter', e)}
-                  className="form-control"
-               
-                />
-              </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-                </>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={this.state.codeFilter}
+                    onChange={(e) => this.handleFilterChange("codeFilter", e)}
+                    className="form-control"
+                  />
+                </div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
+              </>
             );
           },
         },
@@ -184,22 +230,30 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-              
-                <input
-                  type="text"
-                  value={this.state.instypeFilter}
-                  onChange={e => this.handleFilterChange('instypeFilter', e)}
-                  className="form-control"
+                <div
                   style={{
-                    textAlign: 'center',
-                    width: '120px',
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
                   }}
-               
-                />
-              </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-                </>
+                >
+                  <input
+                    type="text"
+                    value={this.state.instypeFilter}
+                    onChange={(e) =>
+                      this.handleFilterChange("instypeFilter", e)
+                    }
+                    className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "120px",
+                    }}
+                  />
+                </div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
+              </>
             );
           },
         },
@@ -211,18 +265,24 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-              
-                <input
-                  type="text"
-                  value={this.state.modelFilter}
-                  onChange={e => this.handleFilterChange('modelFilter', e)}
-                  className="form-control"
-               
-                />
-              </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-                </>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={this.state.modelFilter}
+                    onChange={(e) => this.handleFilterChange("modelFilter", e)}
+                    className="form-control"
+                  />
+                </div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
+              </>
             );
           },
         },
@@ -234,18 +294,20 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
-              
-                <input
-                  type="text"
-                  value={this.state.manufacturerFilter}
-                  onChange={e => this.handleFilterChange('manufacturerFilter', e)}
-                  className="form-control"
-               
-                />
-              </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-                </>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.manufacturerFilter}
+                    onChange={(e) =>
+                      this.handleFilterChange("manufacturerFilter", e)
+                    }
+                    className="form-control"
+                  />
+                </div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
+              </>
             );
           },
         },
@@ -257,18 +319,26 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
-              
-                <input
-                  type="text"
-                  value={this.state.countryFilter}
-                  onChange={e => this.handleFilterChange('countryFilter', e)}
-                  className="form-control"
-               
-                />
-              </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
-                </>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={this.state.countryFilter}
+                    onChange={(e) =>
+                      this.handleFilterChange("countryFilter", e)
+                    }
+                    className="form-control"
+                  />
+                </div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
+              </>
             );
           },
         },
@@ -279,10 +349,16 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -290,7 +366,9 @@ class Instrument extends Component {
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -304,19 +382,27 @@ class Instrument extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px",
+                  }}
+                >
                   <input
                     type="text"
                     value={this.state.dateFilter}
-                    onChange={e => this.handleFilterChange('dateFilter', e)}
+                    onChange={(e) => this.handleFilterChange("dateFilter", e)}
                     className="form-control"
                     style={{
-                      textAlign: 'center',
-                      width: '140px',
+                      textAlign: "center",
+                      width: "140px",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+                <div style={{ textAlign: "center", marginTop: "5px" }}>
+                  {column.text}
+                </div>
               </>
             );
           },
@@ -328,30 +414,36 @@ class Instrument extends Component {
             </>
           ),
         },
-       
+
         {
           dataField: "menu",
           isDummyField: true,
           editable: false,
           text: "Action",
           formatter: (cellContent, methodlist) => (
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+            <div
+              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+            >
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
                     className="mdi mdi-pencil font-size-18"
                     id="edittooltip"
                     onClick={() => this.toggle(methodlist)}
-                  // onClick={e => this.handleCSRClick(e, CSR)}
+                    // onClick={e => this.handleCSRClick(e, CSR)}
                   ></i>
                 </Link>
               </Tooltip>
-             
+              <Tooltip title="Detail">
+                <Link to={`/instrument-list-detail/${methodlist.id}`}>
+                  <i className="fas fa-file-alt font-size-14"></i>
+                </Link>
+              </Tooltip>
               <Tooltip title="History">
                 <Link
                   className="fas fa-comment font-size-18"
                   to={`/${this.state.organization_name}/databaseadmin-history/${methodlist.id}?type=Instrumentlist`}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     // Check if organization_name is valid
                     if (!this.state.organization_name) {
@@ -392,7 +484,6 @@ class Instrument extends Component {
     onGetInstrumentList(this.state.user_id);
     this.setState({ Instrument });
 
-    
     const { ManufacturalList, onGetManufacturalist } = this.props;
     onGetManufacturalist(this.state.user_id);
     this.setState({ ManufacturalList });
@@ -400,8 +491,7 @@ class Instrument extends Component {
     const { ListCountry, onGetCountrylist } = this.props;
     onGetCountrylist(this.state.user_id);
     this.setState({ ListCountry });
-    
-    
+
     const { ListUnit, onGetInstrumentTypeList } = this.props;
     onGetInstrumentTypeList(this.state.user_id);
     this.setState({ ListUnit });
@@ -411,7 +501,7 @@ class Instrument extends Component {
     this.setState({ [filterName]: e.target.value });
   };
   toggleDeleteModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
@@ -424,13 +514,13 @@ class Instrument extends Component {
       this.setState({ errorMessage: "Cannot delete. Analytes are assigned." });
       // Clear error message after 5 seconds
       setTimeout(() => {
-        this.setState({ errorMessage: '' });
+        this.setState({ errorMessage: "" });
       }, 2000);
     }
   };
 
   handleDeleteInstrumentType = () => {
-    const { onDeleteInstrumentType} = this.props;
+    const { onDeleteInstrumentType } = this.props;
     const { ListUnit } = this.state;
     if (ListUnit.id !== undefined) {
       onDeleteInstrumentType(ListUnit);
@@ -441,34 +531,32 @@ class Instrument extends Component {
     }
   };
 
-
-  displaySuccessMessage = message => {
+  displaySuccessMessage = (message) => {
     this.setState({ successMessage: message });
 
     setTimeout(() => {
       this.setState({ successMessage: "", modal: false });
     }, 3000);
-  }
+  };
   toggle(unit) {
     if (unit && unit.id) {
-      console.log("Toggle - Unit:", unit.instrument_type,unit.manufactural);
+      console.log("Toggle - Unit:", unit.instrument_type, unit.manufactural);
       this.setState({
         modal: true,
-        selectedUnit: { 
-          id: unit.id, 
-          name: unit.name, 
-          added_by: unit.added_by ,
-          code: unit.code, 
-          model: unit.model, 
+        selectedUnit: {
+          id: unit.id,
+          name: unit.name,
+          added_by: unit.added_by,
+          code: unit.code,
+          model: unit.model,
           status: unit.status,
           instrument_type: unit.instrument_type, // Access the value property
           manufactural: unit.manufactural, // Access the value property
-          country: unit.country // Access the value property
+          country: unit.country, // Access the value property
         },
         isEdit: true,
       });
     } else {
-
       this.setState({
         modal: true,
         selectedUnit: null,
@@ -479,12 +567,15 @@ class Instrument extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { Instrument } = this.props;
-    if (!isEmpty(Instrument) && size(prevProps.Instrument) !== size(Instrument)) {
+    if (
+      !isEmpty(Instrument) &&
+      size(prevProps.Instrument) !== size(Instrument)
+    ) {
       this.setState({ Instrument: {}, isEdit: false });
     }
   }
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -497,39 +588,41 @@ class Instrument extends Component {
   };
   closeModal = () => {
     this.setState({ modal: false });
-  }
+  };
 
   exportToExcel = () => {
     const { Instrument } = this.props;
     const fileType =
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-    const fileExtension = '.xlsx';
-  
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+
     // Define fields to export
-    const fieldsToExport = ['id', 'name', 'code', 'status','date_of_addition'];
-  
+    const fieldsToExport = ["id", "name", "code", "status", "date_of_addition"];
+
     // Map each row to an object with only the desired fields
-    const dataToExport = Instrument.map(unit => ({
+    const dataToExport = Instrument.map((unit) => ({
       id: unit.id,
       equipment: unit.name,
       code: unit.code,
       Equipment_Type: unit.instrument_type,
       Manufacturer: unit.manufactural,
       status: unit.status,
-      date_of_addition: moment(unit.date_of_addition).format('DD MMM YYYY, h:mm A'),
+      date_of_addition: moment(unit.date_of_addition).format(
+        "DD MMM YYYY, h:mm A"
+      ),
     }));
-  
+
     // Convert data to Excel format and save as file
     const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const data = new Blob([excelBuffer], { type: fileType });
-    const fileName = 'Equipment_list' + fileExtension;
+    const fileName = "Equipment_list" + fileExtension;
     saveAs(data, fileName);
   };
 
   toggleImportModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       importModal: !prevState.importModal,
       importFile: null,
       importError: null,
@@ -547,7 +640,7 @@ class Instrument extends Component {
     const { importFile } = this.state;
     if (!importFile) {
       this.setState({
-        importError: 'Please select a file.',
+        importError: "Please select a file.",
       });
       return;
     }
@@ -556,20 +649,19 @@ class Instrument extends Component {
       const reader = new FileReader();
       reader.onload = async (e) => {
         const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const workbook = XLSX.read(data, { type: "array" });
         // Assuming your data is in the first sheet
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
         // Convert to JSON format
         const jsonData = XLSX.utils.sheet_to_json(sheet);
-        
+
         // Process jsonData and save to the database
         // Example of processing:
         for (let i = 0; i < jsonData.length; i++) {
           const item = jsonData[i];
           // Dispatch an action to save item to the database
           await this.props.onAddNewType({
-
             name: item.name,
             code: item.code,
             status: item.status,
@@ -582,22 +674,22 @@ class Instrument extends Component {
 
         // Close the modal and show success message
         this.toggleImportModal();
-        this.displaySuccessMessage('Data imported successfully!');
+        this.displaySuccessMessage("Data imported successfully!");
         // Optionally, reload data from backend after import
         await this.props.onGetInstrumentList(this.state.user_id);
       };
 
       reader.readAsArrayBuffer(importFile);
     } catch (error) {
-      console.error('Error importing data:', error);
+      console.error("Error importing data:", error);
       this.setState({
-        importError: 'Error importing data. Please try again.',
+        importError: "Error importing data. Please try again.",
       });
     }
   };
 
   render() {
-    const {deleteModal } = this.state;
+    const { deleteModal } = this.state;
     const { errorMessage } = this.state;
     const { SearchBar } = Search;
 
@@ -605,21 +697,39 @@ class Instrument extends Component {
 
     const methodlist = this.state.Instrument;
 
-
-    const { nameFilter, dateFilter, idFilter,codeFilter,instypeFilter,manufacturerFilter,statusFilter,countFilter,countryFilter,modelFilter } = this.state;
+    const {
+      nameFilter,
+      dateFilter,
+      idFilter,
+      codeFilter,
+      instypeFilter,
+      manufacturerFilter,
+      statusFilter,
+      countFilter,
+      countryFilter,
+      modelFilter,
+    } = this.state;
 
     // Apply the filters to the unit list
-    const filteredUnits = Instrument.filter(entry => {
+    const filteredUnits = Instrument.filter((entry) => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
-      const status = entry.status ? entry.status.toString(): "";
+      const status = entry.status ? entry.status.toString() : "";
       const code = entry.code ? entry.code.toString() : "";
       const model = entry.model ? entry.model.toString() : "";
       const count = entry.analytes_count ? entry.analytes_count.toString() : "";
-      const instrument_type = entry.instrument_type ? entry.instrument_type.toString().toLowerCase() : "";
-      const manufactural = entry.manufactural ? entry.manufactural.toString().toLowerCase() : "";
-      const country = entry.country ? entry.country.toString().toLowerCase() : "";
+      const instrument_type = entry.instrument_type
+        ? entry.instrument_type.toString().toLowerCase()
+        : "";
+      const manufactural = entry.manufactural
+        ? entry.manufactural.toString().toLowerCase()
+        : "";
+      const country = entry.country
+        ? entry.country.toString().toLowerCase()
+        : "";
       const id = entry.id ? entry.id.toString() : "";
-      const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
+      const date = entry.date_of_addition
+        ? entry.date_of_addition.toString()
+        : "";
 
       return (
         name.includes(nameFilter.toLowerCase()) &&
@@ -635,13 +745,11 @@ class Instrument extends Component {
       );
     });
 
-
     const pageOptions = {
       sizePerPage: 10,
       totalSize: filteredUnits.length,
       custom: true,
     };
-    
 
     const defaultSorted = [
       {
@@ -656,7 +764,7 @@ class Instrument extends Component {
         value: this.props.ManufacturalList[i].id,
       });
     }
-    
+
     const ListCountry = [];
     for (let i = 0; i < this.props.ListCountry.length; i++) {
       ListCountry.push({
@@ -664,7 +772,7 @@ class Instrument extends Component {
         value: this.props.ListCountry[i].id,
       });
     }
-    
+
     const ListUnit = [];
     for (let i = 0; i < this.props.ListUnit.length; i++) {
       ListUnit.push({
@@ -687,22 +795,34 @@ class Instrument extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="List" breadcrumbItem="Equipment List" />
             <Row className="justify-content-end">
-  <Col lg="auto" className="text-end">
-    <Button onClick={this.exportToExcel} className="mb-3">Export to Excel</Button>
-  </Col>
-  <Col lg="auto" className="text-end">
-    <Button onClick={this.toggleImportModal} className="mb-3">Import from Excel</Button>
-  </Col>
-</Row>
-<Modal isOpen={this.state.importModal} toggle={this.toggleImportModal} className={this.props.className}>
-              <ModalHeader toggle={this.toggleImportModal}>Import from Excel</ModalHeader>
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.exportToExcel} className="mb-3">
+                  Export to Excel
+                </Button>
+              </Col>
+              <Col lg="auto" className="text-end">
+                <Button onClick={this.toggleImportModal} className="mb-3">
+                  Import from Excel
+                </Button>
+              </Col>
+            </Row>
+            <Modal
+              isOpen={this.state.importModal}
+              toggle={this.toggleImportModal}
+              className={this.props.className}
+            >
+              <ModalHeader toggle={this.toggleImportModal}>
+                Import from Excel
+              </ModalHeader>
               <ModalBody>
                 <div className="mb-3 d-flex justify-content-center">
                   <button
                     className="btn btn-primary"
                     onClick={(e) => {
                       e.preventDefault(); // Prevent the default action
-                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/equipment.xlsx";
+                      const downloadUrl =
+                        process.env.REACT_APP_BACKENDURL +
+                        "/media/public/equipment.xlsx";
                       saveAs(downloadUrl, "equipment_type.xlsx"); // Use the file-saver library to trigger the download
                     }}
                   >
@@ -711,20 +831,20 @@ class Instrument extends Component {
                   </button>
                 </div>
 
-
                 <div className="w-100">
-                  <h4><b>Instructions to fill the excel sheet:</b></h4>
+                  <h4>
+                    <b>Instructions to fill the excel sheet:</b>
+                  </h4>
                   <div>
                     <ol>
                       <li>
-                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods,
+                        .xml, .html, .txt, .dbf
                       </li>
+                      <li>There should be a file of 1 column, name</li>
                       <li>
-                        There should be a file of 1 column, name
-                      </li>
-                      <li>
-                        If you want to get more information, contact
-                        us at <strong>eternalqc@gmail.com</strong>
+                        If you want to get more information, contact us at{" "}
+                        <strong>eternalqc@gmail.com</strong>
                       </li>
                     </ol>
                   </div>
@@ -746,32 +866,45 @@ class Instrument extends Component {
                           *
                         </span>
                       </Label>
-                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
+                      <input
+                        type="file"
+                        className="form-control"
+                        onChange={this.handleFileChange}
+                        accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf"
+                      />
                     </FormGroup>
-                  </Col></div>
-
+                  </Col>
+                </div>
 
                 <Row className="mt-4">
                   <Col sm="12" className="d-flex justify-content-end">
-                    <Button color="primary" onClick={this.handleImport} className="me-2">Upload</Button>
-                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+                    <Button
+                      color="primary"
+                      onClick={this.handleImport}
+                      className="me-2"
+                    >
+                      Upload
+                    </Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>
+                      Cancel
+                    </Button>
                   </Col>
                 </Row>
               </ModalBody>
             </Modal>
-        
+
             <Row className="justify-content-center">
               <Col lg="10">
-              <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
+                <p>
+                  <strong>Note:</strong> Please click on the filter to sort the
+                  data in ascending (A to Z) or descending (Z to A) order.
+                </p>
                 <Card>
-                  <CardBody>                  
-                    
-                  <Row>
+                  <CardBody>
+                    <Row>
                       <Col className="pagination pagination-rounded justify-content-center mb-2">
                         {errorMessage && (
-                          <Alert color="danger">
-                            {errorMessage}
-                          </Alert>
+                          <Alert color="danger">{errorMessage}</Alert>
                         )}
                       </Col>
                     </Row>
@@ -788,157 +921,274 @@ class Instrument extends Component {
                           data={filteredUnits}
                           search
                         >
-
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-4">
-
                                 <Col xl="12">
                                   <Col className="text-end">
-
-                                    <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Equipment</button>
+                                    <button
+                                      className="btn btn-primary btn-block mb-4"
+                                      onClick={() => this.toggle()}
+                                      style={{ background: "#0000CD" }}
+                                    >
+                                      Add New Equipment
+                                    </button>
 
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
                                     >
-                                      <ModalHeader toggle={this.closeModal} tag="h4">
+                                      <ModalHeader
+                                        toggle={this.closeModal}
+                                        tag="h4"
+                                      >
                                         {"Equipment"}
                                       </ModalHeader>
                                       <ModalBody>
                                         {this.state.successMessage && (
-                                          <div className="alert alert-success" role="alert">
+                                          <div
+                                            className="alert alert-success"
+                                            role="alert"
+                                          >
                                             {this.state.successMessage}
                                           </div>
                                         )}
-                                       <Formik
-  enableReinitialize={true}
-  initialValues={{
-    name: this.state.selectedUnit ? this.state.selectedUnit.name : "",
-    code: this.state.selectedUnit ? this.state.selectedUnit.code : "",
-    model: this.state.selectedUnit ? this.state.selectedUnit.model : "",
-    status: this.state.selectedUnit ? this.state.selectedUnit.status : "Active",
-    instrument_type: this.state.selectedUnit ? this.state.selectedUnit.instrument_type : "", // Assign selected instrument_type
-    manufactural: this.state.selectedUnit ? this.state.selectedUnit.manufactural : "", // Assign selected manufactural
-    country: this.state.selectedUnit ? this.state.selectedUnit.country : "", 
-  }}
-  validationSchema={Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    code: Yup.string()
-      .required("Code is required")
-      .matches(/^[0-9]+$/, "Code must be a number"),
-    model: Yup.string()
-      .required("Model Number is required"),
-    instrument_type: Yup.mixed().required("Equipment Type is required"),
-    manufactural: Yup.mixed().required("Manufacturer is required"),
-    // country: Yup.mixed().required("Country is required"),
-  })}
-  onSubmit={async (values, { setSubmitting }) => {
-    const userId = localStorage.getItem("authUser")
-      ? JSON.parse(localStorage.getItem("authUser")).user_id
-      : "";
+                                        <Formik
+                                          enableReinitialize={true}
+                                          initialValues={{
+                                            name: this.state.selectedUnit
+                                              ? this.state.selectedUnit.name
+                                              : "",
+                                            code: this.state.selectedUnit
+                                              ? this.state.selectedUnit.code
+                                              : "",
+                                            model: this.state.selectedUnit
+                                              ? this.state.selectedUnit.model
+                                              : "",
+                                            status: this.state.selectedUnit
+                                              ? this.state.selectedUnit.status
+                                              : "Active",
+                                            instrument_type: this.state
+                                              .selectedUnit
+                                              ? this.state.selectedUnit
+                                                  .instrument_type
+                                              : "", // Assign selected instrument_type
+                                            manufactural: this.state
+                                              .selectedUnit
+                                              ? this.state.selectedUnit
+                                                  .manufactural
+                                              : "", // Assign selected manufactural
+                                            country: this.state.selectedUnit
+                                              ? this.state.selectedUnit.country
+                                              : "",
+                                          }}
+                                          validationSchema={Yup.object().shape({
+                                            name: Yup.string().required(
+                                              "Name is required"
+                                            ),
+                                            code: Yup.string()
+                                              .required("Code is required")
+                                              .matches(
+                                                /^[0-9]+$/,
+                                                "Code must be a number"
+                                              ),
+                                            model: Yup.string().required(
+                                              "Model Number is required"
+                                            ),
+                                            instrument_type:
+                                              Yup.mixed().required(
+                                                "Equipment Type is required"
+                                              ),
+                                            manufactural: Yup.mixed().required(
+                                              "Manufacturer is required"
+                                            ),
+                                            // country: Yup.mixed().required("Country is required"),
+                                          })}
+                                          onSubmit={async (
+                                            values,
+                                            { setSubmitting }
+                                          ) => {
+                                            const userId = localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
+                                              : "";
 
-      const newUnit = {
-        name: values.name,
-        code: values.code,
-        model: values.model,
-        status: values.status,
-        added_by: userId,
-        instrument_type: values.instrument_type,
-        manufactural: values.manufactural,     
-        // country: values.country,     
-      };
-      
+                                            const newUnit = {
+                                              name: values.name,
+                                              code: values.code,
+                                              model: values.model,
+                                              status: values.status,
+                                              added_by: userId,
+                                              instrument_type:
+                                                values.instrument_type,
+                                              manufactural: values.manufactural,
+                                              // country: values.country,
+                                            };
 
-    try {
-      if (this.state.isEdit) {
-        await this.props.onUpdateType(this.state.selectedUnit.id, newUnit);
-        this.displaySuccessMessage("Equipment updated successfully!");
-        setTimeout(() => {
-          this.props.onGetInstrumentList(this.state.user_id);
-        }, 1000);
-      } else {
-        await this.props.onAddNewType(newUnit);
-        this.displaySuccessMessage("Equipment added successfully!");
-        setTimeout(() => {
-          this.props.onGetInstrumentList(this.state.user_id);
-        }, 1000);
-      }
+                                            try {
+                                              if (this.state.isEdit) {
+                                                await this.props.onUpdateType(
+                                                  this.state.selectedUnit.id,
+                                                  newUnit
+                                                );
+                                                this.displaySuccessMessage(
+                                                  "Equipment updated successfully!"
+                                                );
+                                                setTimeout(() => {
+                                                  this.props.onGetInstrumentList(
+                                                    this.state.user_id
+                                                  );
+                                                }, 1000);
+                                              } else {
+                                                await this.props.onAddNewType(
+                                                  newUnit
+                                                );
+                                                this.displaySuccessMessage(
+                                                  "Equipment added successfully!"
+                                                );
+                                                setTimeout(() => {
+                                                  this.props.onGetInstrumentList(
+                                                    this.state.user_id
+                                                  );
+                                                }, 1000);
+                                              }
+                                            } catch (error) {
+                                              console.error(
+                                                "Error updating/adding method:",
+                                                error
+                                              );
+                                            }
 
-    } catch (error) {
-      console.error("Error updating/adding method:", error);
-    }
-
-    setSubmitting(false);
-  }}
->
-
-  {({ errors, status, touched }) => (
-    <Form>
-      <Row>
-        <Col className="col-12">
-          <div className="mb-3">
-            <Label className="col-form-label">Equipment Name</Label>
-            <Field
-              name="name"
-              type="text"
-              className="form-control"
-            />
-            <ErrorMessage name="name" component="div" className="text-danger" />
-          </div>
-          <div className="mb-3">
-            <Label className="col-form-label">Code</Label>
-            <Field
-              name="code"
-              type="text"
-              className="form-control"
-            />
-            <ErrorMessage name="code" component="div" className="text-danger" />
-          </div>
-          <div className="mb-3">
-  <Label className="col-form-label">Equipment Type</Label>
-  <Field
-    name="instrument_type" // Ensure the name matches the field name
-    as="select"
-    className="form-control"
-    multiple={false}
-  >
-    <option value="">Select Equipment Type</option> 
-    {ListUnit.map(instrument_type => (
-      <option key={instrument_type.value} value={this.state.instrument_type}>
-        {instrument_type.label}
-      </option>
-    ))}
-  </Field>
-  <ErrorMessage name="instrument_type" component="div" className="text-danger" />
-</div>
-<div className="mb-3">
-            <Label className="col-form-label">Model No.</Label>
-            <Field
-              name="model"
-              type="text"
-              className="form-control"
-            />
-            <ErrorMessage name="model" component="div" className="text-danger" />
-          </div>
-<div className="mb-3">
-  <Label className="col-form-label">Manufacturer</Label>
-  <Field
-    name="manufactural" // Ensure the name matches the field name
-    as="select"
-    className="form-control"
-    multiple={false}
-  >
-    <option value="">Select Manufacturer</option> 
-    {ManufacturalList.map(manufactural => (
-      <option key={manufactural.value} value={this.state.manufactural}>
-        {manufactural.label}
-      </option>
-    ))}
-  </Field>
-  <ErrorMessage name="manufactural" component="div" className="text-danger" />
-</div>
-{/* <div className="mb-3">
+                                            setSubmitting(false);
+                                          }}
+                                        >
+                                          {({ errors, status, touched }) => (
+                                            <Form>
+                                              <Row>
+                                                <Col className="col-12">
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">
+                                                      Equipment Name
+                                                    </Label>
+                                                    <Field
+                                                      name="name"
+                                                      type="text"
+                                                      className="form-control"
+                                                    />
+                                                    <ErrorMessage
+                                                      name="name"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">
+                                                      Code
+                                                    </Label>
+                                                    <Field
+                                                      name="code"
+                                                      type="text"
+                                                      className="form-control"
+                                                    />
+                                                    <ErrorMessage
+                                                      name="code"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">
+                                                      Equipment Type
+                                                    </Label>
+                                                    <Field
+                                                      name="instrument_type" // Ensure the name matches the field name
+                                                      as="select"
+                                                      className="form-control"
+                                                      multiple={false}
+                                                    >
+                                                      <option value="">
+                                                        Select Equipment Type
+                                                      </option>
+                                                      {ListUnit.map(
+                                                        (instrument_type) => (
+                                                          <option
+                                                            key={
+                                                              instrument_type.value
+                                                            }
+                                                            value={
+                                                              this.state
+                                                                .instrument_type
+                                                            }
+                                                          >
+                                                            {
+                                                              instrument_type.label
+                                                            }
+                                                          </option>
+                                                        )
+                                                      )}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="instrument_type"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">
+                                                      Model No.
+                                                    </Label>
+                                                    <Field
+                                                      name="model"
+                                                      type="text"
+                                                      className="form-control"
+                                                    />
+                                                    <ErrorMessage
+                                                      name="model"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
+                                                  </div>
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">
+                                                      Manufacturer
+                                                    </Label>
+                                                    <Field
+                                                      name="manufactural" // Ensure the name matches the field name
+                                                      as="select"
+                                                      className="form-control"
+                                                      multiple={false}
+                                                    >
+                                                      <option value="">
+                                                        Select Manufacturer
+                                                      </option>
+                                                      {ManufacturalList.map(
+                                                        (manufactural) => (
+                                                          <option
+                                                            key={
+                                                              manufactural.value
+                                                            }
+                                                            value={
+                                                              this.state
+                                                                .manufactural
+                                                            }
+                                                          >
+                                                            {manufactural.label}
+                                                          </option>
+                                                        )
+                                                      )}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="manufactural"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
+                                                  </div>
+                                                  {/* <div className="mb-3">
   <Label className="col-form-label">Country</Label>
   <Field
     name="country" // Ensure the name matches the field name
@@ -956,37 +1206,54 @@ class Instrument extends Component {
   <ErrorMessage name="country" component="div" className="text-danger" />
 </div> */}
 
-          <div className="mb-3">
-            <Label className="col-form-label">Status</Label>
-            <Field
-              name="status"
-              as="select"
-              defaultValue="Active"
-              className="form-control"
-              multiple={false}
-            >
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </Field>
-            <ErrorMessage name="status" component="div" className="text-danger" />
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <div className="text-end">
-            <button type="submit" className="btn btn-success save-user"
-              style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
-          </div>
-        </Col>
-      </Row>
-    </Form>
-  )}
-</Formik>
-
+                                                  <div className="mb-3">
+                                                    <Label className="col-form-label">
+                                                      Status
+                                                    </Label>
+                                                    <Field
+                                                      name="status"
+                                                      as="select"
+                                                      defaultValue="Active"
+                                                      className="form-control"
+                                                      multiple={false}
+                                                    >
+                                                      <option value="Active">
+                                                        Active
+                                                      </option>
+                                                      <option value="Inactive">
+                                                        Inactive
+                                                      </option>
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="status"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col>
+                                                  <div className="text-end">
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#0000CD",
+                                                        borderColor: "#0000CD",
+                                                      }}
+                                                    >
+                                                      Save
+                                                    </button>
+                                                  </div>
+                                                </Col>
+                                              </Row>
+                                            </Form>
+                                          )}
+                                        </Formik>
                                       </ModalBody>
                                     </Modal>
-
                                   </Col>
                                   <div className="table-responsive">
                                     <BootstrapTable
@@ -1031,7 +1298,7 @@ Instrument.propTypes = {
   match: PropTypes.object,
   Instrument: PropTypes.array,
   ManufacturalList: PropTypes.array,
-  ListCountry:PropTypes.array,
+  ListCountry: PropTypes.array,
   ListUnit: PropTypes.array,
   className: PropTypes.any,
   onGetInstrumentList: PropTypes.func,
@@ -1049,12 +1316,16 @@ Instrument.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = ({ Instrument,ManufacturalList,ListUnit,ListCountry }) => ({
-  ListUnit:ListUnit.ListUnit,
+const mapStateToProps = ({
+  Instrument,
+  ManufacturalList,
+  ListUnit,
+  ListCountry,
+}) => ({
+  ListUnit: ListUnit.ListUnit,
   Instrument: Instrument.Instrument,
   ManufacturalList: ManufacturalList.ManufacturalList,
   ListCountry: ListCountry.ListCountry,
-
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -1065,8 +1336,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewInstrument(createInstrumentType, id)),
-  onUpdateType: (id, methodlist) => dispatch(updateInstrument({ id, ...methodlist })),
-  onDeleteInstrumentType: methodlist => dispatch(deleteInstrument(methodlist)),
+  onUpdateType: (id, methodlist) =>
+    dispatch(updateInstrument({ id, ...methodlist })),
+  onDeleteInstrumentType: (methodlist) =>
+    dispatch(deleteInstrument(methodlist)),
 });
 
 export default connect(

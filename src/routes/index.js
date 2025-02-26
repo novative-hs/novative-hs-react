@@ -62,7 +62,7 @@ import AnalyteAddEuipments from "pages/databaseadmin/analyte-add-equipments";
 import DatabaseOfParticipantCity from "pages/databaseadmin/database-of-participantcity";
 import DatabaseOfParticipantCountry from "pages/databaseadmin/database-of-participantcountry";
 import DatabaseOfParticipantProvince from "pages/databaseadmin/database-of-participantprovince";
-
+import InstrumentDetail from "pages/databaseadmin/instrument-list-detail";
 import DatabaseOfParticipantDistrict from "pages/databaseadmin/database-of-participantdistrict";
 import DatabaseOfParticipantDepartment from "pages/databaseadmin/database-of-participantdepartment";
 import DatabaseOfParticipantDesignation from "pages/databaseadmin/database-of-participantdesignation";
@@ -286,6 +286,7 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/:organization_name/database-of-reagents", component: DatabaseOfReagentsPage },
   { path: "/:organization_name/equipment-list", component: InstrumentList },
   { path: "/:organization_name/database-of-equipmentType", component: DatabaseOfinsrumentType },
+  { path: "/instrument-list-detail/:id", component: InstrumentDetail},
   { path: "/:organization_name/database-of-manufactural", component: DatabaseOfManufactural },
   { path: "/:organization_name/database-of-method", component: DatabaseOfMethod },
   { path: "/:organization_name/database-of-analyte", component: DatabaseOfAnalyte },

@@ -181,6 +181,7 @@ export const ADD_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/instrument
 export const UPDATE_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/update-instrument-list`;
 export const DELETE_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/delete-instrument`;
 
+export const GET_INSTRUMENT_DETAIL = `${API_ENDPOINT}/api/database-admin/instrument-detail`;
 // Scheme Analytes
 export const GET_SCHEME_ANALYTE = `${API_ENDPOINT}/api/database-admin/scheme-analyte-list`;
 export const ADD_SCHEME_ANALYTE = `${API_ENDPOINT}/api/database-admin/scheme-add-analyte`;

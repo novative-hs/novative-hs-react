@@ -59,6 +59,10 @@ import {
   GET_ANALYTESSAMPLE,
   GET_ANALYTESSAMPLE_SUCCESS,
   GET_ANALYTESSAMPLE_FAIL,
+
+  GET_INSTRUMENT_DETAIL,
+  GET_INSTRUMENT_DETAIL_SUCCESS,
+  GET_INSTRUMENT_DETAIL_FAIL,
 } from "./actionTypes";
 
 
@@ -372,5 +376,20 @@ export const getAnalyteSampleSuccess = SampleListAnalyte => ({
 
 export const getAnalyteSampleFail = error => ({
   type: GET_ANALYTESSAMPLE_FAIL,
+  payload: error,
+});
+
+export const getInstrumentDetail= (id) => ({
+  type: GET_INSTRUMENT_DETAIL,
+  payload: id,
+});
+
+export const getInstrumentDetailSuccess = InstrumentDetail => ({
+  type: GET_INSTRUMENT_DETAIL_SUCCESS,
+  payload: InstrumentDetail,
+});
+
+export const getInstrumentDetailFail = error => ({
+  type: GET_INSTRUMENT_DETAIL_FAIL,
   payload: error,
 });

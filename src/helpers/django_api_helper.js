@@ -3935,3 +3935,7 @@ export const getAuditorSouthList = () =>
 //   get(`${url.GET_AUDITOR_NORTH_TERRITORY_LIST}`, {
 //     headers: getHeader(authHeader()),
 //   });
+export const getInstrumentDetail = (id)=>
+  get(`${url.GET_INSTRUMENT_DETAIL}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
