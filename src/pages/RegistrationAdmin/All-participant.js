@@ -1306,6 +1306,12 @@ class PendingLabs extends Component {
                                                 userId,
                                                 AddPayment
                                               );
+                                              await this.props.onGetPendingLabs(
+                                                this.state.user_id
+                                              ); //payment modal
+                                              this.setState({
+                                                isPaymentModalOpen: false,
+                                              }); // Close modal here
                                               resetForm();
                                               this.displaySuccessMessage(
                                                 "Payment added successfully!"
@@ -1317,7 +1323,7 @@ class PendingLabs extends Component {
                                               );
                                             }
                                             setTimeout(() => {
-                                              this.props.ongetApprovedLabs(
+                                              this.props.onGetPendingLabs(
                                                 this.state.user_id
                                               );
                                               
@@ -1944,6 +1950,8 @@ class PendingLabs extends Component {
                                               );
                                               this.props.ongetApprovedLabs(this.state.user_id);
                                               this.props.onupdateMembershipStatus(this.state.user_id);
+                                              await this.props.onGetPendingLabs(this.state.user_id); //membership modal
+this.setState({ isMembershipModalOpen: false }); // Close modal here
                                               resetForm();
                                               this.displaySuccessMessage(
                                                 "Membership status updated successfully!"
