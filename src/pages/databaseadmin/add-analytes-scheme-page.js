@@ -130,46 +130,39 @@ class SchemeAddAnalyte extends Component {
   }
 
   updateSelectedCheckboxes() {
+    const { SchemeAnalyteList } = this.props;
     const selectedCheckboxes = {};
-    this.props.SchemeAnalyteList.forEach(id => {
-      selectedCheckboxes[id] = true; // Assuming SchemeAnalyteList is an array of IDs
+  
+    SchemeAnalyteList.forEach(analyte => {
+      selectedCheckboxes[analyte.id] = true; // Mark as checked
     });
+  
     this.setState({ selectedCheckboxes });
   }
-
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
     const { onUpdateSchemeAnalytes, match, ListUnit, history } = this.props;
     const schemeId = match.params.id;
-
+  
     const selectedAnalytes = ListUnit.filter(analyte => selectedCheckboxes[analyte.id]);
-    
+  
     if (selectedAnalytes.length === 0) {
-      // Display validation message if no analytes are selected
       this.setFeedbackMessage("Please select analytes.");
       return;
     }
-
+  
     if (schemeId) {
       const payload = {
         id: schemeId,
-        analytes: selectedAnalytes.map(analyte => analyte.id)  // Map to only analyte IDs
+        analytes: selectedAnalytes.map(analyte => analyte.id),
       };
-
-      // Determine if we are adding or updating based on schemeId presence
-      if (schemeId) {
-        // If schemeId exists, we are updating
-        onUpdateSchemeAnalytes(payload);
+  
+      onUpdateSchemeAnalytes(payload).then(() => {
+        this.fetchData(); // Refresh data after updating
         this.setFeedbackMessage("Analytes updated successfully.");
-      } else {
-        // Otherwise, we are adding new
-        // Call your add new method here if needed
-        // this.props.onAddNewSchemeAnalytes(payload, someOtherId); 
-        this.setFeedbackMessage("Analytes added successfully.");
-      }
+      });
+  
       history.push(`/${this.state.organization_name}/scheme`);
-    } else {
-      console.error("Analyte ID not found");
     }
   };
 
@@ -190,11 +183,10 @@ class SchemeAddAnalyte extends Component {
     this.setState(prevState => ({
       selectedCheckboxes: {
         ...prevState.selectedCheckboxes,
-        [id]: !prevState.selectedCheckboxes[id]
-      }
+        [id]: !prevState.selectedCheckboxes[id],
+      },
     }));
   };
-
   filterData = () => {
     const { ListUnit } = this.props;
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
