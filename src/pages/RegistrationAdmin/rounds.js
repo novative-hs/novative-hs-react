@@ -745,7 +745,12 @@ class InstrumentType extends Component {
   };
 
   toggle(round) {
-    console.log("data in case of update asjdhasdf", round);
+    const { onGetgetschemelist } = this.props;
+  
+    // Dispatch the action to fetch the scheme list
+    onGetgetschemelist(this.state.user_id);
+  
+    // Proceed to toggle the modal
     if (round && round.id) {
       this.setState({
         modal: true,
@@ -799,6 +804,9 @@ class InstrumentType extends Component {
       size(prevProps.ListUnitt) !== size(this.props.ListUnitt)
     ) {
       this.setState({ ListUnitt: this.props.ListUnitt });
+    }
+    if (prevProps.SchemeList !== this.props.SchemeList) {
+      this.setState({ SchemeList: this.props.SchemeList });
     }
   }
   onPaginationPageChange = (page) => {
