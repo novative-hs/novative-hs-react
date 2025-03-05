@@ -307,7 +307,8 @@ class ReagentsList extends Component {
                   <Link className="text-success" to="#">
                     <i
                       className="mdi mdi-pencil font-size-18"
-                      onClick={() => this.handleEditScheme(scheme)}
+                      onClick={(e) => this.handleReagentsClick(e, scheme)}
+
                     ></i>
                   </Link>
                 </Tooltip>
