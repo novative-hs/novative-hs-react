@@ -297,94 +297,108 @@ class Results extends Component {
             <div className="text-start">{list.analyte_name}</div>
           ),
         },
-       {
-  text: "Instrument",
-  dataField: "instrument_name",
-  sort: true,
-  formatter: (cellContent, list) => (
-    <div className="text-start">
-      <select
-        className="form-select me-2"
-        value={list.instrument_name || ""}
-        onChange={(e) => this.handleInstrumentChange(e, list)}
-      >
-        <option value="" disabled hidden>
-          Select Instrument
-        </option>
-        {Array.isArray(this.state.Instrument) && this.state.Instrument.length > 0
-          ? this.state.Instrument
-              .filter(instr =>
-                instr.analytes.length === 0 ||  // Allow instruments with no analytes
-                instr.analytes.some(analyte => analyte.id === list.analyte_id)
-              )
-              .map((instr, index) => (
-                <option key={index} value={instr.id}>
-                  {instr.name}
-                </option>
-              ))
-          : <option value="">No Instruments available</option>}
-      </select>
-    </div>
-  ),
-}
-,
+        {
+          text: "Instrument",
+          dataField: "instrument_name",
+          sort: true,
+          formatter: (cellContent, list) => {
+            console.log("Filtering Instruments for Analyte ID:", list.analyte_id);
+            console.log("🎸 Instruments in State:", this.state.Instrument);
+        
+            // Ensure instruments have analytes before filtering
+            const filteredInstruments = this.state.Instrument.filter(instr => {
+              console.log(`🎸 Instrument ${instr.id} - ${instr.name} has analytes:`, instr.analytes);
+              return instr.analytes.includes(list.analyte_name); // Compare names instead of IDs
+            });
+        
+            console.log("✅ Filtered Instruments for Analyte:", filteredInstruments);
+        
+            return (
+              <div className="text-start">
+                <select
+                  className="form-select me-2"
+                  value={list.instrument_id || ""}
+                  onChange={(e) => this.handleInstrumentChange(e, list)}
+                >
+                  <option value="" disabled hidden>Select Instrument</option>
+                  {filteredInstruments.length > 0
+                    ? filteredInstruments.map((instr, index) => (
+                        <option key={index} value={instr.id}>
+                          {instr.name}
+                        </option>
+                      ))
+                    : <option value="">No Instruments available</option>}
+                </select>
+              </div>
+            );
+          },
+        },
         
         {
-          text: "Method",
-          dataField: "method_name",
-          sort: true,
-          formatter: (cellContent, list) => (
-            <div className="text-start">
-              {" "}
-              <select
-                className="form-select me-2"
-                value={list.method_name || ""}
-                onChange={e => this.handleMethodChange(e, list)}
-              >
-                <option value="" disabled hidden>
-                  Select Method
-                </option>
-                {Array.isArray(this.state.ListMethods) &&
-                this.state.ListMethods.length > 0 ? (
-                  this.state.ListMethods.map((method, index) => (
-                    <option key={index} value={method.id}>
-                      {method.name}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">No methods available</option>
-                )}
-              </select>
-            </div>
-          ),
+            text: "Method",
+            dataField: "method_name",
+            sort: true,
+            formatter: (cellContent, list) => (
+                <div className="text-start">
+                    <select
+                        className="form-select me-2"
+                        value={list.method_name || ""}
+                        onChange={(e) => this.handleMethodChange(e, list)}
+                    >
+                        <option value="" disabled hidden>
+                            Select Method
+                        </option>
+                        {this.state.ListMethods &&
+                        this.state.SchemeAnalytesList
+                            ? this.state.ListMethods
+                                  .filter(method =>
+                                      this.state.SchemeAnalytesList.some(analyte =>
+                                          analyte?.id === list?.analyte_id &&
+                                          analyte?.methods?.includes(method.id)
+                                      )
+                                  )
+                                  .map((method, index) => (
+                                      <option key={index} value={method.id}>
+                                          {method.name}
+                                      </option>
+                                  ))
+                            : null}
+                    </select>
+                </div>
+            ),
         },
         {
-          text: "Reagent",
-          dataField: "reagent_name",
-          sort: true,
-          formatter: (cellContent, list) => (
-            <div className="text-start">
-              <select
-                className="form-select me-2"
-                value={list.reagent_name || ""}
-                onChange={e => this.handleReagentChange(e, list)}
-              >
-                <option value="" disabled hidden>
-                  Select Reagent
-                </option>
-                {Array.isArray(this.state.ReagentList) &&
-                this.state.ReagentList.length > 0 ? (
-                  this.state.ReagentList.map((reagent, index) => (
-                    <option key={index} value={reagent.id}>
-                      {reagent.name}
-                    </option>
-                  ))
-                ) : (
-                  <option value="">No reagents available</option>
-                )}
-              </select>
-            </div>
-          ),
+            text: "Reagent",
+            dataField: "reagent_name",
+            sort: true,
+            formatter: (cellContent, list) => (
+                <div className="text-start">
+                    <select
+                        className="form-select me-2"
+                        value={list.reagent_name || ""}
+                        onChange={(e) => this.handleReagentChange(e, list)}
+                    >
+                        <option value="" disabled hidden>
+                            Select Reagent
+                        </option>
+                        {this.state.ReagentList &&
+                        this.state.SchemeAnalytesList
+                            ? this.state.ReagentList
+                                  .filter(reagent =>
+                                      this.state.SchemeAnalytesList.some(analyte =>
+                                          analyte?.id === list?.analyte_id &&
+                                          analyte?.reagents?.includes(reagent.id)
+                                      )
+                                  )
+                                  .map((reagent, index) => (
+                                      <option key={index} value={reagent.id}>
+                                          {reagent.name}
+                                      </option>
+                                  ))
+                            : null}
+                    </select>
+                </div>
+            ),
         },
 
         {
@@ -839,18 +853,36 @@ class Results extends Component {
     this.setState({ combinedData: updatedData });
   };
 
-  handleInstrumentChange = (event, list) => {
-    const { value } = event.target;
-    this.setState(prevState => {
-      const updatedData = prevState.combinedData.map(item => {
-        if (item.id === list.id) {
-          return { ...item, instrument_name: value };
-        }
-        return item;
-      });
-      return { combinedData: updatedData };
+  // handleInstrumentChange = (event, list) => {
+  //   const { value } = event.target;
+  //   this.setState(prevState => {
+  //     const updatedData = prevState.combinedData.map(item => {
+  //       if (item.id === list.id) {
+  //         return { ...item, instrument_name: value };
+  //       }
+  //       return item;
+  //     });
+  //     return { combinedData: updatedData };
+  //   });
+  // };
+//////
+handleInstrumentChange = (event, list) => {
+  const { value } = event.target;
+  this.setState(prevState => {
+    const updatedData = prevState.combinedData.map(item => {
+      if (item.id === list.id) {
+        const selectedInstrument = prevState.Instrument.find(instr => instr.id.toString() === value);
+        return { 
+          ...item, 
+          instrument_id: value,  // Update instrument_id
+          instrument_name: selectedInstrument ? selectedInstrument.name : '' // Ensure correct name
+        };
+      }
+      return item;
     });
-  };
+    return { combinedData: updatedData };
+  });
+};
 
   handleResultTypeChange = (e, list) => {
     const newResultType = e.target.value;
