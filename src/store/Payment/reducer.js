@@ -4,6 +4,8 @@ import {
   ADD_NEW_Payment_FAIL,
   GET_PARTICIPANT_PAYMENT_SUCCESS,
   GET_PARTICIPANT_PAYMENT_FAIL,
+  GET_PARTICIPANT_SCHEME_LIST_SUCCESS,
+  GET_PARTICIPANT_SCHEME_LIST_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -37,6 +39,24 @@ const AddPayment = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+
+      // participant schem list
+      case GET_PARTICIPANT_SCHEME_LIST_SUCCESS:
+  console.log("Reducer - Updated State with Payload:", action.payload);
+  return {
+    ...state,
+    PaymentSchemeList: Array.isArray(action.payload) ? action.payload : [],
+    error: null,
+  };
+
+      
+      case GET_PARTICIPANT_SCHEME_LIST_FAIL:
+        return {
+          ...state,
+          PaymentSchemeList: [], // Clear list on failure
+          error: action.payload,
+        };
+      
     default:
       return state;
   }

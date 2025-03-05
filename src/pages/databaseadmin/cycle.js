@@ -405,14 +405,25 @@ class InstrumentType extends Component {
                   ></i>
                 </Link></Tooltip>
 
-              <Tooltip title="Delete">
-                <Link className="text-danger" to="#">
-                  <i
-                    className="mdi mdi-delete font-size-18"
-                    id="deletetooltip"
-                    onClick={() => this.onClickDelete(cycle)}
-                  ></i>
-                </Link></Tooltip>
+                  {/* Conditionally Render Delete Button  */}
+    {cycle.is_deletable ? (
+      <Tooltip title="Delete">
+        <Link className="text-danger" to="#">
+          <i
+            className="mdi mdi-delete font-size-18"
+            id="deletetooltip"
+            onClick={() => this.onClickDelete(cycle)}
+          ></i>
+        </Link>
+      </Tooltip>
+    ) : (
+      <Tooltip title="Cannot Delete (Used in a Round)">
+        <i
+          className="mdi mdi-delete font-size-18 text-muted"
+          style={{ cursor: "not-allowed" }}
+        ></i>
+      </Tooltip>
+    )}
             </div>
           ),
 

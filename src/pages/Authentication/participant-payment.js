@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
+import { Link } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -91,21 +92,31 @@ class ParticipantPayments extends Component {
           ),
         },
         {
-          dataField: "scheme_name",
+          dataField: "scheme_count",
           text: "Number of Schemes",
           sort: true,
-          headerFormatter: column => (
+          formatter: (cell, row) => (
+            <Link
+            to={`/payment-scheme-list/${row.id}`}
+            style={{ textDecoration: "underline", color: "#0000CD" }}
+            onClick={() => console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)}
+          >
+            {cell}
+          </Link>
+          ),
+          headerFormatter: (column) => (
             <div>
               <Label className="form-label">{column.text}</Label>
               <input
                 type="text"
                 value={this.state.schemeFilter}
-                onChange={e => this.handleFilterChange("schemeFilter", e)}
+                onChange={(e) => this.handleFilterChange("schemeFilter", e)}
                 className="form-control"
               />
             </div>
           ),
         },
+        
         {
           dataField: "price",
           text: "Amount Payment",
@@ -202,26 +213,26 @@ class ParticipantPayments extends Component {
     onGetParticipantpayment();
 }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.GetPayment !== prevProps.GetPayment) {
-      console.log("Updated GetPayment:", this.props.GetPayment); // Check API response
-      const transformedData = (this.props.GetPayment || []).map((payment, index) => ({
-        id: payment.id,
-        participant_name: payment.participant_name, // Ensure this is the correct field from API
-        district: payment.district, // Ensure this is the correct field from API
-        scheme_name: payment.scheme_name, // Ensure this is the correct field from API
-        price: payment.price,
-        discount: payment.discount,
-        paymentmethod: payment.paymentmethod,
-        paydate: payment.paydate,
-        photo: payment.photo, // Ensure the photo field is mapped
-        receivedby: payment.receivedby,
-      }));
-      this.setState({
-        GetPayment: transformedData,
-      });
-    }
+componentDidUpdate(prevProps) {
+  if (this.props.GetPayment !== prevProps.GetPayment) {
+    const transformedData = (this.props.GetPayment || []).map((payment) => ({
+      id: payment.id,
+      participant_name: payment.participant_name,
+      district: payment.district,
+      scheme_count: payment.scheme_count, // Display count of schemes
+      price: payment.price,
+      discount: payment.discount,
+      paymentmethod: payment.paymentmethod,
+      paydate: payment.paydate,
+      photo: payment.photo,
+      receivedby: payment.receivedby,
+    }));
+    this.setState({
+      GetPayment: transformedData,
+    });
   }
+}
+
   
 
   handleFilterChange = (filterName, e) => {
@@ -358,3 +369,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ParticipantPayments);
+

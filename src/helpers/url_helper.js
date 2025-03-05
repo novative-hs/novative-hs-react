@@ -203,7 +203,7 @@ export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;
 export const GET_MAIN_LABS = `${API_ENDPOINT}/api/lab/lab-list`;
 
-
+export const GET_PARTICIPANT_SCHEME_LIST = `${API_ENDPOINT}/api/registration-admin/payment-scheme-list`;
 // TEST
 export const GET_TESTS = `${API_ENDPOINT}/api/medicaltest/test-list`;
 export const GET_UNITS = `${API_ENDPOINT}/api/medicaltest/unit-list`;

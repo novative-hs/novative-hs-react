@@ -3940,3 +3940,9 @@ export const updateInstrumentAnalytelist = (schemeanalyte) => {
     }
   );
 };
+export const getParticipantSchemelist = id => {
+  console.log("Calling API:", `${url.GET_PARTICIPANT_SCHEME_LIST}/${id}`);
+  return get(`${url.GET_PARTICIPANT_SCHEME_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+};  //django helper

@@ -1,12 +1,14 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { ADD_NEW_Payment, GET_PARTICIPANT_PAYMENT } from "./actionTypes";
+import { ADD_NEW_Payment, GET_PARTICIPANT_PAYMENT, GET_PARTICIPANT_SCHEME_LIST } from "./actionTypes";
 import {
   addNewPaymentSuccess,
   addNewPaymentFail,
   getparticipantpaymentSuccess,
   getparticipantpaymentFail,
+  getParticipantSchemelistSuccess,
+  getParticipantSchemelistFail,
 } from "./actions";
-import { addNewPayment, getParticipantPayment } from "../../helpers/django_api_helper";
+import { addNewPayment, getParticipantPayment, getParticipantSchemelist} from "../../helpers/django_api_helper";
 
 function* onAddNewPayment(object) {
   console.log("data in saga1", object.payload.payment);
@@ -38,6 +40,32 @@ function* fetchParticipantPayment() {
     yield put(getparticipantpaymentFail(error));  // Handle error
   }
 }
+function* fetchParticipantSchemelist(action) {
+  try {
+    console.log("Saga Payload (ID):", action.payload);
+
+    // Call the API
+    const response = yield call(getParticipantSchemelist, action.payload);
+    console.log("API Response in Saga:", response);
+
+    // Extract schemes from response.data
+    const data = response.data?.schemes || []; // Adjusted to access `schemes` array in response.data
+
+    if (data.length > 0) {
+      console.log("Dispatching Success Action with Data:", data);
+      yield put(getParticipantSchemelistSuccess(data)); // Dispatch success with valid data
+    } else {
+      console.warn("Empty schemes array in API response");
+      yield put(getParticipantSchemelistSuccess([])); // Handle empty response gracefully
+    }
+  } catch (error) {
+    console.error("Error in Saga:", error);
+    yield put(getParticipantSchemelistFail(error));
+  }
+}
+
+
+
 
 
 
@@ -46,6 +74,7 @@ function* fetchParticipantPayment() {
 function* PaymentSaga() {
   yield takeEvery(ADD_NEW_Payment, onAddNewPayment);
   yield takeEvery(GET_PARTICIPANT_PAYMENT, fetchParticipantPayment);
+  yield takeEvery(GET_PARTICIPANT_SCHEME_LIST, fetchParticipantSchemelist);
 }
 
 export default PaymentSaga;
