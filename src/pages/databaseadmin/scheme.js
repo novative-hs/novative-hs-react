@@ -203,11 +203,11 @@ class ReagentsList extends Component {
             return (
               <div>
                 <Link
-                          to={`/scheme-analytelist/${unitlist.id}`} // Use `unitlist.cycle_id` directly
-                          style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
-                        >
-                          {unitlist.noofanalytes} 
-                        </Link>
+                  to={`/scheme-analytelist/${unitlist.id}`} // Use `unitlist.cycle_id` directly
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                >
+                  {unitlist.noofanalytes}
+                </Link>
               </div>
             );
           },
@@ -291,48 +291,52 @@ class ReagentsList extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          formatter: (cellContent, analyte) => (
-            <div className="d-flex gap-3 ml-3">
-              <Tooltip title="Add Analytes">
-                <Link
-                  to={`/add-analytes-scheme-page/${analyte.id}`}
-                  style={{ textDecoration: "underline", color: "#008000" }}
-                >
-                  <i
-                    className="mdi mdi-test-tube font-size-18"
-                    id="analyteIcon"
-                  ></i>
-                </Link>
-              </Tooltip>
-              <Tooltip title="Update">
-                <Link className="text-success" to="#">
-                  <i
-                    className="mdi mdi-pencil font-size-18"
-                    id="edittooltip"
-                    onClick={(e) => this.handleReagentsClick(e, analyte)}
-                  ></i>
-                </Link>
-              </Tooltip>
-              {!analyte.is_part_of_active_cycle && ( // Hide delete button for schemes with active cycles
-                  <Tooltip title="Delete">
-                    <Link className="text-danger" to="#">
-                      <i
-                        className="mdi mdi-delete font-size-18"
-                        onClick={() => this.onClickDelete(analyte)}
-                      ></i>
-                    </Link>
-                  </Tooltip>
-                )}
-              <Tooltip title="History">
-                <Link
-                  className="fas fa-comment font-size-18"
-                  to={`/${this.state.organization_name}/databaseadmin-history/${analyte.id}?type=Scheme`}
-                ></Link>
-              </Tooltip>
-              
-            </div>
-          ),
+          formatter: (cellContent, scheme) => {
+            return (
+              <div className="d-flex gap-3">
+                <Tooltip title="Add Analytes">
+                  <Link
+                    to={`/add-analytes-scheme-page/${scheme.id}`}
+                    style={{ textDecoration: "underline", color: "#008000" }}
+                  >
+                    <i className="mdi mdi-test-tube font-size-18"></i>
+                  </Link>
+                </Tooltip>
+        
+                <Tooltip title="Update">
+                  <Link className="text-success" to="#">
+                    <i
+                      className="mdi mdi-pencil font-size-18"
+                      onClick={() => this.handleEditScheme(scheme)}
+                    ></i>
+                  </Link>
+                </Tooltip>
+                <Tooltip title="History">
+                  <Link
+                    className="fas fa-comment font-size-18"
+                    to={`/scheme-history/${scheme.id}`}
+                  ></Link>
+                </Tooltip>
+                {!scheme.is_part_of_active_cycle ? ( // Show delete button if not part of an active cycle
+  <Tooltip title="Delete">
+    <Link className="text-danger" to="#">
+      <i
+        className="mdi mdi-delete font-size-18"
+        onClick={() => this.onClickDelete(scheme)}
+      ></i>
+    </Link>
+  </Tooltip>
+) : (
+  <span className="text-muted" style={{ fontSize: "12px" }}>
+    Deletion Disabled
+  </span>
+)}
+
+              </div>
+            );
+          },
         },
+        
       ],
     };
     this.handleReagentsClick = this.handleReagentsClick.bind(this);
@@ -373,12 +377,13 @@ class ReagentsList extends Component {
   //   const { SchemeList } = this.state;
   //   if (SchemeList.id !== undefined) {
   //     onDeleteScheme(SchemeList);
-      // setTimeout(() => {
-      //   onGetScheme(this.state.user_id);
-      // }, 1000);
+  //     setTimeout(() => {
+  //       onGetScheme(this.state.user_id);
+  //     }, 1000);
   //     this.setState({ deleteModal: false });
   //   }
   // };
+
   handleDeleteScheme = () => {
     const { onDeleteScheme, onGetScheme } = this.props;
     const { SchemeList } = this.state;
@@ -400,9 +405,6 @@ class ReagentsList extends Component {
       this.setState({ deleteModal: false, errorMessage: "" }); // Clear error message
     }
   };
-  
-  
-  
   
 
   onClickDelete = (SchemeList) => {
@@ -577,11 +579,16 @@ class ReagentsList extends Component {
             <title>Scheme List | NEQAS</title>
           </MetaTags>
           <Container fluid>
-         {this.state.feedbackMessage && (
-  <div className="alert alert-danger text-center">
-    {this.state.feedbackMessage}
-  </div>
-)}
+            {this.state.feedbackMessage && (
+              <div
+                className={`alert ${this.state.feedbackMessage.includes("successfully")
+                    ? "alert-success"
+                    : "alert-danger"
+                  } text-center`}
+              >
+                {this.state.feedbackMessage}
+              </div>
+            )}
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Scheme" breadcrumbItem="Scheme List" />
             <Row className="justify-content-center">
@@ -592,6 +599,10 @@ class ReagentsList extends Component {
                   only that Analyte shown here, whose units will be{" "}
                   <b className="text-danger">Pos/Ng/Aqi</b>.
                 </p>
+                <p>
+                  <strong>Note:</strong> Schemes with active Cycles cannot be deleted.
+                </p>
+
 
                 <Card>
                   <CardBody>
@@ -670,10 +681,10 @@ class ReagentsList extends Component {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -768,7 +779,7 @@ class ReagentsList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.name &&
-                                                        touched.name
+                                                          touched.name
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -806,7 +817,7 @@ class ReagentsList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.price &&
-                                                        touched.price
+                                                          touched.price
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -855,12 +866,11 @@ class ReagentsList extends Component {
                                                     <Field
                                                       as="select"
                                                       name="analytetype"
-                                                      className={`form-control ${
-                                                        errors.analytetype &&
-                                                        touched.analytetype
+                                                      className={`form-control ${errors.analytetype &&
+                                                          touched.analytetype
                                                           ? "is-invalid"
                                                           : ""
-                                                      }`}
+                                                        }`}
                                                     >
                                                       <option value="">
                                                         ----- Please select
@@ -889,12 +899,11 @@ class ReagentsList extends Component {
                                                     <Field
                                                       as="select"
                                                       name="status"
-                                                      className={`form-control ${
-                                                        errors.status &&
-                                                        touched.status
+                                                      className={`form-control ${errors.status &&
+                                                          touched.status
                                                           ? "is-invalid"
                                                           : ""
-                                                      }`}
+                                                        }`}
                                                     >
                                                       <option value="">
                                                         ----- Please select
@@ -989,4 +998,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-  )(withRouter(ReagentsList));
+)(withRouter(ReagentsList));

@@ -3,11 +3,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import BootstrapTable from "react-bootstrap-table-next";
-import filterFactory, {
-  textFilter,
-  selectFilter,
-} from "react-bootstrap-table2-filter";
+import BootstrapTable from 'react-bootstrap-table-next';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -24,6 +21,7 @@ import {
   Label,
 } from "reactstrap";
 
+
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -37,14 +35,14 @@ import {
   getcyclelist,
   addNewCycleList,
   updateCycleList,
-  deleteCycle,
+  deleteCycle
 } from "store/cycle/actions";
 import { getSchemelist } from "store/scheme/actions";
 import { getAnalytelist } from "store/databaseofunits/actions";
 import { isEmpty, size } from "lodash";
 
 import "assets/scss/table.scss";
-import moment from "moment";
+import moment from 'moment';
 import DeleteModal from "components/Common/DeleteModal";
 import ListUnit from "store/databaseofunits/reducer";
 class InstrumentType extends Component {
@@ -54,16 +52,16 @@ class InstrumentType extends Component {
     this.state = {
       selectedCycle: null,
       isEdit: false,
-      organization_name: "",
-      idFilter: "",
-      schemenameFilter: "",
-      cyclenoFilter: "",
-      cycleFilter: "",
-      startdateFilter: "",
-      enddateFilter: "",
-      roundsFilter: "",
-      noofanalytesFilter: "",
-      statusFilter: "",
+      organization_name: '',
+      idFilter: '',
+      schemenameFilter: '',
+      cyclenoFilter: '',
+      cycleFilter: '',
+      startdateFilter: '',
+      enddateFilter: '',
+      roundsFilter: '',
+      noofanalytesFilter: '',
+      statusFilter: '',
 
       CycleList: [],
       SchemeList: [],
@@ -84,30 +82,23 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.idFilter}
-                    onChange={(e) => this.handleFilterChange("idFilter", e)}
+                    onChange={e => this.handleFilterChange('idFilter', e)}
                     className="form-control"
                     style={{
-                      textAlign: "center",
-                      width: "100px",
+                      textAlign: 'center',
+                      width: '100px',
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+          
         },
         {
           dataField: "scheme_name",
@@ -116,32 +107,23 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.schemenameFilter}
-                    onChange={(e) =>
-                      this.handleFilterChange("schemenameFilter", e)
-                    }
+                    onChange={e => this.handleFilterChange('schemenameFilter', e)}
                     className="form-control"
                     style={{
-                      textAlign: "center",
-                      width: "120px",
+                      textAlign: 'center',
+                      width: '120px',
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+         
         },
         {
           dataField: "cycle_no",
@@ -150,34 +132,25 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <input 
                     type="text"
                     value={this.state.cyclenoFilter}
-                    onChange={(e) =>
-                      this.handleFilterChange("cyclenoFilter", e)
-                    }
+                    onChange={e => this.handleFilterChange('cyclenoFilter', e)}
                     className="form-control"
                     style={{
-                      textAlign: "center",
-                      width: "100px",
+                      textAlign: 'center',
+                      width: '100px',
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+         
         },
-
+        
         {
           dataField: "cycle",
           text: "Cycle Duration",
@@ -234,39 +207,33 @@ class InstrumentType extends Component {
           sort: true,
           formatter: (cellContent, cycle) => (
             <>
-              <span>{moment(cycle.start_date).format("DD MMM YYYY")}</span>
-            </>
-          ),
+              <span>
+                {moment(cycle.start_date).format("DD MMM YYYY")}
+
+              </span>
+            </>),
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+
+                  <input 
                     type="text"
                     value={this.state.startdateFilter}
-                    onChange={(e) =>
-                      this.handleFilterChange("startdateFilter", e)
-                    }
+                    onChange={e => this.handleFilterChange('startdateFilter', e)}
                     className="form-control"
                     style={{
-                      textAlign: "center",
-                      width: "120px",
+                      textAlign: 'center',
+                      width: '120px',
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+          
         },
         {
           dataField: "end_date",
@@ -274,39 +241,34 @@ class InstrumentType extends Component {
           sort: true,
           formatter: (cellContent, cycle) => (
             <>
-              <span>{moment(cycle.end_date).format("DD MMM YYYY")}</span>
-            </>
-          ),
+              <span>
+                {moment(cycle.end_date).format("DD MMM YYYY")}
+
+              </span>
+            </>),
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+
+                  <input 
                     type="text"
                     value={this.state.enddateFilter}
-                    onChange={(e) =>
-                      this.handleFilterChange("enddateFilter", e)
-                    }
+                    onChange={e => this.handleFilterChange('enddateFilter', e)}
                     className="form-control"
+
                     style={{
-                      textAlign: "center",
-                      width: "100px",
+                      textAlign: 'center',
+                      width: '100px',
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+         
         },
         {
           dataField: "rounds",
@@ -316,30 +278,24 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+
+                  <input 
                     type="text"
                     value={this.state.roundsFilter}
-                    onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+                    onChange={e => this.handleFilterChange('roundsFilter', e)}
                     className="form-control"
                     style={{
-                      textAlign: "center",
-                      width: "100px",
+                      textAlign: 'center',
+                      width: '100px',
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+          
         },
         {
           dataField: "noofanalytes",
@@ -349,51 +305,37 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+
+                  <input 
                     type="text"
                     value={this.state.noofanalytesFilter}
-                    onChange={(e) =>
-                      this.handleFilterChange("noofanalytesFilter", e)
-                    }
+                    onChange={e => this.handleFilterChange('noofanalytesFilter', e)}
                     className="form-control"
                     style={{
-                      textAlign: "center",
-                      width: "100px",
+                      textAlign: 'center',
+                      width: '100px',
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
-
+         
           formatter: (cellContent, unitlist) => {
             const { organization_name } = this.state;
             return (
               <div>
                 <Link
                   to={`/${organization_name}/cycle-analyte/${unitlist.scheme_id}`}
-                  style={{
-                    textDecoration: "underline",
-                    color: "#0000CD",
-                    display: "block",
-                    marginTop: "5px",
-                  }}
+                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
                 >
                   {unitlist.noofanalytes}
                 </Link>
               </div>
             );
-          },
+          }
         },
         {
           dataField: "status",
@@ -402,58 +344,36 @@ class InstrumentType extends Component {
           formatter: (cellContent, cycle) => (
             <>
               {cycle.status === "Active" ? (
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  Active
-                </span>
+                <span style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>Active</span>
               ) : (
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  Inactive
-                </span>
+                <span style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>Inactive</span>
               )}
             </>
           ),
           headerFormatter: (column, colIndex) => {
             return (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <select
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                  <select 
                     value={this.state.statusFilter}
-                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
+                    onChange={e => this.handleFilterChange('statusFilter', e)}
                     className="form-control"
                     style={{
-                      textAlign: "center",
-                      width: "100px",
+                      textAlign: 'center',
+                      width: '100px',
                     }}
+
                   >
                     <option value="">All</option>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
+                <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
               </>
             );
           },
+        
         },
         // {
         //   dataField: 'link',
@@ -481,46 +401,45 @@ class InstrumentType extends Component {
                     className="mdi mdi-pencil font-size-18"
                     id="edittooltip"
                     onClick={() => this.toggle(cycle)}
-                    // onClick={e => this.handleCycleClick(e, cycle)}
+                  // onClick={e => this.handleCycleClick(e, cycle)}
                   ></i>
-                </Link>
-              </Tooltip>
+                </Link></Tooltip>
 
-              {/* Conditionally Render Delete Button  */}
+              {/* Conditionally Render Delete Button */}
               {cycle.is_deletable ? (
-                <Tooltip title="Delete">
-                  <Link className="text-danger" to="#">
-                    <i
-                      className="mdi mdi-delete font-size-18"
-                      id="deletetooltip"
-                      onClick={() => this.onClickDelete(cycle)}
-                    ></i>
-                  </Link>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Cannot Delete (Used in a Round)">
-                  <i
-                    className="mdi mdi-delete font-size-18 text-muted"
-                    style={{ cursor: "not-allowed" }}
-                  ></i>
-                </Tooltip>
-              )}
+  <Tooltip title="Delete">
+    <Link className="text-danger" to="#">
+      <i
+        className="mdi mdi-delete font-size-18"
+        id="deletetooltip"
+        onClick={() => this.onClickDelete(cycle)}
+      ></i>
+    </Link>
+  </Tooltip>
+) : (
+  <span className="text-muted" style={{ fontSize: "12px" }}>
+    Deletion Disabled
+  </span>
+)}
+
+
             </div>
           ),
+
         },
       ],
     };
-
+  
     this.toggle = this.toggle.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
   componentDidMount() {
+    
     const { organization_name } = this.props.match.params;
     this.setState({ organization_name });
 
-    const { ListUnit, onGetgetschemelist, onGetInstrumentTypeList } =
-      this.props;
+    const { ListUnit, onGetgetschemelist, onGetInstrumentTypeList } = this.props;
     const userId = this.state.user_id;
 
     this.setState({ ListUnit, CycleList: this.props.CycleList });
@@ -529,7 +448,7 @@ class InstrumentType extends Component {
   }
 
   toggleDeleteModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
@@ -537,27 +456,38 @@ class InstrumentType extends Component {
   handleDeleteCycle = () => {
     const { onDeleteCycle, onGetInstrumentTypeList } = this.props;
     const { CycleList } = this.state;
+
+    // Check if the cycle is part of a round
+    if (CycleList.is_part_of_round) {
+      this.setState({
+        errorMessage: "This cycle is part of a round and cannot be deleted.",
+      });
+      return;
+    }
+
     if (CycleList.id !== undefined) {
       onDeleteCycle(CycleList);
       setTimeout(() => {
         onGetInstrumentTypeList(this.state.user_id);
       }, 1000);
-      this.setState({ deleteModal: false });
+      this.setState({ deleteModal: false, errorMessage: "" }); // Clear error message
     }
   };
 
-  onClickDelete = (CycleList) => {
+
+  onClickDelete = CycleList => {
     this.setState({ CycleList: CycleList });
     this.setState({ deleteModal: true });
   };
 
-  displaySuccessMessage = (message) => {
+  displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
     setTimeout(() => {
       this.setState({ successMessage: "", modal: false });
     }, 3000);
-  };
+  }
+
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
@@ -565,8 +495,8 @@ class InstrumentType extends Component {
 
   toggle(cycle) {
     if (cycle && cycle.id) {
-      console.log("data inn toggle", cycle.id, cycle);
-      console.log("data inn toggle", cycle.id, cycle);
+      console.log("data inn toggle", cycle.id, cycle)
+      console.log("data inn toggle", cycle.id, cycle)
       this.setState({
         modal: true,
         selectedCycle: {
@@ -578,7 +508,7 @@ class InstrumentType extends Component {
           start_date: cycle.start_date
             ? moment(cycle.start_date).format("YYYY-MM-DD")
             : "",
-          end_date: cycle.end_date
+            end_date: cycle.end_date
             ? moment(cycle.end_date).format("YYYY-MM-DD")
             : "",
           rounds: cycle.rounds,
@@ -598,15 +528,12 @@ class InstrumentType extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      !isEmpty(this.props.SchemeList) &&
-      size(prevProps.SchemeList) !== size(this.props.SchemeList)
-    ) {
+    if (!isEmpty(this.props.SchemeList) && size(prevProps.SchemeList) !== size(this.props.SchemeList)) {
       this.setState({ SchemeList: this.props.SchemeList });
     }
   }
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -619,211 +546,148 @@ class InstrumentType extends Component {
   };
   closeModal = () => {
     this.setState({ modal: false });
+  }
+
+  
+
+
+  
+render() {
+  const { SearchBar } = Search;
+  const ListUnit = this.props.ListUnit.map(cycle => ({
+    label: cycle.name,
+    value: cycle.id,
+  }));
+  const { CycleList, SchemeList } = this.props;
+  const { isEdit, deleteModal } = this.state;
+  const { onGetInstrumentTypeList, onUpdateType, onGetgetschemelist, onAddNewType } = this.props;
+  const cycle = this.state.CycleList;
+  
+  const { idFilter, schemenameFilter, cyclenoFilter, cycleFilter, startdateFilter, enddateFilter, roundsFilter, noofanalytesFilter, statusFilter } = this.state;
+
+  const filteredData = CycleList.filter(entry => {   
+    // Modify accordingly for each filter condition
+    const id = entry.id ? entry.id.toString() : "";
+    const scheme_name = entry.scheme_name ? entry.scheme_name.toString().toLowerCase() : "";
+    const cycle_no = entry.cycle_no ? entry.cycle_no.toString().toLowerCase() : "";
+    const cycle = entry.cycle ? entry.cycle.toString() : "";
+    const start_date = entry.start_date ? entry.start_date.toString() : "";
+    const end_date = entry.end_date ? entry.end_date.toString() : "";
+    const rounds = entry.rounds ? entry.rounds.toString() : "";
+    const analytes = entry.analytes ? entry.analytes.toString() : "";
+    const status = entry.status ? entry.status.toString() : "";
+    
+    return (
+      id.includes(idFilter) &&
+      scheme_name.includes(schemenameFilter.toLowerCase()) &&
+      cycle_no.includes(cyclenoFilter.toLowerCase()) &&
+      cycle.includes(cycleFilter) &&
+      start_date.includes(startdateFilter) &&
+      end_date.includes(enddateFilter) &&
+      rounds.includes(roundsFilter) &&
+      analytes.includes(noofanalytesFilter) &&
+      status.includes(statusFilter)
+    );
+  });
+
+
+  const pageOptions = {
+    sizePerPage: 10,
+    // totalSize: CycleList.length,
+    totalSize: filteredData.length,
+    custom: true,
   };
 
-  render() {
-    const { SearchBar } = Search;
-    const ListUnit = this.props.ListUnit.map((cycle) => ({
-      label: cycle.name,
-      value: cycle.id,
-    }));
-    const { CycleList, SchemeList } = this.props;
-    const { isEdit, deleteModal } = this.state;
-    const {
-      onGetInstrumentTypeList,
-      onUpdateType,
-      onGetgetschemelist,
-      onAddNewType,
-    } = this.props;
-    const cycle = this.state.CycleList;
+  const defaultSorted = [
+    {
+      dataField: "id",
+      order: "desc",
+    },
+  ];
 
-    const {
-      idFilter,
-      schemenameFilter,
-      cyclenoFilter,
-      cycleFilter,
-      startdateFilter,
-      enddateFilter,
-      roundsFilter,
-      noofanalytesFilter,
-      statusFilter,
-    } = this.state;
+  return (
+    <React.Fragment>
+      <DeleteModal
+        show={deleteModal}
+        onDeleteClick={this.handleDeleteCycle}
+        onCloseClick={() => this.setState({ deleteModal: false })}
+      />
+      <div className="page-content">
+        <MetaTags>
+          <title>Database Admin | Cycle List</title>
+        </MetaTags>
+        <Container fluid>
+          {/* Render Breadcrumbs */}
+          <Breadcrumbs title="List" breadcrumbItem="Cycle List" />
+          <Row className="justify-content-center">
 
-    const filteredData = CycleList.filter((entry) => {
-      // Modify accordingly for each filter condition
-      const id = entry.id ? entry.id.toString() : "";
-      const scheme_name = entry.scheme_name
-        ? entry.scheme_name.toString().toLowerCase()
-        : "";
-      const cycle_no = entry.cycle_no
-        ? entry.cycle_no.toString().toLowerCase()
-        : "";
-      const cycle = entry.cycle ? entry.cycle.toString() : "";
-      const start_date = entry.start_date ? entry.start_date.toString() : "";
-      const end_date = entry.end_date ? entry.end_date.toString() : "";
-      const rounds = entry.rounds ? entry.rounds.toString() : "";
-      const analytes = entry.analytes ? entry.analytes.toString() : "";
-      const status = entry.status ? entry.status.toString() : "";
+            <Col lg="10">
+            <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
+            <p><strong>Note:</strong> Cycles added to a Round cannot be deleted.</p>
 
-      return (
-        id.includes(idFilter) &&
-        scheme_name.includes(schemenameFilter.toLowerCase()) &&
-        cycle_no.includes(cyclenoFilter.toLowerCase()) &&
-        cycle.includes(cycleFilter) &&
-        start_date.includes(startdateFilter) &&
-        end_date.includes(enddateFilter) &&
-        rounds.includes(roundsFilter) &&
-        analytes.includes(noofanalytesFilter) &&
-        status.includes(statusFilter)
-      );
-    });
+              <Card>
+                <CardBody>
+                  <PaginationProvider
+                    pagination={paginationFactory(pageOptions)}
+                    keyField="id"
+                    columns={this.state.feedbackListColumns}
+                    data={filteredData}
+                  >
+                    {({ paginationProps, paginationTableProps }) => (
+                      <ToolkitProvider
+                        keyField="id"
+                        columns={this.state.feedbackListColumns}
+                        data={filteredData}
+                        search
+                      >
 
-    const pageOptions = {
-      sizePerPage: 10,
-      // totalSize: CycleList.length,
-      totalSize: filteredData.length,
-      custom: true,
-    };
+                        {toolkitprops => (
+                          <React.Fragment>
+                            <Row className="mb-4">
 
-    const defaultSorted = [
-      {
-        dataField: "id",
-        order: "desc",
-      },
-    ];
+                              <Col xl="12">
+                                <Col className="text-end">
 
-    return (
-      <React.Fragment>
-        <DeleteModal
-          show={deleteModal}
-          onDeleteClick={this.handleDeleteCycle}
-          onCloseClick={() => this.setState({ deleteModal: false })}
-        />
-        <div className="page-content">
-          <MetaTags>
-            <title>Database Admin | Cycle List</title>
-          </MetaTags>
-          <Container fluid>
-            {/* Render Breadcrumbs */}
-            <Breadcrumbs title="List" breadcrumbItem="Cycle List" />
-            <Row className="justify-content-center">
-              <Col lg="10">
-                <p>
-                  <strong>Note:</strong> Please click on the filter to sort the
-                  data in ascending (A to Z) or descending (Z to A) order.
-                </p>
-                <Card>
-                  <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
-                      keyField="id"
-                      columns={this.state.feedbackListColumns}
-                      data={filteredData}
-                    >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.feedbackListColumns}
-                          data={filteredData}
-                          search
-                        >
-                          {(toolkitprops) => (
-                            <React.Fragment>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <Col className="text-end">
-                                    <button
-                                      className="btn btn-primary btn-block mb-4"
-                                      onClick={() => this.toggle()}
-                                      style={{ background: "#0000CD" }}
-                                    >
-                                      Add New Cycle
-                                    </button>
+                                    <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Cycle</button>
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
                                     >
-                                      <ModalHeader
-                                        toggle={this.closeModal}
-                                        tag="h4"
-                                      >
+                                      <ModalHeader toggle={this.closeModal} tag="h4">
                                         {"Create New Cycle"}
                                       </ModalHeader>
                                       <ModalBody>
                                         {this.state.successMessage && (
-                                          <div
-                                            className="alert alert-success"
-                                            role="alert"
-                                          >
+                                          <div className="alert alert-success" role="alert">
                                             {this.state.successMessage}
                                           </div>
                                         )}
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            scheme_name: this.state
-                                              .selectedCycle
-                                              ? this.state.selectedCycle
-                                                  .scheme_name
-                                              : "",
-                                            cycle_no: this.state.selectedCycle
-                                              ? this.state.selectedCycle
-                                                  .cycle_no
-                                              : "",
-                                            rounds: this.state.selectedCycle
-                                              ? this.state.selectedCycle.rounds
-                                              : "",
-                                            analytes:
-                                              this.state.selectedAnalytes,
-                                            status: this.state.selectedCycle
-                                              ? this.state.selectedCycle.status
-                                              : "Active",
+                                            scheme_name: this.state.selectedCycle ? this.state.selectedCycle.scheme_name : "",
+                                            cycle_no: this.state.selectedCycle ? this.state.selectedCycle.cycle_no : "",
+                                            rounds: this.state.selectedCycle ? this.state.selectedCycle.rounds : "",
+                                            analytes: this.state.selectedAnalytes,
+                                            status: this.state.selectedCycle ? this.state.selectedCycle.status : "Active",
                                             // cycle: this.state.selectedCycle ? this.state.selectedCycle.cycle : "Months",
-                                            start_date: this.state.selectedCycle
-                                              ? this.state.selectedCycle
-                                                  .start_date
-                                              : "",
-                                            end_date: this.state.selectedCycle
-                                              ? this.state.selectedCycle
-                                                  .end_date
-                                              : "",
+                                            start_date: this.state.selectedCycle ? this.state.selectedCycle.start_date : "",
+                                            end_date: this.state.selectedCycle ? this.state.selectedCycle.end_date : "",
+                                      
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            scheme_name:
-                                              Yup.string().required(
-                                                "Name is required"
-                                              ),
-                                            rounds: Yup.string().required(
-                                              "Select the number of rounds"
-                                            ),
-                                            cycle_no: Yup.string().required(
-                                              "Cycle number is required"
-                                            ),
-                                            start_date: Yup.string().required(
-                                              "Start Date is required"
-                                            ),
-                                            end_date: Yup.string().required(
-                                              "End Date is required"
-                                            ),
-                                            status:
-                                              Yup.string().required(
-                                                "status is required"
-                                              ),
+                                            scheme_name: Yup.string().required("Name is required"),
+                                            rounds: Yup.string().required("Select the number of rounds"),
+                                            cycle_no: Yup.string().required("Cycle number is required"),
+                                            start_date: Yup.string().required("Start Date is required"),
+                                            end_date: Yup.string().required("End Date is required"),
+                                            status: Yup.string().required("status is required"),
                                           })}
-                                          onSubmit={async (
-                                            values,
-                                            { setSubmitting }
-                                          ) => {
-                                            const userId = localStorage.getItem(
-                                              "authUser"
-                                            )
-                                              ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
-                                              : "";
-
+                                          onSubmit={async (values, { setSubmitting }) => {
+                                            const userId = localStorage.getItem("authUser")
+                                                ? JSON.parse(localStorage.getItem("authUser")).user_id
+                                                : "";
+                                        
                                             const newround = {
                                               scheme_name: values.scheme_name,
                                               cycle_no: values.cycle_no,
@@ -834,34 +698,22 @@ class InstrumentType extends Component {
                                               status: values.status,
                                               added_by: userId,
                                             };
-
+                                        
                                             try {
-                                              if (this.state.isEdit) {
-                                                await this.props.onUpdateType(
-                                                  this.state.selectedCycle.id,
-                                                  newround
-                                                );
-                                                this.displaySuccessMessage(
-                                                  "Cycle updated successfully!"
-                                                );
-                                              } else {
-                                                await this.props.onAddNewType(
-                                                  newround
-                                                );
-                                                this.displaySuccessMessage(
-                                                  "Cycle added successfully!"
-                                                );
-                                              }
-                                              // Refetch data and update local state
+                                                if (this.state.isEdit) {
+                                                    await this.props.onUpdateType(this.state.selectedCycle.id, newround);
+                                                    this.displaySuccessMessage("Cycle updated successfully!");
+                                                } else {
+                                                    await this.props.onAddNewType(newround);
+                                                    this.displaySuccessMessage("Cycle added successfully!");
+                                                }
+                                                // Refetch data and update local state
                                               setTimeout(async () => {
                                                 const updatedData =
-                                                  await this.props.onGetInstrumentTypeList(
-                                                    this.state.user_id
-                                                  );
-                                                this.setState({
-                                                  CycleList: updatedData,
-                                                });
-                                              }, 300);
+                                                  await this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                this.setState({ CycleList: updatedData });
+                                              }, 300); 
+                                              
                                             } catch (error) {
                                               console.error(
                                                 "Error updating/adding rounds:",
@@ -872,68 +724,35 @@ class InstrumentType extends Component {
                                             setSubmitting(false);
                                           }}
                                         >
-                                          {({
-                                            errors,
-                                            touched,
-                                            values,
-                                            setFieldValue,
-                                          }) => (
+                                          {({ errors, touched, values, setFieldValue }) => (
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
-                                                  <div className="mb-3">
-                                                    <Label for="scheme_name">
-                                                      Scheme
-                                                    </Label>
+
+                                                <div className="mb-3">
+                                                    <Label for="scheme_name">Scheme</Label>
                                                     <Field
                                                       as="select"
                                                       name="scheme_name"
-                                                      className={
-                                                        "form-control" +
-                                                        (errors.scheme &&
-                                                        touched.scheme
-                                                          ? " is-invalid"
-                                                          : "")
-                                                      }
+                                                      className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
                                                     >
-                                                      <option value="">
-                                                        Select Scheme
-                                                      </option>
-                                                      {SchemeList &&
-                                                        SchemeList.filter(
-                                                          (scheme) =>
-                                                            scheme.status ===
-                                                            "Active"
-                                                        ).map((scheme) => (
-                                                          <option
-                                                            key={scheme.id}
-                                                            value={scheme.id}
-                                                          >
-                                                            {scheme.name}{" "}
-                                                            {/* Display scheme_name */}
-                                                          </option>
-                                                        ))}
+                                                      <option value="">Select Scheme</option>
+                                                      {SchemeList && SchemeList.filter(scheme => scheme.status === 'Active').map((scheme) =>  (
+                                                        <option key={scheme.id} value={scheme.id}>
+                                                          {scheme.name} {/* Display scheme_name */}
+                                                        </option>
+                                                      ))}
                                                     </Field>
-                                                    <ErrorMessage
-                                                      name="scheme_name"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
+                                                    <ErrorMessage name="scheme_name" component="div" className="invalid-feedback" />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">
-                                                      Cycle Name / Number
-                                                    </Label>
+                                                    <Label className="col-form-label">Cycle Name / Number</Label>
                                                     <Field
                                                       name="cycle_no"
                                                       type="text"
                                                       className="form-control"
                                                     />
-                                                    <ErrorMessage
-                                                      name="cycle_no"
-                                                      component="div"
-                                                      className="text-danger"
-                                                    />
+                                                    <ErrorMessage name="cycle_no" component="div" className="text-danger" />
                                                   </div>
                                                   {/* <div className="mb-3">
                                                     <Label className="col-form-label">Cycle Duration</Label>
@@ -950,17 +769,14 @@ class InstrumentType extends Component {
                                                     <ErrorMessage name="cycle" component="div" className="text-danger" />
                                                   </div> */}
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">
-                                                      Cycle Start Date
-                                                    </Label>
+                                                    <Label className="col-form-label">Cycle Start Date</Label>
                                                     <Field
                                                       name="start_date"
                                                       type="date"
                                                       id="start_date"
                                                       className={
                                                         "form-control" +
-                                                        (errors.start_date &&
-                                                        touched.start_date
+                                                        (errors.start_date && touched.start_date
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -972,17 +788,14 @@ class InstrumentType extends Component {
                                                     />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">
-                                                      Cycle End Date
-                                                    </Label>
+                                                    <Label className="col-form-label">Cycle End Date</Label>
                                                     <Field
                                                       name="end_date"
                                                       type="date"
                                                       id="end_date"
                                                       className={
                                                         "form-control" +
-                                                        (errors.end_date &&
-                                                        touched.end_date
+                                                        (errors.end_date && touched.end_date
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -994,9 +807,7 @@ class InstrumentType extends Component {
                                                     />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">
-                                                      Number of Rounds in cycle
-                                                    </Label>
+                                                    <Label className="col-form-label">Number of Rounds in cycle</Label>
                                                     <Field
                                                       name="rounds"
                                                       type="number"
@@ -1004,11 +815,7 @@ class InstrumentType extends Component {
                                                       max={36}
                                                       className="form-control"
                                                     />
-                                                    <ErrorMessage
-                                                      name="rounds"
-                                                      component="div"
-                                                      className="text-danger"
-                                                    />
+                                                    <ErrorMessage name="rounds" component="div" className="text-danger" />
                                                   </div>
                                                   <div className="mb-3">
                                                     <Label className="form-label">
@@ -1017,49 +824,21 @@ class InstrumentType extends Component {
                                                         *
                                                       </span>
                                                     </Label>
-                                                    <Field
-                                                      as="select"
-                                                      name="status"
-                                                      className={`form-control ${
-                                                        errors.status &&
-                                                        touched.status
-                                                          ? "is-invalid"
-                                                          : ""
-                                                      }`}
-                                                    >
-                                                      <option value="">
-                                                        ----- Please select
-                                                        -----
-                                                      </option>
-                                                      <option value="Active">
-                                                        Active
-                                                      </option>
-                                                      <option value="Inactive">
-                                                        Inactive
-                                                      </option>
+                                                    <Field as="select" name="status" className={`form-control ${errors.status && touched.status ? "is-invalid" : ""
+                                                      }`}>
+                                                      <option value="">----- Please select -----</option>
+                                                      <option value="Active">Active</option>
+                                                      <option value="Inactive">Inactive</option>
                                                     </Field>
-                                                    <ErrorMessage
-                                                      name="status"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
+                                                    <ErrorMessage name="status" component="div" className="invalid-feedback" />
                                                   </div>
                                                 </Col>
                                               </Row>
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-success save-user"
-                                                      style={{
-                                                        backgroundColor:
-                                                          "#0000CD",
-                                                        borderColor: "#0000CD",
-                                                      }}
-                                                    >
-                                                      Save
-                                                    </button>
+                                                    <button type="submit" className="btn btn-success save-user"
+                                                      style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
                                                   </div>
                                                 </Col>
                                               </Row>
@@ -1125,20 +904,20 @@ InstrumentType.propTypes = {
 };
 
 const mapStateToProps = ({ CycleList, ListUnit, SchemeList }) => ({
-  CycleList: CycleList.CycleList,
-  SchemeList: SchemeList.SchemeList,
-  ListUnit: ListUnit.ListUnit,
+CycleList: CycleList.CycleList,
+SchemeList: SchemeList.SchemeList,
+ListUnit: ListUnit.ListUnit,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetgetschemelist: (id) => dispatch(getSchemelist(id)),
+  onGetgetschemelist: id => dispatch(getSchemelist(id)),
   onGetInstrumentTypeList: (id) => dispatch(getcyclelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewCycleList(id, createUnit)),
   onUpdateType: (id, cycle) => dispatch(updateCycleList({ id, ...cycle })),
-  onDeleteCycle: (cycle) => dispatch(deleteCycle(cycle)),
+  onDeleteCycle: cycle => dispatch(deleteCycle(cycle)),
 });
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+mapStateToProps,
+mapDispatchToProps
 )(withRouter(InstrumentType));
