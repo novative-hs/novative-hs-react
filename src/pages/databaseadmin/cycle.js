@@ -407,7 +407,7 @@ class InstrumentType extends Component {
 
                  {/* Conditionally Render Delete Button  */}
     {cycle.is_deletable ? (
-      <Tooltip title="Delete">
+      <Tooltip title="Deleteeeee">
         <Link className="text-danger" to="#">
           <i
             className="mdi mdi-delete font-size-18"
