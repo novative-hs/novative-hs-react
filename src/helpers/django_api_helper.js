@@ -2763,18 +2763,24 @@ export const addNewRound = (createUnit, id) => {
     });
 };
 
-export const updateRound = (unit) => {
+export const updateRound = unit => {
   let formData = new FormData();
   formData.append("rounds", unit.rounds);
+  formData.append("scheme", unit.scheme);
+  formData.append("cycle_no", unit.cycle_no);
   formData.append("sample", unit.sample);
   formData.append("issue_date", unit.issue_date);
   formData.append("closing_date", unit.closing_date);
-  // formData.append("notes", unit.notes);
+  formData.append("note", unit.note);
   formData.append("status", unit.status);
   formData.append("added_by", unit.added_by);
-  return axios.put(`${url.UPDATE_ROUND}/${unit.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  return axios.put(
+    `${url.UPDATE_ROUND}/${unit.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 export const deleteRound = (round) =>
