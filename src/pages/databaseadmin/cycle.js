@@ -405,7 +405,7 @@ class InstrumentType extends Component {
                   ></i>
                 </Link></Tooltip>
 
-                  {/* Conditionally Render Delete Button  */}
+                 {/* Conditionally Render Delete Button  */}
     {cycle.is_deletable ? (
       <Tooltip title="Delete">
         <Link className="text-danger" to="#">
@@ -611,6 +611,7 @@ render() {
           {/* Render Breadcrumbs */}
           <Breadcrumbs title="List" breadcrumbItem="Cycle List" />
           <Row className="justify-content-center">
+
             <Col lg="10">
             <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
               <Card>
