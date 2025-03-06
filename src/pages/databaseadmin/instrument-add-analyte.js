@@ -91,6 +91,10 @@ class InstrumentAddAnalyte extends Component {
 
   componentDidMount() {
     this.fetchData(); // Fetch analytes
+    const savedSelections = JSON.parse(localStorage.getItem('selectedCheckboxes'));
+    if (savedSelections) {
+        this.setState({ selectedCheckboxes: savedSelections });
+    }
     this.updateSelectedCheckboxes(); // Set selected checkboxes
   }
 
@@ -138,6 +142,7 @@ class InstrumentAddAnalyte extends Component {
 
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
+    localStorage.setItem('selectedCheckboxes', JSON.stringify(selectedCheckboxes));
     const {
       onUpdateSchemeAnalytes,
       onAddNewInstrumentAnalyte,

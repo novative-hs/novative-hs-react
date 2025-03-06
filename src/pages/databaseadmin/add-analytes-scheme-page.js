@@ -143,29 +143,37 @@ class SchemeAddAnalyte extends Component {
     const { selectedCheckboxes } = this.state;
     const { onUpdateSchemeAnalytes, match, ListUnit, history } = this.props;
     const schemeId = match.params.id;
-  
+
     const selectedAnalytes = ListUnit.filter(analyte => selectedCheckboxes[analyte.id]);
-  
+    
     if (selectedAnalytes.length === 0) {
+      // Display validation message if no analytes are selected
       this.setFeedbackMessage("Please select analytes.");
       return;
     }
-  
+
     if (schemeId) {
       const payload = {
         id: schemeId,
-        analytes: selectedAnalytes.map(analyte => analyte.id),
+        analytes: selectedAnalytes.map(analyte => analyte.id)  // Map to only analyte IDs
       };
-  
-      onUpdateSchemeAnalytes(payload).then(() => {
-        this.fetchData(); // Refresh data after updating
+
+      // Determine if we are adding or updating based on schemeId presence
+      if (schemeId) {
+        // If schemeId exists, we are updating
+        onUpdateSchemeAnalytes(payload);
         this.setFeedbackMessage("Analytes updated successfully.");
-      });
-  
+      } else {
+        // Otherwise, we are adding new
+        // Call your add new method here if needed
+        // this.props.onAddNewSchemeAnalytes(payload, someOtherId); 
+        this.setFeedbackMessage("Analytes added successfully.");
+      }
       history.push(`/${this.state.organization_name}/scheme`);
+    } else {
+      console.error("Analyte ID not found");
     }
   };
-
   setFeedbackMessage = (message) => {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds

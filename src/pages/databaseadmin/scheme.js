@@ -313,11 +313,11 @@ class ReagentsList extends Component {
                   </Link>
                 </Tooltip>
                 <Tooltip title="History">
-                  <Link
-                    className="fas fa-comment font-size-18"
-                    to={`/scheme-history/${scheme.id}`}
-                  ></Link>
-                </Tooltip>
+                <Link
+                  className="fas fa-comment font-size-18"
+                  to={`/${this.state.organization_name}/databaseadmin-history/${scheme.id}?type=Scheme`}
+                ></Link>
+              </Tooltip>
                 {!scheme.is_part_of_active_cycle ? ( // Show delete button if not part of an active cycle
   <Tooltip title="Delete">
     <Link className="text-danger" to="#">
