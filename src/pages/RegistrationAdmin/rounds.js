@@ -1238,8 +1238,14 @@ class InstrumentType extends Component {
                                                       <option value="">
                                                         Select Cycle
                                                       </option>
-                                                      {this.state.filteredCycleList.map(
-                                                        (cycle) => (
+                                                      {this.state.filteredCycleList
+                                                        .filter(
+                                                          cycle =>
+                                                            cycle.status &&
+                                                            cycle.status.toLowerCase() ===
+                                                              "active"
+                                                        )
+                                                        .map(cycle => (
                                                           <option
                                                             key={cycle.id}
                                                             value={String(
@@ -1248,8 +1254,7 @@ class InstrumentType extends Component {
                                                           >
                                                             {cycle.cycle_no}
                                                           </option>
-                                                        )
-                                                      )}
+                                                        ))}
                                                     </Field>
                                                     <ErrorMessage
                                                       name="cycle_no"
