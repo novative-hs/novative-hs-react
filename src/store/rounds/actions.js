@@ -1,8 +1,10 @@
-
 import {
   GET_ROUND_LIST,
   GET_ROUND_LIST_SUCCESS,
   GET_ROUND_LIST_FAIL,
+  GET_ROUND_PARTICIPANT_LIST,
+  GET_ROUND_PARTICIPANT_LIST_SUCCESS,
+  GET_ROUND_PARTICIPANT_LIST_FAIL,
   ADD_NEW_ROUND_LIST,
   ADD_NEW_ROUND_LIST_SUCCESS,
   ADD_NEW_ROUND_LIST_FAIL,
@@ -34,6 +36,27 @@ export const getroundlistFail = (error) => {
     payload: error,
   };
 };
+
+///Round participant list
+
+export const getRoundParticipantlist = (id) => {
+  console.log("Action Payload (ID):", id);
+  return {
+    type: GET_ROUND_PARTICIPANT_LIST,
+    payload: id,
+  };
+};
+
+
+export const getRoundParticipantlistSuccess = RoundList => ({
+  type: GET_ROUND_PARTICIPANT_LIST_SUCCESS,
+  payload: RoundList
+});
+
+export const getRoundParticipantlistFail = error => ({
+  type: GET_ROUND_PARTICIPANT_LIST_FAIL,
+  payload: error,
+});
 
 
 export const addNewRoundList = (createUnit, id) => {

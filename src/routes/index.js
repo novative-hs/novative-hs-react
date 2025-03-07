@@ -203,7 +203,7 @@ import RegistrationAdminList from "pages/HrAdmin/registration-admin-list";
 import RegParticipantCSR from "pages/Authentication/RegisterParticipantCSR";
 import ParticipantPayments from "pages/Authentication/participant-payment";
 import PaymentSchemeList from "pages/Authentication/payment-scheme-list";
-
+import RoundParticipantlist from "pages/RegistrationAdmin/round-participant-list";
 import csrList from "pages/HrAdmin/csr-list";
 import organizationList from "pages/HrAdmin/organizationList";
 import RegisterParticipant from "pages/Authentication/RegisterParticipant";
@@ -351,7 +351,7 @@ const registrationAdminAuthProtectedRoutes = [
   {
     path: "/:organization_name/shared-percentage-pending-Fee/:id", component: sharedPercentagePendingFeeTests,
   },
-  
+  {path: "/round-participant-list/:id", component: RoundParticipantlist},
   { path: "/:organization_name/register-participant", component: RegParticipant},
   { path: "/:organization_name/participant-payment", component: ParticipantPayments},
   {

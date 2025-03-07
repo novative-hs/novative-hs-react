@@ -256,7 +256,6 @@ class InstrumentType extends Component {
           dataField: "nooflabs",
           text: "Number of Participants",
           sort: true,
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -284,6 +283,17 @@ class InstrumentType extends Component {
                   {column.text}
                 </div>
               </>
+            );
+          },
+          formatter: (cell, row) => {
+            return (
+              <Link
+                to={`/round-participant-list/${row.id}`}
+                style={{ textDecoration: "underline", color: "#0000CD" }}
+                onClick={() => console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)}
+              >
+                {cell}
+              </Link>
             );
           },
         },

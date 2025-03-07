@@ -2,6 +2,8 @@
 import {
   GET_ROUND_LIST_SUCCESS,
   GET_ROUND_LIST_FAIL,
+  GET_ROUND_PARTICIPANT_LIST_SUCCESS,
+  GET_ROUND_PARTICIPANT_LIST_FAIL,
   ADD_NEW_ROUND_LIST_SUCCESS,
   ADD_NEW_ROUND_LIST_FAIL,
   UPDATE_NEW_ROUND_LIST_SUCCESS,
@@ -29,6 +31,23 @@ const RoundList = (state = INIT_STATE, action) => {
             ...state,
             error: action.payload,
           };
+
+        // participant schem list
+              case GET_ROUND_PARTICIPANT_LIST_SUCCESS:
+          console.log("Reducer - Updated State with Payload:", action.payload);
+          return {
+            ...state,
+            RoundParticipantlist: Array.isArray(action.payload) ? action.payload : [],
+            error: null,
+          };
+        
+              
+              case GET_ROUND_PARTICIPANT_LIST_FAIL:
+                return {
+                  ...state,
+                  RoundParticipantlist: [], // Clear list on failure
+                  error: action.payload,
+                };
           case ADD_NEW_ROUND_LIST_SUCCESS:
             return {
               ...state,
@@ -75,4 +94,3 @@ const RoundList = (state = INIT_STATE, action) => {
 };
 
 export default RoundList;
-

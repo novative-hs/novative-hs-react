@@ -3952,3 +3952,10 @@ export const getParticipantSchemelist = id => {
     headers: getHeader(authHeader()),
   });
 };  //django helper
+export const getRoundParticipantlist = (id) => {
+  console.log("API Helper - Fetching Round Participant List for ID:", id);
+  return axios.get(`${url.GET_ROUND_PARTICIPANT_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+};
+

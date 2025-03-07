@@ -1,13 +1,14 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { GET_ROUND_LIST,ADD_NEW_ROUND_LIST,UPDATE_NEW_ROUND_LIST, DELETE_ROUND} from "./actionTypes";
+import { GET_ROUND_LIST,ADD_NEW_ROUND_LIST,UPDATE_NEW_ROUND_LIST, DELETE_ROUND, GET_ROUND_PARTICIPANT_LIST} from "./actionTypes";
 
 import { getroundlistSuccess,getroundlistFail,addNewRoundListSuccess,addNewRoundListFail, updateRoundListSuccess,updateRoundListFail, deleteRoundSuccess,
-  deleteRoundFail } from "./actions";
+  deleteRoundFail, getRoundParticipantlistSuccess,
+  getRoundParticipantlistFail, } from "./actions";
 
 //Include Both Helper File with needed rounds
-import { getRoundlist,addNewRound, updateRound, deleteRound} from "../../helpers/django_api_helper";
+import { getRoundlist, getRoundParticipantlist, addNewRound, updateRound, deleteRound} from "../../helpers/django_api_helper";
 
 function* fetchRoundList(object) {
   try {
@@ -19,6 +20,27 @@ function* fetchRoundList(object) {
     yield put(getroundlistFail(error));
   }
 }
+
+function* fetchRoundParticipantlist(action) {
+  try {
+    console.log("Saga - Action Payload:", action.payload); // Verify action payload
+    const id = action.payload.id;
+    const response = yield call(getRoundParticipantlist, id);
+    console.log("Saga - API Response:", response); // Verify API response
+
+    if (response.data && response.data.data) {
+      yield put(getRoundParticipantlistSuccess(response.data.data.participants)); // Pass the correct data to reducer
+    } else {
+      yield put(getRoundParticipantlistFail("Invalid response structure"));
+    }
+  } catch (error) {
+    console.error("Saga - API Error:", error);
+    yield put(getRoundParticipantlistFail(error));
+  }
+}
+
+
+
 function* onAddNewRound(object) {
   try {
     const response = yield call(
@@ -56,6 +78,7 @@ function* onDeleteRound({ payload: round }) {
 function* RoundListSaga() {
   
   yield takeEvery(GET_ROUND_LIST, fetchRoundList);
+  yield takeEvery(GET_ROUND_PARTICIPANT_LIST, fetchRoundParticipantlist);
   yield takeEvery(ADD_NEW_ROUND_LIST, onAddNewRound);
   yield takeEvery(UPDATE_NEW_ROUND_LIST, onUpdateround);
   yield takeEvery(DELETE_ROUND, onDeleteRound);

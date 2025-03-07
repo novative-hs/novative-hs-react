@@ -89,7 +89,7 @@ export const GET_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-labs
 export const ADD_NEW_PAYMENT = `${API_ENDPOINT}/api/registration-admin/add-payment`;
 export const ADD_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-add-lab`;
 export const UPDATE_ROUNDLABS = `${API_ENDPOINT}/api/registration-admin/round-update-lab`;
-
+export const GET_ROUND_PARTICIPANT_LIST = `${API_ENDPOINT}/api/registration-admin/round-participant-list`;
 // Selected-Schemes, Result Page Participant
 export const SELECTED_SCHEMES= `${API_ENDPOINT}/api/registration-admin/selectedSchemes-list`;
 export const SCHEMES_ANALYTES= `${API_ENDPOINT}/api/registration-admin/analyteSpecificScheme-list`;
