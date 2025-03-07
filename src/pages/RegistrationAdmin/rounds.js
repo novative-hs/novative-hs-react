@@ -636,24 +636,35 @@ class InstrumentType extends Component {
   }
 
   handleSchemeChange = (e) => {
-    const selectedSchemeId = e.target.value;
+    const selectedSchemeId = parseInt(e.target.value);
+    console.log("Selected Scheme ID:", selectedSchemeId);
+    console.log("CycleList:", this.props.CycleList);
+    console.log("ListUnitt (Samples):", this.props.ListUnitt);
+    console.log("RoundList:", this.props.RoundList);
 
     // Filter CycleList and SampleList based on the selected scheme
     const filteredCycleList = this.props.CycleList.filter(
       (cycle) => cycle.scheme_id === parseInt(selectedSchemeId)
     );
 
-    const filteredSampleList = this.props.ListUnitt.filter(
-      (sample) => sample.scheme_id === parseInt(selectedSchemeId)
-    );
+    console.log("Filtered Cycle List:", filteredCycleList);
 
-    // Update the state with filtered lists
+    const filteredSampleList = this.props.ListUnitt.filter(
+        (sample) =>
+            sample.scheme_id === selectedSchemeId &&
+            !this.props.RoundList.some(
+                (round) => round.sample === sample.samplename
+            )
+    );
+    console.log("Filtered Sample List:", filteredSampleList);
+
     this.setState({
-      selectedSchemeId,
-      filteredCycleList,
-      filteredSampleList,
+        selectedSchemeId,
+        filteredCycleList,
+        filteredSampleList,
     });
-  };
+};
+
 
   componentDidMount() {
     const { organization_name } = this.props.match.params;
