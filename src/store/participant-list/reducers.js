@@ -28,16 +28,19 @@ import {
     switch (action.type) {
       ///// Rounds Participants
       case GET_ROUNDSLABS_LIST_SUCCESS:
-      return {
-        ...state,
-        LabRoundList: action.payload.labs, // Update to handle Lab array
-      };
-    
-        case GET_ROUNDSLABS_LIST_FAIL:
-          return {
+        console.log("Reducer: Payload received:", action.payload); // Log payload for confirmation
+        return {
             ...state,
-            error: action.payload,
-          };
+            LabRoundList: action.payload, // Use payload directly
+        };
+    
+    case GET_ROUNDSLABS_LIST_FAIL:
+        console.error("Reducer: Error encountered:", action.payload); // Log error
+        return {
+            ...state,
+            error: action.payload.message || action.payload, // Store error message
+        };
+
         case ADD_NEW_ROUNDSLABS_SUCCESS:
           return {
             ...state,

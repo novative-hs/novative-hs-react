@@ -108,8 +108,8 @@ class RoundAddParticipant extends Component {
                 className="form-check-input"
                 id={`checkbox${row.id}`}
                 onChange={() => this.handleCheckboxChange(row.id)}
+                checked={this.state.selectedCheckboxes[row.id] || false} // Link directly to state
                 style={{ cursor: "pointer" }}
-                checked={this.state.selectedCheckboxes[row.id] || false} // Check based on selectedCheckboxes state
               />
             </div>
           ),
@@ -121,6 +121,10 @@ class RoundAddParticipant extends Component {
   componentDidMount() {
     const { organization_name } = this.props.match.params;
     this.setState({ organization_name });
+    console.log("componentDidMount: Organization name set to:", organization_name);
+    console.log("ParticipantList in Component:", this.props.ParticipantList);
+    // console.log("ParticipantList:", this.props.ParticipantList);
+  console.log("LabRoundList:", this.props.LabRoundList);
     // Fetch data when the component mounts
     this.fetchData();
   }
@@ -128,16 +132,28 @@ class RoundAddParticipant extends Component {
   componentDidUpdate(prevProps) {
     // Update selectedCheckboxes when LabRoundList changes
     if (prevProps.LabRoundList !== this.props.LabRoundList) {
+      console.log("componentDidUpdate: LabRoundList updated. Previous:", prevProps.LabRoundList, "Current:", this.props.LabRoundList);
+      console.log("ParticipantList in Component:", this.props.ParticipantList);
       this.updateSelectedCheckboxes();
     }
   }
+//   componentDidUpdate(prevProps) {
+//     if (prevProps.RoundList !== this.props.RoundList) {
+//         console.log("componentDidUpdate: RoundList updated. Updating checkboxes.");
+//         this.updateSelectedCheckboxes();
+//     }
+// }
+
 
   fetchData()  {
     const { ongetParticipantRoundlist, onGetRoundLabs } = this.props;
     const roundId = this.props.match.params.id;
-    console.log("ffffffffffff", roundId)
+    console.log("fetchData: Fetching data for roundId:", roundId);
     if (roundId) {
       onGetRoundLabs(roundId);
+      console.log("fetchData: Called onGetRoundLabs.");
+      ongetParticipantRoundlist(roundId);
+        console.log("fetchData: Called ongetParticipantRoundlist.");
     } else {
       console.error("round ID not found in URL parameters");
     }
@@ -149,27 +165,53 @@ class RoundAddParticipant extends Component {
     }
   }
 
-  updateSelectedCheckboxes() {
-    const selectedCheckboxes = {};
-    const { LabRoundList } = this.props;
+//   updateSelectedCheckboxes() {
+//     const selectedCheckboxes = {};
+//     const { LabRoundList } = this.props;
 
-    if (LabRoundList && Array.isArray(LabRoundList)) {
-        LabRoundList.forEach(id => {
-            selectedCheckboxes[id] = true; // Assuming LabRoundList is an array of IDs
-        });
-    }
+//     console.log("updateSelectedCheckboxes: Updating checkboxes with LabRoundList:", LabRoundList);
 
-    this.setState({ selectedCheckboxes });
+//     if (LabRoundList && Array.isArray(LabRoundList)) {
+//         LabRoundList.forEach(participantId => {
+//             selectedCheckboxes[participantId] = true; // Mark as checked
+//         });
+//     }
+
+//     console.log("updateSelectedCheckboxes: New selectedCheckboxes state:", selectedCheckboxes);
+
+//     this.setState({ selectedCheckboxes });
+// }
+updateSelectedCheckboxes() {
+  const selectedCheckboxes = {};
+  const { LabRoundList } = this.props; // Ensure this uses the correct data source
+
+  console.log("updateSelectedCheckboxes: Updating checkboxes with LabRoundList:", LabRoundList);
+
+  if (LabRoundList && Array.isArray(LabRoundList)) {
+    LabRoundList.forEach(participant => {
+      selectedCheckboxes[participant.id] = true; // Check based on participant IDs
+    });
+  }
+
+  console.log("updateSelectedCheckboxes: New selectedCheckboxes state:", selectedCheckboxes);
+
+  this.setState({ selectedCheckboxes });
 }
+
+
+
+
 
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
     const { onUpdateRoundLabs, match, ParticipantList, history } = this.props;
     const roundId = match.params.id;
+    console.log("handleSave: Saving selected checkboxes. Selected:", selectedCheckboxes);
 
     const selectedParticipants = ParticipantList.filter(participant => selectedCheckboxes[participant.id]);
     
     if (selectedParticipants.length === 0) {
+      console.warn("handleSave: No participants selected.");
       // Display validation message if no labs are selected
       this.setFeedbackMessage("Please select Participants.");
       return;
@@ -180,6 +222,7 @@ class RoundAddParticipant extends Component {
         id: roundId,
         participants: selectedParticipants.map(participant => participant.id)  // Map to only participant IDs
       };
+      console.log("handleSave: Payload prepared for saving:", payload);
 
       // Determine if we are adding or updating based on roundId presence
       if (roundId) {
@@ -194,14 +237,16 @@ class RoundAddParticipant extends Component {
       }
       history.push(`/${this.state.organization_name}/round`);
     } else {
-      console.error("Lab ID not found");
+      console.error("handleSave: roundId not found.");
     }
   };
 
   setFeedbackMessage = (message) => {
+    console.log("setFeedbackMessage: Setting feedback message:", message);
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
       setTimeout(() => {
+        console.log("setFeedbackMessage: Clearing feedback message.");
         this.setState({ feedbackMessage: '' });
       }, 3000); // 3 seconds
     });
@@ -212,44 +257,61 @@ class RoundAddParticipant extends Component {
   };
 
   handleCheckboxChange = (id) => {
+    console.log("handleCheckboxChange: Toggling checkbox for id:", id);
     this.setState(prevState => ({
       selectedCheckboxes: {
         ...prevState.selectedCheckboxes,
         [id]: !prevState.selectedCheckboxes[id]
       }
-    }));
+    }), () => {
+      console.log("handleCheckboxChange: Updated selectedCheckboxes state:", this.state.selectedCheckboxes);
+  });
   };
 
   filterData = () => {
     const { ParticipantList } = this.props;
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
 
-    const filteredData = ParticipantList.filter(entry => {
-      const name = entry.name ? entry.name.toString().toLowerCase() : "";
-      const id = entry.id ? entry.id.toString() : "";
+    // Log the initial state of inputs and ParticipantList
+    console.log("filterData: Filtering data with nameFilter:", nameFilter, "idFilter:", idFilter);
+    console.log("filterData: Original ParticipantList:", ParticipantList);
 
-      return (
-        name.includes(nameFilter.toLowerCase()) &&
-        id.includes(idFilter) 
-      );
+    if (!ParticipantList || ParticipantList.length === 0) {
+        console.warn("filterData: ParticipantList is empty. No data to filter.");
+        return [];
+    }
+
+    // Perform the filtering
+    const filteredData = ParticipantList.filter(entry => {
+        const name = entry.name ? entry.name.toString().toLowerCase() : "";
+        const id = entry.id ? entry.id.toString() : "";
+
+        return (
+            name.includes(nameFilter.toLowerCase()) &&
+            id.includes(idFilter)
+        );
     }).map(entry => ({
-      ...entry,
-      checkbox: (
-        <div className="form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id={`checkbox${entry.id}`}
-            onChange={() => this.handleCheckboxChange(entry.id)}
-            style={{ cursor: "pointer" }}
-            checked={selectedCheckboxes[entry.id] || false}
-          />
-        </div>
-      )
+        ...entry,
+        checkbox: (
+            <div className="form-check">
+                <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id={`checkbox${entry.id}`}
+                    onChange={() => this.handleCheckboxChange(entry.id)}
+                    style={{ cursor: "pointer" }}
+                    checked={selectedCheckboxes[entry.id] || false}
+                />
+            </div>
+        )
     }));
 
+    // Log the filtered results
+    console.log("filterData: Filtered data:", filteredData);
+
     return filteredData;
-  };
+};
+
 
   render() {
     const { ParticipantList } = this.props;
@@ -334,13 +396,23 @@ RoundAddParticipant.propTypes = {
   ongetParticipantRoundlist: PropTypes.func,
   onAddNewRoundLabs: PropTypes.func,
   onUpdateRoundLabs: PropTypes.func,
+  data: PropTypes.array,
+  RoundList: PropTypes.array,
   history: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  ParticipantList: state.ParticipantList?.ParticipantList,
-  LabRoundList: state.ParticipantList?.LabRoundList || [],
-});
+const mapStateToProps = (state) => {
+  console.log("Redux State in mapStateToProps:", state);
+  console.log("ParticipantList in Redux State:", state.ParticipantList);
+  console.log("LabRoundList in Redux State:", state.ParticipantList?.LabRoundList);
+  
+
+  return {
+      ParticipantList: state.ParticipantList?.ParticipantList || [],
+      LabRoundList: state.ParticipantList?.LabRoundList || [],
+      data: state.ParticipantList?.data || [], // Map `data` field from Redux state
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetRoundLabs: id => dispatch(getRoundLablist(id)),

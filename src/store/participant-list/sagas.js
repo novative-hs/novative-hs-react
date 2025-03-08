@@ -13,6 +13,7 @@ import { getParticipantList, getParticipantRoundList, getRoundLablist,addNewRoun
 function* fetchRoundLabsList(object) {
   try {
     const response = yield call(getRoundLablist, object.payload);
+    console.log("API Response:", response.data); 
     yield put(getRoundLablistSuccess(response.data));
   } catch (error) {
     yield put(getRoundLablistFail(error));
