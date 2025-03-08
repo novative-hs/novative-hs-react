@@ -224,6 +224,28 @@ class PendingLabs extends Component {
           filter: textFilter(),
         },
         {
+          dataField: "payment_status",
+          text: "Payment Status",
+          headerStyle: { textAlign: "center" },
+          style: { textAlign: "center" },
+          filter: textFilter(),
+          sort: true,
+          formatter: (cellContent, AllLabs) => (
+            <>
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                {AllLabs.payment_status}
+              </span>
+            </>
+          ),
+          filter: textFilter(),
+        },
+        {
           dataField: "membership_status",
           text: "Membership Status",
           headerStyle: { textAlign: "center" },
@@ -380,6 +402,7 @@ class PendingLabs extends Component {
       lab_staff_name: values.lab_staff_name,
       email_participant: values.email_participant,
       landline_registered_by: values.landline_registered_by,
+      payment_status: values.payment_status,
     };
 
     this.props.onupdateAllLabs(updatedData); // Dispatch update action
@@ -493,6 +516,7 @@ class PendingLabs extends Component {
       marketer_name: data.marketer_name,
       email_participant: data.email_participant,
       landline_registered_by: data.landline_registered_by,
+      payment_status: data.payment_status,
     });
   };
   toggleLabModal = () => {
@@ -945,7 +969,18 @@ class PendingLabs extends Component {
                                                       readOnly={true}
                                                     />
                                                   </div>
-
+{/* /////////////////// */}
+<div className="col-md-6">
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        this.state
+                                                          .payment_status
+                                                      }
+                                                      className="form-control"
+                                                      readOnly={true}
+                                                    />
+                                                  </div>
                                                   <div className="col-md-3">
                                                     <button
                                                       type="button"
@@ -953,7 +988,7 @@ class PendingLabs extends Component {
                                                       onClick={() => {
                                                         navigator.clipboard.writeText(
                                                           this.state
-                                                            .landline_registered_by
+                                                            .payment_status
                                                         );
                                                         this.setState({
                                                           btnText: "Copied",
@@ -999,6 +1034,8 @@ class PendingLabs extends Component {
                                               this.state.email_participant,
                                             landline_registered_by:
                                               this.state.landline_registered_by,
+                                              payment_status:
+                                              this.state.payment_status,
                                           }}
                                           onSubmit={this.handleEditSubmit}
                                         >
@@ -1179,6 +1216,25 @@ class PendingLabs extends Component {
                                                             values.landline_registered_by
                                                           }
                                                           name="landline_registered_by"
+                                                          className="form-control"
+                                                          placeholder="Enter Contact No"
+                                                          onChange={
+                                                            handleChange
+                                                          }
+                                                        />
+                                                      </div>
+                                                    </Col>
+                                                    <Col md={6}>
+                                                      <div className="mb-3">
+                                                        <Label className="form-label">
+                                                        Payment Status
+                                                        </Label>
+                                                        <input
+                                                          type="text"
+                                                          value={
+                                                            values.payment_status
+                                                          }
+                                                          name="payment_status"
                                                           className="form-control"
                                                           placeholder="Enter Contact No"
                                                           onChange={
