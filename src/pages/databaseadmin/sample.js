@@ -333,7 +333,9 @@ class SampleList extends Component {
           </Tooltip>
         </>
       ) : (
-        <span className="text-muted">Actions Disabled</span>
+        <span className="text-muted">
+          {/* Actions Disabled */}
+          </span>
       )}
     </div>
   ),
@@ -521,6 +523,7 @@ class SampleList extends Component {
             <Row className="justify-content-center">
               <Col lg="10">
               <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
+              <p><strong>Note:</strong> Samples that have been rounded will be disabled for updates and deletions.</p>
                 <Card>
                   <CardBody>
                     <PaginationProvider

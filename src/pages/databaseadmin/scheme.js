@@ -329,7 +329,7 @@ class ReagentsList extends Component {
   </Tooltip>
 ) : (
   <span className="text-muted" style={{ fontSize: "12px" }}>
-    Deletion Disabled
+    {/* Deletion Disabled */}
   </span>
 )}
 
