@@ -6,6 +6,7 @@ import {
   GET_PENDING_LABS,
   GET_APPROVED_LABS,
   GET_UNAPPROVED_LABS,
+  GET_SUSPENDED_LABS,
   APPROVE_UNAPPROVE_LAB,
   GET_ALL_PARTICIPANT,
   UPDATE_MEMBERSHIP_STATUS,
@@ -17,6 +18,8 @@ import {
   getPendingLabsFail,
   getApprovedLabsSuccess,
   getApprovedLabsFail,
+  getSuspendedLabsSuccess,
+  getSuspendedLabsFail,
   getUnapprovedLabsSuccess,
   getUnapprovedLabsFail,
   approveUnapproveLabSuccess,
@@ -34,6 +37,7 @@ import {
   getPendingLabs,
   approveUnapproveLab,
   getApprovedLabs,
+  getSuspendedLabs,
   getUnapprovedLabs,
   getAllLabs,
   updateMembershipstatus,
@@ -91,6 +95,14 @@ function* fetchUnapprovedLabs(action) {
     yield put(getUnapprovedLabsFail(error));
   }
 }
+function* fetchSuspendedLabs(action) {
+  try {
+    const response = yield call(getSuspendedLabs, action.payload);
+    yield put(getSuspendedLabsSuccess(response));
+  } catch (error) {
+    yield put(getSuspendedLabsFail(error));
+  }
+}
 
 function* onApproveUnapproveLab(object) {
   try {
@@ -102,12 +114,15 @@ function* onApproveUnapproveLab(object) {
 }
 
 
+
+
 function* registrationAdminSaga() {
   yield takeEvery(UPDATE_MEMBERSHIP_STATUS, onupdateMembershipStatus);
   yield takeEvery(GET_ALL_PARTICIPANT, fetchAllLabs);
   yield takeEvery(GET_PENDING_LABS, fetchPendingLabs);
   yield takeEvery(GET_APPROVED_LABS, fetchApprovedLabs);
   yield takeEvery(GET_UNAPPROVED_LABS, fetchUnapprovedLabs);
+  yield takeEvery(GET_SUSPENDED_LABS, fetchSuspendedLabs);
   yield takeEvery(APPROVE_UNAPPROVE_LAB, onApproveUnapproveLab);
   yield takeEvery(UPDATE_LABS, onupdateAllLabs);
 

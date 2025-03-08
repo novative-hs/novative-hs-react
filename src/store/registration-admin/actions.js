@@ -1,3 +1,4 @@
+
 import {
   GET_ALL_PARTICIPANT,
   GET_ALL_PARTICIPANT_SUCCESS,
@@ -11,6 +12,9 @@ import {
   GET_UNAPPROVED_LABS,
   GET_UNAPPROVED_LABS_SUCCESS,
   GET_UNAPPROVED_LABS_FAIL,
+  GET_SUSPENDED_LABS,
+  GET_SUSPENDED_LABS_SUCCESS,
+  GET_SUSPENDED_LABS_FAIL,
   APPROVE_UNAPPROVE_LAB,
   APPROVE_UNAPPROVE_LAB_SUCCESS,
   APPROVE_UNAPPROVE_LAB_FAIL,
@@ -125,6 +129,20 @@ export const getUnapprovedLabsSuccess = unapprovedLabs => ({
 
 export const getUnapprovedLabsFail = error => ({
   type: GET_UNAPPROVED_LABS_FAIL,
+  payload: error,
+});
+export const getSuspendedLabs = id => ({
+  type: GET_SUSPENDED_LABS,
+  payload: id,
+});
+
+export const getSuspendedLabsSuccess = suspendedLabs => ({
+  type: GET_SUSPENDED_LABS_SUCCESS,
+  payload: suspendedLabs,
+});
+
+export const getSuspendedLabsFail = error => ({
+  type: GET_SUSPENDED_LABS_FAIL,
   payload: error,
 });
 

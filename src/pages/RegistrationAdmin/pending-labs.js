@@ -246,25 +246,24 @@ class PendingLabs extends Component {
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     const { organization_name } = this.state; // Now it's properly updated
-
+  
     let selectedValue = "Pending Participant"; // Default
-
+  
     if (pathname.includes(`/${organization_name}/pending-participant`)) {
       selectedValue = "Pending Participant";
-    } else if (
-      pathname.includes(`/${organization_name}/approved-participant`)
-    ) {
+    } else if (pathname.includes(`/${organization_name}/approved-participant`)) {
       selectedValue = "Approved Participant";
-    } else if (
-      pathname.includes(`/${organization_name}/unapproved-participant`)
-    ) {
+    } else if (pathname.includes(`/${organization_name}/unapproved-participant`)) {
       selectedValue = "Unapproved Participant";
+    } else if (pathname.includes(`/${organization_name}/suspended-participant`)) { 
+      selectedValue = "Suspended Participant"; // New condition added
     } else if (pathname.includes(`/${organization_name}/all-participant`)) {
       selectedValue = "All Participant";
     }
-
+  
     this.setState({ selectedValue });
   };
+  
 
   openPatientModal = (e, arg) => {
     this.setState({
@@ -371,25 +370,27 @@ class PendingLabs extends Component {
   };
   handleSelectChange = (event) => {
     const selectedValue = event.target.value;
-
+  
     // Update the state
     this.setState({ selectedValue });
-
-    // Perform navigation immediately using the selectedValue
-    const { organization_name } = this.state; // Extract from state
+  
+    // Extract organization_name from state
+    const { organization_name } = this.state;
+  
+    // Perform navigation based on the selected value
     if (selectedValue === "Pending Participant") {
       this.props.history.push(`/${organization_name}/pending-participant`);
-    }
-    if (selectedValue === "Approved Participant") {
+    } else if (selectedValue === "Approved Participant") {
       this.props.history.push(`/${organization_name}/approved-participant`);
-    }
-    if (selectedValue === "Unapproved Participant") {
+    } else if (selectedValue === "Unapproved Participant") {
       this.props.history.push(`/${organization_name}/unapproved-participant`);
-    }
-    if (selectedValue === "All Participant") {
+    } else if (selectedValue === "Suspended Participant") { // New condition added
+      this.props.history.push(`/${organization_name}/suspended-participant`);
+    } else if (selectedValue === "All Participant") {
       this.props.history.push(`/${organization_name}/all-participant`);
     }
   };
+  
   render() {
     const { SearchBar } = Search;
 
@@ -461,6 +462,7 @@ class PendingLabs extends Component {
                                         <option value="Pending Participant">Pending Participant</option>
                                         <option value="Approved Participant">Approved Participant</option>
                                         <option value="Unapproved Participant">Unapproved Participant</option>
+                                        <option value="Suspended Participant">Suspended Participant</option>
                                         <option value="All Participant">All Participant</option>
                                       </select>
                                     </div>

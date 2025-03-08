@@ -2873,7 +2873,10 @@ export const getUnapprovedLabs = (id) =>
   get(`${url.GET_UNAPPROVED_LABS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
+export const getSuspendedLabs = id =>
+    get(`${url.GET_SUSPENDED_LABS}/${id}`, {
+      headers: getHeader(authHeader()),
+    });
 export const approveUnapproveCorporate = (data) => {
   let formData = new FormData();
   formData.append("corporate_id", data.corporate_id);

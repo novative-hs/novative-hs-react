@@ -141,6 +141,7 @@ import sharedPercentagePendingFeeTests from "pages/RegistrationAdmin/shared-perc
 import sharedPercentageApprovedFeeTests from "pages/RegistrationAdmin/shared-percentage-approved-Fee";
 import ApprovedLabs from "pages/RegistrationAdmin/approved-labs";
 import UnapprovedLabs from "pages/RegistrationAdmin/unapproved-labs";
+import SuspendedLabs from "pages/RegistrationAdmin/suspended-labs";
 import rounds from "pages/RegistrationAdmin/rounds";
 import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
@@ -359,7 +360,7 @@ const registrationAdminAuthProtectedRoutes = [
   },
   { path: "/:organization_name/approved-participant", component: ApprovedLabs },
   { path: "/:organization_name/unapproved-participant", component: UnapprovedLabs },
-
+  { path: "/:organization_name/suspended-participant", component: SuspendedLabs },
   { path: "/payment-scheme-list/:id", component: PaymentSchemeList},
   {
     path: "/referrellab", component: ReferrelLab,

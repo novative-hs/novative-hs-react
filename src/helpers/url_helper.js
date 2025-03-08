@@ -534,6 +534,7 @@ export const GET_PENDING_LABS = `${API_ENDPOINT}/api/registration-admin/pending-
 export const GET_APPROVED_LABS = `${API_ENDPOINT}/api/registration-admin/approved-labs`;
 export const GET_UNAPPROVED_LABS = `${API_ENDPOINT}/api/registration-admin/unapproved-labs`;
 export const APPROVE_UNAPPROVE_LAB = `${API_ENDPOINT}/api/registration-admin/approve-unapprove-lab`;
+export const GET_SUSPENDED_LABS = `${API_ENDPOINT}/api/registration-admin/suspended-labs`;
 
 export const GET_LABS_RATING = `${API_ENDPOINT}/api/registration-admin/labs-rating`;
 

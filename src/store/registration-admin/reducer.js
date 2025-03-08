@@ -1,3 +1,4 @@
+import suspendedLabs from "pages/RegistrationAdmin/suspended-labs";
 import {
 
   GET_PENDING_LABS_SUCCESS,
@@ -6,6 +7,8 @@ import {
   GET_APPROVED_LABS_FAIL,
   GET_UNAPPROVED_LABS_SUCCESS,
   GET_UNAPPROVED_LABS_FAIL,
+  GET_SUSPENDED_LABS_SUCCESS,
+  GET_SUSPENDED_LABS_FAIL,
   APPROVE_UNAPPROVE_LAB_SUCCESS,
   APPROVE_UNAPPROVE_LAB_FAIL,
   GET_PENDING_B2B_CLIENTS_SUCCESS,
@@ -29,6 +32,7 @@ const INIT_STATE = {
   pendingLabs: [],
   approvedLabs: [],
   unapprovedLabs: [],
+  suspendedLabs: [],
   pendingB2BClients: [],
   approvedB2BClients: [],
   unapprovedB2BClients: [],
@@ -117,7 +121,17 @@ const registrationAdmin = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-
+      case GET_SUSPENDED_LABS_SUCCESS:
+        return {
+          ...state,
+          suspendedLabs: action.payload.data,
+        };
+  
+      case GET_SUSPENDED_LABS_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
     case APPROVE_UNAPPROVE_LAB_SUCCESS:
       return {
         ...state,

@@ -144,7 +144,7 @@ class PendingLabs extends Component {
                 <Link
                   to="#"
                   // onClick={e => this.openLabModal(e, AllLabs)}
-                  onMouseEnter={(e) => this.openLabModal(e, AllLabs)}
+                  onMouseEnter={e => this.openLabModal(e, AllLabs)}
                   onPointerLeave={this.handleMouseExit} // Pass the function reference instead of calling it immediately
                 >
                   {AllLabs.name}
@@ -312,7 +312,7 @@ class PendingLabs extends Component {
   //  alert(message); // Replace this with your desired success message logic
   // }
 
-  isPaymentModalOpen = (participant) => {
+  isPaymentModalOpen = participant => {
     this.setState(
       {
         isPaymentModalOpen: true,
@@ -322,7 +322,7 @@ class PendingLabs extends Component {
     );
   };
 
-  isMembershipModalOpen = (participant) => {
+  isMembershipModalOpen = participant => {
     console.log("Opening Membership Modal for Participant:", participant); // Debug log
     this.setState(
       {
@@ -343,7 +343,7 @@ class PendingLabs extends Component {
   };
   toggleMembershipModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isMembershipModalOpen: !prevState.isMembershipModalOpen,
       }),
       () => {
@@ -356,7 +356,7 @@ class PendingLabs extends Component {
   };
   togglePaymentModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isPaymentModalOpen: !prevState.isPaymentModalOpen,
       }),
       () => {
@@ -423,29 +423,28 @@ class PendingLabs extends Component {
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     const { organization_name } = this.state; // Now it's properly updated
-
+  
     let selectedValue = "Pending Participant"; // Default
-
+  
     if (pathname.includes(`/${organization_name}/pending-participant`)) {
       selectedValue = "Pending Participant";
-    } else if (
-      pathname.includes(`/${organization_name}/approved-participant`)
-    ) {
+    } else if (pathname.includes(`/${organization_name}/approved-participant`)) {
       selectedValue = "Approved Participant";
-    } else if (
-      pathname.includes(`/${organization_name}/unapproved-participant`)
-    ) {
+    } else if (pathname.includes(`/${organization_name}/unapproved-participant`)) {
       selectedValue = "Unapproved Participant";
+    } else if (pathname.includes(`/${organization_name}/suspended-participant`)) {
+      selectedValue = "Suspended Lab"; // New case added
     } else if (pathname.includes(`/${organization_name}/all-participant`)) {
       selectedValue = "All Participant";
     }
-
+  
     this.setState({ selectedValue });
   };
+  
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     let selectedValue = "";
-
+  
     if (
       pathname.includes(`/${this.state.organization_name}/pending-participant`)
     ) {
@@ -455,19 +454,22 @@ class PendingLabs extends Component {
     ) {
       selectedValue = "Approved Participant";
     } else if (
-      pathname.includes(
-        `/${this.state.organization_name}/unapproved-participant`
-      )
+      pathname.includes(`/${this.state.organization_name}/unapproved-participant`)
     ) {
       selectedValue = "Unapproved Participant";
+    } else if (
+      pathname.includes(`/${this.state.organization_name}/suspended-participant`) 
+    ) {
+      selectedValue = "Suspended Participant";
     } else if (
       pathname.includes(`/${this.state.organization_name}/all-participant`)
     ) {
       selectedValue = "All Participant";
     }
-
+  
     this.setState({ selectedValue });
   };
+  
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
@@ -476,7 +478,7 @@ class PendingLabs extends Component {
     });
   };
 
-  toggleEditModal = (data) => {
+  toggleEditModal = data => {
     this.setState({
       editModal: !this.state.editModal,
       id: data.id,
@@ -494,7 +496,7 @@ class PendingLabs extends Component {
     });
   };
   toggleLabModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       LabModal: !prevState.LabModal,
     }));
     this.state.btnText === "Copy"
@@ -502,7 +504,7 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggleModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isModalOpen: !prevState.isModalOpen,
     }));
   };
@@ -523,7 +525,7 @@ class PendingLabs extends Component {
     });
   };
   togglePatientModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
     this.state.btnText === "Copy"
@@ -538,7 +540,7 @@ class PendingLabs extends Component {
     });
   };
   toggleMarketerModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       MarketerModal: !prevState.MarketerModal,
     }));
     this.state.btnText === "Copy"
@@ -546,16 +548,16 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggle() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       modal: !prevState.modal,
     }));
   }
 
-  handleApprovedEvent = (id) => {
+  handleApprovedEvent = id => {
     this.setState({ id: id, isApproved: true, unapprovedModal: true });
   };
 
-  handleUnapprovedEvent = (id) => {
+  handleUnapprovedEvent = id => {
     this.setState({ id: id, isApproved: false, unapprovedModal: true });
   };
 
@@ -579,7 +581,7 @@ class PendingLabs extends Component {
     this.setState({ unapprovedModal: false });
   };
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -592,25 +594,27 @@ class PendingLabs extends Component {
   };
   handleSelectChange = (event) => {
     const selectedValue = event.target.value;
-
+  
     // Update the state
     this.setState({ selectedValue });
-
-    // Perform navigation immediately using the selectedValue
-    const { organization_name } = this.state; // Extract from state
+  
+    // Extract organization_name from state
+    const { organization_name } = this.state;
+  
+    // Perform navigation based on the selected value
     if (selectedValue === "Pending Participant") {
       this.props.history.push(`/${organization_name}/pending-participant`);
-    }
-    if (selectedValue === "Approved Participant") {
+    } else if (selectedValue === "Approved Participant") {
       this.props.history.push(`/${organization_name}/approved-participant`);
-    }
-    if (selectedValue === "Unapproved Participant") {
+    } else if (selectedValue === "Unapproved Participant") {
       this.props.history.push(`/${organization_name}/unapproved-participant`);
-    }
-    if (selectedValue === "All Participant") {
+    } else if (selectedValue === "Suspended Participant") { // New condition added
+      this.props.history.push(`/${organization_name}/suspended-participant`);
+    } else if (selectedValue === "All Participant") {
       this.props.history.push(`/${organization_name}/all-participant`);
     }
   };
+  
   render() {
     const { SearchBar } = Search;
 
@@ -629,12 +633,12 @@ class PendingLabs extends Component {
     const { approvedLabs, CycleList } = this.state;
 
     const participantOptions = (this.props.approvedLabs || []).map(
-      (participant) => ({
+      participant => ({
         value: participant.id, // ensure this is the correct unique identifier
         label: participant.name, // or any other field you'd like to display
       })
     );
-    const schemeOptions = CycleList.map((scheme) => ({
+    const schemeOptions = CycleList.map(scheme => ({
       value: scheme.id, // Use scheme ID instead of scheme name
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
     }));
@@ -681,14 +685,14 @@ class PendingLabs extends Component {
                           data={AllLabs}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="4">
                                   <div className="ms-2 mb-4">
                                     <div>
                                       {/* <Label for="main_lab_appointments" className="form-label"> */}
-                                      {/* <strong>Select Pending, Approved, Unapproved and All Participant</strong> */}
+                                      {/* <strong>Select Pending, Approved, Unapproved , Suspended, and All Participant</strong> */}
                                       {/* </Label> */}
                                       <select
                                         className="form-control select2"
@@ -705,6 +709,9 @@ class PendingLabs extends Component {
                                         </option>
                                         <option value="Unapproved Participant">
                                           Unapproved Participant
+                                        </option>
+                                        <option value="Suspended Participant">
+                                          Suspended Participant
                                         </option>
                                         <option value="All Participant">
                                           All Participant
@@ -1326,14 +1333,15 @@ class PendingLabs extends Component {
                                               this.props.onGetPendingLabs(
                                                 this.state.user_id
                                               );
-                                              
                                             }, 1000);
                                             setTimeout(() => {
                                               this.props.ongetcyclelist(
                                                 this.state.user_id
                                               );
                                             }, 1000);
-                                            this.setState({ isPaymentModalOpen: false });
+                                            this.setState({
+                                              isPaymentModalOpen: false,
+                                            });
                                             setSubmitting(false);
                                           }}
                                         >
@@ -1343,60 +1351,57 @@ class PendingLabs extends Component {
                                             touched,
                                             setFieldValue,
                                           }) => {
-                                            const handleSchemeChange = (
-                                              selectedOptions
-                                            ) => {
-                                              const selectedValues =
-                                                selectedOptions
-                                                  ? selectedOptions.map(
-                                                      (option) => option.value
-                                                    )
-                                                  : [];
-                                              setFieldValue(
-                                                "scheme",
-                                                selectedValues
-                                              );
-
-                                              const totalPrice =
-                                                selectedValues.reduce(
-                                                  (sum, schemeId) => {
-                                                    const scheme =
-                                                      CycleList.find(
-                                                        (s) => s.id === schemeId
-                                                      );
-                                                    return (
-                                                      sum +
-                                                      (scheme
-                                                        ? parseFloat(
-                                                            scheme.price
-                                                          )
-                                                        : 0)
-                                                    );
-                                                  },
-                                                  0
+                                            const handleSchemeChange =
+                                              selectedOptions => {
+                                                const selectedValues =
+                                                  selectedOptions
+                                                    ? selectedOptions.map(
+                                                        option => option.value
+                                                      )
+                                                    : [];
+                                                setFieldValue(
+                                                  "scheme",
+                                                  selectedValues
                                                 );
 
-                                              // Set priceBeforeDiscount only once when schemes are selected
-                                              if (
-                                                !values.priceBeforeDiscount ||
-                                                values.scheme.length === 0
-                                              ) {
+                                                const totalPrice =
+                                                  selectedValues.reduce(
+                                                    (sum, schemeId) => {
+                                                      const scheme =
+                                                        CycleList.find(
+                                                          s => s.id === schemeId
+                                                        );
+                                                      return (
+                                                        sum +
+                                                        (scheme
+                                                          ? parseFloat(
+                                                              scheme.price
+                                                            )
+                                                          : 0)
+                                                      );
+                                                    },
+                                                    0
+                                                  );
+
+                                                // Set priceBeforeDiscount only once when schemes are selected
+                                                if (
+                                                  !values.priceBeforeDiscount ||
+                                                  values.scheme.length === 0
+                                                ) {
+                                                  setFieldValue(
+                                                    "priceBeforeDiscount",
+                                                    totalPrice.toFixed(2)
+                                                  );
+                                                }
+
+                                                // Update the price to reflect the total (will be modified later by discount)
                                                 setFieldValue(
-                                                  "priceBeforeDiscount",
+                                                  "price",
                                                   totalPrice.toFixed(2)
                                                 );
-                                              }
+                                              };
 
-                                              // Update the price to reflect the total (will be modified later by discount)
-                                              setFieldValue(
-                                                "price",
-                                                totalPrice.toFixed(2)
-                                              );
-                                            };
-
-                                            const handleDiscountChange = (
-                                              e
-                                            ) => {
+                                            const handleDiscountChange = e => {
                                               let discountValue = parseFloat(
                                                 e.target.value
                                               );
@@ -1525,13 +1530,11 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOptions
-                                                      ) => {
+                                                      onChange={selectedOptions => {
                                                         const selectedValues =
                                                           selectedOptions
                                                             ? selectedOptions.map(
-                                                                (option) =>
+                                                                option =>
                                                                   option.value
                                                               )
                                                             : [];
@@ -1550,7 +1553,7 @@ class PendingLabs extends Component {
                                                             (sum, schemeId) => {
                                                               const scheme =
                                                                 this.props.CycleList.find(
-                                                                  (s) =>
+                                                                  s =>
                                                                     s.id ===
                                                                     schemeId
                                                                 );
@@ -1583,7 +1586,7 @@ class PendingLabs extends Component {
                                                         );
                                                       }}
                                                       value={schemeOptions.filter(
-                                                        (option) =>
+                                                        option =>
                                                           values.scheme.includes(
                                                             option.value
                                                           )
@@ -1750,7 +1753,7 @@ class PendingLabs extends Component {
                                                       type="file"
                                                       multiple={false}
                                                       accept=".jpg,.jpeg,.png"
-                                                      onChange={(event) =>
+                                                      onChange={event =>
                                                         this.handleFileChange(
                                                           event,
                                                           setFieldValue
@@ -1793,9 +1796,7 @@ class PendingLabs extends Component {
                                                           label: "Cash",
                                                         },
                                                       ]}
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) =>
+                                                      onChange={selectedOption =>
                                                         setFieldValue(
                                                           "paymentmethod",
                                                           selectedOption?.value ||
@@ -1948,8 +1949,12 @@ class PendingLabs extends Component {
                                                 this.state.user_id,
                                                 UpdateMembership
                                               );
-                                              this.props.ongetApprovedLabs(this.state.user_id);
-                                              this.props.onupdateMembershipStatus(this.state.user_id);
+                                              this.props.ongetApprovedLabs(
+                                                this.state.user_id
+                                              );
+                                              this.props.onupdateMembershipStatus(
+                                                this.state.user_id
+                                              );
                                               await this.props.onGetPendingLabs(this.state.user_id); //membership modal
 this.setState({ isMembershipModalOpen: false }); // Close modal here
                                               resetForm();
@@ -1962,7 +1967,9 @@ this.setState({ isMembershipModalOpen: false }); // Close modal here
                                                 error
                                               );
                                             }
-                                            this.setState({ isMembershipModalOpen: false });
+                                            this.setState({
+                                              isMembershipModalOpen: false,
+                                            });
                                             setSubmitting(false);
                                           }}
                                         >
@@ -2006,9 +2013,7 @@ this.setState({ isMembershipModalOpen: false }); // Close modal here
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
@@ -2017,7 +2022,7 @@ this.setState({ isMembershipModalOpen: false }); // Close modal here
                                                       }}
                                                       value={
                                                         membershipOptions.find(
-                                                          (option) =>
+                                                          option =>
                                                             option.value ===
                                                             values.membership
                                                         ) || null
@@ -2104,18 +2109,18 @@ const mapStateToProps = ({ Account, registrationAdmin, CycleList }) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onApproveUnapproveLab: (data) => dispatch(approveUnapproveLab(data)),
-  onGetPendingLabs: (id) => dispatch(getAllLabs(id)),
-  onGetInstrumentTypeList: (id) => dispatch(getSchemelist(id)),
+  onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
+  onGetPendingLabs: id => dispatch(getAllLabs(id)),
+  onGetInstrumentTypeList: id => dispatch(getSchemelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewSchemeList(id, createUnit)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateSchemeList({ id, ...methodlist })),
-  onupdateAllLabs: (updatedData) => {
+  onupdateAllLabs: updatedData => {
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
-  ongetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
-  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
+  ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);
