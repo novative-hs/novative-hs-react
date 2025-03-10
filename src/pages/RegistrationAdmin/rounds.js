@@ -290,7 +290,11 @@ class InstrumentType extends Component {
               <Link
                 to={`/round-participant-list/${row.id}`}
                 style={{ textDecoration: "underline", color: "#0000CD" }}
-                onClick={() => console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)}
+                onClick={() =>
+                  console.log(
+                    `Navigating to payment-scheme-list with ID: ${row.id}`
+                  )
+                }
               >
                 {cell}
               </Link>
@@ -650,21 +654,20 @@ class InstrumentType extends Component {
     console.log("Filtered Cycle List:", filteredCycleList);
 
     const filteredSampleList = this.props.ListUnitt.filter(
-        (sample) =>
-            sample.scheme_id === selectedSchemeId &&
-            !this.props.RoundList.some(
-                (round) => round.sample === sample.samplename
-            )
+      (sample) =>
+        sample.scheme_id === selectedSchemeId &&
+        !this.props.RoundList.some(
+          (round) => round.sample === sample.samplename
+        )
     );
     console.log("Filtered Sample List:", filteredSampleList);
 
     this.setState({
-        selectedSchemeId,
-        filteredCycleList,
-        filteredSampleList,
+      selectedSchemeId,
+      filteredCycleList,
+      filteredSampleList,
     });
-};
-
+  };
 
   componentDidMount() {
     const { organization_name } = this.props.match.params;
@@ -673,8 +676,6 @@ class InstrumentType extends Component {
     if (!this.state.organization_name) {
       this.setState({ organization_name });
     }
-
-    
 
     const {
       onGetRoundList,
@@ -768,41 +769,56 @@ class InstrumentType extends Component {
 
   toggle(round) {
     const { onGetgetschemelist } = this.props;
-  
+
     // Dispatch the action to fetch the scheme list
     onGetgetschemelist(this.state.user_id);
-  
-    // Proceed to toggle the modal
+
     if (round && round.id) {
-      this.setState({
-        modal: true,
-        selectedRound: {
-          id: round.id,
-          rounds: round.rounds,
-          cycle_no: round.cycle_no,
-          sample: round.sample,
-          participants: round.participants,
-          issue_date: round.issue_date
-            ? moment(round.issue_date).format("YYYY-MM-DD")
-            : "",
-          closing_date: round.closing_date
-            ? moment(round.closing_date).format("YYYY-MM-DD")
-            : "",
-          note: round.note,
-          status: round.status,
-          added_by: round.added_by,
+      this.setState(
+        {
+          modal: true,
+          selectedRound: {
+            id: round.id,
+            scheme: round.scheme,
+            rounds: round.rounds,
+            cycle_no: round.cycle_no,
+            sample: round.sample,
+            participants: round.participants,
+            issue_date: round.issue_date
+              ? moment(round.issue_date).format("YYYY-MM-DD")
+              : "",
+            closing_date: round.closing_date
+              ? moment(round.closing_date).format("YYYY-MM-DD")
+              : "",
+            note: round.note,
+            status: round.status,
+            added_by: round.added_by,
+          },
+          selectedSchemeId: round.scheme,
+          selectedCycle: round.cycle_no, // Auto set cycle_no
+          isEdit: true,
         },
-        isEdit: true,
-      });
+        () => {
+          // Call handleSchemeChange to update filtered sample list
+          this.handleSchemeChange({ target: { value: round.scheme } });
+
+          // Wait for state update, then update Formik cycle_no field
+          if (this.formikRef) {
+            this.formikRef.setFieldValue("cycle_no", round.cycle_no);
+          }
+        }
+      );
     } else {
       this.setState({
         modal: true,
         selectedRound: null,
+        selectedSchemeId: null,
+        selectedCycle: null,
         isEdit: false,
       });
     }
   }
-  
+
   componentDidUpdate(prevProps) {
     if (
       !isEmpty(this.props.RoundList) &&
@@ -1244,7 +1260,7 @@ class InstrumentType extends Component {
                                                   </div>
                                                   <div className="mb-3">
                                                     <label htmlFor="cycle_no">
-                                                      Cycle No
+                                                      Select Cycle
                                                     </label>
                                                     <Field
                                                       as="select"
@@ -1255,18 +1271,32 @@ class InstrumentType extends Component {
                                                           ? " is-invalid"
                                                           : ""
                                                       }`}
+                                                      value={
+                                                        this.state.selectedRound
+                                                          ?.cycle_no || ""
+                                                      }
+                                                      onChange={(e) =>
+                                                        this.setState({
+                                                          selectedRound: {
+                                                            ...this.state
+                                                              .selectedRound,
+                                                            cycle_no:
+                                                              e.target.value,
+                                                          },
+                                                        })
+                                                      }
                                                     >
                                                       <option value="">
                                                         Select Cycle
                                                       </option>
                                                       {this.state.filteredCycleList
                                                         .filter(
-                                                          cycle =>
+                                                          (cycle) =>
                                                             cycle.status &&
                                                             cycle.status.toLowerCase() ===
                                                               "active"
                                                         )
-                                                        .map(cycle => (
+                                                        .map((cycle) => (
                                                           <option
                                                             key={cycle.id}
                                                             value={String(
