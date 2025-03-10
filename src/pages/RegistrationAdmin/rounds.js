@@ -1031,9 +1031,8 @@ class InstrumentType extends Component {
                                                   .participants
                                               : "",
                                             cycle_no: this.state.selectedCycle
-                                              ? this.state.selectedCycle
-                                                  .cycle_no
-                                              : "",
+                                             ? this.state.selectedCycle
+                                              : "", 
                                             issue_date: this.state.selectedRound
                                               ? this.state.selectedRound
                                                   .issue_date
