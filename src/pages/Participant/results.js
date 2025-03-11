@@ -238,21 +238,31 @@ class Results extends Component {
       
 
   
-        {
-          text: "Result Value",
-          dataField: "result",
-          sort: true,
-          formatter: (cellContent, list) => (
-            <div className="text-start">
-              <input
-                type="text"
-                ref={el => (this[`resultRef_${list.id}`] = el)}
-                defaultValue={list.result || ""} // Ensure defaultValue is set properly
-                placeholder="Enter result"
-              />
-            </div>
-          ),
-        },
+            {
+              text: "Result Value",
+              dataField: "result",
+              sort: true,
+              formatter: (cellContent, list) => (
+                <div className="text-start">
+                  <input
+                    type="text"
+                    ref={el => (this[`resultRef_${list.id}`] = el)}
+                    defaultValue={list.result || ""}
+                    placeholder="Enter result"
+                    onChange={(e) => {
+                      let value = e.target.value;
+                      // Allow only numbers and a single decimal point
+                      if (/^\d*\.?\d*$/.test(value)) {
+                        e.target.value = value;
+                      } else {
+                        e.target.value = value.slice(0, -1); // Remove last invalid character
+                      }
+                    }}
+                  />
+                </div>
+              ),
+            },
+            
         {
           formatter: (cellContent, list) => {
             const { round_status } = this.props; // Destructure round_status from props
@@ -422,7 +432,6 @@ class Results extends Component {
             </div>
           ),
         },
-
         {
           text: "Result Value",
           dataField: "result",
@@ -432,12 +441,22 @@ class Results extends Component {
               <input
                 type="text"
                 ref={el => (this[`resultRef_${list.id}`] = el)}
-                defaultValue={list.result || ""} // Ensure defaultValue is set properly
+                defaultValue={list.result || ""}
                 placeholder="Enter result"
+                onChange={(e) => {
+                  let value = e.target.value;
+                  // Allow only numbers and a single decimal point
+                  if (/^\d*\.?\d*$/.test(value)) {
+                    e.target.value = value;
+                  } else {
+                    e.target.value = value.slice(0, -1); // Remove last invalid character
+                  }
+                }}
               />
             </div>
           ),
         },
+        
         {
           // text: "Actions",
           formatter: (cellContent, list) => {
