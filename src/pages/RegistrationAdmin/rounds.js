@@ -1205,11 +1205,14 @@ class InstrumentType extends Component {
                                                             form.setFieldValue(
                                                               "scheme",
                                                               value
-                                                            ); // Update Formik value
+                                                            ); 
                                                             this.handleSchemeChange(
                                                               e
-                                                            ); // Custom filtering logic
+                                                            ); 
                                                           }}
+                                                          disabled={
+                                                            this.state.isEdit
+                                                          } 
                                                         >
                                                           <option value="">
                                                             Select Scheme
@@ -1258,40 +1261,32 @@ class InstrumentType extends Component {
                                                     />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <label htmlFor="cycle_no">
+                                                    {/* <label htmlFor="cycle_no">
                                                       Select Cycle
-                                                    </label>
-                                                    <Field
-                                                      as="select"
-                                                      name="cycle_no"
-                                                      className={`form-control${
-                                                        errors.cycle_no &&
-                                                        touched.cycle_no
-                                                          ? " is-invalid"
-                                                          : ""
-                                                      }`}
-                                                    >
-                                                      <option value="">
-                                                        Select Cycle
-                                                      </option>
-                                                      {this.state.filteredCycleList
-                                                        .filter(
-                                                          (cycle) =>
-                                                            cycle.status &&
-                                                            cycle.status.toLowerCase() ===
-                                                              "active"
-                                                        )
-                                                        .map((cycle) => (
-                                                          <option
-                                                            key={cycle.id}
-                                                            value={String(
-                                                              cycle.id
-                                                            )}
-                                                          >
-                                                            {cycle.cycle_no}
-                                                          </option>
-                                                        ))}
-                                                    </Field>
+                                                    </label> */}
+                                                   <Field name="cycle_no">
+  {({ field, form }) => (
+    <div className="mb-3">
+      <label htmlFor="cycle_no">Select Cycle</label>
+      <select
+        {...field}
+        className={`form-control${form.errors.cycle_no && form.touched.cycle_no ? " is-invalid" : ""}`}
+        disabled={this.state.isEdit} // ✅ Disable only in Edit Mode
+      >
+        <option value="">Select Cycle</option>
+        {this.state.filteredCycleList
+          .filter(cycle => cycle.status && cycle.status.toLowerCase() === "active")
+          .map(cycle => (
+            <option key={cycle.id} value={String(cycle.id)}>
+              {cycle.cycle_no}
+            </option>
+          ))}
+      </select>
+      <ErrorMessage name="cycle_no" component="div" className="invalid-feedback" />
+    </div>
+  )}
+</Field>
+
                                                     <ErrorMessage
                                                       name="cycle_no"
                                                       component="div"
@@ -1365,32 +1360,43 @@ class InstrumentType extends Component {
                                                         <Label for="sample">
                                                           Sample
                                                         </Label>
-                                                        <Field
-                                                          as="select"
-                                                          name="sample"
-                                                          className={`form-control${
-                                                            errors.sample &&
-                                                            touched.sample
-                                                              ? " is-invalid"
-                                                              : ""
-                                                          }`}
-                                                        >
-                                                          <option value="">
-                                                            Select Sample
-                                                          </option>
-                                                          {this.state.filteredSampleList.map(
-                                                            (sample) => (
-                                                              <option
-                                                                key={sample.id}
-                                                                value={
-                                                                  sample.samplename
-                                                                }
-                                                              >
-                                                                {
-                                                                  sample.samplename
-                                                                }
+                                                        <Field name="sample">
+                                                          {({
+                                                            field,
+                                                            form,
+                                                          }) => (
+                                                            <select
+                                                              {...field}
+                                                              className={`form-control${
+                                                                form.errors
+                                                                  .sample &&
+                                                                form.touched
+                                                                  .sample
+                                                                  ? " is-invalid"
+                                                                  : ""
+                                                              }`}
+                                                              disabled={[ "Ready", "Open", "Closed", "Report Available"].includes(form.values.status)}
+                                                            >
+                                                              <option value="">
+                                                                Select Sample
                                                               </option>
-                                                            )
+                                                              {this.state.filteredSampleList.map(
+                                                                sample => (
+                                                                  <option
+                                                                    key={
+                                                                      sample.id
+                                                                    }
+                                                                    value={
+                                                                      sample.samplename
+                                                                    }
+                                                                  >
+                                                                    {
+                                                                      sample.samplename
+                                                                    }
+                                                                  </option>
+                                                                )
+                                                              )}
+                                                            </select>
                                                           )}
                                                         </Field>
                                                         <ErrorMessage
