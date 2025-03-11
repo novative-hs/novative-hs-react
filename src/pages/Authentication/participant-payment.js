@@ -135,7 +135,7 @@ class ParticipantPayments extends Component {
         },
         {
           dataField: "discount",
-          text: "Amount of Discount",
+          text: "Discount in Percentage",
           sort: true,
           headerFormatter: column => (
             <div>

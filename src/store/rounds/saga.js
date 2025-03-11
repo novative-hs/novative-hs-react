@@ -29,7 +29,8 @@ function* fetchRoundParticipantlist(action) {
     console.log("Saga - API Response:", response); // Verify API response
 
     if (response.data && response.data.data) {
-      yield put(getRoundParticipantlistSuccess(response.data.data.participants)); // Pass the correct data to reducer
+      // Send the full payload (round_details and participants) to the reducer
+      yield put(getRoundParticipantlistSuccess(response.data.data)); // Passing full data
     } else {
       yield put(getRoundParticipantlistFail("Invalid response structure"));
     }

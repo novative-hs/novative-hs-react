@@ -40,6 +40,7 @@ function* fetchParticipantPayment() {
     yield put(getparticipantpaymentFail(error));  // Handle error
   }
 }
+
 function* fetchParticipantSchemelist(action) {
   try {
     console.log("Saga Payload (ID):", action.payload);
@@ -48,22 +49,24 @@ function* fetchParticipantSchemelist(action) {
     const response = yield call(getParticipantSchemelist, action.payload);
     console.log("API Response in Saga:", response);
 
-    // Extract schemes from response.data
-    const data = response.data?.schemes || []; // Adjusted to access `schemes` array in response.data
+    // Extract schemes and participant_name
+    const schemes = response.data?.schemes || []; // Adjust to your API structure
+    const participant_name = response.data?.participant_name || "Unknown"; // Default if not provided
 
-    if (data.length > 0) {
-      console.log("Dispatching Success Action with Data:", data);
-      yield put(getParticipantSchemelistSuccess(data)); // Dispatch success with valid data
-    } else {
-      console.warn("Empty schemes array in API response");
-      yield put(getParticipantSchemelistSuccess([])); // Handle empty response gracefully
-    }
+    // Dispatch success with both schemes and participant_name
+    yield put(
+      getParticipantSchemelistSuccess({
+        schemes,
+        participant_name,
+      })
+    );
+    console.log("Dispatched Payload from Saga:", { schemes, participant_name });
+    
   } catch (error) {
     console.error("Error in Saga:", error);
     yield put(getParticipantSchemelistFail(error));
   }
 }
-
 
 
 

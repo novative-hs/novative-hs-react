@@ -150,7 +150,11 @@ class PaymentSchemeList extends Component {
             <title>Database Admin | Participants Scheme List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Participants Scheme List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={`Scheme List for ${this.props.participantName || "Unknown"}`}
+/>
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -196,6 +200,7 @@ class PaymentSchemeList extends Component {
 
 PaymentSchemeList.propTypes = {
   match: PropTypes.object,
+  participantName: PropTypes.object,
   PaymentSchemeList: PropTypes.array,
   history: PropTypes.object,
   // onGetSchemeAnalyte: PropTypes.func,
@@ -205,8 +210,14 @@ const mapStateToProps = (state) => {
   console.log("Redux State in mapStateToProps:", state);
   console.log("PartiscipantSchemeLsit:", state.AddPayment); 
   console.log("Mapped PaymentSchemeList:", state.GetPayment?.PaymentSchemeList || []);
+
+  // Extract participantName and log it
+  const participantName = state.AddPayment?.participant_name || "Unknownnnnnnn";
+  console.log("Mapped participantName:", participantName);
+
   return {
     PaymentSchemeList: state.AddPayment?.PaymentSchemeList || [], // Fallback to an empty array
+    participantName,
   };
 };
 

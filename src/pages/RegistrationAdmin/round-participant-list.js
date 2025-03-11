@@ -72,36 +72,48 @@ class RoundParticipantlist extends Component {
         ,
       ],
     };
+    // Bind the transformParticipantData method
+    this.transformParticipantData = this.transformParticipantData.bind(this);
+  }
+
+  // Transformation logic for participant data
+  transformParticipantData(participantList) {
+    // Example transformation logic
+    return participantList.map((participant) => ({
+      ...participant,
+      fullName: `${participant.firstName || "Unknown"} ${participant.lastName || ""}`,
+    }));
   }
 
   componentDidMount() {
     // Fetch data when the component mounts
     this.fetchData();
   }
+ 
+  
+  
   componentDidUpdate(prevProps) {
-    console.log("componentDidUpdate triggered");
-  
-    // Check if the participant list in props has changed
-    if (this.props.RoundParticipantlist !== prevProps.RoundParticipantlist) {
-      console.log("New Props Round Participant List:", this.props.RoundParticipantlist);
-  
-      // Validate the participant list
-      if (Array.isArray(this.props.RoundParticipantlist) && this.props.RoundParticipantlist.length > 0) {
-        const transformedData = this.props.RoundParticipantlist.map((participant, index) => ({
-          id: participant.id || index + 1, // Participant ID
-          name: participant.name || "Unnamed Participant", // Participant Name
-        }));
-  
+    if (prevProps.RoundParticipantlist !== this.props.RoundParticipantlist) {
+      if (typeof this.transformParticipantData === "function") {
+        const transformedData = this.transformParticipantData(this.props.RoundParticipantlist);
         console.log("Transformed Participant Data:", transformedData);
-  
-        // Update the state with transformed data
-        this.setState({ RoundParticipantlist: transformedData, tableKey: this.state.tableKey + 1 });
+        
+        // Check if the transformed data is a valid array
+        if (Array.isArray(transformedData)) {
+          console.log("Transformed data is a valid array.");
+        } else {
+          console.error("Transformed data is not an array.");
+        }
+        
+        this.setState({ RoundParticipantlist: transformedData });
       } else {
-        // Clear the list if it's empty or invalid
-        this.setState({ RoundParticipantlist: [] });
+        console.error("transformParticipantData is not defined or not a function");
       }
     }
   }
+  
+  
+  
   
 
   fetchData() {
@@ -145,9 +157,31 @@ class RoundParticipantlist extends Component {
   };
 
   render() {
-    const { RoundParticipantlist } = this.state;
-    console.log("Participant Scheme List",RoundParticipantlist);
+    const { RoundParticipantlist, roundDetails } = this.props;
+    console.log("RoundParticipantlist in renderrrrrrr:", RoundParticipantlist);  // Add this log
+  
     const defaultSorted = [{ dataField: "id", order: "desc" }];
+  
+   // Use roundDetails for breadcrumb
+   const formatDate = (date) => {
+    if (!date) return '';
+    const [year, month, day] = date.split('-');
+    return `${day}-${month}-${year}`;
+  };
+  
+  const breadcrumbItem = roundDetails
+    ? `Round Number: ${roundDetails.rounds || "No Round Number"}, 
+       Scheme Name: ${roundDetails.scheme_name || "No Scheme Name"}, 
+       Cycle Number: ${roundDetails.cycle_no || "No Cycle Number"}, 
+       Cycle Start Date: ${formatDate(roundDetails.issue_date) || "No Start Date"}, 
+       Cycle End Date: ${formatDate(roundDetails.closing_date) || "No End Date"}, 
+       Round Start Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}, 
+     Round End Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}`
+    : "No Data Available";
+  
+  console.log("Generated Breadcrumb Item:", breadcrumbItem);
+  
+  
     return (
       <React.Fragment>
         <div className="page-content">
@@ -156,6 +190,30 @@ class RoundParticipantlist extends Component {
           </MetaTags>
           <Container fluid>
             <Breadcrumbs title="List" breadcrumbItem="Round Participant List" />
+
+            {/* Display round details below the breadcrumbs */}
+           
+
+            {roundDetails ? (
+  <div className="round-details">
+    <h4>Round Details:</h4>
+    <p className="round-details-text">
+      <span className="me-3">Round Number: <strong>{roundDetails.rounds || "No Round Number"}</strong></span>
+      <span className="me-3">Scheme Name: <strong>{roundDetails.scheme_name || "No Scheme Name"}</strong></span>
+      <span className="me-3">Cycle Number: <strong>{roundDetails.cycle_no || "No Cycle Number"}</strong></span>
+      <span className="me-3">Cycle Start Date: <strong>{formatDate(roundDetails.issue_date) || "No Start Date"}</strong></span>
+      <span className="me-3">Cycle End Date: <strong>{formatDate(roundDetails.closing_date) || "No End Date"}</strong></span>
+      <span className="me-3">Round Start Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}</strong></span>
+      <span className="me-3">Round End Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}</strong></span>
+    </p>
+  </div>
+) : (
+  <div>No round details available.</div>
+)}
+
+
+
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -197,22 +255,30 @@ class RoundParticipantlist extends Component {
       </React.Fragment>
     );
   }
+  
+  
 }
 
 RoundParticipantlist.propTypes = {
   match: PropTypes.object,
   RoundParticipantlist: PropTypes.array,
+  roundDetails: PropTypes.object,
   history: PropTypes.object,
   // onGetSchemeAnalyte: PropTypes.func,
   onGetRoundParticipantList: PropTypes.func,
 };
 const mapStateToProps = (state) => {
-    console.log("Redux State in mapStateToProps:", state); // Debug the entire Redux state
-  
-    return {
-      RoundParticipantlist: state.RoundList?.RoundParticipantlist || [], // Access the correct state slice
-    };
+  console.log("Redux State in mapStateToProps:", state); // Debug to check the state
+  console.log("RoundParticipantlist:", state.RoundList?.RoundParticipantlist);
+  console.log("roundDetails:", state.RoundList?.roundDetails);
+
+  return {
+    roundDetails: state.RoundList?.roundDetails || {},  // Ensure you're mapping the right data
+    RoundParticipantlist: state.RoundList?.RoundParticipantlist || [],  // Same for participant list
   };
+};
+
+
   
 
 

@@ -12,9 +12,11 @@ import {
   DELETE_ROUND_FAIL,
 } from "./actionTypes";
 
+
 const INIT_STATE = {
   RoundList: [],
   AddUnits: [],  
+  roundDetails: {},
   unit: [],
   error: {}, 
 };
@@ -33,21 +35,23 @@ const RoundList = (state = INIT_STATE, action) => {
           };
 
         // participant schem list
-              case GET_ROUND_PARTICIPANT_LIST_SUCCESS:
+        case GET_ROUND_PARTICIPANT_LIST_SUCCESS:
           console.log("Reducer - Updated State with Payload:", action.payload);
           return {
             ...state,
-            RoundParticipantlist: Array.isArray(action.payload) ? action.payload : [],
+            RoundParticipantlist: action.payload.participants || [], // Handle participants
+            roundDetails: action.payload.round_details || {}, // Handle round details
             error: null,
           };
         
-              
-              case GET_ROUND_PARTICIPANT_LIST_FAIL:
-                return {
-                  ...state,
-                  RoundParticipantlist: [], // Clear list on failure
-                  error: action.payload,
-                };
+        case GET_ROUND_PARTICIPANT_LIST_FAIL:
+          return {
+            ...state,
+            RoundParticipantlist: [], // Clear list on failure
+            roundDetails: {}, // Clear round details on failure
+            error: action.payload,
+          };
+        
           case ADD_NEW_ROUND_LIST_SUCCESS:
             return {
               ...state,

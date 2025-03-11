@@ -446,9 +446,9 @@ class PendingLabs extends Component {
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     const { organization_name } = this.state; // Now it's properly updated
-  
+ 
     let selectedValue = "Pending Participant"; // Default
-  
+ 
     if (pathname.includes(`/${organization_name}/pending-participant`)) {
       selectedValue = "Pending Participant";
     } else if (pathname.includes(`/${organization_name}/approved-participant`)) {
@@ -460,14 +460,14 @@ class PendingLabs extends Component {
     } else if (pathname.includes(`/${organization_name}/all-participant`)) {
       selectedValue = "All Participant";
     }
-  
+ 
     this.setState({ selectedValue });
   };
-  
+ 
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     let selectedValue = "";
-  
+ 
     if (
       pathname.includes(`/${this.state.organization_name}/pending-participant`)
     ) {
@@ -481,7 +481,7 @@ class PendingLabs extends Component {
     ) {
       selectedValue = "Unapproved Participant";
     } else if (
-      pathname.includes(`/${this.state.organization_name}/suspended-participant`) 
+      pathname.includes(`/${this.state.organization_name}/suspended-participant`)
     ) {
       selectedValue = "Suspended Participant";
     } else if (
@@ -489,10 +489,10 @@ class PendingLabs extends Component {
     ) {
       selectedValue = "All Participant";
     }
-  
+ 
     this.setState({ selectedValue });
   };
-  
+ 
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
@@ -618,13 +618,13 @@ class PendingLabs extends Component {
   };
   handleSelectChange = (event) => {
     const selectedValue = event.target.value;
-  
+ 
     // Update the state
     this.setState({ selectedValue });
-  
+ 
     // Extract organization_name from state
     const { organization_name } = this.state;
-  
+ 
     // Perform navigation based on the selected value
     if (selectedValue === "Pending Participant") {
       this.props.history.push(`/${organization_name}/pending-participant`);
@@ -638,7 +638,7 @@ class PendingLabs extends Component {
       this.props.history.push(`/${organization_name}/all-participant`);
     }
   };
-  
+ 
   render() {
     const { SearchBar } = Search;
 
@@ -1677,7 +1677,9 @@ class PendingLabs extends Component {
                                                             0
                                                         )} // Format the value
                                                         readOnly
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
+                                                     
                                                       <ErrorMessage
                                                         name="priceBeforeDiscount"
                                                         component="div"
@@ -1738,6 +1740,7 @@ class PendingLabs extends Component {
                                                             0
                                                         )} // Format the value as currency
                                                         readOnly
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
                                                       <ErrorMessage
                                                         name="discountAmount"
@@ -1774,6 +1777,7 @@ class PendingLabs extends Component {
                                                           values.price || 0
                                                         )} // Format the value
                                                         readOnly
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
                                                       <ErrorMessage
                                                         name="price"

@@ -42,18 +42,21 @@ const AddPayment = (state = INIT_STATE, action) => {
 
       // participant schem list
       case GET_PARTICIPANT_SCHEME_LIST_SUCCESS:
-  console.log("Reducer - Updated State with Payload:", action.payload);
-  return {
-    ...state,
-    PaymentSchemeList: Array.isArray(action.payload) ? action.payload : [],
-    error: null,
-  };
-
+        console.log("Reducer - Updated State with Payload:", action.payload);
+        return {
+          ...state,
+          PaymentSchemeList: Array.isArray(action.payload.schemes)
+            ? action.payload.schemes
+            : [], // Extract schemes from payload
+          participant_name: action.payload.participant_name || "Unknown", // Extract participant_name
+          error: null,
+        };
       
       case GET_PARTICIPANT_SCHEME_LIST_FAIL:
         return {
           ...state,
           PaymentSchemeList: [], // Clear list on failure
+          participant_name: "Unknown", // Reset participant name on failure
           error: action.payload,
         };
       
