@@ -101,19 +101,24 @@ class RoundAddParticipant extends Component {
         {
           dataField: "checkbox",
           text: "Select",
-          formatter: (cellContent, row) => (
-            <div className="form-check">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id={`checkbox${row.id}`}
-                onChange={() => this.handleCheckboxChange(row.id)}
-                checked={this.state.selectedCheckboxes[row.id] || false} // Link directly to state
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-          ),
+          formatter: (cellContent, row) => {
+            console.log(`🔘 Rendering checkbox for ID: ${row.id}, Checked: ${this.state.selectedCheckboxes[row.id] || false}`);
+            return (
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id={`checkbox${row.id}`}
+                  onChange={() => this.handleCheckboxChange(row.id)}
+                  checked={this.state.selectedCheckboxes[row.id] || false}
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
+            );
+          },
         },
+        
+        
       ],
     };
   }
@@ -128,15 +133,13 @@ class RoundAddParticipant extends Component {
     // Fetch data when the component mounts
     this.fetchData();
   }
-
   componentDidUpdate(prevProps) {
-    // Update selectedCheckboxes when LabRoundList changes
-    if (prevProps.LabRoundList !== this.props.LabRoundList) {
-      console.log("componentDidUpdate: LabRoundList updated. Previous:", prevProps.LabRoundList, "Current:", this.props.LabRoundList);
-      console.log("ParticipantList in Component:", this.props.ParticipantList);
+    if (prevProps.ParticipantList !== this.props.ParticipantList) {
+      console.log("✅ ParticipantList updated in componentDidUpdate", this.props.ParticipantList);
       this.updateSelectedCheckboxes();
     }
   }
+  
 //   componentDidUpdate(prevProps) {
 //     if (prevProps.RoundList !== this.props.RoundList) {
 //         console.log("componentDidUpdate: RoundList updated. Updating checkboxes.");
@@ -165,42 +168,29 @@ class RoundAddParticipant extends Component {
     }
   }
 
-//   updateSelectedCheckboxes() {
-//     const selectedCheckboxes = {};
-//     const { LabRoundList } = this.props;
-
-//     console.log("updateSelectedCheckboxes: Updating checkboxes with LabRoundList:", LabRoundList);
-
-//     if (LabRoundList && Array.isArray(LabRoundList)) {
-//         LabRoundList.forEach(participantId => {
-//             selectedCheckboxes[participantId] = true; // Mark as checked
-//         });
-//     }
-
-//     console.log("updateSelectedCheckboxes: New selectedCheckboxes state:", selectedCheckboxes);
-
-//     this.setState({ selectedCheckboxes });
-// }
-updateSelectedCheckboxes() {
-  const selectedCheckboxes = {};
-  const { LabRoundList } = this.props; // Ensure this uses the correct data source
-
-  console.log("updateSelectedCheckboxes: Updating checkboxes with LabRoundList:", LabRoundList);
-
-  if (LabRoundList && Array.isArray(LabRoundList)) {
-    LabRoundList.forEach(participant => {
-      selectedCheckboxes[participant.id] = true; // Check based on participant IDs
+  updateSelectedCheckboxes() {
+    const selectedCheckboxes = {};
+    const { ParticipantList } = this.props; // Use ParticipantList here
+  
+    console.log("🚀 Running updateSelectedCheckboxes...");
+    console.log("📝 Full ParticipantList:", JSON.stringify(ParticipantList, null, 2));
+  
+    if (ParticipantList && Array.isArray(ParticipantList)) {
+      ParticipantList.forEach(participant => {
+        console.log(`🔍 Checking participant ID: ${participant.id}, auto_selected: ${participant.auto_selected}`);
+        if (participant.auto_selected) {  
+          console.log(`✅ Participant ID ${participant.id} is auto-selected. Marking checkbox as checked.`);
+          selectedCheckboxes[participant.id] = true;
+        }
+      });
+    }
+  
+    console.log("🎯 Final selectedCheckboxes state before update:", selectedCheckboxes);
+  
+    this.setState({ selectedCheckboxes, tableKey: this.state.tableKey + 1 }, () => {
+      console.log("📌 State updated! New selectedCheckboxes:", this.state.selectedCheckboxes);
     });
   }
-
-  console.log("updateSelectedCheckboxes: New selectedCheckboxes state:", selectedCheckboxes);
-
-  this.setState({ selectedCheckboxes });
-}
-
-
-
-
 
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
