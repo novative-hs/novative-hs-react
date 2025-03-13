@@ -137,16 +137,14 @@ class Results extends Component {
               dataField: "instrument_name",
               sort: true,
               formatter: (cellContent, list) => {
-                console.log("Filtering Instruments for Analyte ID:", list.analyte_id);
-                console.log("🎸 Instruments in State:", this.state.Instrument);
+            
             
                 // Ensure instruments have analytes before filtering
                 const filteredInstruments = this.state.Instrument.filter(instr => {
-                  console.log(`🎸 Instrument ${instr.id} - ${instr.name} has analytes:`, instr.analytes);
+               
                   return instr.analytes.includes(list.analyte_name); // Compare names instead of IDs
                 });
             
-                console.log("✅ Filtered Instruments for Analyte:", filteredInstruments);
             
                 return (
                   <div className="text-start">
@@ -263,39 +261,37 @@ class Results extends Component {
               ),
             },
             
-        {
-          formatter: (cellContent, list) => {
-            const { round_status } = this.props; // Destructure round_status from props
+//         {
+//           formatter: (cellContent, list) => {
+//             const { round_status } = this.props; // Destructure round_status from props
 
-            return (
-              <div className="d-flex flex-row align-items-start">
-                {/* Show buttons only if round_status is "Open" and result_status is not "Submit" */}
-                {round_status &&
-                list.result_status != "Submitted" &&
-                round_status === "Open" ? (
-                  <>
-                    {/* Edit Button */}
-                    <button
-                      onClick={() => this.handleUpdate(list)} // Handle Edit action
-                      className="btn btn-primary me-2"
-                    >
-                      Edit
-                    </button>
+//             return (
+//               <div className="d-flex flex-row align-items-start">
+//   {/* Show buttons only if round_status is "Open" and result_status is not "Submitted" */}
+//   {round_status && list.result_status !== "Submitted" && round_status === "Open" ? (
+//     <>
+//       {/* Save Button (Replacing Edit) */}
+//       <button
+//         onClick={() => this.handleSave(list)} // ✅ Call handleSave instead of handleUpdate
+//         className="btn btn-warning me-2"
+//       >
+//         Save
+//       </button>
 
-                    {/* Submit Button */}
-                    <button
-                      onClick={() => this.handleSubmit(list)} // Handle Submit action
-                      className="btn btn-success"
-                    >
-                      Submit
-                    </button>
-                  </>
-                ) : null}{" "}
-                {/* Hide buttons if the conditions are not met */}
-              </div>
-            );
-          },
-        },
+//       {/* Submit Button */}
+//       <button
+//         onClick={() => this.handleSubmit(list)}
+//         className="btn btn-success"
+//       >
+//         Submit
+//       </button>
+//     </>
+//   ) : null}
+// </div>
+
+//             );
+//           },
+//         },
       ];
     } else if (schemeType === "Qualitative") {
       return [
@@ -312,17 +308,11 @@ class Results extends Component {
           dataField: "instrument_name",
           sort: true,
           formatter: (cellContent, list) => {
-            console.log("Filtering Instruments for Analyte ID:", list.analyte_id);
-            console.log("🎸 Instruments in State:", this.state.Instrument);
-        
             // Ensure instruments have analytes before filtering
             const filteredInstruments = this.state.Instrument.filter(instr => {
-              console.log(`🎸 Instrument ${instr.id} - ${instr.name} has analytes:`, instr.analytes);
+             
               return instr.analytes.includes(list.analyte_name); // Compare names instead of IDs
             });
-        
-            console.log("✅ Filtered Instruments for Analyte:", filteredInstruments);
-        
             return (
               <div className="text-start">
                 <select
@@ -456,59 +446,9 @@ class Results extends Component {
             </div>
           ),
         },
-        
-        {
-          // text: "Actions",
-          formatter: (cellContent, list) => {
-            const { round_status } = this.props;
-            return (
-              <div className="d-flex flex-row align-items-start">
-                {/* Check if round_status is "Open" and list.result_status is "Created" */}
-                {round_status &&
-                list.result_status != "Submitted" &&
-                round_status === "Open" ? (
-                  <>
-                    <button
-                      onClick={() => this.handleUpdate(list)}
-                      className="btn btn-primary me-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => this.handleSubmit(list)}
-                      className="btn btn-success"
-                    >
-                      Submit
-                    </button>
-                  </>
-                ) : null}{" "}
-                {/* If the status is "Closed", hide the buttons */}
-              </div>
-            );
-          },
-        },
       ];
     }
   };
-
-  // componentDidMount() {
-  //   const { SchemeAnalytesList, ListUnits } = this.props;
-
-  //   const { onGetSchemeAnalyte, onGetUnitsList } = this.props;
-  //   const id = this.props.match.params.id;
-  //   const userId = this.state.user_id;
-  //   onGetSchemeAnalyte(id);
-  //   onGetUnitsList(userId);
-
-  //   setTimeout(() => {
-  //     this.setState(
-  //       {
-  //         SchemeAnalytesList: this.props.SchemeAnalytesList,
-  //         ListUnits: this.props.ListUnits,
-  //       },
-  //       this.combineData
-  //     );
-  //   }, 1000); // Adjust the timeout as needed
   // }
   componentDidMount() {
     const {
@@ -533,7 +473,7 @@ class Results extends Component {
   
     // Log the first instrument if available after fetching
     setTimeout(() => {
-      console.log("First Instrument after mount:", this.state.Instrument?.[0]);
+     
     }, 1000);
   }
   
@@ -549,33 +489,24 @@ class Results extends Component {
       result_type,
     } = this.props;
   
-    console.log("First Unit:", this.state.ListUnits[0]);
-    console.log("First Method:", this.state.ListMethods[0]);
-    console.log("First Instrument:", this.state.Instrument[0]);
-    console.log("First Reagent:", this.state.ReagentList[0]);
-
-    console.log("🔄 Checking Instrument List updates...");
-
   // Log previous and current props
-  console.log("Previous Instrument List:", prevProps.Instrument);
-  console.log("Current Instrument List:", this.props.Instrument);
+
 
    if (prevProps.Instrument !== this.props.Instrument) {
-    console.log("🔼 Previous Instrument List:", prevProps.Instrument);
-    console.log("🔽 Current Instrument List:", this.props.Instrument);
+   
   }
   
    if (
     prevProps.Instrument !== this.props.Instrument &&
     this.props.Instrument.length > 0
   ) {
-    console.log("✅ Instrument list updated!", this.props.Instrument);
+   
     this.setState({ Instrument: this.props.Instrument });
   }
 
   // Log if data gets removed
   if (prevProps.Instrument.length > 0 && this.props.Instrument.length === 0) {
-    console.warn("⚠️ Instrument list was cleared!");
+    
   }
   
     const dataChanged = [
@@ -625,24 +556,17 @@ class Results extends Component {
     const { rounds } = this.props;
     const { user_id, ParticipantNo } = this.state;
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
-      // console.log("ResultList", ResultList)
-      // Filter ResultList where the analyte matches
+    
       const participantResults = ResultList.filter(result => {
         return result.analyte === analyte.id;
       });
-      // console.log("participantResults", participantResults)
-      // Check which of these results were submitted by the logged-in user
+     
       const userResult = participantResults.find(result => {
-        console.log(
-          "Comparing user_id:",
-          user_id,
-          "with lab.id:",
-          result.lab.account_id
-        );
-        console.log("Comparing rounds:", rounds, "with result.round_name:", result.round_name);
+        
+    
         return result.lab.account_id === user_id && result.round_name === rounds;
       });
-      // console.log("userResult", userResult);
+      
 
       return {
         id: analyte.id || index,
@@ -738,7 +662,7 @@ class Results extends Component {
         resultData,
         this.state.user_id
       );
-      console.log("Response:", response); // Check the response structure
+    
 
       // Handle success
       if (response.type === "POST_RESULT") {
@@ -813,7 +737,7 @@ class Results extends Component {
         resultData,
         this.state.user_id
       );
-      console.log("Response:", response); // Check the response structure
+  
 
       // Handle success
       if (response.type === "POST_RESULT") {
@@ -831,19 +755,186 @@ class Results extends Component {
       // Example: Reset form, close modal, etc.
     }
   };
-
-  // handleSave = list => {
-  //   const updatedData = this.state.combinedData.map(item => {
-  //     if (item.id === list.id) {
-  //       const result = this[`resultRef_${list.id}`]?.value || ""; // Ensure fallback if undefined
-  //       return { ...item, result }; // Update result field
-  //     }
-  //     return item;
-  //   });
-
-  //   this.setState({ combinedData: updatedData });
-  // };
-
+  handleSaveAll = async () => {
+    const { combinedData } = this.state;
+    const { rounds, scheme_id, round_status } = this.props;
+    const id = this.props.match.params.id;
+  
+    if (!combinedData.length) {
+      alert("No results to save.");
+      return;
+    }
+  
+    const confirmation = window.confirm("Are you sure you want to save all results?");
+    if (!confirmation) return;
+  
+    try {
+      for (const list of combinedData) {
+        const resultData = {
+          round_id: id,
+          analyte_id: list.analyte_id,
+          unit_name: list.unit_name,
+          instrument_name: list.instrument_name,
+          method_name: list.method_name,
+          reagent_name: list.reagent_name,
+          result_type: list.result_type,
+          result: this[`resultRef_${list.id}`]?.value || "",
+          rounds: rounds,
+          scheme_id: scheme_id,
+          round_status: round_status,
+          result_status: "Saved",
+        };
+        await this.props.onPostResult(resultData, this.state.user_id);
+      }
+  
+      alert("All results have been saved successfully.");
+    } catch (error) {
+      alert("Failed to save all results. Please try again.");
+    }
+  };
+  
+  handleSubmitAll = async () => {
+    const { combinedData } = this.state;
+    const { rounds, scheme_id, round_status } = this.props;
+    const id = this.props.match.params.id;
+  
+    if (!combinedData.length) {
+      alert("No results to submit.");
+      return;
+    }
+  
+    const confirmation = window.confirm("Are you sure you want to submit all results? This action cannot be undone.");
+    if (!confirmation) return;
+  
+    try {
+      for (const list of combinedData) {
+        const resultData = {
+          round_id: id,
+          analyte_id: list.analyte_id,
+          unit_name: list.unit_name,
+          instrument_name: list.instrument_name,
+          method_name: list.method_name,
+          reagent_name: list.reagent_name,
+          result_type: list.result_type,
+          result: this[`resultRef_${list.id}`]?.value || "",
+          rounds: rounds,
+          scheme_id: scheme_id,
+          round_status: round_status,
+          result_status: "Submitted",
+        };
+        await this.props.onPostResult(resultData, this.state.user_id);
+      }
+  
+      alert("All results have been submitted successfully.");
+      window.location.reload();
+    } catch (error) {
+      alert("Failed to submit all results. Please try again.");
+    }
+  };
+  handleSubmitAll = async () => {
+    const { combinedData } = this.state;
+    const { rounds, scheme_id, round_status } = this.props;
+    const id = this.props.match.params.id;
+  
+    if (!combinedData.length) {
+      alert("No results to submit.");
+      return;
+    }
+  
+    const confirmation = window.confirm("Are you sure you want to submit all results? This action cannot be undone.");
+    if (!confirmation) return;
+  
+    try {
+      for (const list of combinedData) {
+        const resultData = {
+          round_id: id,
+          analyte_id: list.analyte_id,
+          unit_name: list.unit_name,
+          instrument_name: list.instrument_name,
+          method_name: list.method_name,
+          reagent_name: list.reagent_name,
+          result_type: list.result_type,
+          result: this[`resultRef_${list.id}`]?.value || "",
+          rounds: rounds,
+          scheme_id: scheme_id,
+          round_status: round_status,
+          result_status: "Submitted",
+        };
+        await this.props.onPostResult(resultData, this.state.user_id);
+      }
+  
+      alert("All results have been submitted successfully.");
+      window.location.reload();
+    } catch (error) {
+      alert("Failed to submit all results. Please try again.");
+    }
+  };  
+  handleSave = async (list) => {
+    const id = this.props.match.params.id;
+    const { rounds, scheme_id, round_status } = this.props;
+  
+    // Find the corresponding analyte data in combinedData
+    const analyteData = this.state.combinedData.find(
+      (item) => item.id === list.id
+    );
+  
+    // Extract values
+    const unit_name = list.unit_name;
+    const instrument_name = list.instrument_name;
+    const method_name = list.method_name;
+    const reagent_name = list.reagent_name;
+    const result = this[`resultRef_${list.id}`]?.value || "";
+  
+    // Validate required fields
+    if (
+      !unit_name ||
+      !instrument_name ||
+      !method_name ||
+      !reagent_name ||
+      !result
+    ) {
+      alert("Please fill out all required fields.");
+      return;
+    }
+  
+    // Prepare data object
+    const resultData = {
+      round_id: id,
+      analyte_id: analyteData ? analyteData.analyte_id : "", // Ensure analyte_id is included
+      unit_name: list.unit_name,
+      rounds: rounds,
+      instrument_name: list.instrument_name,
+      method_name: list.method_name,
+      reagent_name: list.reagent_name,
+      result_type: list.result_type,
+      result: this[`resultRef_${list.id}`]?.value || "", // Get the value from the ref
+      scheme_id: scheme_id,
+      round_status: round_status,
+      result_status: "Saved", // Change status to 'Saved'
+    };
+  
+    try {
+      const response = await this.props.onPostResult(
+        resultData,
+        this.state.user_id
+      );
+  
+      // Handle success
+      if (response.type === "POST_RESULT") {
+        alert("Are you sure, You want to save this Result");
+        // Update the UI by setting the new result value in state
+        this.setState((prevState) => {
+          const updatedData = prevState.combinedData.map((item) =>
+            item.id === list.id ? { ...item, result: result } : item
+          );
+          return { combinedData: updatedData };
+        });
+      }
+    } catch (error) {
+      alert("Failed to save result. Please try again.");
+    }
+  };
+  
   handleUnitChange = (event, list) => {
     const { value } = event.target;
     const { combinedData } = this.state;
@@ -1017,9 +1108,7 @@ handleInstrumentChange = (event, list) => {
       closing_date,
       round_status,
     } = this.props;
-    // console.log("scheme type", schemeType, schemeName);
-    // Get the first round's details if available
-    // const firstRound = rounds && rounds.length > 0 ? rounds[0] : null;
+  
 
     const pageOptions = {
       sizePerPage: 10,
@@ -1077,48 +1166,34 @@ handleInstrumentChange = (event, list) => {
                   </Col>
                 </strong>
               </Row>
-              <Row
-                className="justify-content-start"
-                style={{ marginLeft: "120px" }}
-              >
-                <Col sm="12" md="12" lg="6" xl="6">
-                  <Button
-                    onClick={this.exportToExcel}
-                    className="mb-3 me-2"
-                    style={{ minWidth: "120px" }} // Ensures a minimum width but allows for expansion
-                  >
-                    Download Results
-                  </Button>
-                  <Button
-                    onClick={this.handlePrint}
-                    className="mb-3 me-2"
-                    style={{ minWidth: "120px" }}
-                  >
-                    Print
-                  </Button>
-                  {round_status === "Report Available" && (
-                    <Link
-                      to={
-                        schemeType === "Quantitative"
-                          ? `/${organization_name}/${id}/${participant_id}/report`
-                          : `/${organization_name}/${id}/${participant_id}/sereology-report` // Change this URL as needed
-                      }
-                      className="me-2"
-                    >
-                      <Button className="mb-3" style={{ minWidth: "120px" }}>
-                        Report
-                      </Button>
-                    </Link>
-                  )}
-                  <Link
-                    to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}
-                  >
-                    <Button className="mb-3" style={{ minWidth: "120px" }}>
-                      History
-                    </Button>
-                  </Link>
-                </Col>
-              </Row>
+              <Row className="justify-content-start">
+  <Col sm="12" md="12" lg="12" xl="12">
+    <div className="d-flex flex-wrap align-items-center gap-3 ms-5">
+      <Button onClick={this.exportToExcel} className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
+        Download Results
+      </Button>
+      <Button onClick={this.handlePrint} className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
+        Print
+      </Button>
+      <Link to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}>
+        <Button className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
+          History
+        </Button>
+      </Link>
+
+      {/* ✅ Save Button with Bootstrap's btn-success */}
+      <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSaveAll}>
+        Save
+      </Button>
+
+      {/* ✅ Submit Button with Bootstrap's btn-success */}
+      <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSubmitAll}>
+        Submit
+      </Button>
+    </div>
+  </Col>
+</Row>
+
 
               <Row className="justify-content-center align-item-center">
                 <Col lg="10">
