@@ -4,13 +4,10 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
-// Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-
-// Import actions
 import { getAnalyteCycle } from "store/databaseofunits/actions";
 import "assets/scss/table.scss";
 
@@ -20,17 +17,17 @@ class CycleAnalyte extends Component {
     this.state = {
       nameFilter: '',
       idFilter: '',
-      selectedCheckboxes: {}, // Track checked checkboxes
+      selectedCheckboxes: {},
       tableKey: 0,
-      CycleAnalyte: [], // Initialize as empty array
+      CycleAnalyte: [],
       feedbackMessage: '',
-      errorMessage: '', // State for error message
+      errorMessage: '',
       feedbackListColumns: [
         {
           text: "ID",
           dataField: "id",
           sort: true,
-          headerFormatter: (column, colIndex) => (
+          headerFormatter: (column) => (
             <>
               <div>
                 <input
@@ -44,13 +41,12 @@ class CycleAnalyte extends Component {
             </>
           ),
           headerStyle: { width: '100px' },
-          style: { width: '100px' },
         },
         {
           dataField: "name",
           text: "Analyte",
           sort: true,
-          headerFormatter: (column, colIndex) => (
+          headerFormatter: (column) => (
             <>
               <div>
                 <input
@@ -63,39 +59,51 @@ class CycleAnalyte extends Component {
               <div>{column.text}</div>
             </>
           ),
-          headerAlign: 'center',
-          align: 'left',
         },
       ],
     };
   }
 
   componentDidMount() {
-    // Fetch data when the component mounts
     this.fetchData();
   }
 
   componentDidUpdate(prevProps) {
+
+    if (this.props.CycleName !== prevProps.CycleName) {
+      console.log("Updated CycleName in Component:", this.props.CycleName);
+      this.setState({ CycleName: this.props.CycleName });
+    }
+
+    // Handle updates for CycleAnalyte
     if (this.props.CycleAnalyte !== prevProps.CycleAnalyte) {
-      // Transform data into the format required for the table
       const transformedData = this.props.CycleAnalyte.map((analyte, index) => ({
-        id: index + 1,  // or any other unique id
+        id: index + 1,
         name: analyte,
       }));
-
-      // Set transformed data in state
-      this.setState({ CycleAnalyte: transformedData });
+      // const checkboxState = {};
+      // transformedData.forEach((item) => {
+      //   checkboxState[item.id] = false;
+      // });
+      this.setState({
+        CycleAnalyte: transformedData,
+        // selectedCheckboxes: checkboxState,
+      });
+    }
+  
+    // Handle updates for CycleName
+    if (this.props.CycleName !== prevProps.CycleName) {
+      console.log("Updated CycleName in Component:", this.props.CycleName);
+      this.setState({ CycleName: this.props.CycleName });
     }
   }
+  
 
   fetchData() {
     const { onGetUnitAnalyteList } = this.props;
     const unitanalyteId = this.props.match.params.id;
-    console.log("Fetching data for ID:", unitanalyteId);
     if (unitanalyteId) {
       onGetUnitAnalyteList(unitanalyteId);
-    } else {
-      console.error("Analyte ID not found in URL parameters");
     }
   }
 
@@ -103,30 +111,25 @@ class CycleAnalyte extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
+  handleCheckboxChange = (id) => {
+    this.setState((prevState) => ({
+      selectedCheckboxes: {
+        ...prevState.selectedCheckboxes,
+        [id]: !prevState.selectedCheckboxes[id],
+      },
+    }));
+  };
+
   filterData = () => {
-    const { CycleAnalyte } = this.state;  // Now using the state instead of props
-    const { nameFilter, idFilter } = this.state;
-
-    if (!Array.isArray(CycleAnalyte)) {
-      return []; // Return empty array if not an array
-    }
-
-    const filteredData = CycleAnalyte.filter(entry => {
-      const name = entry.name ? entry.name.toString().toLowerCase() : "";
-      const id = entry.id ? entry.id.toString() : "";
-
-      return (
-        name.includes(nameFilter.toLowerCase()) &&
-        id.includes(idFilter)
-      );
-    });
-
-    return filteredData;
+    const { CycleAnalyte, nameFilter, idFilter } = this.state;
+    return CycleAnalyte.filter(entry => (
+      entry.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
+      entry.id.toString().includes(idFilter)
+    ));
   };
 
   render() {
     const { CycleAnalyte } = this.state;
-    console.log("Transformed CycleAnalyte", CycleAnalyte);
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     return (
       <React.Fragment>
@@ -135,15 +138,20 @@ class CycleAnalyte extends Component {
             <title>Database Admin | Cycle Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Cycle Analytes List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={`Cycle No: ${this.state.CycleName || "Unknown"}`}
+/>
+
+
             <Row className="justify-content-center">
-              <Col lg="4">
+              <Col lg="8">
                 <Card>
                   <CardBody>
                     <ToolkitProvider
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={CycleAnalyte}
+                      data={this.filterData()}
                       search
                     >
                       {toolkitprops => (
@@ -155,12 +163,11 @@ class CycleAnalyte extends Component {
                                   key={this.state.tableKey}
                                   {...toolkitprops.baseProps}
                                   defaultSorted={defaultSorted}
-                                  classes={"table align-middle table-hover"}
+                                  classes="table align-middle table-hover"
                                   bordered={false}
-                                  striped={true}
-                                  headerWrapperClasses={"table-light"}
+                                  striped
+                                  headerWrapperClasses="table-light"
                                   responsive
-                                  data={this.filterData()}
                                 />
                               </div>
                             </Col>
@@ -182,23 +189,30 @@ class CycleAnalyte extends Component {
 CycleAnalyte.propTypes = {
   match: PropTypes.object,
   CycleAnalyte: PropTypes.array,
+  CycleName: PropTypes.object,
   history: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
-  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
+  const CycleAnalyte = state.CycleAnalyte?.CycleAnalyte || [];
+  const CycleName = state.CycleAnalyte?.CycleName || "Unknown";
+
+  console.log("Redux State - CycleAnalyte:", CycleAnalyte);
+  console.log("Redux State - CycleName:", CycleName); // Add log to check the value
+
   return {
-    CycleAnalyte: Array.isArray(state.CycleAnalyte.CycleAnalyte) ? state.CycleAnalyte.CycleAnalyte : [], 
+    CycleAnalyte,
+    CycleName,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+
+const mapDispatchToProps = (dispatch) => ({
   onGetUnitAnalyteList: (id) => dispatch(getAnalyteCycle(id)),
-});
+}); 
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(CycleAnalyte));
-

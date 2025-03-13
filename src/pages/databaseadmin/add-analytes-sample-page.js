@@ -234,7 +234,10 @@ class SchemeAddAnalyte extends Component {
             <title>Database Admin | Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Analytes List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={`Analytes for ${this.props.SampleName || "Unknown Sample"}`}
+/>
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -304,14 +307,16 @@ SchemeAddAnalyte.propTypes = {
   SampleAnalyteList: PropTypes.array,
   onGetSchemeAnalytes: PropTypes.func,
   ongetAnalytelist: PropTypes.func,
+  SampleName: PropTypes.object,
   onAddNewSchemeAnalytes: PropTypes.func,
   onUpdateSchemeAnalytes: PropTypes.func, 
   history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  ListUnit: state.ListUnit?.ListUnit,
-  SampleAnalyteList: state.ListUnit?.SampleAnalyteList,
+  ListUnit: state.ListUnit?.ListUnit || [],
+  SampleAnalyteList: state.ListUnit?.SampleAnalyteList || [],
+  SampleName: state.ListUnit?.SampleName || "Unknown Sample", // Map SampleName
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -325,3 +330,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(SchemeAddAnalyte));
+

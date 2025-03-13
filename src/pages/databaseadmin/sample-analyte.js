@@ -76,6 +76,7 @@ class SampleListAnalytes extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    // Handle updates for SampleListAnalyte
     if (this.props.SampleListAnalyte !== prevProps.SampleListAnalyte) {
       console.log("New Props SampleListAnalyte:", this.props.SampleListAnalyte);
       
@@ -89,7 +90,14 @@ class SampleListAnalytes extends Component {
         this.setState({ SampleListAnalyte: transformedData, tableKey: this.state.tableKey + 1 });
       }
     }
+  
+    // Handle updates for SampleName
+    if (this.props.SampleName !== prevProps.SampleName) {
+      console.log("New SampleName:", this.props.SampleName);
+      this.setState({ SampleName: this.props.SampleName });
+    }
   }
+  
   
   
 fetchData() {
@@ -141,7 +149,11 @@ fetchData() {
             <title>Database Admin | Sample Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Sample Analytes List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={`Analytes for ${this.state.SampleName || "Unknown Sample"}`}
+/>
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -189,11 +201,22 @@ SampleListAnalytes.propTypes = {
   match: PropTypes.object,
   SampleListAnalyte: PropTypes.array,
   history: PropTypes.object,
+  SampleName: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
-const mapStateToProps = (state) => ({
-  SampleListAnalyte: state.ListUnit.SampleListAnalyte, // Ensure correct key
-});
+const mapStateToProps = (state) => {
+  const SampleListAnalyte = state.ListUnit?.SampleListAnalyte || [];
+  const SampleName = state.ListUnit?.SampleName || "Unknown Sample";
+
+  // Debugging logs
+  console.log("Redux State - SampleListAnalyte:", SampleListAnalyte);
+  console.log("Redux State - SampleName:", SampleName);
+
+  return {
+    SampleListAnalyte,
+    SampleName,
+  };
+};
 
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -204,3 +227,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(SampleListAnalytes));
+

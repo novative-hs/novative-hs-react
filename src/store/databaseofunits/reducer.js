@@ -37,16 +37,20 @@ import {
   ADD_NEW_SAMPLE_ANALYTE_FAIL,
   UPDATE_SAMPLE_ANALYTE_SUCCESS,
   UPDATE_SAMPLE_ANALYTE_FAIL,
-  GET_ANALYTESSAMPLE_SUCCESS,
-  GET_ANALYTESSAMPLE_FAIL,
-  GET_INSTRUMENT_DETAIL_SUCCESS,
-  GET_INSTRUMENT_DETAIL_FAIL,
+
+  /////////////////////////////////
   GET_INSTRUMENT_ANALYTE_LIST_SUCCESS,
   GET_INSTRUMENT_ANALYTE_LIST_FAIL,
   ADD_NEW_INSTRUMENT_ANALYTE_SUCCESS,
   ADD_NEW_INSTRUMENT_ANALYTE_FAIL,
   UPDATE_INSTRUMENT_ANALYTE_SUCCESS,
   UPDATE_INSTRUMENT_ANALYTE_FAIL,
+  ///////////////////////////////////////
+  GET_ANALYTESSAMPLE_SUCCESS,
+  GET_ANALYTESSAMPLE_FAIL,
+  GET_INSTRUMENT_DETAIL_SUCCESS,
+  GET_INSTRUMENT_DETAIL_FAIL,
+
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -54,10 +58,12 @@ const INIT_STATE = {
   AddSchemeAnalyte: [],
   schemeanalyte: [],
   SampleAnalyteList: [],
+  InstrumentAnalyteList: [],
   CycleAnalyte: [],
-  EquipmentData: [],
-  SampleListAnalytes: [],
   InstrumentDetail: [],
+  EquipmentData: [],
+  InstrumentDetail: {},
+  SampleListAnalytes: [],
   ListUnit: [],
   AddUnits: [],
   unit: [],
@@ -104,7 +110,7 @@ const ListUnit = (state = INIT_STATE, action) => {
     case UPDATE_NEW_INSTRUMENT_TYPE_SUCCESS:
       return {
         ...state,
-        ListUnit: state.ListUnit.map((unit) =>
+        ListUnit: state.ListUnit.map(unit =>
           unit.id.toString() === action.payload.id.toString()
             ? { unit, ...action.payload }
             : unit
@@ -132,7 +138,7 @@ const ListUnit = (state = INIT_STATE, action) => {
     case UPDATE_NEW_INSTRUMENT_TYPE_SUCCESS:
       return {
         ...state,
-        ListUnit: state.ListUnit.map((unit) =>
+        ListUnit: state.ListUnit.map(unit =>
           unit.id.toString() === action.payload.id.toString()
             ? { unit, ...action.payload }
             : unit
@@ -149,7 +155,7 @@ const ListUnit = (state = INIT_STATE, action) => {
       return {
         ...state,
         ListUnit: state.ListUnit.filter(
-          (unit) => unit.id.toString() !== action.payload.id.toString()
+          unit => unit.id.toString() !== action.payload.id.toString()
         ),
       };
 
@@ -174,17 +180,22 @@ const ListUnit = (state = INIT_STATE, action) => {
 
     /////////////analyte for scheme
     case GET_ANALYTEFORSCHEME_LIST_SUCCESS:
-      console.log("Data received in success action:", action.payload); // Log the action.payload
+      console.log("Data received in success action:", action.payload); // Log the action payload
+      console.log("Reducer - Updated State with SchemeName:", action.payload.SchemeName);
       return {
         ...state,
-        ListUnit: action.payload,
+        ListUnit: action.payload.analytes || [], // Store the analytes in ListUnit
+        SchemeName: action.payload.SchemeName || "Unknown", // Store the scheme name separately
       };
-
+    
     case GET_ANALYTEFORSCHEME_LIST_FAIL:
       return {
         ...state,
+        ListUnit: [], // Clear ListUnit on failure
+        SchemeName: "Unknown", // Reset SchemeName on failure
         error: action.payload,
       };
+    
 
     case ADD_NEW_ANALYTE_LIST_SUCCESS:
       return {
@@ -200,7 +211,7 @@ const ListUnit = (state = INIT_STATE, action) => {
     case UPDATE_NEW_ANALYTE_LIST_SUCCESS:
       return {
         ...state,
-        ListUnit: state.ListUnit.map((unit) =>
+        ListUnit: state.ListUnit.map(unit =>
           unit.id.toString() === action.payload.id.toString()
             ? { unit, ...action.payload }
             : unit
@@ -216,7 +227,7 @@ const ListUnit = (state = INIT_STATE, action) => {
       return {
         ...state,
         ListUnit: state.ListUnit.filter(
-          (unit) => unit.id.toString() !== action.payload.id.toString()
+          unit => unit.id.toString() !== action.payload.id.toString()
         ),
       };
 
@@ -228,16 +239,23 @@ const ListUnit = (state = INIT_STATE, action) => {
 
     // Scheme Analytes
     case GET_SCHEMEANALYTE_LIST_SUCCESS:
+      console.log("Reducer - Updated State with Payload:", action.payload);
       return {
         ...state,
-        SchemeAnalyteList: action.payload.analytes, // Update to handle reagents array
+        SchemeAnalyteList: Array.isArray(action.payload.analytes) ? action.payload.analytes : [],
+        SchemeName: action.payload.SchemeName || "Unknown", // Set SchemeName as a string
+        error: null,
       };
-
+    
     case GET_SCHEMEANALYTE_LIST_FAIL:
       return {
         ...state,
+        SchemeAnalyteList: [],
+        SchemeName: "Unknown", // Reset SchemeName on failure
         error: action.payload,
       };
+    
+
     case ADD_NEW_SCHEMEANALYTE_SUCCESS:
       return {
         ...state,
@@ -252,7 +270,7 @@ const ListUnit = (state = INIT_STATE, action) => {
     case UPDATE_SCHEMEANALYTE_SUCCESS:
       return {
         ...state,
-        SchemeAnalyteList: state.SchemeAnalyteList.map((schemeanalyte) =>
+        SchemeAnalyteList: state.SchemeAnalyteList.map(schemeanalyte =>
           schemeanalyte.id.toString() === action.payload.id.toString()
             ? { schemeanalyte, ...action.payload }
             : schemeanalyte
@@ -267,86 +285,41 @@ const ListUnit = (state = INIT_STATE, action) => {
 
     ///// Analytes Associated With Cycle
     case GET_ANALYTESCYCLES_SUCCESS:
-      console.log("ANALYTESCYCLES:", action.payload);
-      return {
-        ...state,
-        CycleAnalyte: action.payload, // Update to handle units array
-      };
+  console.log("ANALYTESCYCLES:", action.payload);
+  return {
+    ...state,
+    CycleAnalyte: action.payload.analytes || [], // Store analytes
+    CycleName: action.payload.CycleName || "Unknown", // Store cycle name
+  };
 
-    case GET_ANALYTESCYCLES_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      };
+case GET_ANALYTESCYCLES_FAIL:
+  return {
+    ...state,
+    CycleAnalyte: [],
+    CycleName: "Unknown", // Reset cycle name on failure
+    error: action.payload,
+  };
+
 
     // Sample Analytes
     case GET_SAMPLE_ANALYTE_LIST_SUCCESS:
-      return {
-        ...state,
-        SampleAnalyteList: action.payload.analytes, // Update to handle reagents array
-      };
+  console.log("Reducer - Payload for Sample Analyte:", action.payload);
+  return {
+    ...state,
+    SampleAnalyteList: action.payload.analytes || [], // Save analytes
+    SampleName: action.payload.sampleName || "Unknown Sample", // Save sample name
+  };
 
-    case GET_SAMPLE_ANALYTE_LIST_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      };
-    case ADD_NEW_SAMPLE_ANALYTE_SUCCESS:
-      return {
-        ...state,
-        AddSampleAnalyte: [...state.AddSampleAnalyte, action.payload.data],
-      };
+case GET_SAMPLE_ANALYTE_LIST_FAIL:
+  console.error("Reducer - Error fetching sample analytes:", action.payload);
+  return {
+    ...state,
+    SampleAnalyteList: [], // Reset SampleAnalyteList on failure
+    SampleName: "Unknown Sample", // Reset SampleName on failure
+    error: action.payload,
+  };
 
-    case ADD_NEW_SAMPLE_ANALYTE_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      };
-    case UPDATE_SAMPLE_ANALYTE_SUCCESS:
-      return {
-        ...state,
-        SampleAnalyteList: state.SampleAnalyteList.map((schemeanalyte) =>
-          schemeanalyte.id.toString() === action.payload.id.toString()
-            ? { schemeanalyte, ...action.payload }
-            : schemeanalyte
-        ),
-      };
-
-    case UPDATE_SAMPLE_ANALYTE_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      };
-
-    case GET_ANALYTESSAMPLE_SUCCESS:
-      console.log("Reducer - SampleListAnalyte:", action.payload);
-      return {
-        ...state,
-        SampleListAnalyte: action.payload,
-      };
-    case GET_ANALYTESSAMPLE_FAIL:
-      console.error(
-        "Reducer - Error fetching sample analytes:",
-        action.payload
-      );
-      return {
-        ...state,
-        error: action.payload,
-      };
-
-    case GET_INSTRUMENT_DETAIL_SUCCESS:
-      console.log("IIIIIIIIINSTRUMENTDETAIL:", action.payload);
-      return {
-        ...state,
-        InstrumentDetail: action.payload, // Update to handle units array
-      };
-
-    case GET_INSTRUMENT_DETAIL_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      };
-
+    /////////////////////////////////////////////////////
     case GET_INSTRUMENT_ANALYTE_LIST_SUCCESS:
       return {
         ...state,
@@ -376,15 +349,74 @@ const ListUnit = (state = INIT_STATE, action) => {
     case UPDATE_INSTRUMENT_ANALYTE_SUCCESS:
       return {
         ...state,
-        InstrumentAnalyteList: state.InstrumentAnalyteList.map(
-          (schemeanalyte) =>
-            schemeanalyte.id.toString() === action.payload.id.toString()
-              ? { schemeanalyte, ...action.payload }
-              : schemeanalyte
+        InstrumentAnalyteList: state.InstrumentAnalyteList.map(schemeanalyte =>
+          schemeanalyte.id.toString() === action.payload.id.toString()
+            ? { schemeanalyte, ...action.payload }
+            : schemeanalyte
         ),
       };
 
     case UPDATE_INSTRUMENT_ANALYTE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    //////////////////////////////////////////
+    case ADD_NEW_SAMPLE_ANALYTE_SUCCESS:
+      return {
+        ...state,
+        AddSampleAnalyte: [...state.AddSampleAnalyte, action.payload.data],
+      };
+
+    case ADD_NEW_SAMPLE_ANALYTE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case UPDATE_SAMPLE_ANALYTE_SUCCESS:
+      return {
+        ...state,
+        SampleAnalyteList: state.SampleAnalyteList.map(schemeanalyte =>
+          schemeanalyte.id.toString() === action.payload.id.toString()
+            ? { schemeanalyte, ...action.payload }
+            : schemeanalyte
+        ),
+      };
+
+    case UPDATE_SAMPLE_ANALYTE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+      case GET_ANALYTESSAMPLE_SUCCESS:
+        console.log("Reducer - SampleListAnalyte:", action.payload);
+        return {
+          ...state,
+          SampleListAnalyte: action.payload.analytes || [], // Extract analytes
+          SampleName: action.payload.sampleName || "Unknown Sample", // Extract sample name
+        };
+      
+      case GET_ANALYTESSAMPLE_FAIL:
+        console.error(
+          "Reducer - Error fetching sample analytes:",
+          action.payload
+        );
+        return {
+          ...state,
+          SampleListAnalyte: [], // Reset SampleListAnalyte on failure
+          SampleName: "Unknown Sample", // Reset SampleName on failure
+          error: action.payload,
+        };
+      
+    case GET_INSTRUMENT_DETAIL_SUCCESS:
+      console.log("IIIIIIIIINSTRUMENTDETAIL:", action.payload);
+      return {
+        ...state,
+        InstrumentDetail: action.payload, // Update to handle units array
+      };
+
+    case GET_INSTRUMENT_DETAIL_FAIL:
       return {
         ...state,
         error: action.payload,
@@ -396,3 +428,4 @@ const ListUnit = (state = INIT_STATE, action) => {
 };
 
 export default ListUnit;
+

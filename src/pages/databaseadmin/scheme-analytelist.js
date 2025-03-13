@@ -23,6 +23,7 @@ class SchemeListAnalyte extends Component {
     this.state = {
       nameFilter: '',
       idFilter: '',
+      // SchemeList: [],
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
       SchemeAnalyteList: [],
@@ -80,6 +81,10 @@ class SchemeListAnalyte extends Component {
     this.fetchData();
   }
   componentDidUpdate(prevProps) {
+    if (this.props.SchemeName !== prevProps.SchemeName) {
+      console.log("Updated SchemeName from Props:", this.props.SchemeName);
+      this.setState({ SchemeName: this.props.SchemeName });
+    }
     if (this.props.SchemeAnalyteList !== prevProps.SchemeAnalyteList) {
       console.log("New Props SchemeAnalyte:", this.props.SchemeAnalyteList);
       
@@ -94,7 +99,7 @@ class SchemeListAnalyte extends Component {
 
   
         console.log("Transformed Data:", transformedData); // Debugging log
-        this.setState({ SchemeAnalyteList: transformedData, tableKey: this.state.tableKey + 1 });
+        this.setState({ SchemeAnalyteList: transformedData,  SchemeName: this.props.SchemeName || "Unknown", tableKey: this.state.tableKey + 1 });
       }
     }
   }
@@ -148,7 +153,10 @@ class SchemeListAnalyte extends Component {
             <title>Database Admin | Scheme Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Scheme Analytes List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={`Analytes for ${this.state.SchemeName || "Unknown"}`}
+/>
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -195,15 +203,20 @@ class SchemeListAnalyte extends Component {
 SchemeListAnalyte.propTypes = {
   match: PropTypes.object,
   SchemeAnalyteList: PropTypes.array,
+  // SchemeList: PropTypes.array,
+  SchemeName: PropTypes.array,
   history: PropTypes.object,
   // onGetSchemeAnalyte: PropTypes.func,
   onGetUnitAnalyteList: PropTypes.func,
 };
 const mapStateToProps = (state) => {
   const SchemeAnalyteList = state.ListUnit?.SchemeAnalyteList || [];
-  console.log('SchemeAnalyteList from Redux State:', SchemeAnalyteList); // Log only SchemeAnalyte
+  const SchemeName = state.ListUnit?.SchemeName  || "Unknown"; // Fetch SchemeName from Redux state
+  console.log('SchemeAnalyteList from Redux State:', SchemeAnalyteList);
+  console.log('SchemeName from Redux State:', SchemeName); // Log SchemeName // Log only SchemeAnalyte
   return {
     SchemeAnalyteList,
+    SchemeName, // Add SchemeName to props
   };
 };
 

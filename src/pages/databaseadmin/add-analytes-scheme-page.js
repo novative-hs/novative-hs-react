@@ -1,3 +1,5 @@
+
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -104,7 +106,19 @@ class SchemeAddAnalyte extends Component {
     if (prevProps.SchemeAnalyteList !== this.props.SchemeAnalyteList) {
       this.updateSelectedCheckboxes();
     }
+  
+    // Check if SchemeName has changed
+    if (this.props.SchemeName !== prevProps.SchemeName) {
+      console.log("Updated SchemeName in Component:", this.props.SchemeName);
+      this.setState({ SchemeName: this.props.SchemeName });
+    }
+  
+    // Check if ListUnit has changed (optional)
+    if (this.props.ListUnit !== prevProps.ListUnit) {
+      console.log("Updated ListUnit in Component:", this.props.ListUnit);
+    }
   }
+  
 
   fetchData()  {
     const { ongetAnalyteforSchemelist, onGetSchemeAnalytes } = this.props;
@@ -130,15 +144,13 @@ class SchemeAddAnalyte extends Component {
   }
 
   updateSelectedCheckboxes() {
-    const { SchemeAnalyteList } = this.props;
     const selectedCheckboxes = {};
-  
-    SchemeAnalyteList.forEach(analyte => {
-      selectedCheckboxes[analyte.id] = true; // Mark as checked
+    this.props.SchemeAnalyteList.forEach(id => {
+      selectedCheckboxes[id] = true; // Assuming SchemeAnalyteList is an array of IDs
     });
-  
     this.setState({ selectedCheckboxes });
   }
+
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
     const { onUpdateSchemeAnalytes, match, ListUnit, history } = this.props;
@@ -174,6 +186,7 @@ class SchemeAddAnalyte extends Component {
       console.error("Analyte ID not found");
     }
   };
+
   setFeedbackMessage = (message) => {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
@@ -191,10 +204,11 @@ class SchemeAddAnalyte extends Component {
     this.setState(prevState => ({
       selectedCheckboxes: {
         ...prevState.selectedCheckboxes,
-        [id]: !prevState.selectedCheckboxes[id],
-      },
+        [id]: !prevState.selectedCheckboxes[id]
+      }
     }));
   };
+
   filterData = () => {
     const { ListUnit } = this.props;
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
@@ -237,7 +251,10 @@ class SchemeAddAnalyte extends Component {
             <title>Database Admin | Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Analytes List" />
+             <Breadcrumbs
+              title="List"
+              breadcrumbItem={`Analytes for ${this.state.SchemeName || "Unknown"}`}
+            />
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -305,6 +322,7 @@ SchemeAddAnalyte.propTypes = {
   match: PropTypes.object,
   ListUnit: PropTypes.array,
   SchemeAnalyteList: PropTypes.array,
+  SchemeName: PropTypes.array,
   onGetSchemeAnalytes: PropTypes.func,
   ongetAnalyteforSchemelist: PropTypes.func,
   onAddNewSchemeAnalytes: PropTypes.func,
@@ -312,10 +330,23 @@ SchemeAddAnalyte.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  ListUnit: state.ListUnit?.ListUnit,
-  SchemeAnalyteList: state.ListUnit?.SchemeAnalyteList,
-});
+const mapStateToProps = (state) => {
+  const ListUnit = state.ListUnit?.ListUnit || [];
+  const SchemeAnalyteList = state.ListUnit?.SchemeAnalyteList || [];
+  const SchemeName = state.ListUnit?.SchemeName || "Unknown";
+
+  // Debug logs
+  console.log("Redux State - ListUnit:", ListUnit);
+  console.log("Redux State - SchemeAnalyteList:", SchemeAnalyteList);
+  console.log("Redux State - SchemeName:", SchemeName);
+
+  return {
+    ListUnit,
+    SchemeAnalyteList,
+    SchemeName, // Map SchemeName
+  };
+};
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetSchemeAnalytes: id => dispatch(getSchemeAnalytelist(id)),
