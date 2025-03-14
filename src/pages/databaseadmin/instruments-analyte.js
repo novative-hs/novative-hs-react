@@ -71,20 +71,23 @@ class InstrumentAnalyte extends Component {
   }
 
   componentDidMount() {
-    // Fetch data when the component mounts
+    this.setState({ InstrumentAnalyte: [] }); // Reset data
     this.fetchData();
   }
-
+  
   fetchData() {
     const { onGetUnitAnalyteList } = this.props;
     const unitanalyteId = this.props.match.params.id;
-    console.log("Fetching data for ID:", unitanalyteId);
+  
+    this.setState({ InstrumentAnalyte: [] }); // Clear previous data
+  
     if (unitanalyteId) {
       onGetUnitAnalyteList(unitanalyteId);
     } else {
       console.error("Analyte ID not found in URL parameters");
     }
   }
+  
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
@@ -173,11 +176,12 @@ InstrumentAnalyte.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
+  console.log('Redux State:', state);
   return {
-    InstrumentAnalyte: state.ListUnits.InstrumentAnalyte || []
+    InstrumentAnalyte: state.ListUnits.InstrumentAnalyte ? [...state.ListUnits.InstrumentAnalyte] : []
   };
 };
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getAnalyteInstrument(id)),
