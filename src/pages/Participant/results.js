@@ -260,38 +260,7 @@ class Results extends Component {
                 </div>
               ),
             },
-            
-//         {
-//           formatter: (cellContent, list) => {
-//             const { round_status } = this.props; // Destructure round_status from props
-
-//             return (
-//               <div className="d-flex flex-row align-items-start">
-//   {/* Show buttons only if round_status is "Open" and result_status is not "Submitted" */}
-//   {round_status && list.result_status !== "Submitted" && round_status === "Open" ? (
-//     <>
-//       {/* Save Button (Replacing Edit) */}
-//       <button
-//         onClick={() => this.handleSave(list)} // ✅ Call handleSave instead of handleUpdate
-//         className="btn btn-warning me-2"
-//       >
-//         Save
-//       </button>
-
-//       {/* Submit Button */}
-//       <button
-//         onClick={() => this.handleSubmit(list)}
-//         className="btn btn-success"
-//       >
-//         Submit
-//       </button>
-//     </>
-//   ) : null}
-// </div>
-
-//             );
-//           },
-//         },
+     
       ];
     } else if (schemeType === "Qualitative") {
       return [
@@ -692,81 +661,7 @@ class Results extends Component {
       // Example: Reset form, close modal, etc.
     }
   };
-  handleSubmit = async list => {
-    const id = this.props.match.params.id;
-    const { rounds, scheme_id, round_status } = this.props;
 
-    // Find the corresponding analyte data in combinedData
-    const analyteData = this.state.combinedData.find(
-      item => item.id === list.id
-    );
-
-    // Extract values
-    const unit_name = list.unit_name;
-    const instrument_name = list.instrument_name;
-    const method_name = list.method_name;
-    const reagent_name = list.reagent_name;
-    const result = this[`resultRef_${list.id}`]?.value || "";
-
-    // Validate required fields
-    if (
-      !unit_name ||
-      !instrument_name ||
-      !method_name ||
-      !reagent_name ||
-      !result
-    ) {
-      alert("Please fill out all required fields.");
-      return; // Prevent form submission
-    }
-    // Show confirmation prompt to the user
-    const confirmation = window.confirm(
-      "Are you sure you want to Submit the result? This action cannot be undone."
-    );
-
-    if (!confirmation) {
-      // If user clicks 'Cancel', exit the function
-      return;
-    }
-    const resultData = {
-      round_id: id,
-      analyte_id: analyteData ? analyteData.analyte_id : "", // Ensure analyte_id is included
-      // analyte_name: analyteData ? analyteData.analyte_name : "", // Ensure analyte_name is included
-      unit_name: list.unit_name,
-      result_type: list.result_type,
-      instrument_name: list.instrument_name,
-      method_name: list.method_name,
-      reagent_name: list.reagent_name,
-      result: this[`resultRef_${list.id}`]?.value || "", // Get the value from the ref
-      rounds: rounds,
-      scheme_id: scheme_id,
-      round_status: round_status,
-      result_status: "Submitted",
-    };
-
-    try {
-      const response = await this.props.onPostResult(
-        resultData,
-        this.state.user_id
-      );
-  
-
-      // Handle success
-      if (response.type === "POST_RESULT") {
-        alert("Result submitted successfully.");
-        window.location.reload();
-        // Optionally, you might want to refresh data or redirect
-        // this.props.onRefreshData(); // Example method to refresh data
-        // this.props.history.push('/success-page'); // Example redirection
-      }
-    } catch (error) {
-      // Handle error
-      alert("Failed to submit result. Please try again.");
-    } finally {
-      // Code to run after try/catch
-      // Example: Reset form, close modal, etc.
-    }
-  };
   handleSaveAll = async () => {
     const { combinedData } = this.state;
     const { rounds, scheme_id, round_status } = this.props;
@@ -843,109 +738,8 @@ class Results extends Component {
       alert("Failed to submit all results. Please try again.");
     }
   };
-  handleSubmitAll = async () => {
-    const { combinedData } = this.state;
-    const { rounds, scheme_id, round_status } = this.props;
-    const id = this.props.match.params.id;
-  
-    if (!combinedData.length) {
-      alert("No results to submit.");
-      return;
-    }
-  
-    const confirmation = window.confirm("Are you sure you want to submit all results? This action cannot be undone.");
-    if (!confirmation) return;
-  
-    try {
-      for (const list of combinedData) {
-        const resultData = {
-          round_id: id,
-          analyte_id: list.analyte_id,
-          unit_name: list.unit_name,
-          instrument_name: list.instrument_name,
-          method_name: list.method_name,
-          reagent_name: list.reagent_name,
-          result_type: list.result_type,
-          result: this[`resultRef_${list.id}`]?.value || "",
-          rounds: rounds,
-          scheme_id: scheme_id,
-          round_status: round_status,
-          result_status: "Submitted",
-        };
-        await this.props.onPostResult(resultData, this.state.user_id);
-      }
-  
-      alert("All results have been submitted successfully.");
-      window.location.reload();
-    } catch (error) {
-      alert("Failed to submit all results. Please try again.");
-    }
-  };  
-  handleSave = async (list) => {
-    const id = this.props.match.params.id;
-    const { rounds, scheme_id, round_status } = this.props;
-  
-    // Find the corresponding analyte data in combinedData
-    const analyteData = this.state.combinedData.find(
-      (item) => item.id === list.id
-    );
-  
-    // Extract values
-    const unit_name = list.unit_name;
-    const instrument_name = list.instrument_name;
-    const method_name = list.method_name;
-    const reagent_name = list.reagent_name;
-    const result = this[`resultRef_${list.id}`]?.value || "";
-  
-    // Validate required fields
-    if (
-      !unit_name ||
-      !instrument_name ||
-      !method_name ||
-      !reagent_name ||
-      !result
-    ) {
-      alert("Please fill out all required fields.");
-      return;
-    }
-  
-    // Prepare data object
-    const resultData = {
-      round_id: id,
-      analyte_id: analyteData ? analyteData.analyte_id : "", // Ensure analyte_id is included
-      unit_name: list.unit_name,
-      rounds: rounds,
-      instrument_name: list.instrument_name,
-      method_name: list.method_name,
-      reagent_name: list.reagent_name,
-      result_type: list.result_type,
-      result: this[`resultRef_${list.id}`]?.value || "", // Get the value from the ref
-      scheme_id: scheme_id,
-      round_status: round_status,
-      result_status: "Saved", // Change status to 'Saved'
-    };
-  
-    try {
-      const response = await this.props.onPostResult(
-        resultData,
-        this.state.user_id
-      );
-  
-      // Handle success
-      if (response.type === "POST_RESULT") {
-        alert("Are you sure, You want to save this Result");
-        // Update the UI by setting the new result value in state
-        this.setState((prevState) => {
-          const updatedData = prevState.combinedData.map((item) =>
-            item.id === list.id ? { ...item, result: result } : item
-          );
-          return { combinedData: updatedData };
-        });
-      }
-    } catch (error) {
-      alert("Failed to save result. Please try again.");
-    }
-  };
+
+ 
   
   handleUnitChange = (event, list) => {
     const { value } = event.target;
@@ -1193,19 +987,20 @@ handleInstrumentChange = (event, list) => {
         </Button>
       </Link>
 
-      {/* ✅ Save Button with Bootstrap's btn-success */}
-      <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSaveAll}>
-        Save
-      </Button>
-
-      {/* ✅ Submit Button with Bootstrap's btn-success */}
-      <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSubmitAll}>
-        Submit
-      </Button>
+      {/* Condition to hide Save & Submit if ALL results are submitted */}
+      {!(this.state.combinedData.length > 0 && this.state.combinedData.every(data => data.result_status === "Submitted")) && (
+        <>
+          <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSaveAll}>
+            Save
+          </Button>
+          <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSubmitAll}>
+            Submit
+          </Button>
+        </>
+      )}
     </div>
   </Col>
 </Row>
-
 
               <Row className="justify-content-center align-item-center">
                 <Col lg="10">
