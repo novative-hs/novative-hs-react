@@ -458,7 +458,6 @@ class Results extends Component {
       onGetInstrumentList,
       onGetReagents,
       onGetResultsList,
-      ResultList,
     } = this.props;
   
     const id = this.props.match.params.id;
@@ -469,14 +468,8 @@ class Results extends Component {
     onGetMethodsList(userId);
     onGetReagents(userId);
     onGetInstrumentList(userId);
-    onGetResultsList(id);
-  
-    // Log the first instrument if available after fetching
-    setTimeout(() => {
-     
-    }, 1000);
+    onGetResultsList(id); // No `.then()` since it's not a Promise
   }
-  
   componentDidUpdate(prevProps) {
     const {
       SchemeAnalytesList,
@@ -489,26 +482,27 @@ class Results extends Component {
       result_type,
     } = this.props;
   
-  // Log previous and current props
-
-
-   if (prevProps.Instrument !== this.props.Instrument) {
-   
-  }
+    // Log previous and current props
+    console.log("Prev Props:", prevProps);
+    console.log("Current Props:", this.props);
   
-   if (
-    prevProps.Instrument !== this.props.Instrument &&
-    this.props.Instrument.length > 0
-  ) {
-   
-    this.setState({ Instrument: this.props.Instrument });
-  }
-
-  // Log if data gets removed
-  if (prevProps.Instrument.length > 0 && this.props.Instrument.length === 0) {
-    
-  }
+    if (prevProps.Instrument !== this.props.Instrument) {
+      console.log("Instrument list changed");
+    }
   
+    if (
+      prevProps.Instrument !== this.props.Instrument &&
+      this.props.Instrument.length > 0
+    ) {
+      this.setState({ Instrument: this.props.Instrument });
+    }
+  
+    // Log if data gets removed
+    if (prevProps.Instrument.length > 0 && this.props.Instrument.length === 0) {
+      console.log("All Instruments removed");
+    }
+  
+    // Detect any data changes
     const dataChanged = [
       prevProps.SchemeAnalytesList !== SchemeAnalytesList,
       prevProps.ListUnits !== ListUnits,
@@ -540,6 +534,13 @@ class Results extends Component {
         },
         this.combineData
       );
+    }
+  
+    // Update combinedData when ResultList changes
+    if (prevProps.ResultList !== this.props.ResultList) {
+      if (this.props.ResultList && this.props.ResultList.length > 0) {
+        this.setState({ combinedData: this.props.ResultList });
+      }
     }
   }
   
@@ -603,7 +604,18 @@ class Results extends Component {
     // Update the state with combined data
     this.setState({ combinedData });
   };
-
+  // fetchSavedResults = async () => {
+  //   const id = this.props.match.params.id; // Round ID
+  //   try {
+  //     const response = await this.props.onGetResultsList(id, this.state.user_id); 
+  //     if (response && response.data) {
+  //       this.setState({ combinedData: response.data });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching saved results:", error);
+  //   }
+  // };
+  
   handleUpdate = async list => {
     const id = this.props.match.params.id;
     const { rounds, scheme_id, round_status } = this.props;

@@ -243,7 +243,7 @@ const ListUnit = (state = INIT_STATE, action) => {
       return {
         ...state,
         SchemeAnalyteList: Array.isArray(action.payload.analytes) ? action.payload.analytes : [],
-        SchemeName: action.payload.schemeName || "Unknown", // Set SchemeName as a string
+        SchemeName: action.payload.SchemeName || "Unknown", // Set SchemeName as a string
         error: null,
       };
     
