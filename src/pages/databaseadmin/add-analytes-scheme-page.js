@@ -99,13 +99,30 @@ class SchemeAddAnalyte extends Component {
     this.fetchData();
   }
 
+  // componentDidUpdate(prevProps) {
+  //   // Update selectedCheckboxes when SchemeAnalyteList changes
+  //   if (prevProps.SchemeAnalyteList !== this.props.SchemeAnalyteList) {
+  //     this.updateSelectedCheckboxes();
+  //   }
+    
+  // }
   componentDidUpdate(prevProps) {
     // Update selectedCheckboxes when SchemeAnalyteList changes
     if (prevProps.SchemeAnalyteList !== this.props.SchemeAnalyteList) {
       this.updateSelectedCheckboxes();
     }
+  
+    // Check if SchemeName has changed
+    if (this.props.SchemeName !== prevProps.SchemeName) {
+      console.log("Updated SchemeName in Component:", this.props.SchemeName);
+      this.setState({ SchemeName: this.props.SchemeName });
+    }
+  
+    // Check if ListUnit has changed (optional)
+    if (this.props.ListUnit !== prevProps.ListUnit) {
+      console.log("Updated ListUnit in Component:", this.props.ListUnit);
+    }
   }
-
   fetchData()  {
     const { ongetAnalyteforSchemelist, onGetSchemeAnalytes } = this.props;
     const schemeId = this.props.match.params.id;
@@ -139,6 +156,7 @@ class SchemeAddAnalyte extends Component {
   
     this.setState({ selectedCheckboxes });
   }
+  
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
     const { onUpdateSchemeAnalytes, match, ListUnit, history } = this.props;
@@ -174,6 +192,16 @@ class SchemeAddAnalyte extends Component {
       console.error("Analyte ID not found");
     }
   };
+  
+  handleCheckboxChange = (id) => {
+    this.setState(prevState => ({
+      selectedCheckboxes: {
+        ...prevState.selectedCheckboxes,
+        [id]: !prevState.selectedCheckboxes[id],
+      },
+    }));
+  };
+  
   setFeedbackMessage = (message) => {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
@@ -187,14 +215,15 @@ class SchemeAddAnalyte extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
-  handleCheckboxChange = (id) => {
-    this.setState(prevState => ({
-      selectedCheckboxes: {
-        ...prevState.selectedCheckboxes,
-        [id]: !prevState.selectedCheckboxes[id],
-      },
-    }));
-  };
+  // handleCheckboxChange = (id) => {
+  //   this.setState(prevState => ({
+  //     selectedCheckboxes: {
+  //       ...prevState.selectedCheckboxes,
+  //       [id]: !prevState.selectedCheckboxes[id]
+  //     }
+  //   }));
+  // };
+
   filterData = () => {
     const { ListUnit } = this.props;
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
@@ -237,7 +266,11 @@ class SchemeAddAnalyte extends Component {
             <title>Database Admin | Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Analytes List" />
+          <Breadcrumbs
+              title="List"
+              breadcrumbItem={`Analytes for ${this.state.SchemeName || "Unknown"}`}
+            />
+
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -309,13 +342,25 @@ SchemeAddAnalyte.propTypes = {
   ongetAnalyteforSchemelist: PropTypes.func,
   onAddNewSchemeAnalytes: PropTypes.func,
   onUpdateSchemeAnalytes: PropTypes.func,
+  SchemeName: PropTypes.array,
   history: PropTypes.object.isRequired,
 };
+const mapStateToProps = (state) => {
+  const ListUnit = state.ListUnit?.ListUnit || [];
+  const SchemeAnalyteList = state.ListUnit?.SchemeAnalyteList || [];
+  const SchemeName = state.ListUnit?.SchemeName || "Unknown";
 
-const mapStateToProps = (state) => ({
-  ListUnit: state.ListUnit?.ListUnit,
-  SchemeAnalyteList: state.ListUnit?.SchemeAnalyteList,
-});
+  // Debug logs
+  console.log("Redux State - ListUnit:", ListUnit);
+  console.log("Redux State - SchemeAnalyteList:", SchemeAnalyteList);
+  console.log("Redux State - SchemeName:", SchemeName);
+
+  return {
+    ListUnit,
+    SchemeAnalyteList,
+    SchemeName, // Map SchemeName
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetSchemeAnalytes: id => dispatch(getSchemeAnalytelist(id)),
