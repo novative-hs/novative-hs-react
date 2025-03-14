@@ -12,13 +12,14 @@ import { getCyclelist,addNewCycle, updateCycle,deleteCycle} from "../../helpers/
 function* fetchCycleList(object) {
   try {
     const response = yield call(getCyclelist, object.payload);
-    console.log("Response from getCyclelist:", response); // Log the response object
+    console.log("Response from getCyclelist:", response); // ✅ Log the response
     yield put(getcyclelistSuccess(response.data));
   } catch (error) {
     console.error("Error in fetchCycleList:", error);
     yield put(getcyclelistFail(error));
   }
 }
+
 function* onAddNewCycle(object) {
   try {
     const response = yield call(
