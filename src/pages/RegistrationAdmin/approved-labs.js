@@ -5,6 +5,7 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import Tooltip from "@material-ui/core/Tooltip";
+import ApproveUnapproveModal from "components/Common/ApproveUnapproveModal";
 import {
   Card,
   CardBody,
@@ -31,7 +32,8 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 //Import Breadcrumb
 import * as Yup from "yup";
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getApprovedLabs, updateMembershipStatus} from "store/registration-admin/actions";
+import { getcyclelist } from "store/cycle/actions";
+import { getApprovedLabs, approveUnapproveLab, onupdateMembershipStatus} from "store/registration-admin/actions";
 import "assets/scss/table.scss";
 
 class ApprovedLabs extends Component {
@@ -40,6 +42,11 @@ class ApprovedLabs extends Component {
     this.node = React.createRef();
     this.state = {
       approvedLabs: [],
+      approvedLabs: [],
+      filteredLabs: [],
+      CycleList: [], // Ensure CycleList is an array
+      selectedScheme: null,
+      selectedParticipantType: "Approved Participant", // Default value
       id: "",
       successMessage: "",
       btnText: "Copy",
@@ -153,6 +160,40 @@ class ApprovedLabs extends Component {
                   filter: textFilter()
                 },
                 {
+                          dataField: "schemes",
+                          text: "Scheme",
+                          sort: false,
+                          filter: textFilter({
+                            onFilter: (filterValue, data) => {
+                              // Custom filtering logic
+                              return data.filter((row) =>
+                                Array.isArray(row.schemes) &&
+                                row.schemes.some((scheme) =>
+                                  scheme.scheme_name.toLowerCase().includes(filterValue.toLowerCase())
+                                )
+                              );
+                            },
+                          }),
+                          headerStyle: { textAlign: "center" },
+                          style: { textAlign: "center" },
+                          formatter: (cellContent, row) => {
+                            if (Array.isArray(row.schemes) && row.schemes.length > 0) {
+                              // Create a unique set of scheme names
+                              const uniqueSchemes = [...new Map(row.schemes.map((scheme) => [scheme.scheme_name, scheme])).values()];
+                
+                              // Render the unique scheme names
+                              return (
+                                <ul style={{ padding: "0", margin: "0", listStyle: "none" }}>
+                                  {uniqueSchemes.map((scheme, index) => (
+                                    <li key={index}>{scheme.scheme_name}</li>
+                                  ))}
+                                </ul>
+                              );
+                            }
+                            return "No schemes available";
+                          },
+                        },
+                {
                   dataField: "landline_registered_by",
                   text: "Contact No.",
                   headerStyle: { textAlign: 'center' }, 
@@ -218,96 +259,12 @@ class ApprovedLabs extends Component {
                     </>
                   ),
                 },
-        // {
-        //   dataField: "menu",
-        //   isDummyField: true,
-        //   editable: false,
-        //   text: "Action",
-        //   formatter: (cellContent, methodlist) => (
-        //     <div>
-        //       <Tooltip title="Update Membership Status">
-        //         <Link className="text-success" to="#">
-        //           <i
-        //             className="mdi mdi-pencil font-size-18"
-        //             id="edittooltip"
-        //             onClick={() => this.toggle(methodlist)}
-        //             // onClick={e => this.handleCSRClick(e, CSR)}
-        //           ></i>
-        //         </Link>
-        //       </Tooltip>
-        //       {/* <Tooltip title="History">
-        //         <Link
-        //           className="fas fa-comment font-size-18"
-        //           to={`/databaseadmin-history/${methodlist.id}`}
-        //         ></Link>
-        //       </Tooltip> */}
-        //     </div>
-        //   ),
-        // },
-        // {
-        //   dataField: "registered_by",
-        //   text: "Registered by",
-        //   sort: true,
-        //   formatter: (cellContent, approvedLabs) => (
-        //     <>
-        //       {approvedLabs.registered_by == 'Lab' ? (
-        //         <span>
-                 
-        //           <Link
-        //         to="#"
-                
-        //         onMouseEnter={e =>  this.openLabModal(e, approvedLabs)}
-        //         onPointerLeave={this.handleMouseExit()}
-        //       >
-        //        {approvedLabs.registered_by}
-        //       </Link>
-        //       </span>
-        //       ) : (
-        //         <span>
-        //           <Link
-        //         to="#"
-        //         // onClick={e => this.openMarketerModal(e, approvedLabs)}
-        //         onMouseEnter={e =>   this.openMarketerModal(e, approvedLabs)}
-        //         onPointerLeave={this.handleMouseExit()}
-        //       >
-        //        {approvedLabs.registered_by}
-        //       </Link>
-        //         </span>
-        //       )}
-        //     </>
-        //   ),filter: textFilter(),
-        // },
-        // {
-        //   dataField: "email",
-        //   text: "Email",
-        //   // sort: true,
-        //   formatter: (cellContent, approvedLab) => (
-        //     <>
-        //       <span className="float-start">
-        //         {approvedLab.email}
-        //       </span>
-        //     </>
-        //   ),
-        //   filter: textFilter(),
-        // },
-        // {
-        //   dataField: "lab_phone",
-        //   text: "Phone",
-        //   // sort: true,
-        //   formatter: (cellContent, approvedLab) => (
-        //     <>
-        //       <span className="float-end">
-        //         {approvedLab.lab_phone}
-        //       </span>
-        //     </>
-        //   ),
-        //   filter: textFilter(),
-        // },
       ],
     };
     this.toggle = this.toggle.bind(this);
     this.handlePatientFeedbackClick =
       this.handlePatientFeedbackClick.bind(this);
+      this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
   }
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
@@ -317,18 +274,123 @@ class ApprovedLabs extends Component {
     }, 3000);
   };
 
+  handleApprovedEvent = id => {
+    this.setState({ id: id, isApproved: true, unapprovedModal: true });
+  };
+
+
+  handleUnapprovedEvent = id => {
+    this.setState({ id: id, isApproved: false, unapprovedModal: true });
+
+  };
+
+  callOnApproveUnapproveLab = () => {
+    const { onApproveUnapproveLab, onGetPendingLabs } = this.props;
+
+    const data = {
+      id: this.state.user_id,
+      labId: this.state.id,
+      isApproved: this.state.isApproved,
+    };
+
+    // calling to unapprove lab
+    onApproveUnapproveLab(data);
+
+    // Calling to update list record
+    setTimeout(() => {
+      onGetPendingLabs(this.state.user_id);
+    }, 1000);
+
+    this.setState({ unapprovedModal: false });
+  };
+
+
+  applyFilters = () => {
+    const { approvedLabs, selectedParticipantType, selectedScheme } = this.state;
+  
+    console.log("State before filtering:", { approvedLabs, selectedParticipantType, selectedScheme });
+  
+    const filteredData = approvedLabs.filter((lab) => {
+      const normalizedStatus = lab.membership_status?.toLowerCase() || "unknown";
+      const participantMatch =
+  selectedParticipantType === "All Participant" ||
+  (selectedParticipantType === "Approved Participant" && lab.membership_status?.toLowerCase()) ||
+  (selectedParticipantType === "Pending Participant" &&
+    lab.membership_status?.toLowerCase() === "pending") ||
+  (selectedParticipantType === "Unapproved Participant" &&
+    lab.membership_status?.toLowerCase() === "unapproved") ||
+  (selectedParticipantType === "Suspended Participant" &&
+    lab.membership_status?.toLowerCase() === "suspended");
+
+      const schemeMatch =
+        !selectedScheme ||
+        (lab.schemes &&
+          Array.isArray(lab.schemes) &&
+          lab.schemes.some((scheme) => scheme.scheme_id?.toString() === selectedScheme));
+  
+      console.log(`Lab ${lab.id} membership_status:`, normalizedStatus);
+      console.log(`Lab ${lab.id} participant match:`, participantMatch);
+      console.log(`Lab ${lab.id} scheme match:`, schemeMatch);
+  
+      return participantMatch && schemeMatch;
+    });
+  
+    console.log("Filtered Data after applying filters:", filteredData);
+  
+    this.setState({ filteredLabs: filteredData }, () => {
+      console.log("FilteredLabs updated in state:", this.state.filteredLabs);
+    });
+  };
+  
+  
+
+handleSchemeChange = (event) => {
+  const selectedScheme = event.target.value;
+  console.log("Scheme selected:", selectedScheme);
+
+  this.setState({ selectedScheme }, () => {
+      this.applyFilters(); // Call filters after updating state
+  });
+};
+
+
   componentDidMount() {
     const { organization_name } = this.props.match.params;
     this.setState({ organization_name }, () => {
       // Call this function inside the setState callback to ensure organization_name is updated first
       this.setInitialDropdownValue();
+      ongetcyclelist(this.state.user_id);
+
+
     });
 
-    const { onGetApprovedLabs } = this.props;
+    const { onGetApprovedLabs, ongetcyclelist,} = this.props;
     onGetApprovedLabs(this.state.user_id);
     // Set the initial dropdown value based on the URL
     //this.setInitialDropdownValue();
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.filteredLabs !== this.state.filteredLabs) {
+      console.log("FilteredLabs updated:", this.state.filteredLabs);
+    }
+    if (prevProps.approvedLabs !== this.props.approvedLabs) {
+        this.setState({ approvedLabs: this.props.approvedLabs }, () => {
+            this.applyFilters(); // Reapply filters when new data is loaded
+        });
+    }
+    if (prevProps.CycleList !== this.props.CycleList) {
+        this.setState({ CycleList: this.props.CycleList });
+    }
+    if (prevProps.approvedLabs !== this.props.approvedLabs) {
+      console.log("Updated approvedLabs:", this.props.approvedLabs);
+      this.setState({ approvedLabs: this.props.approvedLabs }, () => {
+        console.log("State approvedLabs updated:", this.state.approvedLabs);
+        this.applyFilters(); // Reapply filters after approvedLabs is updated
+      });
+    }
+}
+
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     const { organization_name } = this.state; // Now it's properly updated
@@ -452,8 +514,11 @@ class ApprovedLabs extends Component {
   handleSelectChange = (event) => {
     const selectedValue = event.target.value;
   
-    // Update the state
-    this.setState({ selectedValue });
+    // Update the state with selectedParticipantType
+    this.setState({ selectedParticipantType: selectedValue }, () => {
+      // Reapply filters after updating the state
+      this.applyFilters();
+    });
   
     // Extract organization_name from state
     const { organization_name } = this.state;
@@ -465,12 +530,13 @@ class ApprovedLabs extends Component {
       this.props.history.push(`/${organization_name}/approved-participant`);
     } else if (selectedValue === "Unapproved Participant") {
       this.props.history.push(`/${organization_name}/unapproved-participant`);
-    } else if (selectedValue === "Suspended Participant") { // New condition added
+    } else if (selectedValue === "Suspended Participant") {
       this.props.history.push(`/${organization_name}/suspended-participant`);
     } else if (selectedValue === "All Participant") {
       this.props.history.push(`/${organization_name}/all-participant`);
     }
   };
+  
   render() {
     const { SearchBar } = Search;
     const { approvedLabs } = this.props;
@@ -497,6 +563,11 @@ class ApprovedLabs extends Component {
           <MetaTags>
             <title>Approved Participant | NEQAS</title>
           </MetaTags>
+            <ApproveUnapproveModal
+                      show={this.state.unapprovedModal}
+                      onYesClick={this.callOnApproveUnapproveLab}
+                      onCloseClick={() => this.setState({ unapprovedModal: false })}
+                    />
           <Container fluid>
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Participant " breadcrumbItem="Approved" />
@@ -635,33 +706,57 @@ class ApprovedLabs extends Component {
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.approvedLabListColumns}
-                          data={approvedLabs}
+                          data={this.state.filteredLabs || []} // Ensure data is always an array
                           search
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                             <Row className="mb-2">
-                                <Col sm="4">
-                                  <div className="ms-2 mb-4">
-                                    <div>
-
-                                      <select
-                                        className="form-control select2"
-                                        title="main_lab_appointments"
-                                        name="main_lab_appointments"
-                                        onChange={this.handleSelectChange}
-                                        value={this.state.selectedValue}
-                                      >
-                                        <option value="Pending Participant">Pending Participant</option>
-                                        <option value="Approved Participant">Approved Participant</option>
-                                        <option value="Unapproved Participant">Unapproved Participant</option>
-                                        <option value="Suspended Participant">Suspended Participant</option>
-                                        <option value="All Participant">All Participant</option>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </Col>
-                              </Row>
+                              <Row className="mb-2">
+                                                              <Col sm="8">
+                                                                <div className="ms-2 mb-4">
+                                                                  <div className="container">
+                                                                    <div className="row align-items-center">
+                                                                      {/* Filter 1 */}
+                                                                      <div className="col">
+                                                                        <select
+                                                                          className="form-select"
+                                                                          onChange={this.handleSelectChange}
+                                                                          value={this.state.selectedParticipantType}
+                                                                          style={{ width: "200px" }} // Ensures it takes up full width of the column
+                                                                        >
+                                                                          <option value="All Participant">All Participant</option>
+                                                                          <option value="Approved Participant">Approved Participant</option>
+                                                                          <option value="Unapproved Participant">Unapproved Participant</option>
+                                                                          <option value="Pending Participant">Pending Participant</option>
+                                                                          <option value="Suspended Participant">Suspended Participant</option>
+                                                                        </select>
+                                                                      </div>
+                              
+                                                                      {/* Filter 2 */}
+                                                                      <div className="col">
+                                                                        <select
+                                                                          className="form-select"
+                                                                          onChange={this.handleSchemeChange}
+                                                                          value={this.state.selectedScheme}
+                                                                          style={{ width: "200px" }} // Ensures it takes up full width of the column
+                                                                        >
+                                                                          <option value="">Select Scheme</option>
+                                                                          {this.state.CycleList.map((scheme) => (
+                                                                            <option key={scheme.id} value={scheme.id}>
+                                                                              {scheme.scheme_name}
+                                                                            </option>
+                                                                          ))}
+                                                                        </select>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                              
+                              
+                              
+                                                                </div>
+                                                              </Col>
+                                                            </Row>
+                             
                               <Row className="mb-2">
                                 {/* <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
@@ -960,17 +1055,34 @@ class ApprovedLabs extends Component {
 ApprovedLabs.propTypes = {
   match: PropTypes.object,
   approvedLabs: PropTypes.array,
+  ongetcyclelist: PropTypes.func,
   className: PropTypes.any,
   onGetApprovedLabs: PropTypes.func,
+  onGetPendingLabs: PropTypes.func,
+  onApproveUnapproveLab: PropTypes.func,
   onupdateMembershipStatus: PropTypes.func,
   history: PropTypes.any,
+  CycleList: PropTypes.array,
 };
-const mapStateToProps = ({ registrationAdmin }) => ({
-  approvedLabs: registrationAdmin.approvedLabs,
-});
+const mapStateToProps = ({ registrationAdmin, CycleList, PaymentScheme }) => {
+  const cycleList = registrationAdmin.CycleList || [];
+  const paymentSchemeList = PaymentScheme?.PaymentSchemeList || [];
+
+  console.log("CycleList in mapStateToProps (registrationAdmin):", registrationAdmin.CycleList);
+  console.log("CycleList in mapStateToProps (CycleList):", CycleList.CycleList);
+
+  return {
+    approvedLabs: registrationAdmin.approvedLabs || [], // Ensure it's an array
+    CycleList: CycleList?.CycleList || [], // Correctly map CycleList
+    paymentSchemeList, // Optional: Include if needed for payment-related features
+  };
+};
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
+  onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
   onupdateMembershipStatus: (id, status) => dispatch(updateMembershipStatus({ id, ...status })),
 });
 

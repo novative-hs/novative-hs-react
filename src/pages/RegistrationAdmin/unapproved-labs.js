@@ -43,6 +43,7 @@ class UnapprovedLabs extends Component {
     this.state = {
       unapprovedLabs: [],
       organization_name: '',
+      selectedParticipantType: "Unapproved Participant", // Default value
       id: "",
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
       approvedLab: "",
@@ -395,24 +396,21 @@ class UnapprovedLabs extends Component {
                             <React.Fragment>
    <Row className="mb-2">
                                 <Col sm="4">
-                                  <div className="ms-2 mb-4">
-                                    <div>
-                                    
-                                      <select
-                                        className="form-control select2"
-                                        title="main_lab_appointments"
-                                        name="main_lab_appointments"
-                                        onChange={this.handleSelectChange}
-                                        value={this.state.selectedValue}
-                                      >
-                                        <option value="Pending Participant">Pending Participant</option>
-                                        <option value="Approved Participant">Approved Participant</option>
-                                        <option value="Unapproved Participant">Unapproved Participant</option>
-                                        <option value="Suspended Participant">Suspended Participant</option>
-                                        <option value="All Participant">All Participant</option>
-                                      </select>
-                                    </div>
-                                  </div>
+                                <div className="col">
+                                                                        <select
+                                                                          className="form-select"
+                                                                          onChange={this.handleSelectChange}
+                                                                          value={this.state.selectedParticipantType}
+                                                                          style={{ width: "200px" }} // Ensures it takes up full width of the column
+                                                                        >
+                                                                          <option value="All Participant">All Participant</option>
+                                                                          <option value="Approved Participant">Approved Participant</option>
+                                                                          <option value="Unapproved Participant">Unapproved Participant</option>
+                                                                          <option value="Pending Participant">Pending Participant</option>
+                                                                          <option value="Suspended Participant">Suspended Participant</option>
+                                                                        </select>
+                                                                      </div>
+                              
                                 </Col>
                               </Row>
                               <Row className="mb-2">
