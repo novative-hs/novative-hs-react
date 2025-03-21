@@ -22,12 +22,27 @@ import { getInstrumentlist,addNewInstrument,updateInstrument,getAnalyteEquipment
 ///analyte equipments
 function* fetchAnalyteEquipmentsList(object) {
   try {
+    console.log("Saga - Fetching analyte equipments with payload:", object.payload);
+
+    // Make the API call
     const response = yield call(getAnalyteEquipmentlist, object.payload);
-    yield put(getAnalyteEquipmentlistSuccess(response.data));
+    console.log("Saga - API response received:", response);
+
+    // Extract data based on the actual API response structure
+    const analyteData = {
+      analyte_name: response.data.analyte_name, // Directly access `analyte_name`
+      equipments: response.data.equipments,   // Directly access `equipments`
+    };
+    console.log("Saga - Dispatching success with analyteData:", analyteData);
+
+    // Dispatch success action with the extracted data
+    yield put(getAnalyteEquipmentlistSuccess(analyteData));
   } catch (error) {
+    console.error("Saga - Error fetching analyte equipments:", error);
     yield put(getAnalyteEquipmentlistFail(error));
   }
 }
+
 function* onAddNewAnalyteEquipments(object) {
   try {
     const response = yield call(

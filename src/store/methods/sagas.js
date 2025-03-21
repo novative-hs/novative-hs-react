@@ -11,12 +11,27 @@ import {deleteMethod,getMethodlist,addNewMethod, updateMethod, getAnalytemethodl
 ///analyte methods
 function* fetchAnalyteMethodsList(object) {
   try {
+    console.log("Saga - Fetching analyte methods with payload:", object.payload);
+
+    // Make the API call
     const response = yield call(getAnalytemethodlist, object.payload);
-    yield put(getAnalyteMethodlistSuccess(response.data));
+    console.log("Saga - API response received:", response);
+
+    // Extract data
+    const analyteData = {
+      analyte_name: response.data.analyte_name, // Access analyte_name directly
+      methods: response.data.methods,          // Access methods directly
+    };
+    console.log("Saga - Dispatching success with analyteData:", analyteData);
+
+    // Dispatch success action
+    yield put(getAnalyteMethodlistSuccess(analyteData));
   } catch (error) {
+    console.error("Saga - Error fetching analyte methods:", error);
     yield put(getAnalyteMethodlistFail(error));
   }
 }
+
 function* onAddNewAnalyteMethods(object) {
   try {
     const response = yield call(

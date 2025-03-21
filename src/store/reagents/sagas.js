@@ -12,12 +12,27 @@ import { deleteReagent,getReagentsList, addNewReagents, updateReagents,
 ///analyte reagents
 function* fetchAnalyteReagentsList(object) {
   try {
+    console.log("Saga - Fetching analyte reagents with payload:", object.payload);
+
+    // Make the API call
     const response = yield call(getAnalyteReagentlist, object.payload);
-    yield put(getAnalyteReagentlistSuccess(response.data));
+    console.log("Saga - API response received:", response);
+
+    // Extract data
+    const analyteData = {
+      analyte_name: response.data.analyte_name, // Extract analyte_name
+      reagents: response.data.reagents,        // Extract reagents array
+    };
+    console.log("Saga - Dispatching success with analyteData:", analyteData);
+
+    // Dispatch success action
+    yield put(getAnalyteReagentlistSuccess(analyteData));
   } catch (error) {
+    console.error("Saga - Error fetching analyte reagents:", error);
     yield put(getAnalyteReagentlistFail(error));
   }
 }
+
 function* onAddNewAnalyteReagents(object) {
   try {
     const response = yield call(
@@ -92,3 +107,4 @@ function* ReagentsListSaga() {
 }
 
 export default ReagentsListSaga;
+

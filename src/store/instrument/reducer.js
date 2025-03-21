@@ -33,16 +33,24 @@ const Instrument = (state = INIT_STATE, action) => {
 
 /////analytesequipments
 case GET_ANALYTESEQUIPMENTS_LIST_SUCCESS:
-  return {
+  console.log("Reducer - Action Payload for GET_ANALYTESEQUIPMENTS_LIST_SUCCESS:", action.payload);
+  
+  const updatedStateSuccess = {
     ...state,
-    EquipmentAnalyteList: action.payload.equipments, // Update to handle reagents array
+    EquipmentAnalyteList: action.payload.equipments, // Update to handle equipment list
+    analyte_name: action.payload.analyte_name,       // Store the analyte name
   };
+  
+  console.log("Reducer - Updated State for GET_ANALYTESEQUIPMENTS_LIST_SUCCESS:", updatedStateSuccess);
+  return updatedStateSuccess;
 
-    case GET_ANALYTESEQUIPMENTS_LIST_FAIL:
-      return {
-        ...state,
-        error: action.payload,
-      };
+case GET_ANALYTESEQUIPMENTS_LIST_FAIL:
+  console.error("Reducer - Error Payload for GET_ANALYTESEQUIPMENTS_LIST_FAIL:", action.payload);
+  
+  const updatedStateFail = {
+    ...state,
+    error: action.payload,
+  };
     case ADD_NEW_ANALYTESEQUIPMENTS_SUCCESS:
       return {
         ...state,

@@ -13,7 +13,7 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 
 // Import actions
 
-import { getAnalyteEquipmentlist, addNewAnalyteEquipmentlist, updateAnalyteEquipmentlist,getInstrumentlist} from "store/instrument/actions";
+import { getAnalyteEquipmentlist, addNewAnalyteEquipmentlist, updateAnalyteEquipmentlist, getInstrumentlist } from "store/instrument/actions";
 import "assets/scss/table.scss";
 
 class AnalyteAddEquipments extends Component {
@@ -21,7 +21,7 @@ class AnalyteAddEquipments extends Component {
     super(props);
     this.state = {
       nameFilter: '',
-      organization_name : '',
+      organization_name: '',
       idFilter: '',
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
@@ -206,7 +206,7 @@ class AnalyteAddEquipments extends Component {
 
       return (
         name.includes(nameFilter.toLowerCase()) &&
-        id.includes(idFilter) 
+        id.includes(idFilter)
       );
     }).map(entry => ({
       ...entry,
@@ -239,7 +239,18 @@ class AnalyteAddEquipments extends Component {
             <title>Database Admin | Equipments List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Equipment List" />
+            <Breadcrumbs
+              title="List"
+              breadcrumbItem={
+                <>
+                  Equipment List - {" "}
+                  <span style={{ color: "black", fontWeight: "bold" }}>
+                    {this.props.analyte_name || "Loading..."}
+                  </span>
+                </>
+              }
+            />
+
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -313,16 +324,32 @@ AnalyteAddEquipments.propTypes = {
   Instrument: PropTypes.array,
   EquipmentAnalyteList: PropTypes.array,
   history: PropTypes.object,
+  analyte_name: PropTypes.object,
   onGetAnalyteEquipments: PropTypes.func,
   onGetEquipmentList: PropTypes.func,
   onAddNewAnalyteEquipments: PropTypes.func,
   onUpdateAnalyteEquipments: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  Instrument: state.Instrument?.Instrument,
-  EquipmentAnalyteList: state.Instrument?.EquipmentAnalyteList,
-});
+const mapStateToProps = (state) => {
+  // Log the entire Redux state
+  console.log("Redux State in mapStateToProps:", state);
+
+  // Extract and log the mapped values
+  const Instrument = state.Instrument?.Instrument || [];
+  const EquipmentAnalyteList = state.Instrument?.EquipmentAnalyteList || [];
+  const analyte_name = state.Instrument?.analyte_name || '';
+
+  console.log("Mapped Instrument:", Instrument);
+  console.log("Mapped EquipmentAnalyteList:", EquipmentAnalyteList);
+  console.log("Mapped analyte_name:", analyte_name);
+
+  return {
+    Instrument,
+    EquipmentAnalyteList,
+    analyte_name,
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAnalyteEquipments: id => dispatch(getAnalyteEquipmentlist(id)),

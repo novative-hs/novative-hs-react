@@ -22,21 +22,74 @@ function* fetchReagentInManufacturer(object) {
 ///get instrumentsin MANUFACTURER
 function* fetchInstrumentInManufacturer(object) {
   try {
+    console.log("Saga - Payload for API Call:", object.payload);
+
+    // Call the API
     const response = yield call(instrumentsinmaufacturer, object.payload);
-    yield put(getInstrumentsInManufacturerSuccess(response.data));
+    console.log("Saga - API Response:", response); // Log full response
+
+    // Safely extract the data array and manufacturer name
+    const instruments = response.data?.data ?? []; // Ensure it's an array
+    const manufacturerName = response.data?.manufacturer_name ?? "Unknown Manufacturer";
+
+    // Prepare the transformed response
+    const transformedResponse = {
+      data: instruments, // Array of instruments
+      manufacturerName: manufacturerName, // Manufacturer name
+    };
+
+    console.log("Saga - Transformed Response:", transformedResponse); // Log transformed response
+
+    // Dispatch success action
+    yield put(getInstrumentsInManufacturerSuccess(transformedResponse));
   } catch (error) {
+    console.error("Saga - Error Fetching Instruments:", error.message, error.stack); // Log error details
     yield put(getInstrumentsInManufacturerFail(error));
   }
 }
+
+
+
 ///get instrumentsin instrument type
-function* fetchInstrumentInType(object) {
+function* fetchInstrumentsInType(object) {
   try {
+    console.log("Saga - Payload for API Call:", object.payload); // Log the payload
+
+    // Make the API call
     const response = yield call(instrumentsintype, object.payload);
-    yield put(getInstrumentsInTypeSuccess(response.data));
+    console.log("Saga - API Raw Response:", response); // Log the full response object
+
+    // Validate the response structure
+    if (!response || typeof response.instrument_type_name === "undefined" || !Array.isArray(response.instruments)) {
+      console.error("Saga - API Response is undefined or malformed:", response);
+      yield put(getInstrumentsInTypeFail("API Response is undefined or malformed"));
+      return;
+    }
+
+    // Extract data
+    const {
+      instrument_type_name = "Unknown Equipment Type",
+      instruments = [],
+    } = response;
+
+    console.log("Saga - Extracted Instrument Type Name:", instrument_type_name);
+    console.log("Saga - Extracted Instruments:", instruments);
+
+    // Dispatch success action
+    yield put(
+      getInstrumentsInTypeSuccess({
+        equipmentTypeName: instrument_type_name,
+        instruments,
+      })
+    );
   } catch (error) {
-    yield put(getInstrumentsInTypeFail(error));
+    console.error("Saga - Error in fetchInstrumentInType:", error.message, error.stack);
+    yield put(getInstrumentsInTypeFail(error.message || "Unknown error occurred"));
   }
 }
+
+
+
 
 ///////analytes associated with method
 function* fetchAnalyteMethods(object) {
@@ -70,21 +123,36 @@ function* fetchAnalyteReagents(object) {
 ///////analytes associated with unit
 function* fetchAnalyteUnits(object) {
   try {
+    // Call the API and get the response
     const response = yield call(getAnalyteUnit, object.payload);
-    yield put(getAnalyteUnitSuccess(response.data));
+
+    // Extract `unit_name` and `analytes` from the API response
+    const { unit_name, analytes } = response.data;
+
+    console.log("Saga - API Response for Unit Analytes:", response.data); // Debugging log
+    console.log("Saga - Extracted Unit Name:", unit_name);
+    console.log("Saga - Extracted Analytes:", analytes);
+
+    // Dispatch the success action with structured payload
+    yield put(getAnalyteUnitSuccess({ unitName: unit_name, analytes }));
   } catch (error) {
+    console.error("Saga - Error in fetchAnalyteUnits:", error);
     yield put(getAnalyteUnitFail(error));
   }
 }
+
 ///analyte units
-function* fetchAnalyteUnitsList(object) {
+function* fetchAnalyteUnitsList(action) {
   try {
-    const response = yield call(getAnalyteUnitlist, object.payload);
+    const response = yield call(getAnalyteUnitlist, action.payload);
+    console.log("Saga - Dispatching success with:", response.data);
     yield put(getAnalyteUnitlistSuccess(response.data));
   } catch (error) {
+    console.error("Saga - Error:", error);
     yield put(getAnalyteUnitlistFail(error));
   }
 }
+
 function* onAddNewAnalyteUnits(object) {
   try {
     const response = yield call(
@@ -146,7 +214,7 @@ function* UnitsListSaga() {
   yield takeEvery(GET_ANALYTESINSTRUMENTS, fetchAnalyteInstruments);
   yield takeEvery(GET_ANALYTESREAGENTS, fetchAnalyteReagents);
   yield takeEvery(GET_ANALYTESUNITS, fetchAnalyteUnits);
-  yield takeEvery(GET_INSTRUMENTSINTYPE, fetchInstrumentInType);
+  yield takeEvery(GET_INSTRUMENTSINTYPE, fetchInstrumentsInType);
   yield takeEvery(GET_INSTRUMENTSINMANUFACTURER, fetchInstrumentInManufacturer);
   yield takeEvery(GET_REAGENTSINMANUFACTURER, fetchReagentInManufacturer);
 

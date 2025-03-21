@@ -1,133 +1,138 @@
 import {
-    GET_METHODS_LIST_SUCCESS,
-    GET_METHODS_LIST_FAIL,
-    ADD_NEW_METHODS_SUCCESS,
-    ADD_NEW_METHODS_FAIL,
-    UPDATE_METHODS_SUCCESS,
-    UPDATE_METHODS_FAIL,
-    DELETE_METHOD_SUCCESS,
-    DELETE_METHOD_FAIL,
+  GET_METHODS_LIST_SUCCESS,
+  GET_METHODS_LIST_FAIL,
+  ADD_NEW_METHODS_SUCCESS,
+  ADD_NEW_METHODS_FAIL,
+  UPDATE_METHODS_SUCCESS,
+  UPDATE_METHODS_FAIL,
+  DELETE_METHOD_SUCCESS,
+  DELETE_METHOD_FAIL,
 
-    GET_ANALYTESMETHODS_LIST_SUCCESS,
-    GET_ANALYTESMETHODS_LIST_FAIL,
-    ADD_NEW_ANALYTESMETHODS_SUCCESS,
-    ADD_NEW_ANALYTESMETHODS_FAIL,
-    UPDATE_ANALYTESMETHODS_SUCCESS,
-    UPDATE_ANALYTESMETHODS_FAIL
+  GET_ANALYTESMETHODS_LIST_SUCCESS,
+  GET_ANALYTESMETHODS_LIST_FAIL,
+  ADD_NEW_ANALYTESMETHODS_SUCCESS,
+  ADD_NEW_ANALYTESMETHODS_FAIL,
+  UPDATE_ANALYTESMETHODS_SUCCESS,
+  UPDATE_ANALYTESMETHODS_FAIL
 
-  } from "./actionTypes";
-  
-  const INIT_STATE = {
+} from "./actionTypes";
 
-    MethodAnalyteList: [],
-    AddAnalyteMethods: [],
-    analytesmethod: [],
+const INIT_STATE = {
+
+  MethodAnalyteList: [],
+  AddAnalyteMethods: [],
+  analytesmethod: [],
 
 
-    ListMethods: [],
-    error: {},
-    AddMethods: [],
-    method: [],
-  };
-  
-  const ListMethods = (state = INIT_STATE, action) => {
-    switch (action.type) {
-      /////analytesmethods
-      case GET_ANALYTESMETHODS_LIST_SUCCESS:
-      return {
-        ...state,
-        MethodAnalyteList: action.payload.methods, // Update to handle methods array
-      };
-    
-        case GET_ANALYTESMETHODS_LIST_FAIL:
-          return {
-            ...state,
-            error: action.payload,
-          };
-        case ADD_NEW_ANALYTESMETHODS_SUCCESS:
-          return {
-            ...state,
-            AddAnalyteMethods: [...state.AddAnalyteMethods, action.payload.data],
-          };
-    
-        case ADD_NEW_ANALYTESMETHODS_FAIL:
-          return {
-            ...state,
-            error: action.payload,
-          };
-        case UPDATE_ANALYTESMETHODS_SUCCESS:
-          return {
-            ...state,
-            MethodAnalyteList: state.MethodAnalyteList.map(analytesmethod =>
-              analytesmethod.id.toString() === action.payload.id.toString()
-                ? { analytesmethod, ...action.payload }
-                : analytesmethod
-            ),
-          };
-    
-        case UPDATE_ANALYTESMETHODS_FAIL:
-          return {
-            ...state,
-            error: action.payload,
-          };
-  
-      ///////////
-      case GET_METHODS_LIST_SUCCESS:
-        console.log("method list",action.payload);
+  ListMethods: [],
+  error: {},
+  AddMethods: [],
+  method: [],
+};
+
+const ListMethods = (state = INIT_STATE, action) => {
+  switch (action.type) {
+    /////analytesmethods
+    case GET_ANALYTESMETHODS_LIST_SUCCESS:
+console.log("Reducer - Action Payload for GET_ANALYTESMETHODS_LIST_SUCCESS:", action.payload);
+
+return {
+  ...state,
+  MethodAnalyteList: action.payload.methods,  // Store methods array
+  analyte_name: action.payload.analyte_name,  // Store analyte name
+};
+
+case GET_ANALYTESMETHODS_LIST_FAIL:
+console.error("Reducer - Error Payload for GET_ANALYTESMETHODS_LIST_FAIL:", action.payload);
+
+return {
+  ...state,
+  error: action.payload,
+};
+
+      case ADD_NEW_ANALYTESMETHODS_SUCCESS:
         return {
           ...state,
-          ListMethods: action.payload,
+          AddAnalyteMethods: [...state.AddAnalyteMethods, action.payload.data],
         };
   
-      case GET_METHODS_LIST_FAIL:
+      case ADD_NEW_ANALYTESMETHODS_FAIL:
         return {
           ...state,
           error: action.payload,
         };
-      case ADD_NEW_METHODS_SUCCESS:
+      case UPDATE_ANALYTESMETHODS_SUCCESS:
         return {
           ...state,
-          AddMethods: [...state.AddMethods, action.payload.data],
-        };
-  
-      case ADD_NEW_METHODS_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
-      case UPDATE_METHODS_SUCCESS:
-        return {
-          ...state,
-          ListMethods: state.ListMethods.map(method =>
-            method.id.toString() === action.payload.id.toString()
-              ? { method, ...action.payload }
-              : method
+          MethodAnalyteList: state.MethodAnalyteList.map(analytesmethod =>
+            analytesmethod.id.toString() === action.payload.id.toString()
+              ? { analytesmethod, ...action.payload }
+              : analytesmethod
           ),
         };
   
-      case UPDATE_METHODS_FAIL:
+      case UPDATE_ANALYTESMETHODS_FAIL:
         return {
           ...state,
           error: action.payload,
         };
-        case DELETE_METHOD_SUCCESS:
-          return {
-            ...state,
-            ListMethods: state.ListMethods.filter(
-              method => method.id.toString() !== action.payload.id.toString()
-            ),
-          };
-    
-        case DELETE_METHOD_FAIL:
-          return {
-            ...state,
-            error: action.payload,
-          };
 
-      default:
-        return state;
-    }
-  };
+    ///////////
+    case GET_METHODS_LIST_SUCCESS:
+      console.log("method list",action.payload);
+      return {
+        ...state,
+        ListMethods: action.payload,
+      };
+
+    case GET_METHODS_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case ADD_NEW_METHODS_SUCCESS:
+      return {
+        ...state,
+        AddMethods: [...state.AddMethods, action.payload.data],
+      };
+
+    case ADD_NEW_METHODS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case UPDATE_METHODS_SUCCESS:
+      return {
+        ...state,
+        ListMethods: state.ListMethods.map(method =>
+          method.id.toString() === action.payload.id.toString()
+            ? { method, ...action.payload }
+            : method
+        ),
+      };
+
+    case UPDATE_METHODS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+      case DELETE_METHOD_SUCCESS:
+        return {
+          ...state,
+          ListMethods: state.ListMethods.filter(
+            method => method.id.toString() !== action.payload.id.toString()
+          ),
+        };
   
-  export default ListMethods;
-  
+      case DELETE_METHOD_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        };
+
+    default:
+      return state;
+  }
+};
+
+export default ListMethods;

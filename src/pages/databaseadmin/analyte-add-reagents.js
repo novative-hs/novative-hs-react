@@ -5,17 +5,17 @@ import MetaTags from "react-meta-tags";
 import { withRouter } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
-import { Card, CardBody, Col, Container, Row,Alert } from "reactstrap";
+import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
 
 // Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 // Import actions
-import { 
-  getReagentlist, 
-  getAnalyteReagentlist, 
-  addNewAnalyteReagentlist, 
-  updateAnalyteReagentlist 
+import {
+  getReagentlist,
+  getAnalyteReagentlist,
+  addNewAnalyteReagentlist,
+  updateAnalyteReagentlist
 } from "store/reagents/actions";
 import "assets/scss/table.scss";
 
@@ -180,7 +180,7 @@ class AnalyteAddReagents extends Component {
       // Optionally, clear the message after a few seconds
       setTimeout(() => {
         this.props.history.push(`/${this.state.organization_name}/database-of-analyte`);
-      }, 500); 
+      }, 500);
     });
   };
 
@@ -207,7 +207,7 @@ class AnalyteAddReagents extends Component {
 
       return (
         name.includes(nameFilter.toLowerCase()) &&
-        id.includes(idFilter) 
+        id.includes(idFilter)
       );
     }).map(entry => ({
       ...entry,
@@ -240,7 +240,13 @@ class AnalyteAddReagents extends Component {
             <title>Database Admin | Reagent List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Reagent List" />
+            <Breadcrumbs title="List" breadcrumbItem={<>
+              Reagents List - {" "}
+              <span style={{ color: "black", fontWeight: "bold" }}>
+                {this.props.analyte_name || "Loading..."}
+              </span>
+            </>
+            } />
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -316,6 +322,7 @@ AnalyteAddReagents.propTypes = {
   history: PropTypes.object,
   onGetAnalyteReagents: PropTypes.func,
   onGetReagentList: PropTypes.func,
+  analyte_name: PropTypes.object,
   onAddNewAnalyteReagents: PropTypes.func,
   onUpdateAnalyteReagents: PropTypes.func,
 };
@@ -323,6 +330,7 @@ AnalyteAddReagents.propTypes = {
 const mapStateToProps = (state) => ({
   ReagentList: state.ReagentList?.ReagentList,
   ReagentAnalyteList: state.ReagentList?.ReagentAnalyteList,
+  analyte_name: state.ReagentList?.analyte_name || '', // Map analyte_name
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -336,3 +344,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(AnalyteAddReagents));
+

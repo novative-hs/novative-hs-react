@@ -7,13 +7,13 @@ import MetaTags from "react-meta-tags";
 import { withRouter } from "react-router-dom";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
-import { Card, CardBody, Col, Container, Row,Alert } from "reactstrap";
+import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
 
 // Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
 
 // Import actions
-import { getmethodlist ,getAnalyteMethodlist,addNewAnalyteMethodlist,updateAnalyteMethodlist } from "store/methods/actions";
+import { getmethodlist, getAnalyteMethodlist, addNewAnalyteMethodlist, updateAnalyteMethodlist } from "store/methods/actions";
 import "assets/scss/table.scss";
 
 class AnalyteAddMethods extends Component {
@@ -155,9 +155,9 @@ class AnalyteAddMethods extends Component {
       const payload = {
         id: analyteId,
         methods: selectedMethods.map(method => method.id),  // Map to only method IDs
-        
+
       };
-      
+
       console.log('Payload before update:', payload);
       // Determine if we are adding or updating based on analyteId presence
       if (analyteId) {
@@ -207,7 +207,7 @@ class AnalyteAddMethods extends Component {
 
       return (
         name.includes(nameFilter.toLowerCase()) &&
-        id.includes(idFilter) 
+        id.includes(idFilter)
       );
     }).map(entry => ({
       ...entry,
@@ -241,7 +241,19 @@ class AnalyteAddMethods extends Component {
             <title>Database Admin | Method List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Method List" />
+            <Breadcrumbs
+              title="List"
+              breadcrumbItem={
+                <>
+                  Methods List - {" "}
+                  <span style={{ color: "black", fontWeight: "bold" }}>
+                    {this.props.analyte_name || "Loading..."}
+                  </span>
+                </>
+              }
+            />
+
+
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -317,6 +329,7 @@ AnalyteAddMethods.propTypes = {
   history: PropTypes.object,
   onGetAnalyteMethods: PropTypes.func,
   onGetMethodList: PropTypes.func,
+  analyte_name: PropTypes.object,
   onAddNewAnalyteMethods: PropTypes.func,
   onUpdateAnalyteMethods: PropTypes.func,
 };
@@ -324,6 +337,7 @@ AnalyteAddMethods.propTypes = {
 const mapStateToProps = (state) => ({
   ListMethods: state.ListMethods?.ListMethods,
   MethodAnalyteList: state.ListMethods?.MethodAnalyteList,
+  analyte_name: state.ListMethods?.analyte_name || '', // Map analyte_name
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -337,4 +351,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(AnalyteAddMethods));
-
