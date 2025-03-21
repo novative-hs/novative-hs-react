@@ -41,167 +41,251 @@ class ParticipantPayments extends Component {
       GetPayment: [],
       feedbackMessage: "",
       errorMessage: "",
-      feedbackListColumns: [
-        {
-          text: "ID",
-          dataField: "id",
-          sort: true,
-          headerFormatter: column => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.idFilter}
-                onChange={e => this.handleFilterChange("idFilter", e)}
-                className="form-control"
-              />
-            </div>
-          ),
-          headerStyle: { width: "100px" },
-        },
-        {
-          dataField: "participant_name",
-          text: "Participant Name",
-          sort: true,
-          headerFormatter: column => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.nameFilter}
-                onChange={e => this.handleFilterChange("nameFilter", e)}
-                className="form-control"
-              />
-            </div>
-          ),
-        },
-        {
-          dataField: "district",
-          text: "District",
-          sort: true,
-          headerFormatter: column => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.districtFilter}
-                onChange={e => this.handleFilterChange("districtFilter", e)}
-                className="form-control"
-              />
-            </div>
-          ),
-        },
-        {
-          dataField: "scheme_count",
-          text: "Number of Schemes",
-          sort: true,
-          formatter: (cell, row) => (
-            <Link
-            to={`/payment-scheme-list/${row.id}`}
-            style={{ textDecoration: "underline", color: "#0000CD" }}
-            onClick={() => console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)}
+    
+feedbackListColumns: [
+  {
+    text: "ID",
+    dataField: "id",
+    sort: true,
+    hidden: false,
+    formatter: (cellContent, methodlist) => <>{methodlist.id}</>,
+    // filter: textFilter(),
+    headerFormatter: (column, colIndex) => {
+      return (
+        <>
+          <div style={{ textAlign: "center", marginBottom: "5px" }}>
+            {column.text}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+            }}
           >
-            {cell}
-          </Link>
-          ),
-          headerFormatter: (column) => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.schemeFilter}
-                onChange={(e) => this.handleFilterChange("schemeFilter", e)}
-                className="form-control"
-              />
-            </div>
-          ),
-        },
-        
-        {
-          dataField: "price",
-          text: "Amount Payment",
-          sort: true,
-          headerFormatter: column => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.amountFilter}
-                onChange={e => this.handleFilterChange("amountFilter", e)}
-                className="form-control"
-              />
-            </div>
-          ),
-        },
-        {
-          dataField: "discount",
-          text: "Discount in Percentage",
-          sort: true,
-          headerFormatter: column => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.discountFilter}
-                onChange={e => this.handleFilterChange("discountFilter", e)}
-                className="form-control"
-              />
-            </div>
-          ),
-        },
-        {
-          dataField: "paymentmethod",
-          text: "Mode of Payment",
-          sort: true,
-          headerFormatter: column => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.paymentmodeFilter}
-                onChange={e =>
-                  this.handleFilterChange("paymentmodeFilter", e)
-                }
-                className="form-control"
-              />
-            </div>
-          ),
-        },
-        {
-          dataField: "paydate",
-          text: "Date of Payment",
-          sort: true,
-          headerFormatter: column => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.dateFilter}
-                onChange={e => this.handleFilterChange("dateFilter", e)}
-                className="form-control"
-              />
-            </div>
-          ),
-        },
-        {
-          dataField: "receivedby",
-          text: "Payment Received by",
-          sort: true,
-          headerFormatter: column => (
-            <div>
-              <Label className="form-label">{column.text}</Label>
-              <input
-                type="text"
-                value={this.state.paymentreceivedFilter}
-                onChange={e =>
-                  this.handleFilterChange("paymentreceivedFilter", e)
-                }
-                className="form-control"
-              />
-            </div>
-          ),
-        },
-      ],
+            <input
+              type="text"
+              value={this.state.idFilter}
+              onChange={(e) => this.handleFilterChange("idFilter", e)}
+              className="form-control"
+            />
+          </div>
+        </>
+      );
+    },
+  },
+  {
+    dataField: "participant_name",
+    text: "Participant Name",
+    sort: true,
+    headerFormatter: (column, colIndex) => {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.roundsFilter}
+              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+              className="form-control"
+              style={{
+                textAlign: "center",
+                width: "100px",
+                margin: "auto",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+  },
+  {
+    dataField: "district",
+    text: "District",
+    sort: true,
+    headerFormatter: (column, colIndex) => {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.roundsFilter}
+              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+              className="form-control"
+              style={{
+                textAlign: "center",
+                width: "100px",
+                margin: "auto",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+  },
+  {
+    dataField: "scheme_count",
+    text: "Number of Schemes",
+    sort: true,
+    formatter: (cell, row) => (
+      <Link
+      to={`/payment-scheme-list/${row.id}`}
+      style={{ textDecoration: "underline", color: "#0000CD" }}
+      onClick={() => console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)}
+    >
+      {cell}
+    </Link>
+    ),
+    headerFormatter: (column, colIndex) => {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.roundsFilter}
+              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+              className="form-control"
+              style={{
+                textAlign: "center",
+                width: "100px",
+                margin: "auto",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+  },
+  
+  {
+    dataField: "price",
+    text: "Amount Payment",
+    sort: true,
+    headerFormatter: (column, colIndex) => {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.roundsFilter}
+              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+              className="form-control"
+              style={{
+                textAlign: "center",
+                width: "100px",
+                margin: "auto",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+  },
+  {
+    dataField: "discount",
+    text: "Discount Percentage",
+    sort: true,
+    headerFormatter: (column, colIndex) => {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.roundsFilter}
+              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+              className="form-control"
+              style={{
+                textAlign: "center",
+                width: "100px",
+                margin: "auto",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+  },
+  {
+    dataField: "paymentmethod",
+    text: "Mode of Payment",
+    sort: true,
+    headerFormatter: (column, colIndex) => {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.roundsFilter}
+              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+              className="form-control"
+              style={{
+                textAlign: "center",
+                width: "100px",
+                margin: "auto",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+  },
+  {
+    dataField: "paydate",
+    text: "Date of Payment",
+    sort: true,
+    headerFormatter: (column, colIndex) => {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.roundsFilter}
+              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+              className="form-control"
+              style={{
+                textAlign: "center",
+                width: "100px",
+                margin: "auto",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+  },
+  {
+    dataField: "receivedby",
+    text: "Payment Received by",
+    sort: true,
+    headerFormatter: (column, colIndex) => {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.roundsFilter}
+              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+              className="form-control"
+              style={{
+                textAlign: "center",
+                width: "100px",
+                margin: "auto",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+  },
+],
+
     };
   }
 

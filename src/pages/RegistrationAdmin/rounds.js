@@ -85,6 +85,7 @@ class InstrumentType extends Component {
         : "",
       successMessage: "",
       feedbackListColumns: [
+        
         {
           text: "ID",
           dataField: "id",
@@ -95,6 +96,9 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
+                <div style={{ textAlign: "center", marginBottom: "5px" }}>
+                  {column.text}
+                </div>
                 <div
                   style={{
                     display: "flex",
@@ -109,28 +113,20 @@ class InstrumentType extends Component {
                     className="form-control"
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
               </>
             );
           },
-        },
+        }
+        ,
         {
           dataField: "rounds",
           text: "Round No",
           sort: true,
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
                   <input
                     type="text"
                     value={this.state.roundsFilter}
@@ -139,13 +135,11 @@ class InstrumentType extends Component {
                     style={{
                       textAlign: "center",
                       width: "100px",
+                      margin: "auto",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
+              </div>
             );
           },
         },
@@ -153,17 +147,11 @@ class InstrumentType extends Component {
           dataField: "scheme_name",
           text: "Scheme Name",
           sort: true,
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
                   <input
                     type="text"
                     value={this.state.schemenameFilter}
@@ -174,13 +162,11 @@ class InstrumentType extends Component {
                     style={{
                       textAlign: "center",
                       width: "100px",
+                      margin: "auto",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
+              </div>
             );
           },
         },
@@ -188,17 +174,11 @@ class InstrumentType extends Component {
           dataField: "cycle_no",
           text: "Cycle Number",
           sort: true,
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
                   <input
                     type="text"
                     value={this.state.cyclenoFilter}
@@ -209,13 +189,11 @@ class InstrumentType extends Component {
                     style={{
                       textAlign: "center",
                       width: "100px",
+                      margin: "auto",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
+              </div>
             );
           },
         },
@@ -223,17 +201,11 @@ class InstrumentType extends Component {
           dataField: "sample",
           text: "Sample Name",
           sort: true,
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
                   <input
                     type="text"
                     value={this.state.sampleFilter}
@@ -242,13 +214,11 @@ class InstrumentType extends Component {
                     style={{
                       textAlign: "center",
                       width: "100px",
+                      margin: "auto",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
+              </div>
             );
           },
         },
@@ -258,11 +228,13 @@ class InstrumentType extends Component {
           sort: true,
           headerFormatter: (column, colIndex) => {
             return (
-              <>
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "center",
+                    marginTop: "5px",
                     gap: "10px",
                   }}
                 >
@@ -276,13 +248,11 @@ class InstrumentType extends Component {
                     style={{
                       textAlign: "center",
                       width: "160px",
+                      margin: "auto",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
+              </div>
             );
           },
           formatter: (cell, row) => {
@@ -291,44 +261,24 @@ class InstrumentType extends Component {
                 to={`/round-participant-list/${row.id}`}
                 style={{ textDecoration: "underline", color: "#0000CD" }}
                 onClick={() =>
-                  console.log(
-                    `Navigating to payment-scheme-list with ID: ${row.id}`
-                  )
+                  console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)
                 }
               >
                 {cell}
               </Link>
             );
           },
-        },
+        }
+        ,
         {
           dataField: "issue_date",
           text: "Issue Date",
           sort: true,
-          formatter: (cellContent, methodlist) => (
-            <>
-              <span
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                {moment(methodlist.issue_date).format("DD MMM YYYY")}
-              </span>
-            </>
-          ),
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
                   <input
                     type="text"
                     value={this.state.issuedateFilter}
@@ -339,44 +289,26 @@ class InstrumentType extends Component {
                     style={{
                       textAlign: "center",
                       width: "100px",
+                      margin: "auto",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
+              </div>
             );
           },
+          formatter: (cellContent, methodlist) => (
+            <span>{moment(methodlist.issue_date).format("DD MMM YYYY")}</span>
+          ),
         },
         {
           dataField: "closing_date",
           text: "Closing Date",
           sort: true,
-          formatter: (cellContent, methodlist) => (
-            <>
-              <span
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                {moment(methodlist.closing_date).format("DD MMM YYYY")}
-              </span>
-            </>
-          ),
-          // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
                   <input
                     type="text"
                     value={this.state.closingdateFilter}
@@ -387,101 +319,37 @@ class InstrumentType extends Component {
                     style={{
                       textAlign: "center",
                       width: "100px",
+                      margin: "auto",
                     }}
                   />
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
+              </div>
             );
           },
-        },
-        {
-          dataField: "note",
-          text: "Note",
-          sort: true,
-          formatter: (cellContent, methodlist) => {
-            console.log("Debug methodlist.note:", methodlist.note); // Check note value
-            return (
-              <>
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  {methodlist.note || "No note provided"}
-                </span>
-              </>
-            );
-          },
-
-          // filter: textFilter(),
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
-                    type="text"
-                    value={this.state.notesFilter}
-                    onChange={(e) => this.handleFilterChange("notesFilter", e)}
-                    className="form-control"
-                    style={{
-                      textAlign: "center",
-                      width: "100px",
-                    }}
-                  />
-                </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
-            );
-          },
+          formatter: (cellContent, methodlist) => (
+            <span>{moment(methodlist.closing_date).format("DD MMM YYYY")}</span>
+          ),
         },
         {
           dataField: "status",
           text: "Status",
           sort: true,
-          formatter: (cellContent, methodlist) => (
-            <>
-              {methodlist.status === "Created" ? (
-                <span>Created</span>
-              ) : methodlist.status === "Ready" ? (
-                <span>Ready</span>
-              ) : methodlist.status === "Open" ? (
-                <span>Open</span>
-              ) : methodlist.status === "Closed" ? (
-                <span>Closed</span>
-              ) : methodlist.status === "Report Available" ? (
-                <span>Report Available</span>
-              ) : (
-                <span>{methodlist.status}</span> // Fallback in case of unexpected values
-              )}
-            </>
-          ),
           headerFormatter: (column, colIndex) => {
             return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
                   <select
                     value={this.state.statusFilter}
-                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
+                    onChange={(e) =>
+                      this.handleFilterChange("statusFilter", e)
+                    }
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                      margin: "auto",
+                    }}
                   >
                     <option value="">All</option>
                     <option value="Created">Created</option>
@@ -491,12 +359,12 @@ class InstrumentType extends Component {
                     <option value="Report Available">Report Available</option>
                   </select>
                 </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
+              </div>
             );
           },
+          formatter: (cellContent, methodlist) => (
+            <span>{methodlist.status || "Unknown"}</span>
+          ),
         },
         // {
         //   dataField: 'link',
@@ -516,10 +384,15 @@ class InstrumentType extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
+          headerStyle: {
+            textAlign: "center", // Center the text
+            verticalAlign: "middle", // Align text in the center vertically
+          },
           formatter: (cellContent, round) => {
             const { organization_name } = this.state;
 
             return (
+              
               <div
                 className="d-flex gap-3 ml-3"
                 style={{
@@ -573,19 +446,19 @@ class InstrumentType extends Component {
                 {/* {/ Show statistics icon only when the status is "Closed" or "Report Available" /} */}
                 {(round.status === "Closed" ||
                   round.status === "Report Available") && (
-                  <Tooltip title="Statistics">
-                    <Link
-                      to="#"
-                      onClick={() => this.onClickStatistics(round)}
-                      style={{ textDecoration: "underline", color: "#008000" }}
-                    >
-                      <i
-                        className="mdi mdi-chart-bar font-size-18"
-                        id="statisticsIcon"
-                      ></i>
-                    </Link>
-                  </Tooltip>
-                )}
+                    <Tooltip title="Statistics">
+                      <Link
+                        to="#"
+                        onClick={() => this.onClickStatistics(round)}
+                        style={{ textDecoration: "underline", color: "#008000" }}
+                      >
+                        <i
+                          className="mdi mdi-chart-bar font-size-18"
+                          id="statisticsIcon"
+                        ></i>
+                      </Link>
+                    </Tooltip>
+                  )}
 
                 <Tooltip title="Update">
                   <Link className="text-success" to="#">
@@ -1470,7 +1343,7 @@ class InstrumentType extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses={"table-light"}
+                                      headerWrapperClasses={"table-header-sky-blue"}
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}

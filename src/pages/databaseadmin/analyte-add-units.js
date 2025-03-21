@@ -23,6 +23,7 @@ class AnalyteAddUnits extends Component {
       nameFilter: '',
       idFilter: '',
       organization_name: "",
+      analyte_name: '',
       conversionFormulaValues: {}, // Tracks conversion formula values for each row
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
@@ -113,28 +114,28 @@ class AnalyteAddUnits extends Component {
             const isMasterUnitSelected = this.state.selectedCheckboxes[row.id]?.masterUnit;
             return (
               <div>
-                
+
                 {isMasterUnitSelected ? (
                   <Tooltip title="Please Enter Correct Formet.....
                   Eample:  mmol/L=newunit3×0.0259">
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.conversionFormulaValues[row.id]?.conversion_formula || ""}
-                    onChange={e => this.handleConversionFormulaChange(row.id, e.target.value)}
-                    placeholder="Enter Master Unit Conversion formula."
-                  />
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={this.state.conversionFormulaValues[row.id]?.conversion_formula || ""}
+                      onChange={e => this.handleConversionFormulaChange(row.id, e.target.value)}
+                      placeholder="Enter Master Unit Conversion formula."
+                    />
                   </Tooltip>
                 ) : (
                   <span className="text-muted">-</span>
                 )}
-                
+
               </div>
             );
           },
         },
-        
-        
+
+
       ],
     };
   }
@@ -150,20 +151,34 @@ class AnalyteAddUnits extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // Add console.log to check when componentDidUpdate is triggered
+    // Log when the component updates
     console.log('Component did update');
-    
-    // Update selectedCheckboxes when UnitAnalyteList changes
-    if (prevProps.UnitAnalyteList !== this.props.UnitAnalyteList) {
+
+    // Check if UnitAnalyteList prop has changed
+    if (
+      prevProps.UnitAnalyteList !== this.props.UnitAnalyteList &&
+      this.props.UnitAnalyteList
+    ) {
       console.log('UnitAnalyteList prop changed');
       console.log('Previous UnitAnalyteList:', prevProps.UnitAnalyteList);
       console.log('Current UnitAnalyteList:', this.props.UnitAnalyteList);
-      
-      if (this.props.UnitAnalyteList) {
-        this.updateSelectedCheckboxes();
+
+      // Update selected checkboxes
+      this.updateSelectedCheckboxes();
+
+      // Extract and set analyte name if available in UnitAnalyteList
+      const analyte_name = this.props.UnitAnalyteList.analyte_name || ''; // Ensure you're using the correct key
+      if (analyte_name) {
+        this.setState({ analyte_name }, () =>
+          console.log('Analyte name updated:', analyte_name)
+        );
+      } else {
+        console.log('Analyte name is empty or undefined');
       }
     }
   }
+
+
 
   fetchData() {
     const { onGetReagentList, onGetAnalyteUnits } = this.props;
@@ -192,13 +207,13 @@ class AnalyteAddUnits extends Component {
     const { units, master_unit, conversion_formula } = this.props.UnitAnalyteList;
     const selectedCheckboxes = {};
     const conversionFormulaValues = {};
-  
+
     if (Array.isArray(units)) {
       units.forEach(unit => {
         selectedCheckboxes[unit] = { allowedUnit: true, masterUnit: false };
       });
     }
-  
+
     if (master_unit) {
       selectedCheckboxes[master_unit] = {
         ...selectedCheckboxes[master_unit],
@@ -206,39 +221,39 @@ class AnalyteAddUnits extends Component {
       };
       conversionFormulaValues[master_unit] = { conversion_formula: conversion_formula || "" };
     }
-  
+
     this.setState({ selectedCheckboxes, conversionFormulaValues });
   }
-  
+
   handleSave = () => {
     const { selectedCheckboxes, conversionFormulaValues } = this.state;
     const { onUpdateAnalyteUnits, match, ListUnits } = this.props;
     const analyteId = match.params.id;
-  
+
     const selectedUnits = ListUnits.filter(unit => selectedCheckboxes[unit.id]?.allowedUnit);
     if (selectedUnits.length === 0) {
       this.setState({ errorMessage: "Please select at least one Allowed Unit." });
       return;
     }
-  
+
     const masterUnit = Object.keys(selectedCheckboxes).find(key => selectedCheckboxes[key]?.masterUnit);
     if (!masterUnit) {
       this.setState({ errorMessage: "Please select a Master Unit." });
       return;
     }
-  
+
     const payload = {
       id: analyteId,
       units: selectedUnits.map(unit => unit.id),
       masterUnit: parseInt(masterUnit),
       conversion_formula: conversionFormulaValues[masterUnit]?.conversion_formula || "",
     };
-  
+
     onUpdateAnalyteUnits(payload);
     this.setFeedbackMessage("Units updated successfully.");
   };
-  
-  
+
+
   setFeedbackMessage = (message) => {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
@@ -291,7 +306,7 @@ class AnalyteAddUnits extends Component {
         [id]: { conversion_formula: value },
       },
     }));
-  };  
+  };
 
   handleCheckboxChange = (id, column) => {
     this.setState(prevState => {
@@ -381,11 +396,23 @@ class AnalyteAddUnits extends Component {
             <title>Database Admin | Unit List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Unit List" />
-           
+            <Breadcrumbs
+              title="List"
+              breadcrumbItem={
+                <>
+                  Unit List - {" "}
+                  <span style={{ fontWeight: "bold", color: "black" }}>
+                    {this.state.analyte_name || "Loading..."}
+                  </span>
+                </>
+              }
+            />
+
+
+
             <Row className="justify-content-center">
               <Col lg="10">
-              <p><strong>Note:</strong> <b className="text-danger">Analytes</b> will not be active unless <b className="text-danger">Master Unit</b> is selected. The user must select <b className="text-danger">Master Unit</b> before selecting <b className="text-danger">Allowed Unit</b>. </p>
+                <p><strong>Note:</strong> <b className="text-danger">Analytes</b> will not be active unless <b className="text-danger">Master Unit</b> is selected. The user must select <b className="text-danger">Master Unit</b> before selecting <b className="text-danger">Allowed Unit</b>. </p>
                 <Card>
                   <CardBody>
                     <Row>
@@ -455,7 +482,7 @@ class AnalyteAddUnits extends Component {
 AnalyteAddUnits.propTypes = {
   match: PropTypes.object,
   ListUnits: PropTypes.array,
-  UnitAnalyteList: PropTypes.array,
+  UnitAnalyteList: PropTypes.object, // Ensure UnitAnalyteList is an object
   onGetAnalyteUnits: PropTypes.func,
   history: PropTypes.object,
   onGetReagentList: PropTypes.func,
@@ -463,10 +490,29 @@ AnalyteAddUnits.propTypes = {
   onUpdateAnalyteUnits: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  ListUnits: state.ListUnits?.ListUnits || [], // Ensure ListUnits is handled properly too
-  UnitAnalyteList: state.ListUnits?.UnitAnalyteList || [], // Handle case where UnitAnalyteList might be undefined
-});
+const mapStateToProps = (state) => {
+  // Log the entire Redux state
+  console.log("Redux State in mapStateToProps:", state);
+
+  // Extract values from the state
+  const ListUnits = state.ListUnits?.ListUnits || [];
+  const UnitAnalyteList = state.ListUnits?.UnitAnalyteList || {
+    analyte_name: '',
+    units: [],
+    master_unit: null,
+    conversion_formula: null
+  };
+
+  // Log the extracted values
+  console.log("Extracted ListUnits:", ListUnits);
+  console.log("Extracted UnitAnalyteList:", UnitAnalyteList);
+
+  return {
+    ListUnits,
+    UnitAnalyteList,
+  };
+};
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAnalyteUnits: id => dispatch(getAnalyteUnitlist(id)),
