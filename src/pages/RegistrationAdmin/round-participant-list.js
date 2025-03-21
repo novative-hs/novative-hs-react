@@ -12,7 +12,8 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 
 // Import actions
 import { 
-  getRoundParticipantlist
+  getRoundParticipantlist,
+  deleteRoundParticipant,
 } from "store/rounds/actions";
 import "assets/scss/table.scss";
 
@@ -70,10 +71,29 @@ class RoundParticipantlist extends Component {
           align: "left",
         }
         ,
+        {
+          dataField: "delete",
+          text: "Remove",
+          formatter: (cell, row) => (
+            <span
+              style={{ cursor: "pointer", color: "red" }}
+              onClick={() => this.onDeleteRoundParticipant(this.props.roundDetails.round_id, row.id)}
+
+
+            >
+              ❌
+            </span>
+          ),
+          
+          headerAlign: "center",
+          align: "center",
+          headerStyle: { width: '80px' }, // Adjust width if needed
+        },
       ],
     };
     // Bind the transformParticipantData method
     this.transformParticipantData = this.transformParticipantData.bind(this);
+    this.onDeleteRoundParticipant  = this.onDeleteRoundParticipant .bind(this);
   }
 
   // Transformation logic for participant data
@@ -112,9 +132,23 @@ class RoundParticipantlist extends Component {
     }
   }
   
-  
-  
-  
+  onDeleteRoundParticipant(round_id, participant_id) {
+    if (!window.confirm("Are you sure you want to delete this participant?")) {
+        return;
+    }
+
+    try {
+        this.props.onDeleteRoundParticipant(round_id, participant_id)
+            .then(() => {
+                console.log(`Participant with ID ${participant_id} deleted.`);
+
+                // ✅ Ensure only the deleted participant is removed
+                this.props.deleteParticipantFromLabRound(participant_id);
+            });
+    } catch (error) {
+        console.error("Error removing participant:", error);
+    }
+}
 
   fetchData() {
     const { onGetRoundParticipantList } = this.props;
@@ -264,28 +298,29 @@ RoundParticipantlist.propTypes = {
   RoundParticipantlist: PropTypes.array,
   roundDetails: PropTypes.object,
   history: PropTypes.object,
-  // onGetSchemeAnalyte: PropTypes.func,
   onGetRoundParticipantList: PropTypes.func,
+  onDeleteRoundParticipant: PropTypes.func.isRequired,
+  deleteParticipantFromLabRound: PropTypes.func.isRequired,  // ✅ Added this line
 };
-const mapStateToProps = (state) => {
-  console.log("Redux State in mapStateToProps:", state); // Debug to check the state
-  console.log("RoundParticipantlist:", state.RoundList?.RoundParticipantlist);
-  console.log("roundDetails:", state.RoundList?.roundDetails);
 
+const mapStateToProps = (state) => {
+  console.log("Redux State - roundDetails:", state.RoundList?.roundDetails);  // ✅ Add this log
   return {
-    roundDetails: state.RoundList?.roundDetails || {},  // Ensure you're mapping the right data
-    RoundParticipantlist: state.RoundList?.RoundParticipantlist || [],  // Same for participant list
+    roundDetails: state.RoundList?.roundDetails || {},
+    RoundParticipantlist: state.RoundList?.RoundParticipantlist || [],
   };
 };
+const mapDispatchToProps = (dispatch) => ({
+  onGetRoundParticipantList: (id) => dispatch(getRoundParticipantlist(id)),
+  onDeleteRoundParticipant: (roundId, participantId) => dispatch(deleteRoundParticipant(roundId, participantId)),
 
-
-  
-
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  
-    onGetRoundParticipantList: (id) => dispatch(getRoundParticipantlist(id)),
+  // ✅ Ensure it's mapped properly
+  deleteParticipantFromLabRound: (participantId) => dispatch({
+      type: "REMOVE_PARTICIPANT_FROM_LAB_ROUND",
+      payload: participantId
+  }),
 });
+
 
 export default connect(
   mapStateToProps,
