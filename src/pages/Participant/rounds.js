@@ -2,284 +2,513 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import { withRouter } from "react-router-dom";
-import BootstrapTable from 'react-bootstrap-table-next';
+import { withRouter, Link } from "react-router-dom";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory, {
+  PaginationProvider,
+  PaginationListStandalone,
+} from "react-bootstrap-table2-paginator";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
+import Tooltip from "@material-ui/core/Tooltip";
+import { Card, CardBody, Col, Container, Row } from "reactstrap";
+import Select from "react-select";
+import { getSelectedSchemesList } from "store/selected-scheme/actions";
+import { isEmpty, uniq } from "lodash";
+import moment from "moment";
+import { getcyclelist } from "store/cycle/actions";
+import ListUnit from "store/databaseofunits/reducer";
+import CycleList from "store/cycle/reducer";
 
-// Import Breadcrumb
-import Breadcrumbs from "components/Common/Breadcrumb";
-
-// Import actions
-import { 
-  getRoundParticipantlist,
-  deleteRoundParticipant,
-} from "store/rounds/actions";
-import "assets/scss/table.scss";
-
-class RoundParticipantlist extends Component {
+class Roundural extends Component {
   constructor(props) {
     super(props);
+    this.node = React.createRef();
     this.state = {
-      nameFilter: '',
-      idFilter: '',
-      selectedCheckboxes: {}, // Track checked checkboxes
-      tableKey: 0,
-      RoundParticipantlist: [],
-      feedbackMessage: '',
-      errorMessage: '', // State for error message
+      SelectedSchemeList: [],
+      CycleList: [],
+      organization_name: "",
+      selectedName: "All",  // ✅ Default to "All"
+      selectedCycle: "All", // ✅ Default to "All"
+      modal: false,
+      user_id: localStorage.getItem("authUser")
+    ? JSON.parse(localStorage.getItem("authUser")).user_id
+    : null, // ✅ Default to null instead of empty string
+      nameOptions: [],
+      selectedName: "All",
       feedbackListColumns: [
         {
           text: "ID",
           dataField: "id",
           sort: true,
-          headerFormatter: (column, colIndex) => (
-            <>
-              <div>
-                <input
-                  type="text"
-                  value={this.state.idFilter}
-                  onChange={e => this.handleFilterChange('idFilter', e)}
-                  className="form-control"
-                />
-              </div>
-              <div>{column.text}</div>
-            </>
-          ),
-          headerStyle: { width: '100px' },
-          style: { width: '100px' },
+          hidden: true,
         },
         {
-          dataField: "name",
-          text: "Participants",
+          dataField: "scheme_name",
+          text: "Scheme Name",
           sort: true,
-          formatter: (cell, row) => (typeof cell === "string" ? cell : "Unknown"), // Fallback for invalid data
-          headerFormatter: (column, colIndex) => (
+          formatter: (cellContent, round) => {
+            return round.scheme_name; // Display only the scheme name without a link
+          },
+        },
+        {
+          dataField: "cycle_no",
+          text: "Cycle No (Status)",
+          sort: true,
+          formatter: (cellContent, row) => {
+            return `${row.cycle_no} (${row.cycle_status || "Unknown"})`;  // ✅ Show cycle status
+          },
+        },
+        
+        {
+          dataField: "rounds",
+          text: "Rounds",
+          sort: true,
+          formatter: (cellContent, round) => <>{round.rounds}</>,
+        },
+        {
+          dataField: "issueDate",
+          text: "Issue Date",
+          sort: true,
+          formatter: (cellContent, round) => (
             <>
-              <div>
-                <input
-                  type="text"
-                  value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange('nameFilter', e)}
-                  className="form-control"
-                />
-              </div>
-              <div>{column.text}</div>
+              <span>
+                {moment(round.issue_date).format("DD MMM YYYY, h:mm A")}
+              </span>
             </>
           ),
-          headerAlign: "center",
-          align: "left",
-        }
-        ,
+        },
         {
-          dataField: "delete",
-          text: "Remove",
-          formatter: (cell, row) => (
-            <span
-              style={{ cursor: "pointer", color: "red" }}
-              onClick={() => this.onDeleteRoundParticipant(this.props.roundDetails.round_id, row.id)}
-
-
-            >
-              ❌
-            </span>
+          dataField: "closingDate",
+          text: "Closing Date",
+          sort: true,
+          formatter: (cellContent, round) => (
+            <>
+              <span>
+                {moment(round.closing_date).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
           ),
-          
-          headerAlign: "center",
-          align: "center",
-          headerStyle: { width: '80px' }, // Adjust width if needed
+        },
+        // {
+        //   dataField: "roundStatus",
+        //   text: "Submitted-at",
+        //   sort: true,
+        // },
+        {
+          dataField: "status",
+          text: "Status",
+          sort: true,
+        },
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, round) => {
+            const { organization_name } = this.state;
+            return (
+              <div className="d-flex justify-content-center gap-3 ml-3">
+                <Tooltip title="Results">
+                  <Link
+                    className="fas fa-file-alt font-size-18 text-success"
+                    to={`/${organization_name}/${round.id}/${round.participant_id}/participantsResults`}
+                    onClick={e => {
+                      e.preventDefault();
+                      if (!organization_name) {
+                        console.error("Invalid organization name");
+                        return;
+                      }
+                      const url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
+                      console.log("Navigating to:", url);
+                      this.props.history.push(url);
+                    }}
+                  ></Link>
+                </Tooltip>
+
+                {/* History Icon */}
+                <Tooltip title="History">
+                  <Link
+                    className="fas fa-comment font-size-18"
+                    to={`/${organization_name}/rounds-history/${round.id}`}
+                    onClick={e => {
+                      e.preventDefault();
+                      if (!organization_name) {
+                        console.error("Invalid organization name");
+                        return;
+                      }
+                      const url = `/${organization_name}/rounds-history/participant/${round.id}`;
+                      console.log("Navigating to:", url);
+                      this.props.history.push(url);
+                    }}
+                  ></Link>
+                </Tooltip>
+
+                {/* Add Result Icon */}
+              </div>
+            );
+          },
         },
       ],
     };
-    // Bind the transformParticipantData method
-    this.transformParticipantData = this.transformParticipantData.bind(this);
-    this.onDeleteRoundParticipant  = this.onDeleteRoundParticipant .bind(this);
+    this.handleNameFilterChange = this.handleNameFilterChange.bind(this);
   }
 
-  // Transformation logic for participant data
-  transformParticipantData(participantList) {
-    // Example transformation logic
-    return participantList.map((participant) => ({
-      ...participant,
-      fullName: `${participant.firstName || "Unknown"} ${participant.lastName || ""}`,
-    }));
-  }
+  // componentDidMount() {
+  //   const { organization_name } = this.props.match.params;
+  //   this.setState({ organization_name });
+  //   console.log("Fetching Cycle List...");
+  //   this.props.onGetRoundList(this.state.user_id);
+  //     this.props.onGetCycleList(this.state.user_id);
 
+  //   setTimeout(() => {
+  //     console.log("CycleList after API call:", this.props.CycleList); // ✅ Log CycleList after fetching
+  //   }, 3000); // ✅ Delay to allow Redux state update
+  // }
   componentDidMount() {
-    // Fetch data when the component mounts
-    this.fetchData();
-  }
- 
-  
-  
-  componentDidUpdate(prevProps) {
-    if (prevProps.RoundParticipantlist !== this.props.RoundParticipantlist) {
-      if (typeof this.transformParticipantData === "function") {
-        const transformedData = this.transformParticipantData(this.props.RoundParticipantlist);
-        console.log("Transformed Participant Data:", transformedData);
-        
-        // Check if the transformed data is a valid array
-        if (Array.isArray(transformedData)) {
-          console.log("Transformed data is a valid array.");
-        } else {
-          console.error("Transformed data is not an array.");
-        }
-        
-        this.setState({ RoundParticipantlist: transformedData });
-      } else {
-        console.error("transformParticipantData is not defined or not a function");
-      }
-    }
-  }
-  
-  onDeleteRoundParticipant(round_id, participant_id) {
-    if (!window.confirm("Are you sure you want to delete this participant?")) {
+    const { organization_name } = this.props.match.params;
+    this.setState({ organization_name });
+
+    console.log("🚀 Component Mounted: Fetching Round List and Cycle List");
+
+    const user_id = this.state.user_id;
+    if (!user_id) {
+        console.error("❌ Error: user_id is missing or undefined! API calls will fail.");
         return;
     }
 
-    try {
-        this.props.onDeleteRoundParticipant(round_id, participant_id)
-            .then(() => {
-                console.log(`Participant with ID ${participant_id} deleted.`);
+    console.log("🔍 Debug: Fetching rounds and cycles for user_id:", user_id);
 
-                // ✅ Ensure only the deleted participant is removed
-                this.props.deleteParticipantFromLabRound(participant_id);
-            });
-    } catch (error) {
-        console.error("Error removing participant:", error);
-    }
+    this.props.onGetRoundList(user_id);
+    this.props.onGetCycleList(user_id);
+
+    setTimeout(() => {
+        console.log("📊 Redux SelectedSchemeList after API call:", this.props.SelectedSchemeList);
+        console.log("📊 Redux CycleList after API call:", this.props.CycleList);
+
+        // ✅ Set default selected options to "All" after data loads
+        this.setState({
+            SelectedSchemeList: this.props.SelectedSchemeList,
+            selectedScheme: "All",
+            selectedCycle: "All"
+        });
+    }, 3000);
 }
 
-  fetchData() {
-    const { onGetRoundParticipantList } = this.props;
-    const RoundParticipantId = this.props.match.params?.id; // Use optional chaining
-    if (!RoundParticipantId) {
-      console.error("RoundParticipantId not found in URL parameters");
-    } else {
-      console.log("Fetching data for ID:", RoundParticipantId);
-      onGetRoundParticipantList({ id: RoundParticipantId }); // Pass as an object
-    }
+
+
+    // componentDidUpdate(prevProps) {
+    //   const { SelectedSchemeList, CycleList } = this.props;
+    //   if (
+    //     SelectedSchemeList !== prevProps.SelectedSchemeList &&
+    //     !isEmpty(SelectedSchemeList)
+    //   ) {
+    //     const uniqueNames = uniq(
+    //       SelectedSchemeList.map(item => item.scheme_name)
+    //     );
+    //     this.setState({
+    //       SelectedSchemeList,
+    //       nameOptions: ["All", ...uniqueNames],
+    //     });
+    //   }
+    //   if (prevProps.CycleList !== this.props.CycleList) {
+    //     console.log("CycleList updated in props:", this.props.CycleList); // ✅ Debugging log
+    //     this.setState({ CycleList: this.props.CycleList });
+    // }
+    // }
+
+    componentDidUpdate(prevProps) {
+      const { SelectedSchemeList, CycleList } = this.props;
+  
+      // ✅ Ensure SelectedSchemeList updates when new data comes in
+      if (
+          SelectedSchemeList !== prevProps.SelectedSchemeList &&
+          Array.isArray(SelectedSchemeList) &&
+          SelectedSchemeList.length > 0
+      ) {
+          console.log("✅ Loaded SelectedSchemeList:", SelectedSchemeList);
+          
+          this.setState({
+              SelectedSchemeList,
+              nameOptions: ["All", ...uniq(SelectedSchemeList.map(item => item.scheme_name))],
+          });
+      }
+  
+      // ✅ Ensure CycleList updates correctly
+      if (
+          CycleList !== prevProps.CycleList &&
+          Array.isArray(CycleList) &&
+          CycleList.length > 0
+      ) {
+          console.log("✅ Loaded CycleList:", CycleList);
+          this.setState({ CycleList });
+      }
   }
   
-  
 
-  handleFilterChange = (filterName, e) => {
-    this.setState({ [filterName]: e.target.value });
+
+
+handleNameFilterChange(selectedOption) {
+  this.setState(
+      { selectedScheme: selectedOption ? selectedOption.value : "All" },
+      () => {
+          console.log("✅ Updated Selected Scheme:", this.state.selectedScheme);
+          this.forceUpdate(); // ✅ Ensure the component re-renders
+      }
+  );
+}
+
+
+
+  
+handleCycleFilterChange(selectedOption) {
+  this.setState(
+      { selectedCycle: selectedOption ? selectedOption.value : "All" },
+      () => {
+          console.log("✅ Updated Selected Cycle:", this.state.selectedCycle);
+          this.forceUpdate(); // ✅ Ensure the component re-renders
+      }
+  );
+}
+
+
+  
+  handleCycleStatusChange = selectedOption => {
+    this.setState(
+      { selectedCycleStatus: selectedOption ? selectedOption.value : "Active" },
+      () => console.log("✅ Updated Cycle Status:", this.state.selectedCycleStatus)
+    );
   };
+  
 
  
+  // filterData() {
+  //   const { SelectedSchemeList, selectedName, selectedCycle } = this.state;
+  //   if (selectedName === "All") {
+  //     return SelectedSchemeList;
+  //   }
+  //   return SelectedSchemeList.filter(entry => 
+  //     (selectedName === "All" || entry.scheme_name === selectedName) && // ✅ Filter by scheme
+  //     (selectedCycle === "All" || entry.cycle_no === selectedCycle) // ✅ Filter by cycle
+  //   );
+  //   return SelectedSchemeList.filter(
+  //     entry => entry.scheme_name === selectedName,
+  //     entry => entry.cycle_no === selectedCycle
+  //   );
+  // }
 
-  filterData = () => {
-    const { RoundParticipantlist } = this.state;  // Now using the state instead of props
-    const { nameFilter, idFilter } = this.state;
+  // filterData() {
+  //   const { SelectedSchemeList, selectedName, selectedCycle } = this.state;
+  
+  //   console.log("🔍 Selected Scheme:", selectedName);
+  //   console.log("🔍 Selected Cycle:", selectedCycle);
+  //   console.log("📊 Full List Before Filtering:", SelectedSchemeList);
+  
+  //   if (!SelectedSchemeList || SelectedSchemeList.length === 0) {
+  //     console.warn("⚠️ No data available in SelectedSchemeList!");
+  //     return [];
+  //   }
+  
+  //   return SelectedSchemeList.filter(entry => {
+  //     const schemeMatch = selectedName === "All" || entry.scheme_name === selectedName;
+  //     const cycleMatch =
+  //       selectedCycle === "All" ||
+  //       (selectedCycle === "Active" && entry.status?.toLowerCase() === "active") ||
+  //       (selectedCycle === "Inactive" && entry.status?.toLowerCase() === "inactive") ||
+  //       (entry.cycle_no && entry.cycle_no.toString() === selectedCycle);
+  
+  //     return schemeMatch && cycleMatch;
+  //   });
+  // }
 
-    if (!Array.isArray(RoundParticipantlist)) {
-      return []; // Return empty array if not an array
+  filterData() {
+    const { SelectedSchemeList, selectedScheme, selectedCycle } = this.state;
+
+    console.log("🔍 Selected Scheme:", selectedScheme);
+    console.log("🔍 Selected Cycle:", selectedCycle);
+    console.log("📊 Full List Before Filtering:", SelectedSchemeList);
+
+    if (!Array.isArray(SelectedSchemeList) || SelectedSchemeList.length === 0) {
+        console.warn("⚠️ No data available in SelectedSchemeList!");
+        return [];
     }
 
-    const filteredData = RoundParticipantlist.filter(entry => {
-      const name = typeof entry.name === "string" ? entry.name.toLowerCase() : "";
-      const id = entry.id ? entry.id.toString() : "";
+    return SelectedSchemeList.filter(entry => {
+        const schemeMatch = selectedScheme === "All" || entry.scheme_name === selectedScheme;
+        const cycleMatch = selectedCycle === "All" || entry.cycle_status === selectedCycle; // ✅ Now filters by cycle_status
 
-      return (
-        name.includes(nameFilter.toLowerCase()) &&
-        id.includes(idFilter)
-      );
+        return schemeMatch && cycleMatch;
+    });
+}
+
+
+//  S
+
+
+
+ 
+  
+  
+  
+  
+  render() {
+    const { SearchBar } = Search;
+    const { nameOptions, selectedName, selectedCycle } = this.state;
+
+    const pageOptions = {
+      sizePerPage: 10,
+      totalSize: this.state.SelectedSchemeList.length,
+      custom: true,
+    };
+   
+    const filteredRoundList = this.filterData();
+    const schemeName = nameOptions.map(name => {
+      console.log("Scheme name:", name); // Logs each name inside the map function
+      return {
+        value: name,
+        label: name,
+      };
+    });
+    const filteredCycles = this.filterData();
+    const cycle_no = nameOptions.map(cycle_no => {
+      console.log("Cycle name:", CycleList);
+      return {
+        value: cycle_no,
+        labe: cycle_no,
+      };
     });
 
-    return filteredData;
-  };
+    console.log("Final schemeName:", schemeName); // Logs the final array after map is complete
 
-  render() {
-    const { RoundParticipantlist, roundDetails } = this.props;
-    console.log("RoundParticipantlist in renderrrrrrr:", RoundParticipantlist);  // Add this log
-  
-    const defaultSorted = [{ dataField: "id", order: "desc" }];
-  
-   // Use roundDetails for breadcrumb
-   const formatDate = (date) => {
-    if (!date) return '';
-    const [year, month, day] = date.split('-');
-    return `${day}-${month}-${year}`;
-  };
-  
-  const breadcrumbItem = roundDetails
-    ? `Round Number: ${roundDetails.rounds || "No Round Number"}, 
-       Scheme Name: ${roundDetails.scheme_name || "No Scheme Name"}, 
-       Cycle Number: ${roundDetails.cycle_no || "No Cycle Number"}, 
-       Cycle Start Date: ${formatDate(roundDetails.issue_date) || "No Start Date"}, 
-       Cycle End Date: ${formatDate(roundDetails.closing_date) || "No End Date"}, 
-       Round Start Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}, 
-     Round End Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}`
-    : "No Data Available";
-  
-  console.log("Generated Breadcrumb Item:", breadcrumbItem);
-  
-  
+      // ✅ Fix: Ensure `CycleList` is always an array
+      const cycleOptions = [
+        { value: "All", label: "All" },
+        { value: "Active", label: "Active" },
+        { value: "inactive", label: "inactive" },
+        ...(Array.isArray(this.props.CycleList)
+          ? this.props.CycleList.map(cycle => ({
+              value: cycle.cycle_no, // ✅ Use cycle number instead of ID
+              label: cycle.cycle_no,
+            }))
+          : [])
+      ];
+      
+
+
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Database Admin | Round Participant List</title>
+            <title>Rounds</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Round Participant List" />
-
-            {/* Display round details below the breadcrumbs */}
-           
-
-            {roundDetails ? (
-  <div className="round-details">
-    <h4>Round Details:</h4>
-    <p className="round-details-text">
-      <span className="me-3">Round Number: <strong>{roundDetails.rounds || "No Round Number"}</strong></span>
-      <span className="me-3">Scheme Name: <strong>{roundDetails.scheme_name || "No Scheme Name"}</strong></span>
-      <span className="me-3">Cycle Number: <strong>{roundDetails.cycle_no || "No Cycle Number"}</strong></span>
-      <span className="me-3">Cycle Start Date: <strong>{formatDate(roundDetails.issue_date) || "No Start Date"}</strong></span>
-      <span className="me-3">Cycle End Date: <strong>{formatDate(roundDetails.closing_date) || "No End Date"}</strong></span>
-      <span className="me-3">Round Start Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}</strong></span>
-      <span className="me-3">Round End Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}</strong></span>
-    </p>
-  </div>
-) : (
-  <div>No round details available.</div>
-)}
-
-
-
-
-            <Row className="justify-content-center">
-              <Col lg="4">
+            <Row>
+              <Col lg="12">
                 <Card>
                   <CardBody>
-                    <ToolkitProvider
+                    <PaginationProvider
+                      pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={RoundParticipantlist}
-                      search
+                      data={filteredRoundList}
                     >
-                      {toolkitprops => (
-                        <React.Fragment>
-                          <Row className="mb-4">
-                            <Col xl="12">
-                              <div className="table-responsive">
-                                <BootstrapTable
-                                  key={this.state.tableKey}
-                                  {...toolkitprops.baseProps}
-                                  defaultSorted={defaultSorted}
-                                  classes={"table align-middle table-hover"}
-                                  bordered={false}
-                                  striped={true}
-                                  headerWrapperClasses={"table-light"}
-                                  responsive
-                                  data={this.filterData()}
-                                />
-                              </div>
-                            </Col>
-                          </Row>
-                        </React.Fragment>
+                      {({ paginationProps, paginationTableProps }) => (
+                        <ToolkitProvider
+                          keyField="id"
+                          columns={this.state.feedbackListColumns}
+                          data={filteredRoundList}
+                          search
+                        >
+                          {toolkitprops => (
+                            <React.Fragment>
+                              <Row className="mb-2">
+                                {/* Select Scheme */}
+                                <Col xs="4" sm="4" md="3" lg="3">
+                                  <div className="mb-3">
+                                    <label className="form-label">
+                                      Select Scheme
+                                    </label>
+
+                                    <Select
+                                      onChange={this.handleNameFilterChange}
+                                      options={this.state.nameOptions.map(
+                                        name => ({ value: name, label: name })
+                                      )}
+                                      placeholder="Select Scheme..."
+                                      isClearable={true}
+                                      value={
+                                        this.state.selectedScheme
+                                          ? {
+                                              value: this.state.selectedScheme,
+                                              label: this.state.selectedScheme,
+                                            }
+                                          : null
+                                      }
+                                    />
+                                  </div>
+                                </Col>
+
+                                {/* Select Cycle */}
+                                <Col xs="4" sm="4" md="3" lg="3">
+                                  <div className="mb-3">
+                                    <label className="form-label">
+                                      Select Cycle
+                                    </label>
+                                    <Select
+  onChange={(selectedOption) => this.setState({ selectedCycle: selectedOption ? selectedOption.value : "All" })}
+  options={[
+    { value: "All", label: "All" },
+    { value: "Active", label: "Active" },
+    { value: "inactive", label: "inactive" },
+    ...(Array.isArray(this.props.CycleList)
+      ? this.props.CycleList.map(cycle => ({
+          value: cycle.cycle_no, // ✅ Use cycle_no for filtering
+          label: `${cycle.cycle_no} (${cycle.status})`, // ✅ Show status next to cycle_no
+        }))
+      : [])
+  ]}
+  placeholder="Select Cycle..."
+  isClearable={true}
+  value={this.state.selectedCycle ? { value: this.state.selectedCycle, label: this.state.selectedCycle } : null}
+/>
+
+                                  </div>
+                                </Col>
+                              </Row>
+
+                              <Row className="mb-4">
+                                <Col xl="12">
+                                  <div className="table-responsive">
+                                    <BootstrapTable
+                                      {...toolkitprops.baseProps}
+                                      {...paginationTableProps}
+                                      defaultSorted={[
+                                        {
+                                          dataField: "id",
+                                          order: "desc",
+                                        },
+                                      ]}
+                                      classes={"table align-middle table-hover"}
+                                      bordered={false}
+                                      striped={true}
+                                      headerWrapperClasses={"table-light"}
+                                      responsive
+                                      data={filteredRoundList}
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row className="align-items-md-center mt-30">
+                                <Col className="pagination pagination-rounded justify-content-end mb-2">
+                                  <PaginationListStandalone
+                                    {...paginationProps}
+                                  />
+                                </Col>
+                              </Row>
+                            </React.Fragment>
+                          )}
+                        </ToolkitProvider>
                       )}
-                    </ToolkitProvider>
+                    </PaginationProvider>
                   </CardBody>
                 </Card>
               </Col>
@@ -289,40 +518,45 @@ class RoundParticipantlist extends Component {
       </React.Fragment>
     );
   }
-  
-  
 }
 
-RoundParticipantlist.propTypes = {
+Roundural.propTypes = {
   match: PropTypes.object,
-  RoundParticipantlist: PropTypes.array,
-  roundDetails: PropTypes.object,
-  history: PropTypes.object,
-  onGetRoundParticipantList: PropTypes.func,
-  onDeleteRoundParticipant: PropTypes.func.isRequired,
-  deleteParticipantFromLabRound: PropTypes.func.isRequired,  // ✅ Added this line
+  CycleList: PropTypes.array,
+  SelectedSchemeList: PropTypes.array,
+  onGetCycleList: PropTypes.func, // Fix: Add this line
+  className: PropTypes.any,
+  onGetRoundList: PropTypes.func,
+  error: PropTypes.any,
+  success: PropTypes.any,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
+const mapStateToProps = state => {
+  console.log("🟢 Redux State:", state); // ✅ Debug full Redux state
+  console.log("🔵 SelectedSchemeList from Redux:", state.SelectedSchemeList?.SelectedSchemeList);
+  console.log("🟣 CycleList from Redux:", state.CycleList);
 
-const mapStateToProps = (state) => {
-  console.log("Redux State - roundDetails:", state.RoundList?.roundDetails);  // ✅ Add this log
   return {
-    roundDetails: state.RoundList?.roundDetails || {},
-    RoundParticipantlist: state.RoundList?.RoundParticipantlist || [],
+      SelectedSchemeList: state.SelectedSchemeList?.SelectedSchemeList?.map(item => ({
+          ...item,
+          cycle_status: item.cycle_status || "Unknown"  // ✅ Ensure cycle_status is always available
+      })) || [],
+      CycleList: state.CycleList || [], // ✅ Ensure CycleList is not undefined
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  onGetRoundParticipantList: (id) => dispatch(getRoundParticipantlist(id)),
-  onDeleteRoundParticipant: (roundId, participantId) => dispatch(deleteRoundParticipant(roundId, participantId)),
 
-  // ✅ Ensure it's mapped properly
-  deleteParticipantFromLabRound: (participantId) => dispatch({
-      type: "DELETE_PARTICIPANT_FROM_LAB_ROUND",
-      payload: participantId
-  }),
+
+
+console.log("CycleList:", CycleList);
+
+const mapDispatchToProps = dispatch => ({
+  onGetRoundList: id => dispatch(getSelectedSchemesList(id)),
+  onGetCycleList: id => dispatch(getcyclelist(id)), // ✅ Correct name
 });
-
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(RoundParticipantlist));
+)(withRouter(Roundural));
