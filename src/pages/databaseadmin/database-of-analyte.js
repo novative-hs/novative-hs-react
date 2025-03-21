@@ -23,6 +23,9 @@ import {
   Alert,
 } from "reactstrap";
 import { saveAs } from "file-saver";
+import {
+  getSchemelist,
+} from "store/scheme/actions";
 
 import paginationFactory, {
   PaginationProvider,
@@ -56,6 +59,9 @@ class AnalyteList extends Component {
     this.state = {
       nameFilter: "",
       organization_name: "",
+      activeSchemesFilter: "", // No filter applied
+      statusFilter: "",        // No filter applied
+      schemes: [], // To store the list of schemes
       methodsFilter: "",
       equipmentFilter: "",
       reagentsFilter: "",
@@ -255,7 +261,32 @@ class AnalyteList extends Component {
             );
           },
         },
-
+        {
+          dataField: "schemes",
+          text: "Scheme Name",
+          sort: true,
+          formatter: (cellContent, row) => {
+            return row.schemes && row.schemes.length > 0
+              ? row.schemes.join(", ")  // Comma-separated list of scheme names
+              : "No Scheme Name";
+          },
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <input
+                  type="text"
+                  value={this.state.reagentsFilter}
+                  onChange={e => this.handleFilterChange("reagentsFilter", e)}
+                  className="form-control"
+                  style={{ textAlign: 'center', width: '150px' }}
+                />
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '5px' }}>{column.text}</div>
+            </>
+          ),
+          style: { textAlign: "center" },
+          headerStyle: { textAlign: "center" },
+        },
         {
           dataField: "status",
           text: "Status",
@@ -421,17 +452,58 @@ class AnalyteList extends Component {
     return new File([u8arr], filename, { type: mime });
   };
 
+  // componentDidMount() {
+  //   const { organization_name } = this.props.match.params;
+  
+  //   // Only set state if organization_name is empty
+  //   if (!this.state.organization_name) {
+  //     this.setState({ organization_name });
+  //   }
+  
+  //   const { ListUnit, getSchemelist, onGetAnalyte } = this.props;
+  
+  //   // Retrieve user_id from localStorage
+  //   const userId = localStorage.getItem("authUser")
+  //     ? JSON.parse(localStorage.getItem("authUser")).user_id
+  //     : null;
+  
+  //   if (userId) {
+  //     // Pass the user ID to getSchemelist
+  //     getSchemelist(userId);
+  //   } else {
+  //     console.error("User ID is undefined or null.");
+  //   }
+  
+  //   // Fetch analyte list
+  //   onGetAnalyte(this.state.user_id);
+  //   this.setState({ ListUnit });
+  // }
+
   componentDidMount() {
     const { organization_name } = this.props.match.params;
-    // Only set state if organization_name is empty
-    if (!this.state.organization_name) {
-      this.setState({ organization_name });
+    const { ListUnit, getSchemelist, onGetAnalyte } = this.props;
+  
+    // Retrieve user_id from localStorage
+    const userId = localStorage.getItem("authUser")
+      ? JSON.parse(localStorage.getItem("authUser")).user_id
+      : null;
+  
+    if (userId) {
+      console.log("Fetching schemes for userId:", userId);
+      getSchemelist(userId); // Fetch scheme list
+      onGetAnalyte(userId); // Fetch analyte list
+    } else {
+      console.error("User ID is undefined or null.");
     }
-    const { ListUnit, onGetAnalyte } = this.props;
-
-    onGetAnalyte(this.state.user_id);
-    this.setState({ ListUnit });
+  
+    // Set ListUnit in state with a fallback
+    this.setState({ 
+      ListUnit: ListUnit || [], 
+      organization_name: this.state.organization_name || organization_name,
+    });
   }
+  
+  
 
   toggleDeleteModal = () => {
     this.setState(prevState => ({
@@ -483,12 +555,36 @@ class AnalyteList extends Component {
   };
 
   // eslint-disable-next-line no-unused-vars
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { ListUnit } = this.props;
-    if (!isEmpty(ListUnit) && size(prevProps.ListUnit) !== size(ListUnit)) {
-      this.setState({ ListUnit: {}, isEdit: false });
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   const { ListUnit } = this.props;
+  //   if (!isEmpty(ListUnit) && size(prevProps.ListUnit) !== size(ListUnit)) {
+  //     this.setState({ ListUnit: {}, isEdit: false });
+  //   }
+  // }
+
+  componentDidUpdate(prevProps) {
+    const { ListUnit, schemes } = this.props;
+  
+    // Handle ListUnit updates
+    if (prevProps.ListUnit !== ListUnit) {
+      console.log("ListUnit updated:", ListUnit);
+      if (Array.isArray(ListUnit)) {
+        this.setState({ ListUnit });
+      } else if (ListUnit && ListUnit.SchemeAnalyteList) {
+        this.setState({ ListUnit: ListUnit.SchemeAnalyteList });
+      }
+    }
+  
+    // Handle schemes updates
+    // if (prevProps.schemes !== schemes) {
+    //   console.log("Schemes updated in component:", schemes);
+    //   // You can add further logic if needed, like processing or filtering schemes
+    // }
+    if (prevProps.schemes !== this.props.schemes) {
+      console.log("Schemes updated in component:", this.props.schemes);
     }
   }
+  
 
   onPaginationPageChange = page => {
     if (
@@ -645,6 +741,11 @@ class AnalyteList extends Component {
     const { SearchBar } = Search;
     const { errorMessage } = this.state;
     const { ListUnit } = this.props;
+    // const { schemes } = this.props; // Make sure `schemes` is correctly mapped from Redux
+    // if (!schemes || schemes.length === 0) {
+    //   return <div>No schemes available</div>;
+    // }
+  
     const {
       nameFilter,
       dateFilter,
@@ -658,38 +759,82 @@ class AnalyteList extends Component {
       reagentsFilter,
     } = this.state;
 
+    // const filteredData = ListUnit.filter(entry => {
+    //    // Include other conditions if necessary
+    //   // Modify accordingly for each filter condition
+    //   const name = entry.name ? entry.name.toString().toLowerCase() : "";
+    //   const master_unit_name = entry.master_unit_name
+    //     ? entry.master_unit_name.toString().toLowerCase()
+    //     : "";
+    //   const status = entry.status ? entry.status.toString() : "";
+    //   const id = entry.id ? entry.id.toString() : "";
+    //   const noofmethods = entry.noofmethods ? entry.noofmethods.toString() : "";
+    //   const noofreagents = entry.noofreagents
+    //     ? entry.noofreagents.toString()
+    //     : "";
+    //   const noofinstruments = entry.noofinstruments
+    //     ? entry.noofinstruments.toString()
+    //     : "";
+    //   const code = entry.code ? entry.code.toString() : "";
+    //   const date = entry.date_of_addition
+    //     ? entry.date_of_addition.toString()
+    //     : "";
+
+        
+
+    //   return (
+    //     name.includes(nameFilter.toLowerCase()) &&
+    //     master_unit_name.includes(masterunitFilter.toLowerCase()) &&
+    //     status.includes(statusFilter) &&
+    //     id.includes(idFilter) &&
+    //     noofmethods.includes(methodsFilter) &&
+    //     noofreagents.includes(reagentsFilter) &&
+    //     noofinstruments.includes(equipmentFilter) &&
+    //     code.includes(codeFilter) &&
+    //     date.includes(dateFilter)
+    //   );
+    //   activeSchemesMatch &&
+    // statusMatch &&
+    // // Existing filter conditions...
+    // entry.name.toLowerCase().includes(this.state.nameFilter.toLowerCase())
+    // });
+
     const filteredData = ListUnit.filter(entry => {
-      // Modify accordingly for each filter condition
-      const name = entry.name ? entry.name.toString().toLowerCase() : "";
+      const name = entry.name ? entry.name.toLowerCase() : "";
       const master_unit_name = entry.master_unit_name
-        ? entry.master_unit_name.toString().toLowerCase()
+        ? entry.master_unit_name.toLowerCase()
         : "";
-      const status = entry.status ? entry.status.toString() : "";
+      const status = entry.status || "";
       const id = entry.id ? entry.id.toString() : "";
       const noofmethods = entry.noofmethods ? entry.noofmethods.toString() : "";
-      const noofreagents = entry.noofreagents
-        ? entry.noofreagents.toString()
-        : "";
+      const noofreagents = entry.noofreagents ? entry.noofreagents.toString() : "";
       const noofinstruments = entry.noofinstruments
         ? entry.noofinstruments.toString()
         : "";
       const code = entry.code ? entry.code.toString() : "";
-      const date = entry.date_of_addition
-        ? entry.date_of_addition.toString()
-        : "";
-
+      const date = entry.date_of_addition || "";
+    
+      const activeSchemesMatch =
+        !this.state.activeSchemesFilter ||
+        (entry.schemes && entry.schemes.includes(this.state.activeSchemesFilter));
+      
+      const statusMatch = !this.state.statusFilter || entry.status === this.state.statusFilter;
+    
       return (
-        name.includes(nameFilter.toLowerCase()) &&
-        master_unit_name.includes(masterunitFilter.toLowerCase()) &&
-        status.includes(statusFilter) &&
-        id.includes(idFilter) &&
-        noofmethods.includes(methodsFilter) &&
-        noofreagents.includes(reagentsFilter) &&
-        noofinstruments.includes(equipmentFilter) &&
-        code.includes(codeFilter) &&
-        date.includes(dateFilter)
+        activeSchemesMatch &&
+        statusMatch &&
+        name.includes(this.state.nameFilter.toLowerCase() || "") &&
+        master_unit_name.includes(this.state.masterunitFilter.toLowerCase() || "") &&
+        id.includes(this.state.idFilter || "") &&
+        noofmethods.includes(this.state.methodsFilter || "") &&
+        noofreagents.includes(this.state.reagentsFilter || "") &&
+        noofinstruments.includes(this.state.equipmentFilter || "") &&
+        code.includes(this.state.codeFilter || "") &&
+        date.includes(this.state.dateFilter || "")
       );
     });
+    
+    
 
     const { isEdit } = this.state;
     const { deleteModal } = this.state;
@@ -853,6 +998,42 @@ class AnalyteList extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
+                              <Row className="mb-2">
+  <Col xl="4">
+  <div className="form-group">
+      <label htmlFor="activeSchemesFilter">Filter by Scheme</label>
+      <select
+        id="activeSchemesFilter"
+        value={this.state.activeSchemesFilter}
+        onChange={(e) => this.handleFilterChange("activeSchemesFilter", e)}
+        className="form-control"
+      >
+        <option value="">All Schemes</option>
+        {this.props.SchemeList &&
+          this.props.SchemeList.map((SchemeList) => (
+            <option key={SchemeList.id} value={SchemeList.name}>
+              {SchemeList.name}
+            </option>
+          ))}
+      </select>
+    </div>
+  </Col>
+  <Col xl="4">
+    <div className="form-group">
+      <label htmlFor="statusFilter">Filter by Analyte Status</label>
+      <select
+        id="statusFilter"
+        value={this.state.statusFilter}
+        onChange={e => this.handleFilterChange("statusFilter", e)}
+        className="form-control"
+      >
+        <option value="">All</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+    </div>
+  </Col>
+</Row>
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="text-sm-end">
@@ -1167,19 +1348,43 @@ AnalyteList.propTypes = {
   className: PropTypes.any,
   createInstrumentType: PropTypes.array,
   onGetAnalyte: PropTypes.func,
+  getSchemelist: PropTypes.func,
+  schemes: PropTypes.array,
   onAddNewAnalyte: PropTypes.func,
   onUpdateAnalyte: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  SchemeList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ),
 };
 
-const mapStateToProps = ({ ListUnit }) => ({
-  ListUnit: ListUnit?.ListUnit,
-});
+
+const mapStateToProps = (state) => {
+  console.log("Redux State in mapStateToProps:", state);
+
+  const SchemeList = state.SchemeList?.SchemeList || []; // Adjusted key based on structure
+  const ListUnit = state.ListUnit?.ListUnit || [];
+
+  console.log("Extracted Schemes:", SchemeList);
+  console.log("Extracted ListUnit:", ListUnit);
+
+  return {
+    SchemeList,
+    ListUnit,
+  };
+};
+
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetAnalyte: id => dispatch(getAnalytelist(id)),
+  getSchemelist: (id) => dispatch(getSchemelist(id)),
   onAddNewAnalyte: (createInstrumentType, id) =>
     dispatch(addNewAnalyteList(createInstrumentType, id)),
   onUpdateAnalyte: analyte => dispatch(updateAnalyteList(analyte)),
