@@ -2,290 +2,284 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import { withRouter, Link } from "react-router-dom";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, {
-  PaginationProvider,
-  PaginationListStandalone,
-} from "react-bootstrap-table2-paginator";
+import { withRouter } from "react-router-dom";
+import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import Tooltip from "@material-ui/core/Tooltip";
-import {
-  Card,
-  CardBody,
-  Col,
-  Container,
-  Row,
-} from "reactstrap";
-import Select from "react-select";
-import { getSelectedSchemesList } from "store/selected-scheme/actions";
-import { isEmpty, uniq } from "lodash";
-import moment from "moment";
+import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
 
-class Roundural extends Component {
+// Import Breadcrumb
+import Breadcrumbs from "components/Common/Breadcrumb";
+
+// Import actions
+import { 
+  getRoundParticipantlist,
+  deleteRoundParticipant,
+} from "store/rounds/actions";
+import "assets/scss/table.scss";
+
+class RoundParticipantlist extends Component {
   constructor(props) {
     super(props);
-    this.node = React.createRef();
     this.state = {
-      SelectedSchemeList: [],
-      organization_name: '',
-      modal: false,
-      user_id: localStorage.getItem("authUser")
-        ? JSON.parse(localStorage.getItem("authUser")).user_id
-        : "",
-      nameOptions: [],
-      selectedName: "All",
+      nameFilter: '',
+      idFilter: '',
+      selectedCheckboxes: {}, // Track checked checkboxes
+      tableKey: 0,
+      RoundParticipantlist: [],
+      feedbackMessage: '',
+      errorMessage: '', // State for error message
       feedbackListColumns: [
         {
           text: "ID",
           dataField: "id",
           sort: true,
-          hidden: true,
-        },
-        {
-          dataField: "scheme_name",
-          text: "Scheme Name",
-          sort: true,
-          formatter: (cellContent, round) => {
-            return round.scheme_name; // Display only the scheme name without a link
-          },
-        },
-        
-        {
-          dataField: "rounds",
-          text: "Rounds",
-          sort: true,
-          formatter: (cellContent, round) => <>{round.rounds}</>,
-        },
-        {
-          dataField: "issueDate",
-          text: "Issue Date",
-          sort: true,
-          formatter: (cellContent, round) => (
+          headerFormatter: (column, colIndex) => (
             <>
-              <span>
-                {moment(round.issue_date).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-        },
-        {
-          dataField: "closingDate",
-          text: "Closing Date",
-          sort: true,
-          formatter: (cellContent, round) => (
-            <>
-              <span>
-                {moment(round.closing_date).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-        },
-        // {
-        //   dataField: "roundStatus",
-        //   text: "Submitted-at",
-        //   sort: true,
-        // },
-        {
-          dataField: "status",
-          text: "Status",
-          sort: true,
-        },
-        {
-          dataField: "menu",
-          isDummyField: true,
-          editable: false,
-          text: "Action",
-          formatter: (cellContent, round) => {
-            const { organization_name } = this.state;
-            return (
-              <div className="d-flex justify-content-center gap-3 ml-3">
-     <Tooltip title="Results">
-  <Link
-    className="fas fa-file-alt font-size-18 text-success"
-    to={`/${organization_name}/${round.id}/${round.participant_id}/participantsResults`}
-    onClick={(e) => {
-      e.preventDefault();
-      if (!organization_name) {
-        console.error("Invalid organization name");
-        return;
-      }
-      const url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
-      console.log("Navigating to:", url);
-      this.props.history.push(url);
-    }}
-  ></Link>
-</Tooltip>
-
-
-                {/* History Icon */}
-                <Tooltip title="History">
-                  <Link
-                    className="fas fa-comment font-size-18"
-                    to={`/${organization_name}/rounds-history/${round.id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (!organization_name) {
-                        console.error("Invalid organization name");
-                        return;
-                      }
-                      const url = `/${organization_name}/rounds-history/participant/${round.id}`;
-                      console.log("Navigating to:", url);
-                      this.props.history.push(url);
-                    }}
-                  ></Link>
-                </Tooltip>
-        
-                {/* Add Result Icon */}
-              
+              <div>
+                <input
+                  type="text"
+                  value={this.state.idFilter}
+                  onChange={e => this.handleFilterChange('idFilter', e)}
+                  className="form-control"
+                />
               </div>
-            );
-          },
+              <div>{column.text}</div>
+            </>
+          ),
+          headerStyle: { width: '100px' },
+          style: { width: '100px' },
+        },
+        {
+          dataField: "name",
+          text: "Participants",
+          sort: true,
+          formatter: (cell, row) => (typeof cell === "string" ? cell : "Unknown"), // Fallback for invalid data
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "left",
         }
-        
+        ,
+        {
+          dataField: "delete",
+          text: "Remove",
+          formatter: (cell, row) => (
+            <span
+              style={{ cursor: "pointer", color: "red" }}
+              onClick={() => this.onDeleteRoundParticipant(this.props.roundDetails.round_id, row.id)}
+
+
+            >
+              ❌
+            </span>
+          ),
+          
+          headerAlign: "center",
+          align: "center",
+          headerStyle: { width: '80px' }, // Adjust width if needed
+        },
       ],
     };
-    this.handleNameFilterChange = this.handleNameFilterChange.bind(this);
+    // Bind the transformParticipantData method
+    this.transformParticipantData = this.transformParticipantData.bind(this);
+    this.onDeleteRoundParticipant  = this.onDeleteRoundParticipant .bind(this);
+  }
+
+  // Transformation logic for participant data
+  transformParticipantData(participantList) {
+    // Example transformation logic
+    return participantList.map((participant) => ({
+      ...participant,
+      fullName: `${participant.firstName || "Unknown"} ${participant.lastName || ""}`,
+    }));
   }
 
   componentDidMount() {
-    const { organization_name } = this.props.match.params;
-    this.setState({ organization_name });
-    
-    const { onGetRoundList } = this.props;
-    onGetRoundList(this.state.user_id);
+    // Fetch data when the component mounts
+    this.fetchData();
   }
-
+ 
+  
+  
   componentDidUpdate(prevProps) {
-    const { SelectedSchemeList } = this.props;
-    if (
-      SelectedSchemeList !== prevProps.SelectedSchemeList &&
-      !isEmpty(SelectedSchemeList)
-    ) {
-      const uniqueNames = uniq(SelectedSchemeList.map(item => item.scheme_name));
-      // console.log("unique name filters", uniqueNames, item.scheme)
-      this.setState({
-        SelectedSchemeList,
-        nameOptions: ["All", ...uniqueNames],
-      });
+    if (prevProps.RoundParticipantlist !== this.props.RoundParticipantlist) {
+      if (typeof this.transformParticipantData === "function") {
+        const transformedData = this.transformParticipantData(this.props.RoundParticipantlist);
+        console.log("Transformed Participant Data:", transformedData);
+        
+        // Check if the transformed data is a valid array
+        if (Array.isArray(transformedData)) {
+          console.log("Transformed data is a valid array.");
+        } else {
+          console.error("Transformed data is not an array.");
+        }
+        
+        this.setState({ RoundParticipantlist: transformedData });
+      } else {
+        console.error("transformParticipantData is not defined or not a function");
+      }
     }
   }
+  
+  onDeleteRoundParticipant(round_id, participant_id) {
+    if (!window.confirm("Are you sure you want to delete this participant?")) {
+        return;
+    }
 
-  handleNameFilterChange(selectedOption) {
-    this.setState({
-      selectedName: selectedOption ? selectedOption.value : "All",
+    try {
+        this.props.onDeleteRoundParticipant(round_id, participant_id)
+            .then(() => {
+                console.log(`Participant with ID ${participant_id} deleted.`);
+
+                // ✅ Ensure only the deleted participant is removed
+                this.props.deleteParticipantFromLabRound(participant_id);
+            });
+    } catch (error) {
+        console.error("Error removing participant:", error);
+    }
+}
+
+  fetchData() {
+    const { onGetRoundParticipantList } = this.props;
+    const RoundParticipantId = this.props.match.params?.id; // Use optional chaining
+    if (!RoundParticipantId) {
+      console.error("RoundParticipantId not found in URL parameters");
+    } else {
+      console.log("Fetching data for ID:", RoundParticipantId);
+      onGetRoundParticipantList({ id: RoundParticipantId }); // Pass as an object
+    }
+  }
+  
+  
+
+  handleFilterChange = (filterName, e) => {
+    this.setState({ [filterName]: e.target.value });
+  };
+
+ 
+
+  filterData = () => {
+    const { RoundParticipantlist } = this.state;  // Now using the state instead of props
+    const { nameFilter, idFilter } = this.state;
+
+    if (!Array.isArray(RoundParticipantlist)) {
+      return []; // Return empty array if not an array
+    }
+
+    const filteredData = RoundParticipantlist.filter(entry => {
+      const name = typeof entry.name === "string" ? entry.name.toLowerCase() : "";
+      const id = entry.id ? entry.id.toString() : "";
+
+      return (
+        name.includes(nameFilter.toLowerCase()) &&
+        id.includes(idFilter)
+      );
     });
-  }
 
-  filterData() {
-    const { SelectedSchemeList, selectedName } = this.state;
-    if (selectedName === "All") {
-      return SelectedSchemeList;
-    }
-    return SelectedSchemeList.filter(entry => entry.scheme_name === selectedName);
-  }
+    return filteredData;
+  };
 
   render() {
-    const { SearchBar } = Search;
-    const { nameOptions, selectedName } = this.state;
-
-    const pageOptions = {
-      sizePerPage: 10,
-      totalSize: this.state.SelectedSchemeList.length,
-      custom: true,
-    };
-
-    const filteredRoundList = this.filterData();
-    const schemeName = nameOptions.map((name) => {
-      console.log("Scheme name:", name); // Logs each name inside the map function
-      return {
-        value: name,
-        label: name,
-      };
-    });
-    
-    console.log("Final schemeName:", schemeName); // Logs the final array after map is complete
-    
+    const { RoundParticipantlist, roundDetails } = this.props;
+    console.log("RoundParticipantlist in renderrrrrrr:", RoundParticipantlist);  // Add this log
+  
+    const defaultSorted = [{ dataField: "id", order: "desc" }];
+  
+   // Use roundDetails for breadcrumb
+   const formatDate = (date) => {
+    if (!date) return '';
+    const [year, month, day] = date.split('-');
+    return `${day}-${month}-${year}`;
+  };
+  
+  const breadcrumbItem = roundDetails
+    ? `Round Number: ${roundDetails.rounds || "No Round Number"}, 
+       Scheme Name: ${roundDetails.scheme_name || "No Scheme Name"}, 
+       Cycle Number: ${roundDetails.cycle_no || "No Cycle Number"}, 
+       Cycle Start Date: ${formatDate(roundDetails.issue_date) || "No Start Date"}, 
+       Cycle End Date: ${formatDate(roundDetails.closing_date) || "No End Date"}, 
+       Round Start Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}, 
+     Round End Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}`
+    : "No Data Available";
+  
+  console.log("Generated Breadcrumb Item:", breadcrumbItem);
+  
+  
     return (
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Rounds</title>
+            <title>Database Admin | Round Participant List</title>
           </MetaTags>
           <Container fluid>
-            <Row>
-              <Col lg="12">
+            <Breadcrumbs title="List" breadcrumbItem="Round Participant List" />
+
+            {/* Display round details below the breadcrumbs */}
+           
+
+            {roundDetails ? (
+  <div className="round-details">
+    <h4>Round Details:</h4>
+    <p className="round-details-text">
+      <span className="me-3">Round Number: <strong>{roundDetails.rounds || "No Round Number"}</strong></span>
+      <span className="me-3">Scheme Name: <strong>{roundDetails.scheme_name || "No Scheme Name"}</strong></span>
+      <span className="me-3">Cycle Number: <strong>{roundDetails.cycle_no || "No Cycle Number"}</strong></span>
+      <span className="me-3">Cycle Start Date: <strong>{formatDate(roundDetails.issue_date) || "No Start Date"}</strong></span>
+      <span className="me-3">Cycle End Date: <strong>{formatDate(roundDetails.closing_date) || "No End Date"}</strong></span>
+      <span className="me-3">Round Start Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}</strong></span>
+      <span className="me-3">Round End Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}</strong></span>
+    </p>
+  </div>
+) : (
+  <div>No round details available.</div>
+)}
+
+
+
+
+            <Row className="justify-content-center">
+              <Col lg="4">
                 <Card>
                   <CardBody>
-                    <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
+                    <ToolkitProvider
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={filteredRoundList}
+                      data={RoundParticipantlist}
+                      search
                     >
-                      {({ paginationProps, paginationTableProps }) => (
-                        <ToolkitProvider
-                          keyField="id"
-                          columns={this.state.feedbackListColumns}
-                          data={filteredRoundList}
-                          search
-                        >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-2">
-                                <Col xs="4" sm="4" md="3" lg="3">
-                                  <div className="mb-3">
-                                    <Select
-                                      onChange={this.handleNameFilterChange}
-                                      options={schemeName}
-                                      placeholder="Select Scheme..."
-                                      isClearable={true}
-                                      value={
-                                        selectedName === "All"
-                                          ? null
-                                          : schemeName.find(
-                                              option =>
-                                                option.value === selectedName
-                                            )
-                                      }
-                                    />
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={[
-                                        {
-                                          dataField: "id",
-                                          order: "desc",
-                                        },
-                                      ]}
-                                      classes={"table align-middle table-hover"}
-                                      bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      data={filteredRoundList}
-                                    />
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row>
-                            </React.Fragment>
-                          )}
-                        </ToolkitProvider>
+                      {toolkitprops => (
+                        <React.Fragment>
+                          <Row className="mb-4">
+                            <Col xl="12">
+                              <div className="table-responsive">
+                                <BootstrapTable
+                                  key={this.state.tableKey}
+                                  {...toolkitprops.baseProps}
+                                  defaultSorted={defaultSorted}
+                                  classes={"table align-middle table-hover"}
+                                  bordered={false}
+                                  striped={true}
+                                  headerWrapperClasses={"table-light"}
+                                  responsive
+                                  data={this.filterData()}
+                                />
+                              </div>
+                            </Col>
+                          </Row>
+                        </React.Fragment>
                       )}
-                    </PaginationProvider>
+                    </ToolkitProvider>
                   </CardBody>
                 </Card>
               </Col>
@@ -295,29 +289,40 @@ class Roundural extends Component {
       </React.Fragment>
     );
   }
+  
+  
 }
 
-Roundural.propTypes = {
+RoundParticipantlist.propTypes = {
   match: PropTypes.object,
-  SelectedSchemeList: PropTypes.array,
-  className: PropTypes.any,
-  onGetRoundList: PropTypes.func,
-  error: PropTypes.any,
-  success: PropTypes.any,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
+  RoundParticipantlist: PropTypes.array,
+  roundDetails: PropTypes.object,
+  history: PropTypes.object,
+  onGetRoundParticipantList: PropTypes.func,
+  onDeleteRoundParticipant: PropTypes.func.isRequired,
+  deleteParticipantFromLabRound: PropTypes.func.isRequired,  // ✅ Added this line
 };
 
-const mapStateToProps = ({ SelectedSchemeList }) => ({
-  SelectedSchemeList: SelectedSchemeList.SelectedSchemeList,
+const mapStateToProps = (state) => {
+  console.log("Redux State - roundDetails:", state.RoundList?.roundDetails);  // ✅ Add this log
+  return {
+    roundDetails: state.RoundList?.roundDetails || {},
+    RoundParticipantlist: state.RoundList?.RoundParticipantlist || [],
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  onGetRoundParticipantList: (id) => dispatch(getRoundParticipantlist(id)),
+  onDeleteRoundParticipant: (roundId, participantId) => dispatch(deleteRoundParticipant(roundId, participantId)),
+
+  // ✅ Ensure it's mapped properly
+  deleteParticipantFromLabRound: (participantId) => dispatch({
+      type: "DELETE_PARTICIPANT_FROM_LAB_ROUND",
+      payload: participantId
+  }),
 });
 
-const mapDispatchToProps = dispatch => ({
-  onGetRoundList: id => dispatch(getSelectedSchemesList(id)),
-});
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Roundural));
+)(withRouter(RoundParticipantlist));

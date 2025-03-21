@@ -83,7 +83,7 @@ export const GET_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/participant-informa
 
 // Round Participant
 export const GET_PARTICIPANTROUND_LIST = `${API_ENDPOINT}/api/registration-admin/participent-rount`;
-
+export const DELETE_PARTICIPANT = `${API_ENDPOINT}/api/registration-admin/remove-participant`;
 // Rounds Labs
 export const GET_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-labs-list`;
 export const ADD_NEW_PAYMENT = `${API_ENDPOINT}/api/registration-admin/add-payment`;

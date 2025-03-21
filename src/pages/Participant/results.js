@@ -64,7 +64,7 @@ class Results extends Component {
       SchemeAnalytesList: [],
       combinedData: [],
       list: "",
-      unit_name: "",
+      units: "",
       instrument_name: "",
       method_name: "",
       reagent_name: "",
@@ -77,6 +77,7 @@ class Results extends Component {
       rounds: "",
       issue_date: "",
       closing_date: "",
+      isResubmitted: false,
       PostResult: [],
       ResultList: [],
       isDataLoaded: false, // Flag to track if all data is loaded
@@ -90,177 +91,186 @@ class Results extends Component {
     const { schemeType, round_status, SchemeAnalytesList } = this.props;
 
     if (schemeType === "Quantitative") {
-        return [
-            {
-                text: "Analyte",
-                dataField: "analyte_name",
-                sort: true,
-                formatter: (cellContent, list) => (
-                    <div className="text-start">{list.analyte_name}</div>
-                ),
-            },
-            {
-                text: "Unit",
-                dataField: "unit_name",
-                sort: true,
-                formatter: (cellContent, list) => (
-                    <div className="text-start">
-                        <select
-                            className="form-select me-2"
-                            value={list.unit_name || ""}
-                            onChange={(e) => this.handleUnitChange(e, list)}
-                        >
-                            <option value="" disabled hidden>
-                                Select Unit
-                            </option>
-                            {this.state.ListUnits &&
-                            this.state.SchemeAnalytesList
-                                ? this.state.ListUnits
-                                      .filter(unit =>
-                                          this.state.SchemeAnalytesList.some(analyte =>
-                                              analyte?.id === list?.analyte_id &&
-                                              analyte?.units?.includes(unit.id)
-                                          )
-                                      )
-                                      .map((unit, index) => (
-                                          <option key={index} value={unit.id}>
-                                              {unit.name}
-                                          </option>
-                                      ))
-                                : null}
-                        </select>
-                    </div>
-                ),
-            },
-            {
-              text: "Instrument",
-              dataField: "instrument_name",
-              sort: true,
-              formatter: (cellContent, list) => {
-            
-            
-                // Ensure instruments have analytes before filtering
-                const filteredInstruments = this.state.Instrument.filter(instr => {
-               
-                  return instr.analytes.includes(list.analyte_name); // Compare names instead of IDs
-                });
-            
-            
-                return (
-                  <div className="text-start">
-                    <select
-                      className="form-select me-2"
-                      value={list.instrument_id || ""}
-                      onChange={(e) => this.handleInstrumentChange(e, list)}
-                    >
-                      <option value="" disabled hidden>Select Instrument</option>
-                      {filteredInstruments.length > 0
-                        ? filteredInstruments.map((instr, index) => (
-                            <option key={index} value={instr.id}>
-                              {instr.name}
-                            </option>
-                          ))
-                        : <option value="">No Instruments available</option>}
-                    </select>
-                  </div>
-                );
-              },
-            },
-            
-            {
-                text: "Method",
-                dataField: "method_name",
-                sort: true,
-                formatter: (cellContent, list) => (
-                    <div className="text-start">
-                        <select
-                            className="form-select me-2"
-                            value={list.method_name || ""}
-                            onChange={(e) => this.handleMethodChange(e, list)}
-                        >
-                            <option value="" disabled hidden>
-                                Select Method
-                            </option>
-                            {this.state.ListMethods &&
-                            this.state.SchemeAnalytesList
-                                ? this.state.ListMethods
-                                      .filter(method =>
-                                          this.state.SchemeAnalytesList.some(analyte =>
-                                              analyte?.id === list?.analyte_id &&
-                                              analyte?.methods?.includes(method.id)
-                                          )
-                                      )
-                                      .map((method, index) => (
-                                          <option key={index} value={method.id}>
-                                              {method.name}
-                                          </option>
-                                      ))
-                                : null}
-                        </select>
-                    </div>
-                ),
-            },
-            {
-                text: "Reagent",
-                dataField: "reagent_name",
-                sort: true,
-                formatter: (cellContent, list) => (
-                    <div className="text-start">
-                        <select
-                            className="form-select me-2"
-                            value={list.reagent_name || ""}
-                            onChange={(e) => this.handleReagentChange(e, list)}
-                        >
-                            <option value="" disabled hidden>
-                                Select Reagent
-                            </option>
-                            {this.state.ReagentList &&
-                            this.state.SchemeAnalytesList
-                                ? this.state.ReagentList
-                                      .filter(reagent =>
-                                          this.state.SchemeAnalytesList.some(analyte =>
-                                              analyte?.id === list?.analyte_id &&
-                                              analyte?.reagents?.includes(reagent.id)
-                                          )
-                                      )
-                                      .map((reagent, index) => (
-                                          <option key={index} value={reagent.id}>
-                                              {reagent.name}
-                                          </option>
-                                      ))
-                                : null}
-                        </select>
-                    </div>
-                ),
-            },
-      
+      return [
+        {
+          text: "Analyte",
+          dataField: "analyte_name",
+          sort: true,
+          formatter: (cellContent, list) => (
+            <div className="text-start">{list.analyte_name}</div>
+          ),
+        },
+        {
+          text: "Unit",
+          dataField: "units",
+          sort: true,
+          formatter: (cellContent, list) => (
+            <div className="text-start">
+              {list.result_status === "Submitted" ? (
+                <span>
+                  {this.state.ListUnits.find((unit) => unit.id === list.units)
+                    ?.name || "N/A"}
+                </span>
+              ) : (
+                <select
+                  className="form-select me-2"
+                  value={list.units || ""}
+                  onChange={(e) => this.handleUnitChange(e, list)}
+                >
+                  <option value="" disabled hidden>
+                    Select Unit
+                  </option>
+                  {this.state.ListUnits.map((unit, index) => (
+                    <option key={index} value={unit.id}>
+                      {unit.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+          ),
+        },
+        {
+          text: "Instrument",
+          dataField: "instrument_name",
+          sort: true,
+          formatter: (cellContent, list) => {
+            const selectedInstrument = this.state.Instrument.find(
+              (instr) => String(instr.id) === String(list.instrument_name)
+            );
 
-  
-            {
-              text: "Result Value",
-              dataField: "result",
-              sort: true,
-              formatter: (cellContent, list) => (
-                <div className="text-start">
-                  <input
-                    type="text"
-                    ref={el => (this[`resultRef_${list.id}`] = el)}
-                    defaultValue={list.result || ""}
-                    placeholder="Enter result"
-                    onChange={(e) => {
-                      let value = e.target.value;
-                      // Allow only numbers and a single decimal point
-                      if (/^\d*\.?\d*$/.test(value)) {
-                        e.target.value = value;
-                      } else {
-                        e.target.value = value.slice(0, -1); // Remove last invalid character
-                      }
-                    }}
-                  />
-                </div>
-              ),
-            },
-     
+            return (
+              <div className="text-start">
+                {list.result_status === "Submitted" ? (
+                  <span>
+                    {selectedInstrument?.name || `${list.instrument_name}`}
+                  </span>
+                ) : (
+                  <select
+                    className="form-select me-2"
+                    value={list.instrument_name || ""}
+                    onChange={(e) => this.handleInstrumentChange(e, list)}
+                  >
+                    <option value="" disabled hidden>
+                      Select Instrument
+                    </option>
+                    {this.state.Instrument.map((instr, index) => (
+                      <option key={index} value={instr.id}>
+                        {instr.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            );
+          },
+        },
+
+        {
+          text: "Method",
+          dataField: "method_name",
+          sort: true,
+          formatter: (cellContent, list) => (
+            <div className="text-start">
+              {list.result_status === "Submitted" ? (
+                <span>
+                  {this.state.ListMethods.find(
+                    (method) => method.id === list.method_name
+                  )?.name || "N/A"}
+                </span>
+              ) : (
+                <select
+                  className="form-select me-2"
+                  value={list.method_name || ""}
+                  onChange={(e) => this.handleMethodChange(e, list)}
+                >
+                  <option value="" disabled hidden>
+                    Select Method
+                  </option>
+                  {this.state.ListMethods && this.state.SchemeAnalytesList
+                    ? this.state.ListMethods.filter((method) =>
+                        this.state.SchemeAnalytesList.some(
+                          (analyte) =>
+                            analyte?.id === list?.analyte_id &&
+                            analyte?.methods?.includes(method.id)
+                        )
+                      ).map((method, index) => (
+                        <option key={index} value={method.id}>
+                          {method.name}
+                        </option>
+                      ))
+                    : null}
+                </select>
+              )}
+            </div>
+          ),
+        },
+        {
+          text: "Reagent",
+          dataField: "reagent_name",
+          sort: true,
+          formatter: (cellContent, list) => (
+            <div className="text-start">
+              {list.result_status === "Submitted" ? (
+                <span>
+                  {this.state.ReagentList.find(
+                    (reagent) => reagent.id === list.reagent_name
+                  )?.name ||
+                    list.reagent_name ||
+                    "N/A"}
+                </span>
+              ) : (
+                <select
+                  className="form-select me-2"
+                  value={list.reagent_name || ""}
+                  onChange={(e) => this.handleReagentChange(e, list)}
+                >
+                  <option value="" disabled hidden>
+                    Select Reagent
+                  </option>
+                  {this.state.ReagentList && this.state.SchemeAnalytesList
+                    ? this.state.ReagentList.filter((reagent) =>
+                        this.state.SchemeAnalytesList.some(
+                          (analyte) =>
+                            analyte?.id === list?.analyte_id &&
+                            analyte?.reagents?.includes(reagent.id)
+                        )
+                      ).map((reagent, index) => (
+                        <option key={index} value={reagent.id}>
+                          {reagent.name}
+                        </option>
+                      ))
+                    : null}
+                </select>
+              )}
+            </div>
+          ),
+        },
+
+        {
+          text: "Result Value",
+          dataField: "result",
+          sort: true,
+          formatter: (cellContent, list) => (
+            <div className="text-start">
+              <input
+                type="text"
+                ref={(el) => (this[`resultRef_${list.id}`] = el)}
+                defaultValue={list.result || ""}
+                placeholder="Enter result"
+                onChange={(e) => {
+                  let value = e.target.value;
+                  // Allow only numbers and a single decimal point
+                  if (/^\d*\.?\d*$/.test(value)) {
+                    e.target.value = value;
+                  } else {
+                    e.target.value = value.slice(0, -1); // Remove last invalid character
+                  }
+                }}
+              />
+            </div>
+          ),
+        },
       ];
     } else if (schemeType === "Qualitative") {
       return [
@@ -277,97 +287,116 @@ class Results extends Component {
           dataField: "instrument_name",
           sort: true,
           formatter: (cellContent, list) => {
-            // Ensure instruments have analytes before filtering
-            const filteredInstruments = this.state.Instrument.filter(instr => {
-             
-              return instr.analytes.includes(list.analyte_name); // Compare names instead of IDs
-            });
+            const selectedInstrument = this.state.Instrument.find(
+              (instr) => String(instr.id) === String(list.instrument_name)
+            );
+
             return (
               <div className="text-start">
-                <select
-                  className="form-select me-2"
-                  value={list.instrument_id || ""}
-                  onChange={(e) => this.handleInstrumentChange(e, list)}
-                >
-                  <option value="" disabled hidden>Select Instrument</option>
-                  {filteredInstruments.length > 0
-                    ? filteredInstruments.map((instr, index) => (
-                        <option key={index} value={instr.id}>
-                          {instr.name}
-                        </option>
-                      ))
-                    : <option value="">No Instruments available</option>}
-                </select>
+                {list.result_status === "Submitted" ? (
+                  <span>
+                    {selectedInstrument?.name || `${list.instrument_name}`}
+                  </span>
+                ) : (
+                  <select
+                    className="form-select me-2"
+                    value={list.instrument_name || ""}
+                    onChange={(e) => this.handleInstrumentChange(e, list)}
+                  >
+                    <option value="" disabled hidden>
+                      Select Instrument
+                    </option>
+                    {this.state.Instrument.map((instr, index) => (
+                      <option key={index} value={instr.id}>
+                        {instr.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
             );
           },
         },
-        
+
         {
-            text: "Method",
-            dataField: "method_name",
-            sort: true,
-            formatter: (cellContent, list) => (
-                <div className="text-start">
-                    <select
-                        className="form-select me-2"
-                        value={list.method_name || ""}
-                        onChange={(e) => this.handleMethodChange(e, list)}
-                    >
-                        <option value="" disabled hidden>
-                            Select Method
+          text: "Method",
+          dataField: "method_name",
+          sort: true,
+          formatter: (cellContent, list) => (
+            <div className="text-start">
+              {list.result_status === "Submitted" ? (
+                <span>
+                  {this.state.ListMethods.find(
+                    (method) => method.id === list.method_name
+                  )?.name || "N/A"}
+                </span>
+              ) : (
+                <select
+                  className="form-select me-2"
+                  value={list.method_name || ""}
+                  onChange={(e) => this.handleMethodChange(e, list)}
+                >
+                  <option value="" disabled hidden>
+                    Select Method
+                  </option>
+                  {this.state.ListMethods && this.state.SchemeAnalytesList
+                    ? this.state.ListMethods.filter((method) =>
+                        this.state.SchemeAnalytesList.some(
+                          (analyte) =>
+                            analyte?.id === list?.analyte_id &&
+                            analyte?.methods?.includes(method.id)
+                        )
+                      ).map((method, index) => (
+                        <option key={index} value={method.id}>
+                          {method.name}
                         </option>
-                        {this.state.ListMethods &&
-                        this.state.SchemeAnalytesList
-                            ? this.state.ListMethods
-                                  .filter(method =>
-                                      this.state.SchemeAnalytesList.some(analyte =>
-                                          analyte?.id === list?.analyte_id &&
-                                          analyte?.methods?.includes(method.id)
-                                      )
-                                  )
-                                  .map((method, index) => (
-                                      <option key={index} value={method.id}>
-                                          {method.name}
-                                      </option>
-                                  ))
-                            : null}
-                    </select>
-                </div>
-            ),
+                      ))
+                    : null}
+                </select>
+              )}
+            </div>
+          ),
         },
         {
-            text: "Reagent",
-            dataField: "reagent_name",
-            sort: true,
-            formatter: (cellContent, list) => (
-                <div className="text-start">
-                    <select
-                        className="form-select me-2"
-                        value={list.reagent_name || ""}
-                        onChange={(e) => this.handleReagentChange(e, list)}
-                    >
-                        <option value="" disabled hidden>
-                            Select Reagent
+          text: "Reagent",
+          dataField: "reagent_name",
+          sort: true,
+          formatter: (cellContent, list) => (
+            <div className="text-start">
+              {list.result_status === "Submitted" ? (
+                <span>
+                  {this.state.ReagentList.find(
+                    (reagent) => reagent.id === list.reagent_name
+                  )?.name ||
+                    list.reagent_name ||
+                    "N/A"}
+                </span>
+              ) : (
+                <select
+                  className="form-select me-2"
+                  value={list.reagent_name || ""}
+                  onChange={(e) => this.handleReagentChange(e, list)}
+                >
+                  <option value="" disabled hidden>
+                    Select Reagent
+                  </option>
+                  {this.state.ReagentList && this.state.SchemeAnalytesList
+                    ? this.state.ReagentList.filter((reagent) =>
+                        this.state.SchemeAnalytesList.some(
+                          (analyte) =>
+                            analyte?.id === list?.analyte_id &&
+                            analyte?.reagents?.includes(reagent.id)
+                        )
+                      ).map((reagent, index) => (
+                        <option key={index} value={reagent.id}>
+                          {reagent.name}
                         </option>
-                        {this.state.ReagentList &&
-                        this.state.SchemeAnalytesList
-                            ? this.state.ReagentList
-                                  .filter(reagent =>
-                                      this.state.SchemeAnalytesList.some(analyte =>
-                                          analyte?.id === list?.analyte_id &&
-                                          analyte?.reagents?.includes(reagent.id)
-                                      )
-                                  )
-                                  .map((reagent, index) => (
-                                      <option key={index} value={reagent.id}>
-                                          {reagent.name}
-                                      </option>
-                                  ))
-                            : null}
-                    </select>
-                </div>
-            ),
+                      ))
+                    : null}
+                </select>
+              )}
+            </div>
+          ),
         },
 
         {
@@ -376,21 +405,26 @@ class Results extends Component {
           sort: true,
           formatter: (cellContent, list) => (
             <div className="text-start">
-              <select
-                className="form-select me-2"
-                value={list.result_type || ""} // Ensure this is set properly
-                onChange={e => this.handleResultTypeChange(e, list)} // Handle the change event
-              >
-                <option value="" disabled hidden>
-                  Select Result Type
-                </option>
-                <option value="Positive">Positive</option>
-                <option value="Negative">Negative</option>
-                <option value="Equivocal">Equivocal</option>
-              </select>
+              {list.result_status === "Submitted" ? (
+                <span>{list.result_type || "N/A"}</span> // Show plain text after submission
+              ) : (
+                <select
+                  className="form-select me-2"
+                  value={list.result_type || ""} // Ensure this is set properly
+                  onChange={(e) => this.handleResultTypeChange(e, list)} // Handle the change event
+                >
+                  <option value="" disabled hidden>
+                    Select Result Type
+                  </option>
+                  <option value="Positive">Positive</option>
+                  <option value="Negative">Negative</option>
+                  <option value="Equivocal">Equivocal</option>
+                </select>
+              )}
             </div>
           ),
         },
+
         {
           text: "Result Value",
           dataField: "result",
@@ -399,7 +433,7 @@ class Results extends Component {
             <div className="text-start">
               <input
                 type="text"
-                ref={el => (this[`resultRef_${list.id}`] = el)}
+                ref={(el) => (this[`resultRef_${list.id}`] = el)}
                 defaultValue={list.result || ""}
                 placeholder="Enter result"
                 onChange={(e) => {
@@ -428,10 +462,10 @@ class Results extends Component {
       onGetReagents,
       onGetResultsList,
     } = this.props;
-  
+
     const id = this.props.match.params.id;
     const userId = this.state.user_id;
-  
+
     onGetSchemeAnalyte(id);
     onGetUnitsList(userId);
     onGetMethodsList(userId);
@@ -450,27 +484,27 @@ class Results extends Component {
       round_status,
       result_type,
     } = this.props;
-  
+
     // Log previous and current props
     console.log("Prev Props:", prevProps);
     console.log("Current Props:", this.props);
-  
+
     if (prevProps.Instrument !== this.props.Instrument) {
       console.log("Instrument list changed");
     }
-  
+
     if (
       prevProps.Instrument !== this.props.Instrument &&
       this.props.Instrument.length > 0
     ) {
       this.setState({ Instrument: this.props.Instrument });
     }
-  
+
     // Log if data gets removed
     if (prevProps.Instrument.length > 0 && this.props.Instrument.length === 0) {
       console.log("All Instruments removed");
     }
-  
+
     // Detect any data changes
     const dataChanged = [
       prevProps.SchemeAnalytesList !== SchemeAnalytesList,
@@ -481,7 +515,7 @@ class Results extends Component {
       prevProps.ResultList !== ResultList,
       prevProps.round_status !== round_status,
     ].some(Boolean);
-  
+
     if (
       dataChanged &&
       SchemeAnalytesList !== undefined &&
@@ -504,7 +538,7 @@ class Results extends Component {
         this.combineData
       );
     }
-  
+
     // Update combinedData when ResultList changes
     if (prevProps.ResultList !== this.props.ResultList) {
       if (this.props.ResultList && this.props.ResultList.length > 0) {
@@ -512,7 +546,7 @@ class Results extends Component {
       }
     }
   }
-  
+
   combineData = () => {
     const {
       SchemeAnalytesList,
@@ -526,17 +560,15 @@ class Results extends Component {
     const { rounds } = this.props;
     const { user_id, ParticipantNo } = this.state;
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
-    
-      const participantResults = ResultList.filter(result => {
+      const participantResults = ResultList.filter((result) => {
         return result.analyte === analyte.id;
       });
-     
-      const userResult = participantResults.find(result => {
-        
-    
-        return result.lab.account_id === user_id && result.round_name === rounds;
+
+      const userResult = participantResults.find((result) => {
+        return (
+          result.lab.account_id === user_id && result.round_name === rounds
+        );
       });
-      
 
       return {
         id: analyte.id || index,
@@ -544,7 +576,7 @@ class Results extends Component {
         analyte_name: analyte.name,
 
         // Use stored values if available, otherwise default to the first item in the list
-        unit_name: userResult
+        units: userResult
           ? userResult.units
           : Array.isArray(ListUnits) && ListUnits.length > 0
           ? ListUnits[0].id
@@ -555,15 +587,15 @@ class Results extends Component {
           ? ListMethods[0].id
           : "",
         reagent_name: userResult
-          ? userResult.reagents
-          : Array.isArray(ReagentList) && ReagentList.length > 0
-          ? ReagentList[0].id
-          : "",
+          ? this.state.ReagentList.find(
+              (reagent) => reagent.id === userResult.reagents
+            )?.name || "N/A"
+          : "N/A",
         instrument_name: userResult
-          ? userResult.instrument
-          : Array.isArray(Instrument) && Instrument.length > 0
-          ? Instrument[0].id
-          : "",
+          ? this.state.Instrument.find(
+              (instr) => instr.id === userResult.instrument
+            )?.name || "N/A"
+          : "N/A",
         result: userResult ? userResult.result : "",
         result_status: userResult ? userResult.result_status : null,
         result_type: userResult ? userResult.result_type : null,
@@ -573,29 +605,18 @@ class Results extends Component {
     // Update the state with combined data
     this.setState({ combinedData });
   };
-  // fetchSavedResults = async () => {
-  //   const id = this.props.match.params.id; // Round ID
-  //   try {
-  //     const response = await this.props.onGetResultsList(id, this.state.user_id); 
-  //     if (response && response.data) {
-  //       this.setState({ combinedData: response.data });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching saved results:", error);
-  //   }
-  // };
-  
-  handleUpdate = async list => {
+
+  handleUpdate = async (list) => {
     const id = this.props.match.params.id;
     const { rounds, scheme_id, round_status } = this.props;
 
     // Find the corresponding analyte data in combinedData
     const analyteData = this.state.combinedData.find(
-      item => item.id === list.id
+      (item) => item.id === list.id
     );
 
     // Extract values
-    const unit_name = list.unit_name;
+    const units = list.units;
     const instrument_name = list.instrument_name;
     const method_name = list.method_name;
     const reagent_name = list.reagent_name;
@@ -603,7 +624,7 @@ class Results extends Component {
 
     // Validate required fields
     if (
-      !unit_name ||
+      !units ||
       !instrument_name ||
       !method_name ||
       !reagent_name ||
@@ -625,7 +646,7 @@ class Results extends Component {
       round_id: id,
       analyte_id: analyteData ? analyteData.analyte_id : "", // Ensure analyte_id is included
       // analyte_name: analyteData ? analyteData.analyte_name : "", // Ensure analyte_name is included
-      unit_name: list.unit_name,
+      units: list.units,
       rounds: rounds,
       instrument_name: list.instrument_name,
       method_name: list.method_name,
@@ -643,15 +664,9 @@ class Results extends Component {
         resultData,
         this.state.user_id
       );
-    
-
       // Handle success
       if (response.type === "POST_RESULT") {
         alert("Result updated successfully.");
-        // window.location.reload(); // This will reload the page
-        // Optionally, you might want to refresh data or redirect
-        // this.props.onRefreshData(); // Example method to refresh data
-        // this.props.history.push('/success-page'); // Example redirection
       }
     } catch (error) {
       // Handle error
@@ -666,21 +681,23 @@ class Results extends Component {
     const { combinedData } = this.state;
     const { rounds, scheme_id, round_status } = this.props;
     const id = this.props.match.params.id;
-  
+
     if (!combinedData.length) {
       alert("No results to save.");
       return;
     }
-  
-    const confirmation = window.confirm("Are you sure you want to save all results?");
+
+    const confirmation = window.confirm(
+      "Are you sure you want to save all results?"
+    );
     if (!confirmation) return;
-  
+
     try {
       for (const list of combinedData) {
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          unit_name: list.unit_name,
+          units: list.units,
           instrument_name: list.instrument_name,
           method_name: list.method_name,
           reagent_name: list.reagent_name,
@@ -693,32 +710,34 @@ class Results extends Component {
         };
         await this.props.onPostResult(resultData, this.state.user_id);
       }
-  
+
       alert("All results have been saved successfully.");
     } catch (error) {
       alert("Failed to save all results. Please try again.");
     }
   };
-  
+
   handleSubmitAll = async () => {
     const { combinedData } = this.state;
     const { rounds, scheme_id, round_status } = this.props;
     const id = this.props.match.params.id;
-  
+
     if (!combinedData.length) {
       alert("No results to submit.");
       return;
     }
-  
-    const confirmation = window.confirm("Are you sure you want to submit all results? This action cannot be undone.");
+
+    const confirmation = window.confirm(
+      "Are you sure you want to submit all results? This action cannot be undone."
+    );
     if (!confirmation) return;
-  
+
     try {
       for (const list of combinedData) {
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          unit_name: list.unit_name,
+          units: list.units,
           instrument_name: list.instrument_name,
           method_name: list.method_name,
           reagent_name: list.reagent_name,
@@ -731,23 +750,61 @@ class Results extends Component {
         };
         await this.props.onPostResult(resultData, this.state.user_id);
       }
-  
+
       alert("All results have been submitted successfully.");
       window.location.reload();
     } catch (error) {
       alert("Failed to submit all results. Please try again.");
     }
   };
+  handleResubmit = async () => {
+    const { combinedData } = this.state;
+    const { rounds, scheme_id, round_status } = this.props;
+    const id = this.props.match.params.id;
 
- 
-  
+    if (!combinedData.length) {
+      alert("No results to resubmit.");
+      return;
+    }
+
+    const confirmation = window.confirm(
+      "Are you sure you want to re-submit? This will allow modifications."
+    );
+    if (!confirmation) return;
+
+    try {
+      for (const list of combinedData) {
+        const resultData = {
+          round_id: id,
+          analyte_id: list.analyte_id,
+          units: list.units,
+          instrument_name: list.instrument_name,
+          method_name: list.method_name,
+          reagent_name: list.reagent_name,
+          result_type: list.result_type,
+          result: this[`resultRef_${list.id}`]?.value || "",
+          rounds: rounds,
+          scheme_id: scheme_id,
+          round_status: round_status,
+          result_status: "Submitted", // Reset to allow changes
+        };
+        await this.props.onPostResult(resultData, this.state.user_id);
+      }
+
+      alert("Results are now editable again.");
+      this.setState({ isResubmitted: true }); // Hide all buttons after resubmission
+    } catch (error) {
+      alert("Failed to re-submit. Please try again.");
+    }
+  };
+
   handleUnitChange = (event, list) => {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
-        return { ...item, unit_name: value };
+        return { ...item, units: value };
       }
       return item;
     });
@@ -759,7 +816,7 @@ class Results extends Component {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
         return { ...item, method_name: value };
       }
@@ -769,43 +826,32 @@ class Results extends Component {
     this.setState({ combinedData: updatedData });
   };
 
-  // handleInstrumentChange = (event, list) => {
-  //   const { value } = event.target;
-  //   this.setState(prevState => {
-  //     const updatedData = prevState.combinedData.map(item => {
-  //       if (item.id === list.id) {
-  //         return { ...item, instrument_name: value };
-  //       }
-  //       return item;
-  //     });
-  //     return { combinedData: updatedData };
-  //   });
-  // };
-//////
-handleInstrumentChange = (event, list) => {
-  const { value } = event.target;
-  this.setState(prevState => {
-    const updatedData = prevState.combinedData.map(item => {
-      if (item.id === list.id) {
-        const selectedInstrument = prevState.Instrument.find(instr => instr.id.toString() === value);
-        return { 
-          ...item, 
-          instrument_id: value,  // Update instrument_id
-          instrument_name: selectedInstrument ? selectedInstrument.name : '' // Ensure correct name
-        };
-      }
-      return item;
+  handleInstrumentChange = (event, list) => {
+    const { value } = event.target;
+    this.setState((prevState) => {
+      const updatedData = prevState.combinedData.map((item) => {
+        if (item.id === list.id) {
+          const selectedInstrument = prevState.Instrument.find(
+            (instr) => instr.id.toString() === value
+          );
+          return {
+            ...item,
+            instrument_id: value, // Update instrument_id
+            instrument_name: selectedInstrument ? selectedInstrument.name : "", // Ensure correct name
+          };
+        }
+        return item;
+      });
+      return { combinedData: updatedData };
     });
-    return { combinedData: updatedData };
-  });
-};
+  };
 
   handleResultTypeChange = (e, list) => {
     const newResultType = e.target.value;
     const { combinedData } = this.state;
 
     // Update the specific item in the lab data
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
         return { ...item, result_type: newResultType };
       }
@@ -818,7 +864,7 @@ handleInstrumentChange = (event, list) => {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
         return { ...item, reagent_name: value };
       }
@@ -828,7 +874,7 @@ handleInstrumentChange = (event, list) => {
     this.setState({ combinedData: updatedData });
   };
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -860,7 +906,7 @@ handleInstrumentChange = (event, list) => {
     ];
 
     // Map each row to an object with only the desired fields
-    const dataToExport = ResultList.map(unit => ({
+    const dataToExport = ResultList.map((unit) => ({
       id: unit.id,
       Analyte: unit.analyte,
       Unit: unit.units,
@@ -914,7 +960,6 @@ handleInstrumentChange = (event, list) => {
       closing_date,
       round_status,
     } = this.props;
-  
 
     const pageOptions = {
       sizePerPage: 10,
@@ -973,34 +1018,81 @@ handleInstrumentChange = (event, list) => {
                 </strong>
               </Row>
               <Row className="justify-content-start">
-  <Col sm="12" md="12" lg="12" xl="12">
-    <div className="d-flex flex-wrap align-items-center gap-3 ms-5">
-      <Button onClick={this.exportToExcel} className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
-        Download Results
-      </Button>
-      <Button onClick={this.handlePrint} className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
-        Print
-      </Button>
-      <Link to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}>
-        <Button className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
-          History
-        </Button>
-      </Link>
+                <Col sm="12" md="12" lg="12" xl="12">
+                  <div className="d-flex flex-wrap align-items-center gap-3 ms-5">
+                    <Button
+                      onClick={this.exportToExcel}
+                      className="mb-3 btn btn-secondary"
+                      style={{ minWidth: "140px" }}
+                    >
+                      Download Results
+                    </Button>
+                    <Button
+                      onClick={this.handlePrint}
+                      className="mb-3 btn btn-secondary"
+                      style={{ minWidth: "140px" }}
+                    >
+                      Print
+                    </Button>
+                    <Link
+                      to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}
+                    >
+                      <Button
+                        className="mb-3 btn btn-secondary"
+                        style={{ minWidth: "140px" }}
+                      >
+                        History
+                      </Button>
+                    </Link>
 
-      {/* Condition to hide Save & Submit if ALL results are submitted */}
-      {!(this.state.combinedData.length > 0 && this.state.combinedData.every(data => data.result_status === "Submitted")) && (
-        <>
-          <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSaveAll}>
-            Save
-          </Button>
-          <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSubmitAll}>
-            Submit
-          </Button>
-        </>
-      )}
-    </div>
-  </Col>
-</Row>
+                    {/* Condition to hide Save & Submit if ALL results are submitted */}
+                    {!this.state.isResubmitted && (
+                      <>
+                        {/* Show Save & Submit if not all results are submitted and round is not Closed */}
+                        {this.props.round_status !== "Closed" &&
+                          !(
+                            this.state.combinedData.length > 0 &&
+                            this.state.combinedData.every(
+                              (data) => data.result_status === "Submitted"
+                            )
+                          ) && (
+                            <>
+                              <Button
+                                className="mb-3 btn btn-success"
+                                style={{ minWidth: "140px" }}
+                                onClick={this.handleSaveAll}
+                              >
+                                Save
+                              </Button>
+                              <Button
+                                className="mb-3 btn btn-success"
+                                style={{ minWidth: "140px" }}
+                                onClick={this.handleSubmitAll}
+                              >
+                                Submit
+                              </Button>
+                            </>
+                          )}
+
+                        {/* Show Re-Submit if all results are submitted, round is Open, and round is not Closed */}
+                        {this.props.round_status !== "Closed" && // Round status closed na ho
+                          this.state.combinedData.length > 0 &&
+                          this.state.combinedData.some(
+                            (data) => data.result_status === "Submitted" // At least ek submitted ho
+                          ) && (
+                            <Button
+                              className="mb-3 btn btn-success"
+                              style={{ minWidth: "140px" }}
+                              onClick={this.handleResubmit}
+                            >
+                              Re-Submit
+                            </Button>
+                          )}
+                      </>
+                    )}
+                  </div>
+                </Col>
+              </Row>
 
               <Row className="justify-content-center align-item-center">
                 <Col lg="10">
@@ -1019,20 +1111,8 @@ handleInstrumentChange = (event, list) => {
                             data={combinedData}
                             search
                           >
-                            {toolkitprops => (
+                            {(toolkitprops) => (
                               <React.Fragment>
-                                {/* <Row className="mb-4">
-                                <Col xl="4" lg="4" md="4" sm="4">
-                                  <div className="search-box me-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="mdi mdi-magnify search-icon" />
-                                    </div>
-                                  </div>
-                                </Col>
-                              </Row> */}
                                 <div className="table-responsive">
                                   <BootstrapTable
                                     id="printable-table" // Added ID here
@@ -1130,15 +1210,15 @@ const mapStateToProps = ({
 //   SchemeAnalytesList: state.schemeAnalytesReducer.SchemeAnalytesList,
 // });
 
-const mapDispatchToProps = dispatch => ({
-  onGetSchemeAnalyte: id => dispatch(getSchemeAnalytesList(id)),
-  onGetUnitsList: id => dispatch(getunitlist(id)),
-  onGetMethodsList: id => dispatch(getmethodlist(id)),
-  onGetInstrumentList: id => dispatch(getInstrumentlist(id)),
-  onGetReagents: id => dispatch(getReagentlist(id)),
+const mapDispatchToProps = (dispatch) => ({
+  onGetSchemeAnalyte: (id) => dispatch(getSchemeAnalytesList(id)),
+  onGetUnitsList: (id) => dispatch(getunitlist(id)),
+  onGetMethodsList: (id) => dispatch(getmethodlist(id)),
+  onGetInstrumentList: (id) => dispatch(getInstrumentlist(id)),
+  onGetReagents: (id) => dispatch(getReagentlist(id)),
 
   onPostResult: (result, id) => dispatch(postResult(result, id)),
-  onGetResultsList: id => dispatch(getResultsList(id)),
+  onGetResultsList: (id) => dispatch(getResultsList(id)),
 });
 
 export default connect(

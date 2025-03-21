@@ -3962,3 +3962,9 @@ export const getRoundParticipantlist = (id) => {
   });
 };
 
+export const deleteRoundParticipant = async (round_id, participant_id) => {
+  console.log("API CALL: Deleting participant", round_id, participant_id);
+  return axios.delete(`${url.DELETE_PARTICIPANT}/${round_id}/${participant_id}/`, {  // ✅ Fixed
+    headers: getHeader(authHeader()),
+  });
+};
