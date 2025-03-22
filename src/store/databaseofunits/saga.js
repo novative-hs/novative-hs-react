@@ -63,12 +63,30 @@ function* onUpdateSampleAnalyte({ payload: schemeanalyte }) {
 //////////////////////////////////////
 function* fetchInstrumentAnalyteList(object) {
   try {
+    console.log("Saga - Payload for API Call:", object.payload);
+
     const response = yield call(getInstrumentAnalytelist, object.payload);
-    yield put(getInstrumentAnalytelistSuccess(response.data));
+    console.log("Saga - API Response:", response);
+
+    // Safely extract the data
+    const analytes = response?.analytes || []; // Ensure analytes is an array
+    const instrumentName = response?.instrument_name || "Unknown Instrument";
+
+    const transformedResponse = {
+      analytes,
+      instrumentName,
+    };
+
+    console.log("Saga - Transformed Response:", transformedResponse);
+
+    // Dispatch success action
+    yield put(getInstrumentAnalytelistSuccess(transformedResponse));
   } catch (error) {
+    console.error("Saga - Error Fetching Instrument Analytes:", error.message, error.stack);
     yield put(getInstrumentAnalytelistFail(error));
   }
 }
+
 
 function* onAddNewInstrumentAnalyte(object) {
   try {
@@ -342,4 +360,3 @@ function* InstrumentTypeListSaga() {
 }
 
 export default InstrumentTypeListSaga;
-

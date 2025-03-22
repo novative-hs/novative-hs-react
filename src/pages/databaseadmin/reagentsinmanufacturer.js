@@ -122,7 +122,18 @@ class ReagentsInManufacturer extends Component {
             <title>Database Admin | Reagent List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Reagent List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={
+    <>
+      Reagent List For - {" "}
+      <span style={{ color: "black", fontWeight: "bold" }}>
+        {this.props.manufacturerName || "Loading..."}
+      </span>
+    </>
+  }
+/>
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -169,16 +180,19 @@ class ReagentsInManufacturer extends Component {
 ReagentsInManufacturer.propTypes = {
   match: PropTypes.object,
   ReagentsInManufacturer: PropTypes.array,
+  manufacturerName: PropTypes.object,
   history: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
-  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
+  console.log("Redux State:", state);
   return {
-    ReagentsInManufacturer: state.ListUnits.ReagentsInManufacturer || []
+    ReagentsInManufacturer: state.ListUnits?.ReagentsInManufacturer || [],
+    manufacturerName: state.ListUnits?.manufacturerName || "Unknown Manufacturer",
   };
 };
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getReagentsInManufacturer(id)),

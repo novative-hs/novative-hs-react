@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter } from "react-router-dom";
-import BootstrapTable from "react-bootstrap-table-next";
+import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
@@ -23,11 +23,11 @@ class InstrumentAddAnalyte extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameFilter: "",
-      idFilter: "",
+      nameFilter: '',
+      idFilter: '',
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
-      feedbackMessage: "",
+      feedbackMessage: '',
       feedbackListColumns: [
         {
           text: "id",
@@ -39,15 +39,15 @@ class InstrumentAddAnalyte extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={(e) => this.handleFilterChange("idFilter", e)}
+                  onChange={e => this.handleFilterChange('idFilter', e)}
                   className="form-control"
                 />
               </div>
               <div>{column.text}</div>
             </>
           ),
-          headerStyle: { width: "100px" },
-          style: { width: "100px" },
+          headerStyle: { width: '100px' },
+          style: { width: '100px' },
         },
         {
           dataField: "name",
@@ -59,15 +59,15 @@ class InstrumentAddAnalyte extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={(e) => this.handleFilterChange("nameFilter", e)}
+                  onChange={e => this.handleFilterChange('nameFilter', e)}
                   className="form-control"
                 />
               </div>
               <div>{column.text}</div>
             </>
           ),
-          headerAlign: "center",
-          align: "left",
+          headerAlign: 'center',
+          align: 'left',
         },
         {
           dataField: "checkbox",
@@ -85,6 +85,8 @@ class InstrumentAddAnalyte extends Component {
             </div>
           ),
         },
+
+
       ],
     };
   }
@@ -93,16 +95,18 @@ class InstrumentAddAnalyte extends Component {
     this.fetchData(); // Fetch analytes
     const savedSelections = JSON.parse(localStorage.getItem('selectedCheckboxes'));
     if (savedSelections) {
-        this.setState({ selectedCheckboxes: savedSelections });
+      this.setState({ selectedCheckboxes: savedSelections });
     }
     this.updateSelectedCheckboxes(); // Set selected checkboxes
   }
+
 
   componentDidUpdate(prevProps) {
     if (prevProps.InstrumentAnalyteList !== this.props.InstrumentAnalyteList) {
       this.updateSelectedCheckboxes();
     }
   }
+
 
   fetchData() {
     const { ongetAnalytelist, onGetSchemeAnalytes } = this.props;
@@ -133,12 +137,13 @@ class InstrumentAddAnalyte extends Component {
 
     // Convert list to a dictionary of selected analytes
     const selectedCheckboxes = {};
-    InstrumentAnalyteList.forEach((analyte) => {
+    InstrumentAnalyteList.forEach(analyte => {
       selectedCheckboxes[analyte.id] = true;
     });
 
     this.setState({ selectedCheckboxes });
   }
+
 
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
@@ -149,7 +154,7 @@ class InstrumentAddAnalyte extends Component {
       match,
       ListUnit,
       InstrumentAnalyteList = [], // Ensure it's always an array
-      history,
+      history
     } = this.props;
 
     const schemeId = match?.params?.id;
@@ -161,8 +166,7 @@ class InstrumentAddAnalyte extends Component {
     }
 
     // Get selected analytes
-    const selectedAnalytes =
-      ListUnit?.filter((analyte) => selectedCheckboxes[analyte.id]) || [];
+    const selectedAnalytes = ListUnit?.filter(analyte => selectedCheckboxes[analyte.id]) || [];
 
     if (selectedAnalytes.length === 0) {
       this.setFeedbackMessage("Please select analytes.");
@@ -170,17 +174,15 @@ class InstrumentAddAnalyte extends Component {
     }
 
     // Extract selected analyte IDs
-    const selectedAnalyteIds = selectedAnalytes.map((analyte) => analyte.id);
+    const selectedAnalyteIds = selectedAnalytes.map(analyte => analyte.id);
 
     // Ensure existing analyte list is an array
     const existingAnalyteIds = Array.isArray(InstrumentAnalyteList)
-      ? InstrumentAnalyteList.map((analyte) => analyte.id)
+      ? InstrumentAnalyteList.map(analyte => analyte.id)
       : [];
 
     // Merge new analytes with existing ones, avoiding duplicates
-    const uniqueAnalyteIds = [
-      ...new Set([...existingAnalyteIds, ...selectedAnalyteIds]),
-    ];
+    const uniqueAnalyteIds = [...new Set([...existingAnalyteIds, ...selectedAnalyteIds])];
 
     const payload = {
       id: schemeId,
@@ -200,11 +202,13 @@ class InstrumentAddAnalyte extends Component {
     history.push(`/${organization_name}/equipment-list`);
   };
 
+
+
   setFeedbackMessage = (message) => {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
       setTimeout(() => {
-        this.setState({ feedbackMessage: "" });
+        this.setState({ feedbackMessage: '' });
       }, 3000); // 3 seconds
     });
   };
@@ -214,25 +218,28 @@ class InstrumentAddAnalyte extends Component {
   };
 
   handleCheckboxChange = (id) => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       selectedCheckboxes: {
         ...prevState.selectedCheckboxes,
-        [id]: !prevState.selectedCheckboxes[id],
-      },
+        [id]: !prevState.selectedCheckboxes[id]
+      }
     }));
   };
 
   filterData = () => {
     const { ListUnit } = this.props;
-    console.log("data on page is ", ListUnit);
+    console.log("data on page is ", ListUnit)
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
-    console.log("data on page is ", selectedCheckboxes);
-    const filteredData = ListUnit.filter((entry) => {
+    console.log("data on page is ", selectedCheckboxes)
+    const filteredData = ListUnit.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const id = entry.id ? entry.id.toString() : "";
 
-      return name.includes(nameFilter.toLowerCase()) && id.includes(idFilter);
-    }).map((entry) => ({
+      return (
+        name.includes(nameFilter.toLowerCase()) &&
+        id.includes(idFilter)
+      );
+    }).map(entry => ({
       ...entry,
       checkbox: (
         <div className="form-check">
@@ -245,7 +252,7 @@ class InstrumentAddAnalyte extends Component {
             checked={selectedCheckboxes[entry.id] || false}
           />
         </div>
-      ),
+      )
     }));
 
     return filteredData;
@@ -262,7 +269,18 @@ class InstrumentAddAnalyte extends Component {
             <title>Database Admin | Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Analytes List" />
+            <Breadcrumbs
+              title="List"
+              breadcrumbItem={
+                <>
+                  Analytes For - 
+                  <span style={{ color: "black", fontWeight: "bold" }}>
+                    {this.props.instrumentName || "Loading..."}
+                  </span>
+                </>
+              }
+            />
+
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -282,7 +300,7 @@ class InstrumentAddAnalyte extends Component {
                       data={ListUnit}
                       search
                     >
-                      {(toolkitprops) => (
+                      {toolkitprops => (
                         <React.Fragment>
                           <Row className="mb-4">
                             <Col xl="12">
@@ -330,6 +348,7 @@ InstrumentAddAnalyte.propTypes = {
   match: PropTypes.object,
   ListUnit: PropTypes.array,
   InstrumentAnalyteList: PropTypes.array,
+  instrumentName: PropTypes.object,
   onGetSchemeAnalytes: PropTypes.func,
   ongetAnalytelist: PropTypes.func,
   onAddNewInstrumentAnalyte: PropTypes.func,
@@ -337,23 +356,19 @@ InstrumentAddAnalyte.propTypes = {
   history: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-  ListUnit: state.ListUnit?.ListUnit,
-  InstrumentAnalyteList: state.ListUnit?.InstrumentAnalyteList,
+  ListUnit: state.ListUnit?.ListUnit || [],
+  InstrumentAnalyteList: state.ListUnit?.InstrumentAnalyteList || [],
+  instrumentName: state.ListUnit?.instrumentName || "Unknown Instrument",
 });
+
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetSchemeAnalytes: (id) => dispatch(getInstrumentAnalytelist(id)),
+  onGetSchemeAnalytes: id => dispatch(getInstrumentAnalytelist(id)),
   ongetAnalytelist: (id) => dispatch(getAnalytelist(id)),
   onAddNewInstrumentAnalyte: (addInstrumentAnalyte, id) => {
-    console.log(
-      "Adding new scheme analyte:",
-      addInstrumentAnalyte,
-      "with ID:",
-      id
-    );
+    console.log("Adding new scheme analyte:", addInstrumentAnalyte, "with ID:", id);
     return dispatch(addNewInstrumentAnalytelist(addInstrumentAnalyte, id));
   },
-  onUpdateSchemeAnalytes: (schemeanalyte) =>
-    dispatch(updateInstrumentAnalytelist(schemeanalyte)),
+  onUpdateSchemeAnalytes: (schemeanalyte) => dispatch(updateInstrumentAnalytelist(schemeanalyte)),
 });
 export default connect(
   mapStateToProps,

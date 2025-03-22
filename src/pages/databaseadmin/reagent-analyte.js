@@ -121,7 +121,18 @@ class ReagentAnalyte extends Component {
             <title>Database Admin | Reagent Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Reagent Analytes List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={
+    <>
+      Analytes For - 
+      <span style={{ color: "black", fontWeight: "bold" }}>
+        {this.props.reagentName || "Loading..."}
+      </span>
+    </>
+  }
+/>
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -167,17 +178,20 @@ class ReagentAnalyte extends Component {
 
 ReagentAnalyte.propTypes = {
   match: PropTypes.object,
+  reagentName: PropTypes.object,
   ReagentAnalyte: PropTypes.array,
   history: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
-  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
+  console.log('Redux State:', state); // Log entire Redux state for debugging
   return {
-    ReagentAnalyte: state.ListUnits.ReagentAnalyte || []
+    ReagentAnalyte: state.ListUnits.ReagentAnalyte || [],
+    reagentName: state.ListUnits.reagentName || "Unknown Reagent",
   };
 };
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getAnalyteReagent(id)),

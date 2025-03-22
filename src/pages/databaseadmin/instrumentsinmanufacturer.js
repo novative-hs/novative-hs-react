@@ -66,7 +66,7 @@ class InstrumentsInManufacturer extends Component {
           headerAlign: 'center',
           align: 'left',
         },
-        
+
       ],
     };
   }
@@ -91,12 +91,12 @@ class InstrumentsInManufacturer extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
- 
+
 
   filterData = () => {
     const { InstrumentsInManufacturer } = this.props;
 
-    const { nameFilter, idFilter} = this.state;
+    const { nameFilter, idFilter } = this.state;
 
     const filteredData = InstrumentsInManufacturer.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
@@ -113,7 +113,7 @@ class InstrumentsInManufacturer extends Component {
 
   render() {
     const { InstrumentsInManufacturer } = this.props;
-    console.log("InstrumentsInManufacturer",InstrumentsInManufacturer);
+    console.log("InstrumentsInManufacturer", InstrumentsInManufacturer);
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     return (
       <React.Fragment>
@@ -122,7 +122,17 @@ class InstrumentsInManufacturer extends Component {
             <title>Database Admin | Equipment List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Equipment List" />
+            <Breadcrumbs
+              title="List"
+              breadcrumbItem={
+                <>
+                  Equipment List For -
+                  <span style={{ color: "black", fontWeight: "bold" }}>
+                    {this.props.manufacturerName || "Loading..."}
+                  </span>
+                </>
+              }
+            />
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -168,17 +178,28 @@ class InstrumentsInManufacturer extends Component {
 
 InstrumentsInManufacturer.propTypes = {
   match: PropTypes.object,
+  methodName: PropTypes.object,
+  manufacturerName: PropTypes.object,
   InstrumentsInManufacturer: PropTypes.array,
   history: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
-  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
+  console.log("Redux State in mapStateToProps:", state);
+
+  const InstrumentsInManufacturer = state.ListUnits?.InstrumentsInManufacturer || [];
+  const manufacturerName = state.ListUnits?.manufacturerName || "Unknown Manufacturer";
+
+  console.log("Mapped InstrumentsInManufacturer:", InstrumentsInManufacturer);
+  console.log("Mapped manufacturerName:", manufacturerName);
+
   return {
-    InstrumentsInManufacturer: state.ListUnits.InstrumentsInManufacturer || []
+    InstrumentsInManufacturer,
+    manufacturerName,
   };
 };
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getInstrumentsInManufacturer(id)),

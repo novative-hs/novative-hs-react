@@ -71,23 +71,20 @@ class InstrumentAnalyte extends Component {
   }
 
   componentDidMount() {
-    this.setState({ InstrumentAnalyte: [] }); // Reset data
+    // Fetch data when the component mounts
     this.fetchData();
   }
-  
+
   fetchData() {
     const { onGetUnitAnalyteList } = this.props;
     const unitanalyteId = this.props.match.params.id;
-  
-    this.setState({ InstrumentAnalyte: [] }); // Clear previous data
-  
+    console.log("Fetching data for ID:", unitanalyteId);
     if (unitanalyteId) {
       onGetUnitAnalyteList(unitanalyteId);
     } else {
       console.error("Analyte ID not found in URL parameters");
     }
   }
-  
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
@@ -124,7 +121,18 @@ class InstrumentAnalyte extends Component {
             <title>Database Admin | Equipment Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Equipment Analytes List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={
+    <>
+      Equipment Analytes List For - 
+      <span style={{ color: "black", fontWeight: "bold" }}>
+        {this.props.instrumentName || "Loading..."}
+      </span>
+    </>
+  }
+/>
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -171,14 +179,22 @@ class InstrumentAnalyte extends Component {
 InstrumentAnalyte.propTypes = {
   match: PropTypes.object,
   InstrumentAnalyte: PropTypes.array,
+  instrumentName: PropTypes.object,
   history: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
-
 const mapStateToProps = (state) => {
-  console.log('Redux State:', state);
+  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
+
+  const InstrumentAnalyte = state.ListUnits?.InstrumentAnalyte || [];
+  const instrumentName = state.ListUnits?.instrumentName || 'Unknown Instrument';
+
+  console.log('Mapped InstrumentAnalyte:', InstrumentAnalyte);
+  console.log('Mapped instrumentName:', instrumentName);
+
   return {
-    InstrumentAnalyte: state.ListUnits.InstrumentAnalyte ? [...state.ListUnits.InstrumentAnalyte] : []
+    InstrumentAnalyte,
+    instrumentName,
   };
 };
 

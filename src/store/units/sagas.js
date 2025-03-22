@@ -13,8 +13,21 @@ import { getAnalyteInstrument,getAnalyteReagent,getAnalyteMethod,instrumentsinty
 function* fetchReagentInManufacturer(object) {
   try {
     const response = yield call(reagentsinmaufacturer, object.payload);
-    yield put(getReagentsInManufacturerSuccess(response.data));
+    console.log("Saga - API Response:", response); // Log the full API response
+
+    const reagents = response?.data || []; // Extract reagents array
+    const manufacturerName = response?.manufacturer_name || "Unknown Manufacturer"; // Extract manufacturer name
+
+    const transformedResponse = {
+      data: reagents,
+      manufacturerName: manufacturerName,
+    };
+
+    console.log("Saga - Transformed Response:", transformedResponse); // Log transformed response
+
+    yield put(getReagentsInManufacturerSuccess(transformedResponse));
   } catch (error) {
+    console.error("Saga - Error Fetching Reagents:", error.message, error.stack);
     yield put(getReagentsInManufacturerFail(error));
   }
 }
@@ -26,16 +39,19 @@ function* fetchInstrumentInManufacturer(object) {
 
     // Call the API
     const response = yield call(instrumentsinmaufacturer, object.payload);
-    console.log("Saga - API Response:", response); // Log full response
+    console.log("Saga - API Response:", response); // Log the raw response
 
-    // Safely extract the data array and manufacturer name
-    const instruments = response.data?.data ?? []; // Ensure it's an array
-    const manufacturerName = response.data?.manufacturer_name ?? "Unknown Manufacturer";
+    // Extract fields directly from response
+    const instruments = response?.data || []; // Directly access response.data
+    const manufacturerName = response?.manufacturer_name || "Unknown Manufacturer"; // Directly access response.manufacturer_name
+
+    console.log("Saga - Extracted Instruments:", instruments);
+    console.log("Saga - Extracted Manufacturer Name:", manufacturerName);
 
     // Prepare the transformed response
     const transformedResponse = {
-      data: instruments, // Array of instruments
-      manufacturerName: manufacturerName, // Manufacturer name
+      data: instruments,
+      manufacturerName: manufacturerName,
     };
 
     console.log("Saga - Transformed Response:", transformedResponse); // Log transformed response
@@ -94,32 +110,84 @@ function* fetchInstrumentsInType(object) {
 ///////analytes associated with method
 function* fetchAnalyteMethods(object) {
   try {
+    console.log("Saga - Payload for API Call:", object.payload);
+
     const response = yield call(getAnalyteMethod, object.payload);
-    yield put(getAnalyteMethodSuccess(response.data));
+    console.log("Saga - API Response:", response);
+
+    // Extract analytes and method name from response
+    const analytes = response?.data || [];
+    const methodName = response?.method_name || "Unknown Method";
+
+    const transformedResponse = {
+      analytes,
+      methodName,
+    };
+
+    console.log("Saga - Transformed Response:", transformedResponse);
+
+    // Dispatch success action
+    yield put(getAnalyteMethodSuccess(transformedResponse));
   } catch (error) {
+    console.error("Saga - Error Fetching Analyte Methods:", error.message, error.stack);
     yield put(getAnalyteMethodFail(error));
   }
 }
 
+
 ///////analytes associated with instrument
 function* fetchAnalyteInstruments(object) {
   try {
+    console.log("Saga - Payload for API Call:", object.payload);
+
     const response = yield call(getAnalyteInstrument, object.payload);
-    yield put(getAnalyteInstrumentSuccess(response.data));
+    console.log("Saga - API Response:", response);
+
+    const analytes = response?.data || []; // Ensure it's an array
+    const instrumentName = response?.instrument_name || "Unknown Instrument";
+
+    const transformedResponse = {
+      data: analytes,
+      instrumentName: instrumentName,
+    };
+
+    console.log("Saga - Transformed Response:", transformedResponse);
+
+    yield put(getAnalyteInstrumentSuccess(transformedResponse));
   } catch (error) {
+    console.error("Saga - Error Fetching Analytes:", error.message, error.stack);
     yield put(getAnalyteInstrumentFail(error));
   }
 }
 
+
 ///////analytes associated with reagent
 function* fetchAnalyteReagents(object) {
   try {
+    console.log("Saga - Payload for API Call:", object.payload);
+
     const response = yield call(getAnalyteReagent, object.payload);
-    yield put(getAnalyteReagentSuccess(response.data));
+    console.log("Saga - API Response:", response);
+
+    // Extract data from response
+    const analytes = response?.data || [];
+    const reagentName = response?.reagent_name || "Unknown Reagent";
+
+    const transformedResponse = {
+      analytes,
+      reagentName,
+    };
+
+    console.log("Saga - Transformed Response:", transformedResponse);
+
+    // Dispatch success action
+    yield put(getAnalyteReagentSuccess(transformedResponse));
   } catch (error) {
+    console.error("Saga - Error Fetching Reagent Analytes:", error.message, error.stack);
     yield put(getAnalyteReagentFail(error));
   }
 }
+
 ///////analytes associated with unit
 function* fetchAnalyteUnits(object) {
   try {

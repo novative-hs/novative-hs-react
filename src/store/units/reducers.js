@@ -55,36 +55,41 @@ const ListUnits = (state = INIT_STATE, action) => {
 
     /////reagents in MANUFACTURER
     case GET_REAGENTSINMANUFACTURER_SUCCESS:
-      console.log("ReagentsInManufacturer:", action.payload);
-    return {
-      ...state,
-      ReagentsInManufacturer: action.payload, // Update to handle units array
-    };
-  
-      case GET_REAGENTSINMANUFACTURER_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+console.log("ReagentsInManufacturer:", action.payload);
+return {
+  ...state,
+  ReagentsInManufacturer: action.payload.data || [],
+  manufacturerName: action.payload.manufacturerName || "Unknown Manufacturer",
+};
+
+case GET_REAGENTSINMANUFACTURER_FAIL:
+console.error("Error Fetching Reagents:", action.payload);
+return {
+  ...state,
+  ReagentsInManufacturer: [],
+  manufacturerName: "Unknown Manufacturer",
+  error: action.payload,
+};
+
 
 
     /////instruments in MANUFACTURER
     case GET_INSTRUMENTSINMANUFACTURER_SUCCESS:
-console.log("Reducer - InstrumentsInManufacturer Success Payload:", action.payload); // Log payload
-return {
-  ...state,
-  InstrumentsInManufacturer: action.payload.data || [], // Instruments array
-  manufacturerName: action.payload.manufacturerName || "Unknown Manufacturer", // Manufacturer name
-};
-
-case GET_INSTRUMENTSINMANUFACTURER_FAIL:
-console.error("Reducer - Error Fetching Instruments:", action.payload); // Log error payload
-return {
-  ...state,
-  InstrumentsInManufacturer: [], // Reset to empty array on failure
-  manufacturerName: "Unknown Manufacturer", // Reset manufacturer name
-  error: action.payload,
-};
+      console.log("Reducer - InstrumentsInManufacturer Payload:", action.payload);
+      return {
+        ...state,
+        InstrumentsInManufacturer: action.payload.data || [], // Place only the instruments array here
+        manufacturerName: action.payload.manufacturerName || "Unknown Manufacturer", // Manufacturer name
+      };
+    
+    case GET_INSTRUMENTSINMANUFACTURER_FAIL:
+      console.error("Reducer - Error fetching instruments:", action.payload);
+      return {
+        ...state,
+        InstrumentsInManufacturer: [], // Reset to empty array on failure
+        manufacturerName: "Unknown Manufacturer", // Reset manufacturer name on failure
+        error: action.payload,
+      };      
 
 
 
@@ -110,45 +115,60 @@ return {
 
 
       /////analytes associated with methods
-    case GET_ANALYTESMETHODS_SUCCESS:
-      console.log("ANALYTESMETHODS:", action.payload);
-    return {
-      ...state,
-      MethodAnalyte: action.payload, // Update to handle units array
-    };
-  
-      case GET_ANALYTESMETHODS_FAIL:
+      case GET_ANALYTESMETHODS_SUCCESS:
+        console.log("ANALYTESMETHODS:", action.payload);
         return {
           ...state,
+          MethodAnalyte: action.payload.analytes,
+          methodName: action.payload.methodName || "Unknown Method",
+        };
+      
+      case GET_ANALYTESMETHODS_FAIL:
+        console.error("Error Fetching Analyte Methods:", action.payload);
+        return {
+          ...state,
+          MethodAnalyte: [],
+          methodName: "Unknown Method",
           error: action.payload,
         };
+      
 
         /////analytes associated with INSTRUMENTS
-    case GET_ANALYTESINSTRUMENTS_SUCCESS:
-      console.log("InstrumentAnalyte:", action.payload);
-    return {
-      ...state,
-      InstrumentAnalyte: action.payload, // Update to handle units array
-    };
-  
-      case GET_ANALYTESINSTRUMENTS_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+        case GET_ANALYTESINSTRUMENTS_SUCCESS:
+          console.log("InstrumentAnalyte:", action.payload);
+          return {
+            ...state,
+            InstrumentAnalyte: action.payload.data || [],
+            instrumentName: action.payload.instrumentName || "Unknown Instrument",
+          };
+        
+        case GET_ANALYTESINSTRUMENTS_FAIL:
+          console.error("Error Fetching Analytes:", action.payload);
+          return {
+            ...state,
+            InstrumentAnalyte: [],
+            instrumentName: "Unknown Instrument",
+            error: action.payload,
+          };
+        
         /////analytes associated with REAGENTS
-    case GET_ANALYTESREAGENTS_SUCCESS:
-      console.log("ANALYTESREAGENTS:", action.payload);
-    return {
-      ...state,
-      ReagentAnalyte: action.payload, // Update to handle units array
-    };
-  
-      case GET_ANALYTESREAGENTS_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+        case GET_ANALYTESREAGENTS_SUCCESS:
+          console.log("ANALYTESREAGENTS:", action.payload);
+          return {
+            ...state,
+            ReagentAnalyte: action.payload.analytes,
+            reagentName: action.payload.reagentName || "Unknown Reagent",
+          };
+        
+        case GET_ANALYTESREAGENTS_FAIL:
+          console.error("Error Fetching Reagent Analytes:", action.payload);
+          return {
+            ...state,
+            ReagentAnalyte: [],
+            reagentName: "Unknown Reagent",
+            error: action.payload,
+          };
+        
     /////analytes associated with units
     case GET_ANALYTESUNITS_SUCCESS:
 console.log("Reducer - UnitAnalyte:", action.payload); // Log the payload
@@ -260,4 +280,3 @@ return {
 };
 
 export default ListUnits;
-

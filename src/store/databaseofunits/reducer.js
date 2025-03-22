@@ -321,17 +321,22 @@ case GET_SAMPLE_ANALYTE_LIST_FAIL:
 
     /////////////////////////////////////////////////////
     case GET_INSTRUMENT_ANALYTE_LIST_SUCCESS:
+      console.log("Instrument Analyte List:", action.payload);
       return {
         ...state,
-        InstrumentAnalyteList: action.payload.analytes, // Update to handle reagents array
+        InstrumentAnalyteList: action.payload.analytes,
+        instrumentName: action.payload.instrumentName || "Unknown Instrument",
       };
-
+    
     case GET_INSTRUMENT_ANALYTE_LIST_FAIL:
+      console.error("Error Fetching Instrument Analytes:", action.payload);
       return {
         ...state,
+        InstrumentAnalyteList: [],
+        instrumentName: "Unknown Instrument",
         error: action.payload,
       };
-
+    
     case ADD_NEW_INSTRUMENT_ANALYTE_SUCCESS:
       return {
         ...state,
@@ -428,4 +433,3 @@ case GET_SAMPLE_ANALYTE_LIST_FAIL:
 };
 
 export default ListUnit;
-

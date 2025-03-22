@@ -85,7 +85,6 @@ class InstrumentType extends Component {
         : "",
       successMessage: "",
       feedbackListColumns: [
-        
         {
           text: "ID",
           dataField: "id",
@@ -116,8 +115,7 @@ class InstrumentType extends Component {
               </>
             );
           },
-        }
-        ,
+        },
         {
           dataField: "rounds",
           text: "Round No",
@@ -261,15 +259,16 @@ class InstrumentType extends Component {
                 to={`/round-participant-list/${row.id}`}
                 style={{ textDecoration: "underline", color: "#0000CD" }}
                 onClick={() =>
-                  console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)
+                  console.log(
+                    `Navigating to payment-scheme-list with ID: ${row.id}`
+                  )
                 }
               >
                 {cell}
               </Link>
             );
           },
-        }
-        ,
+        },
         {
           dataField: "issue_date",
           text: "Issue Date",
@@ -341,9 +340,7 @@ class InstrumentType extends Component {
                 <div style={{ marginTop: "5px" }}>
                   <select
                     value={this.state.statusFilter}
-                    onChange={(e) =>
-                      this.handleFilterChange("statusFilter", e)
-                    }
+                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -392,7 +389,6 @@ class InstrumentType extends Component {
             const { organization_name } = this.state;
 
             return (
-              
               <div
                 className="d-flex gap-3 ml-3"
                 style={{
@@ -446,19 +442,19 @@ class InstrumentType extends Component {
                 {/* {/ Show statistics icon only when the status is "Closed" or "Report Available" /} */}
                 {(round.status === "Closed" ||
                   round.status === "Report Available") && (
-                    <Tooltip title="Statistics">
-                      <Link
-                        to="#"
-                        onClick={() => this.onClickStatistics(round)}
-                        style={{ textDecoration: "underline", color: "#008000" }}
-                      >
-                        <i
-                          className="mdi mdi-chart-bar font-size-18"
-                          id="statisticsIcon"
-                        ></i>
-                      </Link>
-                    </Tooltip>
-                  )}
+                  <Tooltip title="Statistics">
+                    <Link
+                      to="#"
+                      onClick={() => this.onClickStatistics(round)}
+                      style={{ textDecoration: "underline", color: "#008000" }}
+                    >
+                      <i
+                        className="mdi mdi-chart-bar font-size-18"
+                        id="statisticsIcon"
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                )}
 
                 <Tooltip title="Update">
                   <Link className="text-success" to="#">
@@ -1078,14 +1074,14 @@ class InstrumentType extends Component {
                                                             form.setFieldValue(
                                                               "scheme",
                                                               value
-                                                            ); 
+                                                            );
                                                             this.handleSchemeChange(
                                                               e
-                                                            ); 
+                                                            );
                                                           }}
                                                           disabled={
                                                             this.state.isEdit
-                                                          } 
+                                                          }
                                                         >
                                                           <option value="">
                                                             Select Scheme
@@ -1137,29 +1133,59 @@ class InstrumentType extends Component {
                                                     {/* <label htmlFor="cycle_no">
                                                       Select Cycle
                                                     </label> */}
-                                                   <Field name="cycle_no">
-  {({ field, form }) => (
-    <div className="mb-3">
-      <label htmlFor="cycle_no">Select Cycle</label>
-      <select
-        {...field}
-        className={`form-control${form.errors.cycle_no && form.touched.cycle_no ? " is-invalid" : ""}`}
-        disabled={this.state.isEdit} // ✅ Disable only in Edit Mode
-      >
-        <option value="">Select Cycle</option>
-        {this.state.filteredCycleList
-          .filter(cycle => cycle.status && cycle.status.toLowerCase() === "active")
-          .map(cycle => (
-            <option key={cycle.id} value={String(cycle.id)}>
-              {cycle.cycle_no}
-            </option>
-          ))}
-      </select>
-      <ErrorMessage name="cycle_no" component="div" className="invalid-feedback" />
-    </div>
-  )}
-</Field>
-
+                                                    <Field name="cycle_no">
+                                                      {({ field, form }) => (
+                                                        <div className="mb-3">
+                                                          <label htmlFor="cycle_no">
+                                                            Select Cycle
+                                                          </label>
+                                                          <select
+                                                            {...field}
+                                                            className={`form-control${
+                                                              form.errors
+                                                                .cycle_no &&
+                                                              form.touched
+                                                                .cycle_no
+                                                                ? " is-invalid"
+                                                                : ""
+                                                            }`}
+                                                            disabled={
+                                                              this.state.isEdit
+                                                            } // ✅ Disable only in Edit Mode
+                                                          >
+                                                            <option value="">
+                                                              Select Cycle
+                                                            </option>
+                                                            {this.state.filteredCycleList
+                                                              .filter(
+                                                                (cycle) =>
+                                                                  cycle.status &&
+                                                                  cycle.status.toLowerCase() ===
+                                                                    "active"
+                                                              )
+                                                              .map((cycle) => (
+                                                                <option
+                                                                  key={cycle.id}
+                                                                  value={String(
+                                                                    cycle.cycle_no
+                                                                  )}
+                                                                >
+                                                                  {" "}
+                                                                  {/* Use cycle_no instead */}
+                                                                  {
+                                                                    cycle.cycle_no
+                                                                  }
+                                                                </option>
+                                                              ))}
+                                                          </select>
+                                                          <ErrorMessage
+                                                            name="cycle_no"
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
+                                                      )}
+                                                    </Field>
                                                     <ErrorMessage
                                                       name="cycle_no"
                                                       component="div"
@@ -1248,13 +1274,21 @@ class InstrumentType extends Component {
                                                                   ? " is-invalid"
                                                                   : ""
                                                               }`}
-                                                              disabled={[ "Ready", "Open", "Closed", "Report Available"].includes(form.values.status)}
+                                                              disabled={[
+                                                                "Ready",
+                                                                "Open",
+                                                                "Closed",
+                                                                "Report Available",
+                                                              ].includes(
+                                                                form.values
+                                                                  .status
+                                                              )}
                                                             >
                                                               <option value="">
                                                                 Select Sample
                                                               </option>
                                                               {this.state.filteredSampleList.map(
-                                                                sample => (
+                                                                (sample) => (
                                                                   <option
                                                                     key={
                                                                       sample.id
@@ -1343,7 +1377,9 @@ class InstrumentType extends Component {
                                       classes={"table align-middle table-hover"}
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses={"table-header-sky-blue"}
+                                      headerWrapperClasses={
+                                        "table-header-sky-blue"
+                                      }
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}

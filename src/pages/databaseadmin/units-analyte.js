@@ -90,12 +90,12 @@ class UnitsAnalyte extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
- 
+
 
   filterData = () => {
     const { UnitAnalyte } = this.props;
 
-    const { nameFilter, idFilter} = this.state;
+    const { nameFilter, idFilter } = this.state;
 
     const filteredData = UnitAnalyte.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
@@ -112,7 +112,7 @@ class UnitsAnalyte extends Component {
 
   render() {
     const { UnitAnalyte } = this.props;
-    console.log("UnitAnalyte",UnitAnalyte);
+    console.log("UnitAnalyte", UnitAnalyte);
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     return (
       <React.Fragment>
@@ -121,7 +121,19 @@ class UnitsAnalyte extends Component {
             <title>Database Admin | Unit Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Unit Analytes List" />
+            <Breadcrumbs
+              title="List"
+              breadcrumbItem={
+                <>
+                  Analytes For -
+                  <span style={{ color: "black", fontWeight: "bold" }}>
+                    {this.props.UnitName || "Unknown Unit"}
+                  </span>
+                </>
+              }
+            />
+
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -168,16 +180,19 @@ class UnitsAnalyte extends Component {
 UnitsAnalyte.propTypes = {
   match: PropTypes.object,
   UnitAnalyte: PropTypes.array,
+  UnitName: PropTypes.object,
   history: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
-  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
+  console.log("Redux State:", state); // Debugging log
   return {
-    UnitAnalyte: state.ListUnits.UnitAnalyte || []
+    UnitAnalyte: state.ListUnits?.UnitAnalyte || [], // Analytes
+    UnitName: state.ListUnits?.UnitName || "Unknown Unit", // Unit name
   };
 };
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getAnalyteUnit(id)),

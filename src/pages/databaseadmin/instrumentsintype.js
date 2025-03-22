@@ -66,7 +66,7 @@ class InstrumentsInType extends Component {
           headerAlign: 'center',
           align: 'left',
         },
-        
+
       ],
     };
   }
@@ -91,12 +91,12 @@ class InstrumentsInType extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
- 
+
 
   filterData = () => {
     const { InstrumentsInType } = this.props;
 
-    const { nameFilter, idFilter} = this.state;
+    const { nameFilter, idFilter } = this.state;
 
     const filteredData = InstrumentsInType.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
@@ -113,7 +113,7 @@ class InstrumentsInType extends Component {
 
   render() {
     const { InstrumentsInType } = this.props;
-    console.log("InstrumentsInType",InstrumentsInType);
+    console.log("InstrumentsInType", InstrumentsInType);
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     return (
       <React.Fragment>
@@ -122,7 +122,22 @@ class InstrumentsInType extends Component {
             <title>Database Admin | Equipment List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Equipment List" />
+            <Breadcrumbs
+              title="List"
+              breadcrumbItem={
+                <>
+                  Equipment list For - 
+                  <span style={{ color: "black", fontWeight: "bold" }}>
+                    {this.props.EquipmentTypeName || "Unknown"}
+                  </span>{" "}
+                </>
+              }
+            />
+
+
+
+
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -170,15 +185,15 @@ InstrumentsInType.propTypes = {
   match: PropTypes.object,
   InstrumentsInType: PropTypes.array,
   history: PropTypes.object,
+  EquipmentTypeName: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
-  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
-  return {
-    InstrumentsInType: state.ListUnits.InstrumentsInType || []
-  };
-};
+const mapStateToProps = (state) => ({
+  InstrumentsInType: state.ListUnits?.InstrumentsInType || [],
+  EquipmentTypeName: state.ListUnits?.EquipmentTypeName || "Unknown Equipment Type", // Map EquipmentTypeName
+});
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getInstrumentsInType(id)),

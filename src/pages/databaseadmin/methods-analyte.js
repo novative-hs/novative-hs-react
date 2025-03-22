@@ -121,7 +121,18 @@ class MethodAnalyte extends Component {
             <title>Database Admin | Method Analytes List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Method Analytes List" />
+          <Breadcrumbs
+  title="List"
+  breadcrumbItem={
+    <>
+    Analytes For - 
+      <span style={{ color: "black", fontWeight: "bold" }}>
+        {this.props.methodName || "Loading..."}
+      </span>
+    </>
+  }
+/>
+
             <Row className="justify-content-center">
               <Col lg="4">
                 <Card>
@@ -167,17 +178,20 @@ class MethodAnalyte extends Component {
 
 MethodAnalyte.propTypes = {
   match: PropTypes.object,
+  methodName: PropTypes.object,
   MethodAnalyte: PropTypes.array,
   history: PropTypes.object,
   onGetUnitAnalyteList: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
-  console.log('Redux State:', state); // Log entire Redux state to see structure and contents
+  console.log('Redux State:', state); // Log entire Redux state to debug
   return {
-    MethodAnalyte: state.ListUnits.MethodAnalyte || []
+    MethodAnalyte: state.ListUnits.MethodAnalyte || [],
+    methodName: state.ListUnits.methodName || "Unknown Method",
   };
 };
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetUnitAnalyteList: (id) => dispatch(getAnalyteMethod(id)),

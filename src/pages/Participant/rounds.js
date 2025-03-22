@@ -27,12 +27,12 @@ class Roundural extends Component {
       SelectedSchemeList: [],
       CycleList: [],
       organization_name: "",
-      selectedName: "All",  // ✅ Default to "All"
-      selectedCycle: "All", // ✅ Default to "All"
+      selectedName: "All", // ✅ Default to "All"
+      selectedCycle: "Active", // ✅ Default to "All"
       modal: false,
       user_id: localStorage.getItem("authUser")
-    ? JSON.parse(localStorage.getItem("authUser")).user_id
-    : null, // ✅ Default to null instead of empty string
+        ? JSON.parse(localStorage.getItem("authUser")).user_id
+        : null, // ✅ Default to null instead of empty string
       nameOptions: [],
       selectedName: "All",
       feedbackListColumns: [
@@ -55,10 +55,12 @@ class Roundural extends Component {
           text: "Cycle No (Status)",
           sort: true,
           formatter: (cellContent, row) => {
-            return `${row.cycle_no} (${row.cycle_status || "Unknown"})`;  // ✅ Show cycle status
+            return `${row.cycle_no || "N/A"} (${
+              row.cycle_status || "Unknown"
+            })`; // ✅ Now includes cycle_status
           },
         },
-        
+
         {
           dataField: "rounds",
           text: "Rounds",
@@ -112,7 +114,7 @@ class Roundural extends Component {
                   <Link
                     className="fas fa-file-alt font-size-18 text-success"
                     to={`/${organization_name}/${round.id}/${round.participant_id}/participantsResults`}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       if (!organization_name) {
                         console.error("Invalid organization name");
@@ -130,7 +132,7 @@ class Roundural extends Component {
                   <Link
                     className="fas fa-comment font-size-18"
                     to={`/${organization_name}/rounds-history/${round.id}`}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       if (!organization_name) {
                         console.error("Invalid organization name");
@@ -172,8 +174,10 @@ class Roundural extends Component {
 
     const user_id = this.state.user_id;
     if (!user_id) {
-        console.error("❌ Error: user_id is missing or undefined! API calls will fail.");
-        return;
+      console.error(
+        "❌ Error: user_id is missing or undefined! API calls will fail."
+      );
+      return;
     }
 
     console.log("🔍 Debug: Fetching rounds and cycles for user_id:", user_id);
@@ -182,111 +186,106 @@ class Roundural extends Component {
     this.props.onGetCycleList(user_id);
 
     setTimeout(() => {
-        console.log("📊 Redux SelectedSchemeList after API call:", this.props.SelectedSchemeList);
-        console.log("📊 Redux CycleList after API call:", this.props.CycleList);
+      console.log(
+        "📊 Redux SelectedSchemeList after API call:",
+        this.props.SelectedSchemeList
+      );
+      console.log("📊 Redux CycleList after API call:", this.props.CycleList);
 
-        // ✅ Set default selected options to "All" after data loads
-        this.setState({
-            SelectedSchemeList: this.props.SelectedSchemeList,
-            selectedScheme: "All",
-            selectedCycle: "All"
-        });
+      // ✅ Set default selected options to "All" after data loads
+      this.setState({
+        SelectedSchemeList: this.props.SelectedSchemeList,
+        selectedScheme: "All",
+        selectedCycle: "Active",
+      });
     }, 3000);
-}
-
-
-
-    // componentDidUpdate(prevProps) {
-    //   const { SelectedSchemeList, CycleList } = this.props;
-    //   if (
-    //     SelectedSchemeList !== prevProps.SelectedSchemeList &&
-    //     !isEmpty(SelectedSchemeList)
-    //   ) {
-    //     const uniqueNames = uniq(
-    //       SelectedSchemeList.map(item => item.scheme_name)
-    //     );
-    //     this.setState({
-    //       SelectedSchemeList,
-    //       nameOptions: ["All", ...uniqueNames],
-    //     });
-    //   }
-    //   if (prevProps.CycleList !== this.props.CycleList) {
-    //     console.log("CycleList updated in props:", this.props.CycleList); // ✅ Debugging log
-    //     this.setState({ CycleList: this.props.CycleList });
-    // }
-    // }
-
-    componentDidUpdate(prevProps) {
-      const { SelectedSchemeList, CycleList } = this.props;
-  
-      // ✅ Ensure SelectedSchemeList updates when new data comes in
-      if (
-          SelectedSchemeList !== prevProps.SelectedSchemeList &&
-          Array.isArray(SelectedSchemeList) &&
-          SelectedSchemeList.length > 0
-      ) {
-          console.log("✅ Loaded SelectedSchemeList:", SelectedSchemeList);
-          
-          this.setState({
-              SelectedSchemeList,
-              nameOptions: ["All", ...uniq(SelectedSchemeList.map(item => item.scheme_name))],
-          });
-      }
-  
-      // ✅ Ensure CycleList updates correctly
-      if (
-          CycleList !== prevProps.CycleList &&
-          Array.isArray(CycleList) &&
-          CycleList.length > 0
-      ) {
-          console.log("✅ Loaded CycleList:", CycleList);
-          this.setState({ CycleList });
-      }
   }
-  
 
+  // componentDidUpdate(prevProps) {
+  //   const { SelectedSchemeList, CycleList } = this.props;
+  //   if (
+  //     SelectedSchemeList !== prevProps.SelectedSchemeList &&
+  //     !isEmpty(SelectedSchemeList)
+  //   ) {
+  //     const uniqueNames = uniq(
+  //       SelectedSchemeList.map(item => item.scheme_name)
+  //     );
+  //     this.setState({
+  //       SelectedSchemeList,
+  //       nameOptions: ["All", ...uniqueNames],
+  //     });
+  //   }
+  //   if (prevProps.CycleList !== this.props.CycleList) {
+  //     console.log("CycleList updated in props:", this.props.CycleList); // ✅ Debugging log
+  //     this.setState({ CycleList: this.props.CycleList });
+  // }
+  // }
 
+  componentDidUpdate(prevProps) {
+    const { SelectedSchemeList, CycleList } = this.props;
 
-handleNameFilterChange(selectedOption) {
-  this.setState(
+    // ✅ Ensure SelectedSchemeList updates when new data comes in
+    if (
+      SelectedSchemeList !== prevProps.SelectedSchemeList &&
+      Array.isArray(SelectedSchemeList) &&
+      SelectedSchemeList.length > 0
+    ) {
+      console.log("✅ Loaded SelectedSchemeList:", SelectedSchemeList);
+
+      this.setState({
+        SelectedSchemeList,
+        nameOptions: [
+          "All",
+          ...uniq(SelectedSchemeList.map((item) => item.scheme_name)),
+        ],
+      });
+    }
+
+    // ✅ Ensure CycleList updates correctly
+    if (
+      CycleList !== prevProps.CycleList &&
+      Array.isArray(CycleList) &&
+      CycleList.length > 0
+    ) {
+      console.log("✅ Loaded CycleList:", CycleList);
+      this.setState({ CycleList });
+    }
+  }
+
+  handleNameFilterChange(selectedOption) {
+    this.setState(
       { selectedScheme: selectedOption ? selectedOption.value : "All" },
       () => {
-          console.log("✅ Updated Selected Scheme:", this.state.selectedScheme);
-          this.forceUpdate(); // ✅ Ensure the component re-renders
+        console.log("✅ Updated Selected Scheme:", this.state.selectedScheme);
+        this.forceUpdate(); // ✅ Ensure the component re-renders
       }
-  );
-}
+    );
+  }
 
-
-
-  
-handleCycleFilterChange(selectedOption) {
-  this.setState(
-      { selectedCycle: selectedOption ? selectedOption.value : "All" },
+  handleCycleFilterChange(selectedOption) {
+    this.setState(
+      { selectedCycle: selectedOption ? selectedOption.value : "Active" },
       () => {
-          console.log("✅ Updated Selected Cycle:", this.state.selectedCycle);
-          this.forceUpdate(); // ✅ Ensure the component re-renders
+        console.log("✅ Updated Selected Cycle:", this.state.selectedCycle);
+        this.forceUpdate(); // ✅ Ensure the component re-renders
       }
-  );
-}
+    );
+  }
 
-
-  
-  handleCycleStatusChange = selectedOption => {
+  handleCycleStatusChange = (selectedOption) => {
     this.setState(
       { selectedCycleStatus: selectedOption ? selectedOption.value : "Active" },
-      () => console.log("✅ Updated Cycle Status:", this.state.selectedCycleStatus)
+      () =>
+        console.log("✅ Updated Cycle Status:", this.state.selectedCycleStatus)
     );
   };
-  
 
- 
   // filterData() {
   //   const { SelectedSchemeList, selectedName, selectedCycle } = this.state;
   //   if (selectedName === "All") {
   //     return SelectedSchemeList;
   //   }
-  //   return SelectedSchemeList.filter(entry => 
+  //   return SelectedSchemeList.filter(entry =>
   //     (selectedName === "All" || entry.scheme_name === selectedName) && // ✅ Filter by scheme
   //     (selectedCycle === "All" || entry.cycle_no === selectedCycle) // ✅ Filter by cycle
   //   );
@@ -298,16 +297,16 @@ handleCycleFilterChange(selectedOption) {
 
   // filterData() {
   //   const { SelectedSchemeList, selectedName, selectedCycle } = this.state;
-  
+
   //   console.log("🔍 Selected Scheme:", selectedName);
   //   console.log("🔍 Selected Cycle:", selectedCycle);
   //   console.log("📊 Full List Before Filtering:", SelectedSchemeList);
-  
+
   //   if (!SelectedSchemeList || SelectedSchemeList.length === 0) {
   //     console.warn("⚠️ No data available in SelectedSchemeList!");
   //     return [];
   //   }
-  
+
   //   return SelectedSchemeList.filter(entry => {
   //     const schemeMatch = selectedName === "All" || entry.scheme_name === selectedName;
   //     const cycleMatch =
@@ -315,7 +314,7 @@ handleCycleFilterChange(selectedOption) {
   //       (selectedCycle === "Active" && entry.status?.toLowerCase() === "active") ||
   //       (selectedCycle === "Inactive" && entry.status?.toLowerCase() === "inactive") ||
   //       (entry.cycle_no && entry.cycle_no.toString() === selectedCycle);
-  
+
   //     return schemeMatch && cycleMatch;
   //   });
   // }
@@ -328,28 +327,22 @@ handleCycleFilterChange(selectedOption) {
     console.log("📊 Full List Before Filtering:", SelectedSchemeList);
 
     if (!Array.isArray(SelectedSchemeList) || SelectedSchemeList.length === 0) {
-        console.warn("⚠️ No data available in SelectedSchemeList!");
-        return [];
+      console.warn("⚠️ No data available in SelectedSchemeList!");
+      return [];
     }
 
-    return SelectedSchemeList.filter(entry => {
-        const schemeMatch = selectedScheme === "All" || entry.scheme_name === selectedScheme;
-        const cycleMatch = selectedCycle === "All" || entry.cycle_status === selectedCycle; // ✅ Now filters by cycle_status
+    return SelectedSchemeList.filter((entry) => {
+      const schemeMatch =
+        selectedScheme === "All" || entry.scheme_name === selectedScheme;
+      const cycleMatch =
+        selectedCycle === "All" || entry.cycle_status === selectedCycle; // ✅ Now filters by cycle_status
 
-        return schemeMatch && cycleMatch;
+      return schemeMatch && cycleMatch;
     });
-}
+  }
 
+  //  S
 
-//  S
-
-
-
- 
-  
-  
-  
-  
   render() {
     const { SearchBar } = Search;
     const { nameOptions, selectedName, selectedCycle } = this.state;
@@ -359,9 +352,9 @@ handleCycleFilterChange(selectedOption) {
       totalSize: this.state.SelectedSchemeList.length,
       custom: true,
     };
-   
+
     const filteredRoundList = this.filterData();
-    const schemeName = nameOptions.map(name => {
+    const schemeName = nameOptions.map((name) => {
       console.log("Scheme name:", name); // Logs each name inside the map function
       return {
         value: name,
@@ -369,7 +362,7 @@ handleCycleFilterChange(selectedOption) {
       };
     });
     const filteredCycles = this.filterData();
-    const cycle_no = nameOptions.map(cycle_no => {
+    const cycle_no = nameOptions.map((cycle_no) => {
       console.log("Cycle name:", CycleList);
       return {
         value: cycle_no,
@@ -379,20 +372,18 @@ handleCycleFilterChange(selectedOption) {
 
     console.log("Final schemeName:", schemeName); // Logs the final array after map is complete
 
-      // ✅ Fix: Ensure `CycleList` is always an array
-      const cycleOptions = [
-        { value: "All", label: "All" },
-        { value: "Active", label: "Active" },
-        { value: "inactive", label: "inactive" },
-        ...(Array.isArray(this.props.CycleList)
-          ? this.props.CycleList.map(cycle => ({
-              value: cycle.cycle_no, // ✅ Use cycle number instead of ID
-              label: cycle.cycle_no,
-            }))
-          : [])
-      ];
-      
-
+    // ✅ Fix: Ensure `CycleList` is always an array
+    const cycleOptions = [
+      // { value: "All", label: "All" },
+      { value: "Active", label: "Active" },
+      { value: "inactive", label: "inactive" },
+      ...(Array.isArray(this.props.CycleList)
+        ? this.props.CycleList.map((cycle) => ({
+            value: cycle.cycle_no, // ✅ Use cycle number instead of ID
+            label: cycle.cycle_no,
+          }))
+        : []),
+    ];
 
     return (
       <React.Fragment>
@@ -418,7 +409,7 @@ handleCycleFilterChange(selectedOption) {
                           data={filteredRoundList}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 {/* Select Scheme */}
@@ -431,7 +422,7 @@ handleCycleFilterChange(selectedOption) {
                                     <Select
                                       onChange={this.handleNameFilterChange}
                                       options={this.state.nameOptions.map(
-                                        name => ({ value: name, label: name })
+                                        (name) => ({ value: name, label: name })
                                       )}
                                       placeholder="Select Scheme..."
                                       isClearable={true}
@@ -454,23 +445,39 @@ handleCycleFilterChange(selectedOption) {
                                       Select Cycle
                                     </label>
                                     <Select
-  onChange={(selectedOption) => this.setState({ selectedCycle: selectedOption ? selectedOption.value : "All" })}
-  options={[
-    { value: "All", label: "All" },
-    { value: "Active", label: "Active" },
-    { value: "inactive", label: "inactive" },
-    ...(Array.isArray(this.props.CycleList)
-      ? this.props.CycleList.map(cycle => ({
-          value: cycle.cycle_no, // ✅ Use cycle_no for filtering
-          label: `${cycle.cycle_no} (${cycle.status})`, // ✅ Show status next to cycle_no
-        }))
-      : [])
-  ]}
-  placeholder="Select Cycle..."
-  isClearable={true}
-  value={this.state.selectedCycle ? { value: this.state.selectedCycle, label: this.state.selectedCycle } : null}
-/>
-
+                                      onChange={(selectedOption) =>
+                                        this.setState({
+                                          selectedCycle: selectedOption
+                                            ? selectedOption.value
+                                            : "Active",
+                                        })
+                                      }
+                                      options={[
+                                        { value: "Active", label: "Active" },
+                                        {
+                                          value: "inactive",
+                                          label: "inactive",
+                                        },
+                                        ...(Array.isArray(this.props.CycleList)
+                                          ? this.props.CycleList.map(
+                                              (cycle) => ({
+                                                value: cycle.cycle_no, // ✅ Use cycle_no for filtering
+                                                label: `${cycle.cycle_no} (${cycle.status})`, // ✅ Show status next to cycle_no
+                                              })
+                                            )
+                                          : []),
+                                      ]}
+                                      placeholder="Select Cycle..."
+                                      isClearable={true}
+                                      value={
+                                        this.state.selectedCycle
+                                          ? {
+                                              value: this.state.selectedCycle,
+                                              label: this.state.selectedCycle,
+                                            }
+                                          : null
+                                      }
+                                    />
                                   </div>
                                 </Col>
                               </Row>
@@ -533,27 +540,29 @@ Roundural.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log("🟢 Redux State:", state); // ✅ Debug full Redux state
-  console.log("🔵 SelectedSchemeList from Redux:", state.SelectedSchemeList?.SelectedSchemeList);
+  console.log(
+    "🔵 SelectedSchemeList from Redux:",
+    state.SelectedSchemeList?.SelectedSchemeList
+  );
   console.log("🟣 CycleList from Redux:", state.CycleList);
 
   return {
-      SelectedSchemeList: state.SelectedSchemeList?.SelectedSchemeList?.map(item => ({
-          ...item,
-          cycle_status: item.cycle_status || "Unknown"  // ✅ Ensure cycle_status is always available
+    SelectedSchemeList:
+      state.SelectedSchemeList?.SelectedSchemeList?.map((item) => ({
+        ...item,
+        cycle_status: item.cycle_status || "Unknown", // ✅ Ensure cycle_status is always available
       })) || [],
-      CycleList: state.CycleList || [], // ✅ Ensure CycleList is not undefined
+    CycleList: state.CycleList || [], // ✅ Ensure CycleList is not undefined
   };
 };
 
-
-
 console.log("CycleList:", CycleList);
 
-const mapDispatchToProps = dispatch => ({
-  onGetRoundList: id => dispatch(getSelectedSchemesList(id)),
-  onGetCycleList: id => dispatch(getcyclelist(id)), // ✅ Correct name
+const mapDispatchToProps = (dispatch) => ({
+  onGetRoundList: (id) => dispatch(getSelectedSchemesList(id)),
+  onGetCycleList: (id) => dispatch(getcyclelist(id)), // ✅ Correct name
 });
 
 export default connect(
