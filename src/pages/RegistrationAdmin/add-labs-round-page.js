@@ -117,8 +117,6 @@ class RoundAddParticipant extends Component {
             );
           },
         },
-        
-        
       ],
     };
   }
@@ -126,20 +124,22 @@ class RoundAddParticipant extends Component {
   componentDidMount() {
     const { organization_name } = this.props.match.params;
     this.setState({ organization_name });
-    console.log("componentDidMount: Organization name set to:", organization_name);
-    console.log("ParticipantList in Component:", this.props.ParticipantList);
-    // console.log("ParticipantList:", this.props.ParticipantList);
-  console.log("LabRoundList:", this.props.LabRoundList);
-    // Fetch data when the component mounts
     this.fetchData();
   }
+
   componentDidUpdate(prevProps) {
+    // Update selectedCheckboxes when LabRoundList changes
+    if (prevProps.LabRoundList !== this.props.LabRoundList) {
+      console.log("componentDidUpdate: LabRoundList updated. Previous:", prevProps.LabRoundList, "Current:", this.props.LabRoundList);
+      console.log("ParticipantList in Component:", this.props.ParticipantList);
+      this.updateSelectedCheckboxes();
+    }
+
     if (prevProps.ParticipantList !== this.props.ParticipantList) {
       console.log("✅ ParticipantList updated in componentDidUpdate", this.props.ParticipantList);
       this.updateSelectedCheckboxes();
     }
   }
-  
 //   componentDidUpdate(prevProps) {
 //     if (prevProps.RoundList !== this.props.RoundList) {
 //         console.log("componentDidUpdate: RoundList updated. Updating checkboxes.");
@@ -168,29 +168,45 @@ class RoundAddParticipant extends Component {
     }
   }
 
-  updateSelectedCheckboxes() {
-    const selectedCheckboxes = {};
-    const { ParticipantList } = this.props; // Use ParticipantList here
-  
-    console.log("🚀 Running updateSelectedCheckboxes...");
-    console.log("📝 Full ParticipantList:", JSON.stringify(ParticipantList, null, 2));
-  
-    if (ParticipantList && Array.isArray(ParticipantList)) {
-      ParticipantList.forEach(participant => {
-        console.log(`🔍 Checking participant ID: ${participant.id}, auto_selected: ${participant.auto_selected}`);
-        if (participant.auto_selected) {  
-          console.log(`✅ Participant ID ${participant.id} is auto-selected. Marking checkbox as checked.`);
-          selectedCheckboxes[participant.id] = true;
-        }
-      });
-    }
-  
-    console.log("🎯 Final selectedCheckboxes state before update:", selectedCheckboxes);
-  
-    this.setState({ selectedCheckboxes, tableKey: this.state.tableKey + 1 }, () => {
-      console.log("📌 State updated! New selectedCheckboxes:", this.state.selectedCheckboxes);
+//   updateSelectedCheckboxes() {
+//     const selectedCheckboxes = {};
+//     const { LabRoundList } = this.props;
+
+//     console.log("updateSelectedCheckboxes: Updating checkboxes with LabRoundList:", LabRoundList);
+
+//     if (LabRoundList && Array.isArray(LabRoundList)) {
+//         LabRoundList.forEach(participantId => {
+//             selectedCheckboxes[participantId] = true; // Mark as checked
+//         });
+//     }
+
+//     console.log("updateSelectedCheckboxes: New selectedCheckboxes state:", selectedCheckboxes);
+
+//     this.setState({ selectedCheckboxes });
+// }
+updateSelectedCheckboxes() {
+  const selectedCheckboxes = {};
+  const { ParticipantList } = this.props; // Use ParticipantList here
+
+  console.log("🚀 Running updateSelectedCheckboxes...");
+  console.log("📝 Full ParticipantList:", JSON.stringify(ParticipantList, null, 2));
+
+  if (ParticipantList && Array.isArray(ParticipantList)) {
+    ParticipantList.forEach(participant => {
+      console.log(`🔍 Checking participant ID: ${participant.id}, auto_selected: ${participant.auto_selected}`);
+      if (participant.auto_selected) {  
+        console.log(`✅ Participant ID ${participant.id} is auto-selected. Marking checkbox as checked.`);
+        selectedCheckboxes[participant.id] = true;
+      }
     });
   }
+
+  console.log("🎯 Final selectedCheckboxes state before update:", selectedCheckboxes);
+
+  this.setState({ selectedCheckboxes, tableKey: this.state.tableKey + 1 }, () => {
+    console.log("📌 State updated! New selectedCheckboxes:", this.state.selectedCheckboxes);
+  });
+}
 
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
@@ -258,6 +274,7 @@ class RoundAddParticipant extends Component {
   });
   };
 
+
   filterData = () => {
     const { ParticipantList } = this.props;
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
@@ -303,10 +320,31 @@ class RoundAddParticipant extends Component {
 };
 
 
+
+
   render() {
-    const { ParticipantList } = this.props;
+    const { ParticipantList, roundDetails } = this.props;
     const defaultSorted = [{ dataField: "id", order: "desc" }];
 
+      // Use roundDetails for breadcrumb
+   const formatDate = (date) => {
+    if (!date) return '';
+    const [year, month, day] = date.split('-');
+    return `${day}-${month}-${year}`;
+  };
+  
+  const breadcrumbItem = roundDetails
+    ? `Round Number: ${roundDetails.rounds || "No Round Number"}, 
+       Scheme Name: ${roundDetails.scheme_name || "No Scheme Name"}, 
+       Cycle Number: ${roundDetails.cycle_no || "No Cycle Number"}, 
+       Cycle Start Date: ${formatDate(roundDetails.issue_date) || "No Start Date"}, 
+       Cycle End Date: ${formatDate(roundDetails.closing_date) || "No End Date"}, 
+       Round Start Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}, 
+     Round End Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}`
+    : "No Data Available";
+  
+  console.log("Generated Breadcrumb Item:", breadcrumbItem);
+  
     return (
       <React.Fragment>
         <div className="page-content">
@@ -314,7 +352,28 @@ class RoundAddParticipant extends Component {
             <title>Database Admin | Participants List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Participants List" />
+           <Breadcrumbs title="List" breadcrumbItem="Round Participant List" />
+
+ {/* Display round details below the breadcrumbs */}
+           
+
+ {roundDetails ? (
+  <div className="round-details">
+    <h4>Round Details:</h4>
+    <p className="round-details-text">
+      <span className="me-3">Round Number: <strong>{roundDetails.rounds || "No Round Number"}</strong></span>
+      <span className="me-3">Scheme Name: <strong>{roundDetails.scheme_name || "No Scheme Name"}</strong></span>
+      <span className="me-3">Cycle Number: <strong>{roundDetails.cycle_no || "No Cycle Number"}</strong></span>
+      <span className="me-3">Cycle Start Date: <strong>{formatDate(roundDetails.issue_date) || "No Start Date"}</strong></span>
+      <span className="me-3">Cycle End Date: <strong>{formatDate(roundDetails.closing_date) || "No End Date"}</strong></span>
+      <span className="me-3">Round Start Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}</strong></span>
+      <span className="me-3">Round End Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}</strong></span>
+    </p>
+  </div>
+) : (
+  <div>No round details available.</div>
+)}
+
             <Row className="justify-content-center">
               <Col lg="5">
                 <Card>
@@ -381,10 +440,12 @@ class RoundAddParticipant extends Component {
 RoundAddParticipant.propTypes = {
   match: PropTypes.object,
   ParticipantList: PropTypes.array,
+  roundDetails: PropTypes.object,
   LabRoundList: PropTypes.array,
   onGetRoundLabs: PropTypes.func,
   ongetParticipantRoundlist: PropTypes.func,
   onAddNewRoundLabs: PropTypes.func,
+  // RoundDetails: PropTypes.object,
   onUpdateRoundLabs: PropTypes.func,
   data: PropTypes.array,
   RoundList: PropTypes.array,
@@ -399,7 +460,9 @@ const mapStateToProps = (state) => {
 
   return {
       ParticipantList: state.ParticipantList?.ParticipantList || [],
+      // RoundDetails: state.ParticipantList?.RoundDetails || {}, // Map round details
       LabRoundList: state.ParticipantList?.LabRoundList || [],
+      roundDetails: state.ParticipantList?.roundDetails || {}, // Ensure correct mapping
       data: state.ParticipantList?.data || [], // Map `data` field from Redux state
   };
 };
