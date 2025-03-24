@@ -40,7 +40,6 @@ import {
             ...state,
             error: action.payload.message || action.payload, // Store error message
         };
-
         case ADD_NEW_ROUNDSLABS_SUCCESS:
           return {
             ...state,
@@ -82,16 +81,19 @@ import {
         };
       // Round Participant
       case GET_PARTICIPANTROUND_LIST_SUCCESS:
+        console.log("GET_PARTICIPANTROUND_LIST_SUCCESS: Payload:", action.payload);
         return {
           ...state,
-          ParticipantList: action.payload,
+          ParticipantList: action.payload.participantList,
+          roundDetails: action.payload.roundDetails,
         };
-
-      case GET_PARTICIPANTROUND_LIST_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+      
+      
+          case GET_PARTICIPANTROUND_LIST_FAIL:
+            return {
+              ...state,
+              error: action.payload,
+            };
       default:
         return state;
     }

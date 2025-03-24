@@ -48,12 +48,33 @@ function* fetchParticipantList(object) {
     yield put(getParticipantListFail(error));
   }
 }
-function* fetchParticipantRoundList(object) {
+function* fetchParticipantRoundList(action) {
+  console.log("Saga Triggered: fetchParticipantRoundList");
+  console.log("Payload received in saga:", action.payload);
+
   try {
-    const response = yield call(getParticipantRoundList, object.payload);
-    yield put(getParticipantRoundListSuccess(response.data));
+    // Call the API
+    const response = yield call(getParticipantRoundList, action.payload);
+    console.log("Full API Response Object:", response);
+
+    // Extract participant list and round details
+    const participantList = response?.data || []; // Correctly map to `data`
+    const roundDetails = response?.round_details || {}; // Correctly map to `round_details`
+
+    // Log extracted data
+    console.log("Extracted Participant List:", participantList);
+    console.log("Extracted Round Details:", roundDetails);
+
+    // Dispatch success with participant list and round details
+    yield put(getParticipantRoundListSuccess({ participantList, roundDetails }));
+    console.log("Dispatched GET_PARTICIPANTROUND_LIST_SUCCESS");
   } catch (error) {
+    // Log error details
+    console.error("Error in fetchParticipantRoundList saga:", error);
+
+    // Dispatch failure action
     yield put(getParticipantRoundListFail(error));
+    console.log("Dispatched GET_PARTICIPANTROUND_LIST_FAIL with error:", error);
   }
 }
 
