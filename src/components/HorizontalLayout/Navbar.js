@@ -406,7 +406,7 @@ class Navbar extends Component {
                       <ul className="navbar-nav">
                         <li className="nav-item">
                           <Link
-                            to={`/${organization_name}/pending-participant`}
+                            to={`/${organization_name}/all-participant`}
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">

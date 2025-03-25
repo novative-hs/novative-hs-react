@@ -5,6 +5,8 @@ import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import { Tooltip } from "@material-ui/core";
+import { getcyclelist } from "store/cycle/actions";
+import { addNewPayment } from "store/Payment/actions";
 import {
   Card,
   CardBody,
@@ -47,6 +49,7 @@ class PendingLabs extends Component {
       organization_name: '',
       selectedParticipantType: "Pending Participant", // Default value
       btnText: "Copy",
+      CycleList: [], // Store the cycle list here
       isApproved: false,
       unapprovedModal: false,
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
@@ -156,6 +159,7 @@ class PendingLabs extends Component {
                 ),
                 filter: textFilter()
               },
+              
                {
                  dataField: "landline_registered_by",
                  text: "Contact No.",
@@ -232,18 +236,44 @@ class PendingLabs extends Component {
     
   }
 
+  
+
   componentDidMount() {
     const { organization_name } = this.props.match.params;
+    
+    // Update state with organization_name and then call initial setup
     this.setState({ organization_name }, () => {
-      // Call this function inside the setState callback to ensure organization_name is updated first
       this.setInitialDropdownValue();
     });
-
-    const { pendingLabs, onGetPendingLabs } = this.props;
-    onGetPendingLabs(this.state.user_id);
-    //this.setState({ pendingLabs });
-    //this.setInitialDropdownValue();
+  
+    const { onGetPendingLabs, ongetcyclelist } = this.props; // Destructure required props
+    const { user_id } = this.state; // Get user ID from state
+  
+    // Fetch pending labs
+    if (user_id) {
+      onGetPendingLabs(user_id);
+      console.log("Fetching pending labs for user:", user_id);
+    } else {
+      console.warn("User ID is missing. Skipping pending labs fetch.");
+    }
+  
+    // Fetch cycle/scheme list
+    if (user_id) {
+      ongetcyclelist(user_id);
+      console.log("Fetching cycle/scheme list for user:", user_id);
+    } else {
+      console.warn("User ID is missing. Skipping cycle list fetch.");
+    }
   }
+  
+  
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.CycleList !== this.props.CycleList) {
+      this.setState({ CycleList: this.props.CycleList });
+    }
+  }
+  
   setInitialDropdownValue = () => {
     const { pathname } = this.props.history.location;
     const { organization_name } = this.state; // Now it's properly updated
@@ -264,7 +294,6 @@ class PendingLabs extends Component {
   
     this.setState({ selectedValue });
   };
-  
 
   openPatientModal = (e, arg) => {
     this.setState({
@@ -369,29 +398,34 @@ class PendingLabs extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-  handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-  
-    // Update the state
-    this.setState({ selectedValue });
-  
-    // Extract organization_name from state
+  handleFilterChange = (filterType, selectedValue) => {
     const { organization_name } = this.state;
-  
-    // Perform navigation based on the selected value
-    if (selectedValue === "Pending Participant") {
-      this.props.history.push(`/${organization_name}/pending-participant`);
-    } else if (selectedValue === "Approved Participant") {
-      this.props.history.push(`/${organization_name}/approved-participant`);
-    } else if (selectedValue === "Unapproved Participant") {
-      this.props.history.push(`/${organization_name}/unapproved-participant`);
-    } else if (selectedValue === "Suspended Participant") { // New condition added
-      this.props.history.push(`/${organization_name}/suspended-participant`);
-    } else if (selectedValue === "All Participant") {
-      this.props.history.push(`/${organization_name}/all-participant`);
+
+    if (!organization_name || !filterType || !selectedValue) {
+        console.error("Missing required parameters for navigation.");
+        return;
     }
-  };
-  
+
+    // Construct URL with query parameters
+    const url = `/${organization_name}/all-participant?filterType=${filterType}&filterValue=${selectedValue}`;
+
+    // Navigate to All Participants page
+    this.props.history.push(url);
+};
+
+// Example dropdown change handler
+onDropdownChange = (event) => {
+    const selectedValue = event.target.value;
+    this.handleFilterChange("participantType", selectedValue);
+};
+
+// Example of calling handleFilterChange from a dropdown selection
+onDropdownChange = (event) => {
+    const selectedValue = event.target.value;
+    this.handleFilterChange("participantType", selectedValue);
+};
+
+
   render() {
     const { SearchBar } = Search;
 
@@ -427,7 +461,7 @@ class PendingLabs extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Labs" breadcrumbItem="Pending" />
+            <Breadcrumbs title="Labs" breadcrumbItem="Pending Participant " />
             <Row className="justify-content-center align-item-center">
               <Col lg="10">
                 <Card>
@@ -448,12 +482,16 @@ class PendingLabs extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
-                             <Row className="mb-2">
-                                <Col sm="4">
-                                <div className="col">
+                              <Row className="mb-2">
+                                                              <Col sm="8">
+                                                                <div className="ms-2 mb-4">
+                                                                  <div className="container">
+                                                                    <div className="row align-items-center">
+                                                                      {/* Filter 1 */}
+                                                                      <div className="col">
                                                                         <select
                                                                           className="form-select"
-                                                                          onChange={this.handleSelectChange}
+                                                                          onChange={this.onDropdownChange}
                                                                           value={this.state.selectedParticipantType}
                                                                           style={{ width: "200px" }} // Ensures it takes up full width of the column
                                                                         >
@@ -464,9 +502,15 @@ class PendingLabs extends Component {
                                                                           <option value="Suspended Participant">Suspended Participant</option>
                                                                         </select>
                                                                       </div>
+                                                                    </div>
+                                                                  </div>
                               
-                                </Col>
-                              </Row>
+                              
+                              
+                                                                </div>
+                                                              </Col>
+                                                            </Row>
+                             
                               <Row className="mb-2 mt-3">
                                 {/* <Col sm="4">
                                   <div className="search-box ms-2 mb-2 d-inline-block">
@@ -915,13 +959,26 @@ PendingLabs.propTypes = {
   match: PropTypes.object,
   pendingLabs: PropTypes.array,
   className: PropTypes.any,
+  CycleList: PropTypes.array,
+  ongetcyclelist: PropTypes.func,
   onGetPendingLabs: PropTypes.func,
   onApproveUnapproveLab: PropTypes.func,
   history: PropTypes.any,
 };
-const mapStateToProps = ({ registrationAdmin }) => ({
-  pendingLabs: registrationAdmin.pendingLabs,
-});
+const mapStateToProps = ({ registrationAdmin, CycleList, PaymentScheme }) => {
+  const cycleList = registrationAdmin.CycleList || [];
+  const paymentSchemeList = PaymentScheme?.PaymentSchemeList || [];
+
+  console.log("CycleList in mapStateToProps (registrationAdmin):", registrationAdmin.CycleList);
+  console.log("CycleList in mapStateToProps (CycleList):", CycleList.CycleList);
+
+  return {
+    pendingLabs: registrationAdmin.pendingLabs || [], // Ensure it's an array
+    CycleList: CycleList?.CycleList || [], // Correctly map CycleList
+    paymentSchemeList, // Optional: Include if needed for payment-related features
+  };
+};
+
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
@@ -930,6 +987,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(getSchemelist(id)),
   onAddNewType: (id, createUnit) =>
     dispatch(addNewSchemeList(id, createUnit)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
   onUpdateType: (id, methodlist) => dispatch(updateSchemeList({ id, ...methodlist })),
 });
 

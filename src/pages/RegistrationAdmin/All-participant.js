@@ -13,8 +13,6 @@ import Select from "react-select"; // For Select component
 // import PaymentModal from "../Authentication/participant-payment"; // Adjust the path based on where PaymentModal is located
 import { addNewPayment } from "store/Payment/actions";
 
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
 import {
   Card,
   CardBody,
@@ -42,6 +40,9 @@ import paginationFactory, {
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 
 //Import Breadcrumb
 import * as Yup from "yup";
@@ -62,20 +63,20 @@ class PendingLabs extends Component {
     this.node = React.createRef();
     this.handleSchemeChange = this.handleSchemeChange.bind(this);
     this.state = {
-      AllLabs: [], // Full participant list from the API
-      approvedLabs: [], // Approved labs list
-      CycleList: [], // Scheme cycle list
+      AllLabs: [],                   // Full participant list from the API
+      approvedLabs: [],              // Approved labs list
+      CycleList: [],                 // Scheme cycle lists
       // selectedStatus: "All",         // Default participant status
-      selectedScheme: null, // Currently selected scheme ID
+      selectedScheme: null,          // Currently selected scheme ID
       // selectedCorporate: "",         // Filter for corporate/lab name
       // isSettledFilter: "",           // Filter for settlement status
-      id: "", // Selected participant ID
-      btnText: "Copy", // Button text for copy functionality
-      isPaymentModalOpen: false, // State for payment modal
-      isMembershipModalOpen: false, // State for membership modal
-      organization_name: "", // Organization name
-      isApproved: false, // Approval status
-      unapprovedModal: false, // State for unapproved modal
+      id: "",                        // Selected participant ID
+      btnText: "Copy",               // Button text for copy functionality
+      isPaymentModalOpen: false,     // State for payment modal
+      isMembershipModalOpen: false,  // State for membership modal
+      organization_name: "",         // Organization name
+      isApproved: false,             // Approval status
+      unapprovedModal: false,        // State for unapproved modal
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"], // Tooltip content
       filteredLabs: [],
       pendingLabListColumns: [], // Columns for the table            // Filtered list to display
@@ -155,7 +156,7 @@ class PendingLabs extends Component {
                 <Link
                   to="#"
                   // onClick={e => this.openLabModal(e, AllLabs)}
-                  onMouseEnter={(e) => this.openLabModal(e, AllLabs)}
+                  onMouseEnter={e => this.openLabModal(e, AllLabs)}
                   onPointerLeave={this.handleMouseExit} // Pass the function reference instead of calling it immediately
                 >
                   {AllLabs.name}
@@ -241,14 +242,11 @@ class PendingLabs extends Component {
           filter: textFilter({
             onFilter: (filterValue, data) => {
               // Custom filtering logic
-              return data.filter(
-                (row) =>
-                  Array.isArray(row.schemes) &&
-                  row.schemes.some((scheme) =>
-                    scheme.scheme_name
-                      .toLowerCase()
-                      .includes(filterValue.toLowerCase())
-                  )
+              return data.filter((row) =>
+                Array.isArray(row.schemes) &&
+                row.schemes.some((scheme) =>
+                  scheme.scheme_name.toLowerCase().includes(filterValue.toLowerCase())
+                )
               );
             },
           }),
@@ -257,11 +255,7 @@ class PendingLabs extends Component {
           formatter: (cellContent, row) => {
             if (Array.isArray(row.schemes) && row.schemes.length > 0) {
               // Create a unique set of scheme names
-              const uniqueSchemes = [
-                ...new Map(
-                  row.schemes.map((scheme) => [scheme.scheme_name, scheme])
-                ).values(),
-              ];
+              const uniqueSchemes = [...new Map(row.schemes.map((scheme) => [scheme.scheme_name, scheme])).values()];
 
               // Render the unique scheme names
               return (
@@ -275,6 +269,7 @@ class PendingLabs extends Component {
             return "No schemes available";
           },
         },
+
 
         {
           dataField: "payment_status",
@@ -387,13 +382,16 @@ class PendingLabs extends Component {
     this.toggleMarketerModal = this.toggleMarketerModal.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
+    this.handleParticipantTypeChange = this.handleParticipantTypeChange.bind(this);
+    // this.handleSchemeChange = this.handleSchemeChange.bind(this);
+    this.applyFilters = this.applyFilters.bind(this);
   }
 
   // displaySuccessMessage(message) {
   //  alert(message); // Replace this with your desired success message logic
   // }
 
-  isPaymentModalOpen = (participant) => {
+  isPaymentModalOpen = participant => {
     this.setState(
       {
         isPaymentModalOpen: true,
@@ -403,7 +401,7 @@ class PendingLabs extends Component {
     );
   };
 
-  isMembershipModalOpen = (participant) => {
+  isMembershipModalOpen = participant => {
     console.log("Opening Membership Modal for Participant:", participant); // Debug log
     this.setState(
       {
@@ -422,6 +420,17 @@ class PendingLabs extends Component {
   //   this.setState({ selectedValue: event.target.value }, this.applyFilters);
   // };
 
+  handleParticipantTypeChange(event) {
+    const selectedParticipantType = event.target.value;
+    console.log("Selected Participant Type:", selectedParticipantType);
+ 
+    this.setState({ selectedParticipantType }, () => {
+      console.log("Updated selectedParticipantType in state:", this.state.selectedParticipantType);
+      this.applyFilters();
+    });
+  }
+ 
+
   handleSchemeChange = (event) => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
@@ -433,44 +442,93 @@ class PendingLabs extends Component {
   };
 
   applyFilters = () => {
-    const { AllLabs, selectedParticipantType, selectedScheme } = this.state;
+    const { AllLabs, selectedParticipantType, selectedScheme, organization_name } = this.state;
 
-    console.log("State before filtering:", {
-      AllLabs,
-      selectedParticipantType,
-      selectedScheme,
+    console.log("Filtering with:", {
+        selectedParticipantType,
+        selectedScheme,
+        AllLabs,
     });
 
     const filteredData = AllLabs.filter((lab) => {
-      const participantMatch =
-        selectedParticipantType === "All Participant" ||
-        (selectedParticipantType === "Approved Participant" &&
-          lab.membership_status === "Approved") ||
-        (selectedParticipantType === "Pending Participant" &&
-          lab.membership_status === "Pending") ||
-        (selectedParticipantType === "Unapproved Participant" &&
-          lab.membership_status === "Unapproved") ||
-        (selectedParticipantType === "Suspended Participant" &&
-          lab.membership_status === "Suspended");
+        const membershipStatus = lab.membership_status?.trim().toLowerCase();
+        const membershipDetail = lab.membership_status_detail
+            ? lab.membership_status_detail.trim().toLowerCase()
+            : ""; // Default to empty string if undefined
 
-      const schemeMatch =
-        !selectedScheme ||
-        (Array.isArray(lab.schemes) &&
-          lab.schemes.some(
-            (scheme) => scheme.scheme_id?.toString() === selectedScheme
-          ));
+        console.log("Lab Data:", { id: lab.id, membershipStatus, membershipDetail });
 
-      const result = participantMatch && schemeMatch;
-      console.log(`Lab ${lab.id} included in filtered data: ${result}`);
-      return result;
+        // Define the condition for each participant type
+        let matchesParticipantType = false;
+
+        if (selectedParticipantType === "All Participant") {
+            matchesParticipantType = true; // Show all participants
+        } else if (selectedParticipantType === "Approved Participant") {
+            matchesParticipantType =
+                membershipStatus === "active" || membershipDetail === "active"; // Approved or Active participants
+        } else if (selectedParticipantType === "Pending Participant") {
+            matchesParticipantType = membershipStatus === "pending"; // Pending participants
+        } else if (selectedParticipantType === "Unapproved Participant") {
+            matchesParticipantType = membershipStatus === "inactive"; // Only participants with "inactive" membership status
+        } else if (selectedParticipantType === "Suspended Participant") {
+            matchesParticipantType = membershipStatus === "suspended"; // Suspended participants
+        }
+
+        console.log(`Lab ${lab.id} matchesParticipantType:`, matchesParticipantType);
+
+        // Check if participant matches the selected scheme
+        const matchesScheme =
+            !selectedScheme ||
+            (Array.isArray(lab.schemes) &&
+                lab.schemes.some((scheme) => scheme.scheme_id?.toString() === selectedScheme));
+
+        console.log(`Lab ${lab.id} matchesScheme:`, matchesScheme);
+
+        // Return true only if both participant type and scheme match
+        return matchesParticipantType && matchesScheme;
     });
 
-    console.log("Filtered Data after applying filters:", filteredData);
+    console.log("Filtered Data:", filteredData);
 
+    // Special handling for "Pending Participant"
+    if (selectedParticipantType === "Pending Participant") {
+        this.props.history.push(`/${organization_name}/pending-participant`);
+        return; // Stop here; no need to update filteredLabs for Pending Participants
+    }
+
+    // Update the filtered list in the state for other participant types
     this.setState({ filteredLabs: filteredData }, () => {
-      console.log("FilteredLabs updated in state:", this.state.filteredLabs);
+        console.log("Updated filteredLabs:", this.state.filteredLabs);
     });
-  };
+};
+
+applyFiltersFromQueryParams = () => {
+  const queryParams = new URLSearchParams(this.props.location.search);
+  const filterType = queryParams.get("filterType");
+  const filterValue = queryParams.get("filterValue");
+
+  console.log("Applying filters from query params:", { filterType, filterValue });
+
+  if (filterType && filterValue) {
+      // Update the state based on query parameters
+      this.setState(
+          {
+              selectedParticipantType: filterValue, // Set selected type in state
+          },
+          () => {
+              this.applyFilters(); // Apply filters after updating the state
+          }
+      );
+  }
+};
+
+// componentDidMount() {
+//   // Fetch data and apply filters from query parameters
+//   this.fetchData(this.state.user_id);
+//   this.applyFiltersFromQueryParams();
+// }
+
+
 
   handleFileChange = (event, setFieldValue) => {
     const file = event.currentTarget.files[0];
@@ -478,7 +536,7 @@ class PendingLabs extends Component {
   };
   toggleMembershipModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isMembershipModalOpen: !prevState.isMembershipModalOpen,
       }),
       () => {
@@ -491,7 +549,7 @@ class PendingLabs extends Component {
   };
   togglePaymentModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isPaymentModalOpen: !prevState.isPaymentModalOpen,
       }),
       () => {
@@ -523,59 +581,72 @@ class PendingLabs extends Component {
     this.toggleEditModal(); // Close the modal
   }
 
+
   componentDidMount() {
     console.log("Fetching data...");
-
+ 
     // Retrieve user_id from localStorage
     const authUser = localStorage.getItem("authUser");
     const user_id = authUser ? JSON.parse(authUser).user_id : null;
-
+ 
     if (!user_id) {
       console.error("User ID is missing. Cannot proceed with API calls.");
       return;
     }
-
+ 
     console.log("Retrieved user_id:", user_id);
-
+ 
     // Set user_id in state
     this.setState({ user_id }, () => {
       // Get organization_name from URL params
-      const { organization_name } = this.props.match.params;
+      const { organization_name } = this.props.match.params || {};
       console.log("organization_name from props:", organization_name);
-
-      // Set organization_name in state
-      this.setState({ organization_name }, () => {
-        console.log("Organization name set:", this.state.organization_name);
-
-        // Set the initial dropdown value
-        this.setInitialDropdownValue();
-
-        // API calls for Approved Labs
-        const {
-          onGetParticipantPayment,
-          ongetApprovedLabs,
-          ongetcyclelist,
-          onGetPendingLabs,
-        } = this.props;
-
-        // Call participant payment API
-        onGetParticipantPayment(user_id);
-        console.log("onGetParticipantPayment called with user_id:", user_id);
-
-        // Call approved labs API
-        ongetApprovedLabs(user_id);
-        console.log("ongetApprovedLabs called with user_id:", user_id);
-
-        // Call cycle list API
-        ongetcyclelist(user_id);
-        console.log("ongetcyclelist called with user_id:", user_id);
-
-        // Call pending labs API
-        onGetPendingLabs(user_id);
-        console.log("onGetPendingLabs called with user_id:", user_id);
-      });
+ 
+      if (organization_name) {
+        this.setState({ organization_name }, () => {
+          console.log("Organization name set:", this.state.organization_name);
+ 
+          // // Initialize dropdown value
+          // this.setInitialDropdownValue();
+          this.fetchData(this.state.user_id);
+          this.applyFiltersFromQueryParams();
+          // Fetch data from APIs
+          this.fetchData(user_id);
+        });
+      } else {
+        console.error("Organization name is missing in URL parameters.");
+      }
     });
   }
+ 
+  // Fetch all required data
+  fetchData(user_id) {
+    const {
+      onGetParticipantPayment,
+      ongetApprovedLabs,
+      ongetcyclelist,
+      onGetPendingLabs,
+    } = this.props;
+ 
+    // Call participant payment API
+    onGetParticipantPayment(user_id);
+    console.log("onGetParticipantPayment called with user_id:", user_id);
+ 
+    // Call approved labs API
+    ongetApprovedLabs(user_id);
+    console.log("ongetApprovedLabs called with user_id:", user_id);
+ 
+    // Call cycle list API
+    ongetcyclelist(user_id);
+    console.log("ongetcyclelist called with user_id:", user_id);
+ 
+    // Call pending labs API
+    onGetPendingLabs(user_id);
+    console.log("onGetPendingLabs called with user_id:", user_id);
+  }
+ 
+ 
+
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.filteredLabs !== this.state.filteredLabs) {
@@ -597,64 +668,57 @@ class PendingLabs extends Component {
         this.applyFilters(); // Reapply filters after AllLabs is updated
       });
     }
+
   }
-  setInitialDropdownValue = () => {
-    const { pathname } = this.props.history.location;
-    const { organization_name } = this.state; // Now it's properly updated
+  // setInitialDropdownValue = () => {
+  //   const { pathname } = this.props.history.location;
+  //   const { organization_name } = this.state; // Now it's properly updated
 
-    let selectedValue = "Pending Participant"; // Default
+  //   let selectedValue = "Pending Participant"; // Default
 
-    if (pathname.includes(`/${organization_name}/pending-participant`)) {
-      selectedValue = "Pending Participant";
-    } else if (
-      pathname.includes(`/${organization_name}/approved-participant`)
-    ) {
-      selectedValue = "Approved Participant";
-    } else if (
-      pathname.includes(`/${organization_name}/unapproved-participant`)
-    ) {
-      selectedValue = "Unapproved Participant";
-    } else if (
-      pathname.includes(`/${organization_name}/suspended-participant`)
-    ) {
-      selectedValue = "Suspended Participant"; // New case added
-    } else if (pathname.includes(`/${organization_name}/all-participant`)) {
-      selectedValue = "All Participant";
-    }
+  //   if (pathname.includes(`/${organization_name}/pending-participant`)) {
+  //     selectedValue = "Pending Participant";
+  //   } else if (pathname.includes(`/${organization_name}/approved-participant`)) {
+  //     selectedValue = "Approved Participant";
+  //   } else if (pathname.includes(`/${organization_name}/unapproved-participant`)) {
+  //     selectedValue = "Unapproved Participant";
+  //   } else if (pathname.includes(`/${organization_name}/suspended-participant`)) {
+  //     selectedValue = "Suspended Participant"; // New case added
+  //   } else if (pathname.includes(`/${organization_name}/all-participant`)) {
+  //     selectedValue = "All Participant";
+  //   }
 
-    this.setState({ selectedValue });
-  };
+  //   this.setState({ selectedValue });
+  // };
 
-  setInitialDropdownValue = () => {
-    const { pathname } = this.props.history.location;
-    let selectedValue = "";
+  // setInitialDropdownValue = () => {
+  //   const { pathname } = this.props.history.location;
+  //   let selectedValue = "";
 
-    if (
-      pathname.includes(`/${this.state.organization_name}/pending-participant`)
-    ) {
-      selectedValue = "Pending Participant";
-    } else if (
-      pathname.includes(`/${this.state.organization_name}/approved-participant`)
-    ) {
-      selectedValue = "Approved Participant";
-    } else if (
-      pathname.includes(
-        `/${this.state.organization_name}/unapproved-participant`
-      )
-    ) {
-      selectedValue = "Unapproved Participant";
-    } else if (
-      pathname.includes(`/${this.state.organization_name}/suspended-labs`)
-    ) {
-      selectedValue = "Suspended Participant";
-    } else if (
-      pathname.includes(`/${this.state.organization_name}/all-participant`)
-    ) {
-      selectedValue = "All Participant";
-    }
+  //   if (
+  //     pathname.includes(`/${this.state.organization_name}/pending-participant`)
+  //   ) {
+  //     selectedValue = "Pending Participant";
+  //   } else if (
+  //     pathname.includes(`/${this.state.organization_name}/approved-participant`)
+  //   ) {
+  //     selectedValue = "Approved Participant";
+  //   } else if (
+  //     pathname.includes(`/${this.state.organization_name}/unapproved-participant`)
+  //   ) {
+  //     selectedValue = "Unapproved Participant";
+  //   } else if (
+  //     pathname.includes(`/${this.state.organization_name}/suspended-labs`)
+  //   ) {
+  //     selectedValue = "Suspended Participant";
+  //   } else if (
+  //     pathname.includes(`/${this.state.organization_name}/all-participant`)
+  //   ) {
+  //     selectedValue = "All Participant";
+  //   }
 
-    this.setState({ selectedValue });
-  };
+  //   this.setState({ selectedValue });
+  // };
 
   openPatientModal = (e, arg) => {
     this.setState({
@@ -664,7 +728,7 @@ class PendingLabs extends Component {
     });
   };
 
-  toggleEditModal = (data) => {
+  toggleEditModal = data => {
     this.setState({
       editModal: !this.state.editModal,
       id: data.id,
@@ -683,7 +747,7 @@ class PendingLabs extends Component {
     });
   };
   toggleLabModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       LabModal: !prevState.LabModal,
     }));
     this.state.btnText === "Copy"
@@ -691,7 +755,7 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggleModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isModalOpen: !prevState.isModalOpen,
     }));
   };
@@ -712,7 +776,7 @@ class PendingLabs extends Component {
     });
   };
   togglePatientModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
     this.state.btnText === "Copy"
@@ -727,7 +791,7 @@ class PendingLabs extends Component {
     });
   };
   toggleMarketerModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       MarketerModal: !prevState.MarketerModal,
     }));
     this.state.btnText === "Copy"
@@ -735,52 +799,16 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggle() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       modal: !prevState.modal,
     }));
   }
-  exportToExcel = () => {
-    const { AllLabs } = this.state; // Data source
-    if (!AllLabs || AllLabs.length === 0) {
-      console.error("No data available to export.");
-      alert("No data available to export.");
-      return;
-    }
 
-    // Dynamically extract fields
-    const fields = Object.keys(AllLabs[0] || {});
-    console.log("Extracted Fields:", fields);
-
-    // Map the data to export
-    const dataToExport = AllLabs.map((item) => {
-      const row = {};
-      fields.forEach((field) => {
-        row[field] = item[field] || "N/A"; // Default to "N/A" for missing values
-      });
-      return row;
-    });
-    console.log("Data to Export:", dataToExport);
-
-    // Create the worksheet
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    console.log("Worksheet Data:", XLSX.utils.sheet_to_json(ws));
-
-    // Create the workbook
-    const wb = { Sheets: { Participants: ws }, SheetNames: ["Participants"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-    });
-
-    // Save the file
-    saveAs(data, "Dynamic_Participants.xlsx");
-  };
-
-  handleApprovedEvent = (id) => {
+  handleApprovedEvent = id => {
     this.setState({ id: id, isApproved: true, unapprovedModal: true });
   };
 
-  handleUnapprovedEvent = (id) => {
+  handleUnapprovedEvent = id => {
     this.setState({ id: id, isApproved: false, unapprovedModal: true });
   };
 
@@ -804,7 +832,7 @@ class PendingLabs extends Component {
     this.setState({ unapprovedModal: false });
   };
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -816,32 +844,70 @@ class PendingLabs extends Component {
     }
   };
 
-  handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    console.log("handleSelectChange triggered with:", selectedValue);
-    const { organization_name } = this.state;
+  exportToExcel = () => {
+    const { AllLabs } = this.state; // Data source
+    if (!AllLabs || AllLabs.length === 0) {
+        console.error("No data available to export.");
+        alert("No data available to export.");
+        return;
+    }
 
-    // Update the state and apply filters
-    this.setState({ selectedValue }, () => {
-      console.log("State updated. Now calling applyFilters.");
-      // Apply filters after state is updated
-      this.applyFilters();
+    // Dynamically extract fields
+    const fields = Object.keys(AllLabs[0] || {});
+    console.log("Extracted Fields:", fields);
 
-      // Navigate based on the selected value
-      if (selectedValue === "Pending Participant") {
-        this.props.history.push(`/${organization_name}/pending-participant`);
-      } else if (selectedValue === "Approved Participant") {
-        this.props.history.push(`/${organization_name}/approved-participant`);
-      } else if (selectedValue === "Suspended Participant") {
-        // New condition added
-        this.props.history.push(`/${organization_name}/suspended-participant`);
-      } else if (selectedValue === "Unapproved Participant") {
-        this.props.history.push(`/${organization_name}/unapproved-participant`);
-      } else if (selectedValue === "All Participant") {
-        this.props.history.push(`/${organization_name}/all-participant`);
-      }
+    // Map the data to export
+    const dataToExport = AllLabs.map(item => {
+        const row = {};
+        fields.forEach(field => {
+            row[field] = item[field] || "N/A"; // Default to "N/A" for missing values
+        });
+        return row;
     });
-  };
+    console.log("Data to Export:", dataToExport);
+
+    // Create the worksheet
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    console.log("Worksheet Data:", XLSX.utils.sheet_to_json(ws));
+
+    // Create the workbook
+    const wb = { Sheets: { "Participants": ws }, SheetNames: ["Participants"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" });
+
+    // Save the file
+    saveAs(data, "Dynamic_Participants.xlsx");
+};
+
+
+
+
+  // handleSelectChange = (event) => {
+  //   const selectedValue = event.target.value;
+  //   console.log("handleSelectChange triggered with:", selectedValue);
+  //   const { organization_name } = this.state;
+
+  //   // Update the state and apply filters
+  //   this.setState({ selectedValue }, () => {
+  //     console.log("State updated. Now calling applyFilters.");
+  //     // Apply filters after state is updated
+  //     this.applyFilters();
+
+  //     // Navigate based on the selected value
+  //     if (selectedValue === "Pending Participant") {
+  //       this.props.history.push(`/${organization_name}/pending-participant`);
+  //     } else if (selectedValue === "Approved Participant") {
+  //       this.props.history.push(`/${organization_name}/approved-participant`);
+  //     } else if (selectedValue === "Suspended Participant") { // New condition added
+  //       this.props.history.push(`/${organization_name}/suspended-participant`);
+  //     } else if (selectedValue === "Unapproved Participant") {
+  //       this.props.history.push(`/${organization_name}/unapproved-participant`);
+  //     } else if (selectedValue === "All Participant") {
+  //       this.props.history.push(`/${organization_name}/all-participant`);
+  //     }
+  //   });
+  // };
+
 
   render() {
     console.log("Rendering table with data:", this.state.filteredLabs);
@@ -852,6 +918,7 @@ class PendingLabs extends Component {
     const { onApproveUnapproveLab, onGetPendingLabs } = this.props;
     const { isPaymentModalOpen, togglePaymentModal } = this.props;
     const { isMembershipModalOpen, toggleMembershipModal } = this.props;
+    const { filteredLabs, selectedParticipantType, selectedScheme } = this.state;
 
     const pageOptions = {
       sizePerPage: 10,
@@ -862,12 +929,12 @@ class PendingLabs extends Component {
     const { approvedLabs, CycleList } = this.state;
 
     const participantOptions = (this.props.approvedLabs || []).map(
-      (participant) => ({
+      participant => ({
         value: participant.id, // ensure this is the correct unique identifier
         label: participant.name, // or any other field you'd like to display
       })
     );
-    const schemeOptions = CycleList.map((scheme) => ({
+    const schemeOptions = CycleList.map(scheme => ({
       value: scheme.id, // Use scheme ID instead of scheme name
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
     }));
@@ -896,25 +963,23 @@ class PendingLabs extends Component {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Labs" breadcrumbItem="All" />
+            <Breadcrumbs title="Labs" breadcrumbItem="Lists of Participants" />
             <Row className="justify-content-center align-item-center">
               <Col lg="10">
                 <Card>
                   <CardBody>
-                    <Row className="justify-content-end">
-                      <Col lg="auto" className="text-end">
-                        <Button
-                          onClick={this.exportToExcel}
-                          className="mb-3"
-                          disabled={
-                            !this.state.AllLabs ||
-                            this.state.AllLabs.length === 0
-                          }
-                        >
-                          Export to Excel
-                        </Button>
-                      </Col>
-                    </Row>
+                  <Row className="justify-content-end">
+    <Col lg="auto" className="text-end">
+    <Button
+    onClick={this.exportToExcel}
+    className="mb-3"
+    disabled={!this.state.AllLabs || this.state.AllLabs.length === 0}
+>
+    Export to Excel
+</Button>
+    </Col>
+</Row>
+
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
@@ -928,7 +993,7 @@ class PendingLabs extends Component {
                           data={this.state.filteredLabs}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="8">
@@ -939,27 +1004,15 @@ class PendingLabs extends Component {
                                         <div className="col">
                                           <select
                                             className="form-select"
-                                            onChange={this.handleSelectChange}
-                                            value={
-                                              this.state.selectedParticipantType
-                                            }
+                                            onChange={this.handleParticipantTypeChange}
+                                            value={this.state.selectedParticipantType}
                                             style={{ width: "200px" }} // Ensures it takes up full width of the column
                                           >
-                                            <option value="All Participant">
-                                              All Participant
-                                            </option>
-                                            <option value="Approved Participant">
-                                              Approved Participant
-                                            </option>
-                                            <option value="Unapproved Participant">
-                                              Unapproved Participant
-                                            </option>
-                                            <option value="Pending Participant">
-                                              Pending Participant
-                                            </option>
-                                            <option value="Suspended Participant">
-                                              Suspended Participant
-                                            </option>
+                                            <option value="All Participant">All Participant</option>
+                                            <option value="Approved Participant">Approved Participant</option>
+                                            <option value="Unapproved Participant">Unapproved Participant</option>
+                                            <option value="Pending Participant">Pending Participant</option>
+                                            <option value="Suspended Participant">Suspended Participant</option>
                                           </select>
                                         </div>
 
@@ -971,23 +1024,19 @@ class PendingLabs extends Component {
                                             value={this.state.selectedScheme}
                                             style={{ width: "200px" }} // Ensures it takes up full width of the column
                                           >
-                                            <option value="">
-                                              Select Scheme
-                                            </option>
-                                            {this.state.CycleList.map(
-                                              (scheme) => (
-                                                <option
-                                                  key={scheme.id}
-                                                  value={scheme.id}
-                                                >
-                                                  {scheme.scheme_name}
-                                                </option>
-                                              )
-                                            )}
+                                            <option value="">Select Scheme</option>
+                                            {this.state.CycleList.map((scheme) => (
+                                              <option key={scheme.id} value={scheme.id}>
+                                                {scheme.scheme_name}
+                                              </option>
+                                            ))}
                                           </select>
                                         </div>
                                       </div>
                                     </div>
+
+
+
                                   </div>
                                 </Col>
                               </Row>
@@ -1007,7 +1056,7 @@ class PendingLabs extends Component {
                                 <Col xl="12">
                                   <div className="table-responsive">
                                     <BootstrapTable
-                                      key={`table-${this.state.filteredLabs.length}`} // Unique key for each data update
+                                      key={`table-${this.state.filteredLabs.length}`}// Unique key for each data update
                                       keyField="id"
                                       data={this.state.filteredLabs}
                                       columns={this.state.pendingLabListColumns}
@@ -1542,10 +1591,10 @@ class PendingLabs extends Component {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -1593,10 +1642,10 @@ class PendingLabs extends Component {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "";
                                             const roundedPrice = Math.round(
                                               parseFloat(values.price)
@@ -1657,60 +1706,57 @@ class PendingLabs extends Component {
                                             touched,
                                             setFieldValue,
                                           }) => {
-                                            const handleSchemeChange = (
-                                              selectedOptions
-                                            ) => {
-                                              const selectedValues =
-                                                selectedOptions
-                                                  ? selectedOptions.map(
-                                                      (option) => option.value
+                                            const handleSchemeChange =
+                                              selectedOptions => {
+                                                const selectedValues =
+                                                  selectedOptions
+                                                    ? selectedOptions.map(
+                                                      option => option.value
                                                     )
-                                                  : [];
-                                              setFieldValue(
-                                                "scheme",
-                                                selectedValues
-                                              );
+                                                    : [];
+                                                setFieldValue(
+                                                  "scheme",
+                                                  selectedValues
+                                                );
 
-                                              const totalPrice =
-                                                selectedValues.reduce(
-                                                  (sum, schemeId) => {
-                                                    const scheme =
-                                                      CycleList.find(
-                                                        (s) => s.id === schemeId
-                                                      );
-                                                    return (
-                                                      sum +
-                                                      (scheme
-                                                        ? parseFloat(
+                                                const totalPrice =
+                                                  selectedValues.reduce(
+                                                    (sum, schemeId) => {
+                                                      const scheme =
+                                                        CycleList.find(
+                                                          s => s.id === schemeId
+                                                        );
+                                                      return (
+                                                        sum +
+                                                        (scheme
+                                                          ? parseFloat(
                                                             scheme.price
                                                           )
-                                                        : 0)
-                                                    );
-                                                  },
-                                                  0
-                                                );
+                                                          : 0)
+                                                      );
+                                                    },
+                                                    0
+                                                  );
 
-                                              // Set priceBeforeDiscount only once when schemes are selected
-                                              if (
-                                                !values.priceBeforeDiscount ||
-                                                values.scheme.length === 0
-                                              ) {
+                                                // Set priceBeforeDiscount only once when schemes are selected
+                                                if (
+                                                  !values.priceBeforeDiscount ||
+                                                  values.scheme.length === 0
+                                                ) {
+                                                  setFieldValue(
+                                                    "priceBeforeDiscount",
+                                                    totalPrice.toFixed(2)
+                                                  );
+                                                }
+
+                                                // Update the price to reflect the total (will be modified later by discount)
                                                 setFieldValue(
-                                                  "priceBeforeDiscount",
+                                                  "price",
                                                   totalPrice.toFixed(2)
                                                 );
-                                              }
+                                              };
 
-                                              // Update the price to reflect the total (will be modified later by discount)
-                                              setFieldValue(
-                                                "price",
-                                                totalPrice.toFixed(2)
-                                              );
-                                            };
-
-                                            const handleDiscountChange = (
-                                              e
-                                            ) => {
+                                            const handleDiscountChange = e => {
                                               let discountValue = parseFloat(
                                                 e.target.value
                                               );
@@ -1740,7 +1786,7 @@ class PendingLabs extends Component {
                                                 priceBeforeDiscount -
                                                 (priceBeforeDiscount *
                                                   discountValue) /
-                                                  100;
+                                                100;
 
                                               // Calculate the discount amount in rupees
                                               const discountAmount =
@@ -1835,19 +1881,17 @@ class PendingLabs extends Component {
                                                       options={schemeOptions}
                                                       className={
                                                         errors.scheme &&
-                                                        touched.scheme
+                                                          touched.scheme
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOptions
-                                                      ) => {
+                                                      onChange={selectedOptions => {
                                                         const selectedValues =
                                                           selectedOptions
                                                             ? selectedOptions.map(
-                                                                (option) =>
-                                                                  option.value
-                                                              )
+                                                              option =>
+                                                                option.value
+                                                            )
                                                             : [];
                                                         setFieldValue(
                                                           "scheme",
@@ -1864,7 +1908,7 @@ class PendingLabs extends Component {
                                                             (sum, schemeId) => {
                                                               const scheme =
                                                                 this.props.CycleList.find(
-                                                                  (s) =>
+                                                                  s =>
                                                                     s.id ===
                                                                     schemeId
                                                                 );
@@ -1872,8 +1916,8 @@ class PendingLabs extends Component {
                                                                 sum +
                                                                 (scheme
                                                                   ? parseFloat(
-                                                                      scheme.price
-                                                                    )
+                                                                    scheme.price.replace(/,/g, "")
+                                                                  )
                                                                   : 0)
                                                               );
                                                             },
@@ -1897,7 +1941,7 @@ class PendingLabs extends Component {
                                                         );
                                                       }}
                                                       value={schemeOptions.filter(
-                                                        (option) =>
+                                                        option =>
                                                           values.scheme.includes(
                                                             option.value
                                                           )
@@ -1921,7 +1965,7 @@ class PendingLabs extends Component {
                                                         className={
                                                           "form-control" +
                                                           (errors.priceBeforeDiscount &&
-                                                          touched.priceBeforeDiscount
+                                                            touched.priceBeforeDiscount
                                                             ? " is-invalid"
                                                             : "")
                                                         }
@@ -1929,13 +1973,10 @@ class PendingLabs extends Component {
                                                           "en-US"
                                                         ).format(
                                                           values.priceBeforeDiscount ||
-                                                            0
+                                                          0
                                                         )} // Format the value
                                                         readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
 
                                                       <ErrorMessage
@@ -1983,7 +2024,7 @@ class PendingLabs extends Component {
                                                         className={
                                                           "form-control" +
                                                           (errors.discountAmount &&
-                                                          touched.discountAmount
+                                                            touched.discountAmount
                                                             ? " is-invalid"
                                                             : "")
                                                         }
@@ -1995,13 +2036,10 @@ class PendingLabs extends Component {
                                                           }
                                                         ).format(
                                                           values.discountAmount ||
-                                                            0
+                                                          0
                                                         )} // Format the value as currency
                                                         readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
                                                       <ErrorMessage
                                                         name="discountAmount"
@@ -2028,7 +2066,7 @@ class PendingLabs extends Component {
                                                         className={
                                                           "form-control" +
                                                           (errors.price &&
-                                                          touched.price
+                                                            touched.price
                                                             ? " is-invalid"
                                                             : "")
                                                         }
@@ -2038,10 +2076,7 @@ class PendingLabs extends Component {
                                                           values.price || 0
                                                         )} // Format the value
                                                         readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
                                                       <ErrorMessage
                                                         name="price"
@@ -2077,7 +2112,7 @@ class PendingLabs extends Component {
                                                       type="file"
                                                       multiple={false}
                                                       accept=".jpg,.jpeg,.png"
-                                                      onChange={(event) =>
+                                                      onChange={event =>
                                                         this.handleFileChange(
                                                           event,
                                                           setFieldValue
@@ -2086,7 +2121,7 @@ class PendingLabs extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.photo &&
-                                                        touched.photo
+                                                          touched.photo
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -2120,28 +2155,26 @@ class PendingLabs extends Component {
                                                           label: "Cash",
                                                         },
                                                       ]}
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) =>
+                                                      onChange={selectedOption =>
                                                         setFieldValue(
                                                           "paymentmethod",
                                                           selectedOption?.value ||
-                                                            ""
+                                                          ""
                                                         )
                                                       }
                                                       value={
                                                         values.paymentmethod
                                                           ? {
-                                                              value:
-                                                                values.paymentmethod,
-                                                              label:
-                                                                values.paymentmethod,
-                                                            }
+                                                            value:
+                                                              values.paymentmethod,
+                                                            label:
+                                                              values.paymentmethod,
+                                                          }
                                                           : null
                                                       }
                                                       className={
                                                         errors.paymentmethod &&
-                                                        touched.paymentmethod
+                                                          touched.paymentmethod
                                                           ? "is-invalid"
                                                           : ""
                                                       }
@@ -2208,10 +2241,10 @@ class PendingLabs extends Component {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -2248,10 +2281,10 @@ class PendingLabs extends Component {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "";
 
                                             const UpdateMembership = {
@@ -2281,12 +2314,8 @@ class PendingLabs extends Component {
                                               this.props.onupdateMembershipStatus(
                                                 this.state.user_id
                                               );
-                                              await this.props.onGetPendingLabs(
-                                                this.state.user_id
-                                              ); //membership modal
-                                              this.setState({
-                                                isMembershipModalOpen: false,
-                                              }); // Close modal here
+                                              await this.props.onGetPendingLabs(this.state.user_id); //membership modal
+                                              this.setState({ isMembershipModalOpen: false }); // Close modal here
                                               resetForm();
                                               this.displaySuccessMessage(
                                                 "Membership status updated successfully!"
@@ -2339,22 +2368,20 @@ class PendingLabs extends Component {
                                                       placeholder="Select Status"
                                                       className={
                                                         errors.participant &&
-                                                        touched.participant
+                                                          touched.participant
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
-                                                            ""
+                                                          ""
                                                         );
                                                       }}
                                                       value={
                                                         membershipOptions.find(
-                                                          (option) =>
+                                                          option =>
                                                             option.value ===
                                                             values.membership
                                                         ) || null
@@ -2423,6 +2450,9 @@ PendingLabs.propTypes = {
   ongetcyclelist: PropTypes.func,
   approvedLabs: PropTypes.array,
   onGetParticipantPayment: PropTypes.func,
+  location: PropTypes.shape({
+    search: PropTypes.string, // Ensure 'search' is a string
+  }).isRequired, // Make it required if always expected
 
   CycleList: PropTypes.array,
   PaymentSchemeList: PropTypes.array,
@@ -2431,12 +2461,7 @@ PendingLabs.propTypes = {
   isMembershipModalOpen: PropTypes.array,
   toggleMembershipModal: PropTypes.array,
 };
-const mapStateToProps = ({
-  Account,
-  registrationAdmin,
-  CycleList,
-  PaymentScheme,
-}) => {
+const mapStateToProps = ({ Account, registrationAdmin, CycleList, PaymentScheme }) => {
   const cycleList = registrationAdmin.CycleList || [];
   const paymentSchemeList = PaymentScheme?.PaymentSchemeList || [];
   console.log("CycleList in mapStateToProps:", registrationAdmin, CycleList);
@@ -2452,19 +2477,19 @@ const mapStateToProps = ({
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onApproveUnapproveLab: (data) => dispatch(approveUnapproveLab(data)),
-  onGetPendingLabs: (id) => dispatch(getAllLabs(id)),
-  onGetInstrumentTypeList: (id) => dispatch(getSchemelist(id)),
+  onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
+  onGetPendingLabs: id => dispatch(getAllLabs(id)),
+  onGetInstrumentTypeList: id => dispatch(getSchemelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewSchemeList(id, createUnit)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateSchemeList({ id, ...methodlist })),
-  onupdateAllLabs: (updatedData) => {
+  onupdateAllLabs: updatedData => {
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
   onGetParticipantPayment: (id) => dispatch(getParticipantSchemelist(id)),
-  ongetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
-  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
+  ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);
