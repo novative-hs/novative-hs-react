@@ -73,22 +73,25 @@ class RoundParticipantlist extends Component {
         ,
         {
           dataField: "delete",
-          text: "Remove",
+          text: "Action",
           formatter: (cell, row) => (
             <span
-              style={{ cursor: "pointer", color: "red" }}
+              style={{ cursor: "pointer", color: "#ff4d4d" }}
               onClick={() => this.onDeleteRoundParticipant(this.props.roundDetails.round_id, row.id)}
-
-
+              data-bs-toggle="tooltip" // Bootstrap tooltip attribute
+              data-bs-placement="top" // Position tooltip above
+              title="Remove from Round" // Tooltip text
+              className="custom-tooltip"
             >
               ❌
             </span>
           ),
-          
           headerAlign: "center",
           align: "center",
-          headerStyle: { width: '80px' }, // Adjust width if needed
-        },
+          headerStyle: { width: "80px" },
+        }
+        
+        
       ],
     };
     // Bind the transformParticipantData method
@@ -132,23 +135,30 @@ class RoundParticipantlist extends Component {
     }
   }
   
-  onDeleteRoundParticipant(round_id, participant_id) {
-    if (!window.confirm("Are you sure you want to delete this participant?")) {
-        return;
-    }
-
-    try {
-        this.props.onDeleteRoundParticipant(round_id, participant_id)
-            .then(() => {
-                console.log(`Participant with ID ${participant_id} deleted.`);
-
-                // ✅ Ensure only the deleted participant is removed
-                this.props.deleteParticipantFromLabRound(participant_id);
-            });
-    } catch (error) {
+  onDeleteRoundParticipant = async (roundId, participantId) => {
+    if (window.confirm("Are you sure you want to remove this participant?")) {
+      try {
+        // Call the Redux action to delete the participant
+        await this.props.onDeleteRoundParticipant(roundId, participantId);
+  
+        // Option 1: Re-fetch participants to update the table
+        await this.fetchData(); // Ensure fresh data from the server
+  
+        // Option 2: Alternatively, update state directly to remove the participant locally
+        this.setState((prevState) => ({
+          RoundParticipantlist: prevState.RoundParticipantlist.filter(
+            (participant) => participant.id !== participantId
+          ),
+        }));
+  
+        alert("Participant removed successfully!");
+      } catch (error) {
         console.error("Error removing participant:", error);
+        alert("An error occurred while removing the participant.");
+      }
     }
-}
+  };
+  
 
   fetchData() {
     const { onGetRoundParticipantList } = this.props;
