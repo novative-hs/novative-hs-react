@@ -454,26 +454,26 @@ class AnalyteList extends Component {
 
   // componentDidMount() {
   //   const { organization_name } = this.props.match.params;
-  
+
   //   // Only set state if organization_name is empty
   //   if (!this.state.organization_name) {
   //     this.setState({ organization_name });
   //   }
-  
+
   //   const { ListUnit, getSchemelist, onGetAnalyte } = this.props;
-  
+
   //   // Retrieve user_id from localStorage
   //   const userId = localStorage.getItem("authUser")
   //     ? JSON.parse(localStorage.getItem("authUser")).user_id
   //     : null;
-  
+
   //   if (userId) {
   //     // Pass the user ID to getSchemelist
   //     getSchemelist(userId);
   //   } else {
   //     console.error("User ID is undefined or null.");
   //   }
-  
+
   //   // Fetch analyte list
   //   onGetAnalyte(this.state.user_id);
   //   this.setState({ ListUnit });
@@ -482,12 +482,12 @@ class AnalyteList extends Component {
   componentDidMount() {
     const { organization_name } = this.props.match.params;
     const { ListUnit, getSchemelist, onGetAnalyte } = this.props;
-  
+
     // Retrieve user_id from localStorage
     const userId = localStorage.getItem("authUser")
       ? JSON.parse(localStorage.getItem("authUser")).user_id
       : null;
-  
+
     if (userId) {
       console.log("Fetching schemes for userId:", userId);
       getSchemelist(userId); // Fetch scheme list
@@ -495,15 +495,15 @@ class AnalyteList extends Component {
     } else {
       console.error("User ID is undefined or null.");
     }
-  
+
     // Set ListUnit in state with a fallback
-    this.setState({ 
-      ListUnit: ListUnit || [], 
+    this.setState({
+      ListUnit: ListUnit || [],
       organization_name: this.state.organization_name || organization_name,
     });
   }
-  
-  
+
+
 
   toggleDeleteModal = () => {
     this.setState(prevState => ({
@@ -563,28 +563,28 @@ class AnalyteList extends Component {
   // }
 
   componentDidUpdate(prevProps) {
-    const { ListUnit, schemes } = this.props;
-  
-    // Handle ListUnit updates
-    if (prevProps.ListUnit !== ListUnit) {
-      console.log("ListUnit updated:", ListUnit);
-      if (Array.isArray(ListUnit)) {
-        this.setState({ ListUnit });
-      } else if (ListUnit && ListUnit.SchemeAnalyteList) {
-        this.setState({ ListUnit: ListUnit.SchemeAnalyteList });
-      }
-    }
-  
-    // Handle schemes updates
-    // if (prevProps.schemes !== schemes) {
-    //   console.log("Schemes updated in component:", schemes);
-    //   // You can add further logic if needed, like processing or filtering schemes
-    // }
-    if (prevProps.schemes !== this.props.schemes) {
-      console.log("Schemes updated in component:", this.props.schemes);
+    const { ListUnit, SchemeList } = this.props;
+
+    // Check if `ListUnit` or `SchemeList` has changed
+    if (prevProps.ListUnit !== ListUnit || prevProps.SchemeList !== SchemeList) {
+      console.log("Updating filtered schemes based on ListUnit and SchemeList");
+
+      // Extract unique scheme names from `ListUnit`
+      const analyteSchemes = new Set(
+        ListUnit.flatMap(entry => entry.schemes || []) // `schemes` is assumed to be an array of scheme names
+      );
+
+      // Filter `SchemeList` to include only schemes present in `ListUnit`
+      const filteredSchemes = SchemeList.filter(scheme =>
+        analyteSchemes.has(scheme.name)
+      );
+
+      // Update state with the filtered schemes
+      this.setState({ filteredSchemes });
     }
   }
-  
+
+
 
   onPaginationPageChange = page => {
     if (
@@ -745,7 +745,7 @@ class AnalyteList extends Component {
     // if (!schemes || schemes.length === 0) {
     //   return <div>No schemes available</div>;
     // }
-  
+
     const {
       nameFilter,
       dateFilter,
@@ -780,7 +780,7 @@ class AnalyteList extends Component {
     //     ? entry.date_of_addition.toString()
     //     : "";
 
-        
+
 
     //   return (
     //     name.includes(nameFilter.toLowerCase()) &&
@@ -813,13 +813,13 @@ class AnalyteList extends Component {
         : "";
       const code = entry.code ? entry.code.toString() : "";
       const date = entry.date_of_addition || "";
-    
+
       const activeSchemesMatch =
         !this.state.activeSchemesFilter ||
         (entry.schemes && entry.schemes.includes(this.state.activeSchemesFilter));
-      
+
       const statusMatch = !this.state.statusFilter || entry.status === this.state.statusFilter;
-    
+
       return (
         activeSchemesMatch &&
         statusMatch &&
@@ -833,8 +833,8 @@ class AnalyteList extends Component {
         date.includes(this.state.dateFilter || "")
       );
     });
-    
-    
+
+
 
     const { isEdit } = this.state;
     const { deleteModal } = this.state;
@@ -999,41 +999,42 @@ class AnalyteList extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
-  <Col xl="4">
-  <div className="form-group">
-      <label htmlFor="activeSchemesFilter">Filter by Scheme</label>
-      <select
-        id="activeSchemesFilter"
-        value={this.state.activeSchemesFilter}
-        onChange={(e) => this.handleFilterChange("activeSchemesFilter", e)}
-        className="form-control"
-      >
-        <option value="">All Schemes</option>
-        {this.props.SchemeList &&
-          this.props.SchemeList.map((SchemeList) => (
-            <option key={SchemeList.id} value={SchemeList.name}>
-              {SchemeList.name}
-            </option>
-          ))}
-      </select>
-    </div>
-  </Col>
-  <Col xl="4">
-    <div className="form-group">
-      <label htmlFor="statusFilter">Filter by Analyte Status</label>
-      <select
-        id="statusFilter"
-        value={this.state.statusFilter}
-        onChange={e => this.handleFilterChange("statusFilter", e)}
-        className="form-control"
-      >
-        <option value="">All</option>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-      </select>
-    </div>
-  </Col>
-</Row>
+                                <Col xl="4">
+                                  <div className="form-group">
+                                    <label htmlFor="activeSchemesFilter">Filter by Scheme</label>
+                                    <select
+                                      id="activeSchemesFilter"
+                                      value={this.state.activeSchemesFilter}
+                                      onChange={e => this.handleFilterChange("activeSchemesFilter", e)}
+                                      className="form-control"
+                                    >
+                                      <option value="">All Schemes</option>
+                                      {this.state.filteredSchemes &&
+                                        this.state.filteredSchemes.map(scheme => (
+                                          <option key={scheme.id} value={scheme.name}>
+                                            {scheme.name}
+                                          </option>
+                                        ))}
+                                    </select>
+                                  </div>
+
+                                </Col>
+                                <Col xl="4">
+                                  <div className="form-group">
+                                    <label htmlFor="statusFilter">Filter by Analyte Status</label>
+                                    <select
+                                      id="statusFilter"
+                                      value={this.state.statusFilter}
+                                      onChange={e => this.handleFilterChange("statusFilter", e)}
+                                      className="form-control"
+                                    >
+                                      <option value="">All</option>
+                                      <option value="Active">Active</option>
+                                      <option value="Inactive">Inactive</option>
+                                    </select>
+                                  </div>
+                                </Col>
+                              </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="text-sm-end">
@@ -1091,10 +1092,10 @@ class AnalyteList extends Component {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -1190,7 +1191,7 @@ class AnalyteList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.name &&
-                                                        touched.name
+                                                          touched.name
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -1230,7 +1231,7 @@ class AnalyteList extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.code &&
-                                                        touched.code
+                                                          touched.code
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -1267,12 +1268,11 @@ class AnalyteList extends Component {
                                                     <Field
                                                       as="select"
                                                       name="status"
-                                                      className={`form-control ${
-                                                        errors.status &&
-                                                        touched.status
+                                                      className={`form-control ${errors.status &&
+                                                          touched.status
                                                           ? "is-invalid"
                                                           : ""
-                                                      }`}
+                                                        }`}
                                                     >
                                                       <option value="">
                                                         ----- Please select

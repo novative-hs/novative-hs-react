@@ -52,6 +52,7 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
         round_status:action.payload.round_status,
         result_type: action.payload.result_type,
         scheme_id:action.payload.scheme_id,
+        cycle_no: action.payload.cycle_no,
       };
 
     case SCHEMES_ANALYTES_FAIL:
