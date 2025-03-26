@@ -45,21 +45,36 @@ export const getSchemeAnalytesList = (id) => ({
   };
 
   export const postResult = (result, id) => {
+    console.log("🚀 Dispatching POST_RESULT Action:");
+    console.log("📌 Result Data:", result);
+    console.log("📌 User ID:", id);
+  
     return {
       type: POST_RESULT,
       payload: { result, id },
     };
   };
   
-  export const postResultSuccess = result => ({
-    type: POST_RESULT_SUCCESS,
-    payload: result,
-  });
+  export const postResultSuccess = (result) => {
+    console.log("✅ POST_RESULT_SUCCESS Action Dispatched:");
+    console.log("📌 Response Data:", result);
   
-  export const postResultFail = error => ({
-    type: POST_RESULT_FAIL,
-    payload: error,
-  });
+    return {
+      type: POST_RESULT_SUCCESS,
+      payload: result,
+    };
+  };
+  
+  export const postResultFail = (error) => {
+    console.error("❌ POST_RESULT_FAIL Action Dispatched:");
+    console.error("📌 Error:", error);
+  
+    return {
+      type: POST_RESULT_FAIL,
+      payload: error,
+    };
+  };
+  
 
   ////////////////////////////////
   export const getResultsList = id => ({

@@ -812,7 +812,7 @@ export const postResult = (result, id) => {
   let formData = new FormData();
   formData.append("round_id", result.round_id);
   formData.append("analyte_id", result.analyte_id);
-  formData.append("unit_name", result.unit_name);
+  formData.append("units", result.units);
   formData.append("instrument_name", result.instrument_name);
   formData.append("method_name", result.method_name);
   formData.append("reagent_name", result.reagent_name);
@@ -821,7 +821,7 @@ export const postResult = (result, id) => {
   formData.append("round_status", result.round_status);
   formData.append("scheme_id", result.scheme_id);
   formData.append("result_status", result.result_status);
-
+  
   // Only append `result_type` if it is not null or undefined
   if (result.result_type !== null && result.result_type !== undefined) {
     formData.append("result_type", result.result_type);
