@@ -669,26 +669,6 @@ applyFiltersFromQueryParams = () => {
       });
     }
 
-    if (prevProps.AllLabs !== this.props.AllLabs || prevProps.CycleList !== this.props.CycleList) {
-      // Extract unique scheme names from AllLabs
-      const participantSchemes = new Set(
-          this.props.AllLabs.flatMap(lab =>
-              lab.schemes?.map(scheme => scheme.scheme_name) || []
-          )
-      );
-
-      // Filter CycleList to match the schemes available in participants
-      const filteredCycleList = this.props.CycleList.filter(cycle =>
-          participantSchemes.has(cycle.scheme_name)
-      );
-
-      // Update state with filtered schemes
-      this.setState({
-          CycleList: filteredCycleList,
-          AllLabs: this.props.AllLabs,
-      });
-  }
-
   }
   // setInitialDropdownValue = () => {
   //   const { pathname } = this.props.history.location;
@@ -1038,25 +1018,20 @@ applyFiltersFromQueryParams = () => {
 
                                         {/* Filter 2 */}
                                         <div className="col">
-  <select
-    className="form-select"
-    onChange={this.handleSchemeChange}
-    value={this.state.selectedScheme}
-    style={{ width: "200px" }}
-  >
-    <option value="">Select Scheme</option>
-    {this.state.CycleList.filter(cycle =>
-        this.props.AllLabs.some(lab =>
-          lab.schemes?.some(scheme => scheme.scheme_name === cycle.scheme_name)
-        )
-    ).map(filteredCycle => (
-      <option key={filteredCycle.id} value={filteredCycle.id}>
-        {filteredCycle.scheme_name}
-      </option>
-    ))}
-  </select>
-</div>
-
+                                          <select
+                                            className="form-select"
+                                            onChange={this.handleSchemeChange}
+                                            value={this.state.selectedScheme}
+                                            style={{ width: "200px" }} // Ensures it takes up full width of the column
+                                          >
+                                            <option value="">Select Scheme</option>
+                                            {this.state.CycleList.map((scheme) => (
+                                              <option key={scheme.id} value={scheme.id}>
+                                                {scheme.scheme_name}
+                                              </option>
+                                            ))}
+                                          </select>
+                                        </div>
                                       </div>
                                     </div>
 
