@@ -91,11 +91,11 @@ class Roundural extends Component {
             </>
           ),
         },
-        // {
-        //   dataField: "roundStatus",
-        //   text: "Submitted-at",
-        //   sort: true,
-        // },
+        {
+          dataField: "result_status",
+          text: "Result Status",
+          sort: true,
+        },
         {
           dataField: "status",
           text: "Status",
@@ -114,7 +114,7 @@ class Roundural extends Component {
                   <Link
                     className="fas fa-file-alt font-size-18 text-success"
                     to={`/${organization_name}/${round.id}/${round.participant_id}/participantsResults`}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       if (!organization_name) {
                         console.error("Invalid organization name");
@@ -132,7 +132,7 @@ class Roundural extends Component {
                   <Link
                     className="fas fa-comment font-size-18"
                     to={`/${organization_name}/rounds-history/${round.id}`}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       if (!organization_name) {
                         console.error("Invalid organization name");
@@ -155,17 +155,6 @@ class Roundural extends Component {
     this.handleNameFilterChange = this.handleNameFilterChange.bind(this);
   }
 
-  // componentDidMount() {
-  //   const { organization_name } = this.props.match.params;
-  //   this.setState({ organization_name });
-  //   console.log("Fetching Cycle List...");
-  //   this.props.onGetRoundList(this.state.user_id);
-  //     this.props.onGetCycleList(this.state.user_id);
-
-  //   setTimeout(() => {
-  //     console.log("CycleList after API call:", this.props.CycleList); // ✅ Log CycleList after fetching
-  //   }, 3000); // ✅ Delay to allow Redux state update
-  // }
   componentDidMount() {
     const { organization_name } = this.props.match.params;
     this.setState({ organization_name });
@@ -201,26 +190,6 @@ class Roundural extends Component {
     }, 3000);
   }
 
-  // componentDidUpdate(prevProps) {
-  //   const { SelectedSchemeList, CycleList } = this.props;
-  //   if (
-  //     SelectedSchemeList !== prevProps.SelectedSchemeList &&
-  //     !isEmpty(SelectedSchemeList)
-  //   ) {
-  //     const uniqueNames = uniq(
-  //       SelectedSchemeList.map(item => item.scheme_name)
-  //     );
-  //     this.setState({
-  //       SelectedSchemeList,
-  //       nameOptions: ["All", ...uniqueNames],
-  //     });
-  //   }
-  //   if (prevProps.CycleList !== this.props.CycleList) {
-  //     console.log("CycleList updated in props:", this.props.CycleList); // ✅ Debugging log
-  //     this.setState({ CycleList: this.props.CycleList });
-  // }
-  // }
-
   componentDidUpdate(prevProps) {
     const { SelectedSchemeList, CycleList } = this.props;
 
@@ -236,7 +205,7 @@ class Roundural extends Component {
         SelectedSchemeList,
         nameOptions: [
           "All",
-          ...uniq(SelectedSchemeList.map((item) => item.scheme_name)),
+          ...uniq(SelectedSchemeList.map(item => item.scheme_name)),
         ],
       });
     }
@@ -272,52 +241,13 @@ class Roundural extends Component {
     );
   }
 
-  handleCycleStatusChange = (selectedOption) => {
+  handleCycleStatusChange = selectedOption => {
     this.setState(
       { selectedCycleStatus: selectedOption ? selectedOption.value : "Active" },
       () =>
         console.log("✅ Updated Cycle Status:", this.state.selectedCycleStatus)
     );
   };
-
-  // filterData() {
-  //   const { SelectedSchemeList, selectedName, selectedCycle } = this.state;
-  //   if (selectedName === "All") {
-  //     return SelectedSchemeList;
-  //   }
-  //   return SelectedSchemeList.filter(entry =>
-  //     (selectedName === "All" || entry.scheme_name === selectedName) && // ✅ Filter by scheme
-  //     (selectedCycle === "All" || entry.cycle_no === selectedCycle) // ✅ Filter by cycle
-  //   );
-  //   return SelectedSchemeList.filter(
-  //     entry => entry.scheme_name === selectedName,
-  //     entry => entry.cycle_no === selectedCycle
-  //   );
-  // }
-
-  // filterData() {
-  //   const { SelectedSchemeList, selectedName, selectedCycle } = this.state;
-
-  //   console.log("🔍 Selected Scheme:", selectedName);
-  //   console.log("🔍 Selected Cycle:", selectedCycle);
-  //   console.log("📊 Full List Before Filtering:", SelectedSchemeList);
-
-  //   if (!SelectedSchemeList || SelectedSchemeList.length === 0) {
-  //     console.warn("⚠️ No data available in SelectedSchemeList!");
-  //     return [];
-  //   }
-
-  //   return SelectedSchemeList.filter(entry => {
-  //     const schemeMatch = selectedName === "All" || entry.scheme_name === selectedName;
-  //     const cycleMatch =
-  //       selectedCycle === "All" ||
-  //       (selectedCycle === "Active" && entry.status?.toLowerCase() === "active") ||
-  //       (selectedCycle === "Inactive" && entry.status?.toLowerCase() === "inactive") ||
-  //       (entry.cycle_no && entry.cycle_no.toString() === selectedCycle);
-
-  //     return schemeMatch && cycleMatch;
-  //   });
-  // }
 
   filterData() {
     const { SelectedSchemeList, selectedScheme, selectedCycle } = this.state;
@@ -331,11 +261,11 @@ class Roundural extends Component {
       return [];
     }
 
-    return SelectedSchemeList.filter((entry) => {
+    return SelectedSchemeList.filter(entry => {
       const schemeMatch =
         selectedScheme === "All" || entry.scheme_name === selectedScheme;
       const cycleMatch =
-        selectedCycle === "All" || entry.cycle_status === selectedCycle; // ✅ Now filters by cycle_status
+        selectedCycle === "Active" || entry.cycle_status === selectedCycle; // ✅ Now filters by cycle_status
 
       return schemeMatch && cycleMatch;
     });
@@ -354,7 +284,7 @@ class Roundural extends Component {
     };
 
     const filteredRoundList = this.filterData();
-    const schemeName = nameOptions.map((name) => {
+    const schemeName = nameOptions.map(name => {
       console.log("Scheme name:", name); // Logs each name inside the map function
       return {
         value: name,
@@ -362,7 +292,7 @@ class Roundural extends Component {
       };
     });
     const filteredCycles = this.filterData();
-    const cycle_no = nameOptions.map((cycle_no) => {
+    const cycle_no = nameOptions.map(cycle_no => {
       console.log("Cycle name:", CycleList);
       return {
         value: cycle_no,
@@ -378,7 +308,7 @@ class Roundural extends Component {
       { value: "Active", label: "Active" },
       { value: "inactive", label: "inactive" },
       ...(Array.isArray(this.props.CycleList)
-        ? this.props.CycleList.map((cycle) => ({
+        ? this.props.CycleList.map(cycle => ({
             value: cycle.cycle_no, // ✅ Use cycle number instead of ID
             label: cycle.cycle_no,
           }))
@@ -409,7 +339,7 @@ class Roundural extends Component {
                           data={filteredRoundList}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 {/* Select Scheme */}
@@ -422,7 +352,7 @@ class Roundural extends Component {
                                     <Select
                                       onChange={this.handleNameFilterChange}
                                       options={this.state.nameOptions.map(
-                                        (name) => ({ value: name, label: name })
+                                        name => ({ value: name, label: name })
                                       )}
                                       placeholder="Select Scheme..."
                                       isClearable={true}
@@ -445,7 +375,7 @@ class Roundural extends Component {
                                       Select Cycle
                                     </label>
                                     <Select
-                                      onChange={(selectedOption) =>
+                                      onChange={selectedOption =>
                                         this.setState({
                                           selectedCycle: selectedOption
                                             ? selectedOption.value
@@ -453,18 +383,17 @@ class Roundural extends Component {
                                         })
                                       }
                                       options={[
+                                        // { value: "All", label: "All" },
                                         { value: "Active", label: "Active" },
                                         {
                                           value: "inactive",
                                           label: "inactive",
                                         },
                                         ...(Array.isArray(this.props.CycleList)
-                                          ? this.props.CycleList.map(
-                                              (cycle) => ({
-                                                value: cycle.cycle_no, // ✅ Use cycle_no for filtering
-                                                label: `${cycle.cycle_no} (${cycle.status})`, // ✅ Show status next to cycle_no
-                                              })
-                                            )
+                                          ? this.props.CycleList.map(cycle => ({
+                                              value: cycle.cycle_no, // ✅ Use cycle_no for filtering
+                                              label: `${cycle.cycle_no} (${cycle.status})`, // ✅ Show status next to cycle_no
+                                            }))
                                           : []),
                                       ]}
                                       placeholder="Select Cycle..."
@@ -540,7 +469,7 @@ Roundural.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   console.log("🟢 Redux State:", state); // ✅ Debug full Redux state
   console.log(
     "🔵 SelectedSchemeList from Redux:",
@@ -550,7 +479,7 @@ const mapStateToProps = (state) => {
 
   return {
     SelectedSchemeList:
-      state.SelectedSchemeList?.SelectedSchemeList?.map((item) => ({
+      state.SelectedSchemeList?.SelectedSchemeList?.map(item => ({
         ...item,
         cycle_status: item.cycle_status || "Unknown", // ✅ Ensure cycle_status is always available
       })) || [],
@@ -560,9 +489,9 @@ const mapStateToProps = (state) => {
 
 console.log("CycleList:", CycleList);
 
-const mapDispatchToProps = (dispatch) => ({
-  onGetRoundList: (id) => dispatch(getSelectedSchemesList(id)),
-  onGetCycleList: (id) => dispatch(getcyclelist(id)), // ✅ Correct name
+const mapDispatchToProps = dispatch => ({
+  onGetRoundList: id => dispatch(getSelectedSchemesList(id)),
+  onGetCycleList: id => dispatch(getcyclelist(id)), // ✅ Correct name
 });
 
 export default connect(
