@@ -51,6 +51,7 @@ import * as XLSX from "xlsx";
 
 import "assets/scss/table.scss";
 import { round } from "lodash";
+import CycleList from "store/cycle/reducer";
 
 class Results extends Component {
   constructor(props) {
@@ -72,11 +73,14 @@ class Results extends Component {
       result: "",
       schemeName: "",
       schemeType: "",
+      submissionDate: null, // Stores the "Submitted on" date
+      resubmissionDate: null, // Stores the "Re-Submitted on" date
       round_status: "",
       result_status: "Created",
       rounds: "",
       issue_date: "",
       closing_date: "",
+      cycle_no: "",
       isResubmitted: false,
       PostResult: [],
       ResultList: [],
@@ -87,6 +91,19 @@ class Results extends Component {
       // approvedLabListColumns: this.getApprovedLabListColumns(), // Initialize columns in state
     };
   }
+  fetchResults = async () => {
+    try {
+        const id = this.props.match.params.id;
+        console.log("🔄 Fetching latest results...");
+
+        // Call the Redux action to fetch latest results
+        await this.props.onGetResultsList(id);
+
+        console.log("✅ Latest results fetched");
+    } catch (error) {
+        console.error("❌ Error fetching results", error);
+    }
+};
   getApprovedLabListColumns = () => {
     const { schemeType, round_status, SchemeAnalytesList } = this.props;
 
@@ -104,46 +121,68 @@ class Results extends Component {
           text: "Unit",
           dataField: "units",
           sort: true,
-          formatter: (cellContent, list) => (
-            <div className="text-start">
-              {list.result_status === "Submitted" ? (
-                <span>
-                  {this.state.ListUnits.find((unit) => unit.id === list.units)
-                    ?.name || "N/A"}
-                </span>
-              ) : (
-                <select
-                  className="form-select me-2"
-                  value={list.units || ""}
-                  onChange={(e) => this.handleUnitChange(e, list)}
-                >
-                  <option value="" disabled hidden>
-                    Select Unit
-                  </option>
-                  {this.state.ListUnits.map((unit, index) => (
-                    <option key={index} value={unit.id}>
-                      {unit.name}
+          formatter: (cellContent, list) => {
+            // Find the analyte that matches the current row's analyte_id
+            const filteredUnits = this.state.ListUnits.filter(unit =>
+              this.state.SchemeAnalytesList.some(
+                analyte =>
+                  analyte?.id === list?.analyte_id &&
+                  analyte?.units?.includes(unit.id) // Ensure unit ID exists in the analyte's units
+              )
+            );
+            console.log("Filtered Units for Dropdown:", filteredUnits);
+        
+            // Find the selected unit for display
+            const selectedUnit = filteredUnits.find(
+              unit => String(unit.id) === String(list.units)
+            );
+        
+            return (
+              <div className="text-start">
+                {list.result_status === "Submitted" ? (
+                  <span>
+                    {selectedUnit?.name || `${list.units}`}
+                  </span>
+                ) : (
+                  <select
+                    className="form-select me-2"
+                    value={list.units || ""}
+                    onChange={e => this.handleUnitChange(e, list)}
+                  >
+                    <option value="" disabled hidden>
+                      Select Unit
                     </option>
-                  ))}
-                </select>
-              )}
-            </div>
-          ),
+                    {filteredUnits.map((unit, index) => (
+                      <option key={index} value={unit.id}>
+                        {unit.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            );
+          },
         },
         {
           text: "Instrument",
           dataField: "instrument_name",
           sort: true,
           formatter: (cellContent, list) => {
-            const selectedInstrument = this.state.Instrument.find(
+            // Filter instruments based on analyte_name
+            const filteredInstruments = this.state.Instrument.filter((instr) => {
+              return instr.analytes.includes(list.analyte_name); // Compare names
+            });
+        
+            // Find the selected instrument
+            const selectedInstrument = filteredInstruments.find(
               (instr) => String(instr.id) === String(list.instrument_name)
             );
-
+        
             return (
               <div className="text-start">
                 {list.result_status === "Submitted" ? (
                   <span>
-                    {selectedInstrument?.name || `${list.instrument_name}`}
+                    {selectedInstrument?.name || ` ${list.instrument_name}`}
                   </span>
                 ) : (
                   <select
@@ -154,17 +193,21 @@ class Results extends Component {
                     <option value="" disabled hidden>
                       Select Instrument
                     </option>
-                    {this.state.Instrument.map((instr, index) => (
-                      <option key={index} value={instr.id}>
-                        {instr.name}
-                      </option>
-                    ))}
+                    {filteredInstruments.length > 0
+                      ? filteredInstruments.map((instr, index) => (
+                          <option key={index} value={instr.id}>
+                            {instr.name}
+                          </option>
+                        ))
+                      : <option value="">No Instruments available</option>}
                   </select>
                 )}
               </div>
             );
           },
-        },
+        }
+        
+        ,
 
         {
           text: "Method",
@@ -175,22 +218,22 @@ class Results extends Component {
               {list.result_status === "Submitted" ? (
                 <span>
                   {this.state.ListMethods.find(
-                    (method) => method.id === list.method_name
+                    method => method.id === list.method_name
                   )?.name || "N/A"}
                 </span>
               ) : (
                 <select
                   className="form-select me-2"
                   value={list.method_name || ""}
-                  onChange={(e) => this.handleMethodChange(e, list)}
+                  onChange={e => this.handleMethodChange(e, list)}
                 >
                   <option value="" disabled hidden>
                     Select Method
                   </option>
                   {this.state.ListMethods && this.state.SchemeAnalytesList
-                    ? this.state.ListMethods.filter((method) =>
+                    ? this.state.ListMethods.filter(method =>
                         this.state.SchemeAnalytesList.some(
-                          (analyte) =>
+                          analyte =>
                             analyte?.id === list?.analyte_id &&
                             analyte?.methods?.includes(method.id)
                         )
@@ -214,7 +257,7 @@ class Results extends Component {
               {list.result_status === "Submitted" ? (
                 <span>
                   {this.state.ReagentList.find(
-                    (reagent) => reagent.id === list.reagent_name
+                    reagent => reagent.id === list.reagent_name
                   )?.name ||
                     list.reagent_name ||
                     "N/A"}
@@ -223,15 +266,15 @@ class Results extends Component {
                 <select
                   className="form-select me-2"
                   value={list.reagent_name || ""}
-                  onChange={(e) => this.handleReagentChange(e, list)}
+                  onChange={e => this.handleReagentChange(e, list)}
                 >
                   <option value="" disabled hidden>
                     Select Reagent
                   </option>
                   {this.state.ReagentList && this.state.SchemeAnalytesList
-                    ? this.state.ReagentList.filter((reagent) =>
+                    ? this.state.ReagentList.filter(reagent =>
                         this.state.SchemeAnalytesList.some(
-                          (analyte) =>
+                          analyte =>
                             analyte?.id === list?.analyte_id &&
                             analyte?.reagents?.includes(reagent.id)
                         )
@@ -255,10 +298,10 @@ class Results extends Component {
             <div className="text-start">
               <input
                 type="text"
-                ref={(el) => (this[`resultRef_${list.id}`] = el)}
+                ref={el => (this[`resultRef_${list.id}`] = el)}
                 defaultValue={list.result || ""}
                 placeholder="Enter result"
-                onChange={(e) => {
+                onChange={e => {
                   let value = e.target.value;
                   // Allow only numbers and a single decimal point
                   if (/^\d*\.?\d*$/.test(value)) {
@@ -287,10 +330,16 @@ class Results extends Component {
           dataField: "instrument_name",
           sort: true,
           formatter: (cellContent, list) => {
-            const selectedInstrument = this.state.Instrument.find(
+            // Filter instruments based on analyte_name
+            const filteredInstruments = this.state.Instrument.filter((instr) => {
+              return instr.analytes.includes(list.analyte_name); // Compare names
+            });
+        
+            // Find the selected instrument
+            const selectedInstrument = filteredInstruments.find(
               (instr) => String(instr.id) === String(list.instrument_name)
             );
-
+        
             return (
               <div className="text-start">
                 {list.result_status === "Submitted" ? (
@@ -306,11 +355,13 @@ class Results extends Component {
                     <option value="" disabled hidden>
                       Select Instrument
                     </option>
-                    {this.state.Instrument.map((instr, index) => (
-                      <option key={index} value={instr.id}>
-                        {instr.name}
-                      </option>
-                    ))}
+                    {filteredInstruments.length > 0
+                      ? filteredInstruments.map((instr, index) => (
+                          <option key={index} value={instr.id}>
+                            {instr.name}
+                          </option>
+                        ))
+                      : <option value="">No Instruments available</option>}
                   </select>
                 )}
               </div>
@@ -327,22 +378,22 @@ class Results extends Component {
               {list.result_status === "Submitted" ? (
                 <span>
                   {this.state.ListMethods.find(
-                    (method) => method.id === list.method_name
+                    method => method.id === list.method_name
                   )?.name || "N/A"}
                 </span>
               ) : (
                 <select
                   className="form-select me-2"
                   value={list.method_name || ""}
-                  onChange={(e) => this.handleMethodChange(e, list)}
+                  onChange={e => this.handleMethodChange(e, list)}
                 >
                   <option value="" disabled hidden>
                     Select Method
                   </option>
                   {this.state.ListMethods && this.state.SchemeAnalytesList
-                    ? this.state.ListMethods.filter((method) =>
+                    ? this.state.ListMethods.filter(method =>
                         this.state.SchemeAnalytesList.some(
-                          (analyte) =>
+                          analyte =>
                             analyte?.id === list?.analyte_id &&
                             analyte?.methods?.includes(method.id)
                         )
@@ -366,7 +417,7 @@ class Results extends Component {
               {list.result_status === "Submitted" ? (
                 <span>
                   {this.state.ReagentList.find(
-                    (reagent) => reagent.id === list.reagent_name
+                    reagent => reagent.id === list.reagent_name
                   )?.name ||
                     list.reagent_name ||
                     "N/A"}
@@ -375,15 +426,15 @@ class Results extends Component {
                 <select
                   className="form-select me-2"
                   value={list.reagent_name || ""}
-                  onChange={(e) => this.handleReagentChange(e, list)}
+                  onChange={e => this.handleReagentChange(e, list)}
                 >
                   <option value="" disabled hidden>
                     Select Reagent
                   </option>
                   {this.state.ReagentList && this.state.SchemeAnalytesList
-                    ? this.state.ReagentList.filter((reagent) =>
+                    ? this.state.ReagentList.filter(reagent =>
                         this.state.SchemeAnalytesList.some(
-                          (analyte) =>
+                          analyte =>
                             analyte?.id === list?.analyte_id &&
                             analyte?.reagents?.includes(reagent.id)
                         )
@@ -411,7 +462,7 @@ class Results extends Component {
                 <select
                   className="form-select me-2"
                   value={list.result_type || ""} // Ensure this is set properly
-                  onChange={(e) => this.handleResultTypeChange(e, list)} // Handle the change event
+                  onChange={e => this.handleResultTypeChange(e, list)} // Handle the change event
                 >
                   <option value="" disabled hidden>
                     Select Result Type
@@ -433,10 +484,10 @@ class Results extends Component {
             <div className="text-start">
               <input
                 type="text"
-                ref={(el) => (this[`resultRef_${list.id}`] = el)}
+                ref={el => (this[`resultRef_${list.id}`] = el)}
                 defaultValue={list.result || ""}
                 placeholder="Enter result"
-                onChange={(e) => {
+                onChange={e => {
                   let value = e.target.value;
                   // Allow only numbers and a single decimal point
                   if (/^\d*\.?\d*$/.test(value)) {
@@ -455,12 +506,12 @@ class Results extends Component {
   // }
   componentDidMount() {
     const {
-      onGetSchemeAnalyte,
-      onGetUnitsList,
-      onGetMethodsList,
-      onGetInstrumentList,
-      onGetReagents,
-      onGetResultsList,
+        onGetSchemeAnalyte,
+        onGetUnitsList,
+        onGetMethodsList,
+        onGetInstrumentList,
+        onGetReagents,
+        onGetResultsList,
     } = this.props;
 
     const id = this.props.match.params.id;
@@ -471,18 +522,29 @@ class Results extends Component {
     onGetMethodsList(userId);
     onGetReagents(userId);
     onGetInstrumentList(userId);
-    onGetResultsList(id); // No `.then()` since it's not a Promise
-  }
-  componentDidUpdate(prevProps) {
+    onGetResultsList(id);
+
+    // Retrieve timestamps from localStorage
+    const storedSubmissionDate = localStorage.getItem("submissionDate");
+    const storedResubmissionDate = localStorage.getItem("resubmissionDate");
+
+    this.setState({
+        submissionDate: storedSubmissionDate,
+        resubmissionDate: storedResubmissionDate,
+    });
+    this.fetchResults(); 
+}
+
+  componentDidUpdate(prevProps, prevState) {
     const {
-      SchemeAnalytesList,
-      ListUnits,
-      ListMethods,
-      Instrument,
-      ReagentList,
-      ResultList,
-      round_status,
-      result_type,
+        SchemeAnalytesList,
+        ListUnits,
+        ListMethods,
+        Instrument,
+        ReagentList,
+        ResultList,
+        round_status,
+        result_type,
     } = this.props;
 
     // Log previous and current props
@@ -490,63 +552,97 @@ class Results extends Component {
     console.log("Current Props:", this.props);
 
     if (prevProps.Instrument !== this.props.Instrument) {
-      console.log("Instrument list changed");
+        console.log("Instrument list changed");
     }
 
     if (
-      prevProps.Instrument !== this.props.Instrument &&
-      this.props.Instrument.length > 0
+        prevProps.Instrument !== this.props.Instrument &&
+        this.props.Instrument.length > 0
     ) {
-      this.setState({ Instrument: this.props.Instrument });
+        this.setState({ Instrument: this.props.Instrument });
     }
 
     // Log if data gets removed
     if (prevProps.Instrument.length > 0 && this.props.Instrument.length === 0) {
-      console.log("All Instruments removed");
+        console.log("All Instruments removed");
+    }
+
+    if (prevState.Instrument !== this.state.Instrument) {
+      console.log("Instruments updated:", this.state.Instrument);
+      this.forceUpdate(); // or update your table state
     }
 
     // Detect any data changes
     const dataChanged = [
-      prevProps.SchemeAnalytesList !== SchemeAnalytesList,
-      prevProps.ListUnits !== ListUnits,
-      prevProps.ListMethods !== ListMethods,
-      prevProps.Instrument !== Instrument,
-      prevProps.ReagentList !== ReagentList,
-      prevProps.ResultList !== ResultList,
-      prevProps.round_status !== round_status,
+        prevProps.SchemeAnalytesList !== SchemeAnalytesList,
+        prevProps.ListUnits !== ListUnits,
+        prevProps.ListMethods !== ListMethods,
+        prevProps.Instrument !== Instrument,
+        prevProps.ReagentList !== ReagentList,
+        prevProps.ResultList !== ResultList,
+        prevProps.round_status !== round_status,
     ].some(Boolean);
 
     if (
-      dataChanged &&
-      SchemeAnalytesList !== undefined &&
-      ListUnits !== undefined &&
-      ListMethods !== undefined &&
-      Instrument !== undefined
+        dataChanged &&
+        SchemeAnalytesList !== undefined &&
+        ListUnits !== undefined &&
+        ListMethods !== undefined &&
+        Instrument !== undefined
     ) {
-      this.setState(
-        {
-          SchemeAnalytesList,
-          ListUnits,
-          ListMethods,
-          Instrument,
-          ReagentList,
-          ResultList,
-          round_status,
-          result_type,
-          isDataLoaded: true, // Data is now loaded
-        },
-        this.combineData
-      );
+        this.setState(
+            {
+                SchemeAnalytesList,
+                ListUnits,
+                ListMethods,
+                Instrument,
+                ReagentList,
+                ResultList,
+                round_status,
+                result_type,
+                isDataLoaded: true, // Data is now loaded
+            },
+            this.combineData
+        );
     }
 
     // Update combinedData when ResultList changes
     if (prevProps.ResultList !== this.props.ResultList) {
-      if (this.props.ResultList && this.props.ResultList.length > 0) {
-        this.setState({ combinedData: this.props.ResultList });
-      }
+        if (this.props.ResultList && this.props.ResultList.length > 0) {
+            this.setState({ combinedData: this.props.ResultList });
+        }
     }
-  }
+    if (prevProps.ResultList !== this.props.ResultList) {
+      if (this.props.ResultList.length === 0) {
+          // If results are deleted, clear the submission/resubmission dates
+          localStorage.removeItem("submissionDate");
+          localStorage.removeItem("resubmissionDate");
 
+          // Update state to reflect changes in UI
+          this.setState({ 
+              submissionDate: null,
+              resubmissionDate: null
+          });
+      }
+  }
+}
+
+// ✅ Add Auto-Refresh After Submit or Resubmit
+handleSubmitAll = async () => {
+    // Your existing submit logic
+    console.log("Submitting results...");
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000); // 🚀 Refresh after 1 second
+};
+
+handleResubmit = async () => {
+    // Your existing resubmit logic
+    console.log("Resubmitting results...");
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000); // 🚀 Refresh after 1 second
+};
   combineData = () => {
     const {
       SchemeAnalytesList,
@@ -560,11 +656,11 @@ class Results extends Component {
     const { rounds } = this.props;
     const { user_id, ParticipantNo } = this.state;
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
-      const participantResults = ResultList.filter((result) => {
+      const participantResults = ResultList.filter(result => {
         return result.analyte === analyte.id;
       });
 
-      const userResult = participantResults.find((result) => {
+      const userResult = participantResults.find(result => {
         return (
           result.lab.account_id === user_id && result.round_name === rounds
         );
@@ -588,12 +684,12 @@ class Results extends Component {
           : "",
         reagent_name: userResult
           ? this.state.ReagentList.find(
-              (reagent) => reagent.id === userResult.reagents
+              reagent => reagent.id === userResult.reagents
             )?.name || "N/A"
           : "N/A",
         instrument_name: userResult
           ? this.state.Instrument.find(
-              (instr) => instr.id === userResult.instrument
+              instr => instr.id === userResult.instrument
             )?.name || "N/A"
           : "N/A",
         result: userResult ? userResult.result : "",
@@ -601,18 +697,19 @@ class Results extends Component {
         result_type: userResult ? userResult.result_type : null,
       };
     });
+  
 
     // Update the state with combined data
     this.setState({ combinedData });
   };
 
-  handleUpdate = async (list) => {
+  handleUpdate = async list => {
     const id = this.props.match.params.id;
     const { rounds, scheme_id, round_status } = this.props;
 
     // Find the corresponding analyte data in combinedData
     const analyteData = this.state.combinedData.find(
-      (item) => item.id === list.id
+      item => item.id === list.id
     );
 
     // Extract values
@@ -683,126 +780,186 @@ class Results extends Component {
     const id = this.props.match.params.id;
 
     if (!combinedData.length) {
-      alert("No results to save.");
-      return;
+        alert("No results to save.");
+        return;
     }
 
-    const confirmation = window.confirm(
-      "Are you sure you want to save all results?"
-    );
+    const confirmation = window.confirm("Are you sure you want to save all results?");
     if (!confirmation) return;
 
     try {
-      for (const list of combinedData) {
-        const resultData = {
-          round_id: id,
-          analyte_id: list.analyte_id,
-          units: list.units,
-          instrument_name: list.instrument_name,
-          method_name: list.method_name,
-          reagent_name: list.reagent_name,
-          result_type: list.result_type,
-          result: this[`resultRef_${list.id}`]?.value || "",
-          rounds: rounds,
-          scheme_id: scheme_id,
-          round_status: round_status,
-          result_status: "Saved",
-        };
-        await this.props.onPostResult(resultData, this.state.user_id);
-      }
+        for (const list of combinedData) {
+            const resultData = {
+                round_id: id,
+                analyte_id: list.analyte_id,
+                units: list.units,
+                instrument_name: list.instrument_name,
+                method_name: list.method_name,
+                reagent_name: list.reagent_name,
+                result_type: list.result_type,
+                result: this[`resultRef_${list.id}`]?.value || "",
+                rounds,
+                scheme_id,
+                round_status,
+                result_status: "Saved",
+            };
+            await this.props.onPostResult(resultData, this.state.user_id);
+        }
 
-      alert("All results have been saved successfully.");
+        alert("All results have been saved successfully.");
     } catch (error) {
-      alert("Failed to save all results. Please try again.");
+        alert("Failed to save all results. Please try again.");
     }
-  };
+};
 
-  handleSubmitAll = async () => {
-    const { combinedData } = this.state;
-    const { rounds, scheme_id, round_status } = this.props;
-    const id = this.props.match.params.id;
 
-    if (!combinedData.length) {
+handleSubmitAll = async () => {
+  const { combinedData } = this.state;
+  const { rounds, scheme_id, round_status } = this.props;
+  const id = this.props.match.params.id;
+
+  if (!combinedData.length) {
       alert("No results to submit.");
       return;
-    }
+  }
 
-    const confirmation = window.confirm(
-      "Are you sure you want to submit all results? This action cannot be undone."
-    );
-    if (!confirmation) return;
+  const confirmation = window.confirm("Are you sure you want to submit all results?");
+  if (!confirmation) return;
 
-    try {
+  try {
+      let latestUpdatedAt = new Date().toISOString(); // Default timestamp
+
       for (const list of combinedData) {
-        const resultData = {
-          round_id: id,
-          analyte_id: list.analyte_id,
-          units: list.units,
-          instrument_name: list.instrument_name,
-          method_name: list.method_name,
-          reagent_name: list.reagent_name,
-          result_type: list.result_type,
-          result: this[`resultRef_${list.id}`]?.value || "",
-          rounds: rounds,
-          scheme_id: scheme_id,
-          round_status: round_status,
-          result_status: "Submitted",
-        };
-        await this.props.onPostResult(resultData, this.state.user_id);
+          const resultData = {
+              round_id: id,
+              analyte_id: list.analyte_id,
+              units: list.units,
+              instrument_name: list.instrument_name,
+              method_name: list.method_name,
+              reagent_name: list.reagent_name,
+              result_type: list.result_type,
+              result: this[`resultRef_${list.id}`]?.value || "",
+              rounds: rounds,
+              scheme_id: scheme_id,
+              round_status: round_status,
+              result_status: "Submitted",
+          };
+
+          const response = await this.props.onPostResult(resultData, this.state.user_id);
+
+          if (response.type === "POST_RESULT" && response.payload?.updated_at) {
+              latestUpdatedAt = response.payload.updated_at;
+          }
       }
 
-      alert("All results have been submitted successfully.");
-      window.location.reload();
-    } catch (error) {
+      // Save the timestamp in localStorage before reloading
+      localStorage.setItem("submissionDate", latestUpdatedAt);
+
+      alert("Results submitted successfully!");
+      setTimeout(() => {
+          window.location.reload();
+      }, 1000);
+  } catch (error) {
       alert("Failed to submit all results. Please try again.");
-    }
-  };
-  handleResubmit = async () => {
-    const { combinedData } = this.state;
-    const { rounds, scheme_id, round_status } = this.props;
-    const id = this.props.match.params.id;
+  }
+};
+handleResubmit = async () => {
+  const { combinedData, ReagentList } = this.state;
+  const { rounds, scheme_id, round_status } = this.props;
+  const id = this.props.match.params.id;
 
-    if (!combinedData.length) {
-      alert("No results to resubmit.");
+  if (!combinedData.length) {
+      alert("No results to re-submit.");
       return;
-    }
+  }
 
-    const confirmation = window.confirm(
-      "Are you sure you want to re-submit? This will allow modifications."
-    );
-    if (!confirmation) return;
+  const confirmation = window.confirm("Are you sure you want to re-submit?");
+  if (!confirmation) return;
 
-    try {
-      for (const list of combinedData) {
-        const resultData = {
-          round_id: id,
-          analyte_id: list.analyte_id,
-          units: list.units,
-          instrument_name: list.instrument_name,
-          method_name: list.method_name,
-          reagent_name: list.reagent_name,
-          result_type: list.result_type,
-          result: this[`resultRef_${list.id}`]?.value || "",
-          rounds: rounds,
-          scheme_id: scheme_id,
-          round_status: round_status,
-          result_status: "Submitted", // Reset to allow changes
-        };
-        await this.props.onPostResult(resultData, this.state.user_id);
-      }
+  try {
+      let latestUpdatedAt = null;
+      const updatedResults = [];
 
-      alert("Results are now editable again.");
-      this.setState({ isResubmitted: true }); // Hide all buttons after resubmission
-    } catch (error) {
-      alert("Failed to re-submit. Please try again.");
-    }
-  };
+      const promises = combinedData.map(async (list) => {
+          const reagentObj = ReagentList.find(reagent => reagent.name === list.reagent_name);
+          const reagentId = reagentObj ? reagentObj.id : null;
+
+          if (!reagentId) {
+              console.error("🚨 Invalid reagent:", list.reagent_name);
+              return;
+          }
+
+          const resultData = {
+              round_id: id,
+              analyte_id: list.analyte_id,
+              units: list.units,
+              instrument_name: list.instrument_name,
+              method_name: list.method_name,
+              reagent_name: reagentId,
+              result_type: list.result_type,
+              result: this[`resultRef_${list.id}`]?.value || "",
+              rounds,
+              scheme_id,
+              round_status,
+              result_status: "Submitted",
+          };
+
+          console.log("📤 Sending Data to API:", resultData);
+
+          const response = await this.props.onPostResult(resultData, this.state.user_id);
+          console.log("✅ API Response:", response);
+
+          if (response.type === "POST_RESULT" && response.payload?.updated_at) {
+              latestUpdatedAt = response.payload.updated_at;
+              updatedResults.push({
+                  ...resultData,
+                  submission_date: response.payload.updated_at,
+              });
+          }
+      });
+
+      await Promise.all(promises);
+
+      // ✅ Save the Re-Submit date
+      const currentDateTime = latestUpdatedAt || new Date().toISOString();
+
+      this.setState(
+          prevState => ({
+              combinedData: prevState.combinedData.map(item => ({
+                  ...item,
+                  submission_date: currentDateTime,
+                  result_status: "Submitted", // ✅ Ensure UI updates correctly
+              })),
+              isResubmitted: false,  // ✅ Make sure Re-Submit button appears again
+              submissionMessage: "Results re-submitted successfully!",
+              submissionDate: currentDateTime,
+              resubmissionDate: currentDateTime,
+          }),
+          async () => {
+              console.log("✅ Updated state (Final Check):", this.state);
+              alert(`Result Re-Submitted on ${new Date(currentDateTime).toLocaleString()}`);
+
+              // ✅ Save dates to localStorage
+              localStorage.setItem("submissionDate", currentDateTime);
+              localStorage.setItem("resubmissionDate", currentDateTime);
+
+              // ✅ Fetch latest results after submission
+              await this.fetchResults();
+          }
+      );
+
+  } catch (error) {
+      alert("❌ Failed to re-submit. Please try again.");
+      console.error("🚨 Re-submit Error:", error);
+  }
+};
+
 
   handleUnitChange = (event, list) => {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map((item) => {
+    const updatedData = combinedData.map(item => {
       if (item.id === list.id) {
         return { ...item, units: value };
       }
@@ -816,7 +973,7 @@ class Results extends Component {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map((item) => {
+    const updatedData = combinedData.map(item => {
       if (item.id === list.id) {
         return { ...item, method_name: value };
       }
@@ -825,6 +982,26 @@ class Results extends Component {
 
     this.setState({ combinedData: updatedData });
   };
+
+  // handleInstrumentChange = (event, list) => {
+  //   const { value } = event.target;
+  //   this.setState(prevState => {
+  //     const updatedData = prevState.combinedData.map(item => {
+  //       if (item.id === list.id) {
+  //         const selectedInstrument = prevState.Instrument.find(
+  //           instr => instr.id.toString() === value
+  //         );
+  //         return {
+  //           ...item,
+  //           instrument_id: value, // Update instrument_id
+  //           instrument_name: selectedInstrument ? selectedInstrument.name : "", // Ensure correct name
+  //         };
+  //       }
+  //       return item;
+  //     });
+  //     return { combinedData: updatedData };
+  //   });
+  // };
 
   handleInstrumentChange = (event, list) => {
     const { value } = event.target;
@@ -836,8 +1013,8 @@ class Results extends Component {
           );
           return {
             ...item,
-            instrument_id: value, // Update instrument_id
-            instrument_name: selectedInstrument ? selectedInstrument.name : "", // Ensure correct name
+            instrument_name: value, // Store the selected ID
+            instrument_display_name: selectedInstrument ? selectedInstrument.name : "", // Display name
           };
         }
         return item;
@@ -845,13 +1022,14 @@ class Results extends Component {
       return { combinedData: updatedData };
     });
   };
+  
 
   handleResultTypeChange = (e, list) => {
     const newResultType = e.target.value;
     const { combinedData } = this.state;
 
     // Update the specific item in the lab data
-    const updatedData = combinedData.map((item) => {
+    const updatedData = combinedData.map(item => {
       if (item.id === list.id) {
         return { ...item, result_type: newResultType };
       }
@@ -864,7 +1042,7 @@ class Results extends Component {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map((item) => {
+    const updatedData = combinedData.map(item => {
       if (item.id === list.id) {
         return { ...item, reagent_name: value };
       }
@@ -874,7 +1052,7 @@ class Results extends Component {
     this.setState({ combinedData: updatedData });
   };
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -906,7 +1084,7 @@ class Results extends Component {
     ];
 
     // Map each row to an object with only the desired fields
-    const dataToExport = ResultList.map((unit) => ({
+    const dataToExport = ResultList.map(unit => ({
       id: unit.id,
       Analyte: unit.analyte,
       Unit: unit.units,
@@ -958,6 +1136,7 @@ class Results extends Component {
       rounds,
       issue_date,
       closing_date,
+      cycle_no,
       round_status,
     } = this.props;
 
@@ -988,111 +1167,89 @@ class Results extends Component {
             <Container fluid>
               {/* <Breadcrumbs title="Participant" breadcrumbItem="Unapproved" /> */}
               <Row className="mb-3 text-danger">
-                <strong>
-                  <Col className="d-flex flex-wrap justify-content-md-around justify-content-sm-start  p-3">
-                    <div className="d-flex flex-column flex-md-row align-items-start  mb-2 mb-md-0 p-2">
-                      <span className="me-2">Participant No:</span>
-                      <span>{participant_id}</span>
-                    </div>
-                    <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
-                      <span className="me-2">Scheme: </span>
-                      <span>{schemeName}</span>
-                    </div>
-                    <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
-                      <span className="me-2">Round No: </span>
-                      <span>{rounds}</span>
-                    </div>
-                    <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
-                      <span className="me-2">Issue Date:</span>
-                      <span>
-                        {moment(issue_date).format("DD MMM YYYY, h:mm A")}
-                      </span>
-                    </div>
-                    <div className="d-flex flex-column flex-md-row align-items-start p-2">
-                      <span className="me-2">Closing Date: </span>
-                      <span>
-                        {moment(closing_date).format("DD MMM YYYY, h:mm A")}
-                      </span>
-                    </div>
-                  </Col>
-                </strong>
-              </Row>
-              <Row className="justify-content-start">
-                <Col sm="12" md="12" lg="12" xl="12">
-                  <div className="d-flex flex-wrap align-items-center gap-3 ms-5">
-                    <Button
-                      onClick={this.exportToExcel}
-                      className="mb-3 btn btn-secondary"
-                      style={{ minWidth: "140px" }}
-                    >
-                      Download Results
-                    </Button>
-                    <Button
-                      onClick={this.handlePrint}
-                      className="mb-3 btn btn-secondary"
-                      style={{ minWidth: "140px" }}
-                    >
-                      Print
-                    </Button>
-                    <Link
-                      to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}
-                    >
-                      <Button
-                        className="mb-3 btn btn-secondary"
-                        style={{ minWidth: "140px" }}
-                      >
-                        History
-                      </Button>
-                    </Link>
+  <strong>
+    <Col className="d-flex flex-wrap justify-content-md-around justify-content-sm-start  p-3">
+      <div className="d-flex flex-column flex-md-row align-items-start  mb-2 mb-md-0 p-2">
+        <span className="me-2">Participant No:</span>
+        <span>{participant_id}</span>
+      </div>
+      <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
+        <span className="me-2">Scheme: </span>
+        <span>{schemeName}</span>
+      </div>
+      <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
+        <span className="me-2">Cycle No: </span>
+        <span>{cycle_no}</span>
+      </div>
+      <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
+        <span className="me-2">Round No: </span>
+        <span>{rounds}</span>
+      </div>
+      <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
+        <span className="me-2">Issue Date:</span>
+        <span>{moment(issue_date).format("DD MMM YYYY, h:mm A")}</span>
+      </div>
+      <div className="d-flex flex-column flex-md-row align-items-start p-2">
+        <span className="me-2">Closing Date: </span>
+        <span>{moment(closing_date).format("DD MMM YYYY, h:mm A")}</span>
+      </div>
+    </Col>
+  </strong>
+</Row>
+<div className="d-flex flex-wrap align-items-center gap-3 ms-5">
+  <Button onClick={this.exportToExcel} className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
+    Download Results
+  </Button>
+  <Button onClick={this.handlePrint} className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
+    Print
+  </Button>
+  <Link to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}>
+    <Button className="mb-3 btn btn-secondary" style={{ minWidth: "140px" }}>
+      History
+    </Button>
+  </Link>
 
-                    {/* Condition to hide Save & Submit if ALL results are submitted */}
-                    {!this.state.isResubmitted && (
-                      <>
-                        {/* Show Save & Submit if not all results are submitted and round is not Closed */}
-                        {this.props.round_status !== "Closed" &&
-                          !(
-                            this.state.combinedData.length > 0 &&
-                            this.state.combinedData.every(
-                              (data) => data.result_status === "Submitted"
-                            )
-                          ) && (
-                            <>
-                              <Button
-                                className="mb-3 btn btn-success"
-                                style={{ minWidth: "140px" }}
-                                onClick={this.handleSaveAll}
-                              >
-                                Save
-                              </Button>
-                              <Button
-                                className="mb-3 btn btn-success"
-                                style={{ minWidth: "140px" }}
-                                onClick={this.handleSubmitAll}
-                              >
-                                Submit
-                              </Button>
-                            </>
-                          )}
+  {!this.state.isResubmitted && (
+    <>
+      {!(this.state.combinedData.length > 0 && this.state.combinedData.every(data => data.result_status === "Submitted")) ? (
+        <>
+        
+        <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSaveAll}>
+            Save
+          </Button>
+          <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSubmitAll}>
+            Submit
+          </Button>
+          {this.state.submissionDate && (
+            <span className="text-muted ms-2">
+              <strong>Submitted on:</strong> {moment(this.state.submissionDate).format("MM/DD/YYYY, h:mm:ss A")}
+            </span>
+          )}
+        </>
+      ) : (
+        this.props.round_status === "Open" && (
+          <>
+            <Button className="btn btn-success mb-3" style={{ minWidth: "140px" }} onClick={this.handleResubmit}>
+              Re-Submit
+            </Button>
+            {this.state.resubmissionDate ? (
+    <span className="text-muted ms-2">
+        <strong>Re-Submitted on:</strong> {moment(this.state.resubmissionDate).format("MM/DD/YYYY, h:mm:ss A")}
+    </span>
+) : this.state.submissionDate ? (
+    <span className="text-muted ms-2">
+        <strong>Submitted on:</strong> {moment(this.state.submissionDate).format("MM/DD/YYYY, h:mm:ss A")}
+    </span>
+) : null}
 
-                        {/* Show Re-Submit if all results are submitted, round is Open, and round is not Closed */}
-                        {this.props.round_status !== "Closed" && // Round status closed na ho
-                          this.state.combinedData.length > 0 &&
-                          this.state.combinedData.some(
-                            (data) => data.result_status === "Submitted" // At least ek submitted ho
-                          ) && (
-                            <Button
-                              className="mb-3 btn btn-success"
-                              style={{ minWidth: "140px" }}
-                              onClick={this.handleResubmit}
-                            >
-                              Re-Submit
-                            </Button>
-                          )}
-                      </>
-                    )}
-                  </div>
-                </Col>
-              </Row>
+          </>
+        )
+      )}
+    </>
+  )}
+</div>
+
+
 
               <Row className="justify-content-center align-item-center">
                 <Col lg="10">
@@ -1111,7 +1268,7 @@ class Results extends Component {
                             data={combinedData}
                             search
                           >
-                            {(toolkitprops) => (
+                            {toolkitprops => (
                               <React.Fragment>
                                 <div className="table-responsive">
                                   <BootstrapTable
@@ -1162,28 +1319,25 @@ Results.propTypes = {
   scheme_id: PropTypes.number,
   issue_date: PropTypes.string,
   closing_date: PropTypes.string,
+  cycle_no: PropTypes.string,
   ListUnits: PropTypes.array,
   ListMethods: PropTypes.array,
   Instrument: PropTypes.array,
   ReagentList: PropTypes.array,
-
   PostResult: PropTypes.array,
   ResultList: PropTypes.array,
-
   className: PropTypes.any,
-
   onGetSchemeAnalyte: PropTypes.func,
   onGetUnitsList: PropTypes.func,
   onGetMethodsList: PropTypes.func,
   onGetInstrumentList: PropTypes.func,
   onGetReagents: PropTypes.func,
-
   onPostResult: PropTypes.func,
   onGetResultsList: PropTypes.func,
 };
-
 const mapStateToProps = ({
   SchemeAnalytesList,
+  CycleList,
   ListUnits,
   ListMethods,
   Instrument,
@@ -1199,28 +1353,22 @@ const mapStateToProps = ({
   result_type: SchemeAnalytesList.result_type,
   issue_date: SchemeAnalytesList.issue_date,
   closing_date: SchemeAnalytesList.closing_date,
+  cycle_no: SchemeAnalytesList.cycle_no,
   ListUnits: ListUnits.ListUnits,
   ListMethods: ListMethods.ListMethods,
   Instrument: Instrument.Instrument,
   ReagentList: ReagentList.ReagentList,
   ResultList: SchemeAnalytesList.ResultList,
 });
-
-// const mapStateToProps = state => ({
-//   SchemeAnalytesList: state.schemeAnalytesReducer.SchemeAnalytesList,
-// });
-
-const mapDispatchToProps = (dispatch) => ({
-  onGetSchemeAnalyte: (id) => dispatch(getSchemeAnalytesList(id)),
-  onGetUnitsList: (id) => dispatch(getunitlist(id)),
-  onGetMethodsList: (id) => dispatch(getmethodlist(id)),
-  onGetInstrumentList: (id) => dispatch(getInstrumentlist(id)),
-  onGetReagents: (id) => dispatch(getReagentlist(id)),
-
+const mapDispatchToProps = dispatch => ({
+  onGetSchemeAnalyte: id => dispatch(getSchemeAnalytesList(id)),
+  onGetUnitsList: id => dispatch(getunitlist(id)),
+  onGetMethodsList: id => dispatch(getmethodlist(id)),
+  onGetInstrumentList: id => dispatch(getInstrumentlist(id)),
+  onGetReagents: id => dispatch(getReagentlist(id)),
   onPostResult: (result, id) => dispatch(postResult(result, id)),
-  onGetResultsList: (id) => dispatch(getResultsList(id)),
+  onGetResultsList: id => dispatch(getResultsList(id)),
 });
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
