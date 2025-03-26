@@ -106,17 +106,15 @@ function* onDeleteRoundParticipant({ payload }) {
 
     const response = yield call(deleteRoundParticipant, roundId, participantId);
 
-    yield put(deleteRoundParticipantSuccess(response.data));
+    console.log("Saga Response:", response.data);
+
+    // Dispatch the success action
+    yield put(deleteRoundParticipantSuccess({ id: participantId }));
   } catch (error) {
     console.error("Saga Error:", error);
-    yield put(
-      deleteRoundParticipantFail(
-        error.response ? error.response.data : "Unknown error"
-      )
-    );
+    yield put(deleteRoundParticipantFail(error.response ? error.response.data : "Unknown error"));
   }
 }
-
 function* RoundListSaga() {
   yield takeEvery(GET_ROUND_LIST, fetchRoundList);
   yield takeEvery(GET_ROUND_PARTICIPANT_LIST, fetchRoundParticipantlist);

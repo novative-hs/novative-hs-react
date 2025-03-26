@@ -116,60 +116,60 @@ class RoundParticipantlist extends Component {
   
   
   componentDidUpdate(prevProps) {
+    console.log("Previous RoundParticipantlist:", prevProps.RoundParticipantlist);
+    console.log("Current RoundParticipantlist:", this.props.RoundParticipantlist);
+  
     if (prevProps.RoundParticipantlist !== this.props.RoundParticipantlist) {
-      if (typeof this.transformParticipantData === "function") {
-        const transformedData = this.transformParticipantData(this.props.RoundParticipantlist);
-        console.log("Transformed Participant Data:", transformedData);
-        
-        // Check if the transformed data is a valid array
-        if (Array.isArray(transformedData)) {
-          console.log("Transformed data is a valid array.");
-        } else {
-          console.error("Transformed data is not an array.");
-        }
-        
-        this.setState({ RoundParticipantlist: transformedData });
-      } else {
-        console.error("transformParticipantData is not defined or not a function");
-      }
+      console.log("Detected change in RoundParticipantlist. Updating state...");
+      this.setState({ RoundParticipantlist: this.props.RoundParticipantlist });
     }
   }
+  
+  
   
   onDeleteRoundParticipant = async (roundId, participantId) => {
     if (window.confirm("Are you sure you want to remove this participant?")) {
       try {
-        // Call the Redux action to delete the participant
+        // Dispatch the action to delete the participant
         await this.props.onDeleteRoundParticipant(roundId, participantId);
   
-        // Option 1: Re-fetch participants to update the table
-        await this.fetchData(); // Ensure fresh data from the server
+        // Explicitly re-fetch data to ensure the list is updated
+        console.log("Participant removed. Re-fetching list...");
+        await this.fetchData();
   
-        // Option 2: Alternatively, update state directly to remove the participant locally
-        this.setState((prevState) => ({
-          RoundParticipantlist: prevState.RoundParticipantlist.filter(
-            (participant) => participant.id !== participantId
-          ),
-        }));
-  
-        alert("Participant removed successfully!");
+        console.log("List refreshed.");
       } catch (error) {
         console.error("Error removing participant:", error);
-        alert("An error occurred while removing the participant.");
       }
     }
   };
   
-
-  fetchData() {
+  
+  
+  fetchData = async () => {
     const { onGetRoundParticipantList } = this.props;
-    const RoundParticipantId = this.props.match.params?.id; // Use optional chaining
+    const RoundParticipantId = this.props.match.params?.id;
+  
     if (!RoundParticipantId) {
       console.error("RoundParticipantId not found in URL parameters");
-    } else {
-      console.log("Fetching data for ID:", RoundParticipantId);
-      onGetRoundParticipantList({ id: RoundParticipantId }); // Pass as an object
+      return;
     }
-  }
+  
+    try {
+      console.log("Fetching data for ID:", RoundParticipantId);
+      await onGetRoundParticipantList({ id: RoundParticipantId });
+  
+      // Update local state from props
+      const updatedList = this.props.RoundParticipantlist;
+      if (Array.isArray(updatedList)) {
+        this.setState({ RoundParticipantlist: updatedList });
+      }
+    } catch (error) {
+      console.error("Error fetching participant data:", error);
+    }
+  };
+  
+  
   
   
 
@@ -282,7 +282,8 @@ class RoundParticipantlist extends Component {
                                   striped={true}
                                   headerWrapperClasses={"table-light"}
                                   responsive
-                                  data={this.filterData()}
+                                  data={this.state.RoundParticipantlist}
+                                  columns={this.state.feedbackListColumns}
                                 />
                               </div>
                             </Col>
