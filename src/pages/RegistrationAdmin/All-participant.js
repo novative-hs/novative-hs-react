@@ -645,31 +645,56 @@ applyFiltersFromQueryParams = () => {
     console.log("onGetPendingLabs called with user_id:", user_id);
   }
  
- 
-
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.filteredLabs !== this.state.filteredLabs) {
+  
+componentDidUpdate(prevProps, prevState) {
+  if (prevState.filteredLabs !== this.state.filteredLabs) {
       console.log("FilteredLabs updated:", this.state.filteredLabs);
-    }
-    if (prevProps.approvedLabs !== this.props.approvedLabs) {
-    }
-    if (prevProps.CycleList !== this.props.CycleList) {
+  }
+  if (prevProps.approvedLabs !== this.props.approvedLabs) {
+      // Logic for approvedLabs if needed
+  }
+  if (prevProps.CycleList !== this.props.CycleList) {
       console.log("Updating CycleList in state:", this.props.CycleList);
       this.setState({ CycleList: this.props.CycleList });
-    }
-    if (prevProps.PaymentSchemeList !== this.props.PaymentSchemeList) {
+  }
+  if (prevProps.PaymentSchemeList !== this.props.PaymentSchemeList) {
       this.setState({ PaymentSchemeList: this.props.PaymentSchemeList });
-    }
-    if (prevProps.AllLabs !== this.props.AllLabs) {
+  }
+  if (prevProps.AllLabs !== this.props.AllLabs) {
       console.log("Updated AllLabs:", this.props.AllLabs);
       this.setState({ AllLabs: this.props.AllLabs }, () => {
-        console.log("State AllLabs updated:", this.state.AllLabs);
-        this.applyFilters(); // Reapply filters after AllLabs is updated
+          console.log("State AllLabs updated:", this.state.AllLabs);
+          this.applyFilters(); // Reapply filters after AllLabs is updated
       });
-    }
-
   }
+
+  // Ensure filteredCycleList is updated without modifying CycleList
+  if (
+      prevProps.AllLabs !== this.props.AllLabs ||
+      prevProps.CycleList !== this.props.CycleList
+  ) {
+      console.log("Filtering CycleList for participants");
+
+      // Extract unique scheme names from AllLabs
+      const participantSchemes = new Set(
+          this.props.AllLabs.flatMap(lab =>
+              lab.schemes?.map(scheme => scheme.scheme_name) || []
+          )
+      );
+
+      // Generate the filtered list for participant dropdown
+      const filteredCycleList = this.props.CycleList.filter(cycle =>
+          participantSchemes.has(cycle.scheme_name)
+      );
+
+      // Update state with both lists
+      this.setState({
+          CycleList: this.props.CycleList, // Original list for payment modal
+          filteredCycleList, // Filtered list for participant filters
+      });
+  }
+}
+
   // setInitialDropdownValue = () => {
   //   const { pathname } = this.props.history.location;
   //   const { organization_name } = this.state; // Now it's properly updated
@@ -1018,20 +1043,25 @@ applyFiltersFromQueryParams = () => {
 
                                         {/* Filter 2 */}
                                         <div className="col">
-                                          <select
-                                            className="form-select"
-                                            onChange={this.handleSchemeChange}
-                                            value={this.state.selectedScheme}
-                                            style={{ width: "200px" }} // Ensures it takes up full width of the column
-                                          >
-                                            <option value="">Select Scheme</option>
-                                            {this.state.CycleList.map((scheme) => (
-                                              <option key={scheme.id} value={scheme.id}>
-                                                {scheme.scheme_name}
-                                              </option>
-                                            ))}
-                                          </select>
-                                        </div>
+  <select
+    className="form-select"
+    onChange={this.handleSchemeChange}
+    value={this.state.selectedScheme}
+    style={{ width: "200px" }}
+  >
+    <option value="">Select Scheme</option>
+    {this.state.CycleList.filter(cycle =>
+        this.props.AllLabs.some(lab =>
+          lab.schemes?.some(scheme => scheme.scheme_name === cycle.scheme_name)
+        )
+    ).map(filteredCycle => (
+      <option key={filteredCycle.id} value={filteredCycle.id}>
+        {filteredCycle.scheme_name}
+      </option>
+    ))}
+  </select>
+</div>
+
                                       </div>
                                     </div>
 
