@@ -486,7 +486,7 @@ class Navbar extends Component {
                       <ul className="navbar-nav">
                         <li className="nav-item">
                           <NavLink
-                            to={`/${organization_name}/pending-participant`}
+                            to={`/${organization_name}/all-participant`}
                             className={({ isActive }) =>
                               `dropdown-item ${isActive ? "active-link" : ""}`
                             }
