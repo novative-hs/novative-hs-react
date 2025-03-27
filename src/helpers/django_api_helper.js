@@ -806,7 +806,6 @@ export const getSereologyResult = (id) =>
   get(`${url.GET_SERELOGY_RESULT}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
 //Participant result POST
 export const postResult = (result, id) => {
   let formData = new FormData();
@@ -831,7 +830,6 @@ export const postResult = (result, id) => {
     headers: getHeader(authHeader()),
   });
 };
-
 // export const getSchemeAnalytesList = (id) => {
 //   return axios.get(`${url.SCHEMES_ANALYTES}/${id}`, {
 //     headers: getHeader(authHeader()), // Ensure getHeader and authHeader are correct
