@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Collapse,
   Dropdown,
@@ -7,7 +8,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { Link, withRouter } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 //i18n
@@ -80,8 +81,11 @@ class Navbar extends Component {
   }
 
   updateDimensions = () => {
-    this.setState({ isOpen: window.innerWidth >= 800 });
+    this.setState({ isOpen: window.innerWidth >= 1000 });
   };
+
+  // ✅ Function to apply the active class dynamically
+  isActiveNavLink = ({ isActive }) => (isActive ? "active-link" : "");
 
   render() {
     const { screenWidth } = this.props;
@@ -89,7 +93,7 @@ class Navbar extends Component {
     const { isOpen, dropdowns, dropdownOpen } = this.state;
 
     // Determine if the navbar should be shown based on screen width
-    const shouldShowNavbar = screenWidth >= 800 || isOpen;
+    const shouldShowNavbar = screenWidth >= 1000 || isOpen;
     const { organization_name } = this.props.match.params;
     return (
       <React.Fragment>
@@ -142,75 +146,94 @@ class Navbar extends Component {
                           }
                         >
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-units`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${
+                                  isActive ? "active-dropdown" : ""
+                                }`
+                              }
                             >
-                              Database of units
-                            </Link>
+                              Database of Units
+                            </NavLink>
                           </li>
 
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-equipmentType`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
-                              Database of equipment type
-                            </Link>
+                              Database of Equipment Type
+                            </NavLink>
                           </li>
+
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-manufactural`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Database of manufacturer
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/equipment-list`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Database of equipments
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-method`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Database of method
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-reagents`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Database of reagents
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-analyte`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Database of Analytes
-                            </Link>
+                            </NavLink>
                           </li>
                         </ul>
                       </li>
 
                       <li className="nav-item">
-                        <Link
+                        <NavLink
                           to={`/${organization_name}/databaseadmin-news`}
-                          className="dropdown-item"
+                          className={({ isActive }) =>
+                            `dropdown-item ${isActive ? "active-link" : ""}`
+                          }
                         >
                           <span className="pt-4 font-size-12">
-                            Reports
+                            Database Review
                           </span>
                           {/* {this.props.t("Tests")} */}
-                        </Link>
+                        </NavLink>
                       </li>
                       <li className="nav-item">
                         <span
@@ -248,88 +271,126 @@ class Navbar extends Component {
                           }
                         >
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-participantcity`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               City
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-participantcountry`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Country
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-participantprovince`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Province
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-participantdistrict`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               District
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-participantdepartment`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Department
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-participantdesignation`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Designation
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-participanttype`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Participant Type
-                            </Link>
+                            </NavLink>
                           </li>
                           <li>
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/database-of-participantSector`}
-                              className="dropdown-item"
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
                             >
                               Participant Sector
-                            </Link>
+                            </NavLink>
                           </li>
                         </ul>
                       </li>
                       <li className="nav-item">
-                        <Link to={`/${organization_name}/scheme`} className="dropdown-item">
+                        <NavLink
+                          to={`/${organization_name}/scheme`}
+                          className="dropdown-item"
+                          style={({ isActive }) =>
+                            isActive
+                              ? {
+                                  textDecoration: "underline",
+                                  fontWeight: "bold",
+                                  color: "white",
+                                }
+                              : {}
+                          }
+                        >
                           <span className="pt-4 font-size-12">Scheme</span>
-                          {/* {this.props.t("Tests")} */}
-                        </Link>
+                        </NavLink>
                       </li>
+
                       <li className="nav-item">
-                        <Link to={`/${organization_name}/cycle`} className="dropdown-item">
+                        <NavLink
+                          to={`/${organization_name}/cycle`}
+                          className={({ isActive }) =>
+                            `dropdown-item ${isActive ? "active-link" : ""}`
+                          }
+                        >
                           <span className="pt-4 font-size-12">Cycle</span>
                           {/* {this.props.t("Tests")} */}
-                        </Link>
+                        </NavLink>
                       </li>
                       <li className="nav-item">
-                        <Link to={`/${organization_name}/sample`} className="dropdown-item">
+                        <NavLink
+                          to={`/${organization_name}/sample`}
+                          className={({ isActive }) =>
+                            `dropdown-item ${isActive ? "active-link" : ""}`
+                          }
+                        >
                           <span className="pt-4 font-size-12">Sample</span>
                           {/* {this.props.t("Tests")} */}
-                        </Link>
+                        </NavLink>
                       </li>
                     </ul>
                   </Collapse>
@@ -348,44 +409,63 @@ class Navbar extends Component {
                     >
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          <Link to={`/${organization_name}/add-staff`} className="dropdown-item">
+                          <NavLink
+                            to={`/${organization_name}/add-staff`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
                             <span className="pt-4 font-size-12">Add Staff</span>
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/databaseadmin-list`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">
                               Database Admin
                             </span>
                             {/* {this.props.t("Profiles")} */}
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/registration-admin-list`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">
                               Registration Admin
                             </span>
                             {/* {this.props.t("Packages")} */}
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link to={`/${organization_name}/csr-list`} className="dropdown-item">
+                          <NavLink
+                            to={`/${organization_name}/csr-list`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
                             <span className="pt-4 font-size-12">CSR</span>
                             {/* {this.props.t("Packages")} */}
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                            <Link to={`/${organization_name}/all-participants`} className="dropdown-item">
+                          <NavLink
+                            to={`/${organization_name}/all-participants`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
                             <span className="pt-4 font-size-12">
                               Participants List
                             </span>
-                          </Link>
+                          </NavLink>
                         </li>
                       </ul>
                     </Collapse>
@@ -405,44 +485,60 @@ class Navbar extends Component {
                     >
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          <Link
-                            to={`/${organization_name}/all-participant`}
-                            className="dropdown-item"
+                          <NavLink
+                            to={`/${organization_name}/pending-participant`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">
                               Participant
                             </span>
-                          </Link>
+                          </NavLink>
                         </li>
 
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/register-participant`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">
                               Add Participant
                             </span>
-                          </Link>
+                          </NavLink>
                         </li>
 
                         <li className="nav-item">
-                          <Link to={`/${organization_name}/round`} className="dropdown-item">
+                          <NavLink
+                            to={`/${organization_name}/round`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
                             <span className="pt-4 font-size-12">Rounds</span>
-                          </Link>
+                          </NavLink>
                         </li>
                         <li>
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/participant-payment`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">Payment</span>
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link to={`/${organization_name}/news`} className="dropdown-item">
+                          <NavLink
+                            to={`/${organization_name}/news`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
                             News
-                          </Link>
+                          </NavLink>
                         </li>
                       </ul>
                     </Collapse>
@@ -461,60 +557,32 @@ class Navbar extends Component {
                     >
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/add-organization`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">
                               Add Organization
                             </span>
                             {/* {this.props.t("Profiles")} */}
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to="/organization-list"
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             Organization List
-                          </Link>
+                          </NavLink>
                         </li>
                       </ul>
                     </Collapse>
                   </nav>
                 )}
-              {this.state.account_type && this.state.account_type === "CSR" && (
-                <nav
-                  className="navbar navbar-light navbar-expand-lg"
-                  id="navigation"
-                >
-                  <Collapse
-                    isOpen={isOpen}
-                    className="navbar-collapse"
-                    id="topnav-menu-content"
-                  >
-                    <ul className="navbar-nav">
-                      <li className="nav-item">
-                        <Link
-                          to={`/${organization_name}/register-participant-CSR`}
-                          className="dropdown-item"
-                        >
-                          <span className="pt-4 font-size-12">
-                            Add Participant
-                          </span>
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to={`/${organization_name}/all-participant2`} className="dropdown-item">  
-                          <span className="pt-4 font-size-12">
-                            Participants List
-                          </span>
-                        </Link>
-                      </li>
-                    </ul>
-                  </Collapse>
-                </nav>
-              )}
 
               {this.state.account_type &&
                 this.state.account_type === "labowner" && (
@@ -529,53 +597,65 @@ class Navbar extends Component {
                     >
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          {/* <Link to={"/rounds-participant"} className="dropdown-item"> */}
-                          <Link
+                          {/* <NavLink to={"/rounds-participant"} className={({ isActive }) => `dropdown-item ${isActive ? "active-link" : ""}`}> */}
+                          <NavLink
                             to={`/${organization_name}/rounds-participant`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">Rounds</span>
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/performance`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">
                               Performance
                             </span>
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/newspage`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">News</span>
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/help`}
-                            className="dropdown-item"
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
                           >
                             <span className="pt-4 font-size-12">Help</span>
-                          </Link>
+                          </NavLink>
                         </li>
 
                         {this.state.user_id &&
                           this.state.user_type == "patient" && (
                             <li className="nav-item">
-                              <Link
+                              <NavLink
                                 to={"/test-appointments"}
-                                className="dropdown-item"
+                                className={({ isActive }) =>
+                                  `dropdown-item ${
+                                    isActive ? "active-link" : ""
+                                  }`
+                                }
                               >
                                 {/* {this.props.t("My Appointments")} */}
                                 <span className="pt-4 font-size-12">
                                   My Appointments
                                 </span>
-                              </Link>
+                              </NavLink>
                             </li>
                           )}
                       </ul>

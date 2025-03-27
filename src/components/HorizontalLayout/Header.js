@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import "react-drawer/lib/react-drawer.css";
 import { connect } from "react-redux";
 import { Row, Col } from "reactstrap";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 import logo from "../../assets/images/neqas-logo.jpeg";
 import logoLight from "../../assets/images/neqas-logo.jpeg";
@@ -210,7 +210,7 @@ class Header extends Component {
                     id="navigation"
                   >
                     <Collapse
-                       isOpen={isNavbarOpen}
+                      isOpen={isNavbarOpen}
                       className="navbar-collapse"
                       id="topnav-menu-content"
                     >
@@ -249,75 +249,75 @@ class Header extends Component {
                             }
                           >
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-units`}
                                 className="dropdown-item"
                               >
                                 Database of units
-                              </Link>
+                              </NavLink>
                             </li>
 
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-equipmentType`}
                                 className="dropdown-item"
                               >
                                 Database of equipment type
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-manufactural`}
                                 className="dropdown-item"
                               >
                                 Database of manufacturer
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/equipment-list`}
                                 className="dropdown-item"
                               >
                                 Database of equipments
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-method`}
                                 className="dropdown-item"
                               >
                                 Database of method
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-reagents`}
                                 className="dropdown-item"
                               >
                                 Database of reagents
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-analyte`}
                                 className="dropdown-item"
                               >
                                 Database of Analytes
-                              </Link>
+                              </NavLink>
                             </li>
                           </ul>
                         </li>
 
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/databaseadmin-news`}
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">
-                              Reports
+                              Database Review
                             </span>
                             {/* {this.props.t("Tests")} */}
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
                           <span
@@ -355,158 +355,177 @@ class Header extends Component {
                             }
                           >
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-participantcity`}
                                 className="dropdown-item"
                               >
                                 City
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-participantcountry`}
                                 className="dropdown-item"
                               >
                                 Country
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-participantprovince`}
                                 className="dropdown-item"
                               >
                                 Province
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-participantdistrict`}
                                 className="dropdown-item"
                               >
                                 District
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-participantdepartment`}
                                 className="dropdown-item"
                               >
                                 Department
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-participantdesignation`}
                                 className="dropdown-item"
                               >
                                 Designation
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-participanttype`}
                                 className="dropdown-item"
                               >
                                 Participant Type
-                              </Link>
+                              </NavLink>
                             </li>
                             <li>
-                              <Link
+                              <NavLink
                                 to={`/${organization_name}/database-of-participantSector`}
                                 className="dropdown-item"
                               >
                                 Participant Sector
-                              </Link>
+                              </NavLink>
                             </li>
                           </ul>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/scheme`}
                             className="dropdown-item"
+                            style={({ isActive }) =>
+                              isActive
+                                ? {
+                                    textDecoration: "underline",
+                                    fontWeight: "bold",
+                                    color: "white",
+                                  }
+                                : {}
+                            }
                           >
                             <span className="pt-4 font-size-12">Scheme</span>
-                            {/* {this.props.t("Tests")} */}
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/cycle`}
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">Cycle</span>
                             {/* {this.props.t("Tests")} */}
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/sample`}
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">Sample</span>
                             {/* {this.props.t("Tests")} */}
-                          </Link>
+                          </NavLink>
                         </li>
                       </ul>
                     </Collapse>
                   </nav>
                 )}
-  {this.state.account_type &&
-                this.state.account_type === "organization" && (
-                  <nav
-                    className="navbar navbar-light navbar-expand-lg"
-                    id="navigation"
-                  >
-                    <Collapse
-                       isOpen={isNavbarOpen}
-                       className="navbar-collapse"
-                       id="topnav-menu-content"
+                {this.state.account_type &&
+                  this.state.account_type === "organization" && (
+                    <nav
+                      className="navbar navbar-light navbar-expand-lg"
+                      id="navigation"
                     >
-                      <ul className="navbar-nav">
-                        <li className="nav-item">
-                          <Link to={`/${organization_name}/add-staff`} className="dropdown-item">
-                            <span className="pt-4 font-size-12">Add Staff</span>
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link
-                            to={`/${organization_name}/databaseadmin-list`}
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">
-                              Database Admin
-                            </span>
-                            {/* {this.props.t("Profiles")} */}
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link
-                            to={`/${organization_name}/registration-admin-list`}
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">
-                              Registration Admin
-                            </span>
-                            {/* {this.props.t("Packages")} */}
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                          <Link to={`/${organization_name}/csr-list`} className="dropdown-item">
-                            <span className="pt-4 font-size-12">CSR</span>
-                            {/* {this.props.t("Packages")} */}
-                          </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link to={`/${organization_name}/all-participants`} className="dropdown-item">
-                            <span className="pt-4 font-size-12">
-                              Participants List
-                            </span>
-                          </Link>
-                        </li>
-                      </ul>
-                    </Collapse>
-                  </nav>
-                )}
+                      <Collapse
+                        isOpen={isNavbarOpen}
+                        className="navbar-collapse"
+                        id="topnav-menu-content"
+                      >
+                        <ul className="navbar-nav">
+                          <li className="nav-item">
+                            <NavLink
+                              to={`/${organization_name}/add-staff`}
+                              className="dropdown-item"
+                            >
+                              <span className="pt-4 font-size-12">
+                                Add Staff
+                              </span>
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to={`/${organization_name}/databaseadmin-list`}
+                              className="dropdown-item"
+                            >
+                              <span className="pt-4 font-size-12">
+                                Database Admin
+                              </span>
+                              {/* {this.props.t("Profiles")} */}
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to={`/${organization_name}/registration-admin-list`}
+                              className="dropdown-item"
+                            >
+                              <span className="pt-4 font-size-12">
+                                Registration Admin
+                              </span>
+                              {/* {this.props.t("Packages")} */}
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to={`/${organization_name}/csr-list`}
+                              className="dropdown-item"
+                            >
+                              <span className="pt-4 font-size-12">CSR</span>
+                              {/* {this.props.t("Packages")} */}
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to={`/${organization_name}/all-participants`}
+                              className="dropdown-item"
+                            >
+                              <span className="pt-4 font-size-12">
+                                Participants List
+                              </span>
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </Collapse>
+                    </nav>
+                  )}
                 {this.state.account_type && this.state.account_type === "CSR" && (
                   <nav
                     className="navbar navbar-light navbar-expand-lg"
@@ -519,24 +538,24 @@ class Header extends Component {
                     >
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/register-participant-CSR`}
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">
                               Add Participant
                             </span>
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/all-participant2`}
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">
                               Participants List
                             </span>
-                          </Link>
+                          </NavLink>
                         </li>
                       </ul>
                     </Collapse>
@@ -554,24 +573,24 @@ class Header extends Component {
                     >
                       <ul className="navbar-nav">
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/register-participant-CSR`}
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">
                               Add Participant
                             </span>
-                          </Link>
+                          </NavLink>
                         </li>
                         <li className="nav-item">
-                          <Link
+                          <NavLink
                             to={`/${organization_name}/all-participant2`}
                             className="dropdown-item"
                           >
                             <span className="pt-4 font-size-12">
                               Participants List
                             </span>
-                          </Link>
+                          </NavLink>
                         </li>
                       </ul>
                     </Collapse>
@@ -584,48 +603,48 @@ class Header extends Component {
                       id="navigation"
                     >
                       <Collapse
-                         isOpen={isNavbarOpen}
-                         className="navbar-collapse"
-                         id="topnav-menu-content"
+                        isOpen={isNavbarOpen}
+                        className="navbar-collapse"
+                        id="topnav-menu-content"
                       >
                         <ul className="navbar-nav">
                           <li className="nav-item">
-                            {/* <Link to={"/rounds-participant"} className="dropdown-item"> */}
-                            <Link
+                            {/* <NavLink to={"/rounds-participant"} className="dropdown-item"> */}
+                            <NavLink
                               to={`/${organization_name}/rounds-participant`}
                               className="dropdown-item"
                             >
                               <span className="pt-4 font-size-12">Rounds</span>
-                            </Link>
+                            </NavLink>
                           </li>
                           <li className="nav-item">
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/performance`}
                               className="dropdown-item"
                             >
                               <span className="pt-4 font-size-12">
                                 Performance
                               </span>
-                            </Link>
+                            </NavLink>
                           </li>
                           <li className="nav-item">
-                            <Link
+                            <NavLink
                               to={`/${organization_name}/newspage`}
                               className="dropdown-item"
                             >
                               <span className="pt-4 font-size-12">News</span>
-                            </Link>
+                            </NavLink>
                           </li>
                           <li className="nav-item">
-                            <Link to={`/help`} className="dropdown-item">
+                            <NavLink to={`/help`} className="dropdown-item">
                               <span className="pt-4 font-size-12">Help</span>
-                            </Link>
+                            </NavLink>
                           </li>
 
                           {this.state.user_id &&
                             this.state.user_type == "patient" && (
                               <li className="nav-item">
-                                <Link
+                                <NavLink
                                   to={"/test-appointments"}
                                   className="dropdown-item"
                                 >
@@ -633,7 +652,7 @@ class Header extends Component {
                                   <span className="pt-4 font-size-12">
                                     My Appointments
                                   </span>
-                                </Link>
+                                </NavLink>
                               </li>
                             )}
                         </ul>
@@ -675,3 +694,4 @@ const mapStatetoProps = state => {
 export default connect(mapStatetoProps, { toggleRightSidebar })(
   withRouter(withTranslation()(Header))
 );
+
