@@ -123,29 +123,32 @@ function* onAddEquipmentTypefile(object) {
     yield put(addEquipmentTypefileFail(error));
   }
 }
+/// Scheme Analytes
 function* fetchSchemeAnalyteList(object) {
   try {
     console.log("Saga - Fetching Scheme Analyte List with Payload:", object.payload);
 
     // Call the API
     const response = yield call(getSchemeAnalytelist, object.payload);
-    console.log("Saga - Full API Response Before Dispatch:", response.data);
+    console.log("Saga - API Response:", response.data); // Log the full API response
 
+    // Extract analytes
     const analytes = response.data.analytes || [];
-    console.log("Saga - Extracted Analytes:", analytes);
+    console.log("Saga - Extracted Analytes:", analytes); // Log the extracted analytes
 
+    // Extract scheme name as a string
     const SchemeName = response.data.scheme_name || "Unknown";
-    console.log("Saga - Extracted Scheme Name:", SchemeName);
+    console.log("Saga - Extracted Scheme Name:", SchemeName); // Log the extracted scheme name
 
     // Dispatch success with both analytes and scheme name
     yield put(
       getSchemeAnalytelistSuccess({
         analytes,
-        SchemeName,
+        SchemeName, // Pass scheme name as a string
       })
     );
   } catch (error) {
-    console.error("Saga - Error Fetching Scheme Analyte List:", error);
+    console.error("Saga - Error Fetching Scheme Analyte List:", error); // Log any errors
     yield put(getSchemeAnalytelistFail(error));
   }
 }
