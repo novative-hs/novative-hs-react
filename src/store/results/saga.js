@@ -68,12 +68,22 @@ function* onPostValues(object) {
 function* fetchResultList(object) {
   try {
     const response = yield call(getResultsList, object.payload);
+    
+    if (response.data.length > 0) {
+      const updated_at = response.data[0].updated_at; // Extract updated_at
 
-    yield put(getResultsListSuccess(response.data));
+      yield put(getResultsListSuccess({
+        results: response.data,
+        updated_at: updated_at // Send updated_at to reducer
+      }));
+    } else {
+      yield put(getResultsListFail("No results found"));
+    }
   } catch (error) {
     yield put(getResultsListFail(error));
   }
 }
+
 ////////////////
 function* fetchValuesList(action) {
   try {

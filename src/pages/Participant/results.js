@@ -73,8 +73,6 @@ class Results extends Component {
       result: "",
       schemeName: "",
       schemeType: "",
-      submissionDate: null, // Stores the "Submitted on" date
-      resubmissionDate: null, // Stores the "Re-Submitted on" date
       round_status: "",
       result_status: "Created",
       rounds: "",
@@ -516,6 +514,7 @@ class Results extends Component {
 
     const id = this.props.match.params.id;
     const userId = this.state.user_id;
+    const submittedOn = localStorage.getItem("submittedOn");
 
     onGetSchemeAnalyte(id);
     onGetUnitsList(userId);
@@ -523,109 +522,76 @@ class Results extends Component {
     onGetReagents(userId);
     onGetInstrumentList(userId);
     onGetResultsList(id);
-
+    if (submittedOn) {
+      this.setState({ submittedOn });
+    }
     // Retrieve timestamps from localStorage
-    const storedSubmissionDate = localStorage.getItem("submissionDate");
-    const storedResubmissionDate = localStorage.getItem("resubmissionDate");
-
-    this.setState({
-        submissionDate: storedSubmissionDate,
-        resubmissionDate: storedResubmissionDate,
-    });
-    this.fetchResults(); 
+  
 }
+componentDidUpdate(prevProps, prevState) {
+  const {
+      SchemeAnalytesList,
+      ListUnits,
+      ListMethods,
+      Instrument,
+      ReagentList,
+      ResultList,
+      round_status,
+      result_type,
+  } = this.props;
 
-  componentDidUpdate(prevProps, prevState) {
-    const {
-        SchemeAnalytesList,
-        ListUnits,
-        ListMethods,
-        Instrument,
-        ReagentList,
-        ResultList,
-        round_status,
-        result_type,
-    } = this.props;
+  if (prevProps.Instrument !== this.props.Instrument) {
+      this.setState({ Instrument: this.props.Instrument });
+  }
 
-    // Log previous and current props
-    console.log("Prev Props:", prevProps);
-    console.log("Current Props:", this.props);
+  // Detect any data changes
+  const dataChanged = [
+      prevProps.SchemeAnalytesList !== SchemeAnalytesList,
+      prevProps.ListUnits !== ListUnits,
+      prevProps.ListMethods !== ListMethods,
+      prevProps.Instrument !== Instrument,
+      prevProps.ReagentList !== ReagentList,
+      prevProps.ResultList !== ResultList,
+      prevProps.round_status !== round_status,
+  ].some(Boolean);
 
-    if (prevProps.Instrument !== this.props.Instrument) {
-        console.log("Instrument list changed");
-    }
+  if (dataChanged) {
+      this.setState(
+          {
+              SchemeAnalytesList,
+              ListUnits,
+              ListMethods,
+              Instrument,
+              ReagentList,
+              ResultList,
+              round_status,
+              result_type,
+              isDataLoaded: true, 
+          },
+          this.combineData
+      );
+  }
 
-    if (
-        prevProps.Instrument !== this.props.Instrument &&
-        this.props.Instrument.length > 0
-    ) {
-        this.setState({ Instrument: this.props.Instrument });
-    }
+  // ✅ **Fix: Fetch and update `submittedOn` correctly**
+  if (prevProps.ResultList !== this.props.ResultList) {
+      if (this.props.ResultList && this.props.ResultList.length > 0) {
+          this.setState({ combinedData: this.props.ResultList });
 
-    // Log if data gets removed
-    if (prevProps.Instrument.length > 0 && this.props.Instrument.length === 0) {
-        console.log("All Instruments removed");
-    }
-
-    if (prevState.Instrument !== this.state.Instrument) {
-      console.log("Instruments updated:", this.state.Instrument);
-      this.forceUpdate(); // or update your table state
-    }
-
-    // Detect any data changes
-    const dataChanged = [
-        prevProps.SchemeAnalytesList !== SchemeAnalytesList,
-        prevProps.ListUnits !== ListUnits,
-        prevProps.ListMethods !== ListMethods,
-        prevProps.Instrument !== Instrument,
-        prevProps.ReagentList !== ReagentList,
-        prevProps.ResultList !== ResultList,
-        prevProps.round_status !== round_status,
-    ].some(Boolean);
-
-    if (
-        dataChanged &&
-        SchemeAnalytesList !== undefined &&
-        ListUnits !== undefined &&
-        ListMethods !== undefined &&
-        Instrument !== undefined
-    ) {
-        this.setState(
-            {
-                SchemeAnalytesList,
-                ListUnits,
-                ListMethods,
-                Instrument,
-                ReagentList,
-                ResultList,
-                round_status,
-                result_type,
-                isDataLoaded: true, // Data is now loaded
-            },
-            this.combineData
-        );
-    }
-
-    // Update combinedData when ResultList changes
-    if (prevProps.ResultList !== this.props.ResultList) {
-        if (this.props.ResultList && this.props.ResultList.length > 0) {
-            this.setState({ combinedData: this.props.ResultList });
-        }
-    }
-    if (prevProps.ResultList !== this.props.ResultList) {
-      if (this.props.ResultList.length === 0) {
-          // If results are deleted, clear the submission/resubmission dates
-          localStorage.removeItem("submissionDate");
-          localStorage.removeItem("resubmissionDate");
-
-          // Update state to reflect changes in UI
-          this.setState({ 
-              submissionDate: null,
-              resubmissionDate: null
-          });
+          // Fetch the `updated_at` field from backend
+          fetch(`/api/registration-admin/getResultsData`) // Replace with your API endpoint
+              .then(response => response.json())
+              .then(responseData => {
+                  if (responseData && responseData.updated_at) {
+                      this.setState({
+                          submittedOn: responseData.updated_at, // ✅ Correctly setting submittedOn
+                      });
+                  }
+              })
+              .catch(error => console.error("Error fetching updated data:", error));
       }
   }
 }
+
 
 // ✅ Add Auto-Refresh After Submit or Resubmit
 handleSubmitAll = async () => {
@@ -635,14 +601,58 @@ handleSubmitAll = async () => {
         window.location.reload();
     }, 1000); // 🚀 Refresh after 1 second
 };
-
 handleResubmit = async () => {
-    // Your existing resubmit logic
-    console.log("Resubmitting results...");
-    setTimeout(() => {
-        window.location.reload();
-    }, 1000); // 🚀 Refresh after 1 second
+  const { combinedData } = this.state;
+  const { rounds, scheme_id, round_status } = this.props;
+  const id = this.props.match.params.id;
+
+  if (!combinedData.length) {
+      alert("No results to resubmit.");
+      return;
+  }
+
+  const confirmation = window.confirm("Are you sure you want to resubmit all results?");
+  if (!confirmation) return;
+
+  try {
+      let latestUpdatedAt = new Date().toISOString(); // Default timestamp
+
+      for (const list of combinedData) {
+          const resultData = {
+              round_id: id,
+              analyte_id: list.analyte_id,
+              units: list.units,
+              instrument_name: list.instrument_name,
+              method_name: list.method_name,
+              reagent_name: list.reagent_name,
+              result_type: list.result_type,
+              result: this[`resultRef_${list.id}`]?.value || "",
+              rounds: rounds,
+              scheme_id: scheme_id,
+              round_status: round_status,
+              result_status: "Submitted", // ✅ FIXED: Now it's marked as "Resubmitted"
+          };
+
+          const response = await this.props.onPostResult(resultData, this.state.user_id);
+
+          if (response.type === "POST_RESULT" && response.payload?.updated_at) {
+              latestUpdatedAt = response.payload.updated_at; // Use timestamp from backend
+          }
+      }
+
+      // ✅ Store "Submitted On" timestamp
+      this.setState({ submittedOn: latestUpdatedAt });
+      localStorage.setItem("submittedOn", latestUpdatedAt);
+
+      alert("Results resubmitted successfully!");
+      setTimeout(() => {
+          window.location.reload();
+      }, 1000);
+  } catch (error) {
+      alert("Failed to resubmit results. Please try again.");
+  }
 };
+
   combineData = () => {
     const {
       SchemeAnalytesList,
@@ -812,7 +822,6 @@ handleResubmit = async () => {
     }
 };
 
-
 handleSubmitAll = async () => {
   const { combinedData } = this.state;
   const { rounds, scheme_id, round_status } = this.props;
@@ -848,12 +857,13 @@ handleSubmitAll = async () => {
           const response = await this.props.onPostResult(resultData, this.state.user_id);
 
           if (response.type === "POST_RESULT" && response.payload?.updated_at) {
-              latestUpdatedAt = response.payload.updated_at;
+              latestUpdatedAt = response.payload.updated_at; // Use actual timestamp from backend
           }
       }
 
-      // Save the timestamp in localStorage before reloading
-      localStorage.setItem("submissionDate", latestUpdatedAt);
+      // ✅ Store "Submitted On" in state & localStorage
+      this.setState({ submittedOn: latestUpdatedAt });
+      localStorage.setItem("submittedOn", latestUpdatedAt);
 
       alert("Results submitted successfully!");
       setTimeout(() => {
@@ -863,97 +873,54 @@ handleSubmitAll = async () => {
       alert("Failed to submit all results. Please try again.");
   }
 };
+
 handleResubmit = async () => {
-  const { combinedData, ReagentList } = this.state;
+  const { combinedData } = this.state;
   const { rounds, scheme_id, round_status } = this.props;
   const id = this.props.match.params.id;
 
   if (!combinedData.length) {
-      alert("No results to re-submit.");
+      alert("No results to resubmit.");
       return;
   }
 
-  const confirmation = window.confirm("Are you sure you want to re-submit?");
+  const confirmation = window.confirm("Are you sure you want to resubmit all results?");
   if (!confirmation) return;
 
   try {
-      let latestUpdatedAt = null;
-      const updatedResults = [];
+      let latestUpdatedAt = new Date().toISOString(); // Default timestamp
 
-      const promises = combinedData.map(async (list) => {
-          const reagentObj = ReagentList.find(reagent => reagent.name === list.reagent_name);
-          const reagentId = reagentObj ? reagentObj.id : null;
-
-          if (!reagentId) {
-              console.error("🚨 Invalid reagent:", list.reagent_name);
-              return;
-          }
-
+      for (const list of combinedData) {
           const resultData = {
               round_id: id,
               analyte_id: list.analyte_id,
               units: list.units,
               instrument_name: list.instrument_name,
               method_name: list.method_name,
-              reagent_name: reagentId,
+              reagent_name: list.reagent_name,
               result_type: list.result_type,
               result: this[`resultRef_${list.id}`]?.value || "",
-              rounds,
-              scheme_id,
-              round_status,
+              rounds: rounds,
+              scheme_id: scheme_id,
+              round_status: round_status,
               result_status: "Submitted",
           };
 
-          console.log("📤 Sending Data to API:", resultData);
-
           const response = await this.props.onPostResult(resultData, this.state.user_id);
-          console.log("✅ API Response:", response);
 
           if (response.type === "POST_RESULT" && response.payload?.updated_at) {
-              latestUpdatedAt = response.payload.updated_at;
-              updatedResults.push({
-                  ...resultData,
-                  submission_date: response.payload.updated_at,
-              });
+              latestUpdatedAt = response.payload.updated_at; // Use actual timestamp from backend
           }
-      });
+      }
 
-      await Promise.all(promises);
+      // ✅ Update "Submitted On" in state after resubmission
+      this.setState({ submittedOn: latestUpdatedAt });
 
-      // ✅ Save the Re-Submit date
-      const currentDateTime = latestUpdatedAt || new Date().toISOString();
-
-      this.setState(
-          prevState => ({
-              combinedData: prevState.combinedData.map(item => ({
-                  ...item,
-                  submission_date: currentDateTime,
-                  result_status: "Submitted", // ✅ Ensure UI updates correctly
-              })),
-              isResubmitted: false,  // ✅ Make sure Re-Submit button appears again
-              submissionMessage: "Results re-submitted successfully!",
-              submissionDate: currentDateTime,
-              resubmissionDate: currentDateTime,
-          }),
-          async () => {
-              console.log("✅ Updated state (Final Check):", this.state);
-              alert(`Result Re-Submitted on ${new Date(currentDateTime).toLocaleString()}`);
-
-              // ✅ Save dates to localStorage
-              localStorage.setItem("submissionDate", currentDateTime);
-              localStorage.setItem("resubmissionDate", currentDateTime);
-
-              // ✅ Fetch latest results after submission
-              await this.fetchResults();
-          }
-      );
-
+      alert("Results resubmitted successfully!");
   } catch (error) {
-      alert("❌ Failed to re-submit. Please try again.");
-      console.error("🚨 Re-submit Error:", error);
+      alert("Failed to resubmit results. Please try again.");
   }
 };
-
 
   handleUnitChange = (event, list) => {
     const { value } = event.target;
@@ -1211,45 +1178,35 @@ handleResubmit = async () => {
 
   {!this.state.isResubmitted && (
     <>
+      {/* ✅ Show Save & Submit buttons before submission */}
       {!(this.state.combinedData.length > 0 && this.state.combinedData.every(data => data.result_status === "Submitted")) ? (
         <>
-        
-        <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSaveAll}>
+          <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSaveAll}>
             Save
           </Button>
           <Button className="mb-3 btn btn-success" style={{ minWidth: "140px" }} onClick={this.handleSubmitAll}>
             Submit
           </Button>
-          {this.state.submissionDate && (
-            <span className="text-muted ms-2">
-              <strong>Submitted on:</strong> {moment(this.state.submissionDate).format("MM/DD/YYYY, h:mm:ss A")}
-            </span>
-          )}
         </>
       ) : (
+        /* ✅ After submission, hide Submit button & show Re-Submit with "Submitted On" */
         this.props.round_status === "Open" && (
           <>
             <Button className="btn btn-success mb-3" style={{ minWidth: "140px" }} onClick={this.handleResubmit}>
               Re-Submit
             </Button>
-            {this.state.resubmissionDate ? (
-    <span className="text-muted ms-2">
-        <strong>Re-Submitted on:</strong> {moment(this.state.resubmissionDate).format("MM/DD/YYYY, h:mm:ss A")}
-    </span>
-) : this.state.submissionDate ? (
-    <span className="text-muted ms-2">
-        <strong>Submitted on:</strong> {moment(this.state.submissionDate).format("MM/DD/YYYY, h:mm:ss A")}
-    </span>
-) : null}
-
+            {/* ✅ Show Submitted On date after Submit or Resubmit */}
+            {this.state.submittedOn && (
+              <div className="mb-3">
+                <strong>Submitted On:</strong> {new Date(this.state.submittedOn).toLocaleString()}
+              </div>
+            )}
           </>
         )
       )}
     </>
   )}
 </div>
-
-
 
               <Row className="justify-content-center align-item-center">
                 <Col lg="10">
