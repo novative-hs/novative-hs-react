@@ -875,7 +875,7 @@ handleSubmitAll = async () => {
 };
 
 handleResubmit = async () => {
-  const { combinedData } = this.state;
+  const { combinedData, Instrument, ReagentList } = this.state; // ✅ Ensure we have the lists
   const { rounds, scheme_id, round_status } = this.props;
   const id = this.props.match.params.id;
 
@@ -891,13 +891,17 @@ handleResubmit = async () => {
       let latestUpdatedAt = new Date().toISOString(); // Default timestamp
 
       for (const list of combinedData) {
+          // ✅ Convert instrument_name & reagent_name to IDs before resubmitting
+          const instrument = Instrument.find(instr => instr.name === list.instrument_name);
+          const reagent = ReagentList.find(reag => reag.name === list.reagent_name);
+
           const resultData = {
               round_id: id,
               analyte_id: list.analyte_id,
               units: list.units,
-              instrument_name: list.instrument_name,
+              instrument_name: instrument?.id ?? list.instrument_name, // ✅ Convert to ID
               method_name: list.method_name,
-              reagent_name: list.reagent_name,
+              reagent_name: reagent?.id ?? list.reagent_name, // ✅ Convert to ID
               result_type: list.result_type,
               result: this[`resultRef_${list.id}`]?.value || "",
               rounds: rounds,
@@ -906,10 +910,12 @@ handleResubmit = async () => {
               result_status: "Submitted",
           };
 
+          console.log("🚀 Resubmitting Payload:", resultData); // ✅ Debugging
+
           const response = await this.props.onPostResult(resultData, this.state.user_id);
 
           if (response.type === "POST_RESULT" && response.payload?.updated_at) {
-              latestUpdatedAt = response.payload.updated_at; // Use actual timestamp from backend
+              latestUpdatedAt = response.payload.updated_at;
           }
       }
 
@@ -921,6 +927,7 @@ handleResubmit = async () => {
       alert("Failed to resubmit results. Please try again.");
   }
 };
+
 
   handleUnitChange = (event, list) => {
     const { value } = event.target;
