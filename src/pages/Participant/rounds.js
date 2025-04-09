@@ -187,7 +187,7 @@ class Roundural extends Component {
         selectedScheme: "All",
         selectedCycle: "Active",
       });
-    }, 3000);
+    });
   }
 
   componentDidUpdate(prevProps) {

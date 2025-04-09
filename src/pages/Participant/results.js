@@ -342,7 +342,7 @@ class Results extends Component {
               <div className="text-start">
                 {list.result_status === "Submitted" ? (
                   <span>
-                    {selectedInstrument?.name || `${list.instrument_name}`}
+                    {selectedInstrument?.name || ` ${list.instrument_name}`}
                   </span>
                 ) : (
                   <select
@@ -365,7 +365,9 @@ class Results extends Component {
               </div>
             );
           },
-        },
+        }
+        
+        ,
 
         {
           text: "Method",
@@ -516,20 +518,114 @@ class Results extends Component {
     const userId = this.state.user_id;
     const submittedOn = localStorage.getItem("submittedOn");
 
+    console.log("User ID:", userId); // Ensure this is not undefined or null
+    console.log("Scheme ID:", id);   // Ensure this is valid
+
+    // Log the start of fetching each list
+    console.log("Fetching SchemeAnalyte...");
     onGetSchemeAnalyte(id);
+    
+    console.log("Fetching UnitsList for User ID:", userId);
     onGetUnitsList(userId);
+
+    console.log("Fetching MethodsList for User ID:", userId);
     onGetMethodsList(userId);
+
+    console.log("Fetching Reagents for User ID:", userId);
     onGetReagents(userId);
+
+    console.log("Fetching InstrumentList for User ID:", userId);
     onGetInstrumentList(userId);
+
+    console.log("Fetching ResultsList for Scheme ID:", id);
     onGetResultsList(id);
+
     if (submittedOn) {
       this.setState({ submittedOn });
+      console.log("Submitted On:", submittedOn); // Log the timestamp if it's found
     }
-    // Retrieve timestamps from localStorage
-  
+
+    // You can also add logs to confirm that these fetch actions were successful:
+    this.trackFetchedData();  // You can use this method to track the state of the fetched data.
 }
+
+// Method to track fetched data after state is updated
+trackFetchedData() {
+    console.log("Methods List:", this.state.ListMethods);
+    console.log("Instrument List:", this.state.Instrument);
+    console.log("Reagents List:", this.state.ReagentList);
+    console.log("Units List:", this.state.UnitsList);
+    console.log("Scheme Analyte List:", this.state.SchemeAnalytesList);
+    console.log("Results List:", this.state.ResultsList);
+}
+
+  
+
 componentDidUpdate(prevProps, prevState) {
   const {
+    SchemeAnalytesList,
+    ListUnits,
+    ListMethods,
+    Instrument,
+    ReagentList,
+    ResultList,
+    round_status,
+    result_type,
+  } = this.props;
+
+  // ✅ When user_id becomes available (typically after refresh)
+  if (!prevState.user_id && this.state.user_id) {
+    const userId = this.state.user_id;
+    const id = this.props.match.params.id;
+
+    console.log("user_id became available. Fetching all lists...");
+    this.props.onGetSchemeAnalyte(id);
+    this.props.onGetUnitsList(userId);
+    this.props.onGetMethodsList(userId);
+    this.props.onGetInstrumentList(userId);
+    this.props.onGetReagents(userId);
+    this.props.onGetResultsList(id);
+  }
+
+  // ✅ Check if all required lists are present, then run combineData only once
+  const allListsAvailable =
+    SchemeAnalytesList?.length > 0 &&
+    ListUnits?.length > 0 &&
+    ListMethods?.length > 0 &&
+    Instrument?.length > 0 &&
+    ReagentList?.length > 0 &&
+    ResultList?.length >= 0;
+
+  if (allListsAvailable && !this.state.isDataLoaded) {
+    this.setState(
+      {
+        SchemeAnalytesList,
+        ListUnits,
+        ListMethods,
+        Instrument,
+        ReagentList,
+        ResultList,
+        round_status,
+        result_type,
+        isDataLoaded: true,
+      },
+      this.combineData
+    );
+  }
+
+  // ✅ If any prop data changed AND data is already loaded, update state (don't re-run combineData)
+  const dataChanged = [
+    prevProps.SchemeAnalytesList !== SchemeAnalytesList,
+    prevProps.ListUnits !== ListUnits,
+    prevProps.ListMethods !== ListMethods,
+    prevProps.Instrument !== Instrument,
+    prevProps.ReagentList !== ReagentList,
+    prevProps.ResultList !== ResultList,
+    prevProps.round_status !== round_status,
+  ].some(Boolean);
+
+  if (dataChanged && this.state.isDataLoaded) {
+    this.setState({
       SchemeAnalytesList,
       ListUnits,
       ListMethods,
@@ -538,59 +634,25 @@ componentDidUpdate(prevProps, prevState) {
       ResultList,
       round_status,
       result_type,
-  } = this.props;
-
-  if (prevProps.Instrument !== this.props.Instrument) {
-      this.setState({ Instrument: this.props.Instrument });
+    });
   }
 
-  // Detect any data changes
-  const dataChanged = [
-      prevProps.SchemeAnalytesList !== SchemeAnalytesList,
-      prevProps.ListUnits !== ListUnits,
-      prevProps.ListMethods !== ListMethods,
-      prevProps.Instrument !== Instrument,
-      prevProps.ReagentList !== ReagentList,
-      prevProps.ResultList !== ResultList,
-      prevProps.round_status !== round_status,
-  ].some(Boolean);
-
-  if (dataChanged) {
-      this.setState(
-          {
-              SchemeAnalytesList,
-              ListUnits,
-              ListMethods,
-              Instrument,
-              ReagentList,
-              ResultList,
-              round_status,
-              result_type,
-              isDataLoaded: true, 
-          },
-          this.combineData
-      );
-  }
-
-  // ✅ **Fix: Fetch and update `submittedOn` correctly**
-  if (prevProps.ResultList !== this.props.ResultList) {
-      if (this.props.ResultList && this.props.ResultList.length > 0) {
-          this.setState({ combinedData: this.props.ResultList });
-
-          // Fetch the `updated_at` field from backend
-          fetch(`/api/registration-admin/getResultsData`) // Replace with your API endpoint
-              .then(response => response.json())
-              .then(responseData => {
-                  if (responseData && responseData.updated_at) {
-                      this.setState({
-                          submittedOn: responseData.updated_at, // ✅ Correctly setting submittedOn
-                      });
-                  }
-              })
-              .catch(error => console.error("Error fetching updated data:", error));
-      }
+  // ✅ Update 'submittedOn' from backend if ResultList has changed
+  if (prevProps.ResultList !== ResultList && ResultList.length > 0) {
+    fetch(`/api/registration-admin/getResultsData`)
+      .then(response => response.json())
+      .then(responseData => {
+        if (responseData?.updated_at) {
+          this.setState({ submittedOn: responseData.updated_at });
+        }
+      })
+      .catch(error => console.error("Error fetching updated data:", error));
   }
 }
+
+
+
+
 
 
 // ✅ Add Auto-Refresh After Submit or Resubmit

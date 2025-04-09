@@ -349,16 +349,21 @@ class SampleList extends Component {
 
 
   componentDidMount() {
-
+    // Check if selectedSample is available and log the scheme ID
+    console.log('Selected sample:', this.state.selectedSample);
+    console.log('Scheme ID:', this.state.selectedSample ? this.state.selectedSample.scheme.id : 'No scheme');
+  
+    // Your other logic here
     const { ListUnitt, onGetSampleList, onGetcyclelist, onGetScheme} = this.props;
-
+  
     // Ensure user_id is available before fetching data
     onGetSampleList(this.state.user_id);
     this.setState({ ListUnitt });
-
+  
     onGetcyclelist(this.state.user_id);
     onGetScheme(this.state.user_id);
   }
+  
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
@@ -397,7 +402,7 @@ class SampleList extends Component {
           samplename: sample.samplename,
           sampleno: sample.sampleno,
           scheme: sample.scheme,
-          analytetype: analyte.analytetype,
+          analytetype: sample.analytetype,
           detail: sample.detail,
           notes: sample.notes,
           status: sample.status,
@@ -414,8 +419,14 @@ class SampleList extends Component {
     }
   }
   
-  componentDidUpdate(prevProps) {
-    const { ListUnitt, CycleList, } = this.props;
+  componentDidUpdate(prevProps, prevState) {
+    // Log the selectedSample and scheme ID when it changes
+    if (this.state.selectedSample !== prevState.selectedSample) {
+      console.log('Selected sample updated:', this.state.selectedSample);
+      console.log('Scheme ID:', this.state.selectedSample ? this.state.selectedSample.scheme.id : 'No scheme');
+    }
+    
+    const { ListUnitt, CycleList } = this.props;
     if (!isEmpty(ListUnitt) && size(prevProps.ListUnitt) !== size(ListUnitt)) {
       this.setState({ ListUnitt: {}, isEdit: false });
     }
@@ -426,6 +437,7 @@ class SampleList extends Component {
       this.setState({ SchemeList: {}, isEdit: false });
     }
   }
+  
 
   onPaginationPageChange = page => {
     if (
@@ -567,7 +579,7 @@ class SampleList extends Component {
                                           initialValues={{
                                             samplename: this.state.selectedSample ? this.state.selectedSample.samplename : "",
                                             sampleno: this.state.selectedSample ? this.state.selectedSample.sampleno : "",
-                                            scheme: this.state.selectedSample ? this.state.selectedSample.scheme : "",
+                                            scheme: this.state.selectedSample && this.state.selectedSample.scheme ? this.state.selectedSample.scheme : "", // Change this line
                                             detail: this.state.selectedSample ? this.state.selectedSample.detail : "",
                                             notes: this.state.selectedSample ? this.state.selectedSample.notes : "",
                                             analytetype: this.state.selectedSample ? this.state.selectedSample.analytetype : "",
@@ -643,22 +655,40 @@ class SampleList extends Component {
                                                     />
                                                     <ErrorMessage name="sampleno" component="div" className="text-danger" />
                                                   </div>
-                                                  <div className="mb-3">
-                                                    <Label for="scheme">Select Scheme</Label>
-                                                    <Field
-                                                      as="select"
-                                                      name="scheme"
-                                                      className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
-                                                    >
-                                                      <option value="">Select Scheme</option>
-                                                      {SchemeList && SchemeList.map(scheme => (
-                                                        <option key={scheme.id} value={scheme.id}>
-                                                          {scheme.name} 
-                                                        </option>
-                                                      ))}
-                                                    </Field>
-                                                    <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
-                                                  </div>
+                                                   {/* Conditionally render Scheme input based on edit mode */}
+                                                   {this.state.isEdit ? (
+  <div className="mb-3">
+    <Label for="scheme">Selected Scheme</Label>
+    {/* Displaying the scheme as a non-editable field with the scheme name */}
+    <Field
+      name="scheme"
+      className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
+      component="input"
+      value={this.state.selectedSample && this.state.selectedSample.scheme ? this.state.selectedSample.scheme : ""} // Change this line
+      disabled // Make it non-editable
+    />
+    <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
+  </div>
+) : (
+  <div className="mb-3">
+    <Label for="scheme">Select Scheme</Label>
+    {/* Editable dropdown for adding a new sample */}
+    <Field
+      as="select"
+      name="scheme"
+      className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
+    >
+      <option value="">Select Scheme</option>
+      {SchemeList && SchemeList.map(scheme => (
+        <option key={scheme.id} value={scheme.id}>
+          {scheme.name}
+        </option>
+      ))}
+    </Field>
+    <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
+  </div>
+)}
+
                                                   {/* <div className="mb-3">
                                                     <Label for="scheme">Select Cycle No</Label>
                                                     <Field
@@ -826,7 +856,8 @@ const mapStateToProps = ({ ListUnitt, CycleList, SchemeList}) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetSampleList: (id) => { dispatch(getSamplelist(id)); },
   onAddSampleList: (sample) => { dispatch(addNewSampleList(sample)); },
-  onUpdateSampleList: (id, sample) => dispatch(updateSampleList({ id, ...sample })),
+  onUpdateSampleList: (sample) => dispatch(updateSampleList(sample)),
+
 
   onGetcyclelist: id => dispatch(getcyclelist(id)),
   onGetScheme: id => dispatch(getSchemelist(id)),

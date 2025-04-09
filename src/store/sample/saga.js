@@ -65,9 +65,11 @@ function* onUpdateNewSampleList({ payload: sample }) {
 function* onUpdateSampleList({ payload: sample }) {
   try {
     const response = yield call(updateSampleList, sample);
-    yield put(updateSampleListSuccess(response));
+    console.log("Response from updateSampleList:", response);
+    yield put(updateSampleListSuccess(response?.data)); // use response.data if it's Axios
   } catch (error) {
-    yield put(updateSampleListFail (error));
+    console.error("Caught error in updateSampleList saga:", error);
+    yield put(updateSampleListFail({ message: error.message || "Something went wrong" }));
   }
 }
 

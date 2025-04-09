@@ -646,7 +646,8 @@ export const addNewSampleList = (sample) => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateNewSampleList = (sample) => {
+//////////////////////////////////////
+export const updateSampleList = sample => {
   let formData = new FormData();
   formData.append("samplename", sample.samplename);
   formData.append("sampleno", sample.sampleno);
@@ -656,17 +657,25 @@ export const updateNewSampleList = (sample) => {
   formData.append("detail", sample.detail);
   formData.append("notes", sample.notes);
   formData.append("added_by", sample.added_by);
-  formData.append("analytetype", sample.analytetype);
-
-  return axios.put(`${url.UPDATE_NEW_SAMPLE_LIST}/${sample.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+  formData.append("analytetype", sample.analytetype); 
+  
+  return axios.put(
+    `${url.UPDATE_SAMPLE_LIST}/${sample.id}`,
+      formData,
+      {
+          headers: getHeader(authHeader()),
+      }
+  );
 };
-//////////////////////////////////////
-export const updateSampleList = (id, sample) => async (dispatch) => {
-  return axios.put(`${url.UPDATE_SAMPLE_LIST}/${sample.id}`, formData, {
-    headers: getHeader(authHeader()),
-  });
+///////////////////////////////////
+export const updateNewSampleList = (id, sample) => async dispatch => {
+return axios.put(
+  `${url.UPDATE_NEW_SAMPLE_LIST}/${sample.id}`,
+    formData,
+    {
+        headers: getHeader(authHeader()),
+    }
+);
 };
 ///////////////////////
 export const deleteSampleList = (sample) =>

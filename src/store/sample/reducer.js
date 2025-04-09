@@ -66,23 +66,30 @@ const ListUnitt = (state = INIT_STATE, action) => {
         };
   
   
-      case UPDATE_SAMPLE_LIST_SUCCESS:
-        console.log("Data received in UPDATE_SAMPLE_LIST_SUCCESS:", action.payload); // Log the action.payload
-          return {
-            ...state,
-              ListUnitt: state.ListUnitt.map(sample =>
-                sample.id.toString() === action.payload.id.toString()
-                  ? { sample, ...action.payload }
-                  : sample
-              ),
-        };
+        case UPDATE_SAMPLE_LIST_SUCCESS:
+          if (!action.payload || !action.payload.id) {
+            console.error("Invalid or missing payload in UPDATE_SAMPLE_LIST_SUCCESS:", action.payload);
+            return state;
+          }
         
-      case UPDATE_SAMPLE_LIST_FAIL:
-          console.log("Error in UPDATE_SAMPLE_LIST_FAIL:", action.payload); // Log the action.payload
           return {
             ...state,
-            error: action.payload,
+            ListUnitt: state.ListUnitt.map(sample =>
+              sample.id.toString() === action.payload.id.toString()
+                ? { ...sample, ...action.payload }
+                : sample
+            ),
           };
+        
+                
+                
+          case UPDATE_SAMPLE_LIST_FAIL:
+            console.log("Error in UPDATE_SAMPLE_LIST_FAIL:", action.payload);
+            return {
+              ...state,
+              error: action.payload?.message || "Unknown error",
+            };
+          
   
 
   
