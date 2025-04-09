@@ -148,33 +148,34 @@ class Results extends Component {
   };
   isAllFieldsZero = data => {
     // Check if all the relevant fields in the data are equal to 0
-    return data.every(item => 
-      item.lab_count === 0 &&
-      item.mean_result === 0 &&
-      item.median_result === 0 &&
-      item.robust_mean === 0 &&
-      item.std_deviation === 0 &&
-      item.uncertainty === 0 &&
-      item.cv_percentage === 0
+    return data.every(
+      item =>
+        item.lab_count === 0 &&
+        item.mean_result === 0 &&
+        item.median_result === 0 &&
+        item.robust_mean === 0 &&
+        item.std_deviation === 0 &&
+        item.uncertainty === 0 &&
+        item.cv_percentage === 0
     );
   };
-  
+
   componentDidMount() {
     const { onGetSchemeAnalyte, onGetStatisticsList } = this.props;
     const id = this.props.match.params.id;
-  
+
     // Fetch SchemeAnalytesList and ResultSubmit concurrently
     Promise.all([onGetSchemeAnalyte(id), onGetStatisticsList(id)])
       .then(() => {
         const { SchemeAnalytesList, Statistics } = this.props;
         // Combine data after both API calls succeed
         const combinedData = this.combineData(SchemeAnalytesList, Statistics);
-        
+
         // Check if all fields are 0 and set buttonText accordingly
         const isZero = this.isAllFieldsZero(combinedData);
-        this.setState({ 
+        this.setState({
           combinedData,
-          buttonText: isZero ? "Calculate" : "Recalculate" // Set button text based on data
+          buttonText: isZero ? "Calculate" : "Recalculate", // Set button text based on data
         });
       })
       .catch(error => {
@@ -183,42 +184,49 @@ class Results extends Component {
   }
   componentDidUpdate(prevProps) {
     const { SchemeAnalytesList, ResultSubmit, Statistics } = this.props;
-  
+
     if (
       SchemeAnalytesList !== prevProps.SchemeAnalytesList &&
       !isEmpty(SchemeAnalytesList)
     ) {
-      const combinedData = this.combineData(SchemeAnalytesList, this.props.ResultSubmit);
+      const combinedData = this.combineData(
+        SchemeAnalytesList,
+        this.props.ResultSubmit
+      );
       const isZero = this.isAllFieldsZero(combinedData);
       this.setState({
         SchemeAnalytesList: SchemeAnalytesList,
         combinedData,
-        buttonText: isZero ? "Calculate" : "Recalculate"
+        buttonText: isZero ? "Calculate" : "Recalculate",
       });
     }
-  
+
     if (ResultSubmit !== prevProps.ResultSubmit && !isEmpty(ResultSubmit)) {
-      const combinedData = this.combineData(this.props.SchemeAnalytesList, ResultSubmit);
+      const combinedData = this.combineData(
+        this.props.SchemeAnalytesList,
+        ResultSubmit
+      );
       const isZero = this.isAllFieldsZero(combinedData);
       this.setState({
         ResultSubmitList: ResultSubmit,
         combinedData,
-        buttonText: isZero ? "Calculate" : "Recalculate"
+        buttonText: isZero ? "Calculate" : "Recalculate",
       });
     }
-  
+
     if (Statistics !== prevProps.Statistics && !isEmpty(Statistics)) {
-      const combinedData = this.combineData(this.props.SchemeAnalytesList, Statistics);
+      const combinedData = this.combineData(
+        this.props.SchemeAnalytesList,
+        Statistics
+      );
       const isZero = this.isAllFieldsZero(combinedData);
       this.setState({
         StatisticsList: Statistics,
         combinedData,
-        buttonText: isZero ? "Calculate" : "Recalculate"
+        buttonText: isZero ? "Calculate" : "Recalculate",
       });
     }
   }
-  
-  
 
   onPaginationPageChange = page => {
     if (
@@ -274,7 +282,15 @@ class Results extends Component {
 
   render() {
     // };
-    const { closing_date, rounds } = this.props;
+    const {
+      closing_date,
+      rounds,
+      scheme_name,
+      scheme_type,
+      cycle_no,
+      round_issuedate,
+      round_status,
+    } = this.props;
 
     const { combinedData } = this.state; // Use the combined data
     const pageOptions = {
@@ -289,7 +305,7 @@ class Results extends Component {
         order: "desc",
       },
     ];
-    const { rounds_instance } = this.props;
+    const { issue_date } = this.props;
     return (
       <React.Fragment>
         <div className="page-content">
@@ -313,7 +329,7 @@ class Results extends Component {
                 {/* {this.state.buttonText === "Recalculate" && (
                   <Button
                     color="secondary"
-                    onClick={() => this.handleReport(rounds_instance)}
+                    onClick={() => this.handleReport(issue_date)}
                     className=""
                   >
                     Report
@@ -343,18 +359,81 @@ class Results extends Component {
               </ModalFooter>
             </Modal>
 
-            <Row className="mb-3">
-              <Col className="d-flex  justify-content-around">
-                <div className="d-flex  align-items-center">
-                  <span className="me-2">Round:</span>
-                  <span>{rounds ? rounds : "N/A"}</span>
-                </div>
-                <div className="d-flex align-items-center">
-                  <span className="me-2">Closing Date:</span>
-                  {moment(closing_date).format("DD MMM YYYY, h:mm A")}
-                </div>
-              </Col>
-            </Row>
+            <div className="container">
+              <Row className="mb-4">
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
+                    <span className="me-2">Round:</span>
+                    <span>
+                      <strong>{rounds ? rounds : "N/A"}</strong>
+                    </span>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
+                    <span className="me-2">Scheme Name:</span>
+                    <span>
+                      <strong>{scheme_name ? scheme_name : "N/A"}</strong>
+                    </span>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
+                    <span className="me-2">Scheme Type:</span>
+                    <span>
+                      <strong>{scheme_type ? scheme_type : "N/A"}</strong>
+                    </span>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
+                    <span className="me-2">Cycle No:</span>
+                    <span>
+                      <strong>{cycle_no ? cycle_no : "N/A"}</strong>
+                    </span>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row className="mb-3">
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
+                    <span className="me-2">Closing Date:</span>
+                    <span>
+                      <strong>
+                        {closing_date
+                          ? moment(closing_date).format("DD MMM YYYY, h:mm A")
+                          : "N/A"}
+                      </strong>
+                    </span>
+                  </div>
+                </Col>
+
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
+                    <span className="me-2">Issued Date:</span>
+                    <span>
+                      <strong>
+                        {round_issuedate
+                          ? moment(round_issuedate).format(
+                              "DD MMM YYYY, h:mm A"
+                            )
+                          : "N/A"}
+                      </strong>
+                    </span>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
+                    <span className="me-2">Status:</span>
+                    <span>
+                      <strong>{round_status ? round_status : "N/A"}</strong>
+                    </span>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+
             <Row className="justify-content-center align-item-center">
               <Col lg="10">
                 <Card>
@@ -418,9 +497,16 @@ Results.propTypes = {
   ResultSubmit: PropTypes.array,
   Statistics: PropTypes.array,
   rounds: PropTypes.string,
-  rounds_instance: PropTypes.object,
-
+  issue_date: PropTypes.object,
+  scheme_name: PropTypes.string,
+  scheme_type: PropTypes.string,
+  rounds: PropTypes.string,
   closing_date: PropTypes.string,
+  round_issuedate: PropTypes.string,
+  round_status: PropTypes.string,
+  cycle_no: PropTypes.string,
+
+  // closing_date: PropTypes.string,
   onGetSchemeAnalyte: PropTypes.func,
   onGetResultSubmit: PropTypes.func,
   onGetStatisticsList: PropTypes.func,
@@ -434,6 +520,13 @@ const mapStateToProps = ({ SchemeAnalytesList, ResultSubmit }) => ({
   rounds_instance: SchemeAnalytesList.rounds_instance,
   closing_date: SchemeAnalytesList.closing_date,
   Statistics: SchemeAnalytesList.Statistics,
+  scheme_name: SchemeAnalytesList.schemeName,
+  scheme_type: SchemeAnalytesList.schemeType,
+  // rounds: SchemeAnalytesList.rounds,
+  // closing_date: SchemeAnalytesList.closing_date,
+  round_issuedate: SchemeAnalytesList.issue_date,
+  round_status: SchemeAnalytesList.round_status,
+  cycle_no: SchemeAnalytesList.cycle_no,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -447,3 +540,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(Results));
+
