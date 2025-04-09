@@ -147,7 +147,7 @@ class Results extends Component {
                     value={list.units || ""}
                     onChange={e => this.handleUnitChange(e, list)}
                   >
-                    <option value="" disabled hidden>
+                    <option value="">
                       Select Unit
                     </option>
                     {filteredUnits.map((unit, index) => (
@@ -188,7 +188,7 @@ class Results extends Component {
                     value={list.instrument_name || ""}
                     onChange={(e) => this.handleInstrumentChange(e, list)}
                   >
-                    <option value="" disabled hidden>
+                    <option value="" >
                       Select Instrument
                     </option>
                     {filteredInstruments.length > 0
@@ -203,9 +203,7 @@ class Results extends Component {
               </div>
             );
           },
-        }
-        
-        ,
+        },
 
         {
           text: "Method",
@@ -221,27 +219,26 @@ class Results extends Component {
                 </span>
               ) : (
                 <select
-                  className="form-select me-2"
-                  value={list.method_name || ""}
-                  onChange={e => this.handleMethodChange(e, list)}
-                >
-                  <option value="" disabled hidden>
-                    Select Method
-                  </option>
-                  {this.state.ListMethods && this.state.SchemeAnalytesList
-                    ? this.state.ListMethods.filter(method =>
-                        this.state.SchemeAnalytesList.some(
-                          analyte =>
-                            analyte?.id === list?.analyte_id &&
-                            analyte?.methods?.includes(method.id)
-                        )
-                      ).map((method, index) => (
-                        <option key={index} value={method.id}>
-                          {method.name}
-                        </option>
-                      ))
-                    : null}
-                </select>
+                className="form-select me-2"
+                value={list.method_name || ""}
+                onChange={e => this.handleMethodChange(e, list)}
+              >
+                <option value="">Select Method</option>
+                {this.state.ListMethods && this.state.SchemeAnalytesList
+                  ? this.state.ListMethods.filter(method =>
+                      this.state.SchemeAnalytesList.some(
+                        analyte =>
+                          analyte?.id === list?.analyte_id &&
+                          analyte?.methods?.includes(method.id)
+                      )
+                    ).map((method, index) => (
+                      <option key={index} value={method.id}>
+                        {method.name}
+                      </option>
+                    ))
+                  : null}
+              </select>
+              
               )}
             </div>
           ),
@@ -266,7 +263,7 @@ class Results extends Component {
                   value={list.reagent_name || ""}
                   onChange={e => this.handleReagentChange(e, list)}
                 >
-                  <option value="" disabled hidden>
+                  <option value="">
                     Select Reagent
                   </option>
                   {this.state.ReagentList && this.state.SchemeAnalytesList
@@ -350,7 +347,7 @@ class Results extends Component {
                     value={list.instrument_name || ""}
                     onChange={(e) => this.handleInstrumentChange(e, list)}
                   >
-                    <option value="" disabled hidden>
+                    <option value="">
                       Select Instrument
                     </option>
                     {filteredInstruments.length > 0
@@ -387,7 +384,7 @@ class Results extends Component {
                   value={list.method_name || ""}
                   onChange={e => this.handleMethodChange(e, list)}
                 >
-                  <option value="" disabled hidden>
+                  <option value="">
                     Select Method
                   </option>
                   {this.state.ListMethods && this.state.SchemeAnalytesList
@@ -428,7 +425,7 @@ class Results extends Component {
                   value={list.reagent_name || ""}
                   onChange={e => this.handleReagentChange(e, list)}
                 >
-                  <option value="" disabled hidden>
+                  <option value="">
                     Select Reagent
                   </option>
                   {this.state.ReagentList && this.state.SchemeAnalytesList
@@ -749,11 +746,10 @@ handleResubmit = async () => {
           : Array.isArray(ListUnits) && ListUnits.length > 0
           ? ListUnits[0].id
           : "",
-        method_name: userResult
+          method_name: userResult
           ? userResult.method
-          : Array.isArray(ListMethods) && ListMethods.length > 0
-          ? ListMethods[0].id
           : "",
+        
         reagent_name: userResult
           ? this.state.ReagentList.find(
               reagent => reagent.id === userResult.reagents

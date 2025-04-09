@@ -1,10 +1,14 @@
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter, Link } from "react-router-dom";
-import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import BootstrapTable from "react-bootstrap-table-next";
+import filterFactory, {
+  textFilter,
+  selectFilter,
+} from "react-bootstrap-table2-filter";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import DeleteModal from "components/Common/DeleteModal";
@@ -19,7 +23,7 @@ import {
   ModalHeader,
   ModalBody,
   Label,
-  Button
+  Button,
 } from "reactstrap";
 import { isEmpty, size } from "lodash";
 
@@ -30,9 +34,13 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
-
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getSamplelist, addNewSampleList, updateSampleList, deleteSampleList } from "store/sample/actions";
+import {
+  getSamplelist,
+  addNewSampleList,
+  updateSampleList,
+  deleteSampleList,
+} from "store/sample/actions";
 
 import { getcyclelist } from "store/cycle/actions";
 import { getSchemelist } from "store/scheme/actions";
@@ -59,72 +67,71 @@ class SampleList extends Component {
         : "",
 
       successMessage: "",
-      idFilter:'',
-      nameFilter:'',
-      schemeFilter:'',
-      cycleFilter:'',
-      analyteFilter:'',
-      statusFilter:'',
-      analytetypeFilter: '',
+      idFilter: "",
+      nameFilter: "",
+      schemeFilter: "",
+      cycleFilter: "",
+      analyteFilter: "",
+      statusFilter: "",
+      analytetypeFilter: "",
       feedbackListColumns: [
         {
           dataField: "id",
           text: "Sample ID",
           sort: true,
-          style: { textAlign: 'center' },
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
+                  <input
+                    style={{
+                      width: "120px", // Set your desired width here
+                      fontSize: "14px",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "prewrap",
+                      textAlign: "center", // Align text to the left
+                      display: "block",
                     }}
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    onChange={e => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
                 <div>{column.text}</div>
               </>
             );
-
-        },
+          },
         },
         {
           dataField: "samplename",
           text: "Sample Name",
           sort: true,
-          style: { textAlign: 'center' },
+          style: { textAlign: "center" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
                 <div>
-                  <input style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
+                  <input
+                    style={{
+                      width: "120px", // Set your desired width here
+                      fontSize: "14px",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "prewrap",
+                      textAlign: "center", // Align text to the left
+                      display: "block",
                     }}
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    onChange={e => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
                   />
                 </div>
                 <div>{column.text}</div>
               </>
             );
-
-        },
-
+          },
         },
 
         {
@@ -135,27 +142,25 @@ class SampleList extends Component {
             return (
               <>
                 <div>
-                  <input style={{
-                      width: '150px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
+                  <input
+                    style={{
+                      width: "150px", // Set your desired width here
+                      fontSize: "14px",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "prewrap",
+                      textAlign: "center", // Align text to the left
+                      display: "block",
                     }}
                     type="text"
                     value={this.state.schemeFilter}
-                    onChange={e => this.handleFilterChange('schemeFilter', e)}
+                    onChange={e => this.handleFilterChange("schemeFilter", e)}
                     className="form-control"
                   />
                 </div>
                 <div>{column.text}</div>
               </>
             );
-
-        },
-
-
+          },
         },
         {
           dataField: "cycle_no",
@@ -165,27 +170,25 @@ class SampleList extends Component {
             return (
               <>
                 <div>
-                  <input style={{
-                      width: '150px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
+                  <input
+                    style={{
+                      width: "150px", // Set your desired width here
+                      fontSize: "14px",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "prewrap",
+                      textAlign: "center", // Align text to the left
+                      display: "block",
                     }}
                     type="text"
                     value={this.state.cycleFilter}
-                    onChange={e => this.handleFilterChange('cycleFilter', e)}
+                    onChange={e => this.handleFilterChange("cycleFilter", e)}
                     className="form-control"
                   />
                 </div>
                 <div>{column.text}</div>
               </>
             );
-
-        },
-
-
+          },
         },
         {
           dataField: "noofanalytes",
@@ -195,37 +198,43 @@ class SampleList extends Component {
             return (
               <>
                 <div>
-                  <input  style={{
-                      width: '150px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
+                  <input
+                    style={{
+                      width: "150px", // Set your desired width here
+                      fontSize: "14px",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "prewrap",
+                      textAlign: "center", // Align text to the left
+                      display: "block",
                     }}
                     type="text"
                     value={this.state.analyteFilter}
-                    onChange={e => this.handleFilterChange('analyteFilter', e)}
+                    onChange={e => this.handleFilterChange("analyteFilter", e)}
                     className="form-control"
                   />
                 </div>
                 <div>{column.text}</div>
               </>
             );
-        },
- formatter: (cellContent, unitlist) => {
+          },
+          formatter: (cellContent, unitlist) => {
             const { organization_name } = this.state;
             return (
               <div>
                 <Link
                   to={`/${organization_name}/sample-analyte/${unitlist.id}`}
-                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                  style={{
+                    textDecoration: "underline",
+                    color: "#0000CD",
+                    display: "block",
+                    marginTop: "5px",
+                  }}
                 >
                   {unitlist.noofanalytes}
                 </Link>
               </div>
             );
-          }
+          },
         },
         {
           dataField: "analytetype",
@@ -244,7 +253,7 @@ class SampleList extends Component {
                 >
                   <select
                     value={this.state.analytetypeFilter}
-                    onChange={(e) =>
+                    onChange={e =>
                       this.handleFilterChange("analytetypeFilter", e)
                     }
                     className="form-control"
@@ -273,16 +282,16 @@ class SampleList extends Component {
             return (
               <>
                 <div>
-                  <select style={{
-                      width: '120px', // Set your desired width here
-                      fontSize: '14px',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'prewrap',
-                      textAlign: 'center', // Align text to the left
-                      display: 'block',
+                  <select
+                    style={{
+                      width: "120px", // Set your desired width here
+                      fontSize: "14px",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "prewrap",
+                      textAlign: "center", // Align text to the left
+                      display: "block",
                     }}
-                  
-                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -295,86 +304,82 @@ class SampleList extends Component {
             );
           },
         },
-{
-  dataField: "menu",
-  isDummyField: true,
-  editable: false,
-  text: "Action",
-  formatter: (cellContent, sample) => (
-    <div className="d-flex gap-3 ml-3">
-      {/* Always allow adding analytes */}
-      <Tooltip title="Add Analytes">
-        <Link to={`/add-analytes-sample-page/${sample.id}`} style={{ textDecoration: 'underline', color: '#008000' }}>
-          <i className="mdi mdi-test-tube font-size-18" id="analyteIcon"></i>
-        </Link>
-      </Tooltip>
+        {
+          dataField: "menu",
+          isDummyField: true,
+          editable: false,
+          text: "Action",
+          formatter: (cellContent, sample) => (
+            <div className="d-flex gap-3 ml-3">
+              {/* Always allow adding analytes */}
+              <Tooltip title="Add Analytes">
+                <Link
+                  to={`/add-analytes-sample-page/${sample.id}`}
+                  style={{ textDecoration: "underline", color: "#008000" }}
+                >
+                  <i
+                    className="mdi mdi-test-tube font-size-18"
+                    id="analyteIcon"
+                  ></i>
+                </Link>
+              </Tooltip>
 
-      {/* Show Edit and Delete only if status is "Created" */}
-      {sample.status === "Created" ? (
-        <>
-          <Tooltip title="Update">
-            <Link className="text-success" to="#">
-              <i
-                className="mdi mdi-pencil font-size-18"
-                id="edittooltip"
-                onClick={() => this.toggle(sample)}
-              ></i>
-            </Link>
-          </Tooltip>
+              {/* Show Edit and Delete only if status is "Created" */}
+              {sample.status === "Created" ? (
+                <>
+                  <Tooltip title="Update">
+                    <Link className="text-success" to="#">
+                      <i
+                        className="mdi mdi-pencil font-size-18"
+                        id="edittooltip"
+                        onClick={() => this.toggle(sample)}
+                      ></i>
+                    </Link>
+                  </Tooltip>
 
-          <Tooltip title="Delete">
-            <Link className="text-danger" to="#">
-              <i
-                className="mdi mdi-delete font-size-18"
-                id="deletetooltip"
-                onClick={() => this.onClickDelete(sample)}
-              ></i>
-            </Link>
-          </Tooltip>
-        </>
-      ) : (
-        <span className="text-muted">
-          {/* Actions Disabled */}
-          </span>
-      )}
-    </div>
-  ),
-},
-
+                  <Tooltip title="Delete">
+                    <Link className="text-danger" to="#">
+                      <i
+                        className="mdi mdi-delete font-size-18"
+                        id="deletetooltip"
+                        onClick={() => this.onClickDelete(sample)}
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                </>
+              ) : (
+                <span className="text-muted">{/* Actions Disabled */}</span>
+              )}
+            </div>
+          ),
+        },
       ],
     };
     this.toggle = this.toggle.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
-
   componentDidMount() {
-    // Check if selectedSample is available and log the scheme ID
-    console.log('Selected sample:', this.state.selectedSample);
-    console.log('Scheme ID:', this.state.selectedSample ? this.state.selectedSample.scheme.id : 'No scheme');
-  
-    // Your other logic here
-    const { ListUnitt, onGetSampleList, onGetcyclelist, onGetScheme} = this.props;
-  
+    const { ListUnitt, onGetSampleList, onGetcyclelist, onGetScheme } =
+      this.props;
+
     // Ensure user_id is available before fetching data
     onGetSampleList(this.state.user_id);
     this.setState({ ListUnitt });
-  
+
     onGetcyclelist(this.state.user_id);
     onGetScheme(this.state.user_id);
   }
-  
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
   };
 
-  onClickDelete = (sample) => {
+  onClickDelete = sample => {
     if (sample && sample.id) {
       this.setState({ sample });
       this.setState({ deleteModal: true });
     } else {
-     
     }
   };
   handleFilterChange = (filterName, e) => {
@@ -394,7 +399,6 @@ class SampleList extends Component {
   };
   toggle(sample) {
     if (sample && sample.id) {
-
       this.setState({
         modal: true,
         selectedSample: {
@@ -410,7 +414,6 @@ class SampleList extends Component {
         isEdit: true,
       });
     } else {
-
       this.setState({
         modal: true,
         selectedSample: null,
@@ -418,14 +421,8 @@ class SampleList extends Component {
       });
     }
   }
-  
-  componentDidUpdate(prevProps, prevState) {
-    // Log the selectedSample and scheme ID when it changes
-    if (this.state.selectedSample !== prevState.selectedSample) {
-      console.log('Selected sample updated:', this.state.selectedSample);
-      console.log('Scheme ID:', this.state.selectedSample ? this.state.selectedSample.scheme.id : 'No scheme');
-    }
-    
+
+  componentDidUpdate(prevProps) {
     const { ListUnitt, CycleList } = this.props;
     if (!isEmpty(ListUnitt) && size(prevProps.ListUnitt) !== size(ListUnitt)) {
       this.setState({ ListUnitt: {}, isEdit: false });
@@ -433,11 +430,13 @@ class SampleList extends Component {
     if (!isEmpty(CycleList) && size(prevProps.CycleList) !== size(CycleList)) {
       this.setState({ CycleList: {}, isEdit: false });
     }
-    if (!isEmpty(SchemeList) && size(prevProps.SchemeList) !== size(SchemeList)) {
+    if (
+      !isEmpty(SchemeList) &&
+      size(prevProps.SchemeList) !== size(SchemeList)
+    ) {
       this.setState({ SchemeList: {}, isEdit: false });
     }
   }
-  
 
   onPaginationPageChange = page => {
     if (
@@ -453,10 +452,11 @@ class SampleList extends Component {
   closeModal = () => {
     this.setState({ modal: false });
   };
-  handleDeleteSampleList = (id) => {
+  handleDeleteSampleList = id => {
     const { onDeleteSampleList, onGetSampleList } = this.props;
     const { sample } = this.state;
-    if (sample && sample.id !== undefined) { // Ensure sample.id is defined
+    if (sample && sample.id !== undefined) {
+      // Ensure sample.id is defined
       console.log("Deleting sample:", sample.id);
       onDeleteSampleList(sample); // Pass sample directly without nesting
       setTimeout(() => {
@@ -469,25 +469,43 @@ class SampleList extends Component {
     }
   };
 
-
   render() {
     const { deleteModal } = this.state;
     const { SearchBar } = Search;
-    const { onAddSampleList, onUpdateSampleList, onGetSampleList, onDeleteSampleList, onGetcyclelist, onGetScheme } = this.props;
-    const { idFilter, nameFilter, schemeFilter, cycleFilter,analytetypeFilter, analyteFilter,statusFilter} = this.state;
-    
+    const {
+      onAddSampleList,
+      onUpdateSampleList,
+      onGetSampleList,
+      onDeleteSampleList,
+      onGetcyclelist,
+      onGetScheme,
+    } = this.props;
+    const {
+      idFilter,
+      nameFilter,
+      schemeFilter,
+      cycleFilter,
+      analytetypeFilter,
+      analyteFilter,
+      statusFilter,
+    } = this.state;
+
     const { ListUnitt, CycleList, SchemeList } = this.props;
 
     const filteredData = ListUnitt.filter(entry => {
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString().toLowerCase() : "";
-      const samplename = entry.samplename ? entry.samplename.toString().toLowerCase() : "";
+      const samplename = entry.samplename
+        ? entry.samplename.toString().toLowerCase()
+        : "";
       const scheme = entry.scheme ? entry.scheme.toString() : "";
       // const id = entry.id ? entry.id.toString() : "";
       const cycle_no = entry.cycle_no ? entry.cycle_no.toString() : "";
-      const noofanalytes = entry.noofanalytes ? entry.noofanalytes.toString() : "";
+      const noofanalytes = entry.noofanalytes
+        ? entry.noofanalytes.toString()
+        : "";
       const analytetype = entry.analytetype ? entry.analytetype.toString() : "";
-      const status= entry.status ? entry.status.toString() : "";
+      const status = entry.status ? entry.status.toString() : "";
       return (
         id.includes(idFilter.toLowerCase()) &&
         samplename.includes(nameFilter.toLowerCase()) &&
@@ -497,11 +515,8 @@ class SampleList extends Component {
         noofanalytes.includes(analyteFilter) &&
         analytetype.includes(analytetypeFilter) &&
         status.includes(statusFilter)
-        
       );
-
     });
-
 
     const pageOptions = {
       sizePerPage: 10,
@@ -531,74 +546,130 @@ class SampleList extends Component {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="List" breadcrumbItem="Sample List" />
 
-
             <Row className="justify-content-center">
               <Col lg="10">
-              <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
-              <p><strong>Note:</strong> Samples that have been rounded will be disabled for updates and deletions.</p>
+                <p>
+                  <strong>Note:</strong> Please click on the filter to sort the
+                  data in ascending (A to Z) or descending (Z to A) order.
+                </p>
+                <p>
+                  <strong>Note:</strong> Samples that have been rounded will be
+                  disabled for updates and deletions.
+                </p>
                 <Card>
                   <CardBody>
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={filteredData} 
+                      data={filteredData}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.feedbackListColumns}
-                          data={filteredData} 
+                          data={filteredData}
                           search
                         >
-
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-4">
-
                                 <Col xl="12">
                                   <Col className="text-end">
-
-                                    <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Sample</button>
+                                    <button
+                                      className="btn btn-primary btn-block mb-4"
+                                      onClick={() => this.toggle()}
+                                      style={{ background: "#0000CD" }}
+                                    >
+                                      Add New Sample
+                                    </button>
 
                                     <Modal
                                       isOpen={this.state.modal}
                                       className={this.props.className}
                                     >
-                                      <ModalHeader toggle={this.closeModal} tag="h4">
+                                      <ModalHeader
+                                        toggle={this.closeModal}
+                                        tag="h4"
+                                      >
                                         {"Sample"}
                                       </ModalHeader>
                                       <ModalBody>
                                         {this.state.successMessage && (
-                                          <div className="alert alert-success" role="alert">
+                                          <div
+                                            className="alert alert-success"
+                                            role="alert"
+                                          >
                                             {this.state.successMessage}
                                           </div>
                                         )}
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            samplename: this.state.selectedSample ? this.state.selectedSample.samplename : "",
-                                            sampleno: this.state.selectedSample ? this.state.selectedSample.sampleno : "",
-                                            scheme: this.state.selectedSample && this.state.selectedSample.scheme ? this.state.selectedSample.scheme : "", // Change this line
-                                            detail: this.state.selectedSample ? this.state.selectedSample.detail : "",
-                                            notes: this.state.selectedSample ? this.state.selectedSample.notes : "",
-                                            analytetype: this.state.selectedSample ? this.state.selectedSample.analytetype : "",
+                                            samplename: this.state
+                                              .selectedSample
+                                              ? this.state.selectedSample
+                                                  .samplename
+                                              : "",
+                                            sampleno: this.state.selectedSample
+                                              ? this.state.selectedSample
+                                                  .sampleno
+                                              : "",
+                                            scheme: this.state.selectedSample
+                                              ? this.state.selectedSample.scheme
+                                              : "",
+                                            detail: this.state.selectedSample
+                                              ? this.state.selectedSample.detail
+                                              : "",
+                                            notes: this.state.selectedSample
+                                              ? this.state.selectedSample.notes
+                                              : "",
+                                            analytetype: this.state
+                                              .selectedSample
+                                              ? this.state.selectedSample
+                                                  .analytetype
+                                              : "",
                                             // status: this.state.selectedSample ? this.state.selectedSample.status : "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            samplename: Yup.string().required("Sample Name is required"),
-                                            sampleno: Yup.string().required("Sample No is required"),
-                                            scheme: Yup.string().required("Scheme is required"),
-                                            detail: Yup.string().required("Details is required"),
-                                            notes: Yup.string().required("Notes are required"),
-                                            analytetype: Yup.string().trim().required("Please select the Type from dropdown"), 
+                                            samplename: Yup.string().required(
+                                              "Sample Name is required"
+                                            ),
+                                            sampleno: Yup.string().required(
+                                              "Sample No is required"
+                                            ),
+                                            scheme:
+                                              Yup.string().required(
+                                                "Scheme is required"
+                                              ),
+                                            detail: Yup.string().required(
+                                              "Details is required"
+                                            ),
+                                            notes:
+                                              Yup.string().required(
+                                                "Notes are required"
+                                              ),
+                                            analytetype: Yup.string()
+                                              .trim()
+                                              .required(
+                                                "Please select the Type from dropdown"
+                                              ),
                                             // status: Yup.string().required("Please select the Status from dropdown"),
                                           })}
-                                          onSubmit={async (values, { setSubmitting }) => {
-                                            const userId = localStorage.getItem("authUser")
-                                              ? JSON.parse(localStorage.getItem("authUser")).user_id
+                                          onSubmit={async (
+                                            values,
+                                            { setSubmitting }
+                                          ) => {
+                                            const userId = localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
                                               : "";
-                                          
+
                                             const newSample = {
                                               samplename: values.samplename,
                                               sampleno: values.sampleno,
@@ -606,89 +677,164 @@ class SampleList extends Component {
                                               detail: values.detail,
                                               notes: values.notes,
                                               added_by: userId,
-                                              analytetype: values.analytetype, 
+                                              analytetype: values.analytetype,
                                             };
-                                          
+
                                             try {
-                                              if (this.state.isEdit && this.state.selectedSample) {
-                                                console.log("Updating sample with ID:", this.state.selectedSample.id);
-                                                await this.props.onUpdateSampleList(this.state.selectedSample.id, newSample);
-                                                this.displaySuccessMessage("Sample updated successfully!");
+                                              if (
+                                                this.state.isEdit &&
+                                                this.state.selectedSample
+                                              ) {
+                                                console.log(
+                                                  "Updating sample with ID:",
+                                                  this.state.selectedSample.id
+                                                );
+                                                await this.props.onUpdateSampleList(
+                                                  this.state.selectedSample.id,
+                                                  newSample
+                                                );
+                                                this.displaySuccessMessage(
+                                                  "Sample updated successfully!"
+                                                );
                                               } else {
-                                                await this.props.onAddSampleList(newSample);
-                                                this.displaySuccessMessage("Sample added successfully!");
+                                                await this.props.onAddSampleList(
+                                                  newSample
+                                                );
+                                                this.displaySuccessMessage(
+                                                  "Sample added successfully!"
+                                                );
                                               }
-                                          
+
                                               // Refetch data and update local state
                                               setTimeout(async () => {
-                                                const updatedData = await this.props.onGetSampleList(this.state.user_id);
-                                                this.setState({ sample: updatedData });
+                                                const updatedData =
+                                                  await this.props.onGetSampleList(
+                                                    this.state.user_id
+                                                  );
+                                                this.setState({
+                                                  sample: updatedData,
+                                                });
                                               }, 300);
-                                          
                                             } catch (error) {
-                                              console.error("Error updating/adding sample:", error);
+                                              console.error(
+                                                "Error updating/adding sample:",
+                                                error
+                                              );
                                             }
-                                          
+
                                             setSubmitting(false);
                                           }}
-                                          
                                         >
                                           {({ errors, status, touched }) => (
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">Sample Name</Label>
+                                                    <Label className="col-form-label">
+                                                      Sample Name
+                                                    </Label>
                                                     <Field
                                                       name="samplename"
                                                       type="text"
                                                       className="form-control"
                                                     />
-                                                    <ErrorMessage name="samplename" component="div" className="text-danger" />
+                                                    <ErrorMessage
+                                                      name="samplename"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">Sample No</Label>
+                                                    <Label className="col-form-label">
+                                                      Sample No
+                                                    </Label>
                                                     <Field
                                                       name="sampleno"
                                                       type="text"
                                                       className="form-control"
                                                     />
-                                                    <ErrorMessage name="sampleno" component="div" className="text-danger" />
+                                                    <ErrorMessage
+                                                      name="sampleno"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
                                                   </div>
-                                                   {/* Conditionally render Scheme input based on edit mode */}
-                                                   {this.state.isEdit ? (
-  <div className="mb-3">
-    <Label for="scheme">Selected Scheme</Label>
-    {/* Displaying the scheme as a non-editable field with the scheme name */}
-    <Field
-      name="scheme"
-      className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
-      component="input"
-      value={this.state.selectedSample && this.state.selectedSample.scheme ? this.state.selectedSample.scheme : ""} // Change this line
-      disabled // Make it non-editable
-    />
-    <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
-  </div>
-) : (
-  <div className="mb-3">
-    <Label for="scheme">Select Scheme</Label>
-    {/* Editable dropdown for adding a new sample */}
-    <Field
-      as="select"
-      name="scheme"
-      className={"form-control" + (errors.scheme && touched.scheme ? " is-invalid" : "")}
-    >
-      <option value="">Select Scheme</option>
-      {SchemeList && SchemeList.map(scheme => (
-        <option key={scheme.id} value={scheme.id}>
-          {scheme.name}
-        </option>
-      ))}
-    </Field>
-    <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
-  </div>
-)}
-
+                                                  {this.state.isEdit ? (
+                                                    <div className="mb-3">
+                                                      <Label for="scheme">
+                                                        Selected Scheme
+                                                      </Label>
+                                                      {/* Displaying the scheme as a non-editable field with the scheme name */}
+                                                      <Field
+                                                        name="scheme"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.scheme &&
+                                                          touched.scheme
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        component="input"
+                                                        value={
+                                                          this.state
+                                                            .selectedSample &&
+                                                          this.state
+                                                            .selectedSample
+                                                            .scheme
+                                                            ? this.state
+                                                                .selectedSample
+                                                                .scheme
+                                                            : ""
+                                                        } // Change this line
+                                                        disabled // Make it non-editable
+                                                      />
+                                                      <ErrorMessage
+                                                        name="scheme"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  ) : (
+                                                    <div className="mb-3">
+                                                      <Label for="scheme">
+                                                        Select Scheme
+                                                      </Label>
+                                                      {/* Editable dropdown for adding a new sample */}
+                                                      <Field
+                                                        as="select"
+                                                        name="scheme"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.scheme &&
+                                                          touched.scheme
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                      >
+                                                        <option value="">
+                                                          Select Scheme
+                                                        </option>
+                                                        {SchemeList &&
+                                                          SchemeList.map(
+                                                            scheme => (
+                                                              <option
+                                                                key={scheme.id}
+                                                                value={
+                                                                  scheme.id
+                                                                }
+                                                              >
+                                                                {scheme.name}
+                                                              </option>
+                                                            )
+                                                          )}
+                                                      </Field>
+                                                      <ErrorMessage
+                                                        name="scheme"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  )}
                                                   {/* <div className="mb-3">
                                                     <Label for="scheme">Select Cycle No</Label>
                                                     <Field
@@ -705,7 +851,7 @@ class SampleList extends Component {
                                                     </Field>
                                                     <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
                                                   </div> */}
-                                               <div className="mb-3">
+                                                  <div className="mb-3">
                                                     <Label className="form-label">
                                                       Type
                                                       <span className="text-danger">
@@ -715,11 +861,12 @@ class SampleList extends Component {
                                                     <Field
                                                       as="select"
                                                       name="analytetype"
-                                                      className={`form-control ${errors.analytetype &&
+                                                      className={`form-control ${
+                                                        errors.analytetype &&
                                                         touched.analytetype
-                                                        ? "is-invalid"
-                                                        : ""
-                                                        }`}
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }`}
                                                     >
                                                       <option value="">
                                                         ----- Please select
@@ -739,22 +886,34 @@ class SampleList extends Component {
                                                     />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">Details</Label>
+                                                    <Label className="col-form-label">
+                                                      Details
+                                                    </Label>
                                                     <Field
                                                       name="detail"
                                                       type="text"
                                                       className="form-control"
                                                     />
-                                                    <ErrorMessage name="detail" component="div" className="text-danger" />
+                                                    <ErrorMessage
+                                                      name="detail"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
                                                   </div>
                                                   <div className="mb-3">
-                                                    <Label className="col-form-label">Notes</Label>
+                                                    <Label className="col-form-label">
+                                                      Notes
+                                                    </Label>
                                                     <Field
                                                       name="notes"
                                                       type="text"
                                                       className="form-control"
                                                     />
-                                                    <ErrorMessage name="notes" component="div" className="text-danger" />
+                                                    <ErrorMessage
+                                                      name="notes"
+                                                      component="div"
+                                                      className="text-danger"
+                                                    />
                                                   </div>
                                                   {/* <div className="mb-3">
                                                     <Label className="form-label">
@@ -776,18 +935,25 @@ class SampleList extends Component {
                                               <Row>
                                                 <Col>
                                                   <div className="text-end">
-                                                    <button type="submit" className="btn btn-success save-user"
-                                                      style={{ backgroundColor: '#0000CD', borderColor: '#0000CD' }}>Save</button>
+                                                    <button
+                                                      type="submit"
+                                                      className="btn btn-success save-user"
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#0000CD",
+                                                        borderColor: "#0000CD",
+                                                      }}
+                                                    >
+                                                      Save
+                                                    </button>
                                                   </div>
                                                 </Col>
                                               </Row>
                                             </Form>
                                           )}
                                         </Formik>
-
                                       </ModalBody>
                                     </Modal>
-
                                   </Col>
                                   <div className="table-responsive">
                                     <BootstrapTable
@@ -846,25 +1012,31 @@ SampleList.propTypes = {
   id: PropTypes.string,
 };
 
-const mapStateToProps = ({ ListUnitt, CycleList, SchemeList}) => ({
+const mapStateToProps = ({ ListUnitt, CycleList, SchemeList }) => ({
   CycleList: CycleList.CycleList,
-  SchemeList:SchemeList.SchemeList,
+  SchemeList: SchemeList.SchemeList,
   ListUnitt: ListUnitt.ListUnitt,
-
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetSampleList: (id) => { dispatch(getSamplelist(id)); },
-  onAddSampleList: (sample) => { dispatch(addNewSampleList(sample)); },
-  onUpdateSampleList: (sample) => dispatch(updateSampleList(sample)),
-
+  onGetSampleList: id => {
+    dispatch(getSamplelist(id));
+  },
+  onAddSampleList: sample => {
+    dispatch(addNewSampleList(sample));
+  },
+  onUpdateSampleList: (id, sample) =>
+    dispatch(updateSampleList({ id, ...sample })),
 
   onGetcyclelist: id => dispatch(getcyclelist(id)),
   onGetScheme: id => dispatch(getSchemelist(id)),
-  onDeleteSampleList: (sample) => {dispatch(deleteSampleList(sample));
-    
+  onDeleteSampleList: sample => {
+    dispatch(deleteSampleList(sample));
   },
 });
 
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(SampleList));
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SampleList));
