@@ -60,6 +60,7 @@ class InstrumentType extends Component {
       selectedRound: null,
       isEdit: false,
       organization_name: "",
+      selectedSchemeId: "", // New state
       idFilter: "",
       roundsFilter: "",
       schemenameFilter: "",
@@ -440,19 +441,19 @@ class InstrumentType extends Component {
                 {/* {/ Show statistics icon only when the status is "Closed" or "Report Available" /} */}
                 {(round.status === "Closed" ||
                   round.status === "Report Available") && (
-                    <Tooltip title="Statistics">
-                      <Link
-                        to="#"
-                        onClick={() => this.onClickStatistics(round)}
-                        style={{ textDecoration: "underline", color: "#008000" }}
-                      >
-                        <i
-                          className="mdi mdi-chart-bar font-size-18"
-                          id="statisticsIcon"
-                        ></i>
-                      </Link>
-                    </Tooltip>
-                  )}
+                  <Tooltip title="Statistics">
+                    <Link
+                      to="#"
+                      onClick={() => this.onClickStatistics(round)}
+                      style={{ textDecoration: "underline", color: "#008000" }}
+                    >
+                      <i
+                        className="mdi mdi-chart-bar font-size-18"
+                        id="statisticsIcon"
+                      ></i>
+                    </Link>
+                  </Tooltip>
+                )}
 
                 <Tooltip title="Update">
                   <Link className="text-success" to="#">
@@ -508,6 +509,7 @@ class InstrumentType extends Component {
 
   handleSchemeChange = e => {
     const selectedSchemeId = parseInt(e.target.value);
+    this.setState({ selectedSchemeId });
     console.log("Selected Scheme ID:", selectedSchemeId);
     console.log("CycleList:", this.props.CycleList);
     console.log("ListUnitt (Samples):", this.props.ListUnitt);
@@ -530,10 +532,12 @@ class InstrumentType extends Component {
 
     console.log("Filtered Cycle List:", filteredCycleList);
     const filteredSampleList = this.props.ListUnitt.filter(
-      (sample) =>
+      sample =>
         sample.scheme_id === selectedSchemeId &&
         !this.props.RoundList.some(
-          (round) => round.sample === sample.samplename && round.id !== this.state.selectedRound?.id // Exclude current round's sample
+          round =>
+            round.sample === sample.samplename &&
+            round.id !== this.state.selectedRound?.id // Exclude current round's sample
         )
     );
 
@@ -659,7 +663,7 @@ class InstrumentType extends Component {
           selectedRound: round,
           selectedSchemeId: round.scheme,
           selectedCycle: round.cycle_no,
-          selectedSample: round.sample || '', // Set the previously selected sample
+          selectedSample: round.sample || "", // Set the previously selected sample
           isEdit: true,
         },
         () => {
@@ -778,6 +782,10 @@ class InstrumentType extends Component {
       const status = entry.status ? entry.status.toString() : "";
       const scheme_type = entry.scheme_type ? entry.scheme_type.toString() : "";
 
+      const matchesScheme =
+        !this.state.selectedSchemeId ||
+        entry.scheme?.toString() === this.state.selectedSchemeId.toString();
+
       return (
         id.includes(idFilter) &&
         rounds.includes(roundsFilter) &&
@@ -788,7 +796,8 @@ class InstrumentType extends Component {
         issue_date.includes(issuedateFilter) &&
         closing_date.includes(closingdateFilter) &&
         note.includes(notesFilter) &&
-        status.includes(statusFilter)
+        status.includes(statusFilter) &&
+        matchesScheme
         // scheme_type
       );
     });
@@ -848,8 +857,40 @@ class InstrumentType extends Component {
                           {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-4">
+                                
                                 <Col xl="12">
                                   <Col className="text-end">
+                                  <select
+                                  className="form-select mb-3"
+                                  onChange={this.handleSchemeChange}
+                                  value={this.state.selectedSchemeId}
+                                  style={{ width: "300px" }}
+                                >
+                                  <option value="">Filter by Scheme</option>
+
+                                  {Array.isArray(this.state.SchemeList) &&
+                                  Array.isArray(this.props.RoundList) &&
+                                  this.state.SchemeList.length > 0 ? (
+                                    this.state.SchemeList.filter(scheme =>
+                                      this.props.RoundList.some(
+                                        round =>
+                                          round.scheme?.toString() ===
+                                          scheme.id.toString()
+                                      )
+                                    ).map(scheme => (
+                                      <option key={scheme.id} value={scheme.id}>
+                                        {scheme.scheme_name ||
+                                          scheme.name ||
+                                          "Unnamed Scheme"}
+                                      </option>
+                                    ))
+                                  ) : (
+                                    <option disabled>
+                                      No Schemes Available
+                                    </option>
+                                  )}
+                                </select>
+
                                     <button
                                       className="btn btn-primary btn-block mb-4"
                                       onClick={() => this.toggle()}
@@ -891,19 +932,19 @@ class InstrumentType extends Component {
                                             participants: this.state
                                               .selectedRound
                                               ? this.state.selectedRound
-                                                .participants
+                                                  .participants
                                               : "",
                                             cycle_no: this.state.selectedCycle
                                               ? String(this.state.selectedCycle)
                                               : "", // ✅ Ensure it's a string
                                             issue_date: this.state.selectedRound
                                               ? this.state.selectedRound
-                                                .issue_date
+                                                  .issue_date
                                               : "",
                                             closing_date: this.state
                                               .selectedRound
                                               ? this.state.selectedRound
-                                                .closing_date
+                                                  .closing_date
                                               : "",
                                             note: this.state.selectedRound
                                               ? this.state.selectedRound.note
@@ -934,13 +975,13 @@ class InstrumentType extends Component {
                                             ),
                                             sample: this.state.isEdit
                                               ? Yup.string().required(
-                                                "Sample is required"
-                                              )
+                                                  "Sample is required"
+                                                )
                                               : Yup.string(),
                                             status: this.state.isEdit
                                               ? Yup.string().required(
-                                                "Status is required"
-                                              )
+                                                  "Status is required"
+                                                )
                                               : Yup.string(),
                                           })}
                                           onSubmit={async (
@@ -957,10 +998,10 @@ class InstrumentType extends Component {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                localStorage.getItem(
-                                                  "authUser"
-                                                )
-                                              ).user_id
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
                                               : "";
 
                                             const newround = {
@@ -1053,12 +1094,13 @@ class InstrumentType extends Component {
                                                         </label>
                                                         <select
                                                           {...field}
-                                                          className={`form-control${form.errors
+                                                          className={`form-control${
+                                                            form.errors
                                                               .scheme &&
-                                                              form.touched.scheme
+                                                            form.touched.scheme
                                                               ? " is-invalid"
                                                               : ""
-                                                            }`}
+                                                          }`}
                                                           onChange={e => {
                                                             const { value } =
                                                               e.target;
@@ -1132,13 +1174,14 @@ class InstrumentType extends Component {
                                                           </label>
                                                           <select
                                                             {...field}
-                                                            className={`form-control${form.errors
+                                                            className={`form-control${
+                                                              form.errors
                                                                 .cycle_no &&
-                                                                form.touched
-                                                                  .cycle_no
+                                                              form.touched
+                                                                .cycle_no
                                                                 ? " is-invalid"
                                                                 : ""
-                                                              }`}
+                                                            }`}
                                                             disabled={
                                                               this.state.isEdit
                                                             } // ✅ Disable only in Edit Mode
@@ -1151,7 +1194,7 @@ class InstrumentType extends Component {
                                                                 cycle =>
                                                                   cycle.status &&
                                                                   cycle.status.toLowerCase() ===
-                                                                  "active"
+                                                                    "active"
                                                               )
                                                               .map(cycle => (
                                                                 <option
@@ -1195,7 +1238,7 @@ class InstrumentType extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.issue_date &&
-                                                          touched.issue_date
+                                                        touched.issue_date
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -1217,7 +1260,7 @@ class InstrumentType extends Component {
                                                       className={
                                                         "form-control" +
                                                         (errors.closing_date &&
-                                                          touched.closing_date
+                                                        touched.closing_date
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -1247,38 +1290,78 @@ class InstrumentType extends Component {
                                                   {this.state.isEdit && (
                                                     <>
                                                       <div className="mb-3">
-                                                        <Label for="sample">Sample</Label>
+                                                        <Label for="sample">
+                                                          Sample
+                                                        </Label>
                                                         <Field name="sample">
-                                                          {({ field, form }) => (
+                                                          {({
+                                                            field,
+                                                            form,
+                                                          }) => (
                                                             <select
                                                               {...field}
-                                                              className={`form-control${form.errors.sample && form.touched.sample ? " is-invalid" : ""
-                                                                }`}
-                                                              value={this.state.selectedSample || ''} // Set the default value
-                                                              onChange={(e) => {
-                                                                this.setState({ selectedSample: e.target.value }); // Update the state
-                                                                form.setFieldValue("sample", e.target.value); // Update the form value
+                                                              className={`form-control${
+                                                                form.errors
+                                                                  .sample &&
+                                                                form.touched
+                                                                  .sample
+                                                                  ? " is-invalid"
+                                                                  : ""
+                                                              }`}
+                                                              value={
+                                                                this.state
+                                                                  .selectedSample ||
+                                                                ""
+                                                              } // Set the default value
+                                                              onChange={e => {
+                                                                this.setState({
+                                                                  selectedSample:
+                                                                    e.target
+                                                                      .value,
+                                                                }); // Update the state
+                                                                form.setFieldValue(
+                                                                  "sample",
+                                                                  e.target.value
+                                                                ); // Update the form value
                                                               }}
                                                               disabled={[
                                                                 "Ready",
                                                                 "Open",
                                                                 "Closed",
                                                                 "Report Available",
-                                                              ].includes(form.values.status)} // Disable based on status
+                                                              ].includes(
+                                                                form.values
+                                                                  .status
+                                                              )} // Disable based on status
                                                             >
-                                                              <option value="">Select Sample</option>
-                                                              {this.state.filteredSampleList.map((sample) => (
-                                                                <option key={sample.id} value={sample.samplename}>
-                                                                  {sample.samplename}
-                                                                </option>
-                                                              ))}
+                                                              <option value="">
+                                                                Select Sample
+                                                              </option>
+                                                              {this.state.filteredSampleList.map(
+                                                                sample => (
+                                                                  <option
+                                                                    key={
+                                                                      sample.id
+                                                                    }
+                                                                    value={
+                                                                      sample.samplename
+                                                                    }
+                                                                  >
+                                                                    {
+                                                                      sample.samplename
+                                                                    }
+                                                                  </option>
+                                                                )
+                                                              )}
                                                             </select>
-
                                                           )}
                                                         </Field>
-                                                        <ErrorMessage name="sample" component="div" className="invalid-feedback" />
+                                                        <ErrorMessage
+                                                          name="sample"
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
                                                       </div>
-
 
                                                       <div className="mb-3">
                                                         <Label className="col-form-label">
@@ -1431,3 +1514,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(InstrumentType));
+
