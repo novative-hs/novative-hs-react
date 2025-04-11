@@ -653,13 +653,13 @@ componentDidUpdate(prevProps, prevState) {
 
 
 // ✅ Add Auto-Refresh After Submit or Resubmit
-handleSubmitAll = async () => {
-    // Your existing submit logic
-    console.log("Submitting results...");
-    setTimeout(() => {
-        window.location.reload();
-    }, 1000); // 🚀 Refresh after 1 second
-};
+// handleSubmitAll = async () => {
+//     // Your existing submit logic
+//     console.log("Submitting results...");
+//     setTimeout(() => {
+//         window.location.reload();
+//     }, 1000); // 🚀 Refresh after 1 second
+// };
 handleResubmit = async () => {
   const { combinedData } = this.state;
   const { rounds, scheme_id, round_status } = this.props;
