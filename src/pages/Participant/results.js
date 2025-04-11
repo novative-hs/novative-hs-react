@@ -924,14 +924,14 @@ handleSubmitAll = async () => {
       localStorage.setItem("submittedOn", latestUpdatedAt);
 
       alert("Results submitted successfully!");
-      setTimeout(() => {
-          window.location.reload();
-      }, 1000);
+      // setTimeout(() => {
+      //     window.location.reload();
+      // }, 1000);
+      window.location.reload();
   } catch (error) {
       alert("Failed to submit all results. Please try again.");
   }
 };
-
 handleResubmit = async () => {
   const { combinedData, Instrument, ReagentList } = this.state; // ✅ Ensure we have the lists
   const { rounds, scheme_id, round_status } = this.props;
