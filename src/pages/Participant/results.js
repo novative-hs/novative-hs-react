@@ -1194,7 +1194,7 @@ handleResubmit = async () => {
         {schemeType ? (
           <div className="page-content">
             <MetaTags>
-              <title>Unapproved Participant | NEQAS</title>
+              <title> Participant Result | NEQAS</title>
             </MetaTags>
             <Container fluid>
               {/* <Breadcrumbs title="Participant" breadcrumbItem="Unapproved" /> */}
