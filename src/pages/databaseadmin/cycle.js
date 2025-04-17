@@ -53,6 +53,7 @@ class InstrumentType extends Component {
       selectedCycle: null,
       isEdit: false,
       organization_name: '',
+      selectedScheme: "",
       idFilter: '',
       schemenameFilter: '',
       cyclenoFilter: '',
@@ -434,6 +435,11 @@ class InstrumentType extends Component {
     this.onClickDelete = this.onClickDelete.bind(this);
   }
 
+  handleSchemeChange = (e) => {
+    const selectedScheme = e.target.value;
+    this.setState({ selectedScheme });
+  };
+
   componentDidMount() {
     
     const { organization_name } = this.props.match.params;
@@ -559,7 +565,7 @@ render() {
     value: cycle.id,
   }));
   const { CycleList, SchemeList } = this.props;
-  const { isEdit, deleteModal } = this.state;
+  const { isEdit, deleteModal, selectedScheme  } = this.state;
   const { onGetInstrumentTypeList, onUpdateType, onGetgetschemelist, onAddNewType } = this.props;
   const cycle = this.state.CycleList;
   
@@ -586,7 +592,8 @@ render() {
       end_date.includes(enddateFilter) &&
       rounds.includes(roundsFilter) &&
       analytes.includes(noofanalytesFilter) &&
-      status.includes(statusFilter)
+      status.includes(statusFilter) &&
+      (selectedScheme === "" || scheme_name === selectedScheme.toLowerCase())
     );
   });
 
@@ -644,8 +651,24 @@ render() {
                         {toolkitprops => (
                           <React.Fragment>
                             <Row className="mb-4">
-
                               <Col xl="12">
+
+                              <Col md={4}>
+    <label className="form-label">Filter by Scheme</label>
+    <select
+      className="form-control"
+      value={this.state.selectedScheme}
+      onChange={this.handleSchemeChange}
+    >
+      <option value="">All Schemes</option>
+      {[...new Set(CycleList.map(cycle => cycle.scheme_name))].map((schemeName, index) => (
+        <option key={index} value={schemeName}>
+          {schemeName}
+        </option>
+      ))}
+    </select>
+  </Col>
+                              
                                 <Col className="text-end">
 
                                     <button className="btn btn-primary btn-block mb-4" onClick={() => this.toggle()} style={{ background: "#0000CD" }}>Add New Cycle</button>

@@ -166,9 +166,12 @@ class Results extends Component {
           dataField: "instrument_name",
           sort: true,
           formatter: (cellContent, list) => {
-            // Filter instruments based on analyte_name
+            // Filter instruments based on analyte_name and status === 'Active'
             const filteredInstruments = this.state.Instrument.filter((instr) => {
-              return instr.analytes.includes(list.analyte_name); // Compare names
+              return (
+                instr.status === "Active" &&
+                instr.analytes.includes(list.analyte_name)
+              );
             });
         
             // Find the selected instrument
@@ -188,23 +191,22 @@ class Results extends Component {
                     value={list.instrument_name || ""}
                     onChange={(e) => this.handleInstrumentChange(e, list)}
                   >
-                    <option value="" >
-                      Select Instrument
-                    </option>
-                    {filteredInstruments.length > 0
-                      ? filteredInstruments.map((instr, index) => (
-                          <option key={index} value={instr.id}>
-                            {instr.name}
-                          </option>
-                        ))
-                      : <option value="">No Instruments available</option>}
+                    <option value="">Select Instrument</option>
+                    {filteredInstruments.length > 0 ? (
+                      filteredInstruments.map((instr, index) => (
+                        <option key={index} value={instr.id}>
+                          {instr.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No Instruments available</option>
+                    )}
                   </select>
                 )}
               </div>
             );
           },
         },
-
         {
           text: "Method",
           dataField: "method_name",
@@ -219,26 +221,27 @@ class Results extends Component {
                 </span>
               ) : (
                 <select
-                className="form-select me-2"
-                value={list.method_name || ""}
-                onChange={e => this.handleMethodChange(e, list)}
-              >
-                <option value="">Select Method</option>
-                {this.state.ListMethods && this.state.SchemeAnalytesList
-                  ? this.state.ListMethods.filter(method =>
-                      this.state.SchemeAnalytesList.some(
-                        analyte =>
-                          analyte?.id === list?.analyte_id &&
-                          analyte?.methods?.includes(method.id)
-                      )
-                    ).map((method, index) => (
-                      <option key={index} value={method.id}>
-                        {method.name}
-                      </option>
-                    ))
-                  : null}
-              </select>
-              
+                  className="form-select me-2"
+                  value={list.method_name || ""}
+                  onChange={e => this.handleMethodChange(e, list)}
+                >
+                  <option value="">Select Method</option>
+                  {this.state.ListMethods && this.state.SchemeAnalytesList
+                    ? this.state.ListMethods.filter(
+                        method =>
+                          method.status === "Active" &&
+                          this.state.SchemeAnalytesList.some(
+                            analyte =>
+                              analyte?.id === list?.analyte_id &&
+                              analyte?.methods?.includes(method.id)
+                          )
+                      ).map((method, index) => (
+                        <option key={index} value={method.id}>
+                          {method.name}
+                        </option>
+                      ))
+                    : null}
+                </select>
               )}
             </div>
           ),
@@ -253,9 +256,7 @@ class Results extends Component {
                 <span>
                   {this.state.ReagentList.find(
                     reagent => reagent.id === list.reagent_name
-                  )?.name ||
-                    list.reagent_name ||
-                    "N/A"}
+                  )?.name || list.reagent_name || "N/A"}
                 </span>
               ) : (
                 <select
@@ -263,16 +264,16 @@ class Results extends Component {
                   value={list.reagent_name || ""}
                   onChange={e => this.handleReagentChange(e, list)}
                 >
-                  <option value="">
-                    Select Reagent
-                  </option>
+                  <option value="">Select Reagent</option>
                   {this.state.ReagentList && this.state.SchemeAnalytesList
-                    ? this.state.ReagentList.filter(reagent =>
-                        this.state.SchemeAnalytesList.some(
-                          analyte =>
-                            analyte?.id === list?.analyte_id &&
-                            analyte?.reagents?.includes(reagent.id)
-                        )
+                    ? this.state.ReagentList.filter(
+                        reagent =>
+                          reagent.status === "Active" &&
+                          this.state.SchemeAnalytesList.some(
+                            analyte =>
+                              analyte?.id === list?.analyte_id &&
+                              analyte?.reagents?.includes(reagent.id)
+                          )
                       ).map((reagent, index) => (
                         <option key={index} value={reagent.id}>
                           {reagent.name}
@@ -284,6 +285,7 @@ class Results extends Component {
             </div>
           ),
         },
+        
 
         {
           text: "Result Value",
@@ -325,9 +327,12 @@ class Results extends Component {
           dataField: "instrument_name",
           sort: true,
           formatter: (cellContent, list) => {
-            // Filter instruments based on analyte_name
+            // Filter instruments based on analyte_name and status === 'Active'
             const filteredInstruments = this.state.Instrument.filter((instr) => {
-              return instr.analytes.includes(list.analyte_name); // Compare names
+              return (
+                instr.status === "Active" &&
+                instr.analytes.includes(list.analyte_name)
+              );
             });
         
             // Find the selected instrument
@@ -347,25 +352,23 @@ class Results extends Component {
                     value={list.instrument_name || ""}
                     onChange={(e) => this.handleInstrumentChange(e, list)}
                   >
-                    <option value="">
-                      Select Instrument
-                    </option>
-                    {filteredInstruments.length > 0
-                      ? filteredInstruments.map((instr, index) => (
-                          <option key={index} value={instr.id}>
-                            {instr.name}
-                          </option>
-                        ))
-                      : <option value="">No Instruments available</option>}
+                    <option value="">Select Instrument</option>
+                    {filteredInstruments.length > 0 ? (
+                      filteredInstruments.map((instr, index) => (
+                        <option key={index} value={instr.id}>
+                          {instr.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="">No Instruments available</option>
+                    )}
                   </select>
                 )}
               </div>
             );
           },
-        }
+        },
         
-        ,
-
         {
           text: "Method",
           dataField: "method_name",
@@ -384,16 +387,16 @@ class Results extends Component {
                   value={list.method_name || ""}
                   onChange={e => this.handleMethodChange(e, list)}
                 >
-                  <option value="">
-                    Select Method
-                  </option>
+                  <option value="">Select Method</option>
                   {this.state.ListMethods && this.state.SchemeAnalytesList
-                    ? this.state.ListMethods.filter(method =>
-                        this.state.SchemeAnalytesList.some(
-                          analyte =>
-                            analyte?.id === list?.analyte_id &&
-                            analyte?.methods?.includes(method.id)
-                        )
+                    ? this.state.ListMethods.filter(
+                        method =>
+                          method.status === "Active" &&
+                          this.state.SchemeAnalytesList.some(
+                            analyte =>
+                              analyte?.id === list?.analyte_id &&
+                              analyte?.methods?.includes(method.id)
+                          )
                       ).map((method, index) => (
                         <option key={index} value={method.id}>
                           {method.name}
@@ -415,9 +418,7 @@ class Results extends Component {
                 <span>
                   {this.state.ReagentList.find(
                     reagent => reagent.id === list.reagent_name
-                  )?.name ||
-                    list.reagent_name ||
-                    "N/A"}
+                  )?.name || list.reagent_name || "N/A"}
                 </span>
               ) : (
                 <select
@@ -425,16 +426,16 @@ class Results extends Component {
                   value={list.reagent_name || ""}
                   onChange={e => this.handleReagentChange(e, list)}
                 >
-                  <option value="">
-                    Select Reagent
-                  </option>
+                  <option value="">Select Reagent</option>
                   {this.state.ReagentList && this.state.SchemeAnalytesList
-                    ? this.state.ReagentList.filter(reagent =>
-                        this.state.SchemeAnalytesList.some(
-                          analyte =>
-                            analyte?.id === list?.analyte_id &&
-                            analyte?.reagents?.includes(reagent.id)
-                        )
+                    ? this.state.ReagentList.filter(
+                        reagent =>
+                          reagent.status === "Active" &&
+                          this.state.SchemeAnalytesList.some(
+                            analyte =>
+                              analyte?.id === list?.analyte_id &&
+                              analyte?.reagents?.includes(reagent.id)
+                          )
                       ).map((reagent, index) => (
                         <option key={index} value={reagent.id}>
                           {reagent.name}
@@ -446,6 +447,7 @@ class Results extends Component {
             </div>
           ),
         },
+        
 
         {
           text: "Result Type",
@@ -837,8 +839,7 @@ handleResubmit = async () => {
       // Handle error
       alert("Failed to submit result. Please try again.");
     } finally {
-      // Code to run after try/catch
-      // Example: Reset form, close modal, etc.
+   
     }
   };
 
@@ -932,6 +933,7 @@ handleSubmitAll = async () => {
       alert("Failed to submit all results. Please try again.");
   }
 };
+
 handleResubmit = async () => {
   const { combinedData, Instrument, ReagentList } = this.state; // ✅ Ensure we have the lists
   const { rounds, scheme_id, round_status } = this.props;
@@ -1173,7 +1175,7 @@ handleResubmit = async () => {
     } = this.props;
 
     const pageOptions = {
-      sizePerPage: 50,
+      sizePerPage: 10,
       totalSize: combinedData.length > 0 ? combinedData.length : " ",
       custom: true,
     };
@@ -1194,7 +1196,7 @@ handleResubmit = async () => {
         {schemeType ? (
           <div className="page-content">
             <MetaTags>
-              <title> Participant Result | NEQAS</title>
+              <title>Participant Result | NEQAS</title>
             </MetaTags>
             <Container fluid>
               {/* <Breadcrumbs title="Participant" breadcrumbItem="Unapproved" /> */}
