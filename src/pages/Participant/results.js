@@ -568,6 +568,12 @@ class Results extends Component {
       result_type,
     } = this.props;
 
+    // Check if round_status changed and update state
+    if (prevProps.round_status !== round_status) {
+      this.setState({ round_status });
+      console.log("Updated round_status:", round_status); // Debugging
+    }
+
     // ✅ When user_id becomes available (typically after refresh)
     if (!prevState.user_id && this.state.user_id) {
       const userId = this.state.user_id;
@@ -1178,6 +1184,7 @@ class Results extends Component {
       cycle_no,
       round_status,
     } = this.props;
+    console.log("Round Status:", this.props.round_status);
 
     const pageOptions = {
       sizePerPage: 10,
@@ -1265,56 +1272,57 @@ class Results extends Component {
                   </Button>
                 </Link>
 
-                {!this.state.isResubmitted && (
-                  <>
-                    {/* ✅ Show Save & Submit buttons before submission */}
-                    {!(
-                      this.state.combinedData.length > 0 &&
-                      this.state.combinedData.every(
-                        data => data.result_status === "Submitted"
-                      )
-                    ) ? (
-                      <>
-                        <Button
-                          className="mb-3 btn btn-success"
-                          style={{ minWidth: "140px" }}
-                          onClick={this.handleSaveAll}
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          className="mb-3 btn btn-success"
-                          style={{ minWidth: "140px" }}
-                          onClick={this.handleSubmitAll}
-                        >
-                          Submit
-                        </Button>
-                      </>
-                    ) : (
-                      /* ✅ After submission, hide Submit button & show Re-Submit with "Submitted On" */
-                      this.props.round_status === "Open" && (
+                {this.props.round_status === "Open" &&
+                  !this.state.isResubmitted && (
+                    <>
+                      {/* ✅ Show Save & Submit buttons before submission */}
+                      {!(
+                        this.state.combinedData.length > 0 &&
+                        this.state.combinedData.every(
+                          data => data.result_status === "Submitted"
+                        )
+                      ) ? (
                         <>
                           <Button
-                            className="btn btn-success mb-3"
+                            className="mb-3 btn btn-success"
                             style={{ minWidth: "140px" }}
-                            onClick={this.handleResubmit}
+                            onClick={this.handleSaveAll}
                           >
-                            Re-Submit
+                            Save
                           </Button>
-                          {/* ✅ Show Submitted On date after Submit or Resubmit */}
-                          {this.state.submittedOn && (
-                            <div className="mb-3">
-                              <strong>Submitted On:</strong>{" "}
-                              {new Date(
-                                this.state.submittedOn
-                              ).toLocaleString()}
-                            </div>
-                          )}
+                          <Button
+                            className="mb-3 btn btn-success"
+                            style={{ minWidth: "140px" }}
+                            onClick={this.handleSubmitAll}
+                          >
+                            Submit
+                          </Button>
                         </>
-                      )
-                    )}
-                  </>
-                )}
+                      ) : (
+                        /* ✅ After submission, hide Submit button & show Re-Submit with "Submitted On" */
+                        this.props.round_status === "Open" && (
+                          <>
+                            <Button
+                              className="btn btn-success mb-3"
+                              style={{ minWidth: "140px" }}
+                              onClick={this.handleResubmit}
+                            >
+                              Re-Submit
+                            </Button>
+                            {/* ✅ Show Submitted On date after Submit or Resubmit */}
+                            {this.state.submittedOn && (
+                              <div className="mb-3">
+                                <strong>Submitted On:</strong>{" "}
+                                {new Date(
+                                  this.state.submittedOn
+                                ).toLocaleString()}
+                              </div>
+                            )}
+                          </>
+                        )
+                      )}
+                    </>
+                  )}
               </div>
 
               <Row className="justify-content-center align-item-center">
