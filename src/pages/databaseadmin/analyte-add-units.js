@@ -307,38 +307,42 @@ class AnalyteAddUnits extends Component {
       },
     }));
   };
-
   handleCheckboxChange = (id, column) => {
     this.setState(prevState => {
       let selectedCheckboxes = { ...prevState.selectedCheckboxes };
-
+  
       if (column === "masterUnit") {
-        // Uncheck all other checkboxes in the "Master Unit" column
+        // Uncheck all other master units
         Object.keys(selectedCheckboxes).forEach(key => {
           if (selectedCheckboxes[key]?.masterUnit && key !== id.toString()) {
             selectedCheckboxes[key].masterUnit = false;
           }
         });
-
-        // Toggle the selected checkbox in the "Master Unit" column
+  
+        // Toggle master unit
+        const isCurrentlyMaster = selectedCheckboxes[id]?.masterUnit || false;
         selectedCheckboxes[id] = {
           ...selectedCheckboxes[id],
-          masterUnit: !selectedCheckboxes[id]?.masterUnit
+          masterUnit: !isCurrentlyMaster,
+          // If setting as master, also mark as allowed
+          allowedUnit: !isCurrentlyMaster ? true : selectedCheckboxes[id]?.allowedUnit
         };
       } else if (column === "allowedUnit") {
-        // Toggle the selected checkbox in the "Allowed Unit" column
+        // Toggle allowed unit
         selectedCheckboxes[id] = {
           ...selectedCheckboxes[id],
           allowedUnit: !selectedCheckboxes[id]?.allowedUnit
         };
       }
-
+  
       return { selectedCheckboxes };
     }, () => {
-      // Force table re-render by updating the key
+      // Optional: Force table re-render
       this.setState(prevState => ({ tableKey: prevState.tableKey + 1 }));
     });
   };
+  
+
 
   filterData = () => {
     const { ListUnits } = this.props;
