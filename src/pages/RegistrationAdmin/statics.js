@@ -396,20 +396,8 @@ class Results extends Component {
               </Row>
 
               <Row className="mb-3">
-                <Col md={3}>
-                  <div className="d-flex align-items-center">
-                    <span className="me-2">Closing Date:</span>
-                    <span>
-                      <strong>
-                        {closing_date
-                          ? moment(closing_date).format("DD MMM YYYY, h:mm A")
-                          : "N/A"}
-                      </strong>
-                    </span>
-                  </div>
-                </Col>
-
-                <Col md={3}>
+                
+              <Col md={3}>
                   <div className="d-flex align-items-center">
                     <span className="me-2">Issued Date:</span>
                     <span>
@@ -423,6 +411,19 @@ class Results extends Component {
                     </span>
                   </div>
                 </Col>
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
+                    <span className="me-2">Closing Date:</span>
+                    <span>
+                      <strong>
+                        {closing_date
+                          ? moment(closing_date).format("DD MMM YYYY, h:mm A")
+                          : "N/A"}
+                      </strong>
+                    </span>
+                  </div>
+                </Col>
+
                 <Col md={3}>
                   <div className="d-flex align-items-center">
                     <span className="me-2">Status:</span>
