@@ -708,9 +708,9 @@ class Results extends Component {
       localStorage.setItem("submittedOn", latestUpdatedAt);
 
       alert("Results resubmitted successfully!");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // });
     } catch (error) {
       alert("Failed to resubmit results. Please try again.");
     }
@@ -747,18 +747,11 @@ class Results extends Component {
         // Use stored values if available, otherwise default to the first item in the list
         units: userResult && userResult.units ? userResult.units : "",
 
-        method_name: userResult ? userResult.method : "",
+        reagent_name: userResult ? userResult.reagents || null : null,
+        method_name: userResult ? userResult.method || null : null,
 
-        reagent_name: userResult
-          ? this.state.ReagentList.find(
-              reagent => reagent.id === userResult.reagents
-            )?.name || "N/A"
-          : "N/A",
-        instrument_name: userResult
-          ? this.state.Instrument.find(
-              instr => instr.id === userResult.instrument
-            )?.name || "N/A"
-          : "N/A",
+        instrument_name: userResult ? userResult.instrument || null : null,
+
         result: userResult ? userResult.result : "",
         result_status: userResult ? userResult.result_status : null,
         result_type: userResult ? userResult.result_type : null,
@@ -788,9 +781,9 @@ class Results extends Component {
     // Validate required fields
     if (
       !units ||
-      !instrument_name ||
-      !method_name ||
-      !reagent_name ||
+      // !instrument_name ||
+      // !method_name ||
+      // !reagent_name ||
       !result
     ) {
       alert("Please fill out all required fields.");
@@ -811,9 +804,9 @@ class Results extends Component {
       // analyte_name: analyteData ? analyteData.analyte_name : "", // Ensure analyte_name is included
       units: list.units,
       rounds: rounds,
-      instrument_name: list.instrument_name,
-      method_name: list.method_name,
-      reagent_name: list.reagent_name,
+      instrument_name: list.instrument_name || null,
+      method_name: list.method_name || null,
+      reagent_name: list.reagent_name || null,
       result_type: list.result_type,
       result: this[`resultRef_${list.id}`]?.value || "", // Get the value from the ref
       rounds: rounds,
@@ -859,9 +852,9 @@ class Results extends Component {
           round_id: id,
           analyte_id: list.analyte_id,
           units: list.units,
-          instrument_name: list.instrument_name,
-          method_name: list.method_name,
-          reagent_name: list.reagent_name,
+          instrument_name: list.instrument_name || null,
+          method_name: list.method_name || null,
+          reagent_name: list.reagent_name || null,
           result_type: list.result_type,
           result: this[`resultRef_${list.id}`]?.value || "",
           rounds,
@@ -901,9 +894,9 @@ class Results extends Component {
           round_id: id,
           analyte_id: list.analyte_id,
           units: list.units,
-          instrument_name: list.instrument_name,
-          method_name: list.method_name,
-          reagent_name: list.reagent_name,
+          instrument_name: list.instrument_name || null,
+          method_name: list.method_name || null,
+          reagent_name: list.reagent_name || null,
           result_type: list.result_type,
           result: this[`resultRef_${list.id}`]?.value || "",
           rounds: rounds,
@@ -967,9 +960,9 @@ class Results extends Component {
           round_id: id,
           analyte_id: list.analyte_id,
           units: list.units,
-          instrument_name: instrument?.id ?? list.instrument_name, // ✅ Convert to ID
-          method_name: list.method_name,
-          reagent_name: reagent?.id ?? list.reagent_name, // ✅ Convert to ID
+          instrument_name: list.instrument_name || null,
+          method_name: list.method_name || null,
+          reagent_name: list.reagent_name || null,
           result_type: list.result_type,
           result: this[`resultRef_${list.id}`]?.value || "",
           rounds: rounds,
