@@ -137,9 +137,7 @@ class Results extends Component {
 
             return (
               <div className="text-start">
-                {list.result_status === "Submitted" ? (
-                  <span>{selectedUnit?.name || `${list.units}`}</span>
-                ) : (
+                {this.state.round_status === "Open" ? (
                   <select
                     className="form-select me-2"
                     value={list.units || ""}
@@ -147,11 +145,26 @@ class Results extends Component {
                   >
                     <option value="">Select Unit</option>
                     {filteredUnits.map((unit, index) => (
-                      <option key={index} value={unit.id}>
+                      <option
+                        key={index}
+                        value={unit.id}
+                        style={{
+                          backgroundColor:
+                            String(unit.id) === String(list.units)
+                              ? "#007bff"
+                              : "white",
+                          color:
+                            String(unit.id) === String(list.units)
+                              ? "white"
+                              : "black",
+                        }}
+                      >
                         {unit.name}
                       </option>
                     ))}
                   </select>
+                ) : (
+                  <span>{selectedUnit?.name || `${list.units}`}</span>
                 )}
               </div>
             );
@@ -177,27 +190,45 @@ class Results extends Component {
 
             return (
               <div className="text-start">
-                {list.result_status === "Submitted" ? (
-                  <span>
-                    {selectedInstrument?.name || ` ${list.instrument_name}`}
-                  </span>
-                ) : (
+                {this.state.round_status === "Open" ? (
                   <select
                     className="form-select me-2"
                     value={list.instrument_name || ""}
                     onChange={e => this.handleInstrumentChange(e, list)}
                   >
                     <option value="">Select Instrument</option>
-                    {filteredInstruments.length > 0 ? (
-                      filteredInstruments.map((instr, index) => (
-                        <option key={index} value={instr.id}>
+                    {this.state.Instrument &&
+                      this.state.Instrument.filter(
+                        instr =>
+                          instr.status === "Active" &&
+                          instr.analytes.includes(list.analyte_name)
+                      ).map((instr, index) => (
+                        <option
+                          key={index}
+                          value={instr.id}
+                          style={{
+                            backgroundColor:
+                              String(instr.id) === String(list.instrument_name)
+                                ? "#007bff"
+                                : "white",
+                            color:
+                              String(instr.id) === String(list.instrument_name)
+                                ? "white"
+                                : "black",
+                          }}
+                        >
                           {instr.name}
                         </option>
-                      ))
-                    ) : (
-                      <option value="">No Instruments available</option>
-                    )}
+                      ))}
                   </select>
+                ) : (
+                  <span>
+                    {this.state.Instrument.find(
+                      instr => String(instr.id) === String(list.instrument_name)
+                    )?.name ||
+                      list.instrument_name ||
+                      "N/A"}
+                  </span>
                 )}
               </div>
             );
@@ -209,35 +240,48 @@ class Results extends Component {
           sort: true,
           formatter: (cellContent, list) => (
             <div className="text-start">
-              {list.result_status === "Submitted" ? (
-                <span>
-                  {this.state.ListMethods.find(
-                    method => method.id === list.method_name
-                  )?.name || "N/A"}
-                </span>
-              ) : (
+              {this.state.round_status === "Open" ? (
                 <select
                   className="form-select me-2"
                   value={list.method_name || ""}
                   onChange={e => this.handleMethodChange(e, list)}
                 >
                   <option value="">Select Method</option>
-                  {this.state.ListMethods && this.state.SchemeAnalytesList
-                    ? this.state.ListMethods.filter(
-                        method =>
-                          method.status === "Active" &&
-                          this.state.SchemeAnalytesList.some(
-                            analyte =>
-                              analyte?.id === list?.analyte_id &&
-                              analyte?.methods?.includes(method.id)
-                          )
-                      ).map((method, index) => (
-                        <option key={index} value={method.id}>
-                          {method.name}
-                        </option>
-                      ))
-                    : null}
+                  {this.state.ListMethods &&
+                    this.state.SchemeAnalytesList &&
+                    this.state.ListMethods.filter(
+                      method =>
+                        method.status === "Active" &&
+                        this.state.SchemeAnalytesList.some(
+                          analyte =>
+                            analyte?.id === list?.analyte_id &&
+                            analyte?.methods?.includes(method.id)
+                        )
+                    ).map((method, index) => (
+                      <option
+                        key={index}
+                        value={method.id}
+                        style={{
+                          backgroundColor:
+                            String(method.id) === String(list.method_name)
+                              ? "#007bff"
+                              : "white",
+                          color:
+                            String(method.id) === String(list.method_name)
+                              ? "white"
+                              : "black",
+                        }}
+                      >
+                        {method.name}
+                      </option>
+                    ))}
                 </select>
+              ) : (
+                <span>
+                  {this.state.ListMethods.find(
+                    method => method.id === list.method_name
+                  )?.name || "N/A"}
+                </span>
               )}
             </div>
           ),
@@ -248,7 +292,42 @@ class Results extends Component {
           sort: true,
           formatter: (cellContent, list) => (
             <div className="text-start">
-              {list.result_status === "Submitted" ? (
+              {this.state.round_status === "Open" ? (
+                <select
+                  className="form-select me-2"
+                  value={list.reagent_name || ""}
+                  onChange={e => this.handleReagentChange(e, list)}
+                >
+                  <option value="">Select Reagent</option>
+                  {this.state.ReagentList &&
+                    this.state.ReagentList.filter(
+                      reagent =>
+                        reagent.status === "Active" &&
+                        this.state.SchemeAnalytesList.some(
+                          analyte =>
+                            analyte?.id === list?.analyte_id &&
+                            analyte?.reagents?.includes(reagent.id)
+                        )
+                    ).map((reagent, index) => (
+                      <option
+                        key={index}
+                        value={reagent.id}
+                        style={{
+                          backgroundColor:
+                            String(reagent.id) === String(list.reagent_name)
+                              ? "#007bff"
+                              : "white",
+                          color:
+                            String(reagent.id) === String(list.reagent_name)
+                              ? "white"
+                              : "black",
+                        }}
+                      >
+                        {reagent.name}
+                      </option>
+                    ))}
+                </select>
+              ) : (
                 <span>
                   {this.state.ReagentList.find(
                     reagent => reagent.id === list.reagent_name
@@ -256,29 +335,6 @@ class Results extends Component {
                     list.reagent_name ||
                     "N/A"}
                 </span>
-              ) : (
-                <select
-                  className="form-select me-2"
-                  value={list.reagent_name || ""}
-                  onChange={e => this.handleReagentChange(e, list)}
-                >
-                  <option value="">Select Reagent</option>
-                  {this.state.ReagentList && this.state.SchemeAnalytesList
-                    ? this.state.ReagentList.filter(
-                        reagent =>
-                          reagent.status === "Active" &&
-                          this.state.SchemeAnalytesList.some(
-                            analyte =>
-                              analyte?.id === list?.analyte_id &&
-                              analyte?.reagents?.includes(reagent.id)
-                          )
-                      ).map((reagent, index) => (
-                        <option key={index} value={reagent.id}>
-                          {reagent.name}
-                        </option>
-                      ))
-                    : null}
-                </select>
               )}
             </div>
           ),
@@ -339,68 +395,98 @@ class Results extends Component {
 
             return (
               <div className="text-start">
-                {list.result_status === "Submitted" ? (
-                  <span>
-                    {selectedInstrument?.name || ` ${list.instrument_name}`}
-                  </span>
-                ) : (
+                {this.state.round_status === "Open" ? (
                   <select
                     className="form-select me-2"
                     value={list.instrument_name || ""}
                     onChange={e => this.handleInstrumentChange(e, list)}
                   >
                     <option value="">Select Instrument</option>
-                    {filteredInstruments.length > 0 ? (
-                      filteredInstruments.map((instr, index) => (
-                        <option key={index} value={instr.id}>
+                    {this.state.Instrument &&
+                      this.state.Instrument.filter(
+                        instr =>
+                          instr.status === "Active" &&
+                          instr.analytes.includes(list.analyte_name)
+                      ).map((instr, index) => (
+                        <option
+                          key={index}
+                          value={instr.id}
+                          style={{
+                            backgroundColor:
+                              String(instr.id) === String(list.instrument_name)
+                                ? "#007bff"
+                                : "white",
+                            color:
+                              String(instr.id) === String(list.instrument_name)
+                                ? "white"
+                                : "black",
+                          }}
+                        >
                           {instr.name}
                         </option>
-                      ))
-                    ) : (
-                      <option value="">No Instruments available</option>
-                    )}
+                      ))}
                   </select>
+                ) : (
+                  <span>
+                    {this.state.Instrument.find(
+                      instr => String(instr.id) === String(list.instrument_name)
+                    )?.name ||
+                      list.instrument_name ||
+                      "N/A"}
+                  </span>
                 )}
               </div>
             );
           },
         },
-
         {
           text: "Method",
           dataField: "method_name",
           sort: true,
           formatter: (cellContent, list) => (
             <div className="text-start">
-              {list.result_status === "Submitted" ? (
-                <span>
-                  {this.state.ListMethods.find(
-                    method => method.id === list.method_name
-                  )?.name || "N/A"}
-                </span>
-              ) : (
+              {this.state.round_status === "Open" ? (
                 <select
                   className="form-select me-2"
                   value={list.method_name || ""}
                   onChange={e => this.handleMethodChange(e, list)}
                 >
                   <option value="">Select Method</option>
-                  {this.state.ListMethods && this.state.SchemeAnalytesList
-                    ? this.state.ListMethods.filter(
-                        method =>
-                          method.status === "Active" &&
-                          this.state.SchemeAnalytesList.some(
-                            analyte =>
-                              analyte?.id === list?.analyte_id &&
-                              analyte?.methods?.includes(method.id)
-                          )
-                      ).map((method, index) => (
-                        <option key={index} value={method.id}>
-                          {method.name}
-                        </option>
-                      ))
-                    : null}
+                  {this.state.ListMethods &&
+                    this.state.SchemeAnalytesList &&
+                    this.state.ListMethods.filter(
+                      method =>
+                        method.status === "Active" &&
+                        this.state.SchemeAnalytesList.some(
+                          analyte =>
+                            analyte?.id === list?.analyte_id &&
+                            analyte?.methods?.includes(method.id)
+                        )
+                    ).map((method, index) => (
+                      <option
+                        key={index}
+                        value={method.id}
+                        style={{
+                          backgroundColor:
+                            String(method.id) === String(list.method_name)
+                              ? "#007bff"
+                              : "white",
+                          color:
+                            String(method.id) === String(list.method_name)
+                              ? "white"
+                              : "black",
+                        }}
+                      >
+                        {method.name}
+                      </option>
+                    ))}
                 </select>
+              ) : (
+                <span>
+                  {this.state.ListMethods.find(
+                    method => method.id === list.method_name
+                  )?.name || "N/A"}
+                </span>
               )}
             </div>
           ),
@@ -411,7 +497,42 @@ class Results extends Component {
           sort: true,
           formatter: (cellContent, list) => (
             <div className="text-start">
-              {list.result_status === "Submitted" ? (
+              {this.state.round_status === "Open" ? (
+                <select
+                  className="form-select me-2"
+                  value={list.reagent_name || ""}
+                  onChange={e => this.handleReagentChange(e, list)}
+                >
+                  <option value="">Select Reagent</option>
+                  {this.state.ReagentList &&
+                    this.state.ReagentList.filter(
+                      reagent =>
+                        reagent.status === "Active" &&
+                        this.state.SchemeAnalytesList.some(
+                          analyte =>
+                            analyte?.id === list?.analyte_id &&
+                            analyte?.reagents?.includes(reagent.id)
+                        )
+                    ).map((reagent, index) => (
+                      <option
+                        key={index}
+                        value={reagent.id}
+                        style={{
+                          backgroundColor:
+                            String(reagent.id) === String(list.reagent_name)
+                              ? "#007bff"
+                              : "white",
+                          color:
+                            String(reagent.id) === String(list.reagent_name)
+                              ? "white"
+                              : "black",
+                        }}
+                      >
+                        {reagent.name}
+                      </option>
+                    ))}
+                </select>
+              ) : (
                 <span>
                   {this.state.ReagentList.find(
                     reagent => reagent.id === list.reagent_name
@@ -419,29 +540,6 @@ class Results extends Component {
                     list.reagent_name ||
                     "N/A"}
                 </span>
-              ) : (
-                <select
-                  className="form-select me-2"
-                  value={list.reagent_name || ""}
-                  onChange={e => this.handleReagentChange(e, list)}
-                >
-                  <option value="">Select Reagent</option>
-                  {this.state.ReagentList && this.state.SchemeAnalytesList
-                    ? this.state.ReagentList.filter(
-                        reagent =>
-                          reagent.status === "Active" &&
-                          this.state.SchemeAnalytesList.some(
-                            analyte =>
-                              analyte?.id === list?.analyte_id &&
-                              analyte?.reagents?.includes(reagent.id)
-                          )
-                      ).map((reagent, index) => (
-                        <option key={index} value={reagent.id}>
-                          {reagent.name}
-                        </option>
-                      ))
-                    : null}
-                </select>
               )}
             </div>
           ),
@@ -453,21 +551,31 @@ class Results extends Component {
           sort: true,
           formatter: (cellContent, list) => (
             <div className="text-start">
-              {list.result_status === "Submitted" ? (
-                <span>{list.result_type || "N/A"}</span> // Show plain text after submission
-              ) : (
+              {this.state.round_status === "Open" ? (
                 <select
                   className="form-select me-2"
-                  value={list.result_type || ""} // Ensure this is set properly
-                  onChange={e => this.handleResultTypeChange(e, list)} // Handle the change event
+                  value={list.result_type || ""}
+                  onChange={e => this.handleResultTypeChange(e, list)}
                 >
                   <option value="" disabled hidden>
                     Select Result Type
                   </option>
-                  <option value="Positive">Positive</option>
-                  <option value="Negative">Negative</option>
-                  <option value="Equivocal">Equivocal</option>
+                  {["Positive", "Negative", "Equivocal"].map((type, index) => (
+                    <option
+                      key={index}
+                      value={type}
+                      style={{
+                        backgroundColor:
+                          type === list.result_type ? "#007bff" : "white",
+                        color: type === list.result_type ? "white" : "black",
+                      }}
+                    >
+                      {type}
+                    </option>
+                  ))}
                 </select>
+              ) : (
+                <span>{list.result_type || "N/A"}</span>
               )}
             </div>
           ),
