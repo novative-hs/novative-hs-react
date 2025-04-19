@@ -61,6 +61,7 @@ class InstrumentType extends Component {
       isEdit: false,
       organization_name: "",
       selectedSchemeId: "", // New state
+      selectedFormSchemeId: "", // for modal form
       idFilter: "",
       roundsFilter: "",
       schemenameFilter: "",
@@ -509,7 +510,8 @@ class InstrumentType extends Component {
 
   handleSchemeChange = e => {
     const selectedSchemeId = parseInt(e.target.value);
-    this.setState({ selectedSchemeId });
+    this.setState({ selectedFormSchemeId: selectedSchemeId }); // ✅ only affect modal
+
     console.log("Selected Scheme ID:", selectedSchemeId);
     console.log("CycleList:", this.props.CycleList);
     console.log("ListUnitt (Samples):", this.props.ListUnitt);
@@ -661,7 +663,7 @@ class InstrumentType extends Component {
         {
           modal: true,
           selectedRound: round,
-          selectedSchemeId: round.scheme,
+          selectedFormSchemeId: round.scheme,
           selectedCycle: round.cycle_no,
           selectedSample: round.sample || "", // Set the previously selected sample
           isEdit: true,
@@ -859,7 +861,11 @@ class InstrumentType extends Component {
                               <Row className="mb-4">
                                 <select
                                   className="form-select mb-3"
-                                  onChange={this.handleSchemeChange}
+                                  onChange={e =>
+                                    this.setState({
+                                      selectedSchemeId: e.target.value,
+                                    })
+                                  }
                                   value={this.state.selectedSchemeId}
                                   style={{ width: "300px" }}
                                 >
@@ -922,9 +928,10 @@ class InstrumentType extends Component {
                                             rounds: this.state.selectedRound
                                               ? this.state.selectedRound.rounds
                                               : "",
-                                            scheme: this.state.selectedRound
-                                              ? this.state.selectedRound.scheme
-                                              : "",
+                                            scheme:
+                                              this.state.selectedFormSchemeId ||
+                                              "",
+
                                             sample: this.state.selectedRound
                                               ? this.state.selectedRound.sample
                                               : "",
@@ -1100,16 +1107,29 @@ class InstrumentType extends Component {
                                                               ? " is-invalid"
                                                               : ""
                                                           }`}
+                                                          value={
+                                                            this.state
+                                                              .selectedFormSchemeId ||
+                                                            ""
+                                                          }
                                                           onChange={e => {
-                                                            const { value } =
-                                                              e.target;
+                                                            const value =
+                                                              e.target.value;
                                                             form.setFieldValue(
                                                               "scheme",
                                                               value
                                                             );
+                                                            this.setState({
+                                                              selectedFormSchemeId:
+                                                                value,
+                                                            }); // ✅ update form-only value
                                                             this.handleSchemeChange(
-                                                              e
-                                                            );
+                                                              {
+                                                                target: {
+                                                                  value,
+                                                                },
+                                                              }
+                                                            ); // ⚠️ if handleSchemeChange still sets selectedSchemeId, fix it too
                                                           }}
                                                           disabled={
                                                             this.state.isEdit
@@ -1513,4 +1533,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(InstrumentType));
-
