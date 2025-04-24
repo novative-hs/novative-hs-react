@@ -789,7 +789,7 @@ class Results extends Component {
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          units: list.units,
+          units: list.units && !isNaN(list.units) ? parseInt(list.units) : null,
           instrument_name: list.instrument_name,
           method_name: list.method_name,
           reagent_name: list.reagent_name,
@@ -910,7 +910,8 @@ class Results extends Component {
       round_id: id,
       analyte_id: analyteData ? analyteData.analyte_id : "", // Ensure analyte_id is included
       // analyte_name: analyteData ? analyteData.analyte_name : "", // Ensure analyte_name is included
-      units: list.units,
+      units: list.units && !isNaN(list.units) ? parseInt(list.units) : null,
+
       rounds: rounds,
       instrument_name: list.instrument_name || null,
       method_name: list.method_name || null,
@@ -959,7 +960,8 @@ class Results extends Component {
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          units: list.units,
+          units: list.units && !isNaN(list.units) ? parseInt(list.units) : null,
+
           instrument_name: list.instrument_name || null,
           method_name: list.method_name || null,
           reagent_name: list.reagent_name || null,
@@ -983,25 +985,24 @@ class Results extends Component {
     const { combinedData } = this.state;
     const { rounds, scheme_id, round_status } = this.props;
     const id = this.props.match.params.id;
-
+  
     if (!combinedData.length) {
       alert("No results to submit.");
       return;
     }
-
+  
     const confirmation = window.confirm(
       "Are you sure you want to submit all results?"
     );
     if (!confirmation) return;
-
+  
     try {
       let latestUpdatedAt = new Date().toISOString(); // Default timestamp
-
+  
       for (const list of combinedData) {
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          units: list.units,
           instrument_name: list.instrument_name || null,
           method_name: list.method_name || null,
           reagent_name: list.reagent_name || null,
@@ -1012,30 +1013,34 @@ class Results extends Component {
           round_status: round_status,
           result_status: "Submitted",
         };
-
+  
+        // ✅ Only add units if Quantitative, else exclude it for Qualitative
+        if (this.props.schemeType === "Quantitative") {
+          resultData.units = list.units && !isNaN(list.units) ? parseInt(list.units) : null;
+        }
+  
         const response = await this.props.onPostResult(
           resultData,
           this.state.user_id
         );
-
+  
         if (response.type === "POST_RESULT" && response.payload?.updated_at) {
           latestUpdatedAt = response.payload.updated_at; // Use actual timestamp from backend
         }
       }
-
+  
       // ✅ Store "Submitted On" in state & localStorage
       this.setState({ submittedOn: latestUpdatedAt });
       localStorage.setItem("submittedOn", latestUpdatedAt);
-
+  
       alert("Results submitted successfully!");
-      // setTimeout(() => {
-      //     window.location.reload();
-      // }, 1000);
       window.location.reload();
     } catch (error) {
       alert("Failed to submit all results. Please try again.");
     }
   };
+  
+  
 
   handleResubmit = async () => {
     const { combinedData, Instrument, ReagentList } = this.state; // ✅ Ensure we have the lists
@@ -1067,7 +1072,8 @@ class Results extends Component {
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          units: list.units,
+          units: list.units && !isNaN(list.units) ? parseInt(list.units) : null,
+
           instrument_name: list.instrument_name || null,
           method_name: list.method_name || null,
           reagent_name: list.reagent_name || null,
@@ -1411,7 +1417,13 @@ class Results extends Component {
                               Re-Submit
                             </Button>
                             {/* ✅ Show Submitted On date after Submit or Resubmit */}
-                            {this.state.submittedOn && (
+                            
+                          </>
+                        )
+                      )}
+                    </>
+                  )}
+                  {this.state.submittedOn && (
                               <div className="mb-3">
                                 <strong>Submitted On:</strong>{" "}
                                 {new Date(
@@ -1419,11 +1431,6 @@ class Results extends Component {
                                 ).toLocaleString()}
                               </div>
                             )}
-                          </>
-                        )
-                      )}
-                    </>
-                  )}
               </div>
 
               <Row className="justify-content-center align-item-center">
