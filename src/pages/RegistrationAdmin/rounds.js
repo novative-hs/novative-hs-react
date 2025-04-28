@@ -334,6 +334,10 @@ class InstrumentType extends Component {
           text: "Status",
           sort: true,
           headerFormatter: (column, colIndex) => {
+            const canShowReportAvailable = this.props.RoundList?.some(round => {
+              return round.status === "Closed" && round.statistics_status === "Complete";
+            });
+          
             return (
               <div style={{ textAlign: "center" }}>
                 <div>{column.text}</div>
@@ -353,12 +357,16 @@ class InstrumentType extends Component {
                     <option value="Ready">Ready</option>
                     <option value="Open">Open</option>
                     <option value="Closed">Closed</option>
-                    <option value="Report Available">Report Available</option>
+                    {/* {canShowReportAvailable && (
+                      <option value="Report Available">Report Available</option>
+                    )} */}
                   </select>
                 </div>
               </div>
             );
           },
+          
+          
           formatter: (cellContent, methodlist) => (
             <span>{methodlist.status || "Unknown"}</span>
           ),
@@ -631,21 +639,27 @@ class InstrumentType extends Component {
 
   onClickStatistics = round => {
     if (round && round.id) {
-      // Update the round's status to "report available"
-      // const updatedRound = {
-      //   ...round,
-      //   status: "Report Available",
-      // };
-
-      // // Dispatch the update action to save the new status
-      // this.props.onUpdateRound(round.id, updatedRound);
-
-      // Optionally, redirect to the statistics page
+      if (round.status === "Closed") {
+        // Automatically change status to "Report Available" if Statistics completed
+        const updatedRound = {
+          ...round,
+          status: "Report Available",
+        };
+  
+        this.props.onUpdateRound(round.id, updatedRound);
+  
+        // OPTIONAL: reload RoundList after small delay
+        setTimeout(() => {
+          this.props.onGetRoundList(this.state.user_id);
+        }, 500);
+      }
+  
       this.props.history.push(
         `/${this.state.organization_name}/statistics/${round.id}`
       );
     }
   };
+  
   onClickReport = id => {
     this.props.history.push(
       `/${this.state.organization_name}/slectValues/${id}`
@@ -1401,9 +1415,9 @@ class InstrumentType extends Component {
                                                           <option value="Closed">
                                                             Closed
                                                           </option>
-                                                          <option value="Report Available">
+                                                          {/* <option value="Report Available">
                                                             Report Available
-                                                          </option>
+                                                          </option> */}
                                                         </Field>
                                                         <ErrorMessage
                                                           name="status"
