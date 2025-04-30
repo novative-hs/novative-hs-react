@@ -152,20 +152,19 @@ class Header extends Component {
               <div className="navbar-brand-box" style={{ background: "white" }}>
                 {/* Logo based on account type */}
                 {this.state.account_type === "nhs" ? (
-                  <span className="logo-sm">
-                    <img src={logo} alt="" height="60" />
-                  </span>
+                <span className="logo-sm">
+                  <img src="https://externalqcapi.com/media/organization/nhs_logo.webp" alt="NHS Logo" height="60" />
+                </span>
                 ) : this.state.account_type === "database-admin" ? (
-                  <span className="logo-sm">
-                    <img src={logoLight} alt="Lab Logo" height="60" />
-                  </span>
-                ) : this.state.account_type === "database-admin" ||
-                  this.state.account_type === "registration-admin" ||
-                  this.state.account_type === "organization" ||
-                  this.state.account_type === "CSR" ? (
-                  <span className="logo-sm">
-                    <img src={logoLightSvg} alt="Staff Logo" height="60" />
-                  </span>
+                <span className="logo-sm">
+                  <img src="https://externalqcapi.com/media/organization/nhs_logo.webp" alt="Database Admin Logo" height="60" />
+                </span>
+                ) : this.state.account_type === "registration-admin" ||
+                this.state.account_type === "organization" ||
+                this.state.account_type === "CSR" ? (
+                <span className="logo-sm">
+                  <img src="https://externalqcapi.com/media/organization/nhs_logo.webp" alt="Staff Logo" height="60" />
+                </span>
                 ) : null}
               </div>
 
