@@ -44,18 +44,21 @@ class ReportParticipant extends Component {
           count: result.lab_count || "N/A",
           result: result.result || "N/A",
           mean: result.mean || "N/A",
+          CV: result.CV || "N/A",
+          robust_mean: result.robust_mean || "N/A",
           zScore: zScore,
           rmz: rmz,
           evaluation: evaluation,
+          
         };
       });
 
       // Extract robustMean and robustSD from participantResults
-      let robustMean = "N/A";
+      let robust_mean = "N/A";
       let robustSD = "N/A";
 
       if (participantResults.length > 0) {
-        robustMean = participantResults[0].robust_mean || "N/A";
+        robust_mean = participantResults[0].robust_mean || "N/A";
         robustSD = participantResults[0].robust_sd || "N/A";
       }
 
@@ -66,7 +69,7 @@ class ReportParticipant extends Component {
         closingDate: reportData.closing_date || "N/A",
         printDate: moment(new Date()).format("DD MMM YYYY"),
         matrix: reportData.matrix || "N/A",
-        robustMean: robustMean,
+        robust_mean: reportData.robust_mean || "N/A",
         robustSD: robustSD,
       };
 
@@ -241,7 +244,7 @@ class ReportParticipant extends Component {
               </td>
               <td style={{ width: "16.5%", border: "1px solid #dee2e6" }}>Robust Mean</td>
               <td style={{ width: "16.5%", border: "1px solid #dee2e6" }}>
-                <strong>{reportDetails.robustMean}</strong>
+                <strong>{analyte.robust_mean}</strong>
               </td>
             </tr>
             {/* Row 2 */}
@@ -306,7 +309,7 @@ class ReportParticipant extends Component {
 </td>
 
               <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
-                <strong>{analyte.count}</strong> {/* Coefficient of Variation (CV) */}
+                <strong>{analyte.CV}</strong> {/* Coefficient of Variation (CV) */}
               </td>
               <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
                 <strong>{analyte.upperLevel}</strong> {/* Upper Level of Acceptability */}
