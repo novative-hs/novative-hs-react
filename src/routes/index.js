@@ -96,7 +96,7 @@ import Report from "pages/Participant/report";
 import SereologyReport from "pages/Participant/sereologyReport";
 import UpdateParticipantsResult from "pages/RegistrationAdmin/results"
 import ResultHistory from "pages/Participant/result-history";
-
+import ReportParticipant from "pages/Participant/report1_view";
 // Lab Componentsss
 
 
@@ -337,7 +337,7 @@ const participantsAuthProtectedRoutes = [
   { path: "/:organization_name/:id/:id1/sereology-report", component: SereologyReport},
   { path: "/:organization_name/rounds-history/participant/:id", component: RoundsHistory},
   { path: "/:organization_name/result-history/:id", component: ResultHistory},
-  
+  { path: "/:organization_name/:id/:id1/report1_view", component: ReportParticipant},
 ];
 
 const registrationAdminAuthProtectedRoutes = [

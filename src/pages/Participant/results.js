@@ -1362,7 +1362,13 @@ class Results extends Component {
                   Download Results
                 </Button>
                 <Button
-                  onClick={this.handlePrint}
+                  onClick={() => {
+                    const { organization_name, id, id1 } =
+                      this.props.match.params;
+                    this.props.history.push(
+                      `/${organization_name}/${id}/${id1}/report1_view`
+                    );
+                  }}
                   className="mb-3 btn btn-secondary"
                   style={{ minWidth: "140px" }}
                 >
@@ -1423,14 +1429,15 @@ class Results extends Component {
                       )}
                     </>
                   )}
-                  {this.state.submittedOn && (
-                              <div className="mb-3">
-                                <strong>Submitted On:</strong>{" "}
-                                {new Date(
-                                  this.state.submittedOn
-                                ).toLocaleString()}
-                              </div>
-                            )}
+                   {this.state.submittedOn &&
+                  this.state.combinedData.some(
+                    data => data.result_status === "Submitted"
+                  ) && (
+                    <div className="mb-3">
+                      <strong>Submitted On:</strong>{" "}
+                      {new Date(this.state.submittedOn).toLocaleString()}
+                    </div>
+                  )}
               </div>
 
               <Row className="justify-content-center align-item-center">

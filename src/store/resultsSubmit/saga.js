@@ -31,13 +31,31 @@ function* fetchResultList(object) {
 function* fetchReport(object) {
   try {
     const response = yield call(getReport, object.payload);
-    // console.log("SAGAAAA", object.payload)
-    // console.log("API Response:", response)
-    yield put(getReportSuccess(response.participants_results));
+    console.log("API Response:", response); // Log the full response
+
+    // Ensure response contains the required fields
+    if (response && response.participants_results) {
+      // Prepare the data to include all necessary details
+      const reportData = {
+        participants_results: response.participants_results,
+        round_name: response.round_name,
+        scheme_name: response.scheme_name,
+        issue_date: response.issue_date,
+        closing_date: response.closing_date,
+      };
+
+      console.log("Prepared report data:", reportData); // Debug log
+      yield put(getReportSuccess(reportData)); // Dispatch success action with complete data
+    } else {
+      console.log("No participants data found in the response");
+      yield put(getReportFail("No participants data"));
+    }
   } catch (error) {
+    console.error("Error fetching report:", error);
     yield put(getReportFail(error));
   }
 }
+
 function* fetchSerologReport(object) {
   try {
     const response = yield call(getSereologyResult, object.payload);
