@@ -1523,6 +1523,7 @@ Results.propTypes = {
   onGetReagents: PropTypes.func,
   onPostResult: PropTypes.func,
   onGetResultsList: PropTypes.func,
+  history: PropTypes.object.isRequired, 
 };
 const mapStateToProps = ({
   SchemeAnalytesList,
