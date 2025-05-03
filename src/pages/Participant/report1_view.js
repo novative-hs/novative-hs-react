@@ -38,19 +38,19 @@ class ReportParticipant extends Component {
       );
 
       const analyteData = participantResults.map(result => {
-        const zScore = result.z_score || "N/A";
-        const evaluation = result.evaluation || "N/A";
-        const rmz = result.CV || result.CV || "N/A";
+        const zScore = result.z_score || "--";
+        const evaluation = result.evaluation || "--";
+        const rmz = result.CV || result.CV || "--";
 
         return {
-          analyteName: result.analyte_name || "N/A",
-          unit: result.unit || "N/A",
-          instrument: result.instrument || "N/A",
-          count: result.lab_count || "N/A",
-          result: result.result || "N/A",
-          mean: result.mean || "N/A",
-          CV: result.CV || "N/A",
-          robust_mean: result.robust_mean || "N/A",
+          analyteName: result.analyte_name || "--",
+          unit: result.unit || "--",
+          instrument: result.instrument || "--",
+          count: result.lab_count || "--",
+          result: result.result || "--",
+          mean: result.mean || "--",
+          CV: result.CV || "--",
+          robust_mean: result.robust_mean || "--",
           zScore: zScore,
           // rmz: rmz,
           evaluation: evaluation,
@@ -58,24 +58,24 @@ class ReportParticipant extends Component {
       });
 
       // Extract robustMean and robustSD from participantResults
-      let robust_mean = "N/A";
-      let robustSD = "N/A";
+      let robust_mean = "--";
+      let robustSD = "--";
 
       if (participantResults.length > 0) {
-        robust_mean = participantResults[0].robust_mean || "N/A";
-        robustSD = participantResults[0].robust_sd || "N/A";
+        robust_mean = participantResults[0].robust_mean || "--";
+        robustSD = participantResults[0].robust_sd || "--";
       }
 
       const reportDetails = {
-        round: reportData.round_name || "N/A",
-        scheme: reportData.scheme_name || "N/A",
-        issueDate: reportData.issue_date || "N/A",
-        closingDate: reportData.closing_date || "N/A",
+        round: reportData.round_name || "--",
+        scheme: reportData.scheme_name || "--",
+        issueDate: reportData.issue_date || "--",
+        closingDate: reportData.closing_date || "--",
         printDate: moment(new Date()).format("DD MMM YYYY"),
-        matrix: reportData.matrix || "N/A",  // Check if this exists in the reportData
-        cycle: reportData.cycle_no || "N/A", // Make sure 'cycle_no' exists
-        sample: reportData.sample || "N/A", // Make sure 'sample' exists
-        robust_mean: reportData.robust_mean || "N/A",
+        matrix: reportData.matrix || "--",  // Check if this exists in the reportData
+        cycle: reportData.cycle_no || "--", // Make sure 'cycle_no' exists
+        sample: reportData.sample || "--", // Make sure 'sample' exists
+        robust_mean: reportData.robust_mean || "--",
         robustSD: robustSD,
       };
 
@@ -275,7 +275,7 @@ class ReportParticipant extends Component {
 
         {/* Analyte Details: Dynamically rendered */}
         {analyteData
-  .filter(analyte => analyte.result !== "N/A" && analyte.result !== "")  // Filter out analytes without results
+  .filter(analyte => analyte.result !== "--" && analyte.result !== "")  // Filter out analytes without results
   .map((analyte, index) => (
     <div
       className="analyte-box"
@@ -380,7 +380,7 @@ class ReportParticipant extends Component {
             </td>
             <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
               <strong>
-                {analyte.zScore !== undefined ? analyte.zScore : "N/A"}
+                {analyte.zScore !== undefined ? analyte.zScore : "--"}
               </strong>
             </td>
 
