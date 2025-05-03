@@ -108,8 +108,10 @@ class Roundural extends Component {
           text: "Action",
           formatter: (cellContent, round) => {
             const { organization_name } = this.state;
+            const { id, scheme_id } = round; // Assuming `id` and `scheme_id` are part of the round object
             return (
               <div className="d-flex justify-content-center gap-3 ml-3">
+                {/* Results Icon */}
                 <Tooltip title="Results">
                   <Link
                     className="fas fa-file-alt font-size-18 text-success"
@@ -145,7 +147,17 @@ class Roundural extends Component {
                   ></Link>
                 </Tooltip>
 
-                {/* Add Result Icon */}
+                {/* Report Icon and Print Button - Show only if status is 'Report Available' */}
+                {round.status === "Report Available" && (
+                  <Tooltip title="View Report">
+                    <Link
+                      to={`/${organization_name}/${round.id}/${round.participant_id}/report1_view`}
+                      className="fas fa-file-alt text-primary font-size-18"
+                    >
+                      {/* <i className="fas fa-chart-bar text-warning ml-1 font-size-16"></i> */}
+                    </Link>
+                  </Tooltip>
+                )}
               </div>
             );
           },

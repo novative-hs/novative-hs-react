@@ -42,6 +42,10 @@ function* fetchReport(object) {
         scheme_name: response.scheme_name,
         issue_date: response.issue_date,
         closing_date: response.closing_date,
+        cycle_no: response.cycle_no,       // ✅ Add this
+        sample: response.sample,           // ✅ And this
+        matrix: response.matrix || "N/A",  // ✅ Optional: include if needed
+        robust_mean: response.robust_mean, // ✅ Optional: if required
       };
 
       console.log("Prepared report data:", reportData); // Debug log
@@ -55,7 +59,6 @@ function* fetchReport(object) {
     yield put(getReportFail(error));
   }
 }
-
 function* fetchSerologReport(object) {
   try {
     const response = yield call(getSereologyResult, object.payload);
