@@ -52,6 +52,7 @@ class ReportParticipant extends Component {
           CV: result.CV || "--",
           robust_mean: result.robust_mean || "--",
           robust_deviation: result.robust_deviation || "--",
+          robust_sd: result.robust_sd || "--",
           upper_acceptability_limit: result.upper_acceptability_limit || "--",
           lower_acceptability_limit: result.lower_acceptability_limit || "--",
 
@@ -61,13 +62,13 @@ class ReportParticipant extends Component {
         };
       });
 
-      // Extract robustMean and robustSD from participantResults
+      // Extract robustMean and robust_sd from participantResults
       let robust_mean = "--";
-      let robustSD = "--";
+      let robust_sd = "--";
 
       if (participantResults.length > 0) {
         robust_mean = participantResults[0].robust_mean || "--";
-        robustSD = participantResults[0].robust_sd || "--";
+        robust_sd = participantResults[0].robust_sd || "--";
       }
 
       const reportDetails = {
@@ -80,7 +81,7 @@ class ReportParticipant extends Component {
         cycle: reportData.cycle_no || "--", // Make sure 'cycle_no' exists
         sample: reportData.sample || "--", // Make sure 'sample' exists
         robust_mean: reportData.robust_mean || "--",
-        robustSD: robustSD,
+        robust_sd: robust_sd,
       };
 
       // Update state with report details and analyte data
@@ -309,7 +310,7 @@ class ReportParticipant extends Component {
               Robust SD
             </td>
             <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
-              <strong>{reportDetails.robustSD}</strong>
+              <strong>{analyte.robust_sd}</strong>
             </td>
             <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
               Valid Results
