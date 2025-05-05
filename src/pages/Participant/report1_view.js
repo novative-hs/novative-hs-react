@@ -51,6 +51,10 @@ class ReportParticipant extends Component {
           mean: result.mean || "--",
           CV: result.CV || "--",
           robust_mean: result.robust_mean || "--",
+          robust_deviation: result.robust_deviation || "--",
+          upper_acceptability_limit: result.upper_acceptability_limit || "--",
+          lower_acceptability_limit: result.lower_acceptability_limit || "--",
+
           zScore: zScore,
           // rmz: rmz,
           evaluation: evaluation,
@@ -376,7 +380,7 @@ class ReportParticipant extends Component {
               <strong>{analyte.result}</strong> {/* Test Result */}
             </td>
             <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
-              <strong>{analyte.rmz}</strong> {/* Robust Deviation */}
+              <strong>{analyte.robust_deviation}</strong> {/* Robust Deviation */}
             </td>
             <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
               <strong>
@@ -389,11 +393,13 @@ class ReportParticipant extends Component {
               {/* Coefficient of Variation (CV) */}
             </td>
             <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
-              <strong>{analyte.upperLevel}</strong>{" "}
+              <strong>{analyte.upper_acceptability_limit
+              }</strong>{" "}
               {/* Upper Level of Acceptability */}
             </td>
             <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
-              <strong>{analyte.lowerLevel}</strong>{" "}
+              <strong>{analyte.lower_acceptability_limit
+              }</strong>{" "}
               {/* Lower Level of Acceptability */}
             </td>
             <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
