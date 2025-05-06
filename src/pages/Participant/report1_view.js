@@ -23,6 +23,7 @@ class ReportParticipant extends Component {
     super(props);
     this.state = {
       reportDetails: {},
+      selectedAnalyte: null, // Add selectedAnalyte here
       analyteData: [],
     };
   }
@@ -34,6 +35,7 @@ class ReportParticipant extends Component {
 
   componentDidUpdate(prevProps) {
     const { reportData } = this.props;
+    const { selectedAnalyte } = this.state;
   
     if (prevProps.reportData !== reportData && reportData) {
       const participantId = this.props.match.params.id1;
@@ -44,27 +46,31 @@ class ReportParticipant extends Component {
         result => result.participant_id == participantId
       );
   
-      // ✅ Get z-scores for analyte 'analyte12C' (case-sensitive!)
       const zScoreChartData = reportData.participants_results
-        .filter(result => result.analyte_name === "analyte12C")
+        .filter(result => result.analyte_name === selectedAnalyte)
         .map(result => ({
           name: `Participant ${result.participant_id}`,
           ZScore: result.z_score ? parseFloat(result.z_score) : null,
         }));
   
-      console.log("Z-Score Chart Data:", zScoreChartData); // Debug
+      console.log("Z-Score Chart Data:", zScoreChartData);
+  
+      // Get analyte summaries to retrieve accepted result count
+      const analyteSummaries = reportData.analyte_result_summary || [];
   
       const analyteData = participantResults.map(result => {
         const zScore = result.z_score || "--";
         const evaluation = result.evaluation || "--";
+  
+        const analyteSummary = analyteSummaries.find(
+          summary => summary.analyte_id === result.analyte_id
+        );
   
         return {
           analyteName: result.analyte_name || "--",
           unit: result.unit || "--",
           instrument: result.instrument || "--",
           count: result.lab_count || "--",
-          accepted_results: result.accepted_results || "--",
-          rejected_results: result.rejected_results || "--",
           result: result.result || "--",
           mean: result.mean || "--",
           CV: result.CV || "--",
@@ -75,6 +81,8 @@ class ReportParticipant extends Component {
           lower_acceptability_limit: result.lower_acceptability_limit || "--",
           zScore: zScore,
           evaluation: evaluation,
+          acceptedResults: result.accepted_results || 0,  // Ensure this is included
+          rejectedResults: result.rejected_results || 0,  // Ensure this is included
         };
       });
   
@@ -98,14 +106,18 @@ class ReportParticipant extends Component {
         robust_sd: robust_sd,
       };
   
-      // ✅ Update state with everything, including zScoreChartData
+      // ✅ Update state with everything, including acceptedResults
       this.setState({ reportDetails, analyteData, zScoreChartData });
     }
   }
   
+  handleAnalyteSelection = (analyteName) => {
+    this.setState({ selectedAnalyte: analyteName });
+  };
   
   render() {
     const { reportDetails, analyteData } = this.state;
+    const { selectedAnalyte } = this.state;  // Get selectedAnalyte from state
 
     if (!analyteData.length) {
       return (
@@ -122,20 +134,35 @@ class ReportParticipant extends Component {
           </p>
         </Container>
       );
-      
     }
+   
+// Ensure we filter the data based on selectedAnalyte BEFORE we process Z-Score data
+const combinedZScoreData = analyteData
+  .filter(analyte => selectedAnalyte ? analyte.analyteName.toLowerCase().trim() === selectedAnalyte.toLowerCase().trim() : true)  // Filter analyte data based on selectedAnalyte
+  .map(analyte => {
+    // Get filtered results for the current analyte
+    const filteredResults = this.props.reportData.participants_results.filter(result => result.analyte_name === analyte.analyteName);
 
-    
-     // Calculate combined Z-Score data before the return statement
-  const combinedZScoreData = analyteData.map(analyte => {
-    return this.props.reportData.participants_results
-      .filter(result => result.analyte_name === analyte.analyteName)
-      .map(result => ({
-        name: `Participant ${result.participant_id}`,
-        analyteName: analyte.analyteName,
-        ZScore: result.z_score ? parseFloat(result.z_score) : null,
-      }));
+    console.log("Filtered results for analyte:", analyte.analyteName, filteredResults); // Debugging log
+
+    return filteredResults.map(result => ({
+      name: `Participant ${result.participant_id}`,
+      analyteName: analyte.analyteName,
+      ZScore: result.z_score ? parseFloat(result.z_score) : null,
+    }));
   }).flat(); // Flatten the array to get all the results in one array
+
+// Debugging: Check the combinedZScoreData
+console.log("Combined Z-Score Data:", combinedZScoreData);
+
+// Now, filter out any invalid Z-Scores (null, undefined, or NaN)
+const filteredZScoreData = combinedZScoreData.filter(
+  data => data.ZScore !== null && data.ZScore !== undefined && !isNaN(data.ZScore)
+);
+
+console.log("Filtered Z-Score Data:", filteredZScoreData);
+
+
 
     return (
       <Container
@@ -306,7 +333,6 @@ class ReportParticipant extends Component {
                   {analyte.instrument}
                 </td>
                 <td style={{ border: "1px solid #dee2e6" }}>{analyte.count}</td>
-
                 <td style={{ border: "1px solid #dee2e6" }}>
                   {analyte.result}
                 </td>
@@ -397,18 +423,13 @@ class ReportParticipant extends Component {
                     </tr>
                     {/* Row 3 */}
                     <tr>
-                      <td
-                        style={{
-                          width: "12.5%",
-                          border: "1px solid #dee2e6",
-                          backgroundColor: "#f0f0f0",
-                        }}
-                      >
-                        Valid Results
-                      </td>
-                      <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
-  <strong>{analyte.accepted_results}</strong>
+                    <td style={{ width: "12.5%", border: "1px solid #dee2e6", backgroundColor: "#f0f0f0" }}>
+  Accepted Results
 </td>
+<td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
+  <strong>{analyte.acceptedResults}</strong>
+</td>
+
                       <td
                         style={{
                           width: "12.5%",
@@ -418,9 +439,11 @@ class ReportParticipant extends Component {
                       >
                         Rejected Results
                       </td>
-                      <td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
-  <strong>{analyte.rejected_results}</strong>
-</td>
+                      <td
+                        style={{ width: "12.5%", border: "1px solid #dee2e6" }}
+                      >
+                        <strong>{analyte.rejected_results}</strong>
+                      </td>
                     </tr>
                     <tr>
                       <td
@@ -570,22 +593,25 @@ class ReportParticipant extends Component {
                   height: "500px",
                 }}
               >
-              <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            barSize={30}
-            data={combinedZScoreData}
-            margin={{ top: 20, right: 30, left: 30, bottom: 50 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" style={{ fontSize: "14px" }} />
-            <YAxis style={{ fontSize: "14px" }} />
-            <Tooltip />
-            <Legend wrapperStyle={{ fontSize: "14px" }} />
-            <Bar dataKey="ZScore" fill="#82ca9d" radius={[8, 8, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-
-
+                
+                {filteredZScoreData.length > 0 ? (
+  <ResponsiveContainer width="100%" height={300}>
+    <BarChart
+      barSize={30}
+      data={filteredZScoreData}
+      margin={{ top: 20, right: 30, left: 30, bottom: 50 }}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" style={{ fontSize: "14px" }} />
+      <YAxis style={{ fontSize: "14px" }} />
+      <Tooltip />
+      <Legend wrapperStyle={{ fontSize: "14px" }} />
+      <Bar dataKey="ZScore" fill="#82ca9d" radius={[8, 8, 0, 0]} />
+    </BarChart>
+  </ResponsiveContainer>
+) : (
+  <p style={{ color: "red" }}>No Z-Score data available for this analyte.</p>
+)}
 
               </div>
             </div>
@@ -617,3 +643,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(ReportParticipant));
+
