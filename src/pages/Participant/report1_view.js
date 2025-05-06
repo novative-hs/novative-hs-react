@@ -81,8 +81,8 @@ class ReportParticipant extends Component {
           lower_acceptability_limit: result.lower_acceptability_limit || "--",
           zScore: zScore,
           evaluation: evaluation,
-          acceptedResults: result.accepted_results || 0,  // Ensure this is included
-          rejectedResults: result.rejected_results || 0,  // Ensure this is included
+          acceptedResults: result.accepted_results || "0",  // Ensure this is included
+          rejectedResults: result.rejected_results || "0",  // Ensure this is included
         };
       });
   
@@ -106,7 +106,6 @@ class ReportParticipant extends Component {
         robust_sd: robust_sd,
       };
   
-      // ✅ Update state with everything, including acceptedResults
       this.setState({ reportDetails, analyteData, zScoreChartData });
     }
   }
@@ -442,7 +441,7 @@ console.log("Filtered Z-Score Data:", filteredZScoreData);
                       <td
                         style={{ width: "12.5%", border: "1px solid #dee2e6" }}
                       >
-                        <strong>{analyte.rejected_results}</strong>
+                        <strong>{analyte.rejectedResults}</strong>
                       </td>
                     </tr>
                     <tr>
