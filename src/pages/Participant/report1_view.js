@@ -83,12 +83,8 @@ class ReportParticipant extends Component {
             : result.lower_acceptability_limit || "",
           zScore: isNotSubmitted ? "--" : result.z_score || "",
           evaluation: result.evaluation || "--", // Always shown
-          acceptedResults: isNotSubmitted
-            ? "--"
-            : result.accepted_results || "",
-          rejectedResults: isNotSubmitted
-            ? "--"
-            : result.rejected_results || "",
+          acceptedResults: result.accepted_results || 0,
+          rejectedResults: result.rejected_results || 0,
         };
       });
 
