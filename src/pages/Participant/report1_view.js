@@ -16,6 +16,7 @@ import {
   Legend,
   ResponsiveContainer,
   Label,
+  ReferenceLine,
 } from "recharts";
 
 class ReportParticipant extends Component {
@@ -36,36 +37,36 @@ class ReportParticipant extends Component {
   componentDidUpdate(prevProps) {
     const { reportData } = this.props;
     const { selectedAnalyte } = this.state;
-  
+
     if (prevProps.reportData !== reportData && reportData) {
       const participantId = this.props.match.params.id1;
       console.log("Report Data:", reportData);
       console.log("Looking for participantId:", participantId);
-  
+
       const participantResults = reportData.participants_results.filter(
         result => result.participant_id == participantId
       );
-  
+
       const zScoreChartData = reportData.participants_results
         .filter(result => result.analyte_name === selectedAnalyte)
         .map(result => ({
           name: `Participant ${result.participant_id}`,
           ZScore: result.z_score ? parseFloat(result.z_score) : null,
         }));
-  
+
       console.log("Z-Score Chart Data:", zScoreChartData);
-  
+
       // Get analyte summaries to retrieve accepted result count
       const analyteSummaries = reportData.analyte_result_summary || [];
-  
+
       const analyteData = participantResults.map(result => {
         const zScore = result.z_score || "--";
         const evaluation = result.evaluation || "--";
-  
+
         const analyteSummary = analyteSummaries.find(
           summary => summary.analyte_id === result.analyte_id
         );
-  
+
         return {
           analyteName: result.analyte_name || "--",
           unit: result.unit || "--",
@@ -81,18 +82,18 @@ class ReportParticipant extends Component {
           lower_acceptability_limit: result.lower_acceptability_limit || "--",
           zScore: zScore,
           evaluation: evaluation,
-          acceptedResults: result.accepted_results || "0",  // Ensure this is included
-          rejectedResults: result.rejected_results || "0",  // Ensure this is included
+          acceptedResults: result.accepted_results || 0, // Ensure this is included
+          rejectedResults: result.rejected_results || 0, // Ensure this is included
         };
       });
-  
+
       let robust_mean = "--";
       let robust_sd = "--";
       if (participantResults.length > 0) {
         robust_mean = participantResults[0].robust_mean || "--";
         robust_sd = participantResults[0].robust_sd || "--";
       }
-  
+
       const reportDetails = {
         round: reportData.round_name || "--",
         scheme: reportData.scheme_name || "--",
@@ -105,18 +106,19 @@ class ReportParticipant extends Component {
         robust_mean: reportData.robust_mean || "--",
         robust_sd: robust_sd,
       };
-  
+
+      // ✅ Update state with everything, including acceptedResults
       this.setState({ reportDetails, analyteData, zScoreChartData });
     }
   }
-  
-  handleAnalyteSelection = (analyteName) => {
+
+  handleAnalyteSelection = analyteName => {
     this.setState({ selectedAnalyte: analyteName });
   };
-  
+
   render() {
     const { reportDetails, analyteData } = this.state;
-    const { selectedAnalyte } = this.state;  // Get selectedAnalyte from state
+    const { selectedAnalyte } = this.state; // Get selectedAnalyte from state
 
     if (!analyteData.length) {
       return (
@@ -134,34 +136,46 @@ class ReportParticipant extends Component {
         </Container>
       );
     }
-   
-// Ensure we filter the data based on selectedAnalyte BEFORE we process Z-Score data
-const combinedZScoreData = analyteData
-  .filter(analyte => selectedAnalyte ? analyte.analyteName.toLowerCase().trim() === selectedAnalyte.toLowerCase().trim() : true)  // Filter analyte data based on selectedAnalyte
-  .map(analyte => {
-    // Get filtered results for the current analyte
-    const filteredResults = this.props.reportData.participants_results.filter(result => result.analyte_name === analyte.analyteName);
 
-    console.log("Filtered results for analyte:", analyte.analyteName, filteredResults); // Debugging log
+    // Ensure we filter the data based on selectedAnalyte BEFORE we process Z-Score data
+    const combinedZScoreData = analyteData
+      .filter(analyte =>
+        selectedAnalyte
+          ? analyte.analyteName.toLowerCase().trim() ===
+            selectedAnalyte.toLowerCase().trim()
+          : true
+      ) // Filter analyte data based on selectedAnalyte
+      .map(analyte => {
+        // Get filtered results for the current analyte
+        const filteredResults =
+          this.props.reportData.participants_results.filter(
+            result => result.analyte_name === analyte.analyteName
+          );
 
-    return filteredResults.map(result => ({
-      name: `Participant ${result.participant_id}`,
-      analyteName: analyte.analyteName,
-      ZScore: result.z_score ? parseFloat(result.z_score) : null,
-    }));
-  }).flat(); // Flatten the array to get all the results in one array
+        console.log(
+          "Filtered results for analyte:",
+          analyte.analyteName,
+          filteredResults
+        ); // Debugging log
 
-// Debugging: Check the combinedZScoreData
-console.log("Combined Z-Score Data:", combinedZScoreData);
+        return filteredResults.map(result => ({
+          name: `Participant ${result.participant_id}`,
+          analyteName: analyte.analyteName,
+          ZScore: result.z_score ? parseFloat(result.z_score) : null,
+        }));
+      })
+      .flat(); // Flatten the array to get all the results in one array
 
-// Now, filter out any invalid Z-Scores (null, undefined, or NaN)
-const filteredZScoreData = combinedZScoreData.filter(
-  data => data.ZScore !== null && data.ZScore !== undefined && !isNaN(data.ZScore)
-);
+    // Debugging: Check the combinedZScoreData
+    console.log("Combined Z-Score Data:", combinedZScoreData);
 
-console.log("Filtered Z-Score Data:", filteredZScoreData);
+    // Now, filter out any invalid Z-Scores (null, undefined, or NaN)
+    const filteredZScoreData = combinedZScoreData.filter(
+      data =>
+        data.ZScore !== null && data.ZScore !== undefined && !isNaN(data.ZScore)
+    );
 
-
+    console.log("Filtered Z-Score Data:", filteredZScoreData);
 
     return (
       <Container
@@ -237,50 +251,112 @@ console.log("Filtered Z-Score Data:", filteredZScoreData);
             NHS - National External Quality Assessment Scheme
           </h4>
           <Row>
-          <Row>
-  {/* Left Column */}
-  <Col md={6}>
-  <Row className="mb-2">
-    <Col xs={6} className="text-end" style={{ fontWeight: "bold", color: "black" }}>Participant Number:</Col>
-    <Col xs={6} className="text-left" style={{ color: "blue" }}>{this.props.match.params.id1}</Col>
-  </Row>
-  <Row className="mb-2">
-    <Col xs={6} className="text-end" style={{ fontWeight: "bold", color: "black" }}>Issue Date:</Col>
-    <Col xs={6} className="text-left" style={{ color: "blue" }}>{reportDetails.issueDate}</Col>
-  </Row>
-  <Row className="mb-2">
-    <Col xs={6} className="text-end" style={{ fontWeight: "bold", color: "black" }}>Closing Date:</Col>
-    <Col xs={6} className="text-left" style={{ color: "blue" }}>{reportDetails.closingDate}</Col>
-  </Row>
-  <Row className="mb-2">
-    <Col xs={6} className="text-end" style={{ fontWeight: "bold", color: "black" }}>Print Date:</Col>
-    <Col xs={6} className="text-left" style={{ color: "blue" }}>{reportDetails.printDate}</Col>
-  </Row>
-</Col>
+            <Row>
+              {/* Left Column */}
+              <Col md={6}>
+                <Row className="mb-2">
+                  <Col
+                    xs={6}
+                    className="text-end"
+                    style={{ fontWeight: "bold", color: "black" }}
+                  >
+                    Participant Number:
+                  </Col>
+                  <Col xs={6} className="text-left" style={{ color: "blue" }}>
+                    {this.props.match.params.id1}
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col
+                    xs={6}
+                    className="text-end"
+                    style={{ fontWeight: "bold", color: "black" }}
+                  >
+                    Issue Date:
+                  </Col>
+                  <Col xs={6} className="text-left" style={{ color: "blue" }}>
+                    {reportDetails.issueDate}
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col
+                    xs={6}
+                    className="text-end"
+                    style={{ fontWeight: "bold", color: "black" }}
+                  >
+                    Closing Date:
+                  </Col>
+                  <Col xs={6} className="text-left" style={{ color: "blue" }}>
+                    {reportDetails.closingDate}
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col
+                    xs={6}
+                    className="text-end"
+                    style={{ fontWeight: "bold", color: "black" }}
+                  >
+                    Print Date:
+                  </Col>
+                  <Col xs={6} className="text-left" style={{ color: "blue" }}>
+                    {reportDetails.printDate}
+                  </Col>
+                </Row>
+              </Col>
 
-
-  {/* Right Column */}
-  <Col md={6}>
-  <Row className="mb-2">
-    <Col xs={6} className="text-end" style={{ fontWeight: "bold", color: "black" }}>Scheme:</Col>
-    <Col xs={6} className="text-left" style={{ color: "blue" }}>{reportDetails.scheme}</Col>
-  </Row>
-  <Row className="mb-2">
-    <Col xs={6} className="text-end" style={{ fontWeight: "bold", color: "black" }}>Cycle:</Col>
-    <Col xs={6} className="text-left" style={{ color: "blue" }}>{reportDetails.cycle}</Col>
-  </Row>
-  <Row className="mb-2">
-    <Col xs={6} className="text-end" style={{ fontWeight: "bold", color: "black" }}>Round:</Col>
-    <Col xs={6} className="text-left" style={{ color: "blue" }}>{reportDetails.round}</Col>
-  </Row>
-  <Row className="mb-2">
-    <Col xs={6} className="text-end" style={{ fontWeight: "bold", color: "black" }}>Sample:</Col>
-    <Col xs={6} className="text-left" style={{ color: "blue" }}>{reportDetails.sample}</Col>
-  </Row>
-</Col>
-
-</Row>
-</Row>
+              {/* Right Column */}
+              <Col md={6}>
+                <Row className="mb-2">
+                  <Col
+                    xs={6}
+                    className="text-end"
+                    style={{ fontWeight: "bold", color: "black" }}
+                  >
+                    Scheme:
+                  </Col>
+                  <Col xs={6} className="text-left" style={{ color: "blue" }}>
+                    {reportDetails.scheme}
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col
+                    xs={6}
+                    className="text-end"
+                    style={{ fontWeight: "bold", color: "black" }}
+                  >
+                    Cycle:
+                  </Col>
+                  <Col xs={6} className="text-left" style={{ color: "blue" }}>
+                    {reportDetails.cycle}
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col
+                    xs={6}
+                    className="text-end"
+                    style={{ fontWeight: "bold", color: "black" }}
+                  >
+                    Round:
+                  </Col>
+                  <Col xs={6} className="text-left" style={{ color: "blue" }}>
+                    {reportDetails.round}
+                  </Col>
+                </Row>
+                <Row className="mb-2">
+                  <Col
+                    xs={6}
+                    className="text-end"
+                    style={{ fontWeight: "bold", color: "black" }}
+                  >
+                    Sample:
+                  </Col>
+                  <Col xs={6} className="text-left" style={{ color: "blue" }}>
+                    {reportDetails.sample}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Row>
         </div>
 
         {/* Analyte Table */}
@@ -325,7 +401,9 @@ console.log("Filtered Z-Score Data:", filteredZScoreData);
                 <td style={{ border: "1px solid #dee2e6", textAlign: "left" }}>
                   {analyte.analyteName}
                 </td>
-                <td style={{ border: "1px solid #dee2e6", textAlign: "center" }}>
+                <td
+                  style={{ border: "1px solid #dee2e6", textAlign: "center" }}
+                >
                   {analyte.unit}
                 </td>
                 <td style={{ border: "1px solid #dee2e6", textAlign: "left" }}>
@@ -341,22 +419,22 @@ console.log("Filtered Z-Score Data:", filteredZScoreData);
                 </td>
                 <td style={{ border: "1px solid #dee2e6" }}>{analyte.CV}</td>
                 <td
-  style={{
-    width: "12.5%",
-    border: "1px solid #dee2e6",
-    color:
-      analyte.evaluation === "Acceptable"
-        ? "green"
-        : analyte.evaluation === "Warning"
-        ? "blue"
-        : analyte.evaluation === "Rejected"
-        ? "red"
-        : "black", // fallback for "Not Submitted" or other values
-    fontWeight: "bold",
-  }}
->
-  {analyte.evaluation}
-</td>
+                  style={{
+                    width: "12.5%",
+                    border: "1px solid #dee2e6",
+                    color:
+                      analyte.evaluation === "Acceptable"
+                        ? "green"
+                        : analyte.evaluation === "Warning"
+                        ? "blue"
+                        : analyte.evaluation === "Rejected"
+                        ? "red"
+                        : "black", // fallback for "Not Submitted" or other values
+                    fontWeight: "bold",
+                  }}
+                >
+                  {analyte.evaluation}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -422,12 +500,20 @@ console.log("Filtered Z-Score Data:", filteredZScoreData);
                     </tr>
                     {/* Row 3 */}
                     <tr>
-                    <td style={{ width: "12.5%", border: "1px solid #dee2e6", backgroundColor: "#f0f0f0" }}>
-  Accepted Results
-</td>
-<td style={{ width: "12.5%", border: "1px solid #dee2e6" }}>
-  <strong>{analyte.acceptedResults}</strong>
-</td>
+                      <td
+                        style={{
+                          width: "12.5%",
+                          border: "1px solid #dee2e6",
+                          backgroundColor: "#f0f0f0",
+                        }}
+                      >
+                        Accepted Results
+                      </td>
+                      <td
+                        style={{ width: "12.5%", border: "1px solid #dee2e6" }}
+                      >
+                        <strong>{analyte.acceptedResults}</strong>
+                      </td>
 
                       <td
                         style={{
@@ -441,7 +527,7 @@ console.log("Filtered Z-Score Data:", filteredZScoreData);
                       <td
                         style={{ width: "12.5%", border: "1px solid #dee2e6" }}
                       >
-                        <strong>{analyte.rejectedResults}</strong>
+                        <strong>{analyte.rejected_results}</strong>
                       </td>
                     </tr>
                     <tr>
@@ -538,32 +624,32 @@ console.log("Filtered Z-Score Data:", filteredZScoreData);
                       </td>
                     </tr>
                     <tr>
-                    <td
-  style={{
-    width: "12.5%",
-    border: "1px solid #dee2e6",
-    backgroundColor: "#f0f0f0",
-  }}
->
-  Evaluation
-</td>
-<td
-  style={{
-    width: "12.5%",
-    border: "1px solid #dee2e6",
-    color:
-      analyte.evaluation === "Acceptable"
-        ? "green"
-        : analyte.evaluation === "Warning"
-        ? "blue"
-        : analyte.evaluation === "Rejected"
-        ? "red"
-        : "black", // fallback for "Not Submitted" or other values
-    fontWeight: "bold",
-  }}
->
-  {analyte.evaluation}
-</td>
+                      <td
+                        style={{
+                          width: "12.5%",
+                          border: "1px solid #dee2e6",
+                          backgroundColor: "#f0f0f0",
+                        }}
+                      >
+                        Evaluation
+                      </td>
+                      <td
+                        style={{
+                          width: "12.5%",
+                          border: "1px solid #dee2e6",
+                          color:
+                            analyte.evaluation === "Acceptable"
+                              ? "green"
+                              : analyte.evaluation === "Warning"
+                              ? "blue"
+                              : analyte.evaluation === "Rejected"
+                              ? "red"
+                              : "black", // fallback for "Not Submitted" or other values
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {analyte.evaluation}
+                      </td>
 
                       <td
                         style={{
@@ -592,26 +678,66 @@ console.log("Filtered Z-Score Data:", filteredZScoreData);
                   height: "500px",
                 }}
               >
-                
-                {filteredZScoreData.length > 0 ? (
-  <ResponsiveContainer width="100%" height={300}>
-    <BarChart
-      barSize={30}
-      data={filteredZScoreData}
-      margin={{ top: 20, right: 30, left: 30, bottom: 50 }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" style={{ fontSize: "14px" }} />
-      <YAxis style={{ fontSize: "14px" }} />
-      <Tooltip />
-      <Legend wrapperStyle={{ fontSize: "14px" }} />
-      <Bar dataKey="ZScore" fill="#82ca9d" radius={[8, 8, 0, 0]} />
-    </BarChart>
-  </ResponsiveContainer>
-) : (
-  <p style={{ color: "red" }}>No Z-Score data available for this analyte.</p>
-)}
+                {(() => {
+                  const participantId = this.props.match.params.id1;
 
+                  const allZScores = this.props.reportData.participants_results
+                    .filter(
+                      result =>
+                        result.analyte_name === analyte.analyteName &&
+                        result.z_score !== null &&
+                        !isNaN(result.z_score)
+                    )
+                    .slice(0, analyte.count)
+                    .map((result, index) => ({
+                      name: `${result.participant_id}`, // X-axis will now show participant ID
+                      id: result.participant_id,
+                      ZScore: parseFloat(result.z_score),
+                    }));
+
+                  return allZScores.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart
+                        data={allZScores}
+                        barSize={30}
+                        margin={{ top: 20, right: 30, left: 30, bottom: 50 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" style={{ fontSize: "14px" }} />
+                        <YAxis style={{ fontSize: "14px" }} />
+                        <Tooltip />
+                        <Legend wrapperStyle={{ fontSize: "14px" }} />
+                        <Bar
+                          dataKey="ZScore"
+                          fill="#82ca9d"
+                          radius={[8, 8, 0, 0]}
+                        />
+
+                        {/* ReferenceLine for current participant */}
+                        {allZScores.map(entry =>
+                          String(entry.id) === String(participantId) ? (
+                            <ReferenceLine
+                              key={`ref-${entry.id}`}
+                              x={entry.name}
+                              stroke="black"
+                              strokeWidth={2}
+                              label={{
+                                position: "top",
+                                fill: "black",
+                                fontSize: 12,
+                                value: "",
+                              }}
+                            />
+                          ) : null
+                        )}
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <p style={{ color: "red" }}>
+                      No Z-Score data available for this analyte.
+                    </p>
+                  );
+                })()}
               </div>
             </div>
           ))}
@@ -642,4 +768,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(ReportParticipant));
-
