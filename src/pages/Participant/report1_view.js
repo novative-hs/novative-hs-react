@@ -527,7 +527,7 @@ class ReportParticipant extends Component {
                       <td
                         style={{ width: "12.5%", border: "1px solid #dee2e6" }}
                       >
-                        <strong>{analyte.rejected_results}</strong>
+                        <strong>{analyte.rejectedResults}</strong>
                       </td>
                     </tr>
                     <tr>
