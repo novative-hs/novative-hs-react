@@ -1362,13 +1362,7 @@ class Results extends Component {
                   Download Results
                 </Button>
                 <Button
-                  onClick={() => {
-                    const { organization_name, id, id1 } =
-                      this.props.match.params;
-                    this.props.history.push(
-                      `/${organization_name}/${id}/${id1}/report1_view`
-                    );
-                  }}
+                  onClick= {this.handlePrint}
                   className="mb-3 btn btn-secondary"
                   style={{ minWidth: "140px" }}
                 >
