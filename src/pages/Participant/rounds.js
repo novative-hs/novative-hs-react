@@ -150,12 +150,17 @@ class Roundural extends Component {
                 {/* Report Icon and Print Button - Show only if status is 'Report Available' */}
                 {round.status === "Report Available" && (
                   <Tooltip title="View Report">
-                    <Link
-                      to={`/${organization_name}/${round.id}/${round.participant_id}/report1_view`}
-                      className="fas fa-file-alt text-primary font-size-18"
-                    >
-                      {/* <i className="fas fa-chart-bar text-warning ml-1 font-size-16"></i> */}
-                    </Link>
+                    {round.scheme_type === "Quantitative" ? (
+                      <Link
+                        to={`/${organization_name}/${round.id}/${round.participant_id}/report1_view`}
+                        className="fas fa-file-alt text-primary font-size-18"
+                      />
+                    ) : (
+                      <Link
+                        to={`/${organization_name}/${round.id}/${round.participant_id}/qualitative_report_view`}
+                        className="fas fa-file-alt text-success font-size-18"
+                      />
+                    )}
                   </Tooltip>
                 )}
               </div>
