@@ -121,9 +121,9 @@ class Results extends Component {
           sort: true,
           formatter: (cellContent, list) => {
             // Find the analyte that matches the current row's analyte_id
-            const filteredUnits = this.state.ListUnits.filter(unit =>
+            const filteredUnits = this.state.ListUnits.filter((unit) =>
               this.state.SchemeAnalytesList.some(
-                analyte =>
+                (analyte) =>
                   analyte?.id === list?.analyte_id &&
                   analyte?.units?.includes(unit.id) // Ensure unit ID exists in the analyte's units
               )
@@ -132,7 +132,7 @@ class Results extends Component {
 
             // Find the selected unit for display
             const selectedUnit = filteredUnits.find(
-              unit => String(unit.id) === String(list.units)
+              (unit) => String(unit.id) === String(list.units)
             );
 
             return (
@@ -141,7 +141,7 @@ class Results extends Component {
                   <select
                     className="form-select me-2"
                     value={list.units || ""}
-                    onChange={e => this.handleUnitChange(e, list)}
+                    onChange={(e) => this.handleUnitChange(e, list)}
                   >
                     <option value="">Select Unit</option>
                     {filteredUnits.map((unit, index) => (
@@ -176,16 +176,18 @@ class Results extends Component {
           sort: true,
           formatter: (cellContent, list) => {
             // Filter instruments based on analyte_name and status === 'Active'
-            const filteredInstruments = this.state.Instrument.filter(instr => {
-              return (
-                instr.status === "Active" &&
-                instr.analytes.includes(list.analyte_name)
-              );
-            });
+            const filteredInstruments = this.state.Instrument.filter(
+              (instr) => {
+                return (
+                  instr.status === "Active" &&
+                  instr.analytes.includes(list.analyte_name)
+                );
+              }
+            );
 
             // Find the selected instrument
             const selectedInstrument = filteredInstruments.find(
-              instr => String(instr.id) === String(list.instrument_name)
+              (instr) => String(instr.id) === String(list.instrument_name)
             );
 
             return (
@@ -194,12 +196,12 @@ class Results extends Component {
                   <select
                     className="form-select me-2"
                     value={list.instrument_name || ""}
-                    onChange={e => this.handleInstrumentChange(e, list)}
+                    onChange={(e) => this.handleInstrumentChange(e, list)}
                   >
                     <option value="">Select Instrument</option>
                     {this.state.Instrument &&
                       this.state.Instrument.filter(
-                        instr =>
+                        (instr) =>
                           instr.status === "Active" &&
                           instr.analytes.includes(list.analyte_name)
                       ).map((instr, index) => (
@@ -224,7 +226,8 @@ class Results extends Component {
                 ) : (
                   <span>
                     {this.state.Instrument.find(
-                      instr => String(instr.id) === String(list.instrument_name)
+                      (instr) =>
+                        String(instr.id) === String(list.instrument_name)
                     )?.name ||
                       list.instrument_name ||
                       "N/A"}
@@ -244,16 +247,16 @@ class Results extends Component {
                 <select
                   className="form-select me-2"
                   value={list.method_name || ""}
-                  onChange={e => this.handleMethodChange(e, list)}
+                  onChange={(e) => this.handleMethodChange(e, list)}
                 >
                   <option value="">Select Method</option>
                   {this.state.ListMethods &&
                     this.state.SchemeAnalytesList &&
                     this.state.ListMethods.filter(
-                      method =>
+                      (method) =>
                         method.status === "Active" &&
                         this.state.SchemeAnalytesList.some(
-                          analyte =>
+                          (analyte) =>
                             analyte?.id === list?.analyte_id &&
                             analyte?.methods?.includes(method.id)
                         )
@@ -279,7 +282,7 @@ class Results extends Component {
               ) : (
                 <span>
                   {this.state.ListMethods.find(
-                    method => method.id === list.method_name
+                    (method) => method.id === list.method_name
                   )?.name || "N/A"}
                 </span>
               )}
@@ -296,15 +299,15 @@ class Results extends Component {
                 <select
                   className="form-select me-2"
                   value={list.reagent_name || ""}
-                  onChange={e => this.handleReagentChange(e, list)}
+                  onChange={(e) => this.handleReagentChange(e, list)}
                 >
                   <option value="">Select Reagent</option>
                   {this.state.ReagentList &&
                     this.state.ReagentList.filter(
-                      reagent =>
+                      (reagent) =>
                         reagent.status === "Active" &&
                         this.state.SchemeAnalytesList.some(
-                          analyte =>
+                          (analyte) =>
                             analyte?.id === list?.analyte_id &&
                             analyte?.reagents?.includes(reagent.id)
                         )
@@ -330,7 +333,7 @@ class Results extends Component {
               ) : (
                 <span>
                   {this.state.ReagentList.find(
-                    reagent => reagent.id === list.reagent_name
+                    (reagent) => reagent.id === list.reagent_name
                   )?.name ||
                     list.reagent_name ||
                     "N/A"}
@@ -348,10 +351,10 @@ class Results extends Component {
             <div className="text-start">
               <input
                 type="text"
-                ref={el => (this[`resultRef_${list.id}`] = el)}
+                ref={(el) => (this[`resultRef_${list.id}`] = el)}
                 defaultValue={list.result || ""}
                 placeholder="Enter result"
-                onChange={e => {
+                onChange={(e) => {
                   let value = e.target.value;
                   // Allow only numbers and a single decimal point
                   if (/^\d*\.?\d*$/.test(value)) {
@@ -381,16 +384,18 @@ class Results extends Component {
           sort: true,
           formatter: (cellContent, list) => {
             // Filter instruments based on analyte_name and status === 'Active'
-            const filteredInstruments = this.state.Instrument.filter(instr => {
-              return (
-                instr.status === "Active" &&
-                instr.analytes.includes(list.analyte_name)
-              );
-            });
+            const filteredInstruments = this.state.Instrument.filter(
+              (instr) => {
+                return (
+                  instr.status === "Active" &&
+                  instr.analytes.includes(list.analyte_name)
+                );
+              }
+            );
 
             // Find the selected instrument
             const selectedInstrument = filteredInstruments.find(
-              instr => String(instr.id) === String(list.instrument_name)
+              (instr) => String(instr.id) === String(list.instrument_name)
             );
 
             return (
@@ -399,12 +404,12 @@ class Results extends Component {
                   <select
                     className="form-select me-2"
                     value={list.instrument_name || ""}
-                    onChange={e => this.handleInstrumentChange(e, list)}
+                    onChange={(e) => this.handleInstrumentChange(e, list)}
                   >
                     <option value="">Select Instrument</option>
                     {this.state.Instrument &&
                       this.state.Instrument.filter(
-                        instr =>
+                        (instr) =>
                           instr.status === "Active" &&
                           instr.analytes.includes(list.analyte_name)
                       ).map((instr, index) => (
@@ -429,7 +434,8 @@ class Results extends Component {
                 ) : (
                   <span>
                     {this.state.Instrument.find(
-                      instr => String(instr.id) === String(list.instrument_name)
+                      (instr) =>
+                        String(instr.id) === String(list.instrument_name)
                     )?.name ||
                       list.instrument_name ||
                       "N/A"}
@@ -449,16 +455,16 @@ class Results extends Component {
                 <select
                   className="form-select me-2"
                   value={list.method_name || ""}
-                  onChange={e => this.handleMethodChange(e, list)}
+                  onChange={(e) => this.handleMethodChange(e, list)}
                 >
                   <option value="">Select Method</option>
                   {this.state.ListMethods &&
                     this.state.SchemeAnalytesList &&
                     this.state.ListMethods.filter(
-                      method =>
+                      (method) =>
                         method.status === "Active" &&
                         this.state.SchemeAnalytesList.some(
-                          analyte =>
+                          (analyte) =>
                             analyte?.id === list?.analyte_id &&
                             analyte?.methods?.includes(method.id)
                         )
@@ -484,7 +490,7 @@ class Results extends Component {
               ) : (
                 <span>
                   {this.state.ListMethods.find(
-                    method => method.id === list.method_name
+                    (method) => method.id === list.method_name
                   )?.name || "N/A"}
                 </span>
               )}
@@ -501,15 +507,15 @@ class Results extends Component {
                 <select
                   className="form-select me-2"
                   value={list.reagent_name || ""}
-                  onChange={e => this.handleReagentChange(e, list)}
+                  onChange={(e) => this.handleReagentChange(e, list)}
                 >
                   <option value="">Select Reagent</option>
                   {this.state.ReagentList &&
                     this.state.ReagentList.filter(
-                      reagent =>
+                      (reagent) =>
                         reagent.status === "Active" &&
                         this.state.SchemeAnalytesList.some(
-                          analyte =>
+                          (analyte) =>
                             analyte?.id === list?.analyte_id &&
                             analyte?.reagents?.includes(reagent.id)
                         )
@@ -535,7 +541,7 @@ class Results extends Component {
               ) : (
                 <span>
                   {this.state.ReagentList.find(
-                    reagent => reagent.id === list.reagent_name
+                    (reagent) => reagent.id === list.reagent_name
                   )?.name ||
                     list.reagent_name ||
                     "N/A"}
@@ -555,7 +561,7 @@ class Results extends Component {
                 <select
                   className="form-select me-2"
                   value={list.result_type || ""}
-                  onChange={e => this.handleResultTypeChange(e, list)}
+                  onChange={(e) => this.handleResultTypeChange(e, list)}
                 >
                   <option value="" disabled hidden>
                     Select Result Type
@@ -589,10 +595,10 @@ class Results extends Component {
             <div className="text-start">
               <input
                 type="text"
-                ref={el => (this[`resultRef_${list.id}`] = el)}
+                ref={(el) => (this[`resultRef_${list.id}`] = el)}
                 defaultValue={list.result || ""}
                 placeholder="Enter result"
-                onChange={e => {
+                onChange={(e) => {
                   let value = e.target.value;
                   // Allow only numbers and a single decimal point
                   if (/^\d*\.?\d*$/.test(value)) {
@@ -746,16 +752,9 @@ class Results extends Component {
       });
     }
 
-    // ✅ Update 'submittedOn' from backend if ResultList has changed
-    if (prevProps.ResultList !== ResultList && ResultList.length > 0) {
-      fetch(`/api/registration-admin/getResultsData`)
-        .then(response => response.json())
-        .then(responseData => {
-          if (responseData?.updated_at) {
-            this.setState({ submittedOn: responseData.updated_at });
-          }
-        })
-        .catch(error => console.error("Error fetching updated data:", error));
+    if (prevProps.ResultList !== ResultList && ResultList.length >= 0) {
+      console.log("🔁 ResultList changed, updating combined data...");
+      this.combineData();
     }
   }
 
@@ -831,52 +830,48 @@ class Results extends Component {
       ListMethods,
       Instrument,
       ReagentList,
-      ResultList, // This array contains the previously submitted values
-    } = this.state;
+      ResultList, // ✅ Fresh from Redux props
+      rounds,
+    } = this.props;
 
-    const { rounds } = this.props;
-    const { user_id, ParticipantNo } = this.state;
+    const user_id = this.state.user_id;
+
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
-      const participantResults = ResultList.filter(result => {
-        return result.analyte === analyte.id;
-      });
+      const participantResults = ResultList.filter(
+        (result) => result.analyte === analyte.id
+      );
 
-      const userResult = participantResults.find(result => {
-        return (
-          result.lab.account_id === user_id && result.round_name === rounds
-        );
-      });
+      // ✅ Match by user_id only and include submitted results always
+      const userResult = participantResults.find(
+        (result) =>
+          result.lab?.account_id === user_id &&
+          result.result_status === "Submitted"
+      );
 
       return {
         id: analyte.id || index,
         analyte_id: analyte.id,
         analyte_name: analyte.name,
-
-        // Use stored values if available, otherwise default to the first item in the list
-        units: userResult && userResult.units ? userResult.units : "",
-
-        reagent_name: userResult ? userResult.reagents || null : null,
-        method_name: userResult ? userResult.method || null : null,
-
-        instrument_name: userResult ? userResult.instrument || null : null,
-
-        result: userResult ? userResult.result : "",
-        result_status: userResult ? userResult.result_status : null,
-        result_type: userResult ? userResult.result_type : null,
+        units: userResult?.units || "",
+        reagent_name: userResult?.reagents || null,
+        method_name: userResult?.method || null,
+        instrument_name: userResult?.instrument || null,
+        result: userResult?.result || "",
+        result_status: userResult?.result_status || null,
+        result_type: userResult?.result_type || null,
       };
     });
 
-    // Update the state with combined data
     this.setState({ combinedData });
   };
 
-  handleUpdate = async list => {
+  handleUpdate = async (list) => {
     const id = this.props.match.params.id;
     const { rounds, scheme_id, round_status } = this.props;
 
     // Find the corresponding analyte data in combinedData
     const analyteData = this.state.combinedData.find(
-      item => item.id === list.id
+      (item) => item.id === list.id
     );
 
     // Extract values
@@ -983,22 +978,22 @@ class Results extends Component {
 
   handleSubmitAll = async () => {
     const { combinedData } = this.state;
-    const { rounds, scheme_id, round_status } = this.props;
+    const { rounds, scheme_id, round_status, schemeType } = this.props;
     const id = this.props.match.params.id;
-  
+
     if (!combinedData.length) {
       alert("No results to submit.");
       return;
     }
-  
+
     const confirmation = window.confirm(
       "Are you sure you want to submit all results?"
     );
     if (!confirmation) return;
-  
+
     try {
-      let latestUpdatedAt = new Date().toISOString(); // Default timestamp
-  
+      let latestUpdatedAt = new Date().toISOString();
+
       for (const list of combinedData) {
         const resultData = {
           round_id: id,
@@ -1008,43 +1003,43 @@ class Results extends Component {
           reagent_name: list.reagent_name || null,
           result_type: list.result_type,
           result: this[`resultRef_${list.id}`]?.value || "",
-          rounds: rounds,
-          scheme_id: scheme_id,
-          round_status: round_status,
+          rounds,
+          scheme_id,
+          round_status,
           result_status: "Submitted",
         };
-  
-        // ✅ Only add units if Quantitative, else exclude it for Qualitative
-        if (this.props.schemeType === "Quantitative") {
-          resultData.units = list.units && !isNaN(list.units) ? parseInt(list.units) : null;
+
+        if (schemeType === "Quantitative") {
+          resultData.units =
+            list.units && !isNaN(list.units) ? parseInt(list.units) : null;
         }
-  
+
         const response = await this.props.onPostResult(
           resultData,
           this.state.user_id
         );
-  
+
         if (response.type === "POST_RESULT" && response.payload?.updated_at) {
-          latestUpdatedAt = response.payload.updated_at; // Use actual timestamp from backend
+          latestUpdatedAt = response.payload.updated_at;
         }
       }
-  
-      // ✅ Store "Submitted On" in state & localStorage
+
       this.setState({ submittedOn: latestUpdatedAt });
       localStorage.setItem("submittedOn", latestUpdatedAt);
-  
+
       alert("Results submitted successfully!");
-      window.location.reload();
+
+      // ✅ Refresh results and recombine data
+      await this.fetchResults();
+      this.combineData();
     } catch (error) {
       alert("Failed to submit all results. Please try again.");
     }
   };
-  
-  
 
   handleResubmit = async () => {
-    const { combinedData, Instrument, ReagentList } = this.state; // ✅ Ensure we have the lists
-    const { rounds, scheme_id, round_status } = this.props;
+    const { combinedData } = this.state;
+    const { rounds, scheme_id, round_status, schemeType } = this.props;
     const id = this.props.match.params.id;
 
     if (!combinedData.length) {
@@ -1058,49 +1053,45 @@ class Results extends Component {
     if (!confirmation) return;
 
     try {
-      let latestUpdatedAt = new Date().toISOString(); // Default timestamp
+      let latestUpdatedAt = new Date().toISOString();
 
       for (const list of combinedData) {
-        // ✅ Convert instrument_name & reagent_name to IDs before resubmitting
-        const instrument = Instrument.find(
-          instr => instr.name === list.instrument_name
-        );
-        const reagent = ReagentList.find(
-          reag => reag.name === list.reagent_name
-        );
-
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          units: list.units && !isNaN(list.units) ? parseInt(list.units) : null,
-
           instrument_name: list.instrument_name || null,
           method_name: list.method_name || null,
           reagent_name: list.reagent_name || null,
           result_type: list.result_type,
           result: this[`resultRef_${list.id}`]?.value || "",
-          rounds: rounds,
-          scheme_id: scheme_id,
-          round_status: round_status,
+          rounds,
+          scheme_id,
+          round_status,
           result_status: "Submitted",
         };
 
-        console.log("🚀 Resubmitting Payload:", resultData); // ✅ Debugging
+        if (schemeType === "Quantitative") {
+          resultData.units =
+            list.units && !isNaN(list.units) ? parseInt(list.units) : null;
+        }
 
         const response = await this.props.onPostResult(
           resultData,
           this.state.user_id
         );
-
         if (response.type === "POST_RESULT" && response.payload?.updated_at) {
           latestUpdatedAt = response.payload.updated_at;
         }
       }
 
-      // ✅ Update "Submitted On" in state after resubmission
       this.setState({ submittedOn: latestUpdatedAt });
+      localStorage.setItem("submittedOn", latestUpdatedAt);
 
       alert("Results resubmitted successfully!");
+
+      // ✅ Refresh results and recombine data
+      await this.fetchResults();
+      this.combineData();
     } catch (error) {
       alert("Failed to resubmit results. Please try again.");
     }
@@ -1110,7 +1101,7 @@ class Results extends Component {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
         return { ...item, units: value };
       }
@@ -1124,7 +1115,7 @@ class Results extends Component {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
         return { ...item, method_name: value };
       }
@@ -1156,11 +1147,11 @@ class Results extends Component {
 
   handleInstrumentChange = (event, list) => {
     const { value } = event.target;
-    this.setState(prevState => {
-      const updatedData = prevState.combinedData.map(item => {
+    this.setState((prevState) => {
+      const updatedData = prevState.combinedData.map((item) => {
         if (item.id === list.id) {
           const selectedInstrument = prevState.Instrument.find(
-            instr => instr.id.toString() === value
+            (instr) => instr.id.toString() === value
           );
           return {
             ...item,
@@ -1181,7 +1172,7 @@ class Results extends Component {
     const { combinedData } = this.state;
 
     // Update the specific item in the lab data
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
         return { ...item, result_type: newResultType };
       }
@@ -1194,7 +1185,7 @@ class Results extends Component {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
         return { ...item, reagent_name: value };
       }
@@ -1204,7 +1195,7 @@ class Results extends Component {
     this.setState({ combinedData: updatedData });
   };
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -1236,7 +1227,7 @@ class Results extends Component {
     ];
 
     // Map each row to an object with only the desired fields
-    const dataToExport = ResultList.map(unit => ({
+    const dataToExport = ResultList.map((unit) => ({
       id: unit.id,
       Analyte: unit.analyte,
       Unit: unit.units,
@@ -1294,7 +1285,7 @@ class Results extends Component {
     console.log("Round Status:", this.props.round_status);
 
     const pageOptions = {
-      sizePerPage: 50,
+      sizePerPage: 10,
       totalSize: combinedData.length > 0 ? combinedData.length : " ",
       custom: true,
     };
@@ -1362,7 +1353,13 @@ class Results extends Component {
                   Download Results
                 </Button>
                 <Button
-                  onClick= {this.handlePrint}
+                  onClick={() => {
+                    const { organization_name, id, id1 } =
+                      this.props.match.params;
+                    this.props.history.push(
+                      `/${organization_name}/${id}/${id1}/report1_view`
+                    );
+                  }}
                   className="mb-3 btn btn-secondary"
                   style={{ minWidth: "140px" }}
                 >
@@ -1386,7 +1383,7 @@ class Results extends Component {
                       {!(
                         this.state.combinedData.length > 0 &&
                         this.state.combinedData.every(
-                          data => data.result_status === "Submitted"
+                          (data) => data.result_status === "Submitted"
                         )
                       ) ? (
                         <>
@@ -1417,15 +1414,15 @@ class Results extends Component {
                               Re-Submit
                             </Button>
                             {/* ✅ Show Submitted On date after Submit or Resubmit */}
-                            
                           </>
                         )
                       )}
                     </>
                   )}
-                   {this.state.submittedOn &&
+                {/* ✅ Show Submitted On only if the result is available in the database */}
+                {this.state.submittedOn &&
                   this.state.combinedData.some(
-                    data => data.result_status === "Submitted"
+                    (data) => data.result_status === "Submitted"
                   ) && (
                     <div className="mb-3">
                       <strong>Submitted On:</strong>{" "}
@@ -1451,7 +1448,7 @@ class Results extends Component {
                             data={combinedData}
                             search
                           >
-                            {toolkitprops => (
+                            {(toolkitprops) => (
                               <React.Fragment>
                                 <div className="table-responsive">
                                   <BootstrapTable
@@ -1517,7 +1514,7 @@ Results.propTypes = {
   onGetReagents: PropTypes.func,
   onPostResult: PropTypes.func,
   onGetResultsList: PropTypes.func,
-  history: PropTypes.object.isRequired, 
+  history: PropTypes.object.isRequired, // Add this line for history
 };
 const mapStateToProps = ({
   SchemeAnalytesList,
@@ -1544,14 +1541,14 @@ const mapStateToProps = ({
   ReagentList: ReagentList.ReagentList,
   ResultList: SchemeAnalytesList.ResultList,
 });
-const mapDispatchToProps = dispatch => ({
-  onGetSchemeAnalyte: id => dispatch(getSchemeAnalytesList(id)),
-  onGetUnitsList: id => dispatch(getunitlist(id)),
-  onGetMethodsList: id => dispatch(getmethodlist(id)),
-  onGetInstrumentList: id => dispatch(getInstrumentlist(id)),
-  onGetReagents: id => dispatch(getReagentlist(id)),
+const mapDispatchToProps = (dispatch) => ({
+  onGetSchemeAnalyte: (id) => dispatch(getSchemeAnalytesList(id)),
+  onGetUnitsList: (id) => dispatch(getunitlist(id)),
+  onGetMethodsList: (id) => dispatch(getmethodlist(id)),
+  onGetInstrumentList: (id) => dispatch(getInstrumentlist(id)),
+  onGetReagents: (id) => dispatch(getReagentlist(id)),
   onPostResult: (result, id) => dispatch(postResult(result, id)),
-  onGetResultsList: id => dispatch(getResultsList(id)),
+  onGetResultsList: (id) => dispatch(getResultsList(id)),
 });
 export default connect(
   mapStateToProps,
