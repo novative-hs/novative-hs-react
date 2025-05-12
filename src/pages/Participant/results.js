@@ -1285,7 +1285,7 @@ class Results extends Component {
     console.log("Round Status:", this.props.round_status);
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 30,
       totalSize: combinedData.length > 0 ? combinedData.length : " ",
       custom: true,
     };
