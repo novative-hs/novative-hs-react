@@ -1,6 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import {
   GET_ROUND_LIST,
+  GET_SUBMITTED_PARTICIPANTS,
   ADD_NEW_ROUND_LIST,
   UPDATE_NEW_ROUND_LIST,
   DELETE_ROUND,
@@ -10,6 +11,8 @@ import {
 import {
   getroundlistSuccess,
   getroundlistFail,
+  getsubmittedparticipantsSuccess,
+  getsubmittedparticipantsFail,
   addNewRoundListSuccess,
   addNewRoundListFail,
   updateRoundListSuccess,
@@ -23,13 +26,13 @@ import {
 } from "./actions";
 import {
   getRoundlist,
+  getsubmittedparticipants,
   getRoundParticipantlist,
   addNewRound,
   updateRound,
   deleteRound,
   deleteRoundParticipant, // Backend API call function
 } from "../../helpers/django_api_helper";
-
 function* fetchRoundList({ payload }) {
   try {
     const response = yield call(getRoundlist, payload);
@@ -115,6 +118,33 @@ function* onDeleteRoundParticipant({ payload }) {
     yield put(deleteRoundParticipantFail(error.response ? error.response.data : "Unknown error"));
   }
 }
+
+function* fetchsubmittedparticipants({ payload }) {
+  try {
+    console.log("Fetching submitted participants with payload:", payload); // Log the incoming payload
+    const response = yield call(getsubmittedparticipants, payload);
+
+    // Log the response data
+    console.log("Response received from API:", response);
+
+    // Check if response.data exists
+    if (response.data) {
+      yield put(getsubmittedparticipantsSuccess(response.data));  // Dispatch success with response data
+      console.log("Dispatching success with data:", response.data); // Log the dispatched data
+    } else {
+      console.error("No data found in the response:", response); // Log if there's no data
+      yield put(getsubmittedparticipantsFail("No data returned"));
+    }
+  } catch (error) {
+    // Log error response if any
+    console.error("Error fetching submitted participants:", error);
+    
+    // Dispatch failure with detailed error
+    yield put(
+      getsubmittedparticipantsFail(error.response ? error.response.data : "Unknown error")
+    );
+  }
+}
 function* RoundListSaga() {
   yield takeEvery(GET_ROUND_LIST, fetchRoundList);
   yield takeEvery(GET_ROUND_PARTICIPANT_LIST, fetchRoundParticipantlist);
@@ -122,6 +152,7 @@ function* RoundListSaga() {
   yield takeEvery(UPDATE_NEW_ROUND_LIST, onUpdateround);
   yield takeEvery(DELETE_ROUND, onDeleteRound);
   yield takeEvery(DELETE_ROUND_PARTICIPANT, onDeleteRoundParticipant); // ✅ Added correctly
+  yield takeEvery(GET_SUBMITTED_PARTICIPANTS, fetchsubmittedparticipants);
 }
 
 export default RoundListSaga;

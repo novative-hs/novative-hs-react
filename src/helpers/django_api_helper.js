@@ -3975,3 +3975,9 @@ export const deleteRoundParticipant = async (round_id, participant_id) => {
     headers: getHeader(authHeader()),
   });
 };
+
+//  submitted result//
+export const getsubmittedparticipants = (id) =>
+  get(`${url.GET_SUBMITTED_PARTICIPANTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });

@@ -17,6 +17,10 @@ import {
   DELETE_ROUND_PARTICIPANT, // ✅ Corrected
   DELETE_ROUND_PARTICIPANT_SUCCESS,
   DELETE_ROUND_PARTICIPANT_FAIL,
+  
+GET_SUBMITTED_PARTICIPANTS,
+  GET_SUBMITTED_PARTICIPANTS_SUCCESS,
+  GET_SUBMITTED_PARTICIPANTS_FAIL,
 } from "./actionTypes";
 
 // Round
@@ -141,3 +145,19 @@ export const deleteRoundParticipantFail = (error) => {
     payload: error,
   };
 };
+
+///submitted result partcipipants
+export const getsubmittedparticipants = (id) => ({
+  type: GET_SUBMITTED_PARTICIPANTS,
+  payload: id,
+});
+
+export const getsubmittedparticipantsSuccess = (RoundList) => ({
+  type: GET_SUBMITTED_PARTICIPANTS_SUCCESS,
+  payload: RoundList,
+});
+
+export const getsubmittedparticipantsFail = (error) => ({
+  type: GET_SUBMITTED_PARTICIPANTS_FAIL,
+  payload: error,
+});

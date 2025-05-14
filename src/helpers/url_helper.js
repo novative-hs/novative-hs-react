@@ -100,6 +100,7 @@ export const GET_RESULT_SUBMIT= `${API_ENDPOINT}/api/registration-admin/getAnaly
 export const GET_REPORT= `${API_ENDPOINT}/api/registration-admin/getReport`;
 export const GET_HISTORY_LIST_ROUND = `${API_ENDPOINT}/api/registration-admin/history_list`;
 export const GET_RESULT_HISTORY = `${API_ENDPOINT}/api/registration-admin/result-history_list`;
+export const GET_SUBMITTED_PARTICIPANTS = `${API_ENDPOINT}/api/registration-admin/submitted-participants`;
 
 // Analyte Reagents
 export const GET_ANALYTE_REAGENTS = `${API_ENDPOINT}/api/database-admin/analyte-reagents-list`;
