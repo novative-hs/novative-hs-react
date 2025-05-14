@@ -269,6 +269,41 @@ class InstrumentType extends Component {
             );
           },
         },
+                {
+  dataField: "noofresults",
+  text: "Submitted Results",
+  sort: true,
+  formatter: (cell, row) => {
+    return (
+      <Link
+        to={`/submitted-participants/${row.id}`}  // Navigate to a new page using round ID
+        style={{ textDecoration: "underline", color: "#0000CD" }}
+      >
+        {cell}
+      </Link>
+    );
+  },
+  headerFormatter: (column, colIndex) => {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <div>{column.text}</div>
+        <div style={{ marginTop: "5px" }}>
+          <input
+            type="text"
+            value={this.state.roundsFilter}
+            onChange={e => this.handleFilterChange("roundsFilter", e)}
+            className="form-control"
+            style={{
+              textAlign: "center",
+              width: "100px",
+              margin: "auto",
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+},
         {
           dataField: "issue_date",
           text: "Issue Date",
