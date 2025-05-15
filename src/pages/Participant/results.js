@@ -615,50 +615,42 @@ class Results extends Component {
     }
   };
   // }
-  componentDidMount() {
-    const {
-      onGetSchemeAnalyte,
-      onGetUnitsList,
-      onGetMethodsList,
-      onGetInstrumentList,
-      onGetReagents,
-      onGetResultsList,
-    } = this.props;
+componentDidMount() {
+  const {
+    onGetSchemeAnalyte,
+    onGetUnitsList,
+    onGetMethodsList,
+    onGetInstrumentList,
+    onGetReagents,
+    onGetResultsList,
+  } = this.props;
 
-    const id = this.props.match.params.id;
-    const userId = this.state.user_id;
-    const submittedOn = localStorage.getItem("submittedOn");
+  const roundId = this.props.match.params.id;
+  const userId = this.state.user_id;
 
-    console.log("User ID:", userId); // Ensure this is not undefined or null
-    console.log("Scheme ID:", id); // Ensure this is valid
+  console.log("componentDidMount — roundId:", roundId, "userId:", userId);
 
-    // Log the start of fetching each list
-    console.log("Fetching SchemeAnalyte...");
-    onGetSchemeAnalyte(id);
+  // ✅ Only call APIs if both roundId and userId are present
+  if (userId && roundId) {
+    console.log("✅ Triggering data fetch");
 
-    console.log("Fetching UnitsList for User ID:", userId);
+    onGetSchemeAnalyte(roundId);
     onGetUnitsList(userId);
-
-    console.log("Fetching MethodsList for User ID:", userId);
     onGetMethodsList(userId);
-
-    console.log("Fetching Reagents for User ID:", userId);
-    onGetReagents(userId);
-
-    console.log("Fetching InstrumentList for User ID:", userId);
     onGetInstrumentList(userId);
-
-    console.log("Fetching ResultsList for Scheme ID:", id);
-    onGetResultsList(id);
-
-    if (submittedOn) {
-      this.setState({ submittedOn });
-      console.log("Submitted On:", submittedOn); // Log the timestamp if it's found
-    }
-
-    // You can also add logs to confirm that these fetch actions were successful:
-    this.trackFetchedData(); // You can use this method to track the state of the fetched data.
+    onGetReagents(userId);
+    onGetResultsList(roundId);
+  } else {
+    console.warn("⛔ Skipped fetching — missing roundId or userId");
   }
+
+  // ✅ Load submittedOn from localStorage if available
+  const submittedOn = localStorage.getItem("submittedOn");
+  if (submittedOn) {
+    this.setState({ submittedOn });
+  }
+}
+
 
   // Method to track fetched data after state is updated
   trackFetchedData() {
