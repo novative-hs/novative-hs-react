@@ -3981,3 +3981,11 @@ export const getsubmittedparticipants = (id) =>
   get(`${url.GET_SUBMITTED_PARTICIPANTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
+
+  export const getAnalyteResultParticipantlist = (id, roundId) => {
+    console.log("API Helper - Fetching Round Participant List for ID:", id, roundId);
+    return axios.get(`${url.GET_ANALYTE_RESULT_PARTICIPANT}/${id, roundId}`, {
+      headers: getHeader(authHeader()),
+    });
+  };

@@ -152,7 +152,7 @@ import DisplayValues from "pages/RegistrationAdmin/analteTypeValues";
 import RoundsHistory from "pages/RegistrationAdmin/registrationadmin-history";
 import RegParticipant from "pages/Authentication/RegisterParticipant";
 import ResultParticipantlist from "pages/RegistrationAdmin/submitted-participants";
-
+import StatisticParticipant from "pages/RegistrationAdmin/statistic-participant";
 // finance admin
 ;
 
@@ -375,6 +375,7 @@ const registrationAdminAuthProtectedRoutes = [
   { path: "/:organization_name/rounds-history/:id", component: RoundsHistory},
   { path: "/:organization_name/:id/participant-report", component: Report},
   {path: "/submitted-participants/:id", component: ResultParticipantlist},
+  {path: "/statistic-participant/:roundId/:analyteId", component: StatisticParticipant},
 
 ];
 

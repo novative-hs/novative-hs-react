@@ -15,12 +15,18 @@ import {
   GET_STATISTICS_SUCCESS,
   GET_STATISTICS_FAIL,
 
+
   POST_SERELOGY_VALUES,
   POST_SERELOGY_VALUES_SUCCESS,
   POST_SERELOGY_VALUES_FAIL,
   GET_SERELOGY_VALUES,
   GET_SERELOGY_VALUES_SUCCESS,
   GET_SERELOGY_VALUES_FAIL,
+
+  GET_ANALYTE_RESULT_PARTICIPANT,
+  GET_ANALYTE_RESULT_PARTICIPANT_SUCCESS,
+  GET_ANALYTE_RESULT_PARTICIPANT_FAIL,
+
 
 } from "./actionTypes";
 
@@ -156,4 +162,29 @@ export const getSchemeAnalytesList = (id) => ({
       payload: error,
     };
   };
- 
+
+export function getAnalyteResultParticipant(roundId, analyteId) {
+  console.log("Dispatching GET_ANALYTE_RESULT_PARTICIPANT with:", roundId, analyteId);
+  return {
+    type: GET_ANALYTE_RESULT_PARTICIPANT,
+    payload: { roundId: roundId, analyteId: analyteId },
+  };
+}
+
+// Action on successful fetch
+export function getAnalyteResultParticipantSuccess(getAnalyteResultParticipant) {
+  console.log("GET_ANALYTE_RESULT_PARTICIPANT_SUCCESS:", getAnalyteResultParticipant);
+  return {
+    type: GET_ANALYTE_RESULT_PARTICIPANT_SUCCESS,
+    payload: getAnalyteResultParticipant,
+  };
+}
+
+// Action on failure
+export function getAnalyteResultParticipantFail(error) {
+  console.error("GET_ANALYTE_RESULT_PARTICIPANT_FAIL:", error);
+  return {
+    type: GET_ANALYTE_RESULT_PARTICIPANT_FAIL,
+    payload: error,
+  };
+}

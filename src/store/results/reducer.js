@@ -3,35 +3,34 @@ import {
   SCHEMES_ANALYTES_FAIL,
   POST_RESULT_SUCCESS,
   POST_RESULT_FAIL,
-
   GET_RESULT_SUCCESS,
   GET_RESULT_FAIL,
-
   GET_STATISTICS_SUCCESS,
   GET_STATISTICS_FAIL,
-
   POST_SERELOGY_VALUES_SUCCESS,
   POST_SERELOGY_VALUES_FAIL,
   GET_SERELOGY_VALUES_SUCCESS,
-  GET_SERELOGY_VALUES_FAIL
-  
+  GET_SERELOGY_VALUES_FAIL,
+  GET_ANALYTE_RESULT_PARTICIPANT_SUCCESS,
+  GET_ANALYTE_RESULT_PARTICIPANT_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
   SchemeAnalytesList: [],
+  getAnalyteResultParticipant: [],
   PostResult: [],
   PostValues: [],
   ResultList: [],
   ValuesList: [],
-  Statistics:[],
-  schemeName: '',
-  rounds:'',
+  Statistics: [],
+  schemeName: "",
+  rounds: "",
   error: {},
-  round_status:'', 
-  rounds_instance:'', 
-  scheme_id: '',
-  schemeType: '',
-  round_id: '',
+  round_status: "",
+  rounds_instance: "",
+  scheme_id: "",
+  schemeType: "",
+  round_id: "",
 };
 
 const SchemeAnalytesList = (state = INIT_STATE, action) => {
@@ -49,9 +48,9 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
         closing_date: action.payload.round_closingdate,
         schemeName: action.payload.scheme_name,
         schemeType: action.payload.scheme_type,
-        round_status:action.payload.round_status,
+        round_status: action.payload.round_status,
         result_type: action.payload.result_type,
-        scheme_id:action.payload.scheme_id,
+        scheme_id: action.payload.scheme_id,
         cycle_no: action.payload.cycle_no,
       };
 
@@ -72,7 +71,7 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-    
+
     /////////////////////////////
     case POST_SERELOGY_VALUES_SUCCESS:
       return {
@@ -85,21 +84,21 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-      
-  ////////////////////
-  case GET_RESULT_SUCCESS:
-    return {
-      ...state,
-      ResultList: action.payload.results,
-      updated_at: action.payload.updated_at, // Store updated_at
-    };
-  
+
+    ////////////////////
+    case GET_RESULT_SUCCESS:
+      return {
+        ...state,
+        ResultList: action.payload.results,
+        updated_at: action.payload.updated_at, // Store updated_at
+      };
+
     case GET_RESULT_FAIL:
       return {
         ...state,
         error: action.payload,
       };
-      /////////////////////////
+    /////////////////////////
     case GET_SERELOGY_VALUES_SUCCESS:
       return {
         ...state,
@@ -121,6 +120,26 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+    ///////////////////////////////////
+    case GET_ANALYTE_RESULT_PARTICIPANT_SUCCESS:
+      console.log(
+        "GET_ANALYTE_RESULT_PARTICIPANT_SUCCESS action payload:",
+        action.payload
+      );
+      return {
+        ...state,
+        getAnalyteResultParticipant: action.payload.data,
+      };
+    case GET_ANALYTE_RESULT_PARTICIPANT_FAIL:
+      console.error(
+        "GET_ANALYTE_RESULT_PARTICIPANT_FAIL error:",
+        action.payload
+      );
+      return {
+        ...state,
+        error: action.payload,
+      };
+
     default:
       return state;
   }
