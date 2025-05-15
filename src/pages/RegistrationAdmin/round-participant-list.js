@@ -240,6 +240,7 @@ class RoundParticipantlist extends Component {
 
             {roundDetails ? (
   <div className="round-details">
+    <p><strong>Note:</strong> ❌ Removes participant from this round only..</p>
     <h4>Round Details:</h4>
     <p className="round-details-text">
       <span className="me-3">Round Number: <strong>{roundDetails.rounds || "No Round Number"}</strong></span>
