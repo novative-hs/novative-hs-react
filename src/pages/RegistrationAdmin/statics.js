@@ -66,11 +66,17 @@ class Results extends Component {
         },
         {
           text: "N",
-          // dataField: "lab_count",
           sort: true,
-          formatter: (cellContent, analyte) => (
-            <div className="text-start">{analyte.lab_count}</div>
-          ),
+          formatter: (cellContent, analyte) => {
+            const roundId = this.props.match.params.id; // get round id from route params
+            return (
+              <div className="text-start">
+                <Link to={`/statistic-participant/${roundId}/${analyte.id}`}>
+                  {analyte.lab_count}
+                </Link>
+              </div>
+            );
+          },
         },
         {
           text: "Mean",
@@ -121,10 +127,12 @@ class Results extends Component {
   combineData = (analytes, results) => {
     // console.log("SchemeAnalytesList:", analytes);
     // console.log("ResultSubmit:", results);
-    return analytes.map(analyte => {
+    return analytes.map((analyte) => {
       // console.log("Analyte:", analyte);
       // Find the result entry for the current analyte
-      const resultEntry = results.find(result => result.analyte === analyte.id);
+      const resultEntry = results.find(
+        (result) => result.analyte === analyte.id
+      );
       // console.log("Result Entry:", resultEntry);
       // Extract lab count, mean, and median from the result entry
       const labCount = resultEntry?.lab_count || 0;
@@ -146,10 +154,10 @@ class Results extends Component {
       };
     });
   };
-  isAllFieldsZero = data => {
+  isAllFieldsZero = (data) => {
     // Check if all the relevant fields in the data are equal to 0
     return data.every(
-      item =>
+      (item) =>
         item.lab_count === 0 &&
         item.mean_result === 0 &&
         item.median_result === 0 &&
@@ -178,7 +186,7 @@ class Results extends Component {
           buttonText: isZero ? "Calculate" : "Recalculate", // Set button text based on data
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching data: ", error);
       });
   }
@@ -228,7 +236,7 @@ class Results extends Component {
     }
   }
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -249,7 +257,7 @@ class Results extends Component {
     onGetResultSubmit(id);
 
     // Combine data using ResultSubmit for calculation
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       combinedData: this.combineData(
         prevState.SchemeAnalytesList,
         this.props.ResultSubmit
@@ -257,7 +265,7 @@ class Results extends Component {
     }));
   };
 
-  handleReport = round => {
+  handleReport = (round) => {
     if (round && round.id) {
       // Update the round's status to "report available"
       const updatedRound = {
@@ -272,7 +280,7 @@ class Results extends Component {
     }
   };
   // Function to display the success message
-  displaySuccessMessage = message => {
+  displaySuccessMessage = (message) => {
     this.setState({ successMessage: message, modal: true }); // Open the modal
 
     setTimeout(() => {
@@ -396,8 +404,7 @@ class Results extends Component {
               </Row>
 
               <Row className="mb-3">
-                
-              <Col md={3}>
+                <Col md={3}>
                   <div className="d-flex align-items-center">
                     <span className="me-2">Issued Date:</span>
                     <span>
@@ -452,7 +459,7 @@ class Results extends Component {
                           data={combinedData}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <div className="table-responsive">
                                 <BootstrapTable
@@ -530,10 +537,10 @@ const mapStateToProps = ({ SchemeAnalytesList, ResultSubmit }) => ({
   cycle_no: SchemeAnalytesList.cycle_no,
 });
 
-const mapDispatchToProps = dispatch => ({
-  onGetSchemeAnalyte: id => dispatch(getSchemeAnalytesList(id)),
-  onGetResultSubmit: id => dispatch(getResultSubmit(id)),
-  onGetStatisticsList: id => dispatch(getStatisticsList(id)),
+const mapDispatchToProps = (dispatch) => ({
+  onGetSchemeAnalyte: (id) => dispatch(getSchemeAnalytesList(id)),
+  onGetResultSubmit: (id) => dispatch(getResultSubmit(id)),
+  onGetStatisticsList: (id) => dispatch(getStatisticsList(id)),
   onUpdateRound: (id, round) => dispatch(updateRoundList({ id, ...round })),
 });
 
@@ -541,4 +548,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(Results));
-
