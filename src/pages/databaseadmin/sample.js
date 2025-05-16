@@ -138,6 +138,7 @@ class SampleList extends Component {
           dataField: "scheme",
           text: "Scheme Name",
           sort: true,
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>

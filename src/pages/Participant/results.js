@@ -342,8 +342,7 @@ class Results extends Component {
             </div>
           ),
         },
-
-        {
+{
           text: "Result Value",
           dataField: "result",
           sort: true,
@@ -351,10 +350,10 @@ class Results extends Component {
             <div className="text-start">
               <input
                 type="text"
-                ref={(el) => (this[`resultRef_${list.id}`] = el)}
+                ref={el => (this[`resultRef_${list.id}`] = el)}
                 defaultValue={list.result || ""}
                 placeholder="Enter result"
-                onChange={(e) => {
+                onChange={e => {
                   let value = e.target.value;
                   // Allow only numbers and a single decimal point
                   if (/^\d*\.?\d*$/.test(value)) {

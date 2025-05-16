@@ -356,23 +356,71 @@ updateSelectedCheckboxes() {
 
  {/* Display round details below the breadcrumbs */}
            
+     {roundDetails ? (
+              <div className="round-details">
+                <h4 className="text-primary text-center">
+                  List of Participants Who Submit Results for This Round
+                </h4>
 
- {roundDetails ? (
-  <div className="round-details">
-    <h4>Round Details:</h4>
-    <p className="round-details-text">
-      <span className="me-3">Round Number: <strong>{roundDetails.rounds || "No Round Number"}</strong></span>
-      <span className="me-3">Scheme Name: <strong>{roundDetails.scheme_name || "No Scheme Name"}</strong></span>
-      <span className="me-3">Cycle Number: <strong>{roundDetails.cycle_no || "No Cycle Number"}</strong></span>
-      <span className="me-3">Cycle Start Date: <strong>{formatDate(roundDetails.issue_date) || "No Start Date"}</strong></span>
-      <span className="me-3">Cycle End Date: <strong>{formatDate(roundDetails.closing_date) || "No End Date"}</strong></span>
-      <span className="me-3">Round Start Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}</strong></span>
-      <span className="me-3">Round End Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}</strong></span>
-    </p>
-  </div>
-) : (
-  <div>No round details available.</div>
-)}
+                <h4>Round Details:</h4>
+                <p className="round-details-text">
+                  {/* Display round details */}
+                  <span className="me-3">
+                    Scheme Name:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.scheme_name || "No Scheme Name"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle Number:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.cycle_no || "No Cycle Number"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Round Number:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.rounds || "No Round Number"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle Start Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {formatDate(roundDetails.issue_date) || "No Start Date"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle End Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {formatDate(roundDetails.closing_date) || "No End Date"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Round Start Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.round_start_to_end
+                        ? formatDate(
+                            roundDetails.round_start_to_end.split(" to ")[0]
+                          )
+                        : "No Round Start Date"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Round End Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.round_start_to_end
+                        ? formatDate(
+                            roundDetails.round_start_to_end.split(" to ")[1]
+                          )
+                        : "No Round End Date"}
+                    </strong>
+                  </span>
+                </p>
+              </div>
+            ) : (
+              <div>No round details available.</div>
+            )}
+
 
             <Row className="justify-content-center">
               <Col lg="5">

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
-import { withRouter } from "react-router-dom";
-import BootstrapTable from 'react-bootstrap-table-next';
+import { withRouter, Link } from "react-router-dom";
+import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { Card, CardBody, Col, Container, Row, Alert } from "reactstrap";
 
@@ -18,13 +18,13 @@ class ResultParticipantlist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameFilter: '',
-      idFilter: '',
+      nameFilter: "",
+      idFilter: "",
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
       RoundParticipantlist: [],
-      feedbackMessage: '',
-      errorMessage: '', // State for error message
+      feedbackMessage: "",
+      errorMessage: "", // State for error message
       feedbackListColumns: [
         {
           text: "ID",
@@ -36,28 +36,29 @@ class ResultParticipantlist extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={e => this.handleFilterChange('idFilter', e)}
+                  onChange={e => this.handleFilterChange("idFilter", e)}
                   className="form-control"
                 />
               </div>
               <div>{column.text}</div>
             </>
           ),
-          headerStyle: { width: '100px' },
-          style: { width: '100px' },
+          headerStyle: { width: "100px" },
+          style: { width: "100px" },
         },
         {
           dataField: "name",
           text: "Participants",
           sort: true,
-          formatter: (cell, row) => (typeof cell === "string" ? cell : "Unknown"), // Fallback for invalid data
+          formatter: (cell, row) =>
+            typeof cell === "string" ? cell : "Unknown", // Fallback for invalid data
           headerFormatter: (column, colIndex) => (
             <>
               <div>
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  onChange={e => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -65,8 +66,39 @@ class ResultParticipantlist extends Component {
             </>
           ),
           headerAlign: "center",
-          align: "center",
-        }
+          align: "Left",
+        },
+{
+  dataField: "name",
+  text: "Edit",
+  sort: true,
+  formatter: (cell, row) => (
+    <Link
+      to={`/${this.state.organization_name}/UpdateParticipantsResults/${this.props.match.params.id}?participantID=${row.AccountID}`}
+      title="Edit Participant Result"
+      style={{ color: "#008000", textDecoration: "none" }}
+    >
+      <i className="fas fa-edit"></i> {/* or any icon */}
+    </Link>
+  ),
+  headerFormatter: (column, colIndex) => (
+    <>
+      <div>
+        <input
+          type="text"
+          value={this.state.nameFilter}
+          onChange={(e) => this.handleFilterChange("nameFilter", e)}
+          className="form-control"
+        />
+      </div>
+      <div>{column.text}</div>
+    </>
+  ),
+  headerAlign: "center",
+  align: "center",
+}
+,
+
       ],
     };
     this.transformParticipantData = this.transformParticipantData.bind(this);
@@ -74,9 +106,11 @@ class ResultParticipantlist extends Component {
 
   // Transformation logic for participant data
   transformParticipantData(participantList) {
-    return participantList.map((participant) => ({
+    return participantList.map(participant => ({
       ...participant,
-      fullName: `${participant.firstName || "Unknown"} ${participant.lastName || ""}`,
+      fullName: `${participant.firstName || "Unknown"} ${
+        participant.lastName || ""
+      }`,
     }));
   }
 
@@ -85,8 +119,14 @@ class ResultParticipantlist extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("Previous RoundParticipantlist:", prevProps.RoundParticipantlist);
-    console.log("Current RoundParticipantlist:", this.props.RoundParticipantlist);
+    console.log(
+      "Previous RoundParticipantlist:",
+      prevProps.RoundParticipantlist
+    );
+    console.log(
+      "Current RoundParticipantlist:",
+      this.props.RoundParticipantlist
+    );
 
     if (prevProps.RoundParticipantlist !== this.props.RoundParticipantlist) {
       console.log("Detected change in RoundParticipantlist. Updating state...");
@@ -130,7 +170,8 @@ class ResultParticipantlist extends Component {
     }
 
     return RoundParticipantlist.filter(entry => {
-      const name = typeof entry.name === "string" ? entry.name.toLowerCase() : "";
+      const name =
+        typeof entry.name === "string" ? entry.name.toLowerCase() : "";
       const id = entry.id ? entry.id.toString() : "";
 
       return name.includes(nameFilter.toLowerCase()) && id.includes(idFilter);
@@ -139,25 +180,38 @@ class ResultParticipantlist extends Component {
 
   render() {
     const { RoundParticipantlist, roundDetails } = this.props;
-    console.log("RoundParticipantlist in render:", RoundParticipantlist);  // Log the data in render
+    console.log("RoundParticipantlist in render:", RoundParticipantlist); // Log the data in render
 
     const defaultSorted = [{ dataField: "id", order: "desc" }];
 
     // Use roundDetails for breadcrumb
-    const formatDate = (date) => {
-      if (!date) return '';
-      const [year, month, day] = date.split('-');
+    const formatDate = date => {
+      if (!date) return "";
+      const [year, month, day] = date.split("-");
       return `${day}-${month}-${year}`;
     };
 
     const breadcrumbItem = roundDetails
       ? `Round Number: ${roundDetails.rounds || "No Round Number"}, 
          Scheme Name: ${roundDetails.scheme_name || "No Scheme Name"}, 
+         Round Number: ${roundDetails.rounds || "No Round Number"}, 
          Cycle Number: ${roundDetails.cycle_no || "No Cycle Number"}, 
-         Cycle Start Date: ${formatDate(roundDetails.issue_date) || "No Start Date"}, 
-         Cycle End Date: ${formatDate(roundDetails.closing_date) || "No End Date"}, 
-         Round Start Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}, 
-         Round End Date: ${roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}`
+         Cycle Start Date: ${
+           formatDate(roundDetails.issue_date) || "No Start Date"
+         }, 
+         Cycle End Date: ${
+           formatDate(roundDetails.closing_date) || "No End Date"
+         }, 
+         Round Start Date: ${
+           roundDetails.round_start_to_end
+             ? formatDate(roundDetails.round_start_to_end.split(" to ")[0])
+             : "No Round Start Date"
+         }, 
+         Round End Date: ${
+           roundDetails.round_start_to_end
+             ? formatDate(roundDetails.round_start_to_end.split(" to ")[1])
+             : "No Round End Date"
+         }`
       : "No Data Available";
 
     console.log("Generated Breadcrumb Item:", breadcrumbItem);
@@ -173,18 +227,63 @@ class ResultParticipantlist extends Component {
 
             {roundDetails ? (
               <div className="round-details">
-                <h4 className="text-primary text-center">List of Participants Who Submit Results for This Round</h4>
+                <h4 className="text-primary text-center">
+                  List of Participants Who Submit Results for This Round
+                </h4>
 
                 <h4>Round Details:</h4>
                 <p className="round-details-text">
                   {/* Display round details */}
-                  <span className="me-3">Round Number: <strong>{roundDetails.rounds || "No Round Number"}</strong></span>
-                  <span className="me-3">Scheme Name: <strong>{roundDetails.scheme_name || "No Scheme Name"}</strong></span>
-                  <span className="me-3">Cycle Number: <strong>{roundDetails.cycle_no || "No Cycle Number"}</strong></span>
-                  <span className="me-3">Cycle Start Date: <strong>{formatDate(roundDetails.issue_date) || "No Start Date"}</strong></span>
-                  <span className="me-3">Cycle End Date: <strong>{formatDate(roundDetails.closing_date) || "No End Date"}</strong></span>
-                  <span className="me-3">Round Start Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[0]) : "No Round Start Date"}</strong></span>
-                  <span className="me-3">Round End Date: <strong>{roundDetails.round_start_to_end ? formatDate(roundDetails.round_start_to_end.split(' to ')[1]) : "No Round End Date"}</strong></span>
+                  <span className="me-3">
+                    Scheme Name:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.scheme_name || "No Scheme Name"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle Number:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.cycle_no || "No Cycle Number"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Round Number:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.rounds || "No Round Number"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle Start Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {formatDate(roundDetails.issue_date) || "No Start Date"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle End Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {formatDate(roundDetails.closing_date) || "No End Date"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Round Start Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.round_start_to_end
+                        ? formatDate(
+                            roundDetails.round_start_to_end.split(" to ")[0]
+                          )
+                        : "No Round Start Date"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Round End Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {roundDetails.round_start_to_end
+                        ? formatDate(
+                            roundDetails.round_start_to_end.split(" to ")[1]
+                          )
+                        : "No Round End Date"}
+                    </strong>
+                  </span>
                 </p>
               </div>
             ) : (
@@ -215,7 +314,7 @@ class ResultParticipantlist extends Component {
                                   striped={true}
                                   headerWrapperClasses={"table-light"}
                                   responsive
-                                  data={RoundParticipantlist}  // Use Redux data directly
+                                  data={RoundParticipantlist} // Use Redux data directly
                                   columns={this.state.feedbackListColumns}
                                 />
                               </div>
@@ -243,20 +342,24 @@ ResultParticipantlist.propTypes = {
   ongetsubmittedparticipants: PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
-  console.log("Redux State - roundDetails:", state.RoundList?.roundDetails);  // ✅ Add this log
-  console.log("Redux State - RoundParticipantlist:", state.RoundList?.RoundParticipantlist);  // Log the participants
+const mapStateToProps = state => {
+  console.log("Redux State - roundDetails:", state.RoundList?.roundDetails); // ✅ Add this log
+  console.log(
+    "Redux State - RoundParticipantlist:",
+    state.RoundList?.RoundParticipantlist
+  ); // Log the participants
   return {
     roundDetails: state.RoundList?.roundDetails || {},
     RoundParticipantlist: state.RoundList?.RoundParticipantlist || [],
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  ongetsubmittedparticipants: (id) => dispatch(getsubmittedparticipants(id)),
+const mapDispatchToProps = dispatch => ({
+  ongetsubmittedparticipants: id => dispatch(getsubmittedparticipants(id)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(ResultParticipantlist));
+

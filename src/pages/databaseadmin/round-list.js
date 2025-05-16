@@ -145,7 +145,7 @@ class CycleRoundList extends Component {
     align: "center",
   },
   {
-    text: "Participant Result-Submitter",
+    text: "Result-Submitter",
     dataField: "noofresults",
     sort: true,
     formatter: (cell, row) => <>{row.noofresults}</>,

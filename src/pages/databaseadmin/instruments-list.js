@@ -62,7 +62,6 @@ class Instrument extends Component {
       instypeFilter: "",
       manufacturerFilter: "",
       codeFilter: "",
-      modelFilter: "",
       statusFilter: "",
       idFilter: "",
       countFilter: "",
@@ -257,35 +256,35 @@ class Instrument extends Component {
             );
           },
         },
-        {
-          dataField: "model",
-          text: "Model No.",
-          sort: true,
-          //style: { textAlign: 'right' },
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
-                    type="text"
-                    value={this.state.modelFilter}
-                    onChange={(e) => this.handleFilterChange("modelFilter", e)}
-                    className="form-control"
-                  />
-                </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
-            );
-          },
-        },
+        // {
+        //   dataField: "model",
+        //   text: "Model No.",
+        //   sort: true,
+        //   //style: { textAlign: 'right' },
+        //   headerFormatter: (column, colIndex) => {
+        //     return (
+        //       <>
+        //         <div
+        //           style={{
+        //             display: "flex",
+        //             justifyContent: "center",
+        //             gap: "10px",
+        //           }}
+        //         >
+        //           <input
+        //             type="text"
+        //             value={this.state.modelFilter}
+        //             onChange={(e) => this.handleFilterChange("modelFilter", e)}
+        //             className="form-control"
+        //           />
+        //         </div>
+        //         <div style={{ textAlign: "center", marginTop: "5px" }}>
+        //           {column.text}
+        //         </div>
+        //       </>
+        //     );
+        //   },
+        // },
         {
           dataField: "manufactural",
           text: "Manufacturer",
@@ -559,7 +558,6 @@ class Instrument extends Component {
           name: unit.name,
           added_by: unit.added_by,
           code: unit.code,
-          model: unit.model,
           status: unit.status,
           instrument_type: unit.instrument_type, // Access the value property
           manufactural: unit.manufactural, // Access the value property
@@ -718,7 +716,7 @@ class Instrument extends Component {
       statusFilter,
       countFilter,
       countryFilter,
-      modelFilter,
+
     } = this.state;
 
     // Apply the filters to the unit list
@@ -726,7 +724,6 @@ class Instrument extends Component {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const status = entry.status ? entry.status.toString() : "";
       const code = entry.code ? entry.code.toString() : "";
-      const model = entry.model ? entry.model.toString() : "";
       const count = entry.analytes_count ? entry.analytes_count.toString() : "";
       const instrument_type = entry.instrument_type
         ? entry.instrument_type.toString().toLowerCase()
@@ -746,7 +743,6 @@ class Instrument extends Component {
         name.includes(nameFilter.toLowerCase()) &&
         instrument_type.includes(instypeFilter.toLowerCase()) &&
         code.includes(codeFilter) &&
-        model.includes(modelFilter) &&
         status.includes(statusFilter) &&
         manufactural.includes(manufacturerFilter.toLowerCase()) &&
         country.includes(countryFilter.toLowerCase()) &&
@@ -973,9 +969,6 @@ class Instrument extends Component {
                                             code: this.state.selectedUnit
                                               ? this.state.selectedUnit.code
                                               : "",
-                                            model: this.state.selectedUnit
-                                              ? this.state.selectedUnit.model
-                                              : "",
                                             status: this.state.selectedUnit
                                               ? this.state.selectedUnit.status
                                               : "Active",
@@ -1003,9 +996,6 @@ class Instrument extends Component {
                                                 /^[0-9]+$/,
                                                 "Code must be a number"
                                               ),
-                                            model: Yup.string().required(
-                                              "Model Number is required"
-                                            ),
                                             instrument_type:
                                               Yup.mixed().required(
                                                 "Equipment Type is required"
@@ -1032,7 +1022,6 @@ class Instrument extends Component {
                                             const newUnit = {
                                               name: values.name,
                                               code: values.code,
-                                              model: values.model,
                                               status: values.status,
                                               added_by: userId,
                                               instrument_type:
@@ -1149,21 +1138,7 @@ class Instrument extends Component {
                                                       className="text-danger"
                                                     />
                                                   </div>
-                                                  <div className="mb-3">
-                                                    <Label className="col-form-label">
-                                                      Model No.
-                                                    </Label>
-                                                    <Field
-                                                      name="model"
-                                                      type="text"
-                                                      className="form-control"
-                                                    />
-                                                    <ErrorMessage
-                                                      name="model"
-                                                      component="div"
-                                                      className="text-danger"
-                                                    />
-                                                  </div>
+                                                
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
                                                       Manufacturer
