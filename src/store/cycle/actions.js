@@ -12,6 +12,14 @@ import {
   DELETE_CYCLE,
   DELETE_CYCLE_SUCCESS,
   DELETE_CYCLE_FAIL,
+  ///////////////
+  GET_CYCLE_ROUND_LIST,
+  GET_CYCLE_ROUND_LIST_SUCCESS,
+  GET_CYCLE_ROUND_LIST_FAIL,
+  ////
+  DELETE_CYCLE_ROUND_LIST,
+  DELETE_CYCLE_ROUND_LIST_SUCCESS,
+  DELETE_CYCLE_ROUND_LIST_FAIL,
 } from "./actionTypes";
 
 // Cycle
@@ -35,7 +43,28 @@ export const getcyclelistFail = (error) => {
     payload: error,
   };
 };
+///////////////////////////////////////
+export const getCycleRoundlist = (id) => ({
+  type: GET_CYCLE_ROUND_LIST,
+  payload: id,
+  payload: id,
+});
 
+export const getCycleRoundlistSuccess = (MethodList) => {
+  console.log("MethodList response in success action:", MethodList); 
+  return {
+    type: GET_CYCLE_ROUND_LIST_SUCCESS,
+    payload: MethodList,
+  };
+};
+
+export const getCycleRoundlistFail = (error) => {
+  console.log("Error response in fail action:", error); 
+  return {
+    type: GET_CYCLE_ROUND_LIST_FAIL,
+    payload: error,
+  };
+};
 
 export const addNewCycleList = (createUnit, id) => {
   console.log('Action Creator - addNewCycleList called with:', createUnit, id);
@@ -93,5 +122,21 @@ export const deleteCycleSuccess = unit => ({
 
 export const deleteCycleFail = error => ({
   type: DELETE_CYCLE_FAIL,
+  payload: error,
+});
+
+
+export const deleteCycleRound = unit => ({
+  type: DELETE_CYCLE_ROUND_LIST,
+  payload: unit,
+});
+
+export const deleteCycleRoundSuccess = unit => ({
+  type: DELETE_CYCLE_ROUND_LIST_SUCCESS,
+  payload: unit,
+});
+
+export const deleteCycleRoundFail = error => ({
+  type: DELETE_CYCLE_ROUND_LIST_FAIL,
   payload: error,
 });
