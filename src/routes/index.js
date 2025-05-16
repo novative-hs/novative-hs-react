@@ -77,7 +77,7 @@ import MethodsAnalytes from "pages/databaseadmin/methods-analyte";
 import InstrumentsAnalytes from "pages/databaseadmin/instruments-analyte";
 
 import ReagentsAnalytes from "pages/databaseadmin/reagent-analyte";
-import SchemeRoundList from "pages/databaseadmin/round-list";
+import CycleRoundList from "pages/databaseadmin/round-list";
 //HR  Admin
 import DatabaseadminList from "pages/HrAdmin/databaseadmin-list";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
@@ -301,7 +301,7 @@ const databaseAdminAuthProtectedRoutes = [
   {path: "/:organization_name/sample", component: Sample},
   {path: "/add-analytes-sample-page/:id", component: SampleAnalytes},
   {path: "/scheme-analytelist/:id", component: SchemeListAnalyte},
-   {path: "/round-list/:id", component: SchemeRoundList},
+   {path: "/round-list/:id", component: CycleRoundList},
   { path: "/:organization_name/analyte-add-methods/:id", component: AnalyteAddMethods }, 
   { path: "/:organization_name/analyte-add-units/:id", component: AnalyteAddUnits },   
   { path: "/analyte-add-qualitative-units/:id", component: AnalyteAddQualitativeUnits }, 
