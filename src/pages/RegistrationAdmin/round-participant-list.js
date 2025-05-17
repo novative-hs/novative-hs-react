@@ -239,10 +239,7 @@ class RoundParticipantlist extends Component {
            
      {roundDetails ? (
               <div className="round-details">
-                <h4 className="text-primary text-center">
-                  List of Participants Who Submit Results for This Round
-                </h4>
-
+                
                 <h4>Round Details:</h4>
                 <p className="round-details-text">
                   {/* Display round details */}

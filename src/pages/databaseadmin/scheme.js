@@ -105,7 +105,7 @@ class ReagentsList extends Component {
           text: "Scheme Name",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: "center" },
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -135,7 +135,7 @@ class ReagentsList extends Component {
           text: "Price",
           sort: true,
           // filter: textFilter(),
-          style: { textAlign: "left" },
+          style: { textAlign: "right" },
           headerFormatter: (column, colIndex) => {
             return (
               <>

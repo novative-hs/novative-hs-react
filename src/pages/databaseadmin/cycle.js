@@ -105,6 +105,7 @@ class InstrumentType extends Component {
           dataField: "scheme_name",
           text: "Scheme Name",
           sort: true,
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
