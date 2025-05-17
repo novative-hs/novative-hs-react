@@ -222,7 +222,7 @@ class InstrumentType extends Component {
         },
         {
           dataField: "nooflabs",
-          text: "Number of Participants",
+          text: "Participants",
           sort: true,
           headerFormatter: (column, colIndex) => {
             return (

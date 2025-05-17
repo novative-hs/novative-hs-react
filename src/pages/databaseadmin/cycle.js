@@ -115,6 +115,7 @@ class InstrumentType extends Component {
           dataField: "scheme_name",
           text: "Scheme Name",
           sort: true,
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -345,7 +346,7 @@ class InstrumentType extends Component {
         },
         {
           dataField: "round_numbers",
-          text: "Round Issued",
+          text: "Issued Rounds",
           headerStyle: { textAlign: "center" },
           style: { textAlign: "center" },
           filter: textFilter(),
@@ -779,7 +780,7 @@ class InstrumentType extends Component {
         />
         <div className="page-content">
           <MetaTags>
-            <title>Database Admin | Cycle List</title>
+            <title>Database Admin | Cycle-Main Page</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumbs */}
@@ -790,11 +791,15 @@ class InstrumentType extends Component {
                   <strong>Note:</strong> Please click on the filter to sort the
                   data in ascending (A to Z) or descending (Z to A) order.
                 </p>
-                <p>
-                  <strong>Note:</strong> Cycles added to a Round cannot be
-                  deleted.
-                </p>
 
+                <p>
+                  <strong>Note:</strong> The Status of Cycle will become
+                  Inactive at Cycle End Date, to make it active again change the
+                  End Date.
+                </p>
+                 <p>
+                  <strong>Note:</strong> Once any round is issued again the cycle it cannot be deleted, cycle can only be deleted if issued round is 0.
+                </p>
                 <Card>
                   <CardBody>
                     <PaginationProvider
@@ -816,7 +821,7 @@ class InstrumentType extends Component {
                                 <Col xl="12">
                                   <Col md={4}>
                                     <label className="form-label">
-                                      Filter by Scheme
+                                      Select Scheme
                                     </label>
                                     <select
                                       className="form-control"

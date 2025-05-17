@@ -188,7 +188,7 @@ class CycleRoundList extends Component {
           align: "center",
         },
         {
-          text: "Result-Submitters",
+          text: "Result Submitted",
           dataField: "noofresults",
           sort: true,
           formatter: (cell, row) => <>{row.noofresults}</>,
@@ -220,7 +220,7 @@ class CycleRoundList extends Component {
           align: "center",
         },
         {
-          text: "Status",
+          text: "Round Status",
           dataField: "status",
           sort: true,
           formatter: (cell, row) => <>{row.status}</>,

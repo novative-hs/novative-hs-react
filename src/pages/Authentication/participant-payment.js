@@ -44,7 +44,7 @@ class ParticipantPayments extends Component {
     
 feedbackListColumns: [
   {
-    text: "ID",
+    text: "Payment ID",
     dataField: "id",
     sort: true,
     hidden: false,
@@ -78,6 +78,7 @@ feedbackListColumns: [
     dataField: "participant_name",
     text: "Participant Name",
     sort: true,
+    style: { textAlign: "left" },
     headerFormatter: (column, colIndex) => {
       return (
         <div style={{ textAlign: "center" }}>
@@ -126,7 +127,7 @@ feedbackListColumns: [
   },
   {
     dataField: "scheme_count",
-    text: "Number of Schemes",
+    text: "Scheme",
     sort: true,
     formatter: (cell, row) => (
       <Link
@@ -161,8 +162,9 @@ feedbackListColumns: [
   
   {
     dataField: "price",
-    text: "Amount Payment",
+    text: "Paid Amount",
     sort: true,
+    style: { textAlign: "Right" },
     headerFormatter: (column, colIndex) => {
       return (
         <div style={{ textAlign: "center" }}>
@@ -186,7 +188,7 @@ feedbackListColumns: [
   },
   {
     dataField: "discount",
-    text: "Discount Percentage",
+    text: "% Discount",
     sort: true,
     headerFormatter: (column, colIndex) => {
       return (
@@ -211,7 +213,7 @@ feedbackListColumns: [
   },
   {
     dataField: "paymentmethod",
-    text: "Mode of Payment",
+    text: "Payment Mode",
     sort: true,
     headerFormatter: (column, colIndex) => {
       return (
@@ -236,7 +238,7 @@ feedbackListColumns: [
   },
   {
     dataField: "paydate",
-    text: "Date of Payment",
+    text: "Payment Date",
     sort: true,
     headerFormatter: (column, colIndex) => {
       return (
@@ -356,7 +358,7 @@ componentDidUpdate(prevProps) {
     const defaultSorted = [{ dataField: "id", order: "desc" }];
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: GetPayment.length,
       custom: true,
     };
@@ -370,9 +372,12 @@ componentDidUpdate(prevProps) {
 
           <Container fluid>
             {/* Render Breadcrumbs */}
-            <Breadcrumbs title="Labs" breadcrumbItem="Participant" />
+            <Breadcrumbs title="Labs" breadcrumbItem="Participant-Payment Record" />
             <Row className="justify-content-center align-item-center">
-              <Col lg="10">
+              <Col lg="10">        <p>
+              
+                 <strong>Note:</strong> Click on Scheme Number to get detail of each participants payments
+                </p>
                 <Card>
                   <CardBody>
                     <PaginationProvider
