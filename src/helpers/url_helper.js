@@ -74,10 +74,11 @@ export const UPDATE_ANALYTE = `${API_ENDPOINT}/api/database-admin/update-analyte
 export const DELETE_ANALYTE = `${API_ENDPOINT}/api/database-admin/delete-analyte`;
 
 export const GET_CYCLE_LIST = `${API_ENDPOINT}/api/database-admin/cycle-list`;
+export const GET_CYCLE_ROUND_LIST = `${API_ENDPOINT}/api/database-admin/round-list`;
 export const ADD_NEW_CYCLE = `${API_ENDPOINT}/api/database-admin/post-cycle`;
 export const UPDATE_CYCLE = `${API_ENDPOINT}/api/database-admin/update-cycle-list`;
 export const DELETE_CYCLE = `${API_ENDPOINT}/api/database-admin/delete-cycle`;
-
+export const DELETE_CYCLE_ROUND_LIST = `${API_ENDPOINT}/api/database-admin/delete-round-cycle`;
 //Participant
 export const GET_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/participant-information`;
 

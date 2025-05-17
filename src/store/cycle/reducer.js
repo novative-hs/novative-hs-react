@@ -8,6 +8,10 @@ import {
   UPDATE_NEW_CYCLE_LIST_FAIL,
   DELETE_CYCLE_SUCCESS,
   DELETE_CYCLE_FAIL,
+  GET_CYCLE_ROUND_LIST_SUCCESS,
+  GET_CYCLE_ROUND_LIST_FAIL,
+  DELETE_CYCLE_ROUND_LIST_SUCCESS,
+  DELETE_CYCLE_ROUND_LIST_FAIL
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -72,7 +76,31 @@ const CycleList = (state = INIT_STATE, action) => {
               ...state,
               error: action.payload,
             };
-            
+            case DELETE_CYCLE_ROUND_LIST_SUCCESS:
+            return {
+              ...state,
+              unit: state.unit.filter(
+                person => person.id.toString() !== action.payload.id.toString()
+              ),
+            };
+        
+          case DELETE_CYCLE_ROUND_LIST_FAIL:
+            return {
+              ...state,
+              error: action.payload,
+            };
+            case GET_CYCLE_ROUND_LIST_SUCCESS:
+              console.log("Data received in success action:", action.payload); // Log the action.payload
+              return {
+                ...state,
+                CycleList: action.payload,
+              };
+        
+            case GET_CYCLE_ROUND_LIST_FAIL:
+              return {
+                ...state,
+                error: action.payload,
+              };
     default:
       return state;
   }

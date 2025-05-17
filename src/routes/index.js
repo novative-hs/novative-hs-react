@@ -77,7 +77,7 @@ import MethodsAnalytes from "pages/databaseadmin/methods-analyte";
 import InstrumentsAnalytes from "pages/databaseadmin/instruments-analyte";
 
 import ReagentsAnalytes from "pages/databaseadmin/reagent-analyte";
-
+import SchemeRoundList from "pages/databaseadmin/round-list";
 //HR  Admin
 import DatabaseadminList from "pages/HrAdmin/databaseadmin-list";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
@@ -313,7 +313,7 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/instruments-in-type/:id", component: InstrumentsInType },   
   { path: "/instruments-in-manufacturer/:id", component: InstrumentsInManufacturer }, 
   { path: "/reagents-in-manufacturer/:id", component: ReagentsInManufacturer }, 
-  
+  {path: "/round-list/:id", component: SchemeRoundList},
   //participant data
   { path: "/:organization_name/database-of-participantcity", component: DatabaseOfParticipantCity },
   { path: "/:organization_name/database-of-participantcountry", component: DatabaseOfParticipantCountry },

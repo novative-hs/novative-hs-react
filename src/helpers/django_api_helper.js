@@ -3989,3 +3989,13 @@ export const getsubmittedparticipants = (id) =>
       headers: getHeader(authHeader()),
     });
   };
+
+  export const getCycleRoundlist = id =>
+  get(`${url.GET_CYCLE_ROUND_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+  export const deleteCycleRound = unit =>
+  del(`${url.DELETE_CYCLE_ROUND_LIST}/${unit.id}`, {
+    headers: getHeader(authHeader()),
+  });
