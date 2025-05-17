@@ -3995,7 +3995,7 @@ export const getsubmittedparticipants = (id) =>
     headers: getHeader(authHeader()),
   });
 
-  export const deleteCycleRound = unit =>
+ export const deleteCycleRound = unit =>
   del(`${url.DELETE_CYCLE_ROUND_LIST}/${unit.id}`, {
     headers: getHeader(authHeader()),
   });

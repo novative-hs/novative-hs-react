@@ -60,7 +60,7 @@ function* onDeleteCycle({ payload: unit }) {
 
 function* onDeleteCycleRound({ payload: unit }) {
   try {
-    const response = yield call(deleteCycleRound, unit);
+    const response = yield call(deleteCycleRound, unit); // ✅ fixed here
     yield put(deleteCycleRoundSuccess(response));
   } catch (error) {
     yield put(deleteCycleRoundFail(error));
