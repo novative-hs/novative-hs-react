@@ -28,7 +28,7 @@ class CycleRoundList extends Component {
       idFilter: "",
       organization_name: "",
       CycleList: [],
-      deleteModal: true,
+      deleteModal: false,
       tableKey: 0,
       feedbackMessage: "",
       feedbackListColumns: [
@@ -202,6 +202,8 @@ class CycleRoundList extends Component {
                 }}
               >
                 <input
+
+                
                   type="text"
                   value={this.state.noofresultsFilter}
                   onChange={e =>
@@ -261,7 +263,12 @@ class CycleRoundList extends Component {
                   <i
                     className="mdi mdi-delete font-size-18"
                     id="deletetooltip"
-                    onClick={() => this.onClickDelete(row)} // Use row.id here
+                  onClick={() => {
+  console.log("Clicked delete for row ID:", row.id);
+  this.onClickDelete(row);
+}}
+
+// Use row.id here
                   ></i>
                 </Link>
               </Tooltip>
@@ -273,30 +280,17 @@ class CycleRoundList extends Component {
     this.onClickDelete = this.onClickDelete.bind(this);
   }
   onClickDelete = round => {
-    this.setState({ roundToDelete: round, deleteModal: true });
-  };
+  console.log("Delete icon clicked for round:", round); // 🔍 log full object
+  this.setState({ roundToDelete: round, deleteModal: true });
+};
 
-  // handleDeleteRound = (id) => {
-  //   const { onDeleteRound, ongetCycleList } = this.props;
-  //   this.props.onDeleteRound(id);
-  //   const { roundToDelete } = this.state;
-
-  //   if (roundToDelete?.id) {
-  //     onDeleteRound(roundToDelete.id);
-  //     this.setState({ deleteModal: false });
-
-  //     setTimeout(() => {
-  //       ongetCycleList();
-  //     }, 500);
-  //   }
-  // };
   handleDeleteRound = () => {
     const { onDeleteRound, ongetCycleList } = this.props;
     const { roundToDelete } = this.state;
 
     if (roundToDelete?.id) {
       console.log("Deleting round with ID:", roundToDelete.id); // 👈 log the ID here
-      onDeleteRound(roundToDelete); // ✅ send full object, not just id
+      onDeleteRound(roundToDelete.id); // ✅ send full object, not just id
       this.setState({ deleteModal: false });
 
       setTimeout(() => {
@@ -508,7 +502,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   ongetCycleList: id => dispatch(getCycleRoundlist(id)),
-  onDeleteRound: rounds => dispatch(deleteCycleRound(rounds)),
+  onDeleteRound: id => dispatch(deleteCycleRound(id)),
 });
 export default connect(
   mapStateToProps,

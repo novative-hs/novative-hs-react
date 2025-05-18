@@ -58,14 +58,16 @@ function* onDeleteCycle({ payload: unit }) {
   }
 }
 
-function* onDeleteCycleRound({ payload: unit }) {
+function* onDeleteCycleRound({ payload: id }) {
   try {
-    const response = yield call(deleteCycleRound, unit); // ✅ fixed here
-    yield put(deleteCycleRoundSuccess(response));
+    const response = yield call(deleteCycleRound, id); // ✅ correct now
+    yield put(deleteCycleRoundSuccess(id));            // ✅ return only id
   } catch (error) {
     yield put(deleteCycleRoundFail(error));
   }
 }
+
+
 function* CycleListSaga() {
   
   yield takeEvery(GET_CYCLE_LIST, fetchCycleList);

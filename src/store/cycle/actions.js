@@ -125,13 +125,14 @@ export const deleteCycleFail = error => ({
   payload: error,
 });
 
-export const deleteCycleRound = unit => {
-  console.log("deleteCycleRound called with unit id:", unit?.id);
+export const deleteCycleRound = id => {
+  console.log("deleteCycleRound called with ID:", id); // ✅ Debug log
   return {
     type: DELETE_CYCLE_ROUND_LIST,
-    payload: unit,
+    payload: id, // ✅ Just ID now
   };
 };
+
 
 
 export const deleteCycleRoundSuccess = unit => ({

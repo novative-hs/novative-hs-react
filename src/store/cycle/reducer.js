@@ -76,13 +76,17 @@ const CycleList = (state = INIT_STATE, action) => {
               ...state,
               error: action.payload,
             };
-            case DELETE_CYCLE_ROUND_LIST_SUCCESS:
-            return {
-              ...state,
-              unit: state.unit.filter(
-                person => person.id.toString() !== action.payload.id.toString()
-              ),
-            };
+           case DELETE_CYCLE_ROUND_LIST_SUCCESS:
+  return {
+    ...state,
+    CycleList: state.CycleList.map(cycle => ({
+      ...cycle,
+      rounds: (cycle.rounds || []).filter(
+        round => round.id !== action.payload
+      ),
+    })),
+  };
+
         
           case DELETE_CYCLE_ROUND_LIST_FAIL:
             return {
