@@ -431,10 +431,10 @@ class CycleRoundList extends Component {
             <title>Database Admin | cycles List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs
+            {/* <Breadcrumbs
               title="List"
               // breadcrumbItem={`cycles for ${this.state.CycleName || "Unknown"}`}
-            />
+            /> */}
             {cycleDetails ? (
               <div className="round-details">
                 <h4>Cycle Details:</h4>

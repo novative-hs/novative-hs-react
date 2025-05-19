@@ -112,6 +112,11 @@ class InstrumentType extends Component {
                     value={this.state.idFilter}
                     onChange={(e) => this.handleFilterChange("idFilter", e)}
                     className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "70px",
+                      margin: "auto",
+                    }}
                   />
                 </div>
               </>

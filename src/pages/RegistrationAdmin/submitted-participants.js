@@ -223,7 +223,7 @@ class ResultParticipantlist extends Component {
             <title>Database Admin | Round Participant List</title>
           </MetaTags>
           <Container fluid>
-            <Breadcrumbs title="List" breadcrumbItem="Round Participant List" />
+            {/* <Breadcrumbs title="List" breadcrumbItem="Round Participant List" /> */}
 
             {roundDetails ? (
               <div className="round-details">
