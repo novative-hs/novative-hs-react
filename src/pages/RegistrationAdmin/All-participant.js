@@ -868,40 +868,43 @@ componentDidUpdate(prevProps, prevState) {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-
-  exportToExcel = () => {
-    const { AllLabs } = this.state; // Data source
+exportToExcel = () => {
+    const { AllLabs } = this.state;
     if (!AllLabs || AllLabs.length === 0) {
         console.error("No data available to export.");
         alert("No data available to export.");
         return;
     }
 
-    // Dynamically extract fields
-    const fields = Object.keys(AllLabs[0] || {});
-    console.log("Extracted Fields:", fields);
+    // Use actual keys from payload and provide friendly Excel headers
+    const selectedFields = [
+        { key: "name", label: "Name" },
+        { key: "email", label: "Email" },
+        { key: "address", label: "Address" },
+        { key: "shipping_address", label: "Shipping Address" },
+        { key: "billing_address", label: "Billing Address" },
+        { key: "email_participant", label: "Email of Notification Person" },
+        { key: "district", label: "District" },
+        { key: "city", label: "City" },
+        { key: "lab_staff_name", label: "Name of Notification Person" },
+        { key: "phone", label: "Contact No of Notification Person" },
+        { key: "payment_status", label: "Payment Status" } // This will show "N/A" if it doesn’t exist
+    ];
 
-    // Map the data to export
     const dataToExport = AllLabs.map(item => {
         const row = {};
-        fields.forEach(field => {
-            row[field] = item[field] || "N/A"; // Default to "N/A" for missing values
+        selectedFields.forEach(({ key, label }) => {
+            row[label] = item[key] || "N/A";
         });
         return row;
     });
-    console.log("Data to Export:", dataToExport);
 
-    // Create the worksheet
     const ws = XLSX.utils.json_to_sheet(dataToExport);
-    console.log("Worksheet Data:", XLSX.utils.sheet_to_json(ws));
-
-    // Create the workbook
     const wb = { Sheets: { "Participants": ws }, SheetNames: ["Participants"] };
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" });
 
-    // Save the file
-    saveAs(data, "Dynamic_Participants.xlsx");
+    saveAs(data, "Filtered_Participants.xlsx");
 };
 
 
