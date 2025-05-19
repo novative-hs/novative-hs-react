@@ -83,6 +83,7 @@ class ReagentList extends Component {
           text: "ID",
           dataField: "id",
           sort: true,
+          formatter: (cellContent, row) => <>R-{row.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -574,7 +575,7 @@ class ReagentList extends Component {
 
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: filteredUnits.length,
       custom: true,
     };

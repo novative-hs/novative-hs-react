@@ -946,7 +946,7 @@ componentDidUpdate(prevProps, prevState) {
     const { filteredLabs, selectedParticipantType, selectedScheme } = this.state;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: AllLabs.length, // replace later with size(AllLabs),
       custom: true,
     };
