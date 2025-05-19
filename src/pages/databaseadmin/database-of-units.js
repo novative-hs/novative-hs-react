@@ -61,6 +61,7 @@ class LabsRating extends Component {
           text: "ID",
           dataField: "id",
           sort: true,
+          formatter: (cellContent, row) => <>U-{row.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -356,7 +357,7 @@ class LabsRating extends Component {
     });
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: filteredUnits.length,
       custom: true,
     };

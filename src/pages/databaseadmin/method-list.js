@@ -73,6 +73,7 @@ class InstrumentType extends Component {
           text: "ID",
           dataField: "id",
           sort: true,
+          formatter: (cellContent, row) => <>M-{row.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -499,7 +500,7 @@ class InstrumentType extends Component {
     const filteredData = this.filterData();
   
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: filteredData.length,
       custom: true,
     };

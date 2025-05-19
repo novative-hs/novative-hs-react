@@ -82,7 +82,7 @@ class InstrumentType extends Component {
           dataField: "id",
           sort: true,
           hidden: false,
-          formatter: (cellContent, cycle) => <>{cycle.id}</>,
+          formatter: (cellContent, cycle) => <>C-{cycle.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -758,7 +758,7 @@ class InstrumentType extends Component {
     });
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       // totalSize: CycleList.length,
       totalSize: filteredData.length,
       custom: true,

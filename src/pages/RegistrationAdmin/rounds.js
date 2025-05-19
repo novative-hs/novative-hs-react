@@ -92,7 +92,7 @@ class InstrumentType extends Component {
           dataField: "id",
           sort: true,
           hidden: false,
-          formatter: (cellContent, methodlist) => <>{methodlist.id}</>,
+          formatter: (cellContent, methodlist) => <>R-{methodlist.id}</>,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
@@ -896,7 +896,7 @@ class InstrumentType extends Component {
     });
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       // totalSize: RoundList.length,
       totalSize: filteredData.length,
       custom: true,

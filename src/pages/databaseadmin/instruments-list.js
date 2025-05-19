@@ -84,6 +84,7 @@ class Instrument extends Component {
           text: "ID",
           dataField: "id",
           sort: true,
+          formatter: (cellContent, row) => <>E-{row.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -753,7 +754,7 @@ class Instrument extends Component {
     });
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: filteredUnits.length,
       custom: true,
     };

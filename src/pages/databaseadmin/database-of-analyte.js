@@ -84,6 +84,7 @@ class AnalyteList extends Component {
           text: "ID",
           dataField: "id",
           sort: true,
+          formatter: (cellContent, row) => <>A-{row.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -843,7 +844,7 @@ class AnalyteList extends Component {
     const analyte = this.state.analyte;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: filteredData.length,
       custom: true,
     };

@@ -73,7 +73,7 @@ class ReagentsList extends Component {
           dataField: "id",
           sort: true,
           hidden: false,
-          formatter: (cellContent, analyte) => <>{analyte.id}</>,
+          formatter: (cellContent, analyte) => <>S-{analyte.id}</>,
           // filter: textFilter(),
           headerFormatter: (column, colIndex) => {
             return (
@@ -556,7 +556,7 @@ class ReagentsList extends Component {
     const analyte = this.state.analyte;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       // totalSize: SchemeList.length,
       totalSize: filteredData.length,
       custom: true,

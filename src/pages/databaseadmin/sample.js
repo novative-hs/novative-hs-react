@@ -80,6 +80,7 @@ class SampleList extends Component {
           text: "Sample ID",
           sort: true,
           style: { textAlign: "center" },
+          formatter: (cellContent, row) => <>S-{row.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -520,7 +521,7 @@ class SampleList extends Component {
     });
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: filteredData.length,
       custom: true,
     };

@@ -85,6 +85,7 @@ class Manufactural extends Component {
           text: "ID",
           dataField: "id",
           sort: true,
+          formatter: (cellContent, row) => <>M-{row.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -636,7 +637,7 @@ class Manufactural extends Component {
     const manufacturtal = this.state.manufacturtal;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: ManufacturalList.length,
       custom: true,
     };

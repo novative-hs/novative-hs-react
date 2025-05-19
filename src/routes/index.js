@@ -462,7 +462,7 @@ const registrationAdminAuthProtectedRoutes = [
     path: "/statistic-participant/:roundId/:analyteId",
     component: StatisticParticipant,
   },
-  { path: "/submitted-participants/:id", component: ResultParticipantlist },
+{path: "/pending-submission/:id", component: PendingSubmission},
 ];
 
 //CSR
