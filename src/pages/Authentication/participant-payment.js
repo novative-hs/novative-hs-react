@@ -103,7 +103,7 @@ feedbackListColumns: [
   },
   {
   dataField: "membership_status",
-  text: "Membership Status",
+  text: "Participant Status",
   sort: true,
   headerFormatter: (column, colIndex) => (
     <div style={{ textAlign: "center" }}>
@@ -409,9 +409,12 @@ componentDidUpdate(prevProps) {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Labs" breadcrumbItem="Participant-Payment Record" />
             <Row className="justify-content-center align-item-center">
-              <Col lg="10">        <p>
-              
+              <Col lg="10">       
+               <p>
                  <strong>Note:</strong> Click on Scheme Number to get detail of each participants payments
+                </p>
+                 <p>
+                 <strong>Note:</strong> Click on Payment mode to download the proof of payment.
                 </p>
                 <Card>
                   <CardBody>

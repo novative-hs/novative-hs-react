@@ -37,7 +37,7 @@ class RoundAddParticipant extends Component {
       : "",
       feedbackListColumns: [
         {
-          text: "id",
+          text: "Participant ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => (

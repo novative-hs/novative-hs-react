@@ -27,7 +27,7 @@ class PendingSubmission extends Component {
       errorMessage: "", // State for error message
       feedbackListColumns: [
         {
-          text: "ID",
+          text: "Lab ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => (
@@ -48,7 +48,7 @@ class PendingSubmission extends Component {
         },
         {
           dataField: "name",
-          text: "Participants",
+          text: "Participant",
           sort: true,
           formatter: (cell, row) =>
             typeof cell === "string" ? cell : "Unknown", // Fallback for invalid data

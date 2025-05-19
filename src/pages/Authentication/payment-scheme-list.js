@@ -152,7 +152,7 @@ class PaymentSchemeList extends Component {
           },
         },
         {
-          text: "Pay Date",
+          text: "Payment Date",
           dataField: "pay_date",
           sort: true,
           formatter: (cell) => {
