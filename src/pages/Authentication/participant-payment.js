@@ -44,36 +44,37 @@ class ParticipantPayments extends Component {
     
 feedbackListColumns: [
   {
-    text: "Payment ID",
-    dataField: "id",
-    sort: true,
-    hidden: false,
-    formatter: (cellContent, methodlist) => <>{methodlist.id}</>,
-    // filter: textFilter(),
-    headerFormatter: (column, colIndex) => {
-      return (
-        <>
-          <div style={{ textAlign: "center", marginBottom: "5px" }}>
-            {column.text}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "10px",
-            }}
-          >
-            <input
-              type="text"
-              value={this.state.idFilter}
-              onChange={(e) => this.handleFilterChange("idFilter", e)}
-              className="form-control"
-            />
-          </div>
-        </>
-      );
-    },
+  text: "Payment ID",
+  dataField: "id",
+  sort: true,
+  hidden: false,
+  formatter: (cellContent, methodlist) => <>P-{methodlist.id}</>,
+  // filter: textFilter(),
+  headerFormatter: (column, colIndex) => {
+    return (
+      <>
+        <div style={{ textAlign: "center", marginBottom: "5px" }}>
+          {column.text}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "10px",
+          }}
+        >
+          <input
+            type="text"
+            value={this.state.idFilter}
+            onChange={(e) => this.handleFilterChange("idFilter", e)}
+            className="form-control"
+          />
+        </div>
+      </>
+    );
   },
+}
+,
   {
     dataField: "participant_name",
     text: "Participant Name",
@@ -100,6 +101,27 @@ feedbackListColumns: [
       );
     }
   },
+  {
+  dataField: "membership_status",
+  text: "Membership Status",
+  sort: true,
+  headerFormatter: (column, colIndex) => (
+    <div style={{ textAlign: "center" }}>
+      <div>{column.text}</div>
+      <div style={{ marginTop: "5px" }}>
+        <input
+          type="text"
+          value={this.state.roundsFilter}
+          onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+          className="form-control"
+          style={{ textAlign: "center", width: "100px", margin: "auto" }}
+        />
+      </div>
+    </div>
+  )
+}
+
+,
   {
     dataField: "district",
     text: "District",
@@ -161,31 +183,33 @@ feedbackListColumns: [
   },
   
   {
-    dataField: "price",
-    text: "Paid Amount",
-    sort: true,
-    style: { textAlign: "Right" },
-    headerFormatter: (column, colIndex) => {
-      return (
-        <div style={{ textAlign: "center" }}>
-          <div>{column.text}</div>
-          <div style={{ marginTop: "5px" }}>
-            <input
-              type="text"
-              value={this.state.roundsFilter}
-              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
-              className="form-control"
-              style={{
-                textAlign: "center",
-                width: "100px",
-                margin: "auto",
-              }}
-            />
-          </div>
+  dataField: "price",
+  text: "Paid Amount",
+  sort: true,
+   style: { textAlign: "right" }, 
+  formatter: (cell) => Number(cell).toLocaleString(),  // ✅ Add this line
+  headerFormatter: (column, colIndex) => {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <div>{column.text}</div>
+        <div style={{ marginTop: "5px" }}>
+          <input
+            type="text"
+            value={this.state.roundsFilter}
+            onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+            className="form-control"
+            style={{
+              textAlign: "center",
+              width: "100px",
+              margin: "auto",
+            }}
+          />
         </div>
-      );
-    }
-  },
+      </div>
+    );
+  }
+}
+,
   {
     dataField: "discount",
     text: "% Discount",
@@ -236,31 +260,39 @@ feedbackListColumns: [
       );
     }
   },
-  {
-    dataField: "paydate",
-    text: "Payment Date",
-    sort: true,
-    headerFormatter: (column, colIndex) => {
-      return (
-        <div style={{ textAlign: "center" }}>
-          <div>{column.text}</div>
-          <div style={{ marginTop: "5px" }}>
-            <input
-              type="text"
-              value={this.state.roundsFilter}
-              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
-              className="form-control"
-              style={{
-                textAlign: "center",
-                width: "100px",
-                margin: "auto",
-              }}
-            />
-          </div>
-        </div>
-      );
-    }
+   {
+  dataField: "paydate",
+  text: "Payment Date",
+  sort: true,
+  formatter: (cell) => {
+    const date = new Date(cell);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // month is 0-indexed
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
   },
+  headerFormatter: (column, colIndex) => {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <div>{column.text}</div>
+        <div style={{ marginTop: "5px" }}>
+          <input
+            type="text"
+            value={this.state.roundsFilter}
+            onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+            className="form-control"
+            style={{
+              textAlign: "center",
+              width: "100px",
+              margin: "auto",
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+}
+,
   {
     dataField: "receivedby",
     text: "Payment Received by",
@@ -312,6 +344,7 @@ componentDidUpdate(prevProps) {
       paydate: payment.paydate,
       photo: payment.photo,
       receivedby: payment.receivedby,
+      membership_status: payment.membership_status, // ✅ include this
     }));
     this.setState({
       GetPayment: transformedData,
@@ -337,6 +370,7 @@ componentDidUpdate(prevProps) {
       paymentmodeFilter,
       dateFilter,
       paymentreceivedFilter,
+      membershipFilter, // ← Add this
     } = this.state;
 
     return GetPayment.filter(
@@ -349,7 +383,8 @@ componentDidUpdate(prevProps) {
         entry.discount.toLowerCase().includes(discountFilter.toLowerCase()) &&
         entry.paymentmethod.toLowerCase().includes(paymentmodeFilter.toLowerCase()) &&
         entry.paydate.toLowerCase().includes(dateFilter.toLowerCase()) &&
-        entry.receivedby.toLowerCase().includes(paymentreceivedFilter.toLowerCase())
+        entry.receivedby.toLowerCase().includes(paymentreceivedFilter.toLowerCase())&&
+        entry.membership_status?.toLowerCase().includes(membershipFilter.toLowerCase()) // new condition
     );
   };
 
@@ -458,4 +493,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ParticipantPayments);
-

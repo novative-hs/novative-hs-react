@@ -110,7 +110,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange("idFilter", e)}
+                    onChange={(e) => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -130,7 +130,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.roundsFilter}
-                    onChange={e => this.handleFilterChange("roundsFilter", e)}
+                    onChange={(e) => this.handleFilterChange("roundsFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -155,7 +155,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.schemenameFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("schemenameFilter", e)
                     }
                     className="form-control"
@@ -182,7 +182,9 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.cyclenoFilter}
-                    onChange={e => this.handleFilterChange("cyclenoFilter", e)}
+                    onChange={(e) =>
+                      this.handleFilterChange("cyclenoFilter", e)
+                    }
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -207,7 +209,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.sampleFilter}
-                    onChange={e => this.handleFilterChange("sampleFilter", e)}
+                    onChange={(e) => this.handleFilterChange("sampleFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -239,7 +241,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.participantsFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("participantsFilter", e)
                     }
                     className="form-control"
@@ -269,41 +271,77 @@ class InstrumentType extends Component {
             );
           },
         },
-                {
-  dataField: "noofresults",
-  text: "Submitted Results",
-  sort: true,
-  formatter: (cell, row) => {
-    return (
-      <Link
-        to={`/submitted-participants/${row.id}`}  // Navigate to a new page using round ID
-        style={{ textDecoration: "underline", color: "#0000CD" }}
-      >
-        {cell}
-      </Link>
-    );
-  },
-  headerFormatter: (column, colIndex) => {
-    return (
-      <div style={{ textAlign: "center" }}>
-        <div>{column.text}</div>
-        <div style={{ marginTop: "5px" }}>
-          <input
-            type="text"
-            value={this.state.roundsFilter}
-            onChange={e => this.handleFilterChange("roundsFilter", e)}
-            className="form-control"
-            style={{
-              textAlign: "center",
-              width: "100px",
-              margin: "auto",
-            }}
-          />
-        </div>
-      </div>
-    );
-  }
-},
+        {
+          dataField: "noofresults",
+          text: "Submitted Results",
+          sort: true,
+          formatter: (cell, row) => {
+            return (
+              <Link
+                to={`/submitted-participants/${row.id}`} // Navigate to a new page using round ID
+                style={{ textDecoration: "underline", color: "#0000CD" }}
+              >
+                {cell}
+              </Link>
+            );
+          },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
+                  <input
+                    type="text"
+                    value={this.state.roundsFilter}
+                    onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+                    className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                      margin: "auto",
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          },
+        },
+
+        {
+          dataField: "noofresultsnotsubmitted",
+          text: "Pending Submissions",
+          sort: true,
+          formatter: (cell, row) => {
+            return (
+              <Link
+                to={`/pending-submission/${row.id}`} // Navigate to a new page using round ID
+                style={{ textDecoration: "underline", color: "#0000CD" }}
+              >
+                {cell}
+              </Link>
+            );
+          },
+          headerFormatter: (column, colIndex) => {
+            return (
+              <div style={{ textAlign: "center" }}>
+                <div>{column.text}</div>
+                <div style={{ marginTop: "5px" }}>
+                  <input
+                    type="text"
+                    value={this.state.roundsFilter}
+                    onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+                    className="form-control"
+                    style={{
+                      textAlign: "center",
+                      width: "100px",
+                      margin: "auto",
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          },
+        },
         {
           dataField: "issue_date",
           text: "Issue Date",
@@ -316,7 +354,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.issuedateFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("issuedateFilter", e)
                     }
                     className="form-control"
@@ -346,7 +384,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.closingdateFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("closingdateFilter", e)
                     }
                     className="form-control"
@@ -369,17 +407,22 @@ class InstrumentType extends Component {
           text: "Status",
           sort: true,
           headerFormatter: (column, colIndex) => {
-            const canShowReportAvailable = this.props.RoundList?.some(round => {
-              return round.status === "Closed" && round.statistics_status === "Complete";
-            });
-          
+            const canShowReportAvailable = this.props.RoundList?.some(
+              (round) => {
+                return (
+                  round.status === "Closed" &&
+                  round.statistics_status === "Complete"
+                );
+              }
+            );
+
             return (
               <div style={{ textAlign: "center" }}>
                 <div>{column.text}</div>
                 <div style={{ marginTop: "5px" }}>
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange("statusFilter", e)}
+                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -400,8 +443,7 @@ class InstrumentType extends Component {
               </div>
             );
           },
-          
-          
+
           formatter: (cellContent, methodlist) => (
             <span>{methodlist.status || "Unknown"}</span>
           ),
@@ -443,7 +485,7 @@ class InstrumentType extends Component {
                 <Tooltip title="Add Participants">
                   <Link
                     to="#"
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault(); // Prevent default navigation
 
                       // Check if organization_name is valid
@@ -525,7 +567,7 @@ class InstrumentType extends Component {
                   <Link
                     className="fas fa-comment font-size-18"
                     to={`/${organization_name}/rounds-history/${round.id}`}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault(); // Prevent the default navigation
 
                       // Check if organization_name is valid
@@ -551,7 +593,7 @@ class InstrumentType extends Component {
     this.onClickStatistics = this.onClickStatistics.bind(this);
   }
 
-  handleSchemeChange = e => {
+  handleSchemeChange = (e) => {
     const selectedSchemeId = parseInt(e.target.value);
     this.setState({ selectedFormSchemeId: selectedSchemeId }); // ✅ only affect modal
 
@@ -572,15 +614,15 @@ class InstrumentType extends Component {
 
     // Filter CycleList and SampleList based on the selected scheme
     const filteredCycleList = this.props.CycleList.filter(
-      cycle => cycle.scheme_id === selectedSchemeId
+      (cycle) => cycle.scheme_id === selectedSchemeId
     );
 
     console.log("Filtered Cycle List:", filteredCycleList);
     const filteredSampleList = this.props.ListUnitt.filter(
-      sample =>
+      (sample) =>
         sample.scheme_id === selectedSchemeId &&
         !this.props.RoundList.some(
-          round =>
+          (round) =>
             round.sample === sample.samplename &&
             round.id !== this.state.selectedRound?.id // Exclude current round's sample
         )
@@ -620,7 +662,7 @@ class InstrumentType extends Component {
   }
 
   toggleDeleteModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
@@ -642,7 +684,7 @@ class InstrumentType extends Component {
   //   this.setState({ deleteModal: true });
   // };
 
-  onClickDelete = RoundList => {
+  onClickDelete = (RoundList) => {
     // Allowed statuses for deletion
     const allowedStatuses = ["Open", "Closed", "Report Available"];
 
@@ -660,7 +702,7 @@ class InstrumentType extends Component {
     }
   };
 
-  displaySuccessMessage = message => {
+  displaySuccessMessage = (message) => {
     this.setState({ successMessage: message });
 
     setTimeout(() => {
@@ -672,7 +714,7 @@ class InstrumentType extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
-  onClickStatistics = round => {
+  onClickStatistics = (round) => {
     if (round && round.id) {
       if (round.status === "Closed") {
         // Automatically change status to "Report Available" if Statistics completed
@@ -680,22 +722,22 @@ class InstrumentType extends Component {
           ...round,
           status: "Report Available",
         };
-  
+
         this.props.onUpdateRound(round.id, updatedRound);
-  
+
         // OPTIONAL: reload RoundList after small delay
         setTimeout(() => {
           this.props.onGetRoundList(this.state.user_id);
         }, 500);
       }
-  
+
       this.props.history.push(
         `/${this.state.organization_name}/statistics/${round.id}`
       );
     }
   };
-  
-  onClickReport = id => {
+
+  onClickReport = (id) => {
     this.props.history.push(
       `/${this.state.organization_name}/slectValues/${id}`
     );
@@ -767,7 +809,7 @@ class InstrumentType extends Component {
       this.setState({ SchemeList: this.props.SchemeList });
     }
   }
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -811,7 +853,7 @@ class InstrumentType extends Component {
       statusFilter,
     } = this.state;
 
-    const filteredData = (RoundList || []).filter(entry => {
+    const filteredData = (RoundList || []).filter((entry) => {
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString() : "";
       const rounds = entry.rounds ? entry.rounds.toString() : "";
@@ -905,12 +947,12 @@ class InstrumentType extends Component {
                           data={filteredData}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-4">
                                 <select
                                   className="form-select mb-3"
-                                  onChange={e =>
+                                  onChange={(e) =>
                                     this.setState({
                                       selectedSchemeId: e.target.value,
                                     })
@@ -923,13 +965,13 @@ class InstrumentType extends Component {
                                   {Array.isArray(this.state.SchemeList) &&
                                   Array.isArray(this.props.RoundList) &&
                                   this.state.SchemeList.length > 0 ? (
-                                    this.state.SchemeList.filter(scheme =>
+                                    this.state.SchemeList.filter((scheme) =>
                                       this.props.RoundList.some(
-                                        round =>
+                                        (round) =>
                                           round.scheme?.toString() ===
                                           scheme.id.toString()
                                       )
-                                    ).map(scheme => (
+                                    ).map((scheme) => (
                                       <option key={scheme.id} value={scheme.id}>
                                         {scheme.scheme_name ||
                                           scheme.name ||
@@ -1102,7 +1144,7 @@ class InstrumentType extends Component {
                                               if (values.sample) {
                                                 const sampleToUpdate =
                                                   this.props.ListUnitt.find(
-                                                    sample =>
+                                                    (sample) =>
                                                       sample.samplename ===
                                                       values.sample
                                                   );
@@ -1161,7 +1203,7 @@ class InstrumentType extends Component {
                                                               .selectedFormSchemeId ||
                                                             ""
                                                           }
-                                                          onChange={e => {
+                                                          onChange={(e) => {
                                                             const value =
                                                               e.target.value;
                                                             form.setFieldValue(
@@ -1188,7 +1230,7 @@ class InstrumentType extends Component {
                                                             Select Scheme
                                                           </option>
                                                           {this.state.SchemeList.map(
-                                                            scheme => (
+                                                            (scheme) => (
                                                               <option
                                                                 key={scheme.id}
                                                                 value={
@@ -1259,12 +1301,12 @@ class InstrumentType extends Component {
                                                             </option>
                                                             {this.state.filteredCycleList
                                                               .filter(
-                                                                cycle =>
+                                                                (cycle) =>
                                                                   cycle.status &&
                                                                   cycle.status.toLowerCase() ===
                                                                     "active"
                                                               )
-                                                              .map(cycle => (
+                                                              .map((cycle) => (
                                                                 <option
                                                                   key={cycle.id}
                                                                   value={String(
@@ -1381,7 +1423,7 @@ class InstrumentType extends Component {
                                                                   .selectedSample ||
                                                                 ""
                                                               } // Set the default value
-                                                              onChange={e => {
+                                                              onChange={(e) => {
                                                                 this.setState({
                                                                   selectedSample:
                                                                     e.target
@@ -1406,7 +1448,7 @@ class InstrumentType extends Component {
                                                                 Select Sample
                                                               </option>
                                                               {this.state.filteredSampleList.map(
-                                                                sample => (
+                                                                (sample) => (
                                                                   <option
                                                                     key={
                                                                       sample.id
@@ -1567,14 +1609,14 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetgetschemelist: id => dispatch(getSchemelist(id)),
-  onGetgetcyclelist: id => dispatch(getcyclelist(id)),
-  onGetgetSamplelistlist: id => dispatch(getSamplelist(id)),
-  onGetRoundList: id => dispatch(getroundlist(id)),
+  onGetgetschemelist: (id) => dispatch(getSchemelist(id)),
+  onGetgetcyclelist: (id) => dispatch(getcyclelist(id)),
+  onGetgetSamplelistlist: (id) => dispatch(getSamplelist(id)),
+  onGetRoundList: (id) => dispatch(getroundlist(id)),
   onAddNewRound: (id, createround) =>
     dispatch(addNewRoundList(id, createround)),
   onUpdateRound: (id, round) => dispatch(updateRoundList({ id, ...round })),
-  onDeleteRound: round => dispatch(deleteRound(round)),
+  onDeleteRound: (round) => dispatch(deleteRound(round)),
   onUpdateSampleList: (id, sample) => dispatch(updateSampleList(id, sample)),
 });
 

@@ -4003,3 +4003,7 @@ export const deleteCycleRound = (id) => {
     headers: getHeader(authHeader()),
   });
 };
+export const getUnsubmittedparticipants = (id) =>
+  get(`${url.GET_UNSUBMITTED_PARTICIPANTS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });

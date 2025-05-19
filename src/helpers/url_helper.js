@@ -317,7 +317,7 @@ export const GET_SHARED_PERCENTAGE_PENDING_FEE = `${API_ENDPOINT}/api/registrati
 export const GET_SHARED_PERCENTAGE_APPROVED_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_Approved_tests`;
 export const UPDATE_SHARED_PERCENTAGE_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_pending_tests`;
 export const UPDATE_SHARED_PERCENTAGE_ALL_PENDING_FEE = `${API_ENDPOINT}/api/registration-admin/shared_percentage_all_pending_tests`;
-
+export const GET_UNSUBMITTED_PARTICIPANTS = `${API_ENDPOINT}/api/registration-admin/pending-submission`;
 // DISCOUNT LAB
 export const GET_DISCOUNT_LAB = `${API_ENDPOINT}/api/lab/offered-test-discount-list`;
 export const UPDATE_DISCOUNT_LAB = `${API_ENDPOINT}/api/lab/discount-offered-test`;

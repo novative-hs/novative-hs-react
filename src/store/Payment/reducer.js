@@ -26,13 +26,12 @@ const AddPayment = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-      case GET_PARTICIPANT_PAYMENT_SUCCESS:
-        console.log("GET_PARTICIPANT_PAYMENT_SUCCESS:", action.payload);
-        return {
-          ...state,
-          GetPayment: action.payload || [],  // Ensure it's always an array
-        };
-      
+    case GET_PARTICIPANT_PAYMENT_SUCCESS:
+      console.log("GET_PARTICIPANT_PAYMENT_SUCCESS:", action.payload);
+      return {
+        ...state,
+        GetPayment: action.payload || [], // Ensure it's always an array
+      };
 
     case GET_PARTICIPANT_PAYMENT_FAIL:
       return {
@@ -40,26 +39,37 @@ const AddPayment = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-      // participant schem list
-      case GET_PARTICIPANT_SCHEME_LIST_SUCCESS:
-        console.log("Reducer - Updated State with Payload:", action.payload);
-        return {
-          ...state,
-          PaymentSchemeList: Array.isArray(action.payload.schemes)
-            ? action.payload.schemes
-            : [], // Extract schemes from payload
-          participant_name: action.payload.participant_name || "Unknown", // Extract participant_name
-          error: null,
-        };
-      
-      case GET_PARTICIPANT_SCHEME_LIST_FAIL:
-        return {
-          ...state,
-          PaymentSchemeList: [], // Clear list on failure
-          participant_name: "Unknown", // Reset participant name on failure
-          error: action.payload,
-        };
-      
+    // participant schem list
+
+    case GET_PARTICIPANT_SCHEME_LIST_SUCCESS:
+      console.log(
+        "GET_PARTICIPANT_SCHEME_LIST_SUCCESS action.payload:",
+        action.payload
+      );
+      return {
+        ...state,
+        PaymentSchemeList: Array.isArray(action.payload.schemes)
+          ? action.payload.schemes
+          : [],
+        participant_name: action.payload.participant_name || "Unknown",
+        membership_status: action.payload.membership_status || "Unknown",
+        price: action.payload.price || "",
+        discount: action.payload.discount || "",
+        paid_amount: action.payload.paid_amount || "",
+        pay_date: action.payload.pay_date || "",
+        payment_mode: action.payload.payment_mode || "",
+        received_by: action.payload.received_by || "",
+        error: null,
+      };
+
+    case GET_PARTICIPANT_SCHEME_LIST_FAIL:
+      return {
+        ...state,
+        PaymentSchemeList: [], // Clear list on failure
+        participant_name: "Unknown", // Reset participant name on failure
+        error: action.payload,
+      };
+
     default:
       return state;
   }

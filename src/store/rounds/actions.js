@@ -17,30 +17,32 @@ import {
   DELETE_ROUND_PARTICIPANT, // ✅ Corrected
   DELETE_ROUND_PARTICIPANT_SUCCESS,
   DELETE_ROUND_PARTICIPANT_FAIL,
-  
-GET_SUBMITTED_PARTICIPANTS,
+  GET_SUBMITTED_PARTICIPANTS,
   GET_SUBMITTED_PARTICIPANTS_SUCCESS,
   GET_SUBMITTED_PARTICIPANTS_FAIL,
+  GET_UNSUBMITTED_PARTICIPANTS,
+  GET_UNSUBMITTED_PARTICIPANTS_SUCCESS,
+  GET_UNSUBMITTED_PARTICIPANTS_FAIL,
 } from "./actionTypes";
 
 // Round
-export const getroundlist = (id) => ({
+export const getroundlist = id => ({
   type: GET_ROUND_LIST,
   payload: id,
 });
 
-export const getroundlistSuccess = (RoundList) => ({
+export const getroundlistSuccess = RoundList => ({
   type: GET_ROUND_LIST_SUCCESS,
   payload: RoundList,
 });
 
-export const getroundlistFail = (error) => ({
+export const getroundlistFail = error => ({
   type: GET_ROUND_LIST_FAIL,
   payload: error,
 });
 
 ///Round participant list
-export const getRoundParticipantlist = (id) => {
+export const getRoundParticipantlist = id => {
   console.log("Action Payload (ID):", id);
   return {
     type: GET_ROUND_PARTICIPANT_LIST,
@@ -48,12 +50,12 @@ export const getRoundParticipantlist = (id) => {
   };
 };
 
-export const getRoundParticipantlistSuccess = (RoundList) => ({
+export const getRoundParticipantlistSuccess = RoundList => ({
   type: GET_ROUND_PARTICIPANT_LIST_SUCCESS,
   payload: RoundList,
 });
 
-export const getRoundParticipantlistFail = (error) => ({
+export const getRoundParticipantlistFail = error => ({
   type: GET_ROUND_PARTICIPANT_LIST_FAIL,
   payload: error,
 });
@@ -63,17 +65,17 @@ export const addNewRoundList = (createUnit, id) => ({
   payload: { createUnit, id },
 });
 
-export const addNewRoundListSuccess = (createUnit) => ({
+export const addNewRoundListSuccess = createUnit => ({
   type: ADD_NEW_ROUND_LIST_SUCCESS,
   payload: createUnit,
 });
 
-export const addNewRoundListFail = (error) => ({
+export const addNewRoundListFail = error => ({
   type: ADD_NEW_ROUND_LIST_FAIL,
   payload: error,
 });
 
-export const updateRoundList = (round) => {
+export const updateRoundList = round => {
   console.log("updatevvvvvvvvvvvvvvvvvcalled with:", round);
   return {
     type: UPDATE_NEW_ROUND_LIST,
@@ -81,7 +83,7 @@ export const updateRoundList = (round) => {
   };
 };
 
-export const updateRoundListSuccess = (round) => {
+export const updateRoundListSuccess = round => {
   console.log("update round Success:", round);
   return {
     type: UPDATE_NEW_ROUND_LIST_SUCCESS,
@@ -89,7 +91,7 @@ export const updateRoundListSuccess = (round) => {
   };
 };
 
-export const updateRoundListFail = (error) => {
+export const updateRoundListFail = error => {
   console.log("update round fail:", error);
   return {
     type: UPDATE_NEW_ROUND_LIST_FAIL,
@@ -97,17 +99,17 @@ export const updateRoundListFail = (error) => {
   };
 };
 
-export const deleteRound = (round) => ({
+export const deleteRound = round => ({
   type: DELETE_ROUND,
   payload: round,
 });
 
-export const deleteRoundSuccess = (round) => ({
+export const deleteRoundSuccess = round => ({
   type: DELETE_ROUND_SUCCESS,
   payload: round,
 });
 
-export const deleteRoundFail = (error) => ({
+export const deleteRoundFail = error => ({
   type: DELETE_ROUND_FAIL,
   payload: error,
 });
@@ -124,7 +126,7 @@ export const deleteRoundParticipant = (roundId, participantId) => {
   };
 };
 
-export const deleteRoundParticipantSuccess = (id) => {
+export const deleteRoundParticipantSuccess = id => {
   console.log(
     "Action Creator: deleteRoundParticipantSuccess called with round:",
     id
@@ -135,7 +137,7 @@ export const deleteRoundParticipantSuccess = (id) => {
   };
 };
 
-export const deleteRoundParticipantFail = (error) => {
+export const deleteRoundParticipantFail = error => {
   console.error(
     "Action Creator: deleteRoundParticipantFail called with error:",
     error
@@ -147,17 +149,33 @@ export const deleteRoundParticipantFail = (error) => {
 };
 
 ///submitted result partcipipants
-export const getsubmittedparticipants = (id) => ({
+export const getsubmittedparticipants = id => ({
   type: GET_SUBMITTED_PARTICIPANTS,
   payload: id,
 });
 
-export const getsubmittedparticipantsSuccess = (RoundList) => ({
+export const getsubmittedparticipantsSuccess = RoundList => ({
   type: GET_SUBMITTED_PARTICIPANTS_SUCCESS,
   payload: RoundList,
 });
 
-export const getsubmittedparticipantsFail = (error) => ({
+export const getsubmittedparticipantsFail = error => ({
   type: GET_SUBMITTED_PARTICIPANTS_FAIL,
+  payload: error,
+});
+
+//notsubmitted results page
+export const getUnsubmittedparticipants = id => ({
+  type: GET_UNSUBMITTED_PARTICIPANTS,
+  payload: id,
+});
+
+export const getUnsubmittedparticipantsSuccess = RoundList => ({
+  type: GET_UNSUBMITTED_PARTICIPANTS_SUCCESS,
+  payload: RoundList,
+});
+
+export const getUnsubmittedparticipantsFail = error => ({
+  type: GET_UNSUBMITTED_PARTICIPANTS_FAIL,
   payload: error,
 });

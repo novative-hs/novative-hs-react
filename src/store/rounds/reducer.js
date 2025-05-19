@@ -11,10 +11,10 @@ import {
   DELETE_ROUND_FAIL,
   DELETE_ROUND_PARTICIPANT_SUCCESS,
   DELETE_ROUND_PARTICIPANT_FAIL,
-  
-
- GET_SUBMITTED_PARTICIPANTS_SUCCESS,
+  GET_SUBMITTED_PARTICIPANTS_SUCCESS,
   GET_SUBMITTED_PARTICIPANTS_FAIL,
+  GET_UNSUBMITTED_PARTICIPANTS_SUCCESS,
+  GET_UNSUBMITTED_PARTICIPANTS_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -106,22 +106,44 @@ const RoundList = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-         
-case GET_SUBMITTED_PARTICIPANTS_SUCCESS:
-  return {
-    ...state,
-    RoundParticipantlist: action.payload.participants,
-    roundDetails: action.payload.round_details,
-  };
+    case GET_SUBMITTED_PARTICIPANTS_SUCCESS:
+      return {
+        ...state,
+        RoundParticipantlist: action.payload.participants,
+        roundDetails: action.payload.round_details,
+      };
 
     case GET_SUBMITTED_PARTICIPANTS_FAIL:
-      console.log("GET_SUBMITTED_PARTICIPANTS_FAIL action dispatched with payload:", action.payload);
+      console.log(
+        "GET_SUBMITTED_PARTICIPANTS_FAIL action dispatched with payload:",
+        action.payload
+      );
       return {
         ...state,
         error: action.payload,
       };
 
+    case GET_UNSUBMITTED_PARTICIPANTS_SUCCESS:
+      console.log(
+        "Reducer received participants:",
+        action.payload.participants
+      );
+      return {
+        ...state,
+        RoundParticipantlist: action.payload.participants || [],
+        roundDetails: action.payload.round_details || {},
+      };
 
+    case GET_UNSUBMITTED_PARTICIPANTS_FAIL:
+      console.log(
+        "GET_UNSUBMITTED_PARTICIPANTS_FAIL action dispatched with payload:",
+        action.payload
+      );
+
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }

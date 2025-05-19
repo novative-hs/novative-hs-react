@@ -16,7 +16,11 @@ import DeleteModal from "components/Common/DeleteModal";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import Tooltip from "@material-ui/core/Tooltip";
 // Import actions
-import { getCycleRoundlist, deleteCycleRound } from "store/cycle/actions";
+import {
+  getCycleRoundlist,
+  deleteCycleRound,
+  getcyclelist,
+} from "store/cycle/actions";
 
 import "assets/scss/table.scss";
 
@@ -33,7 +37,7 @@ class CycleRoundList extends Component {
       feedbackMessage: "",
       feedbackListColumns: [
         {
-          text: "ID",
+          text: "Round ID",
           dataField: "id",
           sort: true,
           formatter: (cell, row) => <>{row.id}</>,
@@ -94,10 +98,15 @@ class CycleRoundList extends Component {
         },
 
         {
-          text: "Issue Date",
+          text: "Round Issue Date",
           dataField: "issue_date",
           sort: true,
-          formatter: (cell, row) => <>{row.issue_date}</>,
+          formatter: (cell, row) => {
+            if (!row.issue_date) return "";
+            const dateObj = new Date(row.issue_date);
+            if (isNaN(dateObj)) return row.issue_date; // fallback if invalid date
+            return dateObj.toLocaleDateString("en-GB"); // formats as DD/MM/YYYY
+          },
           headerFormatter: (column, colIndex) => (
             <>
               <div
@@ -124,10 +133,15 @@ class CycleRoundList extends Component {
           align: "center",
         },
         {
-          text: "Closing Date",
+          text: "Round Closing Date",
           dataField: "closing_date",
           sort: true,
-          formatter: (cell, row) => <>{row.closing_date}</>,
+          formatter: (cell, row) => {
+            if (!row.closing_date) return "";
+            const dateObj = new Date(row.closing_date);
+            if (isNaN(dateObj)) return row.closing_date; // fallback if invalid date
+            return dateObj.toLocaleDateString("en-GB"); // formats as DD/MM/YYYY
+          },
           headerFormatter: (column, colIndex) => (
             <>
               <div
@@ -155,6 +169,7 @@ class CycleRoundList extends Component {
           headerAlign: "center",
           align: "center",
         },
+
         {
           text: "Participants",
           dataField: "participant_count",
@@ -202,8 +217,6 @@ class CycleRoundList extends Component {
                 }}
               >
                 <input
-
-                
                   type="text"
                   value={this.state.noofresultsFilter}
                   onChange={e =>
@@ -263,12 +276,12 @@ class CycleRoundList extends Component {
                   <i
                     className="mdi mdi-delete font-size-18"
                     id="deletetooltip"
-                  onClick={() => {
-  console.log("Clicked delete for row ID:", row.id);
-  this.onClickDelete(row);
-}}
+                    onClick={() => {
+                      console.log("Clicked delete for row ID:", row.id);
+                      this.onClickDelete(row);
+                    }}
 
-// Use row.id here
+                    // Use row.id here
                   ></i>
                 </Link>
               </Tooltip>
@@ -280,9 +293,9 @@ class CycleRoundList extends Component {
     this.onClickDelete = this.onClickDelete.bind(this);
   }
   onClickDelete = round => {
-  console.log("Delete icon clicked for round:", round); // 🔍 log full object
-  this.setState({ roundToDelete: round, deleteModal: true });
-};
+    console.log("Delete icon clicked for round:", round); // 🔍 log full object
+    this.setState({ roundToDelete: round, deleteModal: true });
+  };
 
   handleDeleteRound = () => {
     const { onDeleteRound, ongetCycleList } = this.props;
@@ -316,17 +329,21 @@ class CycleRoundList extends Component {
     if (prevProps.CycleList !== this.props.CycleList) {
       console.log("CycleList changed:", this.props.CycleList);
 
-      // Flatten rounds from all cycles
       const flattenedRounds = this.props.CycleList.flatMap(cycle =>
         (cycle.rounds || []).map(round => ({
           ...round,
-          cycle_no: cycle.cycle_no, // optional: add cycle info if needed
-          scheme_name: cycle.scheme_name, // optional
+          cycle_no: cycle.cycle_no,
+          scheme_name: cycle.scheme_name,
         }))
       );
 
       console.log("Flattened rounds:", flattenedRounds);
-      this.setState({ flattenedRounds });
+
+      // ✅ Add this line to store the cycle details (for example, first cycle)
+      this.setState({
+        flattenedRounds,
+        cycleDetails: this.props.CycleList[0] || null, // Store first cycle or null
+      });
     }
 
     if (this.props.CycleName !== prevProps.CycleName) {
@@ -391,6 +408,17 @@ class CycleRoundList extends Component {
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     const { deleteModal } = this.state;
     const filteredData = this.filterData();
+    const { cycleDetails } = this.state;
+
+    const breadcrumbItem = cycleDetails
+      ? `Scheme Name: ${cycleDetails.scheme_name || "No Scheme Name"},
+         Cycle Number: ${cycleDetails.cycle_no || "No Cycle Number"}, 
+         Cycle Start Date: ${cycleDetails.start_date || "No Start Date"}, 
+         Cycle End Date: ${cycleDetails.end_date || "No End Date"}, 
+         }`
+      : "No Data Available";
+
+    console.log("Generated Breadcrumb Item:", breadcrumbItem);
     return (
       <React.Fragment>
         <DeleteModal
@@ -405,8 +433,50 @@ class CycleRoundList extends Component {
           <Container fluid>
             <Breadcrumbs
               title="List"
-              breadcrumbItem={`cycles for ${this.state.CycleName || "Unknown"}`}
+              // breadcrumbItem={`cycles for ${this.state.CycleName || "Unknown"}`}
             />
+            {cycleDetails ? (
+              <div className="round-details">
+                <h4>Cycle Details:</h4>
+                <p className="round-details-text">
+                  {/* Display round details */}
+                  <span className="me-3">
+                    Scheme Name:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {cycleDetails.scheme_name || "No Scheme Name"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle Number:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {cycleDetails.cycle_no || "No Cycle Number"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle Start Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {cycleDetails.start_date
+                        ? new Date(cycleDetails.start_date).toLocaleDateString(
+                            "en-GB"
+                          )
+                        : "No Start Date"}
+                    </strong>
+                  </span>
+                  <span className="me-3">
+                    Cycle End Date:{" "}
+                    <strong style={{ color: "blue" }}>
+                      {cycleDetails.end_date
+                        ? new Date(cycleDetails.end_date).toLocaleDateString(
+                            "en-GB"
+                          )
+                        : "No End Date"}
+                    </strong>
+                  </span>
+                </p>
+              </div>
+            ) : (
+              <div>No round details available.</div>
+            )}
             <Row className="justify-content-center">
               <Col lg="10">
                 <Card>
@@ -494,6 +564,7 @@ CycleRoundList.propTypes = {
   onDeleteCycleRound: PropTypes.func,
   onDeleteRound: PropTypes.func,
   ongetCycleList: PropTypes.func,
+  cycleDetails: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
@@ -503,6 +574,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   ongetCycleList: id => dispatch(getCycleRoundlist(id)),
   onDeleteRound: id => dispatch(deleteCycleRound(id)),
+  onGetInstrumentTypeList: id => dispatch(getcyclelist(id)),
 });
 export default connect(
   mapStateToProps,

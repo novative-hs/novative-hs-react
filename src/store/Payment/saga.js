@@ -43,30 +43,43 @@ function* fetchParticipantPayment() {
 
 function* fetchParticipantSchemelist(action) {
   try {
-    console.log("Saga Payload (ID):", action.payload);
-
-    // Call the API
     const response = yield call(getParticipantSchemelist, action.payload);
     console.log("API Response in Saga:", response);
 
-    // Extract schemes and participant_name
-    const schemes = response.data?.schemes || []; // Adjust to your API structure
-    const participant_name = response.data?.participant_name || "Unknown"; // Default if not provided
+    const data = response.data || {};
+    const schemes = data.schemes || [];
 
-    // Dispatch success with both schemes and participant_name
+    // Extract all relevant fields
+    const participant_name = data.participant_name || "Unknown";
+    const membership_status = data.membership_status || "Unknown";
+    const price = data.price || "";
+    const discount = data.discount || "";
+    const paid_amount = data.paid_amount || "";
+    const pay_date = data.pay_date || "";
+    const payment_mode = data.payment_mode || "";
+    const received_by = data.received_by || "";
+
+    // Dispatch success with all fields
     yield put(
       getParticipantSchemelistSuccess({
         schemes,
         participant_name,
+        membership_status,
+        price,
+        discount,
+        paid_amount,
+        pay_date,
+        payment_mode,
+        received_by
       })
     );
-    console.log("Dispatched Payload from Saga:", { schemes, participant_name });
-    
+
   } catch (error) {
     console.error("Error in Saga:", error);
     yield put(getParticipantSchemelistFail(error));
   }
 }
+
 
 
 
