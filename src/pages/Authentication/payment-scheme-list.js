@@ -142,6 +142,7 @@ class PaymentSchemeList extends Component {
               <div>{column.text}</div>
             </>
           ),
+          align: "right",
           formatter: (cell) => {
             if (cell === null || cell === undefined || cell === "") return "-";
             return new Intl.NumberFormat("en-US", {
@@ -154,6 +155,13 @@ class PaymentSchemeList extends Component {
           text: "Pay Date",
           dataField: "pay_date",
           sort: true,
+          formatter: (cell) => {
+            const date = new Date(cell);
+            const day = String(date.getDate()).padStart(2, "0");
+            const month = String(date.getMonth() + 1).padStart(2, "0"); // month is 0-indexed
+            const year = date.getFullYear();
+            return `${day}-${month}-${year}`;
+          },
           headerFormatter: (column) => (
             <>
               <div>
