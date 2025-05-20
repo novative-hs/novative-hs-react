@@ -281,20 +281,38 @@ class StaffRegister extends Component {
       }),
     };
 
-    const generateRandomPassword = (length = 12) => {
-      const chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      return Array.from(
-        { length },
-        () => chars[Math.floor(Math.random() * chars.length)]
-      ).join("");
-    };
+  const generateRandomPassword = () => {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const numbers = "0123456789";
 
-    const generateLabCode = () => {
-      const prefix = "LAB";
-      const randomNumber = Math.floor(100000 + Math.random() * 900000);
-      return `${prefix}${randomNumber}`;
-    };
+  // Generate 4 random letters
+  const randomLetters = Array.from({ length: 4 }, () =>
+    letters[Math.floor(Math.random() * letters.length)]
+  );
+
+  // Generate 4 random digits
+  const randomNumbers = Array.from({ length: 4 }, () =>
+    numbers[Math.floor(Math.random() * numbers.length)]
+  );
+
+  // Combine and shuffle the characters
+  const combined = [...randomLetters, ...randomNumbers];
+
+  // Shuffle the combined characters
+  for (let i = combined.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [combined[i], combined[j]] = [combined[j], combined[i]];
+  }
+
+  return combined.join("");
+};
+
+// Generate Lab Code: LAB + 4 digits
+const generateLabCode = () => {
+  const prefix = "LAB";
+  const randomNumber = Math.floor(1000 + Math.random() * 9000); // ensures 4-digit number
+  return `${prefix}${randomNumber}`;
+};
     return (
       <React.Fragment>
         <div className="page-content">
