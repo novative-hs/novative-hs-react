@@ -425,10 +425,10 @@ const generateLabCode = () => {
               <Col lg="8">
                 <div>
                   <h5 className="text-danger">Important Note:</h5>
-                  <p className="text-muted text-left">
+                   <p className="text-muted text-left">
                     When uploading the file, please ensure that each participant
-                    has a unique <strong> username </strong> and{" "}
-                    <strong> email address.</strong>
+                    has a unique 
+                    <strong> Login email</strong>
                   </p>
                 </div>
                 <Card>

@@ -420,6 +420,23 @@ class Header extends Component {
                           </ul>
                         </li>
                         <li className="nav-item">
+                                                <NavLink
+                                                  to={`/${organization_name}/participants`}
+                                                  className="dropdown-item"
+                                                  style={({ isActive }) =>
+                                                    isActive
+                                                      ? {
+                                                          textDecoration: "underline",
+                                                          fontWeight: "bold",
+                                                          color: "white",
+                                                        }
+                                                      : {}
+                                                  }
+                                                >
+                                                  <span className="pt-4 font-size-12">Participants</span>
+                                                </NavLink>
+                                              </li>
+                        <li className="nav-item">
                           <NavLink
                             to={`/${organization_name}/scheme`}
                             className="dropdown-item"

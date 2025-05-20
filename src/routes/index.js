@@ -49,6 +49,7 @@ import InstrumentAddAnalyte from "pages/databaseadmin/instrument-add-analyte";
 import DatabaseOfinsrumentType from "pages/databaseadmin/instrument-type-list";
 import InstrumentList from "pages/databaseadmin/instruments-list";
 import Scheme from "pages/databaseadmin/scheme";
+import ParticipantListN from "pages/databaseadmin/participants";
 import Cycle from "pages/databaseadmin/cycle";
 import CycleAnalytes from "pages/databaseadmin/cycle-analyte";
 import SchemeAnalytes from "pages/databaseadmin/add-analytes-scheme-page";
@@ -336,6 +337,7 @@ const databaseAdminAuthProtectedRoutes = [
   },
   { path: "/reagents-in-manufacturer/:id", component: ReagentsInManufacturer },
   { path: "/round-list/:id", component: SchemeRoundList },
+  {path: "/:organization_name/participants", component: ParticipantListN},
   //participant data
   {
     path: "/:organization_name/database-of-participantcity",
