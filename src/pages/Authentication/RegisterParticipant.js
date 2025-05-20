@@ -57,10 +57,8 @@ class StaffRegister extends Component {
       ListSector: [],
       modal: false,
       usernameFieldError: null,
-      passwordFieldError: null,
       incompleteRegistrationError: null,
       submittedMessage: null,
-      emailError: null,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -94,14 +92,8 @@ class StaffRegister extends Component {
     onGetsectorlist(this.state.user_id);
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.emailError !== this.props.emailError) {
-      this.setState({ emailError: this.props.emailError });
-    }
     if (prevProps.usernameError != this.props.usernameError) {
       this.setState({ usernameFieldError: this.props.usernameError });
-    }
-    if (prevProps.passwordError != this.props.passwordError) {
-      this.setState({ passwordFieldError: this.props.passwordError });
     }
 
     if (
@@ -139,30 +131,6 @@ class StaffRegister extends Component {
     }
   }
 
-  togglePasswordVisibility = () => {
-    const passwordInput = document.querySelector('input[name="password"]');
-    const eyeIcon = document.getElementById("eye-icon");
-
-    if (passwordInput && passwordInput.type === "password") {
-      passwordInput.type = "text";
-      eyeIcon.className = "mdi mdi-eye-off-outline";
-    } else if (passwordInput) {
-      passwordInput.type = "password";
-      eyeIcon.className = "mdi mdi-eye-outline";
-    }
-  };
-  togglePassword1Visibility = () => {
-    const passwordInput = document.querySelector('input[name="password2"]');
-    const eyeIcon2 = document.getElementById("eye-icon1");
-
-    if (passwordInput && passwordInput.type === "password") {
-      passwordInput.type = "text";
-      eyeIcon2.className = "mdi mdi-eye-off-outline";
-    } else if (passwordInput) {
-      passwordInput.type = "password";
-      eyeIcon2.className = "mdi mdi-eye-outline";
-    }
-  };
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
@@ -213,10 +181,10 @@ class StaffRegister extends Component {
           await this.props.registerUser({
             name: item.name,
             username: item.username,
-            email: item.email,
+            // email: item.email,
             email_participant: item.email_participant,
-            password: item.password,
-            password2: item.password2,
+            // password: item.password,
+            // password2: item.password2,
             city: item.city,
             phone: item.phone,
             lab_code: item.lab_code,
@@ -260,6 +228,7 @@ class StaffRegister extends Component {
       behavior: "smooth", // Adds smooth scrolling
     });
   };
+
   render() {
     // console.log("Email error received:", this.props.emailError);
     const { ListType, ListSector } = this.state;
@@ -310,6 +279,21 @@ class StaffRegister extends Component {
         overflowY: "auto", // Enable vertical scrolling
         // WebkitOverflowScrolling: "touch", // Smooth scrolling for mobile devices
       }),
+    };
+
+    const generateRandomPassword = (length = 12) => {
+      const chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      return Array.from(
+        { length },
+        () => chars[Math.floor(Math.random() * chars.length)]
+      ).join("");
+    };
+
+    const generateLabCode = () => {
+      const prefix = "LAB";
+      const randomNumber = Math.floor(100000 + Math.random() * 900000);
+      return `${prefix}${randomNumber}`;
     };
     return (
       <React.Fragment>
@@ -363,10 +347,11 @@ class StaffRegister extends Component {
                         .xml, .html, .txt, .dbf
                       </li>
                       <li>
-                        There should be a file having columns, name,username,
-                        email,email_participant, city, country, province,
-                        billing_address, shipping_address, department, district,
-                        lab_staff_name, landline_registered_by, phone, website
+                        There should be a file having columns,
+                        name,username,email_participant, city, country,
+                        province, billing_address, shipping_address, department,
+                        district, lab_staff_name, landline_registered_by, phone,
+                        website
                       </li>
                       <li>
                         If you want to get more information, contact us at{" "}
@@ -439,12 +424,14 @@ class StaffRegister extends Component {
                       <Formik
                         enableReinitialize={true}
                         initialValues={{
+                          password: generateRandomPassword(),
+                          lab_code: generateLabCode(),
                           username: (this.state && this.state.username) || "",
-                          email: (this.state && this.state.email) || "",
+                          // email: (this.state && this.state.email) || "",
                           email_participant:
                             (this.state && this.state.email_participant) || "",
-                          password: (this.state && this.state.password) || "",
-                          password2: (this.state && this.state.password2) || "",
+                          // password: (this.state && this.state.password) || "",
+                          // password2: (this.state && this.state.password2) || "",
                           account_type:
                             (this.state && this.state.account_type) ||
                             "labowner",
@@ -469,7 +456,7 @@ class StaffRegister extends Component {
                             (this.state && this.state.landline_registered_by) ||
                             "",
                           phone: (this.state && this.state.phone) || "",
-                          lab_code: (this.state && this.state.lab_code) || "",
+                          // lab_code: (this.state && this.state.lab_code) || "",
                           type: (this.state && this.state.type) || "",
                           designation:
                             (this.state && this.state.designation) || "",
@@ -491,15 +478,7 @@ class StaffRegister extends Component {
                               100,
                               "Username can't be longer than 100 characters"
                             ),
-                          // password: Yup.string().required(
-                          //   "Please enter your password"
-                          // ),
-                          password: Yup.string()
-                            .required("Please enter your password")
-                            .min(
-                              6,
-                              "Password must be at least 6 characters long"
-                            ),
+
                           name: Yup.string()
                             .trim()
                             .required("Please enter name")
@@ -509,31 +488,9 @@ class StaffRegister extends Component {
                               "Name can't be longer than 100 characters"
                             ),
 
-                          email: Yup.string()
-                            .required("Please enter your email")
-                            .email("Please enter valid email"),
-
                           email_participant: Yup.string()
                             .required("Please enter  email")
                             .email("Please enter valid email"),
-
-                          password2: Yup.string()
-                            .required("Please Correct your password")
-                            .when("password", {
-                              is: val => (val && val.length > 0 ? true : false),
-                              then: Yup.string().oneOf(
-                                [Yup.ref("password")],
-                                "Both password need to be the same"
-                              ),
-                            }),
-                          // city: Yup.array()
-                          // .of(
-                          //   Yup.object().shape({
-                          //     value: Yup.string().required(),
-                          //     label: Yup.string().required(),
-                          //   })
-                          // )
-                          // .min(1, "At least one city is required"),
 
                           city: Yup.string().required("City is required"),
 
@@ -555,12 +512,6 @@ class StaffRegister extends Component {
                               "Country can't be longer than 50 characters"
                             ),
 
-                          // address: Yup.string()
-                          //   .required("Address is required")
-                          //   .max(
-                          //     500,
-                          //     "Address can't be longer than 500 characters"
-                          //   ),
                           billing_address: Yup.string()
                             .required("Billing Address is required")
                             .max(
@@ -636,7 +587,7 @@ class StaffRegister extends Component {
                           setTimeout(() => {
                             if (
                               !this.state.usernameFieldError &&
-                              !this.state.passwordFieldError &&
+                              // !this.state.passwordFieldError &&
                               !this.state.incompleteRegistrationError
                             ) {
                               this.setState({
@@ -659,6 +610,73 @@ class StaffRegister extends Component {
                           setFieldValue,
                         }) => (
                           <Form className="form-horizontal">
+                            <Row>
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
+                                    Lab Code (Auto-generated)
+                                  </Label>
+                                  <div className="input-group">
+                                    <Field
+                                      name="lab_code"
+                                      type="text"
+                                      disabled
+                                      placeholder="Auto-generated"
+                                      value={values.lab_code}
+                                      className="form-control"
+                                    />
+
+                                    <div className="input-group-append">
+                                      <button
+                                        className="btn btn-light"
+                                        type="button"
+                                        id="labcode-addon"
+                                        disabled
+                                      >
+                                        <i className="mdi mdi-lock-outline"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Col>
+
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
+                                    Password (Auto-generated)
+                                  </Label>
+                                  <div className="input-group">
+                                    <Field
+                                      name="password"
+                                      type="text"
+                                      disabled
+                                      placeholder="Auto-generated"
+                                      value={values.password} // ensure this is coming from Formik
+                                      className="form-control"
+                                    />
+                                    <div className="input-group-append">
+                                      <button
+                                        className="btn btn-light"
+                                        type="button"
+                                        id="password-addon"
+                                        disabled
+                                      >
+                                        <i
+                                          id="eye-icon"
+                                          className="mdi mdi-eye-outline"
+                                        ></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Col>
+                            </Row>
                             {/* Name field */}
                             <Row>
                               <Col sm={6} md={6} xl={6}>
@@ -696,38 +714,48 @@ class StaffRegister extends Component {
                                 </div>
                               </Col>
                               <Col sm={6} md={6} xl={6}>
-                                {/* Organization email */}
+                                {/* Username field */}
                                 <div className="mb-3">
                                   <Label
-                                    for="email"
+                                    for="username"
                                     className="form-label"
                                     style={{ color: "blue" }}
                                   >
-                                    Email
+                                    Login Email
                                   </Label>
                                   <Field
-                                    id="email"
-                                    name="email"
-                                    type="text"
-                                    placeholder="Please enter your email"
+                                    id="username"
+                                    name="username"
+                                    placeholder="Enter username"
                                     style={{
                                       borderColor:
                                         errors.name && touched.name
                                           ? "red"
                                           : "black",
                                     }}
+                                    type="text"
+                                    onFocus={() => {
+                                      this.setState({
+                                        usernameFieldError: null,
+                                      });
+                                    }}
                                     className={
                                       "form-control" +
-                                      (errors.email && touched.email
+                                      ((errors.username && touched.username) ||
+                                      this.state.usernameFieldError
                                         ? " is-invalid"
                                         : "")
                                     }
                                   />
                                   <ErrorMessage
-                                    name="email"
+                                    name="username"
                                     component="div"
                                     className="invalid-feedback"
                                   />
+
+                                  <div className="invalid-feedback">
+                                    {this.state.usernameFieldError}
+                                  </div>
                                 </div>
                               </Col>
                             </Row>
@@ -1216,82 +1244,86 @@ class StaffRegister extends Component {
                             {/* <div className="mb-3 mt-5">
                               <h3>Who is registering the participant</h3>
                             </div> */}
-                            <Row>
-                              <Col sm={6} md={6} xl={6}>
-                                {/* Lab Staff Name field */}
-                                <div className="mb-3">
-                                  <Label
-                                    for="lab_staff_name"
-                                    className="form-label"
-                                    style={{ color: "blue" }}
-                                  >
-                                    {/* Registered by (Name) */}
-                                    Name of notification person
-                                  </Label>
-                                  <Field
-                                    id="lab_staff_name"
-                                    name="lab_staff_name"
-                                    type="text"
-                                    placeholder="Please enter the name of person registering participant"
-                                    style={{
-                                      borderColor:
-                                        errors.name && touched.name
-                                          ? "red"
-                                          : "black",
-                                    }}
-                                    className={
-                                      "form-control" +
-                                      (errors.lab_staff_name &&
-                                      touched.lab_staff_name
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="lab_staff_name"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                              <Col sm={6} md={6} xl={6}>
-                                {/* Landline field */}
-                                <div className="mb-3">
-                                  <Label
-                                    for="landline_registered_by"
-                                    className="form-label"
-                                    style={{ color: "blue" }}
-                                  >
-                                    Contact No. of notification person
-                                  </Label>
-                                  <Field
-                                    id="landline_registered_by"
-                                    name="landline_registered_by"
-                                    type="text"
-                                    placeholder="Please enter landline no."
-                                    style={{
-                                      borderColor:
-                                        errors.name && touched.name
-                                          ? "red"
-                                          : "black",
-                                    }}
-                                    className={
-                                      "form-control" +
-                                      (errors.landline_registered_by &&
-                                      touched.landline_registered_by
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="landline_registered_by"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>{" "}
-                              </Col>
-                              {/* Lab Staff Designation field */}
-                              {/* <Col sm={6} md={6} xl={6}>
+                            <p className="text-primary fs-5">
+                              <strong>Information of Notifying Person</strong>
+                            </p>
+                            <div className="bg-light ">
+                              <Row>
+                                <Col sm={6} md={6} xl={6}>
+                                  {/* Lab Staff Name field */}
+                                  <div className="mb-3 pt-3">
+                                    <Label
+                                      for="lab_staff_name"
+                                      className="form-label"
+                                      style={{ color: "blue" }}
+                                    >
+                                      {/* Registered by (Name) */}
+                                      Name of notification person
+                                    </Label>
+                                    <Field
+                                      id="lab_staff_name"
+                                      name="lab_staff_name"
+                                      type="text"
+                                      placeholder="Please enter the name of person registering participant"
+                                      style={{
+                                        borderColor:
+                                          errors.name && touched.name
+                                            ? "red"
+                                            : "black",
+                                      }}
+                                      className={
+                                        "form-control" +
+                                        (errors.lab_staff_name &&
+                                        touched.lab_staff_name
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="lab_staff_name"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                                <Col sm={6} md={6} xl={6}>
+                                  {/* Landline field */}
+                                  <div className="mb-3 pt-3">
+                                    <Label
+                                      for="landline_registered_by"
+                                      className="form-label"
+                                      style={{ color: "blue" }}
+                                    >
+                                      Contact No. of notification person
+                                    </Label>
+                                    <Field
+                                      id="landline_registered_by"
+                                      name="landline_registered_by"
+                                      type="text"
+                                      placeholder="Please enter landline no."
+                                      style={{
+                                        borderColor:
+                                          errors.name && touched.name
+                                            ? "red"
+                                            : "black",
+                                      }}
+                                      className={
+                                        "form-control" +
+                                        (errors.landline_registered_by &&
+                                        touched.landline_registered_by
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="landline_registered_by"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>{" "}
+                                </Col>
+                                {/* Lab Staff Designation field */}
+                                {/* <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
                                   <Label
                                     for="lab_staff_designation"
@@ -1332,252 +1364,84 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col> */}
-                            </Row>
-                            <Row>
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label
-                                    className="form-label"
-                                    style={{ color: "blue" }}
-                                  >
-                                    Email of notification person
-                                  </Label>
-                                  <Field
-                                    name="email_participant"
-                                    type="text"
-                                    placeholder="Enter email of notification person"
-                                    style={{
-                                      borderColor:
-                                        errors.name && touched.name
-                                          ? "red"
-                                          : "black",
-                                    }}
-                                    className={
-                                      "form-control" +
-                                      (errors.email_participant &&
-                                      touched.email_participant
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="email_participant"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
+                              </Row>
+                              <Row>
+                                <Col sm={6} md={6} xl={6}>
+                                  <div className="mb-3">
+                                    <Label
+                                      className="form-label"
+                                      style={{ color: "blue" }}
+                                    >
+                                      Email of notification person
+                                    </Label>
+                                    <Field
+                                      name="email_participant"
+                                      type="text"
+                                      placeholder="Enter email of notification person"
+                                      style={{
+                                        borderColor:
+                                          errors.name && touched.name
+                                            ? "red"
+                                            : "black",
+                                      }}
+                                      className={
+                                        "form-control" +
+                                        (errors.email_participant &&
+                                        touched.email_participant
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="email_participant"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
 
-                                  {this.state.emailError && (
-                                    <div className="invalid-feedback d-block">
-                                      {this.state.emailError}
-                                    </div>
-                                  )}
-                                </div>
-                              </Col>
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label
-                                    for="designation"
-                                    className="form-label"
-                                    style={{ color: "blue" }}
-                                  >
-                                    Designation of notification person
-                                  </Label>
-                                  <Select
-                                    name="designation" // The field name in Formik
-                                    options={designationOptions} // Options for the select
-                                    classNamePrefix="react-select"
-                                    className="react-select-container border border-black"
-                                    onChange={selectedOption => {
-                                      setFieldValue(
-                                        "designation",
-                                        selectedOption
-                                          ? selectedOption.value
-                                          : ""
-                                      ); // Update Formik state with string value
-                                    }}
-                                    value={
-                                      designationOptions.find(
-                                        option =>
-                                          option.value === values.designation
-                                      ) || null
-                                    } // Set the current selected value
-                                  />
-                                  <ErrorMessage
-                                    name="designation" // Error for the city field
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-
-                            <Row>
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label
-                                    for="lab_code"
-                                    className="form-label"
-                                    style={{ color: "blue" }}
-                                  >
-                                    Lab Number
-                                  </Label>
-                                  <Field
-                                    name="lab_code"
-                                    type="text"
-                                    placeholder="Enter Lab Code"
-                                    style={{
-                                      borderColor:
-                                        errors.name && touched.name
-                                          ? "red"
-                                          : "black",
-                                    }}
-                                    className={
-                                      "form-control" +
-                                      (errors.lab_code && touched.lab_code
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="lab_code"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
-
-                            {/* Username field */}
-                            <div className="mb-3">
-                              <Label
-                                for="username"
-                                className="form-label"
-                                style={{ color: "blue" }}
-                              >
-                                Username
-                              </Label>
-                              <Field
-                                id="username"
-                                name="username"
-                                placeholder="Enter username"
-                                style={{
-                                  borderColor:
-                                    errors.name && touched.name
-                                      ? "red"
-                                      : "black",
-                                }}
-                                type="text"
-                                onFocus={() => {
-                                  this.setState({
-                                    usernameFieldError: null,
-                                  });
-                                }}
-                                className={
-                                  "form-control" +
-                                  ((errors.username && touched.username) ||
-                                  this.state.usernameFieldError
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                              />
-                              <ErrorMessage
-                                name="username"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-
-                              <div className="invalid-feedback">
-                                {this.state.usernameFieldError}
-                              </div>
-                            </div>
-                            <div className="mb-3">
-                              <Label
-                                className="form-label"
-                                style={{ color: "blue" }}
-                              >
-                                Password
-                              </Label>
-                              <div className="input-group">
-                                <Field
-                                  name="password"
-                                  type="password"
-                                  placeholder="Enter password"
-                                  style={{
-                                    borderColor:
-                                      errors.name && touched.name
-                                        ? "red"
-                                        : "black",
-                                  }}
-                                  autoComplete="on"
-                                  className={
-                                    "form-control" +
-                                    ((errors.password && touched.password) ||
-                                    this.state.passwordFieldError
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <div className="input-group-append">
-                                  <button
-                                    className="btn btn-light"
-                                    type="button"
-                                    id="password-addon"
-                                    onClick={this.togglePasswordVisibility}
-                                  >
-                                    <i
-                                      id="eye-icon"
-                                      className="mdi mdi-eye-outline"
-                                    ></i>
-                                  </button>
-                                </div>
-                              </div>
-                              <ErrorMessage
-                                name="password"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                              <div className="invalid-feedback">
-                                {this.state.passwordFieldError}
-                              </div>
-
-                              <div className="mt-2 input-group">
-                                <Field
-                                  name="password2"
-                                  type="password"
-                                  placeholder="Re-enter password"
-                                  style={{
-                                    borderColor:
-                                      errors.name && touched.name
-                                        ? "red"
-                                        : "black",
-                                  }}
-                                  autoComplete="on"
-                                  className={
-                                    "form-control" +
-                                    (errors.password2 && touched.password2
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <div className="input-group-append">
-                                  <button
-                                    className="btn btn-light"
-                                    type="button"
-                                    id="password-addon"
-                                    onClick={this.togglePassword1Visibility}
-                                  >
-                                    <i
-                                      id="eye-icon1"
-                                      className="mdi mdi-eye-outline"
-                                    ></i>
-                                  </button>
-                                </div>
-                              </div>
-                              <ErrorMessage
-                                name="password2"
-                                component="div"
-                                className="invalid-feedback"
-                              />
+                                    {this.state.emailError && (
+                                      <div className="invalid-feedback d-block">
+                                        {this.state.emailError}
+                                      </div>
+                                    )}
+                                  </div>
+                                </Col>
+                                <Col sm={6} md={6} xl={6}>
+                                  <div className="mb-3">
+                                    <Label
+                                      for="designation"
+                                      className="form-label"
+                                      style={{ color: "blue" }}
+                                    >
+                                      Designation of notification person
+                                    </Label>
+                                    <Select
+                                      name="designation" // The field name in Formik
+                                      options={designationOptions} // Options for the select
+                                      classNamePrefix="react-select"
+                                      className="react-select-container border border-black"
+                                      onChange={selectedOption => {
+                                        setFieldValue(
+                                          "designation",
+                                          selectedOption
+                                            ? selectedOption.value
+                                            : ""
+                                        ); // Update Formik state with string value
+                                      }}
+                                      value={
+                                        designationOptions.find(
+                                          option =>
+                                            option.value === values.designation
+                                        ) || null
+                                      } // Set the current selected value
+                                    />
+                                    <ErrorMessage
+                                      name="designation" // Error for the city field
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
                             </div>
 
                             {/* <div className="mb-3">
