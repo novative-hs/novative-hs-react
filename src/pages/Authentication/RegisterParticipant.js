@@ -1276,7 +1276,7 @@ const generateLabCode = () => {
                                       style={{ color: "blue" }}
                                     >
                                       {/* Registered by (Name) */}
-                                      Name of notification person
+                                      Name 
                                     </Label>
                                     <Field
                                       id="lab_staff_name"
@@ -1312,7 +1312,7 @@ const generateLabCode = () => {
                                       className="form-label"
                                       style={{ color: "blue" }}
                                     >
-                                      Contact No. of notification person
+                                      Contact No
                                     </Label>
                                     <Field
                                       id="landline_registered_by"
@@ -1390,7 +1390,7 @@ const generateLabCode = () => {
                                       className="form-label"
                                       style={{ color: "blue" }}
                                     >
-                                      Email of notification person
+                                      Email
                                     </Label>
                                     <Field
                                       name="email_participant"
@@ -1430,7 +1430,7 @@ const generateLabCode = () => {
                                       className="form-label"
                                       style={{ color: "blue" }}
                                     >
-                                      Designation of notification person
+                                      Designation
                                     </Label>
                                     <Select
                                       name="designation" // The field name in Formik
