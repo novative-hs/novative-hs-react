@@ -41,27 +41,24 @@ const AddPayment = (state = INIT_STATE, action) => {
 
     // participant schem list
 
-    case GET_PARTICIPANT_SCHEME_LIST_SUCCESS:
-      console.log(
-        "GET_PARTICIPANT_SCHEME_LIST_SUCCESS action.payload:",
-        action.payload
-      );
-      return {
-        ...state,
-        PaymentSchemeList: Array.isArray(action.payload.schemes)
-          ? action.payload.schemes
-          : [],
-        participant_name: action.payload.participant_name || "Unknown",
-        membership_status: action.payload.membership_status || "Unknown",
-        price: action.payload.price || "",
-        discount: action.payload.discount || "",
-        paid_amount: action.payload.paid_amount || "",
-        pay_date: action.payload.pay_date || "",
-        payment_mode: action.payload.payment_mode || "",
-        received_by: action.payload.received_by || "",
-        error: null,
-      };
-
+   case GET_PARTICIPANT_SCHEME_LIST_SUCCESS:
+  console.log("GET_PARTICIPANT_SCHEME_LIST_SUCCESS action.payload:", action.payload);
+  return {
+    ...state,
+    PaymentSchemeList: Array.isArray(action.payload.schemes)
+      ? action.payload.schemes
+      : [],
+    participant_name: action.payload.participant_name || "Unknown",
+    membership_status: action.payload.membership_status || "Unknown",
+    price: action.payload.price || "",
+    discount: action.payload.discount || "",
+    paid_amount: action.payload.paid_amount || "",
+    pay_date: action.payload.pay_date || "",
+    payment_mode: action.payload.payment_mode || "",
+    received_by: action.payload.received_by || "",
+    photo_url: action.payload.photo_url || "",  // <-- add here too!
+    error: null,
+  };
     case GET_PARTICIPANT_SCHEME_LIST_FAIL:
       return {
         ...state,

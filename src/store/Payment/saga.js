@@ -1,5 +1,9 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { ADD_NEW_Payment, GET_PARTICIPANT_PAYMENT, GET_PARTICIPANT_SCHEME_LIST } from "./actionTypes";
+import {
+  ADD_NEW_Payment,
+  GET_PARTICIPANT_PAYMENT,
+  GET_PARTICIPANT_SCHEME_LIST,
+} from "./actionTypes";
 import {
   addNewPaymentSuccess,
   addNewPaymentFail,
@@ -8,7 +12,11 @@ import {
   getParticipantSchemelistSuccess,
   getParticipantSchemelistFail,
 } from "./actions";
-import { addNewPayment, getParticipantPayment, getParticipantSchemelist} from "../../helpers/django_api_helper";
+import {
+  addNewPayment,
+  getParticipantPayment,
+  getParticipantSchemelist,
+} from "../../helpers/django_api_helper";
 
 function* onAddNewPayment(object) {
   console.log("data in saga1", object.payload.payment);
@@ -27,20 +35,19 @@ function* onAddNewPayment(object) {
 function* fetchParticipantPayment() {
   try {
     const response = yield call(getParticipantPayment);
-    console.log("Full API Response:", response);  // Log the full response
-    console.log("API Response Data:", response);  // Log the data (no need for `data` if it's an array)
+    console.log("Full API Response:", response); // Log the full response
+    console.log("API Response Data:", response); // Log the data (no need for `data` if it's an array)
 
     if (response && response.length > 0) {
-      yield put(getparticipantpaymentSuccess(response));  // Pass the array directly if that's the data
+      yield put(getparticipantpaymentSuccess(response)); // Pass the array directly if that's the data
     } else {
       throw new Error("No data returned");
     }
   } catch (error) {
     console.error("Error fetching Participant Payment:", error);
-    yield put(getparticipantpaymentFail(error));  // Handle error
+    yield put(getparticipantpaymentFail(error)); // Handle error
   }
 }
-
 function* fetchParticipantSchemelist(action) {
   try {
     const response = yield call(getParticipantSchemelist, action.payload);
@@ -58,6 +65,7 @@ function* fetchParticipantSchemelist(action) {
     const pay_date = data.pay_date || "";
     const payment_mode = data.payment_mode || "";
     const received_by = data.received_by || "";
+    const photo_url = data.photo_url || ""; // <-- add this line
 
     // Dispatch success with all fields
     yield put(
@@ -70,22 +78,15 @@ function* fetchParticipantSchemelist(action) {
         paid_amount,
         pay_date,
         payment_mode,
-        received_by
+        received_by,
+        photo_url, // <-- add here too
       })
     );
-
   } catch (error) {
     console.error("Error in Saga:", error);
     yield put(getParticipantSchemelistFail(error));
   }
 }
-
-
-
-
-
-
-
 
 function* PaymentSaga() {
   yield takeEvery(ADD_NEW_Payment, onAddNewPayment);

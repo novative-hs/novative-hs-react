@@ -320,7 +320,7 @@ class InstrumentType extends Component {
             return (
               <Link
                 to={`/pending-submission/${row.id}`} // Navigate to a new page using round ID
-                style={{ textDecoration: "underline", color: "#0000CD" }}
+                style={{ textDecoration: "underline", color: "red" }}
               >
                 {cell}
               </Link>

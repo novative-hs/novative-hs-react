@@ -5,6 +5,7 @@ import MetaTags from "react-meta-tags";
 import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import {
   Card,
   CardBody,
@@ -147,40 +148,38 @@ feedbackListColumns: [
       );
     }
   },
-  {
-    dataField: "scheme_count",
-    text: "Scheme",
-    sort: true,
-    formatter: (cell, row) => (
-      <Link
-      to={`/payment-scheme-list/${row.id}`}
-      style={{ textDecoration: "underline", color: "#0000CD" }}
-      onClick={() => console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)}
-    >
-      {cell}
-    </Link>
-    ),
-    headerFormatter: (column, colIndex) => {
-      return (
-        <div style={{ textAlign: "center" }}>
-          <div>{column.text}</div>
-          <div style={{ marginTop: "5px" }}>
-            <input
-              type="text"
-              value={this.state.roundsFilter}
-              onChange={(e) => this.handleFilterChange("roundsFilter", e)}
-              className="form-control"
-              style={{
-                textAlign: "center",
-                width: "100px",
-                margin: "auto",
-              }}
-            />
-          </div>
+ {
+  dataField: "scheme_count",
+  text: "Scheme",
+  sort: true,
+  // formatter: (cell, row) => (
+  //   // // Just plain text now, no <Link>
+  //   // <span style={{ color: "#0000CD", textDecoration: "underline", cursor: "default" }}>
+  //   //   {cell}
+  //   // </span>
+  // ),
+  headerFormatter: (column, colIndex) => {
+    return (
+      <div style={{ textAlign: "center" }}>
+        <div>{column.text}</div>
+        <div style={{ marginTop: "5px" }}>
+          <input
+            type="text"
+            value={this.state.roundsFilter}
+            onChange={(e) => this.handleFilterChange("roundsFilter", e)}
+            className="form-control"
+            style={{
+              textAlign: "center",
+              width: "100px",
+              margin: "auto",
+            }}
+          />
         </div>
-      );
-    }
-  },
+      </div>
+    );
+  }
+},
+
   
   {
   dataField: "price",
@@ -265,12 +264,17 @@ feedbackListColumns: [
   text: "Payment Date",
   sort: true,
   formatter: (cell) => {
-    const date = new Date(cell);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // month is 0-indexed
-    const year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-  },
+  console.log("pay_date cell:", cell);
+  if (!cell) return "-";
+  const dateObj = new Date(cell);
+  if (isNaN(dateObj)) return "-";
+
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  const month = dateObj.toLocaleString("en-US", { month: "short" });
+  const year = dateObj.getFullYear();
+
+  return `${day}-${month}-${year}`;
+},
   headerFormatter: (column, colIndex) => {
     return (
       <div style={{ textAlign: "center" }}>
@@ -318,6 +322,41 @@ feedbackListColumns: [
       );
     }
   },
+ {
+  dataField: "action_item",
+  text: "Action",
+  headerStyle: {
+    textAlign: "center",
+    verticalAlign: "middle",
+  },
+  formatter: (cell, row) => {
+    return (
+      <div
+        className="d-flex gap-3 ml-3"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+        }}
+      >
+        <Tooltip title="Payment Details">
+          <Link
+            to={`/payment-scheme-list/${row.id}`}
+            style={{ textDecoration: "underline", color: "#0000CD" }}
+            onClick={() =>
+              console.log(`Navigating to payment-scheme-list with ID: ${row.id}`)
+            }
+          >
+            {/* Using MDI payment icon */}
+            <i className="mdi mdi-credit-card-outline font-size-18" />
+          </Link>
+        </Tooltip>
+      </div>
+    );
+  },
+}
+,
+
 ],
 
     };
@@ -409,12 +448,9 @@ componentDidUpdate(prevProps) {
             {/* Render Breadcrumbs */}
             <Breadcrumbs title="Labs" breadcrumbItem="Participant-Payment Record" />
             <Row className="justify-content-center align-item-center">
-              <Col lg="10">       
-               <p>
+              <Col lg="10">        <p>
+              
                  <strong>Note:</strong> Click on Scheme Number to get detail of each participants payments
-                </p>
-                 <p>
-                 <strong>Note:</strong> Click on Payment mode to download the proof of payment.
                 </p>
                 <Card>
                   <CardBody>
