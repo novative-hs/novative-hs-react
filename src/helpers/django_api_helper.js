@@ -375,17 +375,29 @@ export const postCorporateInformation = (id, corporate) => {
 };
 
 // Login Method
-export const postLogin = (user) => {
+// Login Method
+export const postLogin = user => {
   let formData = new FormData();
-  formData.append("username", user.username);
-  formData.append("password", user.password);
-  formData.append("guest_id", user.guest_id);
 
   console.log("django api", user);
+
+  if (user.account_type === "labowner") {
+    formData.append("lab_code", user.lab_code);
+    formData.append("username", user.username);
+    formData.append("password", user.password);
+  } else {
+    formData.append("username", user.username);
+    formData.append("password", user.password);
+    if (user.guest_id) {
+      formData.append("guest_id", user.guest_id);
+    }
+  }
+
   return axios.post(url.POST_LOGIN, formData, {
     headers: getHeader(authHeader()),
   });
 };
+
 //////////////////////////
 export const getNews = (id) =>
   get(`${url.GET_NEWS}/${id}`, {
