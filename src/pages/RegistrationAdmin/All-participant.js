@@ -235,40 +235,40 @@ class PendingLabs extends Component {
           ),
           filter: textFilter(),
         },
-        {
-          dataField: "schemes",
-          text: "Scheme",
-          sort: false,
-          filter: textFilter({
-            onFilter: (filterValue, data) => {
-              // Custom filtering logic
-              return data.filter((row) =>
-                Array.isArray(row.schemes) &&
-                row.schemes.some((scheme) =>
-                  scheme.scheme_name.toLowerCase().includes(filterValue.toLowerCase())
-                )
-              );
-            },
-          }),
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
-          formatter: (cellContent, row) => {
-            if (Array.isArray(row.schemes) && row.schemes.length > 0) {
-              // Create a unique set of scheme names
-              const uniqueSchemes = [...new Map(row.schemes.map((scheme) => [scheme.scheme_name, scheme])).values()];
+        // {
+        //   dataField: "schemes",
+        //   text: "Scheme",
+        //   sort: false,
+        //   filter: textFilter({
+        //     onFilter: (filterValue, data) => {
+        //       // Custom filtering logic
+        //       return data.filter((row) =>
+        //         Array.isArray(row.schemes) &&
+        //         row.schemes.some((scheme) =>
+        //           scheme.scheme_name.toLowerCase().includes(filterValue.toLowerCase())
+        //         )
+        //       );
+        //     },
+        //   }),
+        //   headerStyle: { textAlign: "center" },
+        //   style: { textAlign: "center" },
+        //   formatter: (cellContent, row) => {
+        //     if (Array.isArray(row.schemes) && row.schemes.length > 0) {
+        //       // Create a unique set of scheme names
+        //       const uniqueSchemes = [...new Map(row.schemes.map((scheme) => [scheme.scheme_name, scheme])).values()];
 
-              // Render the unique scheme names
-              return (
-                <ul style={{ padding: "0", margin: "0", listStyle: "none" }}>
-                  {uniqueSchemes.map((scheme, index) => (
-                    <li key={index}>{scheme.scheme_name}</li>
-                  ))}
-                </ul>
-              );
-            }
-            return "No schemes available";
-          },
-        },
+        //       // Render the unique scheme names
+        //       return (
+        //         <ul style={{ padding: "0", margin: "0", listStyle: "none" }}>
+        //           {uniqueSchemes.map((scheme, index) => (
+        //             <li key={index}>{scheme.scheme_name}</li>
+        //           ))}
+        //         </ul>
+        //       );
+        //     }
+        //     return "No schemes available";
+        //   },
+        // },
 
 
         {
@@ -382,8 +382,7 @@ class PendingLabs extends Component {
     this.toggleMarketerModal = this.toggleMarketerModal.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
-    this.handleParticipantTypeChange = this.handleParticipantTypeChange.bind(this);
-    // this.handleSchemeChange = this.handleSchemeChange.bind(this);
+    this.handleParticipantTypeChange = this.handleParticipantTypeChange.bind(this)
     this.applyFilters = this.applyFilters.bind(this);
   }
 
@@ -559,27 +558,34 @@ applyFiltersFromQueryParams = () => {
   };
 
   handleEditSubmit(values) {
-    console.log("Form values:", values); // Check if the form is submitting correctly
-    const updatedData = {
-      id: values.id,
-      name: values.name,
-      email: values.email,
-      address: values.address,
-      shipping_address: values.shipping_address,
-      billing_address: values.billing_address,
-      marketer_name: values.marketer_name,
-      city: values.city,
-      district: values.district,
-      lab_staff_name: values.lab_staff_name,
-      email_participant: values.email_participant,
-      landline_registered_by: values.landline_registered_by,
-      payment_status: values.payment_status,
-    };
+  console.log("Form values:", values);
 
-    this.props.onupdateAllLabs(updatedData); // Dispatch update action
+  const updatedData = {
+    id: values.id,
+    name: values.name,
+    email: values.email,
+    address: values.address,
+    shipping_address: values.shipping_address,
+    billing_address: values.billing_address,
+    marketer_name: values.marketer_name,
+    city: values.city,
+    district: values.district,
+    lab_staff_name: values.lab_staff_name,
+    email_participant: values.email_participant,
+    landline_registered_by: values.landline_registered_by,
+    payment_status: values.payment_status,
+  };
 
-    this.toggleEditModal(); // Close the modal
-  }
+  this.props.onupdateAllLabs(updatedData); // Dispatch update action
+
+  // Show success message
+  this.setState({ successMessage: "Participant updated successfully" });
+
+  // Delay modal close by 2 seconds
+  setTimeout(() => {
+    this.setState({ editModal: false, successMessage: "" });
+  }, 2000);
+}
 
 
   componentDidMount() {
@@ -645,7 +651,7 @@ applyFiltersFromQueryParams = () => {
     console.log("onGetPendingLabs called with user_id:", user_id);
   }
  
-  
+ 
 componentDidUpdate(prevProps, prevState) {
   if (prevState.filteredLabs !== this.state.filteredLabs) {
       console.log("FilteredLabs updated:", this.state.filteredLabs);
@@ -868,6 +874,7 @@ componentDidUpdate(prevProps, prevState) {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
+
 exportToExcel = () => {
     const { AllLabs } = this.state;
     if (!AllLabs || AllLabs.length === 0) {
@@ -906,6 +913,7 @@ exportToExcel = () => {
 
     saveAs(data, "Filtered_Participants.xlsx");
 };
+
 
 
 
@@ -1046,23 +1054,20 @@ exportToExcel = () => {
 
                                         {/* Filter 2 */}
                                         <div className="col">
-  <select
-    className="form-select"
-    onChange={this.handleSchemeChange}
-    value={this.state.selectedScheme}
-    style={{ width: "200px" }}
-  >
-    <option value="">Select Scheme</option>
-    {this.state.CycleList.filter(cycle =>
-        this.props.AllLabs.some(lab =>
-          lab.schemes?.some(scheme => scheme.scheme_name === cycle.scheme_name)
-        )
-    ).map(filteredCycle => (
+ <select
+  className="form-select"
+  onChange={this.handleSchemeChange}
+  value={this.state.selectedScheme}
+  style={{ width: "200px" }}
+>
+  <option value="">Select Scheme</option>
+  {Array.isArray(this.state.filteredCycleList) &&
+    this.state.filteredCycleList.map(filteredCycle => (
       <option key={filteredCycle.id} value={filteredCycle.id}>
-        {filteredCycle.scheme_name}
+        {`${filteredCycle.scheme_name} - Cycle ${filteredCycle.cycle_no}`}
       </option>
     ))}
-  </select>
+</select>
 </div>
 
                                       </div>
@@ -1348,6 +1353,11 @@ exportToExcel = () => {
                                         Edit Lab Details
                                       </ModalHeader>
                                       <ModalBody>
+                                          {this.state.successMessage && (
+  <div className="alert alert-success text-center">
+    {this.state.successMessage}
+  </div>
+)}
                                         <Formik
                                           initialValues={{
                                             id: this.state.id,

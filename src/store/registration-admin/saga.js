@@ -1,4 +1,6 @@
 import { call, put, takeEvery } from "redux-saga/effects";
+import axios from 'axios';
+
 
 // Crypto Redux States
 import {
@@ -11,6 +13,7 @@ import {
   GET_ALL_PARTICIPANT,
   UPDATE_MEMBERSHIP_STATUS,
   UPDATE_LABS,
+  GET_DELETE_PARTICIPANT,
 } from "./actionTypes";
 
 import {
@@ -29,7 +32,9 @@ import {
   updateMembershipStatusSuccess,
   updateMembershipStatusFail,
   updateAllLabsSuccess,
-  updateAllLabsFail
+  updateAllLabsFail,
+  getDeleteParticipantSuccess,
+  getDeleteParticipantFail
 } from "./actions";
 
 //Include Both Helper File with needed methods
@@ -41,7 +46,8 @@ import {
   getUnapprovedLabs,
   getAllLabs,
   updateMembershipstatus,
-  updateAllLabs
+  updateAllLabs,
+  getDeleteParticipant,
 } from "../../helpers/django_api_helper";
 
 function* onupdateMembershipStatus({ payload: status }) {
@@ -95,6 +101,7 @@ function* fetchUnapprovedLabs(action) {
     yield put(getUnapprovedLabsFail(error));
   }
 }
+
 function* fetchSuspendedLabs(action) {
   try {
     const response = yield call(getSuspendedLabs, action.payload);
@@ -113,12 +120,31 @@ function* onApproveUnapproveLab(object) {
   }
 }
 
+function* onDeleteParticipant({ payload }) {
+  const { participantId } = payload;
+  console.log(`[Saga] Delete participant requested: participantId=${participantId}`);
 
+  try {
+    const baseURL = 'http://localhost:8000';
+    const url = `${baseURL}/api/registration-admin/delete-participants/${participantId}/`;
+
+    const response = yield call(
+      axios.delete,
+      url,
+      {}
+    );
+
+    yield put(getDeleteParticipantSuccess(participantId));
+  } catch (error) {
+    yield put(getDeleteParticipantFail(error?.response?.data?.message || "Delete failed"));
+  }
+}
 
 
 function* registrationAdminSaga() {
   yield takeEvery(UPDATE_MEMBERSHIP_STATUS, onupdateMembershipStatus);
   yield takeEvery(GET_ALL_PARTICIPANT, fetchAllLabs);
+  yield takeEvery(GET_DELETE_PARTICIPANT, onDeleteParticipant);
   yield takeEvery(GET_PENDING_LABS, fetchPendingLabs);
   yield takeEvery(GET_APPROVED_LABS, fetchApprovedLabs);
   yield takeEvery(GET_UNAPPROVED_LABS, fetchUnapprovedLabs);
@@ -130,3 +156,6 @@ function* registrationAdminSaga() {
 }
 
 export default registrationAdminSaga;
+
+
+

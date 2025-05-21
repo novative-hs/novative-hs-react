@@ -35,7 +35,9 @@ import {
   UPDATE_MEMBERSHIP_STATUS_FAIL,
   UPDATE_LABS,
   UPDATE_LABS_SUCCESS,
-  UPDATE_LABS_FAIL
+  UPDATE_LABS_FAIL,GET_DELETE_PARTICIPANT,
+  GET_DELETE_PARTICIPANT_SUCCESS,
+  GET_DELETE_PARTICIPANT_FAIL,
 } from "./actionTypes";
   //Update  Membership Status Action
   export const updateMembershipStatus = status => {
@@ -222,3 +224,18 @@ export const approveUnapproveB2BClientFail = error => ({
   payload: error,
 });
 
+
+export const getDeleteParticipant = (participantId) => ({
+  type: GET_DELETE_PARTICIPANT,
+  payload: { participantId },
+});
+
+export const getDeleteParticipantSuccess = (participantId) => ({
+  type: GET_DELETE_PARTICIPANT_SUCCESS,
+  payload: participantId,
+});
+
+export const getDeleteParticipantFail = (error) => ({
+  type: GET_DELETE_PARTICIPANT_FAIL,
+  payload: error,
+});

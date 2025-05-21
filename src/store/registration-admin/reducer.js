@@ -25,6 +25,8 @@ import {
   UPDATE_MEMBERSHIP_STATUS_FAIL,
   UPDATE_LABS_SUCCESS,
   UPDATE_LABS_FAIL,
+  GET_DELETE_PARTICIPANT_SUCCESS,
+  GET_DELETE_PARTICIPANT_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -36,6 +38,7 @@ const INIT_STATE = {
   pendingB2BClients: [],
   approvedB2BClients: [],
   unapprovedB2BClients: [],
+  deleteparticipants:[],
   success: [],
   error: {},
   Membershipstatus:[],
@@ -192,8 +195,18 @@ const registrationAdmin = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-    
+      /// delete partcipants///
+       case GET_DELETE_PARTICIPANT_SUCCESS:
+      return {
+        ...state,
+        approvedLabs: action.payload.data,
+      };
 
+    case GET_DELETE_PARTICIPANT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }
