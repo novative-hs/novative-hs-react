@@ -440,7 +440,7 @@ const generateLabCode = () => {
                         </Alert>
                       )}
                       <Formik
-                        enableReinitialize={true}
+                        // enableReinitialize={true}
                         initialValues={{
                           password: generateRandomPassword(),
                           lab_code: generateLabCode(),
