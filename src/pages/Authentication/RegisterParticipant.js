@@ -152,76 +152,102 @@ class StaffRegister extends Component {
       importFile: file,
     });
   };
+/////////////////////////////////
+ generateRandomPassword = () => {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
 
-  handleImport = async () => {
-    const { importFile } = this.state;
-    if (!importFile) {
-      this.setState({
-        importError: "Please select a file.",
-      });
-      return;
+    const randomLetters = Array.from({ length: 4 }, () =>
+      letters[Math.floor(Math.random() * letters.length)]
+    );
+    const randomNumbers = Array.from({ length: 4 }, () =>
+      numbers[Math.floor(Math.random() * numbers.length)]
+    );
+
+    const combined = [...randomLetters, ...randomNumbers];
+
+    for (let i = combined.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [combined[i], combined[j]] = [combined[j], combined[i]];
     }
 
-    try {
-      const reader = new FileReader();
-      reader.onload = async e => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
-        // Assuming your data is in the first sheet
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        // Convert to JSON format
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-        // Process jsonData and save to the database
-        // Example of processing:
-        for (let i = 0; i < jsonData.length; i++) {
-          const item = jsonData[i];
-          // Dispatch an action to save item to the database
-          await this.props.registerUser({
-            name: item.name,
-            username: item.username,
-            // email: item.email,
-            email_participant: item.email_participant,
-            // password: item.password,
-            // password2: item.password2,
-            city: item.city,
-            phone: item.phone,
-            lab_code: item.lab_code,
-            type: item.type,
-            sector: item.sector,
-            address: item.address,
-            designation: item.designation,
-            country: item.country,
-            province: item.province,
-            billing_address: item.billing_address,
-            shipping_address: item.shipping_address,
-            department: item.department,
-            district: item.district,
-            lab_staff_name: item.lab_staff_name,
-            landline_registered_by: item.landline_registered_by,
-            website: item.website,
-            account_type: (this.state && this.state.account_type) || "labowner",
-            added_by: localStorage.getItem("authUser")
-              ? JSON.parse(localStorage.getItem("authUser")).user_id
-              : "",
-            // Add other fields as required based on your schema
-          });
-        }
-
-        // Close the modal and show success message
-        this.toggleImportModal();
-        this.displaySuccessMessage("Data imported successfully!");
-      };
-
-      reader.readAsArrayBuffer(importFile);
-    } catch (error) {
-      console.error("Error importing data:", error);
-      this.setState({
-        importError: "Error importing data. Please try again.",
-      });
-    }
+    return combined.join("");
   };
+
+  generateLabCode = () => {
+    const prefix = "LAB";
+    const randomNumber = Math.floor(1000 + Math.random() * 9000);
+    return `${prefix}${randomNumber}`;
+  };
+
+  /////////////////////////////////
+handleImport = async () => {
+  const { importFile } = this.state;
+  if (!importFile) {
+    this.setState({
+      importError: "Please select a file.",
+    });
+    return;
+  }
+
+  try {
+    const reader = new FileReader();
+    const self = this; // ✅ capture 'this' from component context
+
+    reader.onload = async e => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+      for (let i = 0; i < jsonData.length; i++) {
+        const item = jsonData[i];
+
+        const generatedPassword = self.generateRandomPassword();
+        const generatedLabCode = self.generateLabCode();
+
+        await self.props.registerUser({
+          name: item.name,
+          username: item.username,
+          email_participant: item.email_participant,
+          password: generatedPassword,
+          lab_code: generatedLabCode,
+          city: item.city,
+          phone: item.phone,
+          type: item.type,
+          sector: item.sector,
+          address: item.address,
+          designation: item.designation,
+          country: item.country,
+          province: item.province,
+          billing_address: item.billing_address,
+          shipping_address: item.shipping_address,
+          department: item.department,
+          district: item.district,
+          lab_staff_name: item.lab_staff_name,
+          landline_registered_by: item.landline_registered_by,
+          website: item.website,
+          account_type: self.state.account_type || "labowner",
+          added_by: localStorage.getItem("authUser")
+            ? JSON.parse(localStorage.getItem("authUser")).user_id
+            : "",
+        });
+      }
+
+      self.toggleImportModal();
+      self.displaySuccessMessage("Data imported successfully!");
+    };
+
+    reader.readAsArrayBuffer(importFile);
+  } catch (error) {
+    console.error("Error importing data:", error);
+    this.setState({
+      importError: "Error importing data. Please try again.",
+    });
+  }
+};
+
   scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -281,6 +307,8 @@ class StaffRegister extends Component {
       }),
     };
 
+
+    
   const generateRandomPassword = () => {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   const numbers = "0123456789";
@@ -425,7 +453,7 @@ const generateLabCode = () => {
               <Col lg="8">
                 <div>
                   <h5 className="text-danger">Important Note:</h5>
-                   <p className="text-muted text-left">
+                  <p className="text-muted text-left">
                     When uploading the file, please ensure that each participant
                     has a unique 
                     <strong> Login email</strong>
@@ -587,38 +615,39 @@ const generateLabCode = () => {
                           // website: Yup.string().url("Invalid URL"),
                           // .required("Website is required"),
                         })}
-                        onSubmit={(values, { setSubmitting, resetForm }) => {
-                          // Trigger scroll to top
-                          this.scrollToTop();
-                          // for multiple selection
-                          // const cityIds = values.city
-                          //   .map(city => city.value)
-                          //   .join(",");
+                     onSubmit={(values, { setSubmitting, resetForm }) => {
+  this.scrollToTop();
 
-                          // const formData = {
-                          //   ...values,
-                          //   city: cityIds,
-                          // };
+  // Create payload conditionally
+  let payload = { ...values };
 
-                          this.props.registerUser(values);
-                          setSubmitting(false); // Ensures form is not submitting
-                          setTimeout(() => {
-                            if (
-                              !this.state.usernameFieldError &&
-                              // !this.state.passwordFieldError &&
-                              !this.state.incompleteRegistrationError
-                            ) {
-                              this.setState({
-                                submittedMessage:
-                                  "Participant added successfully.",
-                              });
-                              setTimeout(() => {
-                                this.setState({ submittedMessage: "" });
-                                resetForm(); // Reset form fields after the success message disappears
-                              }, 2000);
-                            }
-                          }, 1000); // Initial 1 second delay
-                        }}
+  // If lab type is "Participant", include lab_code
+  if (values.type === "Participant") {
+    payload.lab_code = values.lab_code;
+  } else {
+    // If not a participant, you may optionally remove lab_code
+    delete payload.lab_code;
+  }
+
+  this.props.registerUser(payload);
+  setSubmitting(false);
+
+  setTimeout(() => {
+    if (
+      !this.state.usernameFieldError &&
+      !this.state.incompleteRegistrationError
+    ) {
+      this.setState({
+        submittedMessage: "Participant added successfully.",
+      });
+      setTimeout(() => {
+        this.setState({ submittedMessage: "" });
+        resetForm();
+      }, 2000);
+    }
+  }, 1000);
+}}
+
                       >
                         {({
                           values,
