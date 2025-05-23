@@ -155,7 +155,7 @@ class PendingLabs extends Component {
                 <Link
                   to="#"
                   // onClick={e => this.openLabModal(e, AllLabs)}
-                  onMouseEnter={(e) => this.openLabModal(e, AllLabs)}
+                  onMouseEnter={e => this.openLabModal(e, AllLabs)}
                   onPointerLeave={this.handleMouseExit} // Pass the function reference instead of calling it immediately
                 >
                   {AllLabs.name}
@@ -399,7 +399,7 @@ class PendingLabs extends Component {
   //  alert(message); // Replace this with your desired success message logic
   // }
 
-  isPaymentModalOpen = (participant) => {
+  isPaymentModalOpen = participant => {
     this.setState(
       {
         isPaymentModalOpen: true,
@@ -409,7 +409,7 @@ class PendingLabs extends Component {
     );
   };
 
-  isMembershipModalOpen = (participant) => {
+  isMembershipModalOpen = participant => {
     console.log("Opening Membership Modal for Participant:", participant); // Debug log
     this.setState(
       {
@@ -441,7 +441,7 @@ class PendingLabs extends Component {
     });
   }
 
-  handleSchemeChange = (event) => {
+  handleSchemeChange = event => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
 
@@ -465,7 +465,7 @@ class PendingLabs extends Component {
       AllLabs,
     });
 
-    const filteredData = AllLabs.filter((lab) => {
+    const filteredData = AllLabs.filter(lab => {
       const membershipStatus = lab.membership_status?.trim().toLowerCase();
       const membershipDetail = lab.membership_status_detail
         ? lab.membership_status_detail.trim().toLowerCase()
@@ -505,7 +505,7 @@ class PendingLabs extends Component {
         !selectedScheme ||
         (Array.isArray(lab.schemes) &&
           lab.schemes.some(
-            (scheme) => scheme.scheme_id?.toString() === selectedScheme
+            scheme => scheme.scheme_id?.toString() === selectedScheme
           ));
 
       console.log(`Lab ${lab.id} matchesScheme:`, matchesScheme);
@@ -563,7 +563,7 @@ class PendingLabs extends Component {
   };
   toggleMembershipModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isMembershipModalOpen: !prevState.isMembershipModalOpen,
       }),
       () => {
@@ -576,7 +576,7 @@ class PendingLabs extends Component {
   };
   togglePaymentModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isPaymentModalOpen: !prevState.isPaymentModalOpen,
       }),
       () => {
@@ -710,12 +710,12 @@ class PendingLabs extends Component {
       // Extract unique scheme names from AllLabs
       const participantSchemes = new Set(
         this.props.AllLabs.flatMap(
-          (lab) => lab.schemes?.map((scheme) => scheme.scheme_name) || []
+          lab => lab.schemes?.map(scheme => scheme.scheme_name) || []
         )
       );
 
       // Generate the filtered list for participant dropdown
-      const filteredCycleList = this.props.CycleList.filter((cycle) =>
+      const filteredCycleList = this.props.CycleList.filter(cycle =>
         participantSchemes.has(cycle.scheme_name)
       );
 
@@ -785,7 +785,7 @@ class PendingLabs extends Component {
     });
   };
 
-  toggleEditModal = (data) => {
+  toggleEditModal = data => {
     this.setState({
       editModal: !this.state.editModal,
       id: data.id,
@@ -804,7 +804,7 @@ class PendingLabs extends Component {
     });
   };
   toggleLabModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       LabModal: !prevState.LabModal,
     }));
     this.state.btnText === "Copy"
@@ -812,7 +812,7 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggleModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isModalOpen: !prevState.isModalOpen,
     }));
   };
@@ -833,7 +833,7 @@ class PendingLabs extends Component {
     });
   };
   togglePatientModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
     this.state.btnText === "Copy"
@@ -848,7 +848,7 @@ class PendingLabs extends Component {
     });
   };
   toggleMarketerModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       MarketerModal: !prevState.MarketerModal,
     }));
     this.state.btnText === "Copy"
@@ -856,16 +856,16 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggle() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       modal: !prevState.modal,
     }));
   }
 
-  handleApprovedEvent = (id) => {
+  handleApprovedEvent = id => {
     this.setState({ id: id, isApproved: true, unapprovedModal: true });
   };
 
-  handleUnapprovedEvent = (id) => {
+  handleUnapprovedEvent = id => {
     this.setState({ id: id, isApproved: false, unapprovedModal: true });
   };
 
@@ -889,7 +889,7 @@ class PendingLabs extends Component {
     this.setState({ unapprovedModal: false });
   };
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -924,7 +924,7 @@ class PendingLabs extends Component {
       { key: "payment_status", label: "Payment Status" }, // This will show "N/A" if it doesn’t exist
     ];
 
-    const dataToExport = AllLabs.map((item) => {
+    const dataToExport = AllLabs.map(item => {
       const row = {};
       selectedFields.forEach(({ key, label }) => {
         row[label] = item[key] || "N/A";
@@ -989,12 +989,12 @@ class PendingLabs extends Component {
     const { approvedLabs, CycleList } = this.state;
 
     const participantOptions = (this.props.approvedLabs || []).map(
-      (participant) => ({
+      participant => ({
         value: participant.id, // ensure this is the correct unique identifier
         label: participant.name, // or any other field you'd like to display
       })
     );
-    const schemeOptions = CycleList.map((scheme) => ({
+    const schemeOptions = CycleList.map(scheme => ({
       value: scheme.id, // Use scheme ID instead of scheme name
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
     }));
@@ -1056,7 +1056,7 @@ class PendingLabs extends Component {
                           data={this.state.filteredLabs}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="8">
@@ -1111,7 +1111,7 @@ class PendingLabs extends Component {
                                               this.state.filteredCycleList
                                             ) &&
                                               this.state.filteredCycleList.map(
-                                                (filteredCycle) => (
+                                                filteredCycle => (
                                                   <option
                                                     key={filteredCycle.id}
                                                     value={filteredCycle.id}
@@ -1661,14 +1661,14 @@ class PendingLabs extends Component {
                                     </Modal>
 
                                     <Modal
-                                      isOpen={this.state.isMembershipModalOpen}
-                                      toggle={this.toggleMembershipModal}
+                                      isOpen={this.state.isPaymentModalOpen}
+                                      toggle={this.togglePaymentModal}
                                       className={this.props.className}
                                     >
                                       <ModalHeader
-                                        toggle={this.toggleMembershipModal}
+                                        toggle={this.togglePaymentModal}
                                       >
-                                        Updating Membership for{" "}
+                                        Payment for{" "}
                                         {this.state.selectedParticipant?.name ||
                                           "Unknown"}
                                       </ModalHeader>
@@ -1676,11 +1676,18 @@ class PendingLabs extends Component {
                                         <Formik
                                           enableReinitialize={true}
                                           initialValues={{
-                                            membership: "", // Default empty value
+                                            photo: "",
                                             participant:
                                               this.state.selectedParticipant
                                                 ?.id || "",
-                                            // Participant ID passed as prop
+                                            paydate: "",
+                                            payment_status: "", // No default
+                                            // is_active: false,      // default inactive
+                                            paymentmethod: "",
+                                            scheme: [],
+                                            price: "",
+                                            discount: 0,
+                                            receivedby: "",
                                             added_by: localStorage.getItem(
                                               "authUser"
                                             )
@@ -1692,35 +1699,50 @@ class PendingLabs extends Component {
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
-                                            membership:
+                                            participant: Yup.string().required(
+                                              "Participant is required"
+                                            ),
+                                            scheme: Yup.array().min(
+                                              1,
+                                              "At least one scheme must be selected"
+                                            ),
+                                            payment_status:
                                               Yup.string().required(
-                                                "Status required"
+                                                "Payment status is required"
                                               ),
+                                            price:
+                                              Yup.string().required(
+                                                "Price is required"
+                                              ),
+                                            paydate:
+                                              Yup.string().required(
+                                                "Date is required"
+                                              ),
+                                            photo: Yup.string().required(
+                                              "Deposit Slip is required"
+                                            ),
+                                            receivedby: Yup.string().required(
+                                              "Received By is required"
+                                            ),
+                                            paymentmethod:
+                                              Yup.string().required(
+                                                "Payment Method is required"
+                                              ),
+                                            discount: Yup.number()
+                                              .min(
+                                                0,
+                                                "Discount must be at least 0%"
+                                              )
+                                              .max(
+                                                100,
+                                                "Discount cannot be more than 100%"
+                                              )
+                                              .required("Discount is required"),
                                           })}
                                           onSubmit={async (
                                             values,
                                             { setSubmitting, resetForm }
                                           ) => {
-                                            console.log(
-                                              "Form Values Submitted:",
-                                              values
-                                            );
-                                            console.log(
-                                              "Form Values Submitted:",
-                                              values
-                                            );
-                                            console.log(
-                                              "Participant ID:",
-                                              values.participant
-                                            );
-
-                                            if (!values.participant) {
-                                              console.error(
-                                                "Error: Lab ID (participant) is missing!"
-                                              );
-                                              return;
-                                            }
-
                                             const userId = localStorage.getItem(
                                               "authUser"
                                             )
@@ -1730,52 +1752,58 @@ class PendingLabs extends Component {
                                                   )
                                                 ).user_id
                                               : "";
-
-                                            const UpdateMembership = {
-                                              membership_status:
-                                                values.membership, // Correct key
-                                              added_by: userId, // This should match the logged-in user's ID
-                                              participant: values.participant, // Participant ID should come here
+                                            const roundedPrice = Math.round(
+                                              parseFloat(values.price)
+                                            );
+                                            const AddPayment = {
+                                              participant: values.participant,
+                                              scheme: values.scheme,
+                                              price: roundedPrice,
+                                              payment_status:
+                                                values.payment_status,
+                                              // is_active: values.is_active, // Pass this to backend
+                                              discount: values.discount,
+                                              paydate: values.paydate,
+                                              photo: values.photo,
+                                              receivedby: values.receivedby,
+                                              paymentmethod:
+                                                values.paymentmethod,
+                                              added_by: userId,
                                             };
-                                            console.log(
-                                              "Selected Participant ID:",
-                                              this.state.selectedParticipant?.id
-                                            );
-
-                                            console.log(
-                                              "Payload being sent to API:",
-                                              UpdateMembership
-                                            );
 
                                             try {
-                                              await this.props.onupdateMembershipStatus(
-                                                this.state.user_id,
-                                                UpdateMembership
-                                              );
-                                              this.props.ongetApprovedLabs(
-                                                this.state.user_id
-                                              );
-                                              this.props.onupdateMembershipStatus(
-                                                this.state.user_id
+                                              await this.props.onAddNewPayment(
+                                                userId,
+                                                AddPayment
                                               );
                                               await this.props.onGetPendingLabs(
                                                 this.state.user_id
-                                              ); //membership modal
+                                              ); //payment modal
                                               this.setState({
-                                                isMembershipModalOpen: false,
+                                                isPaymentModalOpen: false,
                                               }); // Close modal here
                                               resetForm();
                                               this.displaySuccessMessage(
-                                                "Membership status updated successfully!"
+                                                "Payment added successfully!"
                                               );
                                             } catch (error) {
                                               console.error(
-                                                "Error updating membership status:",
+                                                "Error adding payment:",
                                                 error
                                               );
                                             }
+                                            setTimeout(() => {
+                                              this.props.onGetPendingLabs(
+                                                this.state.user_id
+                                              );
+                                            }, 1000);
+                                            setTimeout(() => {
+                                              this.props.ongetcyclelist(
+                                                this.state.user_id
+                                              );
+                                            }, 1000);
                                             this.setState({
-                                              isMembershipModalOpen: false,
+                                              isPaymentModalOpen: false,
                                             });
                                             setSubmitting(false);
                                           }}
@@ -1786,34 +1814,141 @@ class PendingLabs extends Component {
                                             touched,
                                             setFieldValue,
                                           }) => {
-                                            const membershipOptions = [
-                                              {
-                                                value: "Active",
-                                                label: "Active",
-                                              },
-                                              {
-                                                value: "Inactive",
-                                                label: "Inactive",
-                                              },
-                                              {
-                                                value: "Suspended",
-                                                label: "Suspended",
-                                              },
-                                            ];
+                                            const handleSchemeChange =
+                                              selectedOptions => {
+                                                const selectedValues =
+                                                  selectedOptions
+                                                    ? selectedOptions.map(
+                                                        option => option.value
+                                                      )
+                                                    : [];
+                                                setFieldValue(
+                                                  "scheme",
+                                                  selectedValues
+                                                );
+
+                                                const totalPrice =
+                                                  selectedValues.reduce(
+                                                    (sum, schemeId) => {
+                                                      const scheme =
+                                                        CycleList.find(
+                                                          s => s.id === schemeId
+                                                        );
+                                                      return (
+                                                        sum +
+                                                        (scheme
+                                                          ? parseFloat(
+                                                              scheme.price
+                                                            )
+                                                          : 0)
+                                                      );
+                                                    },
+                                                    0
+                                                  );
+
+                                                // Set priceBeforeDiscount only once when schemes are selected
+                                                if (
+                                                  !values.priceBeforeDiscount ||
+                                                  values.scheme.length === 0
+                                                ) {
+                                                  setFieldValue(
+                                                    "priceBeforeDiscount",
+                                                    totalPrice.toFixed(2)
+                                                  );
+                                                }
+
+                                                // Update the price to reflect the total (will be modified later by discount)
+                                                setFieldValue(
+                                                  "price",
+                                                  totalPrice.toFixed(2)
+                                                );
+                                              };
+
+                                            const handleDiscountChange = e => {
+                                              let discountValue = parseFloat(
+                                                e.target.value
+                                              );
+
+                                              // Ensure discountValue is valid, if not set to 0
+                                              if (
+                                                isNaN(discountValue) ||
+                                                discountValue < 0
+                                              ) {
+                                                discountValue = 0;
+                                              }
+
+                                              // Update the discount field
+                                              setFieldValue(
+                                                "discount",
+                                                discountValue
+                                              );
+
+                                              // Use priceBeforeDiscount for calculations
+                                              const priceBeforeDiscount =
+                                                parseFloat(
+                                                  values.priceBeforeDiscount
+                                                ) || 0;
+
+                                              // Calculate the discounted price
+                                              const discountedPrice =
+                                                priceBeforeDiscount -
+                                                (priceBeforeDiscount *
+                                                  discountValue) /
+                                                  100;
+
+                                              // Calculate the discount amount in rupees
+                                              const discountAmount =
+                                                (priceBeforeDiscount *
+                                                  discountValue) /
+                                                100;
+
+                                              // Update the price (price after discount) and discount amount
+                                              setFieldValue(
+                                                "price",
+                                                discountedPrice.toFixed(2)
+                                              );
+                                              setFieldValue(
+                                                "discountAmount",
+                                                discountAmount.toFixed(2)
+                                              );
+
+                                              console.log(
+                                                "Discount Value:",
+                                                discountValue
+                                              ); // Debugging
+                                              console.log(
+                                                "Price Before Discount:",
+                                                priceBeforeDiscount
+                                              ); // Debugging
+                                              console.log(
+                                                "Price After Discount:",
+                                                discountedPrice
+                                              ); // Debugging
+                                              console.log(
+                                                "Discount Amount:",
+                                                discountAmount
+                                              ); // Debugging
+                                            };
 
                                             return (
                                               <Form>
-                                                <Row>
+                                                {errors.successMessage && (
+                                                  <Alert color="success">
+                                                    {errors.successMessage}
+                                                  </Alert>
+                                                )}
+
+                                                {/* <Row>
                                                   <Col>
-                                                    <Label>
-                                                      Membership Status
-                                                    </Label>
+                                                    <Label>Participant</Label>
                                                     <Select
-                                                      name="membership"
-                                                      options={
-                                                        membershipOptions
+                                                      name="participant"
+                                                      value={
+                                                        this.state
+                                                          .selectedParticipant
+                                                          ?.name || "Unknown"
                                                       }
-                                                      placeholder="Select Status"
+                                                      readOnly
                                                       className={
                                                         errors.participant &&
                                                         touched.participant
@@ -1824,21 +1959,424 @@ class PendingLabs extends Component {
                                                         selectedOption
                                                       ) => {
                                                         setFieldValue(
-                                                          "membership",
+                                                          "participant",
                                                           selectedOption?.value ||
                                                             ""
                                                         );
                                                       }}
-                                                      value={
-                                                        membershipOptions.find(
-                                                          (option) =>
-                                                            option.value ===
-                                                            values.membership
-                                                        ) || null
+                                                      // value={
+                                                      //   participantOptions.find(
+                                                      //     (option) =>
+                                                      //       option.value ===
+                                                      //       values.participant
+                                                      //   ) || null
+                                                      // }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="participant"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row> */}
+
+                                                <Row>
+                                                  <Col>
+                                                    <Label>Scheme</Label>
+                                                    <Select
+                                                      name="scheme"
+                                                      isMulti
+                                                      options={schemeOptions}
+                                                      className={
+                                                        errors.scheme &&
+                                                        touched.scheme
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }
+                                                      onChange={selectedOptions => {
+                                                        const selectedValues =
+                                                          selectedOptions
+                                                            ? selectedOptions.map(
+                                                                option =>
+                                                                  option.value
+                                                              )
+                                                            : [];
+                                                        setFieldValue(
+                                                          "scheme",
+                                                          selectedValues
+                                                        );
+
+                                                        console.log(
+                                                          "Selected Scheme IDs:",
+                                                          selectedValues
+                                                        ); // Debugging
+
+                                                        const totalPrice =
+                                                          selectedValues.reduce(
+                                                            (sum, schemeId) => {
+                                                              const scheme =
+                                                                this.props.CycleList.find(
+                                                                  s =>
+                                                                    s.id ===
+                                                                    schemeId
+                                                                );
+                                                              return (
+                                                                sum +
+                                                                (scheme
+                                                                  ? parseFloat(
+                                                                      scheme.price.replace(
+                                                                        /,/g,
+                                                                        ""
+                                                                      )
+                                                                    )
+                                                                  : 0)
+                                                              );
+                                                            },
+                                                            0
+                                                          );
+
+                                                        console.log(
+                                                          "Total Price:",
+                                                          totalPrice
+                                                        ); // Debugging
+
+                                                        // Update the priceBeforeDiscount field
+                                                        setFieldValue(
+                                                          "priceBeforeDiscount",
+                                                          totalPrice.toFixed(2)
+                                                        );
+
+                                                        setFieldValue(
+                                                          "price",
+                                                          totalPrice.toFixed(2)
+                                                        );
+                                                      }}
+                                                      value={schemeOptions.filter(
+                                                        option =>
+                                                          values.scheme.includes(
+                                                            option.value
+                                                          )
+                                                      )}
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col>
+                                                    <div className="mb-3">
+                                                      <Label
+                                                        for="priceBeforeDiscount"
+                                                        className="form-label"
+                                                      >
+                                                        Price before Discount
+                                                      </Label>
+                                                      <Field
+                                                        name="priceBeforeDiscount"
+                                                        type="text"
+                                                        placeholder="Enter price"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.priceBeforeDiscount &&
+                                                          touched.priceBeforeDiscount
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        value={new Intl.NumberFormat(
+                                                          "en-US"
+                                                        ).format(
+                                                          values.priceBeforeDiscount ||
+                                                            0
+                                                        )} // Format the value
+                                                        readOnly
+                                                        style={{
+                                                          backgroundColor:
+                                                            "#e9ecef",
+                                                        }} // Slightly darker grey background
+                                                      />
+
+                                                      <ErrorMessage
+                                                        name="priceBeforeDiscount"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+
+                                                <Row>
+                                                  <Col>
+                                                    <Label>
+                                                      Discount in (%)
+                                                    </Label>
+                                                    <Field
+                                                      name="discount"
+                                                      type="number"
+                                                      className="form-control"
+                                                      onChange={
+                                                        handleDiscountChange
                                                       }
                                                     />
                                                     <ErrorMessage
-                                                      name="membership"
+                                                      name="discount"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col>
+                                                    <div className="mb-3">
+                                                      <Label
+                                                        for="discountAmount"
+                                                        className="form-label"
+                                                      >
+                                                        Discount Amount (Rs)
+                                                      </Label>
+                                                      <Field
+                                                        name="discountAmount"
+                                                        type="text"
+                                                        placeholder="Discount amount"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.discountAmount &&
+                                                          touched.discountAmount
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        value={new Intl.NumberFormat(
+                                                          "en-US",
+                                                          {
+                                                            style: "currency",
+                                                            currency: "PKR",
+                                                          }
+                                                        ).format(
+                                                          values.discountAmount ||
+                                                            0
+                                                        )} // Format the value as currency
+                                                        readOnly
+                                                        style={{
+                                                          backgroundColor:
+                                                            "#e9ecef",
+                                                        }} // Slightly darker grey background
+                                                      />
+                                                      <ErrorMessage
+                                                        name="discountAmount"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+
+                                                <Row>
+                                                  <Col>
+                                                    <div className="mb-3">
+                                                      <Label
+                                                        for="price"
+                                                        className="form-label"
+                                                      >
+                                                        Price after Discount
+                                                      </Label>
+                                                      <Field
+                                                        name="price"
+                                                        type="text"
+                                                        placeholder="Enter price"
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.price &&
+                                                          touched.price
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                        value={new Intl.NumberFormat(
+                                                          "en-US"
+                                                        ).format(
+                                                          values.price || 0
+                                                        )} // Format the value
+                                                        readOnly
+                                                        style={{
+                                                          backgroundColor:
+                                                            "#e9ecef",
+                                                        }} // Slightly darker grey background
+                                                      />
+                                                      <ErrorMessage
+                                                        name="price"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+
+                                                <Row>
+                                                  <Col>
+                                                    <Label>Pay Date</Label>
+                                                    <Field
+                                                      name="paydate"
+                                                      type="date"
+                                                      className="form-control"
+                                                    />
+                                                    <ErrorMessage
+                                                      name="paydate"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
+
+                                                <Row>
+                                                  <Col>
+                                                    <Label>Pay Copy</Label>
+                                                    <Input
+                                                      id="formFile"
+                                                      name="photo"
+                                                      type="file"
+                                                      multiple={false}
+                                                      accept=".jpg,.jpeg,.png"
+                                                      onChange={event =>
+                                                        this.handleFileChange(
+                                                          event,
+                                                          setFieldValue
+                                                        )
+                                                      }
+                                                      className={
+                                                        "form-control" +
+                                                        (errors.photo &&
+                                                        touched.photo
+                                                          ? " is-invalid"
+                                                          : "")
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="photo"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
+
+                                                <Row>
+                                                  <Col>
+                                                    <Label>
+                                                      Payment Method
+                                                    </Label>
+                                                    <Select
+                                                      name="paymentmethod"
+                                                      options={[
+                                                        {
+                                                          value: "Online",
+                                                          label: "Online",
+                                                        },
+                                                        {
+                                                          value: "Cheque",
+                                                          label: "Cheque",
+                                                        },
+                                                        {
+                                                          value: "Cash",
+                                                          label: "Cash",
+                                                        },
+                                                      ]}
+                                                      onChange={selectedOption =>
+                                                        setFieldValue(
+                                                          "paymentmethod",
+                                                          selectedOption?.value ||
+                                                            ""
+                                                        )
+                                                      }
+                                                      value={
+                                                        values.paymentmethod
+                                                          ? {
+                                                              value:
+                                                                values.paymentmethod,
+                                                              label:
+                                                                values.paymentmethod,
+                                                            }
+                                                          : null
+                                                      }
+                                                      className={
+                                                        errors.paymentmethod &&
+                                                        touched.paymentmethod
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="paymentmethod"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                  <Col>
+                                                    <Label>
+                                                      Payment Status
+                                                    </Label>
+                                                    <Select
+                                                      name="payment_status"
+                                                      options={[
+                                                        {
+                                                          value: "Paid",
+                                                          label: "Paid",
+                                                        },
+                                                        {
+                                                          value: "In process",
+                                                          label: "In process",
+                                                        },
+                                                      ]}
+                                                      onChange={selectedOption => {
+                                                        const status =
+                                                          selectedOption?.value ||
+                                                          "";
+                                                        setFieldValue(
+                                                          "payment_status",
+                                                          status
+                                                        );
+                                                        if (
+                                                          status === "Paid" ||
+                                                          status ===
+                                                            "In process"
+                                                        ) {
+                                                          setFieldValue(
+                                                            "is_active",
+                                                            true
+                                                          ); // Mark as active on payment
+                                                        }
+                                                      }}
+                                                      value={
+                                                        values.payment_status
+                                                          ? {
+                                                              value:
+                                                                values.payment_status,
+                                                              label:
+                                                                values.payment_status,
+                                                            }
+                                                          : {
+                                                              value: "Paid",
+                                                              label: "Paid",
+                                                            }
+                                                      }
+                                                      className={
+                                                        errors.payment_status &&
+                                                        touched.payment_status
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="payment_status"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col>
+                                                    <Label>Received By</Label>
+                                                    <Field
+                                                      name="receivedby"
+                                                      type="text"
+                                                      className="form-control"
+                                                    />
+                                                    <ErrorMessage
+                                                      name="receivedby"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
@@ -1859,7 +2397,6 @@ class PendingLabs extends Component {
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
-
                                     <Modal
                                       isOpen={this.state.isMembershipModalOpen}
                                       toggle={this.toggleMembershipModal}
@@ -2020,9 +2557,7 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
@@ -2031,7 +2566,7 @@ class PendingLabs extends Component {
                                                       }}
                                                       value={
                                                         membershipOptions.find(
-                                                          (option) =>
+                                                          option =>
                                                             option.value ===
                                                             values.membership
                                                         ) || null
@@ -2132,19 +2667,19 @@ const mapStateToProps = ({
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onApproveUnapproveLab: (data) => dispatch(approveUnapproveLab(data)),
-  onGetPendingLabs: (id) => dispatch(getAllLabs(id)),
-  onGetInstrumentTypeList: (id) => dispatch(getSchemelist(id)),
+  onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
+  onGetPendingLabs: id => dispatch(getAllLabs(id)),
+  onGetInstrumentTypeList: id => dispatch(getSchemelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewSchemeList(id, createUnit)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateSchemeList({ id, ...methodlist })),
-  onupdateAllLabs: (updatedData) => {
+  onupdateAllLabs: updatedData => {
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
-  onGetParticipantPayment: (id) => dispatch(getParticipantSchemelist(id)),
-  ongetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
-  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
+  onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
+  ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);
