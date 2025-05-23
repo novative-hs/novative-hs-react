@@ -1659,7 +1659,6 @@ class PendingLabs extends Component {
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
-
                                     <Modal
                                       isOpen={this.state.isPaymentModalOpen}
                                       toggle={this.togglePaymentModal}
@@ -2397,6 +2396,205 @@ class PendingLabs extends Component {
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
+
+                                    <Modal
+                                      isOpen={this.state.isMembershipModalOpen}
+                                      toggle={this.toggleMembershipModal}
+                                      className={this.props.className}
+                                    >
+                                      <ModalHeader
+                                        toggle={this.toggleMembershipModal}
+                                      >
+                                        Updating Membership for{" "}
+                                        {this.state.selectedParticipant?.name ||
+                                          "Unknown"}
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <Formik
+                                          enableReinitialize={true}
+                                          initialValues={{
+                                            membership: "", // Default empty value
+                                            participant:
+                                              this.state.selectedParticipant
+                                                ?.id || "",
+                                            // Participant ID passed as prop
+                                            added_by: localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
+                                              : "",
+                                          }}
+                                          validationSchema={Yup.object().shape({
+                                            membership:
+                                              Yup.string().required(
+                                                "Status required"
+                                              ),
+                                          })}
+                                          onSubmit={async (
+                                            values,
+                                            { setSubmitting, resetForm }
+                                          ) => {
+                                            console.log(
+                                              "Form Values Submitted:",
+                                              values
+                                            );
+                                            console.log(
+                                              "Form Values Submitted:",
+                                              values
+                                            );
+                                            console.log(
+                                              "Participant ID:",
+                                              values.participant
+                                            );
+
+                                            if (!values.participant) {
+                                              console.error(
+                                                "Error: Lab ID (participant) is missing!"
+                                              );
+                                              return;
+                                            }
+
+                                            const userId = localStorage.getItem(
+                                              "authUser"
+                                            )
+                                              ? JSON.parse(
+                                                  localStorage.getItem(
+                                                    "authUser"
+                                                  )
+                                                ).user_id
+                                              : "";
+
+                                            const UpdateMembership = {
+                                              membership_status:
+                                                values.membership, // Correct key
+                                              added_by: userId, // This should match the logged-in user's ID
+                                              participant: values.participant, // Participant ID should come here
+                                            };
+                                            console.log(
+                                              "Selected Participant ID:",
+                                              this.state.selectedParticipant?.id
+                                            );
+
+                                            console.log(
+                                              "Payload being sent to API:",
+                                              UpdateMembership
+                                            );
+
+                                            try {
+                                              await this.props.onupdateMembershipStatus(
+                                                this.state.user_id,
+                                                UpdateMembership
+                                              );
+                                              this.props.ongetApprovedLabs(
+                                                this.state.user_id
+                                              );
+                                              this.props.onupdateMembershipStatus(
+                                                this.state.user_id
+                                              );
+                                              await this.props.onGetPendingLabs(
+                                                this.state.user_id
+                                              ); //membership modal
+                                              this.setState({
+                                                isMembershipModalOpen: false,
+                                              }); // Close modal here
+                                              resetForm();
+                                              this.displaySuccessMessage(
+                                                "Membership status updated successfully!"
+                                              );
+                                            } catch (error) {
+                                              console.error(
+                                                "Error updating membership status:",
+                                                error
+                                              );
+                                            }
+                                            this.setState({
+                                              isMembershipModalOpen: false,
+                                            });
+                                            setSubmitting(false);
+                                          }}
+                                        >
+                                          {({
+                                            values,
+                                            errors,
+                                            touched,
+                                            setFieldValue,
+                                          }) => {
+                                            const membershipOptions = [
+                                              {
+                                                value: "Active",
+                                                label: "Active",
+                                              },
+                                              {
+                                                value: "Inactive",
+                                                label: "Inactive",
+                                              },
+                                              {
+                                                value: "Suspended",
+                                                label: "Suspended",
+                                              },
+                                            ];
+
+                                            return (
+                                              <Form>
+                                                <Row>
+                                                  <Col>
+                                                    <Label>
+                                                      Membership Status
+                                                    </Label>
+                                                    <Select
+                                                      name="membership"
+                                                      options={
+                                                        membershipOptions
+                                                      }
+                                                      placeholder="Select Status"
+                                                      className={
+                                                        errors.participant &&
+                                                        touched.participant
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }
+                                                      onChange={selectedOption => {
+                                                        setFieldValue(
+                                                          "membership",
+                                                          selectedOption?.value ||
+                                                            ""
+                                                        );
+                                                      }}
+                                                      value={
+                                                        membershipOptions.find(
+                                                          option =>
+                                                            option.value ===
+                                                            values.membership
+                                                        ) || null
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="membership"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
+
+                                                <ModalFooter>
+                                                  <Button
+                                                    color="primary"
+                                                    type="submit"
+                                                  >
+                                                    Save
+                                                  </Button>
+                                                </ModalFooter>
+                                              </Form>
+                                            );
+                                          }}
+                                        </Formik>
+                                      </ModalBody>
+                                    </Modal>
+
                                     <Modal
                                       isOpen={this.state.isMembershipModalOpen}
                                       toggle={this.toggleMembershipModal}
