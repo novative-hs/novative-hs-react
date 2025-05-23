@@ -155,7 +155,7 @@ class PendingLabs extends Component {
                 <Link
                   to="#"
                   // onClick={e => this.openLabModal(e, AllLabs)}
-                  onMouseEnter={(e) => this.openLabModal(e, AllLabs)}
+                  onMouseEnter={e => this.openLabModal(e, AllLabs)}
                   onPointerLeave={this.handleMouseExit} // Pass the function reference instead of calling it immediately
                 >
                   {AllLabs.name}
@@ -298,8 +298,18 @@ class PendingLabs extends Component {
           style: { textAlign: "center" },
           filter: textFilter(),
           sort: true,
-          formatter: (cellContent, AllLabs) => (
-            <>
+          formatter: (cellContent, AllLabs) => {
+            // Assuming the cycle status is stored in AllLabs.cycle_status or similar
+            const cycleStatus = AllLabs.cycle_status || ""; // adjust if your key is different
+
+            const displayStatus =
+              cycleStatus.toLowerCase() === "active"
+                ? "Active"
+                : AllLabs.membership_status
+                ? AllLabs.membership_status
+                : "Inactive";
+
+            return (
               <span
                 style={{
                   display: "flex",
@@ -307,10 +317,10 @@ class PendingLabs extends Component {
                   gap: "10px",
                 }}
               >
-                {AllLabs.membership_status}
+                {displayStatus}
               </span>
-            </>
-          ),
+            );
+          },
           filter: textFilter(),
         },
         {
@@ -389,7 +399,7 @@ class PendingLabs extends Component {
   //  alert(message); // Replace this with your desired success message logic
   // }
 
-  isPaymentModalOpen = (participant) => {
+  isPaymentModalOpen = participant => {
     this.setState(
       {
         isPaymentModalOpen: true,
@@ -399,7 +409,7 @@ class PendingLabs extends Component {
     );
   };
 
-  isMembershipModalOpen = (participant) => {
+  isMembershipModalOpen = participant => {
     console.log("Opening Membership Modal for Participant:", participant); // Debug log
     this.setState(
       {
@@ -431,7 +441,7 @@ class PendingLabs extends Component {
     });
   }
 
-  handleSchemeChange = (event) => {
+  handleSchemeChange = event => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
 
@@ -455,7 +465,7 @@ class PendingLabs extends Component {
       AllLabs,
     });
 
-    const filteredData = AllLabs.filter((lab) => {
+    const filteredData = AllLabs.filter(lab => {
       const membershipStatus = lab.membership_status?.trim().toLowerCase();
       const membershipDetail = lab.membership_status_detail
         ? lab.membership_status_detail.trim().toLowerCase()
@@ -495,7 +505,7 @@ class PendingLabs extends Component {
         !selectedScheme ||
         (Array.isArray(lab.schemes) &&
           lab.schemes.some(
-            (scheme) => scheme.scheme_id?.toString() === selectedScheme
+            scheme => scheme.scheme_id?.toString() === selectedScheme
           ));
 
       console.log(`Lab ${lab.id} matchesScheme:`, matchesScheme);
@@ -553,7 +563,7 @@ class PendingLabs extends Component {
   };
   toggleMembershipModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isMembershipModalOpen: !prevState.isMembershipModalOpen,
       }),
       () => {
@@ -566,7 +576,7 @@ class PendingLabs extends Component {
   };
   togglePaymentModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isPaymentModalOpen: !prevState.isPaymentModalOpen,
       }),
       () => {
@@ -700,12 +710,12 @@ class PendingLabs extends Component {
       // Extract unique scheme names from AllLabs
       const participantSchemes = new Set(
         this.props.AllLabs.flatMap(
-          (lab) => lab.schemes?.map((scheme) => scheme.scheme_name) || []
+          lab => lab.schemes?.map(scheme => scheme.scheme_name) || []
         )
       );
 
       // Generate the filtered list for participant dropdown
-      const filteredCycleList = this.props.CycleList.filter((cycle) =>
+      const filteredCycleList = this.props.CycleList.filter(cycle =>
         participantSchemes.has(cycle.scheme_name)
       );
 
@@ -775,7 +785,7 @@ class PendingLabs extends Component {
     });
   };
 
-  toggleEditModal = (data) => {
+  toggleEditModal = data => {
     this.setState({
       editModal: !this.state.editModal,
       id: data.id,
@@ -794,7 +804,7 @@ class PendingLabs extends Component {
     });
   };
   toggleLabModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       LabModal: !prevState.LabModal,
     }));
     this.state.btnText === "Copy"
@@ -802,7 +812,7 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggleModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isModalOpen: !prevState.isModalOpen,
     }));
   };
@@ -823,7 +833,7 @@ class PendingLabs extends Component {
     });
   };
   togglePatientModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
     this.state.btnText === "Copy"
@@ -838,7 +848,7 @@ class PendingLabs extends Component {
     });
   };
   toggleMarketerModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       MarketerModal: !prevState.MarketerModal,
     }));
     this.state.btnText === "Copy"
@@ -846,16 +856,16 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggle() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       modal: !prevState.modal,
     }));
   }
 
-  handleApprovedEvent = (id) => {
+  handleApprovedEvent = id => {
     this.setState({ id: id, isApproved: true, unapprovedModal: true });
   };
 
-  handleUnapprovedEvent = (id) => {
+  handleUnapprovedEvent = id => {
     this.setState({ id: id, isApproved: false, unapprovedModal: true });
   };
 
@@ -879,7 +889,7 @@ class PendingLabs extends Component {
     this.setState({ unapprovedModal: false });
   };
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -914,7 +924,7 @@ class PendingLabs extends Component {
       { key: "payment_status", label: "Payment Status" }, // This will show "N/A" if it doesn’t exist
     ];
 
-    const dataToExport = AllLabs.map((item) => {
+    const dataToExport = AllLabs.map(item => {
       const row = {};
       selectedFields.forEach(({ key, label }) => {
         row[label] = item[key] || "N/A";
@@ -979,12 +989,12 @@ class PendingLabs extends Component {
     const { approvedLabs, CycleList } = this.state;
 
     const participantOptions = (this.props.approvedLabs || []).map(
-      (participant) => ({
+      participant => ({
         value: participant.id, // ensure this is the correct unique identifier
         label: participant.name, // or any other field you'd like to display
       })
     );
-    const schemeOptions = CycleList.map((scheme) => ({
+    const schemeOptions = CycleList.map(scheme => ({
       value: scheme.id, // Use scheme ID instead of scheme name
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
     }));
@@ -1046,7 +1056,7 @@ class PendingLabs extends Component {
                           data={this.state.filteredLabs}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="8">
@@ -1092,7 +1102,7 @@ class PendingLabs extends Component {
                                             className="form-select"
                                             onChange={this.handleSchemeChange}
                                             value={this.state.selectedScheme}
-                                            style={{ width: "200px" }}
+                                            style={{ width: "300px" }} // Increased width for longer text
                                           >
                                             <option value="">
                                               Select Scheme
@@ -1101,12 +1111,19 @@ class PendingLabs extends Component {
                                               this.state.filteredCycleList
                                             ) &&
                                               this.state.filteredCycleList.map(
-                                                (filteredCycle) => (
+                                                filteredCycle => (
                                                   <option
                                                     key={filteredCycle.id}
                                                     value={filteredCycle.id}
                                                   >
-                                                    {`${filteredCycle.scheme_name} - Cycle ${filteredCycle.cycle_no}`}
+                                                    {`${
+                                                      filteredCycle.scheme_name
+                                                    } - Cycle ${
+                                                      filteredCycle.cycle_no
+                                                    } (${
+                                                      filteredCycle.status ||
+                                                      "No Status"
+                                                    })`}
                                                   </option>
                                                 )
                                               )}
@@ -1788,60 +1805,57 @@ class PendingLabs extends Component {
                                             touched,
                                             setFieldValue,
                                           }) => {
-                                            const handleSchemeChange = (
-                                              selectedOptions
-                                            ) => {
-                                              const selectedValues =
-                                                selectedOptions
-                                                  ? selectedOptions.map(
-                                                      (option) => option.value
-                                                    )
-                                                  : [];
-                                              setFieldValue(
-                                                "scheme",
-                                                selectedValues
-                                              );
-
-                                              const totalPrice =
-                                                selectedValues.reduce(
-                                                  (sum, schemeId) => {
-                                                    const scheme =
-                                                      CycleList.find(
-                                                        (s) => s.id === schemeId
-                                                      );
-                                                    return (
-                                                      sum +
-                                                      (scheme
-                                                        ? parseFloat(
-                                                            scheme.price
-                                                          )
-                                                        : 0)
-                                                    );
-                                                  },
-                                                  0
+                                            const handleSchemeChange =
+                                              selectedOptions => {
+                                                const selectedValues =
+                                                  selectedOptions
+                                                    ? selectedOptions.map(
+                                                        option => option.value
+                                                      )
+                                                    : [];
+                                                setFieldValue(
+                                                  "scheme",
+                                                  selectedValues
                                                 );
 
-                                              // Set priceBeforeDiscount only once when schemes are selected
-                                              if (
-                                                !values.priceBeforeDiscount ||
-                                                values.scheme.length === 0
-                                              ) {
+                                                const totalPrice =
+                                                  selectedValues.reduce(
+                                                    (sum, schemeId) => {
+                                                      const scheme =
+                                                        CycleList.find(
+                                                          s => s.id === schemeId
+                                                        );
+                                                      return (
+                                                        sum +
+                                                        (scheme
+                                                          ? parseFloat(
+                                                              scheme.price
+                                                            )
+                                                          : 0)
+                                                      );
+                                                    },
+                                                    0
+                                                  );
+
+                                                // Set priceBeforeDiscount only once when schemes are selected
+                                                if (
+                                                  !values.priceBeforeDiscount ||
+                                                  values.scheme.length === 0
+                                                ) {
+                                                  setFieldValue(
+                                                    "priceBeforeDiscount",
+                                                    totalPrice.toFixed(2)
+                                                  );
+                                                }
+
+                                                // Update the price to reflect the total (will be modified later by discount)
                                                 setFieldValue(
-                                                  "priceBeforeDiscount",
+                                                  "price",
                                                   totalPrice.toFixed(2)
                                                 );
-                                              }
+                                              };
 
-                                              // Update the price to reflect the total (will be modified later by discount)
-                                              setFieldValue(
-                                                "price",
-                                                totalPrice.toFixed(2)
-                                              );
-                                            };
-
-                                            const handleDiscountChange = (
-                                              e
-                                            ) => {
+                                            const handleDiscountChange = e => {
                                               let discountValue = parseFloat(
                                                 e.target.value
                                               );
@@ -1970,13 +1984,11 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOptions
-                                                      ) => {
+                                                      onChange={selectedOptions => {
                                                         const selectedValues =
                                                           selectedOptions
                                                             ? selectedOptions.map(
-                                                                (option) =>
+                                                                option =>
                                                                   option.value
                                                               )
                                                             : [];
@@ -1995,7 +2007,7 @@ class PendingLabs extends Component {
                                                             (sum, schemeId) => {
                                                               const scheme =
                                                                 this.props.CycleList.find(
-                                                                  (s) =>
+                                                                  s =>
                                                                     s.id ===
                                                                     schemeId
                                                                 );
@@ -2031,7 +2043,7 @@ class PendingLabs extends Component {
                                                         );
                                                       }}
                                                       value={schemeOptions.filter(
-                                                        (option) =>
+                                                        option =>
                                                           values.scheme.includes(
                                                             option.value
                                                           )
@@ -2211,7 +2223,7 @@ class PendingLabs extends Component {
                                                       type="file"
                                                       multiple={false}
                                                       accept=".jpg,.jpeg,.png"
-                                                      onChange={(event) =>
+                                                      onChange={event =>
                                                         this.handleFileChange(
                                                           event,
                                                           setFieldValue
@@ -2254,9 +2266,7 @@ class PendingLabs extends Component {
                                                           label: "Cash",
                                                         },
                                                       ]}
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) =>
+                                                      onChange={selectedOption =>
                                                         setFieldValue(
                                                           "paymentmethod",
                                                           selectedOption?.value ||
@@ -2477,9 +2487,7 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
@@ -2488,7 +2496,7 @@ class PendingLabs extends Component {
                                                       }}
                                                       value={
                                                         membershipOptions.find(
-                                                          (option) =>
+                                                          option =>
                                                             option.value ===
                                                             values.membership
                                                         ) || null
@@ -2589,19 +2597,19 @@ const mapStateToProps = ({
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onApproveUnapproveLab: (data) => dispatch(approveUnapproveLab(data)),
-  onGetPendingLabs: (id) => dispatch(getAllLabs(id)),
-  onGetInstrumentTypeList: (id) => dispatch(getSchemelist(id)),
+  onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
+  onGetPendingLabs: id => dispatch(getAllLabs(id)),
+  onGetInstrumentTypeList: id => dispatch(getSchemelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewSchemeList(id, createUnit)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateSchemeList({ id, ...methodlist })),
-  onupdateAllLabs: (updatedData) => {
+  onupdateAllLabs: updatedData => {
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
-  onGetParticipantPayment: (id) => dispatch(getParticipantSchemelist(id)),
-  ongetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
-  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
+  onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
+  ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);

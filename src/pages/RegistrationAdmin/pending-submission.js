@@ -27,7 +27,7 @@ class PendingSubmission extends Component {
       errorMessage: "", // State for error message
       feedbackListColumns: [
         {
-          text: "Lab ID",
+          text: "ID",
           dataField: "id",
           sort: true,
           headerFormatter: (column, colIndex) => (
@@ -48,7 +48,7 @@ class PendingSubmission extends Component {
         },
         {
           dataField: "name",
-          text: "Participant",
+          text: "Participants",
           sort: true,
           formatter: (cell, row) =>
             typeof cell === "string" ? cell : "Unknown", // Fallback for invalid data
@@ -68,68 +68,149 @@ class PendingSubmission extends Component {
           headerAlign: "center",
           align: "Left",
         },
-{
-  dataField: "email",
-  text: "Email",
-  sort: true,
-  formatter: (cell) => <span>{cell}</span>,  // Just show email, no edit icon
-  headerFormatter: (column, colIndex) => (
-    <>
-      <div>
-        <input
-          type="text"
-          value={this.state.nameFilter}
-          onChange={(e) => this.handleFilterChange("nameFilter", e)}
-          className="form-control"
-        />
-      </div>
-      <div>{column.text}</div>
-    </>
+        {
+          dataField: "email",
+          text: "Email",
+          sort: true,
+          formatter: cell => <span>{cell}</span>, // Just show email, no edit icon
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.nameFilter}
+                  onChange={e => this.handleFilterChange("nameFilter", e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "left",
+        },
+        {
+    dataField: "contact_person_name",
+    text: "Contact Person",
+    sort: true,
+    headerFormatter: (column, colIndex) => (
+      <>
+        <div>
+          <input
+            type="text"
+            value={this.state.contactPersonFilter}
+            onChange={e => this.handleFilterChange("contactPersonFilter", e)}
+            className="form-control"
+          />
+        </div>
+        <div>{column.text}</div>
+      </>
+    ),
+    headerAlign: "center",
+    align: "center",
+  },
+    
+        {
+          dataField: "contact", // or "phone" depending on your data field name
+          text: "Phone",
+          sort: true,
+          formatter: cell => <span>{cell || "-"}</span>, // shows phone or dash if empty
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.phoneFilter}
+                  onChange={e => this.handleFilterChange("phoneFilter", e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "center",
+        },
+         {
+    dataField: "province",
+    text: "Province",
+    sort: true,
+    headerFormatter: (column, colIndex) => (
+      <>
+        <div>
+          <input
+            type="text"
+            value={this.state.provinceFilter}
+            onChange={e => this.handleFilterChange("provinceFilter", e)}
+            className="form-control"
+          />
+        </div>
+        <div>{column.text}</div>
+      </>
+    ),
+    headerAlign: "center",
+    align: "center",
+  },
+  {
+    dataField: "district",
+    text: "District",
+    sort: true,
+    headerFormatter: (column, colIndex) => (
+      <>
+        <div>
+          <input
+            type="text"
+            value={this.state.districtFilter}
+            onChange={e => this.handleFilterChange("districtFilter", e)}
+            className="form-control"
+          />
+        </div>
+        <div>{column.text}</div>
+      </>
+    ),
+    headerAlign: "center",
+    align: "center",
+  },
+  {
+    dataField: "city",
+    text: "City",
+    sort: true,
+    headerFormatter: (column, colIndex) => (
+      <>
+        <div>
+          <input
+            type="text"
+            value={this.state.cityFilter}
+            onChange={e => this.handleFilterChange("cityFilter", e)}
+            className="form-control"
+          />
+        </div>
+        <div>{column.text}</div>
+      </>
+    ),
+    headerAlign: "center",
+    align: "center",
+  },
+      {
+          dataField: "comments",
+          text: "Comments",
+           formatter: (cell, row) => (
+    <Link to={`/comments/${row.AccountID}`} title="Add/View Comments">
+      <button
+        style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          color: "#007bff",
+        }}
+      >
+        <i className="fas fa-comments"></i>
+      </button>
+    </Link>
   ),
-  headerAlign: "center",
-  align: "left",
-}
-
-,
-{
-  dataField: "contact", // or "phone" depending on your data field name
-  text: "Phone",
-  sort: true,
-  formatter: (cell) => <span>{cell || "-"}</span>, // shows phone or dash if empty
-  headerFormatter: (column, colIndex) => (
-    <>
-      <div>
-        <input
-          type="text"
-          value={this.state.phoneFilter}
-          onChange={(e) => this.handleFilterChange("phoneFilter", e)}
-          className="form-control"
-        />
-      </div>
-      <div>{column.text}</div>
-    </>
-  ),
-  headerAlign: "center",
-  align: "center",
-}
-,
-{
-  dataField: "comments",
-  text: "Comments",
-  formatter: (cell, row) => (
-    <button
-      style={{ background: "none", border: "none", cursor: "pointer", color: "#007bff" }}
-      title="Add/View Comments"
-      onClick={() => this.handleOpenComments(row.AccountID)}
-    >
-      <i className="fas fa-comments"></i>
-    </button>
-  ),
-  headerAlign: "center",
-  align: "center",
-}
-,
-
+          headerAlign: "center",
+          align: "center",
+        },
       ],
     };
     this.transformParticipantData = this.transformParticipantData.bind(this);
@@ -259,7 +340,8 @@ class PendingSubmission extends Component {
             {roundDetails ? (
               <div className="round-details">
                 <h4 className="text-primary text-center">
-                  List of Participants Who have not Submitted Results for This Round
+                  List of Participants Who have not Submitted Results for This
+                  Round
                 </h4>
 
                 <h4>Round Details:</h4>
