@@ -434,7 +434,7 @@ onDropdownChange = (event) => {
     const { onApproveUnapproveLab, onGetPendingLabs } = this.props;
 
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: pendingLabs.length, // replace later with size(pendingLabs),
       custom: true,
     };

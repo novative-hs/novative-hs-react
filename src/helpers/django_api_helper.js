@@ -1307,6 +1307,7 @@ export const addNewPayment = (payment, id) => {
   formData.append("paymentmethod", payment.paymentmethod);
   formData.append("paydate", payment.paydate);
   formData.append("photo", payment.photo);
+  formData.append("payment_status", payment.payment_status);
   formData.append("receivedby", payment.receivedby);
   formData.append("added_by", payment.added_by);
 
