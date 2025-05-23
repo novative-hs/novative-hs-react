@@ -188,7 +188,7 @@ class PendingLabs extends Component {
           filter: textFilter(),
         },
         {
-          dataField: "email_participant",
+          dataField: "user_name",
           text: "Email",
           sort: true,
           headerStyle: { textAlign: "center", width: "200px" },
@@ -206,7 +206,7 @@ class PendingLabs extends Component {
                   overflowWrap: "break-word", // Ensures text wraps properly
                 }}
               >
-                {AllLabs.email_participant}
+                {AllLabs.user_name}
               </span>
             </>
           ),
