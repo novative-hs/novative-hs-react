@@ -11,7 +11,7 @@ import { Tooltip } from "@material-ui/core";
 import { Alert } from "reactstrap"; // For Alert component
 import Select from "react-select"; // For Select component
 // import PaymentModal from "../Authentication/participant-payment"; // Adjust the path based on where PaymentModal is located
-// import { addNewPayment } from "store/Payment/actions";
+import { addNewPayment } from "store/Payment/actions";
 
 import {
   Card,
@@ -30,7 +30,6 @@ import {
 import {
   getApprovedLabs,
   updateMembershipStatus,
-  getDeleteParticipant,
 } from "store/registration-admin/actions";
 import { getParticipantSchemelist } from "store/Payment/actions";
 import { getcyclelist } from "store/cycle/actions";
@@ -43,6 +42,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+
 
 //Import Breadcrumb
 import * as Yup from "yup";
@@ -63,21 +63,20 @@ class ParticipantListN extends Component {
     this.node = React.createRef();
     this.handleSchemeChange = this.handleSchemeChange.bind(this);
     this.state = {
-      AllLabs: [], // Full participant list from the API
-      approvedLabs: [], // Approved labs list
-      CycleList: [], // Scheme cycle lists
+      AllLabs: [],                   // Full participant list from the API
+      approvedLabs: [],              // Approved labs list
+      CycleList: [],                 // Scheme cycle lists
       // selectedStatus: "All",         // Default participant status
-      selectedScheme: null, // Currently selected scheme ID
+      selectedScheme: null,          // Currently selected scheme ID
       // selectedCorporate: "",         // Filter for corporate/lab name
       // isSettledFilter: "",           // Filter for settlement status
-      id: "", // Selected participant ID
-      successMessage: "", // <-- Add this
-      btnText: "Copy", // Button text for copy functionality
-      isPaymentModalOpen: false, // State for payment modal
-      isMembershipModalOpen: false, // State for membership modal
-      organization_name: "", // Organization name
-      isApproved: false, // Approval status
-      unapprovedModal: false, // State for unapproved modal
+      id: "",                        // Selected participant ID
+      btnText: "Copy",               // Button text for copy functionality
+      isPaymentModalOpen: false,     // State for payment modal
+      isMembershipModalOpen: false,  // State for membership modal
+      organization_name: "",         // Organization name
+      isApproved: false,             // Approval status
+      unapprovedModal: false,        // State for unapproved modal
       tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"], // Tooltip content
       filteredLabs: [],
       pendingLabListColumns: [], // Columns for the table            // Filtered list to display
@@ -87,41 +86,42 @@ class ParticipantListN extends Component {
         : "",
 
       pendingLabListColumns: [
-        {
-          text: "ID",
-          dataField: "id",
-          sort: true,
-          hidden: false,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
-          filter: textFilter(), // Enable text filter on the ID field
-          formatter: (cellContent, AllLabs) => <>{AllLabs.id}</>,
-        },
-        {
-          dataField: "name",
-          text: "Name",
-          sort: true,
-          headerStyle: { textAlign: "center" }, // align header text to left
-          style: { textAlign: "left" }, // align cell content to left
-          filter: textFilter(),
-          formatter: (cellContent, AllLabs) => (
-            <span
-              style={{
-                display: "flex",
-                justifyContent: "flex-start", // aligns inner content to the left
-                gap: "10px",
-              }}
-            >
-              <Link
-                to="#"
-                onMouseEnter={e => this.openLabModal(e, AllLabs)}
-                onPointerLeave={this.handleMouseExit}
-              >
-                {AllLabs.name}
-              </Link>
-            </span>
-          ),
-        },
+       {
+  text: "ID",
+  dataField: "id",
+  sort: true,
+  hidden: false,
+  headerStyle: { textAlign: "center" },
+  style: { textAlign: "center" },
+  filter: textFilter(), // Enable text filter on the ID field
+  formatter: (cellContent, AllLabs) => <>{AllLabs.id}</>,
+},
+       {
+  dataField: "name",
+  text: "Name",
+  sort: true,
+  headerStyle: { textAlign: "center" },  // align header text to left
+  style: { textAlign: "left" },        // align cell content to left
+  filter: textFilter(),
+  formatter: (cellContent, AllLabs) => (
+    <span
+      style={{
+        display: "flex",
+        justifyContent: "flex-start",  // aligns inner content to the left
+        gap: "10px",
+      }}
+    >
+      <Link
+        to="#"
+        onMouseEnter={e => this.openLabModal(e, AllLabs)}
+        onPointerLeave={this.handleMouseExit}
+      >
+        {AllLabs.name}
+      </Link>
+    </span>
+  ),
+}
+,
         {
           dataField: "district",
           text: "District",
@@ -167,7 +167,7 @@ class ParticipantListN extends Component {
           filter: textFilter(),
         },
         {
-          dataField: "email_participant",
+          dataField: "user_name",
           text: "Email",
           sort: true,
           headerStyle: { textAlign: "center", width: "200px" },
@@ -185,7 +185,7 @@ class ParticipantListN extends Component {
                   overflowWrap: "break-word", // Ensures text wraps properly
                 }}
               >
-                {AllLabs.email_participant}
+                {AllLabs.user_name}
               </span>
             </>
           ),
@@ -213,16 +213,16 @@ class ParticipantListN extends Component {
           ),
           filter: textFilter(),
         },
-        {
-          dataField: "password_foradmins",
-          text: "Password",
-          sort: false,
-          filter: textFilter({ placeholder: "" }),
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
-          formatter: (cellContent, row) => row.password_foradmins || "N/A",
-        },
-        {
+{
+  dataField: "password_foradmins",
+  text: "Password",
+  sort: false,
+  filter: textFilter({ placeholder: "" }),
+  headerStyle: { textAlign: "center" },
+  style: { textAlign: "center" },
+  formatter: (cellContent, row) => row.password_foradmins || "N/A"
+},
+   {
           dataField: "membership_status",
           text: "Membership Status",
           headerStyle: { textAlign: "center" },
@@ -272,18 +272,16 @@ class ParticipantListN extends Component {
                     <i className="mdi mdi-pencil font-size-18"></i>
                   </Link>
                 </Tooltip>
-              <Tooltip title="Delete">
-  <button
-    className="btn btn-link text-danger p-0"
-    onClick={() => this.handleDeleteParticipant(AllLabs)}
-    style={{ border: "none", background: "none", cursor: "pointer" }}
-  >
-    <i className="fas fa-trash-alt"></i>
-  </button>
-</Tooltip>
-
-
-
+                <Tooltip title="Delete">
+                  <Link
+                    className=""
+                    to="#"
+                    // onClick={() => this.isPaymentModalOpen(AllLabs)} // Pass the ID of the lab for later use
+                  >
+                    {/* <i className="fas fa-money-bill-wave"></i>{" "} */}
+                    {/* Payment Icon */}
+                  </Link>
+                </Tooltip>
               </div>
             </>
           ),
@@ -302,8 +300,7 @@ class ParticipantListN extends Component {
     this.toggleMarketerModal = this.toggleMarketerModal.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
-    this.handleParticipantTypeChange =
-      this.handleParticipantTypeChange.bind(this);
+    this.handleParticipantTypeChange = this.handleParticipantTypeChange.bind(this)
     this.applyFilters = this.applyFilters.bind(this);
   }
 
@@ -320,21 +317,6 @@ class ParticipantListN extends Component {
       () => console.log("Modal State Updated:", this.state.selectedParticipant)
     );
   };
-handleDeleteParticipant = (participant) => {
-  console.log("Deleting participant:", participant);
-  const hasActiveCycle = Array.isArray(participant.schemes) &&
-    participant.schemes.some(scheme => scheme.cycle_status === "Active");
-
-  if (hasActiveCycle) {
-    alert("This participant has an active cycle and cannot be deleted.");
-    // or use toast.warning("This participant has an active cycle and cannot be deleted.");
-  } else {
-    // Confirm deletion
-    if (window.confirm("Are you sure you want to delete this participant?")) {
-      this.props.ongetDeleteParticipant(participant.id); // dispatch delete or call API
-    }
-  }
-};
 
   isMembershipModalOpen = participant => {
     console.log("Opening Membership Modal for Participant:", participant); // Debug log
@@ -358,17 +340,15 @@ handleDeleteParticipant = (participant) => {
   handleParticipantTypeChange(event) {
     const selectedParticipantType = event.target.value;
     console.log("Selected Participant Type:", selectedParticipantType);
-
+ 
     this.setState({ selectedParticipantType }, () => {
-      console.log(
-        "Updated selectedParticipantType in state:",
-        this.state.selectedParticipantType
-      );
+      console.log("Updated selectedParticipantType in state:", this.state.selectedParticipantType);
       this.applyFilters();
     });
   }
+ 
 
-  handleSchemeChange = event => {
+  handleSchemeChange = (event) => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
 
@@ -379,108 +359,93 @@ handleDeleteParticipant = (participant) => {
   };
 
   applyFilters = () => {
-    const {
-      AllLabs,
-      selectedParticipantType,
-      selectedScheme,
-      organization_name,
-    } = this.state;
+    const { AllLabs, selectedParticipantType, selectedScheme, organization_name } = this.state;
 
     console.log("Filtering with:", {
-      selectedParticipantType,
-      selectedScheme,
-      AllLabs,
+        selectedParticipantType,
+        selectedScheme,
+        AllLabs,
     });
 
-    const filteredData = AllLabs.filter(lab => {
-      const membershipStatus = lab.membership_status?.trim().toLowerCase();
-      const membershipDetail = lab.membership_status_detail
-        ? lab.membership_status_detail.trim().toLowerCase()
-        : ""; // Default to empty string if undefined
+    const filteredData = AllLabs.filter((lab) => {
+        const membershipStatus = lab.membership_status?.trim().toLowerCase();
+        const membershipDetail = lab.membership_status_detail
+            ? lab.membership_status_detail.trim().toLowerCase()
+            : ""; // Default to empty string if undefined
 
-      console.log("Lab Data:", {
-        id: lab.id,
-        membershipStatus,
-        membershipDetail,
-      });
+        console.log("Lab Data:", { id: lab.id, membershipStatus, membershipDetail });
 
-      // Define the condition for each participant type
-      let matchesParticipantType = false;
+        // Define the condition for each participant type
+        let matchesParticipantType = false;
 
-      if (selectedParticipantType === "All Participant") {
-        matchesParticipantType = true; // Show all participants
-      } else if (selectedParticipantType === "Approved Participant") {
-        matchesParticipantType =
-          membershipStatus === "active" || membershipDetail === "active"; // Approved or Active participants
-      } else if (selectedParticipantType === "Pending Participant") {
-        matchesParticipantType = membershipStatus === "pending"; // Pending participants
-      } else if (selectedParticipantType === "Unapproved Participant") {
-        matchesParticipantType = membershipStatus === "inactive"; // Only participants with "inactive" membership status
-      } else if (selectedParticipantType === "Suspended Participant") {
-        matchesParticipantType = membershipStatus === "suspended"; // Suspended participants
-      }
+        if (selectedParticipantType === "All Participant") {
+            matchesParticipantType = true; // Show all participants
+        } else if (selectedParticipantType === "Approved Participant") {
+            matchesParticipantType =
+                membershipStatus === "active" || membershipDetail === "active"; // Approved or Active participants
+        } else if (selectedParticipantType === "Pending Participant") {
+            matchesParticipantType = membershipStatus === "pending"; // Pending participants
+        } else if (selectedParticipantType === "Unapproved Participant") {
+            matchesParticipantType = membershipStatus === "inactive"; // Only participants with "inactive" membership status
+        } else if (selectedParticipantType === "Suspended Participant") {
+            matchesParticipantType = membershipStatus === "suspended"; // Suspended participants
+        }
 
-      console.log(
-        `Lab ${lab.id} matchesParticipantType:`,
-        matchesParticipantType
-      );
+        console.log(`Lab ${lab.id} matchesParticipantType:`, matchesParticipantType);
 
-      // Check if participant matches the selected scheme
-      const matchesScheme =
-        !selectedScheme ||
-        (Array.isArray(lab.schemes) &&
-          lab.schemes.some(
-            scheme => scheme.scheme_id?.toString() === selectedScheme
-          ));
+        // Check if participant matches the selected scheme
+        const matchesScheme =
+            !selectedScheme ||
+            (Array.isArray(lab.schemes) &&
+                lab.schemes.some((scheme) => scheme.scheme_id?.toString() === selectedScheme));
 
-      console.log(`Lab ${lab.id} matchesScheme:`, matchesScheme);
+        console.log(`Lab ${lab.id} matchesScheme:`, matchesScheme);
 
-      // Return true only if both participant type and scheme match
-      return matchesParticipantType && matchesScheme;
+        // Return true only if both participant type and scheme match
+        return matchesParticipantType && matchesScheme;
     });
 
     console.log("Filtered Data:", filteredData);
 
     // Special handling for "Pending Participant"
     if (selectedParticipantType === "Pending Participant") {
-      this.props.history.push(`/${organization_name}/pending-participant`);
-      return; // Stop here; no need to update filteredLabs for Pending Participants
+        this.props.history.push(`/${organization_name}/pending-participant`);
+        return; // Stop here; no need to update filteredLabs for Pending Participants
     }
 
     // Update the filtered list in the state for other participant types
     this.setState({ filteredLabs: filteredData }, () => {
-      console.log("Updated filteredLabs:", this.state.filteredLabs);
+        console.log("Updated filteredLabs:", this.state.filteredLabs);
     });
-  };
+};
 
-  applyFiltersFromQueryParams = () => {
-    const queryParams = new URLSearchParams(this.props.location.search);
-    const filterType = queryParams.get("filterType");
-    const filterValue = queryParams.get("filterValue");
+applyFiltersFromQueryParams = () => {
+  const queryParams = new URLSearchParams(this.props.location.search);
+  const filterType = queryParams.get("filterType");
+  const filterValue = queryParams.get("filterValue");
 
-    console.log("Applying filters from query params:", {
-      filterType,
-      filterValue,
-    });
+  console.log("Applying filters from query params:", { filterType, filterValue });
 
-    if (filterType && filterValue) {
+  if (filterType && filterValue) {
       // Update the state based on query parameters
       this.setState(
-        {
-          selectedParticipantType: filterValue, // Set selected type in state
-        },
-        () => {
-          this.applyFilters(); // Apply filters after updating the state
-        }
+          {
+              selectedParticipantType: filterValue, // Set selected type in state
+          },
+          () => {
+              this.applyFilters(); // Apply filters after updating the state
+          }
       );
-    }
-  };
+  }
+};
 
-  // componentDidMount() {
-  //   // Fetch data and apply filters from query parameters
-  //   this.fetchData(this.state.user_id);
-  //   this.applyFiltersFromQueryParams();
-  // }
+// componentDidMount() {
+//   // Fetch data and apply filters from query parameters
+//   this.fetchData(this.state.user_id);
+//   this.applyFiltersFromQueryParams();
+// }
+
+
 
   handleFileChange = (event, setFieldValue) => {
     const file = event.currentTarget.files[0];
@@ -510,61 +475,54 @@ handleDeleteParticipant = (participant) => {
     );
   };
 
-handleEditSubmit(values) {
-  console.log("Form values:", values);
+  handleEditSubmit(values) {
+    console.log("Form values:", values); // Check if the form is submitting correctly
+    const updatedData = {
+      id: values.id,
+      name: values.name,
+      email: values.email,
+      address: values.address,
+      shipping_address: values.shipping_address,
+      billing_address: values.billing_address,
+      marketer_name: values.marketer_name,
+      city: values.city,
+      district: values.district,
+      lab_staff_name: values.lab_staff_name,
+      user_name: values.user_name,
+      landline_registered_by: values.landline_registered_by,
+      payment_status: values.payment_status,
+    };
 
-  const updatedData = {
-    id: values.id,
-    name: values.name,
-    email: values.email,
-    address: values.address,
-    shipping_address: values.shipping_address,
-    billing_address: values.billing_address,
-    marketer_name: values.marketer_name,
-    city: values.city,
-    district: values.district,
-    lab_staff_name: values.lab_staff_name,
-    email_participant: values.email_participant,
-    landline_registered_by: values.landline_registered_by,
-    payment_status: values.payment_status,
-  };
+    this.props.onupdateAllLabs(updatedData); // Dispatch update action
 
-  this.props.onupdateAllLabs(updatedData); // Dispatch update action
-
-  // Show success message
-  this.setState({ successMessage: "Participant updated successfully" });
-
-  // Delay modal close by 2 seconds
-  setTimeout(() => {
-    this.setState({ editModal: false, successMessage: "" });
-  }, 2000);
-}
+    this.toggleEditModal(); // Close the modal
+  }
 
 
   componentDidMount() {
     console.log("Fetching data...");
-
+ 
     // Retrieve user_id from localStorage
     const authUser = localStorage.getItem("authUser");
     const user_id = authUser ? JSON.parse(authUser).user_id : null;
-
+ 
     if (!user_id) {
       console.error("User ID is missing. Cannot proceed with API calls.");
       return;
     }
-
+ 
     console.log("Retrieved user_id:", user_id);
-
+ 
     // Set user_id in state
     this.setState({ user_id }, () => {
       // Get organization_name from URL params
       const { organization_name } = this.props.match.params || {};
       console.log("organization_name from props:", organization_name);
-
+ 
       if (organization_name) {
         this.setState({ organization_name }, () => {
           console.log("Organization name set:", this.state.organization_name);
-
+ 
           // // Initialize dropdown value
           // this.setInitialDropdownValue();
           this.fetchData(this.state.user_id);
@@ -577,7 +535,7 @@ handleEditSubmit(values) {
       }
     });
   }
-
+ 
   // Fetch all required data
   fetchData(user_id) {
     const {
@@ -586,72 +544,73 @@ handleEditSubmit(values) {
       ongetcyclelist,
       onGetPendingLabs,
     } = this.props;
-
+ 
     // Call participant payment API
     onGetParticipantPayment(user_id);
     console.log("onGetParticipantPayment called with user_id:", user_id);
-
+ 
     // Call approved labs API
     ongetApprovedLabs(user_id);
     console.log("ongetApprovedLabs called with user_id:", user_id);
-
+ 
     // Call cycle list API
     ongetcyclelist(user_id);
     console.log("ongetcyclelist called with user_id:", user_id);
-
+ 
     // Call pending labs API
     onGetPendingLabs(user_id);
     console.log("onGetPendingLabs called with user_id:", user_id);
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.filteredLabs !== this.state.filteredLabs) {
+ 
+ 
+componentDidUpdate(prevProps, prevState) {
+  if (prevState.filteredLabs !== this.state.filteredLabs) {
       console.log("FilteredLabs updated:", this.state.filteredLabs);
-    }
-    if (prevProps.approvedLabs !== this.props.approvedLabs) {
+  }
+  if (prevProps.approvedLabs !== this.props.approvedLabs) {
       // Logic for approvedLabs if needed
-    }
-    if (prevProps.CycleList !== this.props.CycleList) {
+  }
+  if (prevProps.CycleList !== this.props.CycleList) {
       console.log("Updating CycleList in state:", this.props.CycleList);
       this.setState({ CycleList: this.props.CycleList });
-    }
-    if (prevProps.PaymentSchemeList !== this.props.PaymentSchemeList) {
+  }
+  if (prevProps.PaymentSchemeList !== this.props.PaymentSchemeList) {
       this.setState({ PaymentSchemeList: this.props.PaymentSchemeList });
-    }
-    if (prevProps.AllLabs !== this.props.AllLabs) {
+  }
+  if (prevProps.AllLabs !== this.props.AllLabs) {
       console.log("Updated AllLabs:", this.props.AllLabs);
       this.setState({ AllLabs: this.props.AllLabs }, () => {
-        console.log("State AllLabs updated:", this.state.AllLabs);
-        this.applyFilters(); // Reapply filters after AllLabs is updated
+          console.log("State AllLabs updated:", this.state.AllLabs);
+          this.applyFilters(); // Reapply filters after AllLabs is updated
       });
-    }
+  }
 
-    // Ensure filteredCycleList is updated without modifying CycleList
-    if (
+  // Ensure filteredCycleList is updated without modifying CycleList
+  if (
       prevProps.AllLabs !== this.props.AllLabs ||
       prevProps.CycleList !== this.props.CycleList
-    ) {
+  ) {
       console.log("Filtering CycleList for participants");
 
       // Extract unique scheme names from AllLabs
       const participantSchemes = new Set(
-        this.props.AllLabs.flatMap(
-          lab => lab.schemes?.map(scheme => scheme.scheme_name) || []
-        )
+          this.props.AllLabs.flatMap(lab =>
+              lab.schemes?.map(scheme => scheme.scheme_name) || []
+          )
       );
 
       // Generate the filtered list for participant dropdown
       const filteredCycleList = this.props.CycleList.filter(cycle =>
-        participantSchemes.has(cycle.scheme_name)
+          participantSchemes.has(cycle.scheme_name)
       );
 
       // Update state with both lists
       this.setState({
-        CycleList: this.props.CycleList, // Original list for payment modal
-        filteredCycleList, // Filtered list for participant filters
+          CycleList: this.props.CycleList, // Original list for payment modal
+          filteredCycleList, // Filtered list for participant filters
       });
-    }
   }
+}
 
   // setInitialDropdownValue = () => {
   //   const { pathname } = this.props.history.location;
@@ -724,7 +683,7 @@ handleEditSubmit(values) {
       billing_address: data.billing_address,
       lab_staff_name: data.lab_staff_name,
       marketer_name: data.marketer_name,
-      email_participant: data.email_participant,
+      user_name: data.user_name,
       landline_registered_by: data.landline_registered_by,
       payment_status: data.payment_status,
     });
@@ -827,46 +786,48 @@ handleEditSubmit(values) {
     }
   };
 
-  exportToExcel = () => {
+exportToExcel = () => {
     const { AllLabs } = this.state;
     if (!AllLabs || AllLabs.length === 0) {
-      console.error("No data available to export.");
-      alert("No data available to export.");
-      return;
+        console.error("No data available to export.");
+        alert("No data available to export.");
+        return;
     }
 
     // Use actual keys from payload and provide friendly Excel headers
     const selectedFields = [
-      { key: "name", label: "Name" },
-      { key: "email", label: "Email" },
-      { key: "address", label: "Address" },
-      { key: "shipping_address", label: "Shipping Address" },
-      { key: "billing_address", label: "Billing Address" },
-      { key: "email_participant", label: "Email of Notification Person" },
-      { key: "district", label: "District" },
-      { key: "city", label: "City" },
-      { key: "lab_staff_name", label: "Name of Notification Person" },
-      { key: "phone", label: "Contact No of Notification Person" },
-      { key: "payment_status", label: "Payment Status" }, // This will show "N/A" if it doesn’t exist
+        { key: "name", label: "Name" },
+        { key: "email", label: "Email" },
+        { key: "address", label: "Address" },
+        { key: "shipping_address", label: "Shipping Address" },
+        { key: "billing_address", label: "Billing Address" },
+        { key: "user_name", label: "Email of Notification Person" },
+        { key: "district", label: "District" },
+        { key: "city", label: "City" },
+        { key: "lab_staff_name", label: "Name of Notification Person" },
+        { key: "phone", label: "Contact No of Notification Person" },
+        { key: "payment_status", label: "Payment Status" } // This will show "N/A" if it doesn’t exist
     ];
 
     const dataToExport = AllLabs.map(item => {
-      const row = {};
-      selectedFields.forEach(({ key, label }) => {
-        row[label] = item[key] || "N/A";
-      });
-      return row;
+        const row = {};
+        selectedFields.forEach(({ key, label }) => {
+            row[label] = item[key] || "N/A";
+        });
+        return row;
     });
 
     const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = { Sheets: { Participants: ws }, SheetNames: ["Participants"] };
+    const wb = { Sheets: { "Participants": ws }, SheetNames: ["Participants"] };
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-    });
+    const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" });
 
     saveAs(data, "Filtered_Participants.xlsx");
-  };
+};
+
+
+
+
 
   // handleSelectChange = (event) => {
   //   const selectedValue = event.target.value;
@@ -894,6 +855,7 @@ handleEditSubmit(values) {
   //   });
   // };
 
+
   render() {
     console.log("Rendering table with data:", this.state.filteredLabs);
     const { SearchBar } = Search;
@@ -903,8 +865,7 @@ handleEditSubmit(values) {
     const { onApproveUnapproveLab, onGetPendingLabs } = this.props;
     const { isPaymentModalOpen, togglePaymentModal } = this.props;
     const { isMembershipModalOpen, toggleMembershipModal } = this.props;
-    const { filteredLabs, selectedParticipantType, selectedScheme } =
-      this.state;
+    const { filteredLabs, selectedParticipantType, selectedScheme } = this.state;
 
     const pageOptions = {
       sizePerPage: 50,
@@ -954,20 +915,17 @@ handleEditSubmit(values) {
               <Col lg="10">
                 <Card>
                   <CardBody>
-                    <Row className="justify-content-end">
-                      <Col lg="auto" className="text-end">
-                        <Button
-                          onClick={this.exportToExcel}
-                          className="mb-3"
-                          disabled={
-                            !this.state.AllLabs ||
-                            this.state.AllLabs.length === 0
-                          }
-                        >
-                          Export to Excel
-                        </Button>
-                      </Col>
-                    </Row>
+                  <Row className="justify-content-end">
+    <Col lg="auto" className="text-end">
+    <Button
+    onClick={this.exportToExcel}
+    className="mb-3"
+    disabled={!this.state.AllLabs || this.state.AllLabs.length === 0}
+>
+    Export to Excel
+</Button>
+    </Col>
+</Row>
 
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
@@ -993,53 +951,44 @@ handleEditSubmit(values) {
                                         <div className="col">
                                           <select
                                             className="form-select"
-                                            onChange={
-                                              this.handleParticipantTypeChange
-                                            }
-                                            value={
-                                              this.state.selectedParticipantType
-                                            }
+                                            onChange={this.handleParticipantTypeChange}
+                                            value={this.state.selectedParticipantType}
                                             style={{ width: "200px" }} // Ensures it takes up full width of the column
                                           >
-                                            <option value="All Participant">
-                                              All Participant
-                                            </option>
-                                            <option value="Approved Participant">
-                                              Approved Participant
-                                            </option>
-                                            <option value="Unapproved Participant">
-                                              Unapproved Participant
-                                            </option>
-                                            <option value="Pending Participant">
-                                              Pending Participant
-                                            </option>
-                                            <option value="Suspended Participant">
-                                              Suspended Participant
-                                            </option>
+                                            <option value="All Participant">All Participant</option>
+                                            <option value="Approved Participant">Approved Participant</option>
+                                            <option value="Unapproved Participant">Unapproved Participant</option>
+                                            <option value="Pending Participant">Pending Participant</option>
+                                            <option value="Suspended Participant">Suspended Participant</option>
                                           </select>
                                         </div>
 
                                         {/* Filter 2 */}
                                         <div className="col">
-                                         <select
-  className="form-select"
-  onChange={this.handleSchemeChange}
-  value={this.state.selectedScheme}
-  style={{ width: "200px" }}
->
-  <option value="">Select Scheme</option>
-  {Array.isArray(this.state.filteredCycleList) &&
-    this.state.filteredCycleList.map(filteredCycle => (
+  <select
+    className="form-select"
+    onChange={this.handleSchemeChange}
+    value={this.state.selectedScheme}
+    style={{ width: "200px" }}
+  >
+    <option value="">Select Scheme</option>
+    {this.state.CycleList.filter(cycle =>
+        this.props.AllLabs.some(lab =>
+          lab.schemes?.some(scheme => scheme.scheme_name === cycle.scheme_name)
+        )
+    ).map(filteredCycle => (
       <option key={filteredCycle.id} value={filteredCycle.id}>
-        {`${filteredCycle.scheme_name} - Cycle ${filteredCycle.cycle_no}`}
+        {filteredCycle.scheme_name}
       </option>
     ))}
-</select>
+  </select>
+</div>
 
-
-                                        </div>
                                       </div>
                                     </div>
+
+
+
                                   </div>
                                 </Col>
                               </Row>
@@ -1059,22 +1008,25 @@ handleEditSubmit(values) {
                                 <Col xl="12">
                                   <div className="table-responsive">
                                     <BootstrapTable
-                                      key={`table-${this.state.filteredLabs.length}`}
+                                      key={`table-${this.state.filteredLabs.length}`}// Unique key for each data update
                                       keyField="id"
                                       data={this.state.filteredLabs}
                                       columns={this.state.pendingLabListColumns}
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes="table align-middle table-condensed table-hover table-body-white" // <- add body class here
+                                      classes={
+                                        "table align-middle table-condensed table-hover"
+                                      }
                                       bordered={false}
                                       striped={true}
-                                      headerWrapperClasses="table-header-grey" // <- header style class
+                                      headerWrapperClasses={
+                                        "table-header-grey"
+                                      }
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}
                                     />
-
                                     <Modal
                                       isOpen={this.state.LabModal}
                                       className={this.props.className}
@@ -1315,12 +1267,6 @@ handleEditSubmit(values) {
                                         Edit Lab Details
                                       </ModalHeader>
                                       <ModalBody>
-                                      {this.state.successMessage && (
-  <div className="alert alert-success text-center">
-    {this.state.successMessage}
-  </div>
-)}
-
                                         <Formik
                                           initialValues={{
                                             id: this.state.id,
@@ -1335,8 +1281,8 @@ handleEditSubmit(values) {
                                               this.state.billing_address,
                                             lab_staff_name:
                                               this.state.lab_staff_name,
-                                            email_participant:
-                                              this.state.email_participant,
+                                            user_name:
+                                              this.state.user_name,
                                             landline_registered_by:
                                               this.state.landline_registered_by,
                                             payment_status:
@@ -1441,9 +1387,9 @@ handleEditSubmit(values) {
                                                     <input
                                                       type="email"
                                                       value={
-                                                        values.email_participant
+                                                        values.user_name
                                                       }
-                                                      name="email_participant"
+                                                      name="user_name"
                                                       className="form-control"
                                                       placeholder="Enter Email"
                                                       onChange={handleChange}
@@ -1597,10 +1543,10 @@ handleEditSubmit(values) {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -1648,10 +1594,10 @@ handleEditSubmit(values) {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "";
                                             const roundedPrice = Math.round(
                                               parseFloat(values.price)
@@ -1717,8 +1663,8 @@ handleEditSubmit(values) {
                                                 const selectedValues =
                                                   selectedOptions
                                                     ? selectedOptions.map(
-                                                        option => option.value
-                                                      )
+                                                      option => option.value
+                                                    )
                                                     : [];
                                                 setFieldValue(
                                                   "scheme",
@@ -1736,8 +1682,8 @@ handleEditSubmit(values) {
                                                         sum +
                                                         (scheme
                                                           ? parseFloat(
-                                                              scheme.price
-                                                            )
+                                                            scheme.price
+                                                          )
                                                           : 0)
                                                       );
                                                     },
@@ -1792,7 +1738,7 @@ handleEditSubmit(values) {
                                                 priceBeforeDiscount -
                                                 (priceBeforeDiscount *
                                                   discountValue) /
-                                                  100;
+                                                100;
 
                                               // Calculate the discount amount in rupees
                                               const discountAmount =
@@ -1887,7 +1833,7 @@ handleEditSubmit(values) {
                                                       options={schemeOptions}
                                                       className={
                                                         errors.scheme &&
-                                                        touched.scheme
+                                                          touched.scheme
                                                           ? "is-invalid"
                                                           : ""
                                                       }
@@ -1895,9 +1841,9 @@ handleEditSubmit(values) {
                                                         const selectedValues =
                                                           selectedOptions
                                                             ? selectedOptions.map(
-                                                                option =>
-                                                                  option.value
-                                                              )
+                                                              option =>
+                                                                option.value
+                                                            )
                                                             : [];
                                                         setFieldValue(
                                                           "scheme",
@@ -1922,11 +1868,8 @@ handleEditSubmit(values) {
                                                                 sum +
                                                                 (scheme
                                                                   ? parseFloat(
-                                                                      scheme.price.replace(
-                                                                        /,/g,
-                                                                        ""
-                                                                      )
-                                                                    )
+                                                                    scheme.price.replace(/,/g, "")
+                                                                  )
                                                                   : 0)
                                                               );
                                                             },
@@ -1974,7 +1917,7 @@ handleEditSubmit(values) {
                                                         className={
                                                           "form-control" +
                                                           (errors.priceBeforeDiscount &&
-                                                          touched.priceBeforeDiscount
+                                                            touched.priceBeforeDiscount
                                                             ? " is-invalid"
                                                             : "")
                                                         }
@@ -1982,13 +1925,10 @@ handleEditSubmit(values) {
                                                           "en-US"
                                                         ).format(
                                                           values.priceBeforeDiscount ||
-                                                            0
+                                                          0
                                                         )} // Format the value
                                                         readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
 
                                                       <ErrorMessage
@@ -2036,7 +1976,7 @@ handleEditSubmit(values) {
                                                         className={
                                                           "form-control" +
                                                           (errors.discountAmount &&
-                                                          touched.discountAmount
+                                                            touched.discountAmount
                                                             ? " is-invalid"
                                                             : "")
                                                         }
@@ -2048,13 +1988,10 @@ handleEditSubmit(values) {
                                                           }
                                                         ).format(
                                                           values.discountAmount ||
-                                                            0
+                                                          0
                                                         )} // Format the value as currency
                                                         readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
                                                       <ErrorMessage
                                                         name="discountAmount"
@@ -2081,7 +2018,7 @@ handleEditSubmit(values) {
                                                         className={
                                                           "form-control" +
                                                           (errors.price &&
-                                                          touched.price
+                                                            touched.price
                                                             ? " is-invalid"
                                                             : "")
                                                         }
@@ -2091,10 +2028,7 @@ handleEditSubmit(values) {
                                                           values.price || 0
                                                         )} // Format the value
                                                         readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
+                                                        style={{ backgroundColor: "#e9ecef" }} // Slightly darker grey background
                                                       />
                                                       <ErrorMessage
                                                         name="price"
@@ -2139,7 +2073,7 @@ handleEditSubmit(values) {
                                                       className={
                                                         "form-control" +
                                                         (errors.photo &&
-                                                        touched.photo
+                                                          touched.photo
                                                           ? " is-invalid"
                                                           : "")
                                                       }
@@ -2177,22 +2111,22 @@ handleEditSubmit(values) {
                                                         setFieldValue(
                                                           "paymentmethod",
                                                           selectedOption?.value ||
-                                                            ""
+                                                          ""
                                                         )
                                                       }
                                                       value={
                                                         values.paymentmethod
                                                           ? {
-                                                              value:
-                                                                values.paymentmethod,
-                                                              label:
-                                                                values.paymentmethod,
-                                                            }
+                                                            value:
+                                                              values.paymentmethod,
+                                                            label:
+                                                              values.paymentmethod,
+                                                          }
                                                           : null
                                                       }
                                                       className={
                                                         errors.paymentmethod &&
-                                                        touched.paymentmethod
+                                                          touched.paymentmethod
                                                           ? "is-invalid"
                                                           : ""
                                                       }
@@ -2259,10 +2193,10 @@ handleEditSubmit(values) {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -2299,10 +2233,10 @@ handleEditSubmit(values) {
                                               "authUser"
                                             )
                                               ? JSON.parse(
-                                                  localStorage.getItem(
-                                                    "authUser"
-                                                  )
-                                                ).user_id
+                                                localStorage.getItem(
+                                                  "authUser"
+                                                )
+                                              ).user_id
                                               : "";
 
                                             const UpdateMembership = {
@@ -2332,12 +2266,8 @@ handleEditSubmit(values) {
                                               this.props.onupdateMembershipStatus(
                                                 this.state.user_id
                                               );
-                                              await this.props.onGetPendingLabs(
-                                                this.state.user_id
-                                              ); //membership modal
-                                              this.setState({
-                                                isMembershipModalOpen: false,
-                                              }); // Close modal here
+                                              await this.props.onGetPendingLabs(this.state.user_id); //membership modal
+                                              this.setState({ isMembershipModalOpen: false }); // Close modal here
                                               resetForm();
                                               this.displaySuccessMessage(
                                                 "Membership status updated successfully!"
@@ -2390,7 +2320,7 @@ handleEditSubmit(values) {
                                                       placeholder="Select Status"
                                                       className={
                                                         errors.participant &&
-                                                        touched.participant
+                                                          touched.participant
                                                           ? "is-invalid"
                                                           : ""
                                                       }
@@ -2398,7 +2328,7 @@ handleEditSubmit(values) {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
-                                                            ""
+                                                          ""
                                                         );
                                                       }}
                                                       value={
@@ -2467,7 +2397,6 @@ ParticipantListN.propTypes = {
   onupdateAllLabs: PropTypes.any,
   onAddNewPayment: PropTypes.func,
   onupdateMembershipStatus: PropTypes.func,
-  ongetDeleteParticipant: PropTypes.func,
   participantId: PropTypes.func,
   ongetApprovedLabs: PropTypes.func,
   ongetcyclelist: PropTypes.func,
@@ -2484,12 +2413,7 @@ ParticipantListN.propTypes = {
   isMembershipModalOpen: PropTypes.array,
   toggleMembershipModal: PropTypes.array,
 };
-const mapStateToProps = ({
-  Account,
-  registrationAdmin,
-  CycleList,
-  PaymentScheme,
-}) => {
+const mapStateToProps = ({ Account, registrationAdmin, CycleList, PaymentScheme }) => {
   const cycleList = registrationAdmin.CycleList || [];
   const paymentSchemeList = PaymentScheme?.PaymentSchemeList || [];
   console.log("CycleList in mapStateToProps:", registrationAdmin, CycleList);
@@ -2515,11 +2439,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
-  onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
+  onGetParticipantPayment: (id) => dispatch(getParticipantSchemelist(id)),
   ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
-  ongetDeleteParticipant: id => dispatch(getDeleteParticipant(id)),
   ongetcyclelist: id => dispatch(getcyclelist(id)),
-  // onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
+  onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);
     dispatch(updateMembershipStatus({ id, ...status }));
