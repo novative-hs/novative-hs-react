@@ -221,20 +221,56 @@ class Navbar extends Component {
                           </li>
                         </ul>
                       </li>
+<li className="nav-item">
+                                               <span
+                                                 className="dropdown-item database-dropdown"
+                                                 onMouseEnter={() =>
+                                                   this.toggleDropdown("databaseReviewDropdownOpen")
 
-                      <li className="nav-item">
-                        <NavLink
-                          to={`/${organization_name}/databaseadmin-news`}
-                          className={({ isActive }) =>
-                            `dropdown-item ${isActive ? "active-link" : ""}`
-                          }
-                        >
-                          <span className="pt-4 font-size-12">
-                            Database Review
-                          </span>
-                          {/* {this.props.t("Tests")} */}
-                        </NavLink>
-                      </li>
+                                                 }
+                                               >
+                                                 <span className="pt-4 font-size-12">Database Review</span>
+                                               </span>
+                                               <ul
+                                                 className={
+                                                   dropdowns. databaseReviewDropdownOpen
+                                                     ? "dropdown-menu show"
+                                                     : "dropdown-menu"
+                                                 }
+                                                 style={{ backgroundColor: "#0000CD" }}
+                                                 onMouseEnter={() =>
+                                                   this.setState({
+                                                     dropdowns: {
+                                                       ...dropdowns,
+                                                       databaseReviewDropdownOpen: true,
+                                                     },
+                                                   })
+                                                 }
+                                                 onMouseLeave={() =>
+                                                   this.setState({
+                                                     dropdowns: {
+                                                       ...dropdowns,
+                                                       databaseReviewDropdownOpen: false,
+                                                     },
+                                                   })
+                                                 }
+                                               >
+                                                 <li>
+                                                   <NavLink
+                                                     to={`/${organization_name}/participantreport`}
+                                                     className={({ isActive }) =>
+                                                       `dropdown-item ${
+                                                         isActive ? "active-dropdown" : ""
+                                                       }`
+                                                     }
+                                                   >
+                                                     Participants Count
+                                                   </NavLink>
+                                                 </li>
+                       
+                                              
+                                               </ul>
+                                             </li>
                       <li className="nav-item">
                         <span
                           className="dropdown-item participant-data-dropdown"

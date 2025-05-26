@@ -78,6 +78,7 @@ import InstrumentsAnalytes from "pages/databaseadmin/instruments-analyte";
 
 import ReagentsAnalytes from "pages/databaseadmin/reagent-analyte";
 import SchemeRoundList from "pages/databaseadmin/round-list";
+import Membershipstatusreport from "pages/databaseadmin/participantreport";
 //HR  Admin
 import DatabaseadminList from "pages/HrAdmin/databaseadmin-list";
 // import FinanceAdminProfile from "../pages/Authentication/StaffProfile";
@@ -371,6 +372,7 @@ const databaseAdminAuthProtectedRoutes = [
     path: "/:organization_name/database-of-participantSector",
     component: DatabaseOfParticipantSector,
   },
+   {path: "/:organization_name/participantreport", component: Membershipstatusreport},
 ];
 const participantsAuthProtectedRoutes = [
   {

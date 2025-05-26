@@ -60,12 +60,24 @@ function* onupdateMembershipStatus({ payload: status }) {
   }
 }
 
+
 function* fetchAllLabs(action) {
   try {
+    console.log('[Saga] fetchAllLabs started with payload:', action.payload);
+
     const response = yield call(getAllLabs, action.payload);
+
+    console.log('[Saga] fetchAllLabs API response:', response);
+
     yield put(getAllLabsSuccess(response));
+
+    console.log('[Saga] Dispatched getAllLabsSuccess');
   } catch (error) {
-    yield put(getAllLabsFail(error));
+    console.error('[Saga] fetchAllLabs failed:', error);
+
+    yield put(getAllLabsFail(error.message || 'Fetch all labs failed'));
+
+    console.log('[Saga] Dispatched getAllLabsFail');
   }
 }
 function* onupdateAllLabs({ payload: status }) {

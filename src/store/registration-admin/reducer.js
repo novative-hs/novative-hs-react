@@ -1,6 +1,5 @@
 import suspendedLabs from "pages/RegistrationAdmin/suspended-labs";
 import {
-
   GET_PENDING_LABS_SUCCESS,
   GET_PENDING_LABS_FAIL,
   GET_APPROVED_LABS_SUCCESS,
@@ -30,7 +29,7 @@ import {
 } from "./actionTypes";
 
 const INIT_STATE = {
-  AllLabs:[],
+  AllLabs: [],
   pendingLabs: [],
   approvedLabs: [],
   unapprovedLabs: [],
@@ -38,19 +37,18 @@ const INIT_STATE = {
   pendingB2BClients: [],
   approvedB2BClients: [],
   unapprovedB2BClients: [],
-  deleteparticipants:[],
+  deleteparticipants: [],
   success: [],
   error: {},
-  Membershipstatus:[],
+  Membershipstatus: [],
 };
 
 const registrationAdmin = (state = INIT_STATE, action) => {
   switch (action.type) {
-
     case UPDATE_MEMBERSHIP_STATUS_SUCCESS:
       return {
         ...state,
-        Membershipstatus: state.Membershipstatus.map(status =>
+        Membershipstatus: state.Membershipstatus.map((status) =>
           status.id.toString() === action.payload.id.toString()
             ? { status, ...action.payload }
             : status
@@ -64,31 +62,37 @@ const registrationAdmin = (state = INIT_STATE, action) => {
       };
 
     case GET_ALL_PARTICIPANT_SUCCESS:
+      console.log(
+        "[Reducer] GET_ALL_PARTICIPANT_SUCCESS payload:",
+        action.payload
+      );
       return {
         ...state,
         AllLabs: action.payload.data,
+        participantCounts: action.payload.counts, // ✅ Add this line
       };
 
     case GET_ALL_PARTICIPANT_FAIL:
+      console.log("[Reducer] GET_ALL_PARTICIPANT_FAIL error:", action.payload);
       return {
         ...state,
         error: action.payload,
       };
-      case UPDATE_LABS_SUCCESS:
-        return {
-          ...state,
-          updateAllLabs: state.updateAllLabs.map(status =>
-            status.id.toString() === action.payload.id.toString()
-              ? { status, ...action.payload }
-              : status
-          ),
-        };
-  
-      case UPDATE_LABS_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+    case UPDATE_LABS_SUCCESS:
+      return {
+        ...state,
+        updateAllLabs: state.updateAllLabs.map((status) =>
+          status.id.toString() === action.payload.id.toString()
+            ? { status, ...action.payload }
+            : status
+        ),
+      };
+
+    case UPDATE_LABS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case GET_PENDING_LABS_SUCCESS:
       return {
         ...state,
@@ -124,17 +128,17 @@ const registrationAdmin = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-      case GET_SUSPENDED_LABS_SUCCESS:
-        return {
-          ...state,
-          suspendedLabs: action.payload.data,
-        };
-  
-      case GET_SUSPENDED_LABS_FAIL:
-        return {
-          ...state,
-          error: action.payload,
-        };
+    case GET_SUSPENDED_LABS_SUCCESS:
+      return {
+        ...state,
+        suspendedLabs: action.payload.data,
+      };
+
+    case GET_SUSPENDED_LABS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     case APPROVE_UNAPPROVE_LAB_SUCCESS:
       return {
         ...state,
@@ -195,8 +199,8 @@ const registrationAdmin = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-      /// delete partcipants///
-       case GET_DELETE_PARTICIPANT_SUCCESS:
+    /// delete partcipants///
+    case GET_DELETE_PARTICIPANT_SUCCESS:
       return {
         ...state,
         approvedLabs: action.payload.data,

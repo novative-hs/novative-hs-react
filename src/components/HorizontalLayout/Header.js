@@ -46,6 +46,7 @@ class Header extends Component {
       dropdowns: {
         databaseDropdownOpen: false,
         participantDataDropdownOpen: false,
+        databaseReviewDropdownOpen: false,
       },
     };
 
@@ -56,7 +57,7 @@ class Header extends Component {
   }
 
   toggleDropdown() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       dropdownOpen: !prevState.dropdownOpen,
     }));
     this.props.openLeftMenuCallBack();
@@ -64,7 +65,7 @@ class Header extends Component {
 
   toggleNavbar() {
     console.log("Menu icon clicked. Toggling navbar state.");
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isNavbarOpen: !prevState.isNavbarOpen, // Toggle navbar open/close state
     }));
   }
@@ -73,7 +74,7 @@ class Header extends Component {
     this.props.openLeftMenuCallBack();
   }
   toggleDropdown(dropdownName) {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       dropdowns: {
         ...prevState.dropdowns,
         [dropdownName]: !prevState.dropdowns[dropdownName],
@@ -105,7 +106,7 @@ class Header extends Component {
 
   toggleNavbar() {
     console.log("Menu icon clicked. Toggling navbar state.");
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isNavbarOpen: !prevState.isNavbarOpen, // Toggle navbar open/close state
       isOpen: !prevState.isOpen, // Sync with the Collapse component
     }));
@@ -152,19 +153,31 @@ class Header extends Component {
               <div className="navbar-brand-box" style={{ background: "white" }}>
                 {/* Logo based on account type */}
                 {this.state.account_type === "nhs" ? (
-                <span className="logo-sm">
-                  <img src="https://externalqcapi.com/media/organization/nhs_logo.webp" alt="NHS Logo" height="60" />
-                </span>
+                  <span className="logo-sm">
+                    <img
+                      src="https://externalqcapi.com/media/organization/nhs_logo.webp"
+                      alt="NHS Logo"
+                      height="60"
+                    />
+                  </span>
                 ) : this.state.account_type === "database-admin" ? (
-                <span className="logo-sm">
-                  <img src="https://externalqcapi.com/media/organization/nhs_logo.webp" alt="Database Admin Logo" height="60" />
-                </span>
+                  <span className="logo-sm">
+                    <img
+                      src="https://externalqcapi.com/media/organization/nhs_logo.webp"
+                      alt="Database Admin Logo"
+                      height="60"
+                    />
+                  </span>
                 ) : this.state.account_type === "registration-admin" ||
-                this.state.account_type === "organization" ||
-                this.state.account_type === "CSR" ? (
-                <span className="logo-sm">
-                  <img src="https://externalqcapi.com/media/organization/nhs_logo.webp" alt="Staff Logo" height="60" />
-                </span>
+                  this.state.account_type === "organization" ||
+                  this.state.account_type === "CSR" ? (
+                  <span className="logo-sm">
+                    <img
+                      src="https://externalqcapi.com/media/organization/nhs_logo.webp"
+                      alt="Staff Logo"
+                      height="60"
+                    />
+                  </span>
                 ) : null}
               </div>
 
@@ -308,15 +321,53 @@ class Header extends Component {
                         </li>
 
                         <li className="nav-item">
-                          <NavLink
-                            to={`/${organization_name}/databaseadmin-news`}
-                            className="dropdown-item"
+                          <span
+                            className="dropdown-item database-dropdown"
+                            onMouseEnter={() =>
+                              this.toggleDropdown("databaseReviewDropdownOpen")
+                            }
                           >
                             <span className="pt-4 font-size-12">
                               Database Review
                             </span>
-                            {/* {this.props.t("Tests")} */}
-                          </NavLink>
+                          </span>
+                          <ul
+                            className={
+                              dropdowns.databaseReviewDropdownOpen
+                                ? "dropdown-menu show"
+                                : "dropdown-menu"
+                            }
+                            style={{ backgroundColor: "#0000CD" }}
+                            onMouseEnter={() =>
+                              this.setState({
+                                dropdowns: {
+                                  ...dropdowns,
+                                  databaseReviewDropdownOpen: true,
+                                },
+                              })
+                            }
+                            onMouseLeave={() =>
+                              this.setState({
+                                dropdowns: {
+                                  ...dropdowns,
+                                  databaseReviewDropdownOpen: false,
+                                },
+                              })
+                            }
+                          >
+                            <li>
+                              <NavLink
+                                to={`/${organization_name}/participantreport`}
+                                className={({ isActive }) =>
+                                  `dropdown-item ${
+                                    isActive ? "active-dropdown" : ""
+                                  }`
+                                }
+                              >
+                                Participants Count
+                              </NavLink>
+                            </li>
+                          </ul>
                         </li>
                         <li className="nav-item">
                           <span
@@ -420,22 +471,24 @@ class Header extends Component {
                           </ul>
                         </li>
                         <li className="nav-item">
-                                                <NavLink
-                                                  to={`/${organization_name}/participants`}
-                                                  className="dropdown-item"
-                                                  style={({ isActive }) =>
-                                                    isActive
-                                                      ? {
-                                                          textDecoration: "underline",
-                                                          fontWeight: "bold",
-                                                          color: "white",
-                                                        }
-                                                      : {}
-                                                  }
-                                                >
-                                                  <span className="pt-4 font-size-12">Participants</span>
-                                                </NavLink>
-                                              </li>
+                          <NavLink
+                            to={`/${organization_name}/participants`}
+                            className="dropdown-item"
+                            style={({ isActive }) =>
+                              isActive
+                                ? {
+                                    textDecoration: "underline",
+                                    fontWeight: "bold",
+                                    color: "white",
+                                  }
+                                : {}
+                            }
+                          >
+                            <span className="pt-4 font-size-12">
+                              Participants
+                            </span>
+                          </NavLink>
+                        </li>
                         <li className="nav-item">
                           <NavLink
                             to={`/${organization_name}/scheme`}
@@ -699,7 +752,7 @@ Header.propTypes = {
   }).isRequired,
 };
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   const { layoutType, showRightSidebar } = state.Layout;
   return { layoutType, showRightSidebar };
 };
@@ -710,4 +763,3 @@ const mapStatetoProps = state => {
 export default connect(mapStatetoProps, { toggleRightSidebar })(
   withRouter(withTranslation()(Header))
 );
-
