@@ -109,7 +109,7 @@ class PaymentSchemeList extends Component {
 }
 ,
     {
-      text: "Discount",
+      text: "Discount Amount",
       dataField: "discount",
       sort: true,
       headerFormatter: (column) => (
