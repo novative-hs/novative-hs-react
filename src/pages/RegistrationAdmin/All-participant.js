@@ -1471,7 +1471,11 @@ class PendingLabs extends Component {
                                                       name="email"
                                                       className="form-control"
                                                       placeholder="Enter Email"
-                                                      onChange={handleChange}
+                                                      readOnly
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#f0f0f0",
+                                                      }} // Light grey
                                                     />
                                                   </div>
 
@@ -2208,7 +2212,7 @@ class PendingLabs extends Component {
 
                                                 <Row>
                                                   <Col>
-                                                    <Label>Pay Date</Label>
+                                                    <Label>Check/Transaction Date</Label>
                                                     <Field
                                                       name="paydate"
                                                       type="date"
