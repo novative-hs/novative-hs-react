@@ -1333,7 +1333,7 @@ class PendingLabs extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      Email
+                                                      Login Email
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
