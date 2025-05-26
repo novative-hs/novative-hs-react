@@ -38,7 +38,7 @@ class Navbar extends Component {
 
   toggleDropdown(dropdownName) {
     // Toggle the specified dropdown
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       dropdownOpen: !prevState.dropdownOpen,
       dropdowns: {
         ...prevState.dropdowns,
@@ -48,7 +48,7 @@ class Navbar extends Component {
   }
 
   toggleNavbar() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isOpen: !prevState.isOpen,
     }));
   }
@@ -221,56 +221,55 @@ class Navbar extends Component {
                           </li>
                         </ul>
                       </li>
-<li className="nav-item">
-                                               <span
-                                                 className="dropdown-item database-dropdown"
-                                                 onMouseEnter={() =>
-                                                   this.toggleDropdown("databaseReviewDropdownOpen")
-
-                                                 }
-                                               >
-                                                 <span className="pt-4 font-size-12">Database Review</span>
-                                               </span>
-                                               <ul
-                                                 className={
-                                                   dropdowns. databaseReviewDropdownOpen
-                                                     ? "dropdown-menu show"
-                                                     : "dropdown-menu"
-                                                 }
-                                                 style={{ backgroundColor: "#0000CD" }}
-                                                 onMouseEnter={() =>
-                                                   this.setState({
-                                                     dropdowns: {
-                                                       ...dropdowns,
-                                                       databaseReviewDropdownOpen: true,
-                                                     },
-                                                   })
-                                                 }
-                                                 onMouseLeave={() =>
-                                                   this.setState({
-                                                     dropdowns: {
-                                                       ...dropdowns,
-                                                       databaseReviewDropdownOpen: false,
-                                                     },
-                                                   })
-                                                 }
-                                               >
-                                                 <li>
-                                                   <NavLink
-                                                     to={`/${organization_name}/participantreport`}
-                                                     className={({ isActive }) =>
-                                                       `dropdown-item ${
-                                                         isActive ? "active-dropdown" : ""
-                                                       }`
-                                                     }
-                                                   >
-                                                     Participants Count
-                                                   </NavLink>
-                                                 </li>
-                       
-                                              
-                                               </ul>
-                                             </li>
+                    <li className="nav-item">
+                        <span
+                          className="dropdown-item database-dropdown"
+                          onMouseEnter={() =>
+                            this.toggleDropdown("databaseReviewDropdownOpen")
+                          }
+                        >
+                          <span className="pt-4 font-size-12">
+                            Database Review
+                          </span>
+                        </span>
+                        <ul
+                          className={
+                            dropdowns.databaseReviewDropdownOpen
+                              ? "dropdown-menu show"
+                              : "dropdown-menu"
+                          }
+                          style={{ backgroundColor: "#0000CD" }}
+                          onMouseEnter={() =>
+                            this.setState({
+                              dropdowns: {
+                                ...dropdowns,
+                                databaseReviewDropdownOpen: true,
+                              },
+                            })
+                          }
+                          onMouseLeave={() =>
+                            this.setState({
+                              dropdowns: {
+                                ...dropdowns,
+                                databaseReviewDropdownOpen: false,
+                              },
+                            })
+                          }
+                        >
+                          <li>
+                            <NavLink
+                              to={`/${organization_name}/participantreport`}
+                              className={({ isActive }) =>
+                                `dropdown-item ${
+                                  isActive ? "active-dropdown" : ""
+                                }`
+                              }
+                            >
+                              Participants Count
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </li>
                       <li className="nav-item">
                         <span
                           className="dropdown-item participant-data-dropdown"
@@ -389,22 +388,24 @@ class Navbar extends Component {
                         </ul>
                       </li>
                       <li className="nav-item">
-                                                <NavLink
-                                                  to={`/${organization_name}/participants`}
-                                                  className="dropdown-item"
-                                                  style={({ isActive }) =>
-                                                    isActive
-                                                      ? {
-                                                          textDecoration: "underline",
-                                                          fontWeight: "bold",
-                                                          color: "white",
-                                                        }
-                                                      : {}
-                                                  }
-                                                >
-                                                  <span className="pt-4 font-size-12">Participants</span>
-                                                </NavLink>
-                                              </li>
+                        <NavLink
+                          to={`/${organization_name}/participants`}
+                          className="dropdown-item"
+                          style={({ isActive }) =>
+                            isActive
+                              ? {
+                                  textDecoration: "underline",
+                                  fontWeight: "bold",
+                                  color: "white",
+                                }
+                              : {}
+                          }
+                        >
+                          <span className="pt-4 font-size-12">
+                            Participants
+                          </span>
+                        </NavLink>
+                      </li>
                       <li className="nav-item">
                         <NavLink
                           to={`/${organization_name}/scheme`}
@@ -736,7 +737,7 @@ Navbar.propTypes = {
   }),
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { layoutType } = state.Layout;
   const { carts } = state.carts;
   return { layoutType, carts };

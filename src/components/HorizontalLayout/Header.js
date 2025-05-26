@@ -319,7 +319,6 @@ class Header extends Component {
                             </li>
                           </ul>
                         </li>
-
                         <li className="nav-item">
                           <span
                             className="dropdown-item database-dropdown"
