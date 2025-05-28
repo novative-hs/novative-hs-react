@@ -1309,6 +1309,7 @@ export const addNewPayment = (payment, id) => {
   formData.append("paydate", payment.paydate);
   formData.append("photo", payment.photo);
   formData.append("payment_status", payment.payment_status);
+  formData.append("payment_settlement", payment.payment_settlement);
   formData.append("added_by", payment.added_by);
   formData.append("receivedby", payment.receivedby);
   if (payment.remaining_amount !== undefined && payment.remaining_amount !== null) {
