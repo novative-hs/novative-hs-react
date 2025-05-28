@@ -1310,8 +1310,11 @@ export const addNewPayment = (payment, id) => {
   formData.append("photo", payment.photo);
   formData.append("payment_status", payment.payment_status);
   formData.append("payment_settlement", payment.payment_settlement);
+  formData.append("discountAmount", payment.discountAmount);
   formData.append("added_by", payment.added_by);
   formData.append("receivedby", payment.receivedby);
+  formData.append("taxDeduction", payment.taxDeduction);
+  formData.append("part_payment_amount", payment.part_payment_amount);
   if (payment.remaining_amount !== undefined && payment.remaining_amount !== null) {
     formData.append("remaining_amount", payment.remaining_amount);
   }
@@ -1322,6 +1325,7 @@ export const addNewPayment = (payment, id) => {
     },
   });
 };
+
 // ---------------Scheme add Analytes-------
 export const getSchemeAnalytelist = (id) =>
   get(`${url.GET_SCHEME_ANALYTE}/${id}`, {

@@ -27,6 +27,7 @@ class ParticipantPayments extends Component {
       schemeFilter: "",
       amountFilter: "",
       discountFilter: "",
+      TaxFilter: "",
       paymentmodeFilter: "",
       dateFilter: "",
       paymentreceivedFilter: "",
@@ -161,7 +162,7 @@ class ParticipantPayments extends Component {
         },
         {
           dataField: "price",
-          text: "Paid Amount",
+          text: "Payable",
           sort: true,
           style: { textAlign: "right" },
           formatter: cell => Number(cell).toLocaleString(),
@@ -185,8 +186,8 @@ class ParticipantPayments extends Component {
           ),
         },
         {
-          dataField: "discount",
-          text: "% Discount",
+          dataField: "discountAmount",
+          text: " Discount Amount",
           sort: true,
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
@@ -196,6 +197,163 @@ class ParticipantPayments extends Component {
                   type="text"
                   value={this.state.discountFilter}
                   onChange={e => this.handleFilterChange("discountFilter", e)}
+                  className="form-control"
+                  style={{
+                    textAlign: "center",
+                    width: "100px",
+                    margin: "auto",
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        },
+         {
+          dataField: "taxDeduction",
+          text: "Tax",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <div style={{ textAlign: "center" }}>
+              <div>{column.text}</div>
+              <div style={{ marginTop: "5px" }}>
+                <input
+                  type="text"
+                  value={this.state.TaxFilter}
+                  onChange={e => this.handleFilterChange("TaxFilter", e)}
+                  className="form-control"
+                  style={{
+                    textAlign: "center",
+                    width: "100px",
+                    margin: "auto",
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        },
+       {
+  dataField: "price",
+  text: "Payable",
+  sort: true,
+  formatter: (cell, row) => {
+    const price = parseFloat(row.price) || 0;
+    const discount = parseFloat(row.discount) || 0;
+    const tax = parseFloat(row.tax) || 0;
+
+    const payable = price - discount - tax;
+    return payable.toFixed(2); // format to 2 decimal places
+  },
+  headerFormatter: (column, colIndex) => (
+    <div style={{ textAlign: "center" }}>
+      <div>{column.text}</div>
+      <div style={{ marginTop: "5px" }}>
+        <input
+          type="text"
+          value={this.state.priceFilter}
+          onChange={e => this.handleFilterChange("priceFilter", e)}
+          className="form-control"
+          style={{
+            textAlign: "center",
+            width: "100px",
+            margin: "auto",
+          }}
+        />
+      </div>
+    </div>
+  ),
+}
+,
+
+        {
+          dataField: "payment_settlement",
+          text: "Payment Settlement",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <div style={{ textAlign: "center" }}>
+              <div>{column.text}</div>
+              <div style={{ marginTop: "5px" }}>
+                <input
+                  type="text"
+                  value={this.state.paymentmodeFilter}
+                  onChange={e =>
+                    this.handleFilterChange("paymentmodeFilter", e)
+                  }
+                  className="form-control"
+                  style={{
+                    textAlign: "center",
+                    width: "100px",
+                    margin: "auto",
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        },
+        
+        {
+          dataField: "payment_status",
+          text: "Payment Status",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <div style={{ textAlign: "center" }}>
+              <div>{column.text}</div>
+              <div style={{ marginTop: "5px" }}>
+                <input
+                  type="text"
+                  value={this.state.paymentmodeFilter}
+                  onChange={e =>
+                    this.handleFilterChange("paymentmodeFilter", e)
+                  }
+                  className="form-control"
+                  style={{
+                    textAlign: "center",
+                    width: "100px",
+                    margin: "auto",
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        },
+         {
+          dataField: "part_payment_amount",
+          text: "Paid Amount",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <div style={{ textAlign: "center" }}>
+              <div>{column.text}</div>
+              <div style={{ marginTop: "5px" }}>
+                <input
+                  type="text"
+                  value={this.state.paymentmodeFilter}
+                  onChange={e =>
+                    this.handleFilterChange("paymentmodeFilter", e)
+                  }
+                  className="form-control"
+                  style={{
+                    textAlign: "center",
+                    width: "100px",
+                    margin: "auto",
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        },
+        {
+          dataField: "remaining_amount",
+          text: "Remaining Amount",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <div style={{ textAlign: "center" }}>
+              <div>{column.text}</div>
+              <div style={{ marginTop: "5px" }}>
+                <input
+                  type="text"
+                  value={this.state.paymentmodeFilter}
+                  onChange={e =>
+                    this.handleFilterChange("paymentmodeFilter", e)
+                  }
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -339,8 +497,13 @@ class ParticipantPayments extends Component {
         district: payment.district,
         scheme_count: payment.scheme_count, // Display count of schemes
         price: payment.price,
-        discount: payment.discount,
+        discountAmount: payment.discountAmount,
+        taxDeduction: payment.taxDeduction,
+        payment_settlement: payment.payment_settlement,
         paymentmethod: payment.paymentmethod,
+        payment_status: payment.payment_status,
+        part_payment_amount: payment.part_payment_amount,
+        remaining_amount: payment.remaining_amount,
         paydate: payment.paydate,
         photo: payment.photo,
         receivedby: payment.receivedby,
@@ -365,6 +528,7 @@ class ParticipantPayments extends Component {
       schemeFilter,
       amountFilter,
       discountFilter,
+      TaxFilter,
       paymentmodeFilter,
       dateFilter,
       paymentreceivedFilter,
@@ -381,6 +545,14 @@ class ParticipantPayments extends Component {
         entry.scheme_name.toLowerCase().includes(schemeFilter.toLowerCase()) &&
         entry.price.toLowerCase().includes(amountFilter.toLowerCase()) &&
         entry.discount.toLowerCase().includes(discountFilter.toLowerCase()) &&
+        
+        entry.taxDeduction.toLowerCase().includes(TaxFilter.toLowerCase()) &&
+        entry.payment_settlement.toLowerCase().includes(paymentmodeFilter.toLowerCase) &&
+        
+        entry.part_payment_amount.toLowerCase().includes(paymentmodeFilter.toLowerCase) &&
+        entry.remaining_amount.toLowerCase().includes(paymentmodeFilter.toLowerCase) &&
+        
+        entry.payment_status.toLowerCase().includes(paymentmodeFilter.toLowerCase) &&
         entry.paymentmethod
           .toLowerCase()
           .includes(paymentmodeFilter.toLowerCase()) &&
