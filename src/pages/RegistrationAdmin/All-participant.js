@@ -8,10 +8,12 @@ import filterFactory, {
   selectFilter,
 } from "react-bootstrap-table2-filter";
 import { Tooltip } from "@material-ui/core";
-import { Alert } from "reactstrap";
-import Select from "react-select";
-
+import { Alert } from "reactstrap"; // For Alert component
+import Select from "react-select"; // For Select component
+// import PaymentModal from "../Authentication/participant-payment"; // Adjust the path based on where PaymentModal is located
 import { addNewPayment } from "store/Payment/actions";
+import { getcitylist } from "store/participantcity/actions";
+import { getdistrictlist } from "store/participantdistrict/actions";
 
 import {
   Card,
@@ -58,26 +60,27 @@ import "assets/scss/table.scss";
 class PendingLabs extends Component {
   constructor(props) {
     super(props);
-
+    //this.displaySuccessMessage = this.displaySuccessMessage.bind(this);
     this.node = React.createRef();
     this.handleSchemeChange = this.handleSchemeChange.bind(this);
     this.state = {
-      AllLabs: [], // Full participant list from the API
-      approvedLabs: [], // Approved labs list
-      CycleList: [], // Scheme cycle lists
-      // selectedStatus: "All",         // Default participant status
-      selectedScheme: null, // Currently selected scheme ID
-      // selectedCorporate: "",         // Filter for corporate/lab name
-      // isSettledFilter: "",           // Filter for settlement status
-      id: "", // Selected participant ID
-      btnText: "Copy", // Button text for copy functionality
-      isPaymentModalOpen: false, // State for payment modal
-      isMembershipModalOpen: false, // State for membership modal
-      organization_name: "", // Organization name
-      isApproved: false, // Approval status
-      unapprovedModal: false, // State for unapproved modal
-      tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"], // Tooltip content
+      AllLabs: [],
+      approvedLabs: [],
+      ListCity: [],
+      ListDistrict: [],
+      CycleList: [],
+      selectedScheme: null,
+      id: "",
+      btnText: "Copy",
+      isPaymentModalOpen: false,
+      isMembershipModalOpen: false,
+      organization_name: "",
+      isApproved: false,
+      unapprovedModal: false,
+      tooltipContent: ["Worst", "Bad", "Average", "Good", "Excellent"],
       filteredLabs: [],
+      cityOptions: [],
+      districtOptions: [],
       pendingLabListColumns: [], // Columns for the table            // Filtered list to display
       selectedParticipantType: "All Participant", // Default participant type
       user_id: localStorage.getItem("authUser")
@@ -234,6 +237,40 @@ class PendingLabs extends Component {
           ),
           filter: textFilter(),
         },
+        // {
+        //   dataField: "schemes",
+        //   text: "Scheme",
+        //   sort: false,
+        //   filter: textFilter({
+        //     onFilter: (filterValue, data) => {
+        //       // Custom filtering logic
+        //       return data.filter((row) =>
+        //         Array.isArray(row.schemes) &&
+        //         row.schemes.some((scheme) =>
+        //           scheme.scheme_name.toLowerCase().includes(filterValue.toLowerCase())
+        //         )
+        //       );
+        //     },
+        //   }),
+        //   headerStyle: { textAlign: "center" },
+        //   style: { textAlign: "center" },
+        //   formatter: (cellContent, row) => {
+        //     if (Array.isArray(row.schemes) && row.schemes.length > 0) {
+        //       // Create a unique set of scheme names
+        //       const uniqueSchemes = [...new Map(row.schemes.map((scheme) => [scheme.scheme_name, scheme])).values()];
+
+        //       // Render the unique scheme names
+        //       return (
+        //         <ul style={{ padding: "0", margin: "0", listStyle: "none" }}>
+        //           {uniqueSchemes.map((scheme, index) => (
+        //             <li key={index}>{scheme.scheme_name}</li>
+        //           ))}
+        //         </ul>
+        //       );
+        //     }
+        //     return "No schemes available";
+        //   },
+        // },
 
         {
           dataField: "payment_status",
@@ -585,6 +622,11 @@ class PendingLabs extends Component {
   componentDidMount() {
     console.log("Fetching data...");
 
+    const { onGetCityList } = this.props;
+    onGetCityList(this.state.user_id);
+
+    const { onGetDistrictList } = this.props;
+    onGetDistrictList(this.state.user_id);
     // Retrieve user_id from localStorage
     const authUser = localStorage.getItem("authUser");
     const user_id = authUser ? JSON.parse(authUser).user_id : null;
@@ -610,7 +652,8 @@ class PendingLabs extends Component {
           // this.setInitialDropdownValue();
           this.fetchData(this.state.user_id);
           this.applyFiltersFromQueryParams();
-          // Fetch data from APIs
+          // Fetch city options
+
           this.fetchData(user_id);
         });
       } else {
@@ -618,6 +661,8 @@ class PendingLabs extends Component {
       }
     });
   }
+
+  // New method to fetch cities
 
   // Fetch all required data
   fetchData(user_id) {
@@ -646,6 +691,12 @@ class PendingLabs extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.ListCity !== this.props.ListCity) {
+      this.setState({ ListCity: this.props.ListCity });
+    }
+    if (prevProps.ListDistrict !== this.props.ListDistrict) {
+      this.setState({ ListDistrict: this.props.ListDistrict });
+    }
     if (prevState.filteredLabs !== this.state.filteredLabs) {
       console.log("FilteredLabs updated:", this.state.filteredLabs);
     }
@@ -693,6 +744,56 @@ class PendingLabs extends Component {
       });
     }
   }
+
+  // setInitialDropdownValue = () => {
+  //   const { pathname } = this.props.history.location;
+  //   const { organization_name } = this.state; // Now it's properly updated
+
+  //   let selectedValue = "Pending Participant"; // Default
+
+  //   if (pathname.includes(`/${organization_name}/pending-participant`)) {
+  //     selectedValue = "Pending Participant";
+  //   } else if (pathname.includes(`/${organization_name}/approved-participant`)) {
+  //     selectedValue = "Approved Participant";
+  //   } else if (pathname.includes(`/${organization_name}/unapproved-participant`)) {
+  //     selectedValue = "Unapproved Participant";
+  //   } else if (pathname.includes(`/${organization_name}/suspended-participant`)) {
+  //     selectedValue = "Suspended Participant"; // New case added
+  //   } else if (pathname.includes(`/${organization_name}/all-participant`)) {
+  //     selectedValue = "All Participant";
+  //   }
+
+  //   this.setState({ selectedValue });
+  // };
+
+  // setInitialDropdownValue = () => {
+  //   const { pathname } = this.props.history.location;
+  //   let selectedValue = "";
+
+  //   if (
+  //     pathname.includes(`/${this.state.organization_name}/pending-participant`)
+  //   ) {
+  //     selectedValue = "Pending Participant";
+  //   } else if (
+  //     pathname.includes(`/${this.state.organization_name}/approved-participant`)
+  //   ) {
+  //     selectedValue = "Approved Participant";
+  //   } else if (
+  //     pathname.includes(`/${this.state.organization_name}/unapproved-participant`)
+  //   ) {
+  //     selectedValue = "Unapproved Participant";
+  //   } else if (
+  //     pathname.includes(`/${this.state.organization_name}/suspended-labs`)
+  //   ) {
+  //     selectedValue = "Suspended Participant";
+  //   } else if (
+  //     pathname.includes(`/${this.state.organization_name}/all-participant`)
+  //   ) {
+  //     selectedValue = "All Participant";
+  //   }
+
+  //   this.setState({ selectedValue });
+  // };
 
   openPatientModal = (e, arg) => {
     this.setState({
@@ -861,9 +962,45 @@ class PendingLabs extends Component {
     saveAs(data, "Filtered_Participants.xlsx");
   };
 
+  // handleSelectChange = (event) => {
+  //   const selectedValue = event.target.value;
+  //   console.log("handleSelectChange triggered with:", selectedValue);
+  //   const { organization_name } = this.state;
+
+  //   // Update the state and apply filters
+  //   this.setState({ selectedValue }, () => {
+  //     console.log("State updated. Now calling applyFilters.");
+  //     // Apply filters after state is updated
+  //     this.applyFilters();
+
+  //     // Navigate based on the selected value
+  //     if (selectedValue === "Pending Participant") {
+  //       this.props.history.push(`/${organization_name}/pending-participant`);
+  //     } else if (selectedValue === "Approved Participant") {
+  //       this.props.history.push(`/${organization_name}/approved-participant`);
+  //     } else if (selectedValue === "Suspended Participant") { // New condition added
+  //       this.props.history.push(`/${organization_name}/suspended-participant`);
+  //     } else if (selectedValue === "Unapproved Participant") {
+  //       this.props.history.push(`/${organization_name}/unapproved-participant`);
+  //     } else if (selectedValue === "All Participant") {
+  //       this.props.history.push(`/${organization_name}/all-participant`);
+  //     }
+  //   });
+  // };
+
   render() {
     console.log("Rendering table with data:", this.state.filteredLabs);
     const { SearchBar } = Search;
+    const { ListCity } = this.state;
+    const { ListDistrict } = this.state;
+    const cityOptions = ListCity.map(city => ({
+      value: city.name,
+      label: city.name,
+    }));
+    const districtOptions = ListDistrict.map(district => ({
+      value: district.name,
+      label: district.name,
+    }));
 
     const { AllLabs } = this.props;
     const data = this.state.data;
@@ -878,6 +1015,7 @@ class PendingLabs extends Component {
       totalSize: AllLabs.length, // replace later with size(AllLabs),
       custom: true,
     };
+
     // const { isPaymentModalOpen } = this.state;
     const { approvedLabs, CycleList } = this.state;
 
@@ -900,6 +1038,13 @@ class PendingLabs extends Component {
         order: "desc", // desc or asc
       },
     ];
+    const customStyles = {
+      // <-- This is invalid here
+      control: provided => ({
+        ...provided,
+        minHeight: "38px",
+      }),
+    };
 
     return (
       <React.Fragment>
@@ -1027,7 +1172,18 @@ class PendingLabs extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="mb-2 mt-3"></Row>
+                              <Row className="mb-2 mt-3">
+                                {/* <Col sm="4">
+                                  <div className="search-box ms-2 mb-2 d-inline-block">
+                                    <div className="position-relative">
+                                      <SearchBar
+                                        {...toolkitprops.searchProps}
+                                      />
+                                      <i className="bx bx-search-alt search-icon" />
+                                    </div>
+                                  </div>
+                                </Col> */}
+                              </Row>
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -1323,6 +1479,8 @@ class PendingLabs extends Component {
                                         >
                                           {({
                                             values,
+                                            errors,
+                                            setFieldValue,
                                             handleChange,
                                             handleSubmit,
                                           }) => (
@@ -1347,7 +1505,7 @@ class PendingLabs extends Component {
                                                   {/* {/ Email Field /} */}
                                                   <div className="mb-3">
                                                     <Label className="form-label">
-                                                      Email
+                                                      Login Email
                                                     </Label>
                                                     <input
                                                       type="email"
@@ -1356,6 +1514,11 @@ class PendingLabs extends Component {
                                                       className="form-control"
                                                       placeholder="Enter Email"
                                                       onChange={handleChange}
+                                                      readOnly={true}
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#f0f0f0",
+                                                      }} // light grey
                                                     />
                                                   </div>
 
@@ -1427,43 +1590,103 @@ class PendingLabs extends Component {
                                                     />
                                                   </div>
                                                   <Row>
-                                                    <Col md={6}>
+                                                    <Col sm={6} md={6} xl={6}>
                                                       <div className="mb-3">
-                                                        <Label className="form-label">
+                                                        <Label
+                                                          for="district"
+                                                          className="form-label"
+                                                        >
                                                           District
                                                         </Label>
-                                                        <input
-                                                          type="text"
+                                                        <Select
+                                                          name="district" // The field name in Formik
+                                                          options={
+                                                            districtOptions
+                                                          } // Options for the select
+                                                          styles={customStyles}
+                                                          className={
+                                                            errors.district &&
+                                                            touched.district
+                                                              ? " is-invalid"
+                                                              : ""
+                                                          }
+                                                          onChange={selectedOption => {
+                                                            setFieldValue(
+                                                              "district",
+                                                              selectedOption
+                                                                ? selectedOption.value
+                                                                : ""
+                                                            );
+                                                          }}
                                                           value={
-                                                            values.district
-                                                          }
-                                                          name="district"
-                                                          className="form-control"
-                                                          placeholder="Enter District"
-                                                          onChange={
-                                                            handleChange
-                                                          }
+                                                            districtOptions.find(
+                                                              option =>
+                                                                option.value ===
+                                                                values.district
+                                                            ) || null
+                                                          } // Set the current selected value
+                                                        />
+                                                        <ErrorMessage
+                                                          name="district" // Error for the city field
+                                                          component="div"
+                                                          className="invalid-feedback"
                                                         />
                                                       </div>
                                                     </Col>
-                                                    <Col md={6}>
+
+                                                    <Col sm={6} md={6} xl={6}>
                                                       <div className="mb-3">
-                                                        <Label className="form-label">
+                                                        <Label
+                                                          for="city"
+                                                          className="form-label"
+                                                        >
                                                           City
                                                         </Label>
-                                                        <input
-                                                          type="text"
-                                                          value={values.city}
-                                                          name="city"
-                                                          className="form-control"
-                                                          placeholder="Enter City"
-                                                          onChange={
-                                                            handleChange
+                                                        <Select
+                                                          name="city" // The field name in Formik
+                                                          // isMulti // Enable multi-select
+                                                          options={cityOptions} // Options for the select
+                                                          styles={customStyles}
+                                                          className={
+                                                            // "form-control" +
+                                                            errors.city &&
+                                                            touched.city
+                                                              ? " is-invalid"
+                                                              : "" // Conditional class based on validation
                                                           }
+                                                          //   onChange={
+                                                          //     selectedOptions =>
+                                                          //       setFieldValue("city", selectedOptions) // Update Formik state
+                                                          //   }
+                                                          //   value={values.city} // Set the current selected values
+                                                          // />
+                                                          onChange={selectedOption => {
+                                                            setFieldValue(
+                                                              "city",
+                                                              selectedOption
+                                                                ? selectedOption.value
+                                                                : ""
+                                                            ); // Update Formik state with string value
+                                                          }}
+                                                          value={
+                                                            cityOptions.find(
+                                                              option =>
+                                                                option.value ===
+                                                                values.city
+                                                            ) || null
+                                                          } // Set the current selected value
+                                                          // menuPlacement="auto"
+                                                          // menuShouldScrollIntoView={false}
+                                                        />
+                                                        <ErrorMessage
+                                                          name="city" // Error for the city field
+                                                          component="div"
+                                                          className="invalid-feedback"
                                                         />
                                                       </div>
                                                     </Col>
                                                   </Row>
+
                                                   {/* {/ Name and Contact No of Notification Person in one row /} */}
                                                   <Row>
                                                     <Col md={6}>
@@ -1590,13 +1813,10 @@ class PendingLabs extends Component {
                                               "Participant is required"
                                             ),
                                             taxDeduction: Yup.number()
-                                              .min(0)
-                                              .max(100)
-                                              .required(),
-                                            scheme: Yup.array().min(
-                                              1,
-                                              "At least one scheme must be selected"
-                                            ),
+                                              .min(0, "Cannot be negative")
+                                              .required(
+                                                "Tax deduction is required"
+                                              ),
                                             price: Yup.string().when(
                                               "discount",
                                               {
@@ -1767,30 +1987,46 @@ class PendingLabs extends Component {
                                                 values.paymentmethod,
                                               added_by: userId,
                                             };
+                                            // 👉 Place this block immediately after the object above:
+                                            if (values.discount === 100) {
+                                              // Remove all unnecessary fields if discount is 100%
+                                              delete AddPayment.remaining_amount;
+                                              delete AddPayment.paydate;
+                                              delete AddPayment.photo;
+                                              delete AddPayment.payment_status;
+                                              delete AddPayment.receivedby;
+                                              delete AddPayment.paymentmethod;
+                                              delete AddPayment.payment_settlement;
+                                            } else {
+                                              // Provide fallbacks if values are missing
+                                              if (
+                                                values.payment_settlement ===
+                                                "Part"
+                                              ) {
+                                                AddPayment.remaining_amount =
+                                                  values.remaining_amount ?? 0;
+                                              }
+                                              AddPayment.paydate =
+                                                values.paydate ?? null;
+                                              AddPayment.photo =
+                                                values.photo ?? null;
+                                              AddPayment.payment_status =
+                                                values.payment_status ?? null;
+                                              AddPayment.receivedby =
+                                                values.receivedby ?? null;
+                                              AddPayment.paymentmethod =
+                                                values.paymentmethod ?? null;
+                                            }
+
                                             // Conditionally add remaining_amount only if payment_settlement === 'part'
                                             if (
                                               values.payment_settlement ===
                                               "Part"
                                             ) {
-                                              const remaining = parseFloat(
-                                                values.remaining_amount
-                                              );
-                                              if (!isNaN(remaining)) {
-                                                AddPayment.remaining_amount =
-                                                  remaining;
-                                              }
+                                              AddPayment.remaining_amount =
+                                                values.remaining_amount || 0; // Or whatever logic you want for default
                                             }
 
-                                            if (
-                                              values.discount === 100 &&
-                                              parseFloat(values.price) === 0
-                                            ) {
-                                              delete AddPayment.payment_status;
-                                              delete AddPayment.paydate;
-                                              delete AddPayment.photo;
-                                              delete AddPayment.receivedby;
-                                              delete AddPayment.paymentmethod;
-                                            }
                                             try {
                                               await this.props.onAddNewPayment(
                                                 userId,
@@ -3114,29 +3350,40 @@ PendingLabs.propTypes = {
   }).isRequired, // Make it required if always expected
 
   CycleList: PropTypes.array,
+  onGetCityList: PropTypes.func,
+  onGetDistrictList: PropTypes.func,
   PaymentSchemeList: PropTypes.array,
   isPaymentModalOpen: PropTypes.array,
   togglePaymentModal: PropTypes.array,
   isMembershipModalOpen: PropTypes.array,
   toggleMembershipModal: PropTypes.array,
+  ListCity: PropTypes.array,
+  ListDistrict: PropTypes.array,
 };
 const mapStateToProps = ({
   Account,
+  ListCity,
+  ListDistrict,
   registrationAdmin,
   CycleList,
   PaymentScheme,
 }) => {
-  const cycleList = registrationAdmin.CycleList || [];
-  const paymentSchemeList = PaymentScheme?.PaymentSchemeList || [];
-  console.log("CycleList in mapStateToProps:", registrationAdmin, CycleList);
-  // console.log("CycleList in mapStateToProps (registrationAdmin):", registrationAdmin.CycleList);
-  console.log("CycleList in mapStateToProps (CycleList):", CycleList.CycleList);
+  console.log("registrationAdmin:", registrationAdmin);
+  console.log("CycleList from props:", CycleList);
+  console.log("ListCity from props:", ListCity);
+  console.log("ListDistrict from props:", ListDistrict);
 
   return {
-    userID: Account.userID,
-    AllLabs: registrationAdmin.AllLabs,
-    approvedLabs: registrationAdmin.approvedLabs || [],
-    CycleList: CycleList.CycleList, // Ensure it never returns undefined
+    userID: Account?.userID || null,
+
+    ListCity: ListCity?.ListCity || [],
+    ListDistrict: ListDistrict?.ListDistrict || [],
+
+    AllLabs: registrationAdmin?.AllLabs || [],
+    approvedLabs: registrationAdmin?.approvedLabs || [],
+
+    CycleList: CycleList?.CycleList || [],
+    PaymentSchemeList: PaymentScheme?.PaymentSchemeList || [],
   };
 };
 
@@ -3151,6 +3398,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
+  onGetCityList: id => dispatch(getcitylist(id)),
+  onGetDistrictList: id => dispatch(getdistrictlist(id)),
   onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
   ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
   ongetcyclelist: id => dispatch(getcyclelist(id)),
