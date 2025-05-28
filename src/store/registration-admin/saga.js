@@ -1,4 +1,5 @@
 
+
 import { call, put, takeEvery } from "redux-saga/effects";
 import axios from 'axios';
 
@@ -48,7 +49,7 @@ import {
   getAllLabs,
   updateMembershipstatus,
   updateAllLabs,
-  getDeleteParticipant,
+  deleteParticipant ,
 } from "../../helpers/django_api_helper";
 
 function* onupdateMembershipStatus({ payload: status }) {
@@ -79,6 +80,7 @@ function* fetchAllLabs(action) {
     console.log('[Saga] Dispatched getAllLabsFail');
   }
 }
+
 function* onupdateAllLabs({ payload: status }) {
   try {
     const response = yield call(updateAllLabs, status);
@@ -132,23 +134,29 @@ function* onApproveUnapproveLab(object) {
   }
 }
 
-function* onDeleteParticipant({ payload }) {
+
+function* onDeleteParticipant({ payload, meta }) {
   const { participantId } = payload;
-  console.log(`[Saga] Delete participant requested: participantId=${participantId}`);
+  const { resolve, reject } = meta || {};
 
   try {
-    const baseURL = 'http://localhost:8000';
-    const url = `${baseURL}/api/registration-admin/delete-participants/${participantId}/`;
+    const response = yield call(deleteParticipant, participantId);
 
-    const response = yield call(
-      axios.delete,
-      url,
-      {}
-    );
-
-    yield put(getDeleteParticipantSuccess(participantId));
+    // Axios typically throws for 403/404, so this is just a fallback
+    if (response?.status === 200 || response?.status === 204) {
+      yield put(getDeleteParticipantSuccess(participantId));
+      if (resolve) resolve(response);
+    } else {
+      const errorMsg =
+        response?.message || "Failed to delete participant.";
+      yield put(getDeleteParticipantFail(errorMsg));
+      if (reject) reject(errorMsg);
+    }
   } catch (error) {
-    yield put(getDeleteParticipantFail(error?.response?.data?.message || "Delete failed"));
+    const errorMsg =
+      error?.response?.data?.message || "Failed to delete participant.";
+    yield put(getDeleteParticipantFail(errorMsg));
+    if (reject) reject(errorMsg);
   }
 }
 

@@ -331,20 +331,19 @@ class ParticipantListN extends Component {
     );
   };
 handleDeleteParticipant = (participant) => {
-  console.log("Deleting participant:", participant);
-  const hasActiveCycle = Array.isArray(participant.schemes) &&
-    participant.schemes.some(scheme => scheme.cycle_status === "Active");
-
-  if (hasActiveCycle) {
-    alert("This participant has an active cycle and cannot be deleted.");
-    // or use toast.warning("This participant has an active cycle and cannot be deleted.");
-  } else {
-    // Confirm deletion
-    if (window.confirm("Are you sure you want to delete this participant?")) {
-      this.props.ongetDeleteParticipant(participant.id); // dispatch delete or call API
-    }
+  if (window.confirm("Are you sure you want to delete this participant?")) {
+    new Promise((resolve, reject) => {
+      this.props.ongetDeleteParticipant(participant.id, resolve, reject);
+    })
+      .then(() => {
+        alert("Participant deleted successfully.");
+      })
+      .catch((errorMessage) => {
+        alert(errorMessage); // Shows: "This participant has an active cycle and cannot be deleted."
+      });
   }
 };
+
 
   isMembershipModalOpen = participant => {
     console.log("Opening Membership Modal for Participant:", participant); // Debug log
@@ -2527,7 +2526,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
   ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
-  ongetDeleteParticipant: id => dispatch(getDeleteParticipant(id)),
+  ongetDeleteParticipant: (id, resolve, reject) =>
+  dispatch(getDeleteParticipant(id, resolve, reject)),
   ongetcyclelist: id => dispatch(getcyclelist(id)),
   // onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
   onupdateMembershipStatus: (id, status) => {

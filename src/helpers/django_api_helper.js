@@ -4020,9 +4020,7 @@ export const getUnsubmittedparticipants = (id) =>
   get(`${url.GET_UNSUBMITTED_PARTICIPANTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
-export const getDeleteParticipant = (id) =>
-  get(`${url.GET_DELETE_PARTICIPANTS}/${id}`, {
+export const deleteParticipant = (id) =>
+  del(`${url.GET_DELETE_PARTICIPANTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
- 

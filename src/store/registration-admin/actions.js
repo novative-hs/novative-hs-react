@@ -227,9 +227,10 @@ export const approveUnapproveB2BClientFail = error => ({
 });
 
 
-export const getDeleteParticipant = (participantId) => ({
+export const getDeleteParticipant = (participantId, resolve, reject) => ({
   type: GET_DELETE_PARTICIPANT,
   payload: { participantId },
+  meta: { resolve, reject },
 });
 
 export const getDeleteParticipantSuccess = (participantId) => ({
