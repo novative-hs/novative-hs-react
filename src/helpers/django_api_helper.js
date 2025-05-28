@@ -1297,20 +1297,23 @@ export const deleteCycle = (unit) =>
 
 //-----------------Payment----------------
 export const addNewPayment = (payment, id) => {
-  console.log("data in django api helper", payment.participant);
+  console.log("Data in Django API Helper:", payment);
+
   let formData = new FormData();
   formData.append("participant", payment.participant);
   formData.append("scheme", payment.scheme);
-  // formData.append("cycle_no", payment.cycle_no);
+  formData.append("cycle_id", payment.cycle_id); // Ensure cycle_id is included
   formData.append("price", payment.price);
   formData.append("discount", payment.discount);
   formData.append("paymentmethod", payment.paymentmethod);
   formData.append("paydate", payment.paydate);
   formData.append("photo", payment.photo);
   formData.append("payment_status", payment.payment_status);
-  formData.append("receivedby", payment.receivedby);
   formData.append("added_by", payment.added_by);
-
+  formData.append("receivedby", payment.receivedby);
+  if (payment.remaining_amount !== undefined && payment.remaining_amount !== null) {
+    formData.append("remaining_amount", payment.remaining_amount);
+  }
   return axios.post(`${url.ADD_NEW_PAYMENT}`, formData, {
     headers: {
       ...getHeader(authHeader()),

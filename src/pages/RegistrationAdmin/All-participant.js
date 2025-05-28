@@ -8,9 +8,9 @@ import filterFactory, {
   selectFilter,
 } from "react-bootstrap-table2-filter";
 import { Tooltip } from "@material-ui/core";
-import { Alert } from "reactstrap"; // For Alert component
-import Select from "react-select"; // For Select component
-// import PaymentModal from "../Authentication/participant-payment"; // Adjust the path based on where PaymentModal is located
+import { Alert } from "reactstrap";
+import Select from "react-select";
+
 import { addNewPayment } from "store/Payment/actions";
 
 import {
@@ -58,7 +58,7 @@ import "assets/scss/table.scss";
 class PendingLabs extends Component {
   constructor(props) {
     super(props);
-    //this.displaySuccessMessage = this.displaySuccessMessage.bind(this);
+
     this.node = React.createRef();
     this.handleSchemeChange = this.handleSchemeChange.bind(this);
     this.state = {
@@ -234,40 +234,6 @@ class PendingLabs extends Component {
           ),
           filter: textFilter(),
         },
-        // {
-        //   dataField: "schemes",
-        //   text: "Scheme",
-        //   sort: false,
-        //   filter: textFilter({
-        //     onFilter: (filterValue, data) => {
-        //       // Custom filtering logic
-        //       return data.filter((row) =>
-        //         Array.isArray(row.schemes) &&
-        //         row.schemes.some((scheme) =>
-        //           scheme.scheme_name.toLowerCase().includes(filterValue.toLowerCase())
-        //         )
-        //       );
-        //     },
-        //   }),
-        //   headerStyle: { textAlign: "center" },
-        //   style: { textAlign: "center" },
-        //   formatter: (cellContent, row) => {
-        //     if (Array.isArray(row.schemes) && row.schemes.length > 0) {
-        //       // Create a unique set of scheme names
-        //       const uniqueSchemes = [...new Map(row.schemes.map((scheme) => [scheme.scheme_name, scheme])).values()];
-
-        //       // Render the unique scheme names
-        //       return (
-        //         <ul style={{ padding: "0", margin: "0", listStyle: "none" }}>
-        //           {uniqueSchemes.map((scheme, index) => (
-        //             <li key={index}>{scheme.scheme_name}</li>
-        //           ))}
-        //         </ul>
-        //       );
-        //     }
-        //     return "No schemes available";
-        //   },
-        // },
 
         {
           dataField: "payment_status",
@@ -602,6 +568,7 @@ class PendingLabs extends Component {
       email_participant: values.email_participant,
       landline_registered_by: values.landline_registered_by,
       payment_status: values.payment_status,
+      payment_settlement: values.payment_settlement,
     };
 
     this.props.onupdateAllLabs(updatedData); // Dispatch update action
@@ -727,56 +694,6 @@ class PendingLabs extends Component {
     }
   }
 
-  // setInitialDropdownValue = () => {
-  //   const { pathname } = this.props.history.location;
-  //   const { organization_name } = this.state; // Now it's properly updated
-
-  //   let selectedValue = "Pending Participant"; // Default
-
-  //   if (pathname.includes(`/${organization_name}/pending-participant`)) {
-  //     selectedValue = "Pending Participant";
-  //   } else if (pathname.includes(`/${organization_name}/approved-participant`)) {
-  //     selectedValue = "Approved Participant";
-  //   } else if (pathname.includes(`/${organization_name}/unapproved-participant`)) {
-  //     selectedValue = "Unapproved Participant";
-  //   } else if (pathname.includes(`/${organization_name}/suspended-participant`)) {
-  //     selectedValue = "Suspended Participant"; // New case added
-  //   } else if (pathname.includes(`/${organization_name}/all-participant`)) {
-  //     selectedValue = "All Participant";
-  //   }
-
-  //   this.setState({ selectedValue });
-  // };
-
-  // setInitialDropdownValue = () => {
-  //   const { pathname } = this.props.history.location;
-  //   let selectedValue = "";
-
-  //   if (
-  //     pathname.includes(`/${this.state.organization_name}/pending-participant`)
-  //   ) {
-  //     selectedValue = "Pending Participant";
-  //   } else if (
-  //     pathname.includes(`/${this.state.organization_name}/approved-participant`)
-  //   ) {
-  //     selectedValue = "Approved Participant";
-  //   } else if (
-  //     pathname.includes(`/${this.state.organization_name}/unapproved-participant`)
-  //   ) {
-  //     selectedValue = "Unapproved Participant";
-  //   } else if (
-  //     pathname.includes(`/${this.state.organization_name}/suspended-labs`)
-  //   ) {
-  //     selectedValue = "Suspended Participant";
-  //   } else if (
-  //     pathname.includes(`/${this.state.organization_name}/all-participant`)
-  //   ) {
-  //     selectedValue = "All Participant";
-  //   }
-
-  //   this.setState({ selectedValue });
-  // };
-
   openPatientModal = (e, arg) => {
     this.setState({
       PatientModal: true,
@@ -801,6 +718,7 @@ class PendingLabs extends Component {
       email_participant: data.email_participant,
       landline_registered_by: data.landline_registered_by,
       payment_status: data.payment_status,
+      payment_settlement: data.payment_settlement,
     });
   };
   toggleLabModal = () => {
@@ -921,7 +839,8 @@ class PendingLabs extends Component {
       { key: "city", label: "City" },
       { key: "lab_staff_name", label: "Name of Notification Person" },
       { key: "phone", label: "Contact No of Notification Person" },
-      { key: "payment_status", label: "Payment Status" }, // This will show "N/A" if it doesn’t exist
+      { key: "payment_status", label: "Payment Status" },
+      { key: "payment_settlement", label: "Payment Settlement" },
     ];
 
     const dataToExport = AllLabs.map(item => {
@@ -941,32 +860,6 @@ class PendingLabs extends Component {
 
     saveAs(data, "Filtered_Participants.xlsx");
   };
-
-  // handleSelectChange = (event) => {
-  //   const selectedValue = event.target.value;
-  //   console.log("handleSelectChange triggered with:", selectedValue);
-  //   const { organization_name } = this.state;
-
-  //   // Update the state and apply filters
-  //   this.setState({ selectedValue }, () => {
-  //     console.log("State updated. Now calling applyFilters.");
-  //     // Apply filters after state is updated
-  //     this.applyFilters();
-
-  //     // Navigate based on the selected value
-  //     if (selectedValue === "Pending Participant") {
-  //       this.props.history.push(`/${organization_name}/pending-participant`);
-  //     } else if (selectedValue === "Approved Participant") {
-  //       this.props.history.push(`/${organization_name}/approved-participant`);
-  //     } else if (selectedValue === "Suspended Participant") { // New condition added
-  //       this.props.history.push(`/${organization_name}/suspended-participant`);
-  //     } else if (selectedValue === "Unapproved Participant") {
-  //       this.props.history.push(`/${organization_name}/unapproved-participant`);
-  //     } else if (selectedValue === "All Participant") {
-  //       this.props.history.push(`/${organization_name}/all-participant`);
-  //     }
-  //   });
-  // };
 
   render() {
     console.log("Rendering table with data:", this.state.filteredLabs);
@@ -1134,18 +1027,7 @@ class PendingLabs extends Component {
                                   </div>
                                 </Col>
                               </Row>
-                              <Row className="mb-2 mt-3">
-                                {/* <Col sm="4">
-                                  <div className="search-box ms-2 mb-2 d-inline-block">
-                                    <div className="position-relative">
-                                      <SearchBar
-                                        {...toolkitprops.searchProps}
-                                      />
-                                      <i className="bx bx-search-alt search-icon" />
-                                    </div>
-                                  </div>
-                                </Col> */}
-                              </Row>
+                              <Row className="mb-2 mt-3"></Row>
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
@@ -1333,7 +1215,7 @@ class PendingLabs extends Component {
                                                 <div className="mb-3 row">
                                                   <div className="col-md-3">
                                                     <Label className="form-label">
-                                                      Login Email
+                                                      Email
                                                     </Label>
                                                   </div>
                                                   <div className="col-md-9">
@@ -1434,6 +1316,8 @@ class PendingLabs extends Component {
                                               this.state.landline_registered_by,
                                             payment_status:
                                               this.state.payment_status,
+                                            payment_settlement:
+                                              this.state.payment_settlement,
                                           }}
                                           onSubmit={this.handleEditSubmit}
                                         >
@@ -1471,11 +1355,7 @@ class PendingLabs extends Component {
                                                       name="email"
                                                       className="form-control"
                                                       placeholder="Enter Email"
-                                                      readOnly
-                                                      style={{
-                                                        backgroundColor:
-                                                          "#f0f0f0",
-                                                      }} // Light grey
+                                                      onChange={handleChange}
                                                     />
                                                   </div>
 
@@ -1685,9 +1565,13 @@ class PendingLabs extends Component {
                                                 ?.id || "",
                                             paydate: "",
                                             payment_status: "", // No default
+                                            payment_settlement: "",
                                             // is_active: false,      // default inactive
                                             paymentmethod: "",
+                                            taxDeduction: 0,
                                             scheme: [],
+                                            part_payment_amount: "",
+                                            remaining_amount: "",
                                             price: "",
                                             discount: 0,
                                             receivedby: "",
@@ -1705,32 +1589,134 @@ class PendingLabs extends Component {
                                             participant: Yup.string().required(
                                               "Participant is required"
                                             ),
+                                            taxDeduction: Yup.number()
+                                              .min(0)
+                                              .max(100)
+                                              .required(),
                                             scheme: Yup.array().min(
                                               1,
                                               "At least one scheme must be selected"
                                             ),
-                                            payment_status:
-                                              Yup.string().required(
-                                                "Payment status is required"
-                                              ),
-                                            price:
-                                              Yup.string().required(
-                                                "Price is required"
-                                              ),
-                                            paydate:
-                                              Yup.string().required(
-                                                "Date is required"
-                                              ),
-                                            photo: Yup.string().required(
-                                              "Deposit Slip is required"
+                                            price: Yup.string().when(
+                                              "discount",
+                                              {
+                                                is: discount =>
+                                                  discount === 100,
+                                                then: Yup.string()
+                                                  .test(
+                                                    "price-zero-if-100-discount",
+                                                    "Price must be 0 if discount is 100%",
+                                                    value =>
+                                                      parseFloat(value) === 0
+                                                  )
+                                                  .required(),
+                                                otherwise:
+                                                  Yup.string().required(
+                                                    "Price is required"
+                                                  ),
+                                              }
                                             ),
-                                            receivedby: Yup.string().required(
-                                              "Received By is required"
+
+                                            payment_status: Yup.string().when(
+                                              ["discount", "price"],
+                                              {
+                                                is: (discount, price) =>
+                                                  !(
+                                                    discount === 100 &&
+                                                    parseFloat(price) === 0
+                                                  ),
+                                                then: Yup.string().required(
+                                                  "Payment status is required"
+                                                ),
+                                                otherwise:
+                                                  Yup.string().notRequired(),
+                                              }
                                             ),
-                                            paymentmethod:
-                                              Yup.string().required(
-                                                "Payment Method is required"
-                                              ),
+
+                                            paydate: Yup.string().when(
+                                              ["discount", "price"],
+                                              {
+                                                is: (discount, price) =>
+                                                  !(
+                                                    discount === 100 &&
+                                                    parseFloat(price) === 0
+                                                  ),
+                                                then: Yup.string().required(
+                                                  "Date is required"
+                                                ),
+                                                otherwise:
+                                                  Yup.string().notRequired(),
+                                              }
+                                            ),
+
+                                            photo: Yup.mixed().when(
+                                              ["discount", "price"],
+                                              {
+                                                is: (discount, price) =>
+                                                  !(
+                                                    discount === 100 &&
+                                                    parseFloat(price) === 0
+                                                  ),
+                                                then: Yup.mixed()
+                                                  .required(
+                                                    "Deposit Slip is required"
+                                                  )
+                                                  .test(
+                                                    "fileSize",
+                                                    "File too large",
+                                                    value =>
+                                                      value &&
+                                                      value.size <=
+                                                        2 * 1024 * 1024
+                                                  )
+                                                  .test(
+                                                    "fileType",
+                                                    "Unsupported file format",
+                                                    value =>
+                                                      value &&
+                                                      [
+                                                        "image/jpeg",
+                                                        "image/png",
+                                                        "image/jpg",
+                                                        "application/pdf",
+                                                      ].includes(value.type)
+                                                  ),
+                                                otherwise:
+                                                  Yup.mixed().notRequired(),
+                                              }
+                                            ),
+
+                                            receivedby: Yup.string().when(
+                                              ["discount", "price"],
+                                              {
+                                                is: (discount, price) =>
+                                                  !(
+                                                    discount === 100 &&
+                                                    parseFloat(price) === 0
+                                                  ),
+                                                then: Yup.string().required(
+                                                  "Received By is required"
+                                                ),
+                                                otherwise:
+                                                  Yup.string().notRequired(),
+                                              }
+                                            ),
+
+                                            paymentmethod: Yup.string().when(
+                                              ["discount", "price"],
+                                              {
+                                                is: (discount, price) =>
+                                                  !(
+                                                    discount === 100 &&
+                                                    parseFloat(price) === 0
+                                                  ),
+                                                then: Yup.string().required(
+                                                  "Payment Method is required"
+                                                ),
+                                                otherwise:
+                                                  Yup.string().notRequired(),
+                                              }
+                                            ),
                                             discount: Yup.number()
                                               .min(
                                                 0,
@@ -1758,22 +1744,53 @@ class PendingLabs extends Component {
                                             const roundedPrice = Math.round(
                                               parseFloat(values.price)
                                             );
+                                            const safePaydate =
+                                              values.paydate &&
+                                              values.paydate.trim() !== ""
+                                                ? values.paydate
+                                                : null;
                                             const AddPayment = {
                                               participant: values.participant,
                                               scheme: values.scheme,
                                               price: roundedPrice,
                                               payment_status:
                                                 values.payment_status,
+
+                                              payment_settlement:
+                                                values.payment_settlement,
                                               // is_active: values.is_active, // Pass this to backend
                                               discount: values.discount,
-                                              paydate: values.paydate,
+                                              paydate: safePaydate,
                                               photo: values.photo,
                                               receivedby: values.receivedby,
                                               paymentmethod:
                                                 values.paymentmethod,
                                               added_by: userId,
                                             };
+                                            // Conditionally add remaining_amount only if payment_settlement === 'part'
+                                            if (
+                                              values.payment_settlement ===
+                                              "Part"
+                                            ) {
+                                              const remaining = parseFloat(
+                                                values.remaining_amount
+                                              );
+                                              if (!isNaN(remaining)) {
+                                                AddPayment.remaining_amount =
+                                                  remaining;
+                                              }
+                                            }
 
+                                            if (
+                                              values.discount === 100 &&
+                                              parseFloat(values.price) === 0
+                                            ) {
+                                              delete AddPayment.payment_status;
+                                              delete AddPayment.paydate;
+                                              delete AddPayment.photo;
+                                              delete AddPayment.receivedby;
+                                              delete AddPayment.paymentmethod;
+                                            }
                                             try {
                                               await this.props.onAddNewPayment(
                                                 userId,
@@ -1816,6 +1833,7 @@ class PendingLabs extends Component {
                                             errors,
                                             touched,
                                             setFieldValue,
+                                            submitForm, // <-- add this
                                           }) => {
                                             const handleSchemeChange =
                                               selectedOptions => {
@@ -1871,66 +1889,92 @@ class PendingLabs extends Component {
                                               let discountValue = parseFloat(
                                                 e.target.value
                                               );
-
-                                              // Ensure discountValue is valid, if not set to 0
                                               if (
                                                 isNaN(discountValue) ||
                                                 discountValue < 0
-                                              ) {
+                                              )
                                                 discountValue = 0;
-                                              }
 
-                                              // Update the discount field
                                               setFieldValue(
                                                 "discount",
                                                 discountValue
                                               );
 
-                                              // Use priceBeforeDiscount for calculations
                                               const priceBeforeDiscount =
                                                 parseFloat(
                                                   values.priceBeforeDiscount
                                                 ) || 0;
 
-                                              // Calculate the discounted price
+                                              // Apply discount
                                               const discountedPrice =
-                                                priceBeforeDiscount -
-                                                (priceBeforeDiscount *
-                                                  discountValue) /
-                                                  100;
-
-                                              // Calculate the discount amount in rupees
+                                                priceBeforeDiscount *
+                                                (1 - discountValue / 100);
                                               const discountAmount =
-                                                (priceBeforeDiscount *
-                                                  discountValue) /
-                                                100;
+                                                priceBeforeDiscount -
+                                                discountedPrice;
 
-                                              // Update the price (price after discount) and discount amount
-                                              setFieldValue(
-                                                "price",
-                                                discountedPrice.toFixed(2)
-                                              );
+                                              // Apply tax deduction if exists
+                                              const taxDeduction =
+                                                parseFloat(
+                                                  values.taxDeduction
+                                                ) || 0;
+                                              const finalPrice =
+                                                discountedPrice *
+                                                (1 - taxDeduction / 100);
+
                                               setFieldValue(
                                                 "discountAmount",
                                                 discountAmount.toFixed(2)
                                               );
+                                              setFieldValue(
+                                                "price",
+                                                finalPrice.toFixed(2)
+                                              );
 
-                                              console.log(
-                                                "Discount Value:",
-                                                discountValue
-                                              ); // Debugging
-                                              console.log(
-                                                "Price Before Discount:",
-                                                priceBeforeDiscount
-                                              ); // Debugging
-                                              console.log(
-                                                "Price After Discount:",
-                                                discountedPrice
-                                              ); // Debugging
-                                              console.log(
-                                                "Discount Amount:",
-                                                discountAmount
-                                              ); // Debugging
+                                              if (discountValue === 100) {
+                                                submitForm();
+                                              }
+                                            };
+
+                                            const handleTaxChange = e => {
+                                              let taxDeduction = parseFloat(
+                                                e.target.value
+                                              );
+                                              if (
+                                                isNaN(taxDeduction) ||
+                                                taxDeduction < 0
+                                              )
+                                                taxDeduction = 0;
+                                              if (taxDeduction > 100)
+                                                taxDeduction = 100;
+
+                                              setFieldValue(
+                                                "taxDeduction",
+                                                taxDeduction
+                                              );
+
+                                              const priceBeforeDiscount =
+                                                parseFloat(
+                                                  values.priceBeforeDiscount
+                                                ) || 0;
+                                              const discount =
+                                                parseFloat(values.discount) ||
+                                                0;
+
+                                              // Apply discount
+                                              const discountedPrice =
+                                                priceBeforeDiscount *
+                                                (1 - discount / 100);
+
+                                              // Apply tax deduction
+                                              const finalPrice =
+                                                discountedPrice *
+                                                (1 - taxDeduction / 100);
+
+                                              setFieldValue(
+                                                "price",
+                                                finalPrice.toFixed(2)
+                                              );
                                             };
 
                                             return (
@@ -1940,49 +1984,6 @@ class PendingLabs extends Component {
                                                     {errors.successMessage}
                                                   </Alert>
                                                 )}
-
-                                                {/* <Row>
-                                                  <Col>
-                                                    <Label>Participant</Label>
-                                                    <Select
-                                                      name="participant"
-                                                      value={
-                                                        this.state
-                                                          .selectedParticipant
-                                                          ?.name || "Unknown"
-                                                      }
-                                                      readOnly
-                                                      className={
-                                                        errors.participant &&
-                                                        touched.participant
-                                                          ? "is-invalid"
-                                                          : ""
-                                                      }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
-                                                        setFieldValue(
-                                                          "participant",
-                                                          selectedOption?.value ||
-                                                            ""
-                                                        );
-                                                      }}
-                                                      // value={
-                                                      //   participantOptions.find(
-                                                      //     (option) =>
-                                                      //       option.value ===
-                                                      //       values.participant
-                                                      //   ) || null
-                                                      // }
-                                                    />
-                                                    <ErrorMessage
-                                                      name="participant"
-                                                      component="div"
-                                                      className="invalid-feedback"
-                                                    />
-                                                  </Col>
-                                                </Row> */}
-
                                                 <Row>
                                                   <Col>
                                                     <Label>Scheme</Label>
@@ -2067,35 +2068,31 @@ class PendingLabs extends Component {
                                                   <Col>
                                                     <div className="mb-3">
                                                       <Label
-                                                        for="priceBeforeDiscount"
+                                                        htmlFor="priceBeforeDiscount"
                                                         className="form-label"
                                                       >
-                                                        Price before Discount
+                                                        Payable
                                                       </Label>
-                                                      <Field
-                                                        name="priceBeforeDiscount"
-                                                        type="text"
-                                                        placeholder="Enter price"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.priceBeforeDiscount &&
-                                                          touched.priceBeforeDiscount
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                        value={new Intl.NumberFormat(
-                                                          "en-US"
-                                                        ).format(
-                                                          values.priceBeforeDiscount ||
-                                                            0
-                                                        )} // Format the value
-                                                        readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
-                                                      />
-
+                                                      <Field name="priceBeforeDiscount">
+                                                        {({ field }) => (
+                                                          <input
+                                                            {...field}
+                                                            type="text"
+                                                            className="form-control"
+                                                            value={new Intl.NumberFormat(
+                                                              "en-PK"
+                                                            ).format(
+                                                              values.priceBeforeDiscount ||
+                                                                0
+                                                            )}
+                                                            readOnly
+                                                            style={{
+                                                              backgroundColor:
+                                                                "#e9ecef",
+                                                            }}
+                                                          />
+                                                        )}
+                                                      </Field>
                                                       <ErrorMessage
                                                         name="priceBeforeDiscount"
                                                         component="div"
@@ -2106,113 +2103,376 @@ class PendingLabs extends Component {
                                                 </Row>
 
                                                 <Row>
-                                                  <Col>
+                                                  <Col md={6}>
                                                     <Label>
                                                       Discount in (%)
                                                     </Label>
-                                                    <Field
-                                                      name="discount"
-                                                      type="number"
-                                                      className="form-control"
-                                                      onChange={
-                                                        handleDiscountChange
-                                                      }
-                                                    />
+                                                    <Field name="discount">
+                                                      {({ field }) => (
+                                                        <input
+                                                          {...field}
+                                                          type="text"
+                                                          className="form-control"
+                                                          onChange={e => {
+                                                            const discountPercent =
+                                                              parseFloat(
+                                                                e.target.value
+                                                              );
+                                                            setFieldValue(
+                                                              "discount",
+                                                              e.target.value
+                                                            );
+
+                                                            const payable =
+                                                              parseFloat(
+                                                                values.priceBeforeDiscount
+                                                              ) || 0;
+                                                            if (
+                                                              !isNaN(
+                                                                discountPercent
+                                                              )
+                                                            ) {
+                                                              const discountAmount =
+                                                                (payable *
+                                                                  discountPercent) /
+                                                                100;
+                                                              setFieldValue(
+                                                                "discountAmount",
+                                                                discountAmount.toFixed(
+                                                                  2
+                                                                )
+                                                              );
+                                                              const tax =
+                                                                parseFloat(
+                                                                  values.taxDeduction
+                                                                ) || 0;
+                                                              const finalPrice =
+                                                                payable -
+                                                                discountAmount -
+                                                                tax;
+                                                              setFieldValue(
+                                                                "price",
+                                                                finalPrice.toFixed(
+                                                                  2
+                                                                )
+                                                              );
+                                                            }
+                                                          }}
+                                                        />
+                                                      )}
+                                                    </Field>
                                                     <ErrorMessage
                                                       name="discount"
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
                                                   </Col>
+
+                                                  <Col md={6}>
+                                                    <Label>
+                                                      Discount Amount (Rs)
+                                                    </Label>
+                                                    <Field name="discountAmount">
+                                                      {({ field }) => (
+                                                        <input
+                                                          {...field}
+                                                          type="text"
+                                                          className="form-control"
+                                                          value={
+                                                            field.value || ""
+                                                          } // Ensures controlled input
+                                                          onChange={e => {
+                                                            const discountAmount =
+                                                              parseFloat(
+                                                                e.target.value
+                                                              );
+                                                            setFieldValue(
+                                                              "discountAmount",
+                                                              e.target.value
+                                                            );
+
+                                                            const payable =
+                                                              parseFloat(
+                                                                values.priceBeforeDiscount
+                                                              ) || 0;
+                                                            if (
+                                                              !isNaN(
+                                                                discountAmount
+                                                              ) &&
+                                                              payable > 0
+                                                            ) {
+                                                              const percent =
+                                                                (discountAmount /
+                                                                  payable) *
+                                                                100;
+                                                              setFieldValue(
+                                                                "discount",
+                                                                percent.toFixed(
+                                                                  2
+                                                                )
+                                                              );
+                                                              const tax =
+                                                                parseFloat(
+                                                                  values.taxDeduction
+                                                                ) || 0;
+                                                              const finalPrice =
+                                                                payable -
+                                                                discountAmount -
+                                                                tax;
+                                                              setFieldValue(
+                                                                "price",
+                                                                finalPrice.toFixed(
+                                                                  2
+                                                                )
+                                                              );
+                                                            }
+                                                          }}
+                                                        />
+                                                      )}
+                                                    </Field>
+
+                                                    <ErrorMessage
+                                                      name="discountAmount"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
                                                 </Row>
+
+                                                <Row>
+                                                  <Col>
+                                                    <Label>
+                                                      Tax Deduction Amount
+                                                    </Label>
+                                                    <Field name="taxDeduction">
+                                                      {({ field }) => (
+                                                        <input
+                                                          {...field}
+                                                          type="text"
+                                                          className="form-control"
+                                                          placeholder="Enter tax deduction amount"
+                                                          onChange={e => {
+                                                            const tax =
+                                                              parseFloat(
+                                                                e.target.value
+                                                              );
+                                                            setFieldValue(
+                                                              "taxDeduction",
+                                                              e.target.value
+                                                            );
+
+                                                            const payable =
+                                                              parseFloat(
+                                                                values.priceBeforeDiscount
+                                                              ) || 0;
+                                                            const discount =
+                                                              parseFloat(
+                                                                values.discountAmount
+                                                              ) || 0;
+                                                            if (!isNaN(tax)) {
+                                                              const finalPrice =
+                                                                payable -
+                                                                discount -
+                                                                tax;
+                                                              setFieldValue(
+                                                                "price",
+                                                                finalPrice.toFixed(
+                                                                  2
+                                                                )
+                                                              );
+                                                            }
+                                                          }}
+                                                        />
+                                                      )}
+                                                    </Field>
+                                                    <ErrorMessage
+                                                      name="taxDeduction"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+                                                </Row>
+
                                                 <Row>
                                                   <Col>
                                                     <div className="mb-3">
                                                       <Label
-                                                        for="discountAmount"
+                                                        htmlFor="price"
                                                         className="form-label"
                                                       >
-                                                        Discount Amount (Rs)
+                                                        Payable after Discount &
+                                                        Tax Deduction
                                                       </Label>
-                                                      <Field
-                                                        name="discountAmount"
-                                                        type="text"
-                                                        placeholder="Discount amount"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.discountAmount &&
-                                                          touched.discountAmount
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                        value={new Intl.NumberFormat(
-                                                          "en-US",
-                                                          {
-                                                            style: "currency",
-                                                            currency: "PKR",
+                                                      <Field name="price">
+                                                        {({ field }) => (
+                                                          <input
+                                                            {...field}
+                                                            type="text"
+                                                            className="form-control"
+                                                            value={new Intl.NumberFormat(
+                                                              "en-PK",
+                                                              {
+                                                                style:
+                                                                  "currency",
+                                                                currency: "PKR",
+                                                              }
+                                                            ).format(
+                                                              values.price || 0
+                                                            )}
+                                                            readOnly
+                                                            style={{
+                                                              backgroundColor:
+                                                                "#e9ecef",
+                                                            }}
+                                                          />
+                                                        )}
+                                                      </Field>
+                                                      <ErrorMessage
+                                                        name="price"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </div>
+                                                  </Col>
+                                                </Row>
+
+                                                <Col>
+                                                  <Label>
+                                                    Payment Settlement
+                                                  </Label>
+                                                  <Select
+                                                    name="payment_settlement"
+                                                    options={[
+                                                      {
+                                                        value: "Full",
+                                                        label: "Full",
+                                                      },
+                                                      {
+                                                        value: "Part",
+                                                        label: "Part",
+                                                      },
+                                                    ]}
+                                                    onChange={selectedOption => {
+                                                      const settlement =
+                                                        selectedOption?.value ||
+                                                        "";
+                                                      setFieldValue(
+                                                        "payment_settlement",
+                                                        settlement
+                                                      );
+
+                                                      if (
+                                                        settlement === "Full" ||
+                                                        settlement === "Part"
+                                                      ) {
+                                                        setFieldValue(
+                                                          "is_active",
+                                                          true
+                                                        );
+                                                      }
+                                                    }}
+                                                    value={
+                                                      values.payment_settlement
+                                                        ? {
+                                                            value:
+                                                              values.payment_settlement,
+                                                            label:
+                                                              values.payment_settlement,
                                                           }
-                                                        ).format(
-                                                          values.discountAmount ||
-                                                            0
-                                                        )} // Format the value as currency
-                                                        readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
-                                                      />
+                                                        : null
+                                                    }
+                                                    placeholder="Select"
+                                                    className={
+                                                      errors.payment_settlement &&
+                                                      touched.payment_settlement
+                                                        ? "is-invalid"
+                                                        : ""
+                                                    }
+                                                  />
+                                                  <ErrorMessage
+                                                    name="payment_settlement"
+                                                    component="div"
+                                                    className="invalid-feedback"
+                                                  />
+                                                </Col>
+                                                {values.payment_settlement ===
+                                                  "Part" && (
+                                                  <>
+                                                    <Col className="mt-3">
+                                                      <Label>
+                                                        Part Payment Amount
+                                                      </Label>
+                                                      <Field name="part_payment_amount">
+                                                        {({ field }) => (
+                                                          <input
+                                                            {...field}
+                                                            type="number"
+                                                            className={
+                                                              errors.part_payment_amount &&
+                                                              touched.part_payment_amount
+                                                                ? "form-control is-invalid"
+                                                                : "form-control"
+                                                            }
+                                                            value={
+                                                              field.value ===
+                                                                undefined ||
+                                                              field.value ===
+                                                                null
+                                                                ? ""
+                                                                : field.value
+                                                            } // safest check
+                                                            onChange={e => {
+                                                              const partAmount =
+                                                                parseFloat(
+                                                                  e.target.value
+                                                                ) || 0;
+                                                              const totalAmount =
+                                                                parseFloat(
+                                                                  values.price
+                                                                ) || 0;
+                                                              const remaining =
+                                                                totalAmount -
+                                                                partAmount;
+
+                                                              setFieldValue(
+                                                                "part_payment_amount",
+                                                                e.target.value
+                                                              );
+                                                              setFieldValue(
+                                                                "remaining_amount",
+                                                                remaining >= 0
+                                                                  ? remaining
+                                                                  : 0
+                                                              );
+                                                            }}
+                                                          />
+                                                        )}
+                                                      </Field>
+
                                                       <ErrorMessage
-                                                        name="discountAmount"
+                                                        name="part_payment_amount"
                                                         component="div"
                                                         className="invalid-feedback"
                                                       />
-                                                    </div>
-                                                  </Col>
-                                                </Row>
+                                                    </Col>
 
-                                                <Row>
-                                                  <Col>
-                                                    <div className="mb-3">
-                                                      <Label
-                                                        for="price"
-                                                        className="form-label"
-                                                      >
-                                                        Price after Discount
+                                                    <Col className="mt-3">
+                                                      <Label>
+                                                        Remaining Amount
                                                       </Label>
                                                       <Field
-                                                        name="price"
-                                                        type="text"
-                                                        placeholder="Enter price"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.price &&
-                                                          touched.price
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                        value={new Intl.NumberFormat(
-                                                          "en-US"
-                                                        ).format(
-                                                          values.price || 0
-                                                        )} // Format the value
-                                                        readOnly
-                                                        style={{
-                                                          backgroundColor:
-                                                            "#e9ecef",
-                                                        }} // Slightly darker grey background
+                                                        name="remaining_amount"
+                                                        type="number"
+                                                        disabled
+                                                        className="form-control"
                                                       />
-                                                      <ErrorMessage
-                                                        name="price"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                  </Col>
-                                                </Row>
+                                                    </Col>
+                                                  </>
+                                                )}
 
                                                 <Row>
                                                   <Col>
-                                                    <Label>Check/Transaction Date</Label>
+                                                    <Label>Pay Date</Label>
                                                     <Field
                                                       name="paydate"
                                                       type="date"
@@ -2234,7 +2494,7 @@ class PendingLabs extends Component {
                                                       name="photo"
                                                       type="file"
                                                       multiple={false}
-                                                      accept=".jpg,.jpeg,.png"
+                                                      accept=".jpg,.jpeg,.png,.pdf"
                                                       onChange={event =>
                                                         this.handleFileChange(
                                                           event,
@@ -2249,6 +2509,17 @@ class PendingLabs extends Component {
                                                           : "")
                                                       }
                                                     />
+                                                    {/* Note below the input */}
+                                                    <small
+                                                      style={{
+                                                        color: "#007bff",
+                                                      }}
+                                                    >
+                                                      Only JPEG, PNG, or PDF
+                                                      files up to 2MB in size
+                                                      are allowed.
+                                                    </small>
+
                                                     <ErrorMessage
                                                       name="photo"
                                                       component="div"
@@ -2308,6 +2579,8 @@ class PendingLabs extends Component {
                                                       className="invalid-feedback"
                                                     />
                                                   </Col>
+                                                </Row>
+                                                <Row>
                                                   <Col>
                                                     <Label>
                                                       Payment Status
@@ -2332,6 +2605,7 @@ class PendingLabs extends Component {
                                                           "payment_status",
                                                           status
                                                         );
+
                                                         if (
                                                           status === "Paid" ||
                                                           status ===
@@ -2340,7 +2614,7 @@ class PendingLabs extends Component {
                                                           setFieldValue(
                                                             "is_active",
                                                             true
-                                                          ); // Mark as active on payment
+                                                          );
                                                         }
                                                       }}
                                                       value={
@@ -2351,11 +2625,9 @@ class PendingLabs extends Component {
                                                               label:
                                                                 values.payment_status,
                                                             }
-                                                          : {
-                                                              value: "Paid",
-                                                              label: "Paid",
-                                                            }
+                                                          : null
                                                       }
+                                                      placeholder="Select"
                                                       className={
                                                         errors.payment_status &&
                                                         touched.payment_status
