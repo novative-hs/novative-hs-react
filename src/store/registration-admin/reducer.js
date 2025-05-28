@@ -48,7 +48,7 @@ const registrationAdmin = (state = INIT_STATE, action) => {
     case UPDATE_MEMBERSHIP_STATUS_SUCCESS:
       return {
         ...state,
-        Membershipstatus: state.Membershipstatus.map((status) =>
+        Membershipstatus: state.Membershipstatus.map(status =>
           status.id.toString() === action.payload.id.toString()
             ? { status, ...action.payload }
             : status
@@ -81,7 +81,7 @@ const registrationAdmin = (state = INIT_STATE, action) => {
     case UPDATE_LABS_SUCCESS:
       return {
         ...state,
-        updateAllLabs: state.updateAllLabs.map((status) =>
+        updateAllLabs: state.updateAllLabs.map(status =>
           status.id.toString() === action.payload.id.toString()
             ? { status, ...action.payload }
             : status

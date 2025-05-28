@@ -60,7 +60,6 @@ function* onupdateMembershipStatus({ payload: status }) {
   }
 }
 
-
 function* fetchAllLabs(action) {
   try {
     console.log('[Saga] fetchAllLabs started with payload:', action.payload);

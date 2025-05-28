@@ -272,6 +272,16 @@ class ParticipantListN extends Component {
                     <i className="mdi mdi-pencil font-size-18"></i>
                   </Link>
                 </Tooltip>
+                {/* {/ Revert Status Button /} */}
+                                <Tooltip title="Membership Status">
+                                  <Link
+                                    className=""
+                                    to="#"
+                                    onClick={() => this.isMembershipModalOpen(AllLabs)} // Opens the Approved/Unapproved modal
+                                  >
+                                    <i className="mdi mdi-refresh font-size-14"></i>
+                                  </Link>
+                                </Tooltip>
               <Tooltip title="Delete">
   <button
     className="btn btn-link text-danger p-0"
