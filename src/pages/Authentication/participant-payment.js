@@ -193,6 +193,7 @@ class ParticipantPayments extends Component {
           dataField: "discountAmount",
           text: " Discount Amount",
           sort: true,
+          style: { textAlign: "right" },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -216,6 +217,7 @@ class ParticipantPayments extends Component {
           dataField: "taxDeduction",
           text: "Tax",
           sort: true,
+          style: { textAlign: "right" },
           formatter: cell => Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
@@ -240,6 +242,7 @@ class ParticipantPayments extends Component {
           dataField: "price",
           text: "Final Price",
           sort: true,
+          style: { textAlign: "right" },
           formatter: (cell, row) => {
             const price = parseFloat(row.price) || 0;
             const discount = parseFloat(row.discount) || 0;
@@ -249,7 +252,7 @@ class ParticipantPayments extends Component {
 
             // Format with comma and 2 decimal places
             return payable.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
+              minimumFractionDigits: 0,
               maximumFractionDigits: 2,
             });
           },
@@ -324,9 +327,15 @@ class ParticipantPayments extends Component {
           ),
         },
         {
-          dataField: "part_payment_amount",
+          dataField: "part_payment_amount", // Keep the field for filtering/sorting purposes
           text: "Paid Amount",
           sort: true,
+          style: { textAlign: "right" },
+          formatter: (cell, row) => {
+            return row.payment_settlement === "Full"
+              ? row.price
+              : row.part_payment_amount;
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -352,6 +361,7 @@ class ParticipantPayments extends Component {
           dataField: "remaining_amount",
           text: "Remaining Amount",
           sort: true,
+          style: { textAlign: "right" },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -438,11 +448,11 @@ class ParticipantPayments extends Component {
           formatter: cell => {
             if (!cell) return "-";
             const dateObj = new Date(cell);
-            if (isNaN(dateObj)) return "-";
+            if (isNaN(dateObj.getTime())) return "-";
 
             const day = String(dateObj.getDate()).padStart(2, "0");
-            const month = dateObj.toLocaleString("en-US", { month: "short" });
-            const year = dateObj.getFullYear();
+            const month = dateObj.toLocaleString("en-US", { month: "short" }); // Capitalized month
+            const year = String(dateObj.getFullYear()).slice(-2); // Last two digits of the year
 
             return `${day}-${month}-${year}`;
           },
@@ -643,10 +653,6 @@ class ParticipantPayments extends Component {
             <Row className="justify-content-center align-item-center">
               <Col lg="10">
                 {" "}
-                <p>
-                  <strong>Note:</strong> Click on Scheme Number to get detail of
-                  each participants payments
-                </p>
                 <Card>
                   <CardBody>
                     <PaginationProvider
