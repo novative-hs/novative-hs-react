@@ -530,7 +530,7 @@ const generateLabCode = () => {
                             .required("Please enter name")
                             .min(3, "Name must be at least 3 characters")
                             .max(
-                              100,
+                              255,
                               "Name can't be longer than 100 characters"
                             ),
 
