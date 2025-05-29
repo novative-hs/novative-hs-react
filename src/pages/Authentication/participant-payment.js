@@ -237,7 +237,7 @@ class ParticipantPayments extends Component {
         },
         {
           dataField: "price",
-          text: "Final Price",
+          text: "Net Payable",
           sort: true,
           formatter: (cell, row) => {
             const price = parseFloat(row.price) || 0;
