@@ -27,6 +27,7 @@ class ParticipantPayments extends Component {
       schemeFilter: "",
       amountFilter: "",
       discountFilter: "",
+      schemepriceFilter: "",
       TaxFilter: "",
       paymentmodeFilter: "",
       dateFilter: "",
@@ -161,7 +162,7 @@ class ParticipantPayments extends Component {
           ),
         },
         {
-          dataField: "price",
+          dataField: "priceBeforeDiscount",
           text: "Payable",
           sort: true,
           style: { textAlign: "right" },
@@ -172,8 +173,10 @@ class ParticipantPayments extends Component {
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.amountFilter}
-                  onChange={e => this.handleFilterChange("amountFilter", e)}
+                  value={this.state.schemepriceFilter}
+                  onChange={e =>
+                    this.handleFilterChange("schemepriceFilter", e)
+                  }
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -208,10 +211,11 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
-         {
+        {
           dataField: "taxDeduction",
           text: "Tax",
           sort: true,
+          formatter: cell => Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -231,39 +235,42 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
-       {
-  dataField: "price",
-  text: "Payable",
-  sort: true,
-  formatter: (cell, row) => {
-    const price = parseFloat(row.price) || 0;
-    const discount = parseFloat(row.discount) || 0;
-    const tax = parseFloat(row.tax) || 0;
+        {
+          dataField: "price",
+          text: "Final Price",
+          sort: true,
+          formatter: (cell, row) => {
+            const price = parseFloat(row.price) || 0;
+            const discount = parseFloat(row.discount) || 0;
+            const tax = parseFloat(row.tax) || 0;
 
-    const payable = price - discount - tax;
-    return payable.toFixed(2); // format to 2 decimal places
-  },
-  headerFormatter: (column, colIndex) => (
-    <div style={{ textAlign: "center" }}>
-      <div>{column.text}</div>
-      <div style={{ marginTop: "5px" }}>
-        <input
-          type="text"
-          value={this.state.priceFilter}
-          onChange={e => this.handleFilterChange("priceFilter", e)}
-          className="form-control"
-          style={{
-            textAlign: "center",
-            width: "100px",
-            margin: "auto",
-          }}
-        />
-      </div>
-    </div>
-  ),
-}
-,
+            const payable = price - discount - tax;
 
+            // Format with comma and 2 decimal places
+            return payable.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            });
+          },
+          headerFormatter: (column, colIndex) => (
+            <div style={{ textAlign: "center" }}>
+              <div>{column.text}</div>
+              <div style={{ marginTop: "5px" }}>
+                <input
+                  type="text"
+                  value={this.state.priceFilter}
+                  onChange={e => this.handleFilterChange("priceFilter", e)}
+                  className="form-control"
+                  style={{
+                    textAlign: "center",
+                    width: "100px",
+                    margin: "auto",
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        },
         {
           dataField: "payment_settlement",
           text: "Payment Settlement",
@@ -289,7 +296,7 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
-        
+
         {
           dataField: "payment_status",
           text: "Payment Status",
@@ -315,7 +322,7 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
-         {
+        {
           dataField: "part_payment_amount",
           text: "Paid Amount",
           sort: true,
@@ -497,6 +504,7 @@ class ParticipantPayments extends Component {
         district: payment.district,
         scheme_count: payment.scheme_count, // Display count of schemes
         price: payment.price,
+        priceBeforeDiscount: payment.priceBeforeDiscount,
         discountAmount: payment.discountAmount,
         taxDeduction: payment.taxDeduction,
         payment_settlement: payment.payment_settlement,
@@ -526,6 +534,7 @@ class ParticipantPayments extends Component {
       idFilter,
       districtFilter,
       schemeFilter,
+      schemepriceFilter,
       amountFilter,
       discountFilter,
       TaxFilter,
@@ -544,15 +553,23 @@ class ParticipantPayments extends Component {
         entry.district.toLowerCase().includes(districtFilter.toLowerCase()) &&
         entry.scheme_name.toLowerCase().includes(schemeFilter.toLowerCase()) &&
         entry.price.toLowerCase().includes(amountFilter.toLowerCase()) &&
+        entry.priceBeforeDiscount
+          .toLowerCase()
+          .includes(schemepriceFilter.toLowerCase()) &&
         entry.discount.toLowerCase().includes(discountFilter.toLowerCase()) &&
-        
         entry.taxDeduction.toLowerCase().includes(TaxFilter.toLowerCase()) &&
-        entry.payment_settlement.toLowerCase().includes(paymentmodeFilter.toLowerCase) &&
-        
-        entry.part_payment_amount.toLowerCase().includes(paymentmodeFilter.toLowerCase) &&
-        entry.remaining_amount.toLowerCase().includes(paymentmodeFilter.toLowerCase) &&
-        
-        entry.payment_status.toLowerCase().includes(paymentmodeFilter.toLowerCase) &&
+        entry.payment_settlement
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase) &&
+        entry.part_payment_amount
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase) &&
+        entry.remaining_amount
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase) &&
+        entry.payment_status
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase) &&
         entry.paymentmethod
           .toLowerCase()
           .includes(paymentmodeFilter.toLowerCase()) &&

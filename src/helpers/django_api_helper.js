@@ -1315,6 +1315,7 @@ export const addNewPayment = (payment, id) => {
   formData.append("receivedby", payment.receivedby);
   formData.append("taxDeduction", payment.taxDeduction);
   formData.append("part_payment_amount", payment.part_payment_amount);
+  formData.append("priceBeforeDiscount", payment.priceBeforeDiscount);
   if (payment.remaining_amount !== undefined && payment.remaining_amount !== null) {
     formData.append("remaining_amount", payment.remaining_amount);
   }

@@ -158,7 +158,7 @@ class PendingLabs extends Component {
                 <Link
                   to="#"
                   // onClick={e => this.openLabModal(e, AllLabs)}
-                  onMouseEnter={(e) => this.openLabModal(e, AllLabs)}
+                  onMouseEnter={e => this.openLabModal(e, AllLabs)}
                   onPointerLeave={this.handleMouseExit} // Pass the function reference instead of calling it immediately
                 >
                   {AllLabs.name}
@@ -245,9 +245,9 @@ class PendingLabs extends Component {
             onFilter: (filterValue, data) => {
               // Custom filtering logic
               return data.filter(
-                (row) =>
+                row =>
                   Array.isArray(row.schemes) &&
-                  row.schemes.some((scheme) =>
+                  row.schemes.some(scheme =>
                     scheme.scheme_name
                       .toLowerCase()
                       .includes(filterValue.toLowerCase())
@@ -262,7 +262,7 @@ class PendingLabs extends Component {
               // Create a unique set of scheme names
               const uniqueSchemes = [
                 ...new Map(
-                  row.schemes.map((scheme) => [scheme.scheme_name, scheme])
+                  row.schemes.map(scheme => [scheme.scheme_name, scheme])
                 ).values(),
               ];
 
@@ -431,7 +431,7 @@ class PendingLabs extends Component {
   //  alert(message); // Replace this with your desired success message logic
   // }
 
-  isPaymentModalOpen = (participant) => {
+  isPaymentModalOpen = participant => {
     this.setState(
       {
         isPaymentModalOpen: true,
@@ -441,7 +441,7 @@ class PendingLabs extends Component {
     );
   };
 
-  isMembershipModalOpen = (participant) => {
+  isMembershipModalOpen = participant => {
     console.log("Opening Membership Modal for Participant:", participant); // Debug log
     this.setState(
       {
@@ -473,7 +473,7 @@ class PendingLabs extends Component {
     });
   }
 
-  handleSchemeChange = (event) => {
+  handleSchemeChange = event => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
 
@@ -497,7 +497,7 @@ class PendingLabs extends Component {
       AllLabs,
     });
 
-    const filteredData = AllLabs.filter((lab) => {
+    const filteredData = AllLabs.filter(lab => {
       const membershipStatus = lab.membership_status?.trim().toLowerCase();
       const membershipDetail = lab.membership_status_detail
         ? lab.membership_status_detail.trim().toLowerCase()
@@ -537,7 +537,7 @@ class PendingLabs extends Component {
         !selectedScheme ||
         (Array.isArray(lab.schemes) &&
           lab.schemes.some(
-            (scheme) => scheme.scheme_id?.toString() === selectedScheme
+            scheme => scheme.scheme_id?.toString() === selectedScheme
           ));
 
       console.log(`Lab ${lab.id} matchesScheme:`, matchesScheme);
@@ -595,7 +595,7 @@ class PendingLabs extends Component {
   };
   toggleMembershipModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isMembershipModalOpen: !prevState.isMembershipModalOpen,
       }),
       () => {
@@ -608,7 +608,7 @@ class PendingLabs extends Component {
   };
   togglePaymentModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isPaymentModalOpen: !prevState.isPaymentModalOpen,
       }),
       () => {
@@ -757,12 +757,12 @@ class PendingLabs extends Component {
       // Extract unique scheme names from AllLabs
       const participantSchemes = new Set(
         this.props.AllLabs.flatMap(
-          (lab) => lab.schemes?.map((scheme) => scheme.scheme_name) || []
+          lab => lab.schemes?.map(scheme => scheme.scheme_name) || []
         )
       );
 
       // Generate the filtered list for participant dropdown
-      const filteredCycleList = this.props.CycleList.filter((cycle) =>
+      const filteredCycleList = this.props.CycleList.filter(cycle =>
         participantSchemes.has(cycle.scheme_name)
       );
 
@@ -832,7 +832,7 @@ class PendingLabs extends Component {
     });
   };
 
-  toggleEditModal = (data) => {
+  toggleEditModal = data => {
     this.setState({
       editModal: !this.state.editModal,
       id: data.id,
@@ -852,7 +852,7 @@ class PendingLabs extends Component {
     });
   };
   toggleLabModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       LabModal: !prevState.LabModal,
     }));
     this.state.btnText === "Copy"
@@ -860,7 +860,7 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggleModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isModalOpen: !prevState.isModalOpen,
     }));
   };
@@ -881,7 +881,7 @@ class PendingLabs extends Component {
     });
   };
   togglePatientModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
     this.state.btnText === "Copy"
@@ -896,7 +896,7 @@ class PendingLabs extends Component {
     });
   };
   toggleMarketerModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       MarketerModal: !prevState.MarketerModal,
     }));
     this.state.btnText === "Copy"
@@ -904,16 +904,16 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggle() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       modal: !prevState.modal,
     }));
   }
 
-  handleApprovedEvent = (id) => {
+  handleApprovedEvent = id => {
     this.setState({ id: id, isApproved: true, unapprovedModal: true });
   };
 
-  handleUnapprovedEvent = (id) => {
+  handleUnapprovedEvent = id => {
     this.setState({ id: id, isApproved: false, unapprovedModal: true });
   };
 
@@ -937,7 +937,7 @@ class PendingLabs extends Component {
     this.setState({ unapprovedModal: false });
   };
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -973,7 +973,7 @@ class PendingLabs extends Component {
       { key: "payment_settlement", label: "Payment Settlement" },
     ];
 
-    const dataToExport = AllLabs.map((item) => {
+    const dataToExport = AllLabs.map(item => {
       const row = {};
       selectedFields.forEach(({ key, label }) => {
         row[label] = item[key] || "N/A";
@@ -1022,11 +1022,11 @@ class PendingLabs extends Component {
     const { SearchBar } = Search;
     const { ListCity } = this.state;
     const { ListDistrict } = this.state;
-    const cityOptions = ListCity.map((city) => ({
+    const cityOptions = ListCity.map(city => ({
       value: city.name,
       label: city.name,
     }));
-    const districtOptions = ListDistrict.map((district) => ({
+    const districtOptions = ListDistrict.map(district => ({
       value: district.name,
       label: district.name,
     }));
@@ -1049,12 +1049,12 @@ class PendingLabs extends Component {
     const { approvedLabs, CycleList } = this.state;
 
     const participantOptions = (this.props.approvedLabs || []).map(
-      (participant) => ({
+      participant => ({
         value: participant.id, // ensure this is the correct unique identifier
         label: participant.name, // or any other field you'd like to display
       })
     );
-    const schemeOptions = CycleList.map((scheme) => ({
+    const schemeOptions = CycleList.map(scheme => ({
       value: scheme.id, // Use scheme ID instead of scheme name
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
     }));
@@ -1069,7 +1069,7 @@ class PendingLabs extends Component {
     ];
     const customStyles = {
       // <-- This is invalid here
-      control: (provided) => ({
+      control: provided => ({
         ...provided,
         minHeight: "38px",
       }),
@@ -1123,7 +1123,7 @@ class PendingLabs extends Component {
                           data={this.state.filteredLabs}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="8">
@@ -1178,7 +1178,7 @@ class PendingLabs extends Component {
                                               this.state.filteredCycleList
                                             ) &&
                                               this.state.filteredCycleList.map(
-                                                (filteredCycle) => (
+                                                filteredCycle => (
                                                   <option
                                                     key={filteredCycle.id}
                                                     value={filteredCycle.id}
@@ -1639,9 +1639,7 @@ class PendingLabs extends Component {
                                                               ? " is-invalid"
                                                               : ""
                                                           }
-                                                          onChange={(
-                                                            selectedOption
-                                                          ) => {
+                                                          onChange={selectedOption => {
                                                             setFieldValue(
                                                               "district",
                                                               selectedOption
@@ -1651,7 +1649,7 @@ class PendingLabs extends Component {
                                                           }}
                                                           value={
                                                             districtOptions.find(
-                                                              (option) =>
+                                                              option =>
                                                                 option.value ===
                                                                 values.district
                                                             ) || null
@@ -1691,9 +1689,7 @@ class PendingLabs extends Component {
                                                           //   }
                                                           //   value={values.city} // Set the current selected values
                                                           // />
-                                                          onChange={(
-                                                            selectedOption
-                                                          ) => {
+                                                          onChange={selectedOption => {
                                                             setFieldValue(
                                                               "city",
                                                               selectedOption
@@ -1703,7 +1699,7 @@ class PendingLabs extends Component {
                                                           }}
                                                           value={
                                                             cityOptions.find(
-                                                              (option) =>
+                                                              option =>
                                                                 option.value ===
                                                                 values.city
                                                             ) || null
@@ -1799,7 +1795,7 @@ class PendingLabs extends Component {
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
-                                     <Modal
+                                    <Modal
                                       isOpen={this.state.isPaymentModalOpen}
                                       toggle={this.togglePaymentModal}
                                       className={this.props.className}
@@ -2039,6 +2035,8 @@ class PendingLabs extends Component {
                                                 values.discountAmount,
                                               paydate: safePaydate,
                                               taxDeduction: values.taxDeduction,
+                                              priceBeforeDiscount:
+                                                values.priceBeforeDiscount,
                                               part_payment_amount:
                                                 values.part_payment_amount,
                                               photo: values.photo,
@@ -3130,9 +3128,7 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
@@ -3141,7 +3137,7 @@ class PendingLabs extends Component {
                                                       }}
                                                       value={
                                                         membershipOptions.find(
-                                                          (option) =>
+                                                          option =>
                                                             option.value ===
                                                             values.membership
                                                         ) || null
@@ -3330,9 +3326,7 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
@@ -3341,7 +3335,7 @@ class PendingLabs extends Component {
                                                       }}
                                                       value={
                                                         membershipOptions.find(
-                                                          (option) =>
+                                                          option =>
                                                             option.value ===
                                                             values.membership
                                                         ) || null
@@ -3453,21 +3447,21 @@ const mapStateToProps = ({
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onApproveUnapproveLab: (data) => dispatch(approveUnapproveLab(data)),
-  onGetPendingLabs: (id) => dispatch(getAllLabs(id)),
-  onGetInstrumentTypeList: (id) => dispatch(getSchemelist(id)),
+  onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
+  onGetPendingLabs: id => dispatch(getAllLabs(id)),
+  onGetInstrumentTypeList: id => dispatch(getSchemelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewSchemeList(id, createUnit)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateSchemeList({ id, ...methodlist })),
-  onupdateAllLabs: (updatedData) => {
+  onupdateAllLabs: updatedData => {
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
-  onGetCityList: (id) => dispatch(getcitylist(id)),
-  onGetDistrictList: (id) => dispatch(getdistrictlist(id)),
-  onGetParticipantPayment: (id) => dispatch(getParticipantSchemelist(id)),
-  ongetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
-  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
+  onGetCityList: id => dispatch(getcitylist(id)),
+  onGetDistrictList: id => dispatch(getdistrictlist(id)),
+  onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
+  ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);
