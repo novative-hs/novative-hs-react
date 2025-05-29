@@ -1909,8 +1909,8 @@ class PendingLabs extends Component {
                                                 "payment_status",
                                                 {
                                                   is: val =>
-                                                    val ===
-                                                    "Payment In process",
+                                                    val !==
+                                                    "Payment In process", // required only if NOT "Payment In process"
                                                   then: Yup.mixed().required(
                                                     "Upload copy of purchase order is required"
                                                   ),
