@@ -7,7 +7,17 @@ import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import { Card, CardBody, Col, Container, Row, Label } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Label,
+  Modal,
+  ModalHeader,
+  ModalBody,
+} from "reactstrap";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -26,10 +36,13 @@ class ParticipantPayments extends Component {
       idFilter: "",
       districtFilter: "",
       schemeFilter: "",
+      schemeModalOpen: false,
       amountFilter: "",
       discountFilter: "",
       schemepriceFilter: "",
+      hoveredSchemeNames: [],
       TaxFilter: "",
+      hoveredSchemeNames: [],
       paymentmodeFilter: "",
       dateFilter: "",
       paymentreceivedFilter: "",
@@ -159,6 +172,18 @@ class ParticipantPayments extends Component {
                   }}
                 />
               </div>
+            </div>
+          ),
+          formatter: (cell, row) => (
+            <div
+              onMouseEnter={() => {
+                clearTimeout(this.mouseExitTimeout);
+                this.handleSchemeHover(row);
+              }}
+              onPointerLeave={this.handleMouseExit}
+              style={{ cursor: "pointer", textAlign: "center", color: "blue" }}
+            >
+              {cell}
             </div>
           ),
         },
@@ -327,36 +352,41 @@ class ParticipantPayments extends Component {
           ),
         },
         {
-          dataField: "part_payment_amount", // Keep the field for filtering/sorting purposes
-          text: "Paid Amount",
-          sort: true,
-          style: { textAlign: "right" },
-          formatter: (cell, row) => {
-            return row.payment_settlement === "Full"
-              ? row.price
-              : row.part_payment_amount;
-          },
-          headerFormatter: (column, colIndex) => (
-            <div style={{ textAlign: "center" }}>
-              <div>{column.text}</div>
-              <div style={{ marginTop: "5px" }}>
-                <input
-                  type="text"
-                  value={this.state.paymentmodeFilter}
-                  onChange={e =>
-                    this.handleFilterChange("paymentmodeFilter", e)
-                  }
-                  className="form-control"
-                  style={{
-                    textAlign: "center",
-                    width: "100px",
-                    margin: "auto",
-                  }}
-                />
-              </div>
-            </div>
-          ),
-        },
+  dataField: "part_payment_amount",
+  text: "Paid Amount",
+  sort: true,
+  style: { textAlign: "right" },
+  formatter: (cell, row) => {
+    const amount = row.payment_settlement === "Full" ? row.price : row.part_payment_amount;
+
+    // Ensure value is treated as a number, fallback to 0 if invalid
+    const numericValue = parseFloat(amount) || 0;
+
+    // Format with commas
+    return new Intl.NumberFormat().format(numericValue);
+  },
+  headerFormatter: (column, colIndex) => (
+    <div style={{ textAlign: "center" }}>
+      <div>{column.text}</div>
+      <div style={{ marginTop: "5px" }}>
+        <input
+          type="text"
+          value={this.state.paymentmodeFilter}
+          onChange={e =>
+            this.handleFilterChange("paymentmodeFilter", e)
+          }
+          className="form-control"
+          style={{
+            textAlign: "center",
+            width: "100px",
+            margin: "auto",
+          }}
+        />
+      </div>
+    </div>
+  ),
+},
+
         {
           dataField: "remaining_amount",
           text: "Remaining Amount",
@@ -547,6 +577,7 @@ class ParticipantPayments extends Component {
         participant_name: payment.participant_name,
         district: payment.district,
         scheme_count: payment.scheme_count, // Display count of schemes
+        scheme_names: payment.scheme_names || [], // <-- add this line
         price: payment.price,
         priceBeforeDiscount: payment.priceBeforeDiscount,
         discountAmount: payment.discountAmount,
@@ -566,6 +597,31 @@ class ParticipantPayments extends Component {
       });
     }
   }
+  handleSchemeHover = row => {
+    if (this.mouseExitTimeout) {
+      clearTimeout(this.mouseExitTimeout);
+    }
+    this.setState({
+      hoveredSchemeNames: row.scheme_names || [],
+      schemeModalOpen: true,
+      hoveredParticipantName: row.participant_name || "", // add this line
+    });
+  };
+
+  handleSchemeModalClose = () => {
+    this.setState({
+      schemeModalOpen: false,
+    });
+  };
+
+  handleMouseExit = () => {
+    this.setState({
+      PatientModal: false,
+      MarketerModal: false,
+      LabModal: false,
+      isHovered: false,
+    });
+  };
 
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
@@ -653,6 +709,10 @@ class ParticipantPayments extends Component {
             <Row className="justify-content-center align-item-center">
               <Col lg="10">
                 {" "}
+                {/* <p>
+                  <strong>Note:</strong> Click on Scheme Number to get detail of
+                  each participants payments
+                </p> */}
                 <Card>
                   <CardBody>
                     <PaginationProvider
@@ -670,6 +730,34 @@ class ParticipantPayments extends Component {
                         >
                           {toolkitprops => (
                             <React.Fragment>
+                              <Modal
+                                isOpen={this.state.schemeModalOpen}
+                                toggle={this.handleSchemeModalClose}
+                                onMouseEnter={() =>
+                                  clearTimeout(this.mouseExitTimeout)
+                                }
+                                onMouseLeave={this.handleMouseExit}
+                                // className="modal-sm"
+                                // size="sm"  // Change this to 'lg' or 'xl' for bigger width
+                              >
+                                <ModalHeader
+                                  toggle={this.handleSchemeModalClose}
+                                  tag="h4"
+                                >
+                                  Available Schemes for{" "}
+                                  {this.state.hoveredParticipantName}
+                                </ModalHeader>
+                                <ModalBody>
+                                  <ul>
+                                    {this.state.hoveredSchemeNames.map(
+                                      (name, index) => (
+                                        <li key={index}>{name}</li>
+                                      )
+                                    )}
+                                  </ul>
+                                </ModalBody>
+                              </Modal>
+
                               <Row className="mb-2 mt-3"></Row>
                               <Row className="mb-4">
                                 <Col xl="12">
