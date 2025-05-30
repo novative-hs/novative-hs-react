@@ -1795,9 +1795,9 @@ class PendingLabs extends Component {
                                                           <Label
                                                             for="designation"
                                                             className="form-label"
-                                                            style={{
-                                                              color: "blue",
-                                                            }}
+                                                            // style={{
+                                                            //   color: "blue",
+                                                            // }}
                                                           >
                                                             Designation
                                                           </Label>
@@ -1807,7 +1807,7 @@ class PendingLabs extends Component {
                                                               designationOptions
                                                             } // Options for the select
                                                             classNamePrefix="react-select"
-                                                            className="react-select-container border border-black"
+                                                            className="react-select-container border"
                                                             onChange={selectedOption => {
                                                               setFieldValue(
                                                                 "designation",

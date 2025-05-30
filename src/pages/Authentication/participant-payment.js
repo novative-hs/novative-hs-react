@@ -73,7 +73,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={e => this.handleFilterChange("idFilter", e)}
+                  onChange={(e) => this.handleFilterChange("idFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -92,7 +92,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange("nameFilter", e)}
+                  onChange={(e) => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -115,7 +115,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.membershipStatusFilter || ""}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("membershipStatusFilter", e)
                   }
                   className="form-control"
@@ -140,7 +140,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.districtFilter}
-                  onChange={e => this.handleFilterChange("districtFilter", e)}
+                  onChange={(e) => this.handleFilterChange("districtFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -163,7 +163,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemeFilter}
-                  onChange={e => this.handleFilterChange("schemeFilter", e)}
+                  onChange={(e) => this.handleFilterChange("schemeFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -192,7 +192,7 @@ class ParticipantPayments extends Component {
           text: "Payable",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell => Number(cell).toLocaleString(),
+          formatter: (cell) => Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -200,7 +200,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemepriceFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("schemepriceFilter", e)
                   }
                   className="form-control"
@@ -219,7 +219,7 @@ class ParticipantPayments extends Component {
           text: "Discount Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell => {
+          formatter: (cell) => {
             const num = parseFloat(cell);
             if (isNaN(num)) return cell;
 
@@ -238,7 +238,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.discountFilter}
-                  onChange={e => this.handleFilterChange("discountFilter", e)}
+                  onChange={(e) => this.handleFilterChange("discountFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -255,10 +255,15 @@ class ParticipantPayments extends Component {
           text: "Tax",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell =>
-            cell === null || cell === undefined || parseFloat(cell) === 0
+          formatter: (cell) => {
+            const num = parseFloat(cell);
+            return cell === null ||
+              cell === undefined ||
+              isNaN(num) ||
+              num === 0
               ? "--"
-              : Number(cell).toLocaleString(),
+              : num.toLocaleString();
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -266,7 +271,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.TaxFilter}
-                  onChange={e => this.handleFilterChange("TaxFilter", e)}
+                  onChange={(e) => this.handleFilterChange("TaxFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -278,7 +283,6 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
-
         {
           dataField: "price",
           text: "Final Price",
@@ -304,7 +308,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.priceFilter}
-                  onChange={e => this.handleFilterChange("priceFilter", e)}
+                  onChange={(e) => this.handleFilterChange("priceFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -327,7 +331,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentmodeFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentmodeFilter", e)
                   }
                   className="form-control"
@@ -353,7 +357,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentmodeFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentmodeFilter", e)
                   }
                   className="form-control"
@@ -391,7 +395,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentmodeFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentmodeFilter", e)
                   }
                   className="form-control"
@@ -411,7 +415,7 @@ class ParticipantPayments extends Component {
           text: "Remaining Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell =>
+          formatter: (cell) =>
             cell === null || cell === undefined || parseFloat(cell) === 0
               ? "--"
               : Number(cell).toLocaleString(),
@@ -422,7 +426,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentmodeFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentmodeFilter", e)
                   }
                   className="form-control"
@@ -479,7 +483,7 @@ class ParticipantPayments extends Component {
                   <input
                     type="text"
                     value={this.state.paymentmodeFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("paymentmodeFilter", e)
                     }
                     className="form-control"
@@ -499,7 +503,7 @@ class ParticipantPayments extends Component {
           dataField: "paydate",
           text: "Payment Date",
           sort: true,
-          formatter: cell => {
+          formatter: (cell) => {
             if (!cell) return "-";
             const dateObj = new Date(cell);
             if (isNaN(dateObj.getTime())) return "-";
@@ -517,7 +521,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.dateFilter}
-                  onChange={e => this.handleFilterChange("dateFilter", e)}
+                  onChange={(e) => this.handleFilterChange("dateFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -540,7 +544,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentreceivedFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentreceivedFilter", e)
                   }
                   className="form-control"
@@ -596,7 +600,7 @@ class ParticipantPayments extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.GetPayment !== prevProps.GetPayment) {
-      const transformedData = (this.props.GetPayment || []).map(payment => ({
+      const transformedData = (this.props.GetPayment || []).map((payment) => ({
         id: payment.id,
         participant_name: payment.participant_name,
         district: payment.district,
@@ -621,7 +625,7 @@ class ParticipantPayments extends Component {
       });
     }
   }
-  handleSchemeHover = row => {
+  handleSchemeHover = (row) => {
     if (this.mouseExitTimeout) {
       clearTimeout(this.mouseExitTimeout);
     }
@@ -669,7 +673,7 @@ class ParticipantPayments extends Component {
     } = this.state;
 
     return GetPayment.filter(
-      entry =>
+      (entry) =>
         entry.id.toString().includes(idFilter) &&
         entry.participant_name
           .toLowerCase()
@@ -752,7 +756,7 @@ class ParticipantPayments extends Component {
                           data={this.state.GetPayment}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Modal
                                 isOpen={this.state.schemeModalOpen}
@@ -833,11 +837,11 @@ ParticipantPayments.propTypes = {
   onGetParticipantpayment: PropTypes.func,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   GetPayment: state.AddPayment?.GetPayment ?? [],
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   onGetParticipantpayment: () => dispatch(getParticipantPayment()),
 });
 
