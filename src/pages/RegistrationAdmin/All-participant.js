@@ -1857,34 +1857,7 @@ class PendingLabs extends Component {
                                             participant: Yup.string().required(
                                               "Participant is required"
                                             ),
-                                            taxDeduction: Yup.number()
-                                              .nullable()
-                                              .when("payment_status", {
-                                                is: (payment_status) =>
-                                                  payment_status !==
-                                                  "Payment In process",
-                                                then: Yup.number()
-                                                  .nullable()
-                                                  .required(
-                                                    "Tax Deduction is required"
-                                                  )
-                                                  .transform(
-                                                    (value, originalValue) =>
-                                                      originalValue === ""
-                                                        ? null
-                                                        : value
-                                                  ),
-                                                otherwise: Yup.number()
-                                                  .nullable()
-                                                  .notRequired()
-                                                  .transform(
-                                                    (value, originalValue) =>
-                                                      originalValue === ""
-                                                        ? null
-                                                        : value
-                                                  ),
-                                              }),
-
+                                            taxDeduction: Yup.number().nullable(),
                                             discountAmount: Yup.number()
                                               .nullable()
                                               .when("payment_status", {
