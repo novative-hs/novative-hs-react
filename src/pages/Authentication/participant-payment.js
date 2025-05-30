@@ -216,9 +216,21 @@ class ParticipantPayments extends Component {
         },
         {
           dataField: "discountAmount",
-          text: " Discount Amount",
+          text: "Discount Amount",
           sort: true,
           style: { textAlign: "right" },
+          formatter: cell => {
+            const num = parseFloat(cell);
+            if (isNaN(num)) return cell;
+
+            // Show decimals only if necessary
+            return num % 1 === 0
+              ? num.toLocaleString()
+              : num.toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 2,
+                });
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -243,7 +255,10 @@ class ParticipantPayments extends Component {
           text: "Tax",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell => Number(cell).toLocaleString(),
+          formatter: cell =>
+            cell === null || cell === undefined || parseFloat(cell) === 0
+              ? "--"
+              : Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -263,6 +278,7 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
+
         {
           dataField: "price",
           text: "Final Price",
@@ -352,46 +368,22 @@ class ParticipantPayments extends Component {
           ),
         },
         {
-  dataField: "part_payment_amount",
-  text: "Paid Amount",
-  sort: true,
-  style: { textAlign: "right" },
-  formatter: (cell, row) => {
-    const amount = row.payment_settlement === "Full" ? row.price : row.part_payment_amount;
-
-    // Ensure value is treated as a number, fallback to 0 if invalid
-    const numericValue = parseFloat(amount) || 0;
-
-    // Format with commas
-    return new Intl.NumberFormat().format(numericValue);
-  },
-  headerFormatter: (column, colIndex) => (
-    <div style={{ textAlign: "center" }}>
-      <div>{column.text}</div>
-      <div style={{ marginTop: "5px" }}>
-        <input
-          type="text"
-          value={this.state.paymentmodeFilter}
-          onChange={e =>
-            this.handleFilterChange("paymentmodeFilter", e)
-          }
-          className="form-control"
-          style={{
-            textAlign: "center",
-            width: "100px",
-            margin: "auto",
-          }}
-        />
-      </div>
-    </div>
-  ),
-},
-
-        {
-          dataField: "remaining_amount",
-          text: "Remaining Amount",
+          dataField: "part_payment_amount",
+          text: "Paid Amount",
           sort: true,
           style: { textAlign: "right" },
+          formatter: (cell, row) => {
+            const amount =
+              row.payment_settlement === "Full"
+                ? row.price
+                : row.part_payment_amount;
+
+            // Ensure value is treated as a number, fallback to 0 if invalid
+            const numericValue = parseFloat(amount) || 0;
+
+            // Format with commas
+            return new Intl.NumberFormat().format(numericValue);
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -413,6 +405,38 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
+
+        {
+          dataField: "remaining_amount",
+          text: "Remaining Amount",
+          sort: true,
+          style: { textAlign: "right" },
+          formatter: cell =>
+            cell === null || cell === undefined || parseFloat(cell) === 0
+              ? "--"
+              : Number(cell).toLocaleString(),
+          headerFormatter: (column, colIndex) => (
+            <div style={{ textAlign: "center" }}>
+              <div>{column.text}</div>
+              <div style={{ marginTop: "5px" }}>
+                <input
+                  type="text"
+                  value={this.state.paymentmodeFilter}
+                  onChange={e =>
+                    this.handleFilterChange("paymentmodeFilter", e)
+                  }
+                  className="form-control"
+                  style={{
+                    textAlign: "center",
+                    width: "100px",
+                    margin: "auto",
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        },
+
         {
           dataField: "paymentmethod",
           text: "Payment Mode",
@@ -651,9 +675,7 @@ class ParticipantPayments extends Component {
           .toLowerCase()
           .includes(nameFilter.toLowerCase()) &&
         entry.district.toLowerCase().includes(districtFilter.toLowerCase()) &&
-        // entry.scheme_name.toLowerCase().includes(schemeFilter.toLowerCase()) &&
-        entry.scheme_names.join(', ').toLowerCase().includes(schemeFilter.toLowerCase()) &&
-
+        entry.scheme_name.toLowerCase().includes(schemeFilter.toLowerCase()) &&
         entry.price.toLowerCase().includes(amountFilter.toLowerCase()) &&
         entry.priceBeforeDiscount
           .toLowerCase()
