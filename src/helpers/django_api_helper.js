@@ -2879,6 +2879,7 @@ export const updateAllLabs = (AllLabs) => {
   formData.append("email", AllLabs.email);
   formData.append("address", AllLabs.address);
   formData.append("district", AllLabs.district);
+  formData.append("designation", AllLabs.designation);
   formData.append("city", AllLabs.city);
   formData.append("shipping_address", AllLabs.shipping_address);
   formData.append("billing_address", AllLabs.billing_address);

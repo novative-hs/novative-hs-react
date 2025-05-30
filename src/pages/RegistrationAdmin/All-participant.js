@@ -14,7 +14,7 @@ import Select from "react-select"; // For Select component
 import { addNewPayment } from "store/Payment/actions";
 import { getcitylist } from "store/participantcity/actions";
 import { getdistrictlist } from "store/participantdistrict/actions";
-
+import { getdesignationlist } from "store/participantdesignation/actions";
 import {
   Card,
   CardBody,
@@ -69,6 +69,7 @@ class PendingLabs extends Component {
       ListCity: [],
       ListDistrict: [],
       CycleList: [],
+      ListDesignation: [],
       selectedScheme: null,
       id: "",
       btnText: "Copy",
@@ -663,6 +664,9 @@ class PendingLabs extends Component {
     const { onGetCityList } = this.props;
     onGetCityList(this.state.user_id);
 
+    const { onGetdesignationlist } = this.props;
+    onGetdesignationlist(this.state.user_id);
+
     const { onGetDistrictList } = this.props;
     onGetDistrictList(this.state.user_id);
     // Retrieve user_id from localStorage
@@ -732,6 +736,11 @@ class PendingLabs extends Component {
     if (prevProps.ListCity !== this.props.ListCity) {
       this.setState({ ListCity: this.props.ListCity });
     }
+
+    if (prevProps.ListDesignation !== this.props.ListDesignation) {
+      this.setState({ ListDesignation: this.props.ListDesignation });
+    }
+
     if (prevProps.ListDistrict !== this.props.ListDistrict) {
       this.setState({ ListDistrict: this.props.ListDistrict });
     }
@@ -1033,6 +1042,7 @@ class PendingLabs extends Component {
     const { SearchBar } = Search;
     const { ListCity } = this.state;
     const { ListDistrict } = this.state;
+    const { ListDesignation } = this.state;
     const cityOptions = ListCity.map(city => ({
       value: city.name,
       label: city.name,
@@ -1042,6 +1052,10 @@ class PendingLabs extends Component {
       label: district.name,
     }));
 
+    const designationOptions = ListDesignation.map(designation => ({
+      value: designation.name,
+      label: designation.name,
+    }));
     const { AllLabs } = this.props;
     const data = this.state.data;
     const { onApproveUnapproveLab, onGetPendingLabs } = this.props;
@@ -1776,22 +1790,44 @@ class PendingLabs extends Component {
                                                           />
                                                         </div>
                                                       </Col>
-                                                      <Col md={6}>
+                                                      <Col sm={6} md={6} xl={6}>
                                                         <div className="mb-3">
-                                                          <Label className="form-label">
+                                                          <Label
+                                                            for="designation"
+                                                            className="form-label"
+                                                            style={{
+                                                              color: "blue",
+                                                            }}
+                                                          >
                                                             Designation
                                                           </Label>
-                                                          <input
-                                                            type="text"
+                                                          <Select
+                                                            name="designation" // The field name in Formik
+                                                            options={
+                                                              designationOptions
+                                                            } // Options for the select
+                                                            classNamePrefix="react-select"
+                                                            className="react-select-container border border-black"
+                                                            onChange={selectedOption => {
+                                                              setFieldValue(
+                                                                "designation",
+                                                                selectedOption
+                                                                  ? selectedOption.value
+                                                                  : ""
+                                                              ); // Update Formik state with string value
+                                                            }}
                                                             value={
-                                                              values.designation
-                                                            }
-                                                            name="designation"
-                                                            className="form-control"
-                                                            placeholder="Enter Designation"
-                                                            onChange={
-                                                              handleChange
-                                                            }
+                                                              designationOptions.find(
+                                                                option =>
+                                                                  option.value ===
+                                                                  values.designation
+                                                              ) || null
+                                                            } // Set the current selected value
+                                                          />
+                                                          <ErrorMessage
+                                                            name="designation" // Error for the city field
+                                                            component="div"
+                                                            className="invalid-feedback"
                                                           />
                                                         </div>
                                                       </Col>
@@ -3552,7 +3588,10 @@ PendingLabs.propTypes = {
   CycleList: PropTypes.array,
   onGetCityList: PropTypes.func,
   onGetDistrictList: PropTypes.func,
+
+  ListDesignation: PropTypes.array,
   PaymentSchemeList: PropTypes.array,
+  onGetdesignationlist: PropTypes.func,
   isPaymentModalOpen: PropTypes.array,
   togglePaymentModal: PropTypes.array,
   isMembershipModalOpen: PropTypes.array,
@@ -3564,6 +3603,7 @@ const mapStateToProps = ({
   Account,
   ListCity,
   ListDistrict,
+  ListDesignation,
   registrationAdmin,
   CycleList,
   PaymentScheme,
@@ -3578,7 +3618,7 @@ const mapStateToProps = ({
 
     ListCity: ListCity?.ListCity || [],
     ListDistrict: ListDistrict?.ListDistrict || [],
-
+    ListDesignation: ListDesignation?.ListDesignation || [],
     AllLabs: registrationAdmin?.AllLabs || [],
     approvedLabs: registrationAdmin?.approvedLabs || [],
 
@@ -3600,6 +3640,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onGetCityList: id => dispatch(getcitylist(id)),
   onGetDistrictList: id => dispatch(getdistrictlist(id)),
+  onGetdesignationlist: id => dispatch(getdesignationlist(id)),
   onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
   ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
   ongetcyclelist: id => dispatch(getcyclelist(id)),
