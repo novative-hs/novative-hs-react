@@ -651,7 +651,9 @@ class ParticipantPayments extends Component {
           .toLowerCase()
           .includes(nameFilter.toLowerCase()) &&
         entry.district.toLowerCase().includes(districtFilter.toLowerCase()) &&
-        entry.scheme_name.toLowerCase().includes(schemeFilter.toLowerCase()) &&
+        // entry.scheme_name.toLowerCase().includes(schemeFilter.toLowerCase()) &&
+        entry.scheme_names.join(', ').toLowerCase().includes(schemeFilter.toLowerCase()) &&
+
         entry.price.toLowerCase().includes(amountFilter.toLowerCase()) &&
         entry.priceBeforeDiscount
           .toLowerCase()
