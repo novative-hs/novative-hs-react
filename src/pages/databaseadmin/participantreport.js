@@ -4,7 +4,19 @@ import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { Link } from "react-router-dom";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-import { Alert, Card, CardBody, Col, Container, Row } from "reactstrap";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import {
+  Alert,
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Row,
+  Label,
+  Modal,
+  ModalHeader,
+  ModalBody,
+} from "reactstrap";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -20,7 +32,7 @@ import {
   approveUnapproveLab,
   getApprovedLabs,
   getcyclelist,
-  //   getParticipantCount
+  // getParticipantCount,
 } from "store/registration-admin/actions";
 
 import "assets/scss/table.scss";
@@ -33,6 +45,8 @@ class Membershipstatusreport extends Component {
     this.state = {
       AllLabs: [],
       approvedLabs: [],
+      selectedParticipants: [],
+      LabModal: false, // ✅ Make sure it's false initially
       CycleList: [],
       filteredCycleList: [],
       filteredLabs: [],
@@ -78,11 +92,7 @@ class Membershipstatusreport extends Component {
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                gap: "10px",
-              }}
+              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
             >
               {lab.district}
             </span>
@@ -97,30 +107,29 @@ class Membershipstatusreport extends Component {
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                gap: "10px",
-              }}
+              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
             >
               {lab.city}
             </span>
           ),
         },
-
         {
           dataField: "total_labs",
           text: "Total Labs",
           sort: true,
           headerStyle: { textAlign: "center" },
-          style: {
-            textAlign: "center",
-            backgroundColor: "#bbdefb",
-          },
+          style: { textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
-              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+              style={{
+                cursor: "pointer",
+                color: "blue",
+                textDecoration: "underline",
+              }}
+              onClick={() =>
+                this.openParticipantList(lab.province, lab.district, lab.city)
+              }
             >
               {lab.total_labs}
             </span>
@@ -131,10 +140,7 @@ class Membershipstatusreport extends Component {
           text: "New Register",
           sort: true,
           headerStyle: { textAlign: "center", width: "200px" },
-          style: {
-            textAlign: "center",
-            backgroundColor: "#fce8a1", // light green (Bootstrap's "success" background)
-          },
+          style: { textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -157,10 +163,7 @@ class Membershipstatusreport extends Component {
           text: "Active",
           sort: true,
           headerStyle: { textAlign: "center" },
-          style: {
-            textAlign: "center",
-            backgroundColor: "	#d4edda",
-          },
+          style: { textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -175,10 +178,7 @@ class Membershipstatusreport extends Component {
           text: "Inactive",
           sort: true,
           headerStyle: { textAlign: "center" },
-          style: {
-            textAlign: "center",
-            backgroundColor: "#eaf4ea", // light green (Bootstrap's "success" background)
-          },
+          style: { textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -193,10 +193,7 @@ class Membershipstatusreport extends Component {
           text: "Suspended",
           sort: true,
           headerStyle: { textAlign: "center" },
-          style: {
-            textAlign: "center",
-            backgroundColor: "#f9dcc4", // light green (Bootstrap's "success" background)
-          },
+          style: { textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -285,6 +282,32 @@ class Membershipstatusreport extends Component {
 
     return Object.values(grouped);
   }
+
+  openParticipantList = (province, district, city) => {
+    const selectedParticipants = this.state.AllLabs.filter(
+      lab =>
+        lab.province === province &&
+        lab.district === district &&
+        lab.city === city
+    );
+
+    this.setState({
+      selectedParticipants,
+      LabModal: true, // Open the modal
+      modalProvince: province, // Update modal header info
+      modalDistrict: district,
+      modalCity: city,
+    });
+  };
+  toggleLabModal = () => {
+    this.setState(prevState => ({
+      LabModal: !prevState.LabModal,
+    }));
+  };
+
+  closeParticipantModal = () => {
+    this.setState({ showParticipantModal: false });
+  };
 
   componentDidMount() {
     const { user_id } = this.state;
@@ -393,11 +416,11 @@ class Membershipstatusreport extends Component {
       custom: true,
     };
     const defaultSorted = [
-      {
-        dataField: "province",
-        order: "asc",
-      },
-    ];
+  {
+    dataField: "province",
+    order: "asc",
+  },
+];
 
     return (
       <React.Fragment>
@@ -414,9 +437,9 @@ class Membershipstatusreport extends Component {
 
           <Container fluid>
             <Breadcrumbs
-              maintitle="Participant Status Report"
+              maintitle="Membership Status Report"
               title="Admin"
-              breadcrumbItem="participant Status Report"
+              breadcrumbItem="Membership Status Report"
             />
 
             <Row>
@@ -449,6 +472,39 @@ class Membershipstatusreport extends Component {
                                 wrapperClasses="table-responsive"
                                 noDataIndication="No Labs found"
                               />
+                              <Modal
+                                isOpen={this.state.LabModal}
+                                className={this.props.className}
+                                toggle={this.toggleLabModal} // ✅ This tells the modal to close when the "x" is clicked
+                              >
+                                <ModalHeader
+                                  toggle={this.toggleLabModal}
+                                  tag="h4"
+                                >
+                                  Participants in {this.state.modalProvince},{" "}
+                                  {this.state.modalDistrict},{" "}
+                                  {this.state.modalCity}
+                                </ModalHeader>
+
+                                <ModalBody>
+                                  {this.state.selectedParticipants.length ===
+                                  0 ? (
+                                    <p>
+                                      No participants found in this location.
+                                    </p>
+                                  ) : (
+                                    <ul>
+                                      {this.state.selectedParticipants.map(
+                                        (participant, idx) => (
+                                          <li key={idx}>
+                                            {participant.name || "Unnamed Lab"}
+                                          </li>
+                                        )
+                                      )}
+                                    </ul>
+                                  )}
+                                </ModalBody>
+                              </Modal>
 
                               <Row>
                                 <Col>
@@ -483,6 +539,7 @@ Membershipstatusreport.propTypes = {
   approvedLabs: PropTypes.array,
   CycleList: PropTypes.array,
   match: PropTypes.object,
+  className: PropTypes.any,
 };
 const mapStateToProps = state => {
   console.log("ProfileMenu mapStateToProps state:", state);
