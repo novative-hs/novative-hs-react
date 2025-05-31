@@ -2723,51 +2723,6 @@ class PendingLabs extends Component {
                                                     />
                                                   </Col>
                                                 </Row>
-                                                 <Row>
-                                                      <Col>
-                                                        <div className="mb-3">
-                                                          <Label
-                                                            htmlFor="price"
-                                                            className="form-label"
-                                                          >
-                                                            Payable after
-                                                            Discount & Tax
-                                                            Deduction
-                                                          </Label>
-                                                          <Field name="price">
-                                                            {({ field }) => (
-                                                              <input
-                                                                {...field}
-                                                                type="text"
-                                                                className="form-control"
-                                                                value={new Intl.NumberFormat(
-                                                                  "en-PK",
-                                                                  {
-                                                                    style:
-                                                                      "currency",
-                                                                    currency:
-                                                                      "PKR",
-                                                                  }
-                                                                ).format(
-                                                                  values.price ||
-                                                                    0
-                                                                )}
-                                                                readOnly
-                                                                style={{
-                                                                  backgroundColor:
-                                                                    "#e9ecef",
-                                                                }}
-                                                              />
-                                                            )}
-                                                          </Field>
-                                                          <ErrorMessage
-                                                            name="price"
-                                                            component="div"
-                                                            className="invalid-feedback"
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                    </Row>
                                                 <Row>
                                                   <Col>
                                                     <Label>
@@ -2864,7 +2819,51 @@ class PendingLabs extends Component {
                                                 {values.payment_status ===
                                                   "Paid" && (
                                                   <>
-                                                   
+                                                    <Row>
+                                                      <Col>
+                                                        <div className="mb-3">
+                                                          <Label
+                                                            htmlFor="price"
+                                                            className="form-label"
+                                                          >
+                                                            Payable after
+                                                            Discount & Tax
+                                                            Deduction
+                                                          </Label>
+                                                          <Field name="price">
+                                                            {({ field }) => (
+                                                              <input
+                                                                {...field}
+                                                                type="text"
+                                                                className="form-control"
+                                                                value={new Intl.NumberFormat(
+                                                                  "en-PK",
+                                                                  {
+                                                                    style:
+                                                                      "currency",
+                                                                    currency:
+                                                                      "PKR",
+                                                                  }
+                                                                ).format(
+                                                                  values.price ||
+                                                                    0
+                                                                )}
+                                                                readOnly
+                                                                style={{
+                                                                  backgroundColor:
+                                                                    "#e9ecef",
+                                                                }}
+                                                              />
+                                                            )}
+                                                          </Field>
+                                                          <ErrorMessage
+                                                            name="price"
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
+                                                      </Col>
+                                                    </Row>
 
                                                     <Col>
                                                       <Label>
