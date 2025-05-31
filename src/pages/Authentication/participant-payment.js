@@ -36,12 +36,17 @@ class ParticipantPayments extends Component {
       idFilter: "",
       districtFilter: "",
       schemeFilter: "",
+      settlementFilter: "",
+      paymentamountFilter: "",
       schemeModalOpen: false,
       amountFilter: "",
       discountFilter: "",
+      priceFilter: "",
       schemepriceFilter: "",
       hoveredSchemeNames: [],
       TaxFilter: "",
+      statusFilter: "",
+      remainingamountFilter: "",
       hoveredSchemeNames: [],
       paymentmodeFilter: "",
       dateFilter: "",
@@ -73,7 +78,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={(e) => this.handleFilterChange("idFilter", e)}
+                  onChange={e => this.handleFilterChange("idFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -92,7 +97,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={(e) => this.handleFilterChange("nameFilter", e)}
+                  onChange={e => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -115,7 +120,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.membershipStatusFilter || ""}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("membershipStatusFilter", e)
                   }
                   className="form-control"
@@ -140,7 +145,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.districtFilter}
-                  onChange={(e) => this.handleFilterChange("districtFilter", e)}
+                  onChange={e => this.handleFilterChange("districtFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -163,7 +168,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemeFilter}
-                  onChange={(e) => this.handleFilterChange("schemeFilter", e)}
+                  onChange={e => this.handleFilterChange("schemeFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -192,7 +197,7 @@ class ParticipantPayments extends Component {
           text: "Payable",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => Number(cell).toLocaleString(),
+          formatter: cell => Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -200,7 +205,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemepriceFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("schemepriceFilter", e)
                   }
                   className="form-control"
@@ -219,7 +224,7 @@ class ParticipantPayments extends Component {
           text: "Discount Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => {
+          formatter: cell => {
             const num = parseFloat(cell);
             if (isNaN(num)) return cell;
 
@@ -238,7 +243,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.discountFilter}
-                  onChange={(e) => this.handleFilterChange("discountFilter", e)}
+                  onChange={e => this.handleFilterChange("discountFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -255,7 +260,7 @@ class ParticipantPayments extends Component {
           text: "Tax",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => {
+          formatter: cell => {
             const num = parseFloat(cell);
             return cell === null ||
               cell === undefined ||
@@ -271,7 +276,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.TaxFilter}
-                  onChange={(e) => this.handleFilterChange("TaxFilter", e)}
+                  onChange={e => this.handleFilterChange("TaxFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -308,7 +313,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.priceFilter}
-                  onChange={(e) => this.handleFilterChange("priceFilter", e)}
+                  onChange={e => this.handleFilterChange("priceFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -330,10 +335,8 @@ class ParticipantPayments extends Component {
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.paymentmodeFilter}
-                  onChange={(e) =>
-                    this.handleFilterChange("paymentmodeFilter", e)
-                  }
+                  value={this.state.settlementFilter}
+                  onChange={e => this.handleFilterChange("settlementFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -356,10 +359,8 @@ class ParticipantPayments extends Component {
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.paymentmodeFilter}
-                  onChange={(e) =>
-                    this.handleFilterChange("paymentmodeFilter", e)
-                  }
+                  value={this.state.statusFilter}
+                  onChange={e => this.handleFilterChange("statusFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -394,9 +395,9 @@ class ParticipantPayments extends Component {
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.paymentmodeFilter}
-                  onChange={(e) =>
-                    this.handleFilterChange("paymentmodeFilter", e)
+                  value={this.state.paymentamountFilter}
+                  onChange={e =>
+                    this.handleFilterChange("paymentamountFilter", e)
                   }
                   className="form-control"
                   style={{
@@ -415,7 +416,7 @@ class ParticipantPayments extends Component {
           text: "Remaining Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) =>
+          formatter: cell =>
             cell === null || cell === undefined || parseFloat(cell) === 0
               ? "--"
               : Number(cell).toLocaleString(),
@@ -425,9 +426,9 @@ class ParticipantPayments extends Component {
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.paymentmodeFilter}
-                  onChange={(e) =>
-                    this.handleFilterChange("paymentmodeFilter", e)
+                  value={this.state.remainingamountFilter}
+                  onChange={e =>
+                    this.handleFilterChange("remainingamountFilter", e)
                   }
                   className="form-control"
                   style={{
@@ -483,7 +484,7 @@ class ParticipantPayments extends Component {
                   <input
                     type="text"
                     value={this.state.paymentmodeFilter}
-                    onChange={(e) =>
+                    onChange={e =>
                       this.handleFilterChange("paymentmodeFilter", e)
                     }
                     className="form-control"
@@ -503,7 +504,7 @@ class ParticipantPayments extends Component {
           dataField: "paydate",
           text: "Payment Date",
           sort: true,
-          formatter: (cell) => {
+          formatter: cell => {
             if (!cell) return "-";
             const dateObj = new Date(cell);
             if (isNaN(dateObj.getTime())) return "-";
@@ -521,7 +522,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.dateFilter}
-                  onChange={(e) => this.handleFilterChange("dateFilter", e)}
+                  onChange={e => this.handleFilterChange("dateFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -544,7 +545,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentreceivedFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("paymentreceivedFilter", e)
                   }
                   className="form-control"
@@ -600,7 +601,7 @@ class ParticipantPayments extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.GetPayment !== prevProps.GetPayment) {
-      const transformedData = (this.props.GetPayment || []).map((payment) => ({
+      const transformedData = (this.props.GetPayment || []).map(payment => ({
         id: payment.id,
         participant_name: payment.participant_name,
         district: payment.district,
@@ -625,7 +626,7 @@ class ParticipantPayments extends Component {
       });
     }
   }
-  handleSchemeHover = (row) => {
+  handleSchemeHover = row => {
     if (this.mouseExitTimeout) {
       clearTimeout(this.mouseExitTimeout);
     }
@@ -666,48 +667,55 @@ class ParticipantPayments extends Component {
       amountFilter,
       discountFilter,
       TaxFilter,
+      paymentamountFilter,
       paymentmodeFilter,
+      remainingamountFilter,
+      statusFilter,
+      priceFilter,
+      settlementFilter,
       dateFilter,
       paymentreceivedFilter,
-      membershipFilter, // ← Add this
+      membershipStatusFilter,
     } = this.state;
 
+    const safeString = val =>
+      val !== undefined && val !== null ? String(val).toLowerCase() : "";
+
     return GetPayment.filter(
-      (entry) =>
-        entry.id.toString().includes(idFilter) &&
-        entry.participant_name
-          .toLowerCase()
-          .includes(nameFilter.toLowerCase()) &&
-        entry.district.toLowerCase().includes(districtFilter.toLowerCase()) &&
-        entry.scheme_name.toLowerCase().includes(schemeFilter.toLowerCase()) &&
-        entry.price.toLowerCase().includes(amountFilter.toLowerCase()) &&
-        entry.priceBeforeDiscount
-          .toLowerCase()
-          .includes(schemepriceFilter.toLowerCase()) &&
-        entry.discount.toLowerCase().includes(discountFilter.toLowerCase()) &&
-        entry.taxDeduction.toLowerCase().includes(TaxFilter.toLowerCase()) &&
-        entry.payment_settlement
-          .toLowerCase()
-          .includes(paymentmodeFilter.toLowerCase) &&
-        entry.part_payment_amount
-          .toLowerCase()
-          .includes(paymentmodeFilter.toLowerCase) &&
-        entry.remaining_amount
-          .toLowerCase()
-          .includes(paymentmodeFilter.toLowerCase) &&
-        entry.payment_status
-          .toLowerCase()
-          .includes(paymentmodeFilter.toLowerCase) &&
-        entry.paymentmethod
-          .toLowerCase()
-          .includes(paymentmodeFilter.toLowerCase()) &&
-        entry.paydate.toLowerCase().includes(dateFilter.toLowerCase()) &&
-        entry.receivedby
-          .toLowerCase()
-          .includes(paymentreceivedFilter.toLowerCase()) &&
-        entry.membership_status
-          ?.toLowerCase()
-          .includes(membershipFilter.toLowerCase()) // new condition
+      entry =>
+        safeString(entry.id).includes(idFilter.toLowerCase()) &&
+        safeString(entry.participant_name).includes(nameFilter.toLowerCase()) &&
+        safeString(entry.district).includes(districtFilter.toLowerCase()) &&
+        safeString(entry.scheme_count).includes(schemeFilter.toLowerCase()) &&
+        safeString(entry.price).includes(priceFilter.toLowerCase()) &&
+        safeString(entry.priceBeforeDiscount).includes(
+          schemepriceFilter.toLowerCase()
+        ) &&
+        safeString(entry.price).includes(amountFilter.toLowerCase()) &&
+        safeString(entry.discountAmount).includes(
+          discountFilter.toLowerCase()
+        ) &&
+        safeString(entry.taxDeduction).includes(TaxFilter.toLowerCase()) &&
+        safeString(entry.payment_settlement).includes(
+          settlementFilter.toLowerCase()
+        ) &&
+        safeString(entry.paymentmethod).includes(
+          paymentmodeFilter.toLowerCase()
+        ) &&
+        safeString(entry.payment_status).includes(statusFilter.toLowerCase()) &&
+        safeString(entry.part_payment_amount).includes(
+          paymentamountFilter.toLowerCase()
+        ) &&
+        safeString(entry.remaining_amount).includes(
+          remainingamountFilter.toLowerCase()
+        ) &&
+        safeString(entry.paydate).includes(dateFilter.toLowerCase()) &&
+        safeString(entry.receivedby).includes(
+          paymentreceivedFilter.toLowerCase()
+        ) &&
+        safeString(entry.membership_status).includes(
+          (membershipStatusFilter || "").toLowerCase()
+        )
     );
   };
 
@@ -747,16 +755,16 @@ class ParticipantPayments extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={this.state.GetPayment}
+                      data={this.filterData()}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.feedbackListColumns}
-                          data={this.state.GetPayment}
+                          data={this.filterData()}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Modal
                                 isOpen={this.state.schemeModalOpen}
@@ -837,11 +845,11 @@ ParticipantPayments.propTypes = {
   onGetParticipantpayment: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   GetPayment: state.AddPayment?.GetPayment ?? [],
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   onGetParticipantpayment: () => dispatch(getParticipantPayment()),
 });
 
