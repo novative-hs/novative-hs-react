@@ -48,7 +48,7 @@ const registrationAdmin = (state = INIT_STATE, action) => {
     case UPDATE_MEMBERSHIP_STATUS_SUCCESS:
       return {
         ...state,
-        Membershipstatus: state.Membershipstatus.map(status =>
+        Membershipstatus: state.Membershipstatus.map((status) =>
           status.id.toString() === action.payload.id.toString()
             ? { status, ...action.payload }
             : status
@@ -66,10 +66,15 @@ const registrationAdmin = (state = INIT_STATE, action) => {
         "[Reducer] GET_ALL_PARTICIPANT_SUCCESS payload:",
         action.payload
       );
+      console.log(
+        "[Reducer] Active Schemes Without Cycle:",
+        action.payload.active_schemes_without_cycle
+      ); // ✅ Extra log
       return {
         ...state,
         AllLabs: action.payload.data,
-        participantCounts: action.payload.counts, // ✅ Add this line
+        participantCounts: action.payload.counts,
+        activeSchemesWithoutCycle: action.payload.active_schemes_without_cycle,
       };
 
     case GET_ALL_PARTICIPANT_FAIL:
@@ -81,7 +86,7 @@ const registrationAdmin = (state = INIT_STATE, action) => {
     case UPDATE_LABS_SUCCESS:
       return {
         ...state,
-        updateAllLabs: state.updateAllLabs.map(status =>
+        updateAllLabs: state.updateAllLabs.map((status) =>
           status.id.toString() === action.payload.id.toString()
             ? { status, ...action.payload }
             : status
