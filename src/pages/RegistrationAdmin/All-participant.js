@@ -67,6 +67,7 @@ class PendingLabs extends Component {
       AllLabs: [],
       approvedLabs: [],
       ListCity: [],
+      activeSchemesWithoutCycle: [],
       ListDistrict: [],
       CycleList: [],
       ListDesignation: [],
@@ -1039,6 +1040,8 @@ class PendingLabs extends Component {
 
   render() {
     console.log("Rendering table with data:", this.state.filteredLabs);
+    const activeSchemesWithoutCycle =
+      this.props.activeSchemesWithoutCycle || [];
     const { SearchBar } = Search;
     const { ListCity } = this.state;
     const { ListDistrict } = this.state;
@@ -1079,9 +1082,25 @@ class PendingLabs extends Component {
         label: participant.name, // or any other field you'd like to display
       })
     );
-    const schemeOptions = CycleList.filter(
-      scheme => scheme.status && scheme.status.toLowerCase() === "active"
+    const combinedSchemeOptions = [
+      ...(this.state.filteredCycleList || []).map(scheme => ({
+        value: scheme.id,
+        label: `${scheme.scheme_name} - Cycle ${scheme.cycle_no}`,
+      })),
+      ...(this.props.activeSchemesWithoutCycle || []).map(scheme => ({
+        value: scheme.id,
+        label: `${scheme.scheme_name} (No Cycle)`,
+      })),
+    ];
+
+    const schemeOptionsWithoutCycle = (
+      this.props.activeSchemesWithoutCycle || []
     ).map(scheme => ({
+      value: scheme.id,
+      label: scheme.scheme_name,
+    }));
+
+    const schemeOptions = activeSchemesWithoutCycle.map(scheme => ({
       value: scheme.id,
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
     }));
@@ -1196,31 +1215,41 @@ class PendingLabs extends Component {
                                             className="form-select"
                                             onChange={this.handleSchemeChange}
                                             value={this.state.selectedScheme}
-                                            style={{ width: "300px" }} // Increased width for longer text
+                                            style={{ width: "300px" }}
                                           >
                                             <option value="">
                                               Select Scheme
                                             </option>
-                                            {Array.isArray(
-                                              this.state.filteredCycleList
-                                            ) &&
-                                              this.state.filteredCycleList.map(
-                                                filteredCycle => (
-                                                  <option
-                                                    key={filteredCycle.id}
-                                                    value={filteredCycle.id}
-                                                  >
-                                                    {`${
-                                                      filteredCycle.scheme_name
-                                                    } - Cycle ${
-                                                      filteredCycle.cycle_no
-                                                    } (${
-                                                      filteredCycle.status ||
-                                                      "No Status"
-                                                    })`}
-                                                  </option>
-                                                )
-                                              )}
+                                            <optgroup label="Schemes With Cycle">
+                                              {(
+                                                this.state.filteredCycleList ||
+                                                []
+                                              ).map(scheme => (
+                                                <option
+                                                  key={scheme.id}
+                                                  value={scheme.id}
+                                                >
+                                                  {`${scheme.scheme_name} - Cycle ${scheme.cycle_no}`}
+                                                </option>
+                                              ))}
+                                            </optgroup>
+                                            <optgroup label="Schemes Without Cycle">
+                                              {(
+                                                this.props
+                                                  .activeSchemesWithoutCycle ||
+                                                []
+                                              ).map(item => (
+                                                <option
+                                                  key={item.id}
+                                                  value={item.id}
+                                                >
+                                                  {item.scheme_name ||
+                                                    item.name ||
+                                                    "Unnamed"}{" "}
+                                                  (No Cycle)
+                                                </option>
+                                              ))}
+                                            </optgroup>
                                           </select>
                                         </div>
                                       </div>
@@ -3578,6 +3607,7 @@ PendingLabs.propTypes = {
   ongetApprovedLabs: PropTypes.func,
   ongetcyclelist: PropTypes.func,
   approvedLabs: PropTypes.array,
+  activeSchemesWithoutCycle: PropTypes.array,
   onGetParticipantPayment: PropTypes.func,
   location: PropTypes.shape({
     search: PropTypes.string, // Ensure 'search' is a string
@@ -3610,6 +3640,10 @@ const mapStateToProps = ({
   console.log("CycleList from props:", CycleList);
   console.log("ListCity from props:", ListCity);
   console.log("ListDistrict from props:", ListDistrict);
+  console.log(
+    "Active Schemes Without Cycle:",
+    registrationAdmin?.activeSchemesWithoutCycle
+  );
 
   return {
     userID: Account?.userID || null,
@@ -3619,7 +3653,7 @@ const mapStateToProps = ({
     ListDesignation: ListDesignation?.ListDesignation || [],
     AllLabs: registrationAdmin?.AllLabs || [],
     approvedLabs: registrationAdmin?.approvedLabs || [],
-
+    activeSchemesWithoutCycle: registrationAdmin?.activeSchemesWithoutCycle,
     CycleList: CycleList?.CycleList || [],
     PaymentSchemeList: PaymentScheme?.PaymentSchemeList || [],
   };
@@ -3643,6 +3677,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
   ongetcyclelist: id => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
+
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);
     dispatch(updateMembershipStatus({ id, ...status }));
