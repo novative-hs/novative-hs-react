@@ -35,19 +35,22 @@ function* onAddNewPayment(object) {
 function* fetchParticipantPayment() {
   try {
     const response = yield call(getParticipantPayment);
-    console.log("Full API Response:", response); // Log the full response
-    console.log("API Response Data:", response); // Log the data (no need for `data` if it's an array)
+    console.log("Full API Response:", response);
 
-    if (response && response.length > 0) {
-      yield put(getparticipantpaymentSuccess(response)); // Pass the array directly if that's the data
+    // Access the 'payments' array inside the response
+    const payments = response.payments || [];
+
+    if (payments.length > 0) {
+      yield put(getparticipantpaymentSuccess(payments));
     } else {
       throw new Error("No data returned");
     }
   } catch (error) {
     console.error("Error fetching Participant Payment:", error);
-    yield put(getparticipantpaymentFail(error)); // Handle error
+    yield put(getparticipantpaymentFail(error));
   }
 }
+
 function* fetchParticipantSchemelist(action) {
   try {
     const response = yield call(getParticipantSchemelist, action.payload);

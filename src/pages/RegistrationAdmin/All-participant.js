@@ -2401,7 +2401,7 @@ class PendingLabs extends Component {
                                                 )}
                                                 <Row>
                                                   <Col>
-                                                    <Label>Schemeeeeeeeeee</Label>
+                                                    <Label>Scheme</Label>
                                                     <Select
   name="scheme"
   isMulti

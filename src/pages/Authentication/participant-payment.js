@@ -36,17 +36,12 @@ class ParticipantPayments extends Component {
       idFilter: "",
       districtFilter: "",
       schemeFilter: "",
-      settlementFilter: "",
-      paymentamountFilter: "",
       schemeModalOpen: false,
       amountFilter: "",
       discountFilter: "",
-      priceFilter: "",
       schemepriceFilter: "",
       hoveredSchemeNames: [],
       TaxFilter: "",
-      statusFilter: "",
-      remainingamountFilter: "",
       hoveredSchemeNames: [],
       paymentmodeFilter: "",
       dateFilter: "",
@@ -221,21 +216,9 @@ class ParticipantPayments extends Component {
         },
         {
           dataField: "discountAmount",
-          text: "Discount Amount",
+          text: " Discount Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell => {
-            const num = parseFloat(cell);
-            if (isNaN(num)) return cell;
-
-            // Show decimals only if necessary
-            return num % 1 === 0
-              ? num.toLocaleString()
-              : num.toLocaleString(undefined, {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 2,
-                });
-          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -260,15 +243,7 @@ class ParticipantPayments extends Component {
           text: "Tax",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell => {
-            const num = parseFloat(cell);
-            return cell === null ||
-              cell === undefined ||
-              isNaN(num) ||
-              num === 0
-              ? "--"
-              : num.toLocaleString();
-          },
+          formatter: cell => Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -335,8 +310,10 @@ class ParticipantPayments extends Component {
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.settlementFilter}
-                  onChange={e => this.handleFilterChange("settlementFilter", e)}
+                  value={this.state.paymentmodeFilter}
+                  onChange={e =>
+                    this.handleFilterChange("paymentmodeFilter", e)
+                  }
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -359,8 +336,10 @@ class ParticipantPayments extends Component {
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.statusFilter}
-                  onChange={e => this.handleFilterChange("statusFilter", e)}
+                  value={this.state.paymentmodeFilter}
+                  onChange={e =>
+                    this.handleFilterChange("paymentmodeFilter", e)
+                  }
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -377,27 +356,15 @@ class ParticipantPayments extends Component {
           text: "Paid Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell, row) => {
-            const amount =
-              row.payment_settlement === "Full"
-                ? row.price
-                : row.part_payment_amount;
-
-            // Ensure value is treated as a number, fallback to 0 if invalid
-            const numericValue = parseFloat(amount) || 0;
-
-            // Format with commas
-            return new Intl.NumberFormat().format(numericValue);
-          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.paymentamountFilter}
+                  value={this.state.paymentmodeFilter}
                   onChange={e =>
-                    this.handleFilterChange("paymentamountFilter", e)
+                    this.handleFilterChange("paymentmodeFilter", e)
                   }
                   className="form-control"
                   style={{
@@ -410,25 +377,20 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
-
         {
           dataField: "remaining_amount",
           text: "Remaining Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell =>
-            cell === null || cell === undefined || parseFloat(cell) === 0
-              ? "--"
-              : Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
               <div style={{ marginTop: "5px" }}>
                 <input
                   type="text"
-                  value={this.state.remainingamountFilter}
+                  value={this.state.paymentmodeFilter}
                   onChange={e =>
-                    this.handleFilterChange("remainingamountFilter", e)
+                    this.handleFilterChange("paymentmodeFilter", e)
                   }
                   className="form-control"
                   style={{
@@ -441,7 +403,6 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
-
         {
           dataField: "paymentmethod",
           text: "Payment Mode",
@@ -667,55 +628,48 @@ class ParticipantPayments extends Component {
       amountFilter,
       discountFilter,
       TaxFilter,
-      paymentamountFilter,
       paymentmodeFilter,
-      remainingamountFilter,
-      statusFilter,
-      priceFilter,
-      settlementFilter,
       dateFilter,
       paymentreceivedFilter,
-      membershipStatusFilter,
+      membershipFilter, // ← Add this
     } = this.state;
-
-    const safeString = val =>
-      val !== undefined && val !== null ? String(val).toLowerCase() : "";
 
     return GetPayment.filter(
       entry =>
-        safeString(entry.id).includes(idFilter.toLowerCase()) &&
-        safeString(entry.participant_name).includes(nameFilter.toLowerCase()) &&
-        safeString(entry.district).includes(districtFilter.toLowerCase()) &&
-        safeString(entry.scheme_count).includes(schemeFilter.toLowerCase()) &&
-        safeString(entry.price).includes(priceFilter.toLowerCase()) &&
-        safeString(entry.priceBeforeDiscount).includes(
-          schemepriceFilter.toLowerCase()
-        ) &&
-        safeString(entry.price).includes(amountFilter.toLowerCase()) &&
-        safeString(entry.discountAmount).includes(
-          discountFilter.toLowerCase()
-        ) &&
-        safeString(entry.taxDeduction).includes(TaxFilter.toLowerCase()) &&
-        safeString(entry.payment_settlement).includes(
-          settlementFilter.toLowerCase()
-        ) &&
-        safeString(entry.paymentmethod).includes(
-          paymentmodeFilter.toLowerCase()
-        ) &&
-        safeString(entry.payment_status).includes(statusFilter.toLowerCase()) &&
-        safeString(entry.part_payment_amount).includes(
-          paymentamountFilter.toLowerCase()
-        ) &&
-        safeString(entry.remaining_amount).includes(
-          remainingamountFilter.toLowerCase()
-        ) &&
-        safeString(entry.paydate).includes(dateFilter.toLowerCase()) &&
-        safeString(entry.receivedby).includes(
-          paymentreceivedFilter.toLowerCase()
-        ) &&
-        safeString(entry.membership_status).includes(
-          (membershipStatusFilter || "").toLowerCase()
-        )
+        entry.id.toString().includes(idFilter) &&
+        entry.participant_name
+          .toLowerCase()
+          .includes(nameFilter.toLowerCase()) &&
+        entry.district.toLowerCase().includes(districtFilter.toLowerCase()) &&
+        entry.scheme_name.toLowerCase().includes(schemeFilter.toLowerCase()) &&
+        entry.price.toLowerCase().includes(amountFilter.toLowerCase()) &&
+        entry.priceBeforeDiscount
+          .toLowerCase()
+          .includes(schemepriceFilter.toLowerCase()) &&
+        entry.discount.toLowerCase().includes(discountFilter.toLowerCase()) &&
+        entry.taxDeduction.toLowerCase().includes(TaxFilter.toLowerCase()) &&
+        entry.payment_settlement
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase) &&
+        entry.part_payment_amount
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase) &&
+        entry.remaining_amount
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase) &&
+        entry.payment_status
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase) &&
+        entry.paymentmethod
+          .toLowerCase()
+          .includes(paymentmodeFilter.toLowerCase()) &&
+        entry.paydate.toLowerCase().includes(dateFilter.toLowerCase()) &&
+        entry.receivedby
+          .toLowerCase()
+          .includes(paymentreceivedFilter.toLowerCase()) &&
+        entry.membership_status
+          ?.toLowerCase()
+          .includes(membershipFilter.toLowerCase()) // new condition
     );
   };
 
@@ -755,13 +709,13 @@ class ParticipantPayments extends Component {
                       pagination={paginationFactory(pageOptions)}
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={this.filterData()}
+                      data={this.state.GetPayment}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
                           columns={this.state.feedbackListColumns}
-                          data={this.filterData()}
+                          data={this.state.GetPayment}
                           search
                         >
                           {toolkitprops => (
