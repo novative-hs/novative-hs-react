@@ -14,7 +14,7 @@ import Select from "react-select"; // For Select component
 import { addNewPayment } from "store/Payment/actions";
 import { getcitylist } from "store/participantcity/actions";
 import { getdistrictlist } from "store/participantdistrict/actions";
-import { getdesignationlist } from "store/participantdesignation/actions";
+
 import {
   Card,
   CardBody,
@@ -56,6 +56,7 @@ import {
 
 import ApproveUnapproveModal from "components/Common/ApproveUnapproveModal";
 import "assets/scss/table.scss";
+import registrationAdmin from "store/registration-admin/reducer";
 
 class PendingLabs extends Component {
   constructor(props) {
@@ -67,10 +68,9 @@ class PendingLabs extends Component {
       AllLabs: [],
       approvedLabs: [],
       ListCity: [],
-      activeSchemesWithoutCycle: [],
       ListDistrict: [],
+      activeSchemesWithoutCycle: [],
       CycleList: [],
-      ListDesignation: [],
       selectedScheme: null,
       id: "",
       btnText: "Copy",
@@ -145,8 +145,8 @@ class PendingLabs extends Component {
           dataField: "name",
           text: "Participant name",
           sort: true,
-          headerStyle: { textAlign: "left" }, // <-- Header aligned left
-          style: { textAlign: "left" },
+          headerStyle: { textAlign: "center" },
+          style: { textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
@@ -174,8 +174,8 @@ class PendingLabs extends Component {
           dataField: "lab_staff_name",
           text: "Name",
           sort: true,
-          headerStyle: { textAlign: "left" }, // <-- Header aligned left
-          style: { textAlign: "left" },
+          headerStyle: { textAlign: "center" },
+          style: { textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
@@ -295,7 +295,7 @@ class PendingLabs extends Component {
                 gap: "10px",
               }}
             >
-              {/* <Link
+              <Link
                 to={`/payment-scheme-list/${AllLabs.id}`}
                 style={{ textDecoration: "underline", color: "#0000CD" }}
                 onClick={() =>
@@ -305,7 +305,7 @@ class PendingLabs extends Component {
                 }
               >
                 <i className="mdi mdi-credit-card-outline font-size-18" />
-              </Link> */}
+              </Link>
               {AllLabs.payment_settlement}
             </span>
           ),
@@ -665,9 +665,6 @@ class PendingLabs extends Component {
     const { onGetCityList } = this.props;
     onGetCityList(this.state.user_id);
 
-    const { onGetdesignationlist } = this.props;
-    onGetdesignationlist(this.state.user_id);
-
     const { onGetDistrictList } = this.props;
     onGetDistrictList(this.state.user_id);
     // Retrieve user_id from localStorage
@@ -737,11 +734,6 @@ class PendingLabs extends Component {
     if (prevProps.ListCity !== this.props.ListCity) {
       this.setState({ ListCity: this.props.ListCity });
     }
-
-    if (prevProps.ListDesignation !== this.props.ListDesignation) {
-      this.setState({ ListDesignation: this.props.ListDesignation });
-    }
-
     if (prevProps.ListDistrict !== this.props.ListDistrict) {
       this.setState({ ListDistrict: this.props.ListDistrict });
     }
@@ -1042,10 +1034,10 @@ class PendingLabs extends Component {
     console.log("Rendering table with data:", this.state.filteredLabs);
     const activeSchemesWithoutCycle =
       this.props.activeSchemesWithoutCycle || [];
+ console.log("Rendering activeSchemesWithoutCycle:", this.state.activeSchemesWithoutCycle);
     const { SearchBar } = Search;
     const { ListCity } = this.state;
     const { ListDistrict } = this.state;
-    const { ListDesignation } = this.state;
     const cityOptions = ListCity.map(city => ({
       value: city.name,
       label: city.name,
@@ -1055,10 +1047,6 @@ class PendingLabs extends Component {
       label: district.name,
     }));
 
-    const designationOptions = ListDesignation.map(designation => ({
-      value: designation.name,
-      label: designation.name,
-    }));
     const { AllLabs } = this.props;
     const data = this.state.data;
     const { onApproveUnapproveLab, onGetPendingLabs } = this.props;
@@ -1082,28 +1070,22 @@ class PendingLabs extends Component {
         label: participant.name, // or any other field you'd like to display
       })
     );
-    const combinedSchemeOptions = [
-      ...(this.state.filteredCycleList || []).map(scheme => ({
-        value: scheme.id,
-        label: `${scheme.scheme_name} - Cycle ${scheme.cycle_no}`,
-      })),
-      ...(this.props.activeSchemesWithoutCycle || []).map(scheme => ({
-        value: scheme.id,
-        label: `${scheme.scheme_name} (No Cycle)`,
-      })),
-    ];
+   const schemeOptions = [
+  // Schemes with cycles
+  ...CycleList.map(scheme => ({
+    value: scheme.id,
+    label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
+    price: scheme.price, // used for totalPrice calculation
+  })),
 
-    const schemeOptionsWithoutCycle = (
-      this.props.activeSchemesWithoutCycle || []
-    ).map(scheme => ({
-      value: scheme.id,
-      label: scheme.scheme_name,
-    }));
+  // Schemes without cycles
+  ...activeSchemesWithoutCycle.map(scheme => ({
+    value: scheme.id,
+    label: `(Scheme Name: ${scheme.name}) - (No Cycle)`,
+    price: "0", // or provide actual price if available
+  })),
+];
 
-    const schemeOptions = activeSchemesWithoutCycle.map(scheme => ({
-      value: scheme.id,
-      label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
-    }));
 
     console.log("Mapped scheme option:", schemeOptions);
     const { isModalOpen, toggleModal, isOpen, toggle, onSubmit } = this.state;
@@ -1215,41 +1197,31 @@ class PendingLabs extends Component {
                                             className="form-select"
                                             onChange={this.handleSchemeChange}
                                             value={this.state.selectedScheme}
-                                            style={{ width: "300px" }}
+                                            style={{ width: "300px" }} // Increased width for longer text
                                           >
                                             <option value="">
                                               Select Scheme
                                             </option>
-                                            <optgroup label="Schemes With Cycle">
-                                              {(
-                                                this.state.filteredCycleList ||
-                                                []
-                                              ).map(scheme => (
-                                                <option
-                                                  key={scheme.id}
-                                                  value={scheme.id}
-                                                >
-                                                  {`${scheme.scheme_name} - Cycle ${scheme.cycle_no}`}
-                                                </option>
-                                              ))}
-                                            </optgroup>
-                                            <optgroup label="Schemes Without Cycle">
-                                              {(
-                                                this.props
-                                                  .activeSchemesWithoutCycle ||
-                                                []
-                                              ).map(item => (
-                                                <option
-                                                  key={item.id}
-                                                  value={item.id}
-                                                >
-                                                  {item.scheme_name ||
-                                                    item.name ||
-                                                    "Unnamed"}{" "}
-                                                  (No Cycle)
-                                                </option>
-                                              ))}
-                                            </optgroup>
+                                            {Array.isArray(
+                                              this.state.filteredCycleList
+                                            ) &&
+                                              this.state.filteredCycleList.map(
+                                                filteredCycle => (
+                                                  <option
+                                                    key={filteredCycle.id}
+                                                    value={filteredCycle.id}
+                                                  >
+                                                    {`${
+                                                      filteredCycle.scheme_name
+                                                    } - Cycle ${
+                                                      filteredCycle.cycle_no
+                                                    } (${
+                                                      filteredCycle.status ||
+                                                      "No Status"
+                                                    })`}
+                                                  </option>
+                                                )
+                                              )}
                                           </select>
                                         </div>
                                       </div>
@@ -1272,26 +1244,29 @@ class PendingLabs extends Component {
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
-                                    <BootstrapTable
-                                      key={`table-${this.state.filteredLabs.length}`} // Unique key for each data update
-                                      keyField="id"
-                                      data={this.state.filteredLabs}
-                                      columns={this.state.pendingLabListColumns}
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={
-                                        "table align-middle table-condensed table-hover"
-                                      }
-                                      bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={
-                                        "table-header-sky-blue"
-                                      }
-                                      responsive
-                                      ref={this.node}
-                                      filter={filterFactory()}
-                                    />
+                                      <BootstrapTable
+                                        key={`table-${this.state.filteredLabs.length}`} // Unique key for each data update
+                                        keyField="id"
+                                        data={this.state.filteredLabs}
+                                        columns={this.state.pendingLabListColumns}
+                                        {...toolkitprops.baseProps}
+                                        {...paginationTableProps}
+                                        defaultSorted={defaultSorted}
+                                        classes={
+                                          "table align-middle table-condensed table-hover"
+                                        }
+                                        bordered={false}
+                                        striped={false}
+
+                                        headerWrapperClasses={
+                                          "table-header-sky-blue"
+                                        }
+                                        responsive
+                                        ref={this.node}
+                                        filter={filterFactory()}
+                                      rowClasses={(row, rowIndex) => (rowIndex % 2 === 0 ? "row-a" : "row-b")}
+
+                                      />
                                     <Modal
                                       isOpen={this.state.LabModal}
                                       className={this.props.className}
@@ -1821,44 +1796,22 @@ class PendingLabs extends Component {
                                                           />
                                                         </div>
                                                       </Col>
-                                                      <Col sm={6} md={6} xl={6}>
+                                                      <Col md={6}>
                                                         <div className="mb-3">
-                                                          <Label
-                                                            for="designation"
-                                                            className="form-label"
-                                                            // style={{
-                                                            //   color: "blue",
-                                                            // }}
-                                                          >
+                                                          <Label className="form-label">
                                                             Designation
                                                           </Label>
-                                                          <Select
-                                                            name="designation" // The field name in Formik
-                                                            options={
-                                                              designationOptions
-                                                            } // Options for the select
-                                                            classNamePrefix="react-select"
-                                                            className="react-select-container border"
-                                                            onChange={selectedOption => {
-                                                              setFieldValue(
-                                                                "designation",
-                                                                selectedOption
-                                                                  ? selectedOption.value
-                                                                  : ""
-                                                              ); // Update Formik state with string value
-                                                            }}
+                                                          <input
+                                                            type="text"
                                                             value={
-                                                              designationOptions.find(
-                                                                option =>
-                                                                  option.value ===
-                                                                  values.designation
-                                                              ) || null
-                                                            } // Set the current selected value
-                                                          />
-                                                          <ErrorMessage
-                                                            name="designation" // Error for the city field
-                                                            component="div"
-                                                            className="invalid-feedback"
+                                                              values.designation
+                                                            }
+                                                            name="designation"
+                                                            className="form-control"
+                                                            placeholder="Enter Designation"
+                                                            onChange={
+                                                              handleChange
+                                                            }
                                                           />
                                                         </div>
                                                       </Col>
@@ -2448,82 +2401,37 @@ class PendingLabs extends Component {
                                                 )}
                                                 <Row>
                                                   <Col>
-                                                    <Label>Scheme</Label>
+                                                    <Label>Schemeeeeeeeeee</Label>
                                                     <Select
-                                                      name="scheme"
-                                                      isMulti
-                                                      options={schemeOptions}
-                                                      className={
-                                                        errors.scheme &&
-                                                        touched.scheme
-                                                          ? "is-invalid"
-                                                          : ""
-                                                      }
-                                                      onChange={selectedOptions => {
-                                                        const selectedValues =
-                                                          selectedOptions
-                                                            ? selectedOptions.map(
-                                                                option =>
-                                                                  option.value
-                                                              )
-                                                            : [];
-                                                        setFieldValue(
-                                                          "scheme",
-                                                          selectedValues
-                                                        );
+  name="scheme"
+  isMulti
+  options={schemeOptions}
+  className={
+    errors.scheme && touched.scheme ? "is-invalid" : ""
+  }
+  onChange={selectedOptions => {
+    const selectedValues = selectedOptions
+      ? selectedOptions.map(option => option.value)
+      : [];
 
-                                                        console.log(
-                                                          "Selected Scheme IDs:",
-                                                          selectedValues
-                                                        ); // Debugging
+    setFieldValue("scheme", selectedValues);
 
-                                                        const totalPrice =
-                                                          selectedValues.reduce(
-                                                            (sum, schemeId) => {
-                                                              const scheme =
-                                                                this.props.CycleList.find(
-                                                                  s =>
-                                                                    s.id ===
-                                                                    schemeId
-                                                                );
-                                                              return (
-                                                                sum +
-                                                                (scheme
-                                                                  ? parseFloat(
-                                                                      scheme.price.replace(
-                                                                        /,/g,
-                                                                        ""
-                                                                      )
-                                                                    )
-                                                                  : 0)
-                                                              );
-                                                            },
-                                                            0
-                                                          );
+    const totalPrice = selectedValues.reduce((sum, schemeId) => {
+      const scheme = schemeOptions.find(s => s.value === schemeId);
+      return (
+        sum +
+        (scheme ? parseFloat(scheme.price.replace(/,/g, "")) : 0)
+      );
+    }, 0);
 
-                                                        console.log(
-                                                          "Total Price:",
-                                                          totalPrice
-                                                        ); // Debugging
+    setFieldValue("priceBeforeDiscount", totalPrice.toFixed(2));
+    setFieldValue("price", totalPrice.toFixed(2));
+  }}
+  value={schemeOptions.filter(option =>
+    values.scheme.includes(option.value)
+  )}
+/>
 
-                                                        // Update the priceBeforeDiscount field
-                                                        setFieldValue(
-                                                          "priceBeforeDiscount",
-                                                          totalPrice.toFixed(2)
-                                                        );
-
-                                                        setFieldValue(
-                                                          "price",
-                                                          totalPrice.toFixed(2)
-                                                        );
-                                                      }}
-                                                      value={schemeOptions.filter(
-                                                        option =>
-                                                          values.scheme.includes(
-                                                            option.value
-                                                          )
-                                                      )}
-                                                    />
                                                   </Col>
                                                 </Row>
                                                 <Row>
@@ -2756,48 +2664,6 @@ class PendingLabs extends Component {
                                                 </Row>
                                                 <Row>
                                                   <Col>
-                                                    <div className="mb-3">
-                                                      <Label
-                                                        htmlFor="price"
-                                                        className="form-label"
-                                                      >
-                                                        Payable after Discount &
-                                                        Tax Deduction
-                                                      </Label>
-                                                      <Field name="price">
-                                                        {({ field }) => (
-                                                          <input
-                                                            {...field}
-                                                            type="text"
-                                                            className="form-control"
-                                                            value={new Intl.NumberFormat(
-                                                              "en-PK",
-                                                              {
-                                                                style:
-                                                                  "currency",
-                                                                currency: "PKR",
-                                                              }
-                                                            ).format(
-                                                              values.price || 0
-                                                            )}
-                                                            readOnly
-                                                            style={{
-                                                              backgroundColor:
-                                                                "#e9ecef",
-                                                            }}
-                                                          />
-                                                        )}
-                                                      </Field>
-                                                      <ErrorMessage
-                                                        name="price"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                  </Col>
-                                                </Row>
-                                                <Row>
-                                                  <Col>
                                                     <Label>
                                                       Payment Status
                                                     </Label>
@@ -2892,6 +2758,52 @@ class PendingLabs extends Component {
                                                 {values.payment_status ===
                                                   "Paid" && (
                                                   <>
+                                                    <Row>
+                                                      <Col>
+                                                        <div className="mb-3">
+                                                          <Label
+                                                            htmlFor="price"
+                                                            className="form-label"
+                                                          >
+                                                            Payable after
+                                                            Discount & Tax
+                                                            Deduction
+                                                          </Label>
+                                                          <Field name="price">
+                                                            {({ field }) => (
+                                                              <input
+                                                                {...field}
+                                                                type="text"
+                                                                className="form-control"
+                                                                value={new Intl.NumberFormat(
+                                                                  "en-PK",
+                                                                  {
+                                                                    style:
+                                                                      "currency",
+                                                                    currency:
+                                                                      "PKR",
+                                                                  }
+                                                                ).format(
+                                                                  values.price ||
+                                                                    0
+                                                                )}
+                                                                readOnly
+                                                                style={{
+                                                                  backgroundColor:
+                                                                    "#e9ecef",
+                                                                }}
+                                                              />
+                                                            )}
+                                                          </Field>
+                                                          <ErrorMessage
+                                                            name="price"
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
+                                                      </Col>
+                                                    </Row>
+
                                                     <Col>
                                                       <Label>
                                                         Payment Settlement
@@ -3607,8 +3519,8 @@ PendingLabs.propTypes = {
   ongetApprovedLabs: PropTypes.func,
   ongetcyclelist: PropTypes.func,
   approvedLabs: PropTypes.array,
-  activeSchemesWithoutCycle: PropTypes.array,
   onGetParticipantPayment: PropTypes.func,
+  activeSchemesWithoutCycle: PropTypes.array,
   location: PropTypes.shape({
     search: PropTypes.string, // Ensure 'search' is a string
   }).isRequired, // Make it required if always expected
@@ -3616,10 +3528,7 @@ PendingLabs.propTypes = {
   CycleList: PropTypes.array,
   onGetCityList: PropTypes.func,
   onGetDistrictList: PropTypes.func,
-
-  ListDesignation: PropTypes.array,
   PaymentSchemeList: PropTypes.array,
-  onGetdesignationlist: PropTypes.func,
   isPaymentModalOpen: PropTypes.array,
   togglePaymentModal: PropTypes.array,
   isMembershipModalOpen: PropTypes.array,
@@ -3631,7 +3540,6 @@ const mapStateToProps = ({
   Account,
   ListCity,
   ListDistrict,
-  ListDesignation,
   registrationAdmin,
   CycleList,
   PaymentScheme,
@@ -3644,13 +3552,12 @@ const mapStateToProps = ({
     "Active Schemes Without Cycle:",
     registrationAdmin?.activeSchemesWithoutCycle
   );
-
   return {
     userID: Account?.userID || null,
 
     ListCity: ListCity?.ListCity || [],
     ListDistrict: ListDistrict?.ListDistrict || [],
-    ListDesignation: ListDesignation?.ListDesignation || [],
+
     AllLabs: registrationAdmin?.AllLabs || [],
     approvedLabs: registrationAdmin?.approvedLabs || [],
     activeSchemesWithoutCycle: registrationAdmin?.activeSchemesWithoutCycle,
@@ -3672,12 +3579,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onGetCityList: id => dispatch(getcitylist(id)),
   onGetDistrictList: id => dispatch(getdistrictlist(id)),
-  onGetdesignationlist: id => dispatch(getdesignationlist(id)),
   onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
   ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
   ongetcyclelist: id => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
-
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);
     dispatch(updateMembershipStatus({ id, ...status }));
