@@ -60,21 +60,17 @@ const registrationAdmin = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
-
     case GET_ALL_PARTICIPANT_SUCCESS:
       console.log(
         "[Reducer] GET_ALL_PARTICIPANT_SUCCESS payload:",
         action.payload
       );
-      console.log(
-        "[Reducer] Active Schemes Without Cycle:",
-        action.payload.active_schemes_without_cycle
-      ); // ✅ Extra log
       return {
         ...state,
         AllLabs: action.payload.data,
-        participantCounts: action.payload.counts,
-        activeSchemesWithoutCycle: action.payload.active_schemes_without_cycle,
+        participantCounts: action.payload.counts, // ✅ Add this line
+        scheme_list: action.payload.scheme_list, // ✅ Add this line
+        scheme_lab_count: action.payload.scheme_lab_count, // ✅ Add this line
       };
 
     case GET_ALL_PARTICIPANT_FAIL:
@@ -83,6 +79,7 @@ const registrationAdmin = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+
     case UPDATE_LABS_SUCCESS:
       return {
         ...state,
