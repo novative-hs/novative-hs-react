@@ -366,6 +366,18 @@ class Header extends Component {
                                 Participants Count
                               </NavLink>
                             </li>
+                            <li>
+                              <NavLink
+                                to={`/${organization_name}/schemedetails`}
+                                className={({ isActive }) =>
+                                  `dropdown-item ${
+                                    isActive ? "active-dropdown" : ""
+                                  }`
+                                }
+                              >
+                                Scheme Detail
+                              </NavLink>
+                            </li>
                           </ul>
                         </li>
                         <li className="nav-item">

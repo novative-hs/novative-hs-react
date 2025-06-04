@@ -56,7 +56,7 @@ import SchemeAnalytes from "pages/databaseadmin/add-analytes-scheme-page";
 import SchemeListAnalyte from "pages/databaseadmin/scheme-analytelist";
 import Sample from "pages/databaseadmin/sample";
 import SampleAnalytes from "pages/databaseadmin/add-analytes-sample-page";
-
+import SchemeDetailsReport from "pages/databaseadmin/schemedetails";
 import AnalyteAddReagents from "pages/databaseadmin/analyte-add-reagents";
 import AnalyteAddEuipments from "pages/databaseadmin/analyte-add-equipments";
 import DatabaseOfParticipantCity from "pages/databaseadmin/database-of-participantcity";
@@ -307,6 +307,7 @@ const databaseAdminAuthProtectedRoutes = [
   { path: "/:organization_name/sample", component: Sample },
   { path: "/add-analytes-sample-page/:id", component: SampleAnalytes },
   { path: "/scheme-analytelist/:id", component: SchemeListAnalyte },
+  {path: "/:organization_name/schemedetails", component: SchemeDetailsReport},
   {
     path: "/:organization_name/analyte-add-methods/:id",
     component: AnalyteAddMethods,
