@@ -1105,6 +1105,7 @@ class PendingLabs extends Component {
             <Row className="justify-content-center align-item-center">
               <Col lg="10">
                 <Card>
+                  <p>The Schemes Will not be shown for the payment until the Cycle is Active</p>
                   <CardBody>
                     <Row className="justify-content-end">
                       <Col lg="auto" className="text-end">
