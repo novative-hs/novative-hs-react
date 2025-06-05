@@ -2873,14 +2873,15 @@ export const getAllLabs = (id) =>
     headers: getHeader(authHeader()),
   });
 
-export const updateAllLabs = (AllLabs) => {
+  export const updateAllLabs = (AllLabs) => {
   let formData = new FormData();
   formData.append("name", AllLabs.name);
   formData.append("email", AllLabs.email);
   formData.append("address", AllLabs.address);
   formData.append("district", AllLabs.district);
-  formData.append("designation", AllLabs.designation);
   formData.append("city", AllLabs.city);
+  formData.append("province", AllLabs.province);
+  formData.append("designation", AllLabs.designation);
   formData.append("shipping_address", AllLabs.shipping_address);
   formData.append("billing_address", AllLabs.billing_address);
   formData.append("lab_staff_name", AllLabs.lab_staff_name);

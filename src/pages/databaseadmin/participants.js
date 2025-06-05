@@ -529,8 +529,9 @@ class ParticipantListN extends Component {
       id: values.id,
       name: values.name,
       email: values.email,
-      address: values.address,
+      province: values.province, // ✅ Add this line
       designation: values.designation,
+      address: values.address,
       shipping_address: values.shipping_address,
       billing_address: values.billing_address,
       marketer_name: values.marketer_name,
@@ -698,22 +699,25 @@ class ParticipantListN extends Component {
   };
 
   toggleEditModal = data => {
+    console.log("Edit Modal Data:", data); // Add this line
     this.setState({
       editModal: !this.state.editModal,
       id: data.id,
       name: data.name,
       email: data.email,
       address: data.address,
-      designation: data.designation,
       district: data.district,
+      province: data.province,
       city: data.city,
       shipping_address: data.shipping_address,
       billing_address: data.billing_address,
       lab_staff_name: data.lab_staff_name,
+      designation: data.lab_staff_designation,
       marketer_name: data.marketer_name,
       email_participant: data.email_participant,
       landline_registered_by: data.landline_registered_by,
       payment_status: data.payment_status,
+      payment_settlement: data.payment_settlement,
     });
   };
   toggleLabModal = () => {
@@ -832,7 +836,6 @@ class ParticipantListN extends Component {
       { key: "email_participant", label: "Email of Notification Person" },
       { key: "district", label: "District" },
       { key: "city", label: "City" },
-      { key: "designation", label: "Designation" },
       { key: "lab_staff_name", label: "Name of Notification Person" },
       { key: "phone", label: "Contact No of Notification Person" },
       { key: "payment_status", label: "Payment Status" }, // This will show "N/A" if it doesn’t exist
@@ -1065,7 +1068,7 @@ class ParticipantListN extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes="table align-middle table-condensed table-body-white" // <- add body class here
+                                      classes="table align-middle table-condensed table-hover table-body-white" // <- add body class here
                                       bordered={false}
                                       striped={true}
                                       headerWrapperClasses="table-header-grey" // <- header style class
@@ -1326,7 +1329,6 @@ class ParticipantListN extends Component {
                                             email: this.state.email,
                                             address: this.state.address,
                                             district: this.state.district,
-                                            designation: this.state.designation,
                                             city: this.state.city,
                                             province: this.state.province,
                                             shipping_address:
@@ -1378,12 +1380,17 @@ class ParticipantListN extends Component {
                                                       Login Email
                                                     </Label>
                                                     <input
-                                                      type="text"
+                                                      type="email"
                                                       value={values.email}
                                                       name="email"
                                                       className="form-control"
-                                                      placeholder="Enter Address"
+                                                      placeholder="Enter Email"
                                                       onChange={handleChange}
+                                                      readOnly={true}
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#f0f0f0",
+                                                      }} // light grey
                                                     />
                                                   </div>
 
