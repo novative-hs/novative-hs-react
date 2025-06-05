@@ -1065,7 +1065,7 @@ class ParticipantListN extends Component {
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes="table align-middle table-condensed table-hover table-body-white" // <- add body class here
+                                      classes="table align-middle table-condensed table-body-white" // <- add body class here
                                       bordered={false}
                                       striped={true}
                                       headerWrapperClasses="table-header-grey" // <- header style class
