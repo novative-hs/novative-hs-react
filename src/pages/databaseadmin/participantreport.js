@@ -71,15 +71,10 @@ class Membershipstatusreport extends Component {
                 display: "flex",
                 justifyContent: "flex-start",
                 gap: "10px",
+                color: "#000", // Force black text
               }}
             >
-              <Link
-                to="#"
-                onMouseEnter={e => this.openLabModal(e, lab)}
-                onPointerLeave={this.handleMouseExit}
-              >
-                {lab.province}
-              </Link>
+              {lab.province}
             </span>
           ),
         },
@@ -117,15 +112,14 @@ class Membershipstatusreport extends Component {
           dataField: "total_labs",
           text: "Total Labs",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: { textAlign: "center", backgroundColor: "#fff3cd" }, // Light Yellow
+          style: { backgroundColor: "#fff3cd", textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
               style={{
                 cursor: "pointer",
                 color: "blue",
-                textDecoration: "underline",
               }}
               onClick={() =>
                 this.openParticipantList(lab.province, lab.district, lab.city)
@@ -139,8 +133,8 @@ class Membershipstatusreport extends Component {
           dataField: "new_register_labs",
           text: "New Register",
           sort: true,
-          headerStyle: { textAlign: "center", width: "200px" },
-          style: { textAlign: "center" },
+          headerStyle: { textAlign: "center", backgroundColor: "#e3f2fd" }, // Light Blue
+          style: { backgroundColor: "#e3f2fd", textAlign: "left" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -162,8 +156,8 @@ class Membershipstatusreport extends Component {
           dataField: "active_labs",
           text: "Active",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: { textAlign: "center", backgroundColor: "#f3e5f5" }, // Light Lavender
+          style: { backgroundColor: "#f3e5f5", textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -177,8 +171,9 @@ class Membershipstatusreport extends Component {
           dataField: "inactive_labs",
           text: "Inactive",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+
+          headerStyle: { textAlign: "center", backgroundColor: "#d1e7dd" }, // Light Green
+          style: { backgroundColor: "#d1e7dd", textAlign: "left" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -192,8 +187,8 @@ class Membershipstatusreport extends Component {
           dataField: "suspended_labs",
           text: "Suspended",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: { textAlign: "center", backgroundColor: "#f8d7da" }, // Light Red
+          style: { backgroundColor: "#f8d7da", textAlign: "center" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -416,11 +411,11 @@ class Membershipstatusreport extends Component {
       custom: true,
     };
     const defaultSorted = [
-  {
-    dataField: "province",
-    order: "asc",
-  },
-];
+      {
+        dataField: "province",
+        order: "asc",
+      },
+    ];
 
     return (
       <React.Fragment>
