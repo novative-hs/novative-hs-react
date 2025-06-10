@@ -1088,10 +1088,8 @@ class PendingLabs extends Component {
       })
     );
     const schemeOptions = CycleList.map(scheme => ({
-      value: `${scheme.scheme_id}-${scheme.id}`, // concatenate scheme_id and cycle_id
+      value: scheme.id, // Use scheme ID instead of scheme name
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
-      scheme_id: scheme.scheme_id,
-      cycle_id: scheme.id,
     }));
 
     console.log("Mapped scheme option:", schemeOptions);
@@ -1504,415 +1502,415 @@ class PendingLabs extends Component {
                                       </ModalBody>
                                     </Modal>
                                     <Modal
-                                      isOpen={this.state.editModal}
-                                      toggle={this.toggleEditModal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.toggleEditModal}
-                                      >
-                                        Edit Lab Details
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        {this.state.successMessage && (
-                                          <div className="alert alert-success text-center">
-                                            {this.state.successMessage}
-                                          </div>
-                                        )}
-                                        <Formik
-                                          initialValues={{
-                                            id: this.state.id,
-                                            name: this.state.name,
-                                            email: this.state.email,
-                                            address: this.state.address,
-                                            district: this.state.district,
-                                            city: this.state.city,
-                                            province: this.state.province,
-                                            shipping_address:
-                                              this.state.shipping_address,
-                                            billing_address:
-                                              this.state.billing_address,
-                                            lab_staff_name:
-                                              this.state.lab_staff_name,
-                                            email_participant:
-                                              this.state.email_participant,
-                                            landline_registered_by:
-                                              this.state.landline_registered_by,
-                                            designation: this.state.designation,
-                                            payment_status:
-                                              this.state.payment_status,
-                                            payment_settlement:
-                                              this.state.payment_settlement,
-                                          }}
-                                          onSubmit={this.handleEditSubmit}
-                                        >
-                                          {({
-                                            values,
-                                            errors,
-                                            setFieldValue,
-                                            handleChange,
-                                            handleSubmit,
-                                          }) => (
-                                            <Form onSubmit={handleSubmit}>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  {/* {/ Name Field /} */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Name
-                                                    </Label>
-                                                    <input
-                                                      type="text"
-                                                      value={values.name}
-                                                      name="name"
-                                                      className="form-control"
-                                                      placeholder="Enter Name"
-                                                      onChange={handleChange}
-                                                    />
-                                                  </div>
-
-                                                  {/* {/ Email Field /} */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Login Email
-                                                    </Label>
-                                                    <input
-                                                      type="email"
-                                                      value={values.email}
-                                                      name="email"
-                                                      className="form-control"
-                                                      placeholder="Enter Email"
-                                                      onChange={handleChange}
-                                                      readOnly={true}
-                                                      style={{
-                                                        backgroundColor:
-                                                          "#f0f0f0",
-                                                      }} // light grey
-                                                    />
-                                                  </div>
-
-                                                  {/* {/ Address Field /} */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                    <input
-                                                      type="text"
-                                                      value={values.address}
-                                                      name="address"
-                                                      className="form-control"
-                                                      placeholder="Enter Address"
-                                                      onChange={handleChange}
-                                                    />
-                                                  </div>
-
-                                                  {/* {/ District and City in one row /} */}
-
-                                                  {/* {/ Shipping Address Field /} */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Shipping Address
-                                                    </Label>
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        values.shipping_address
-                                                      }
-                                                      name="shipping_address"
-                                                      className="form-control"
-                                                      placeholder="Enter Shipping Address"
-                                                      onChange={handleChange}
-                                                    />
-                                                  </div>
-
-                                                  {/* / Billing Address Field / */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Billing Address
-                                                    </Label>
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        values.billing_address
-                                                      }
-                                                      name="billing_address"
-                                                      className="form-control"
-                                                      placeholder="Enter Billing Address"
-                                                      onChange={handleChange}
-                                                    />
-                                                  </div>
-                                                  {/* {/ Email of Notification Person /} */}
-
-                                                  <Row>
-                                                    <Col sm={6} md={6} xl={6}>
-                                                      <div className="mb-3">
-                                                        <Label
-                                                          for="district"
-                                                          className="form-label"
-                                                        >
-                                                          District
-                                                        </Label>
-                                                        <Select
-                                                          name="district" // The field name in Formik
-                                                          options={
-                                                            districtOptions
-                                                          } // Options for the select
-                                                          styles={customStyles}
-                                                          className={
-                                                            errors.district &&
-                                                            touched.district
-                                                              ? " is-invalid"
-                                                              : ""
-                                                          }
-                                                          onChange={selectedOption => {
-                                                            setFieldValue(
-                                                              "district",
-                                                              selectedOption
-                                                                ? selectedOption.value
-                                                                : ""
-                                                            );
-                                                          }}
-                                                          value={
-                                                            districtOptions.find(
-                                                              option =>
-                                                                option.value ===
-                                                                values.district
-                                                            ) || null
-                                                          } // Set the current selected value
-                                                        />
-                                                        <ErrorMessage
-                                                          name="district" // Error for the city field
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
-                                                      </div>
-                                                    </Col>
-
-                                                    <Col sm={6} md={6} xl={6}>
-                                                      <div className="mb-3">
-                                                        <Label
-                                                          for="city"
-                                                          className="form-label"
-                                                        >
-                                                          City
-                                                        </Label>
-                                                        <Select
-                                                          name="city" // The field name in Formik
-                                                          // isMulti // Enable multi-select
-                                                          options={cityOptions} // Options for the select
-                                                          styles={customStyles}
-                                                          className={
-                                                            // "form-control" +
-                                                            errors.city &&
-                                                            touched.city
-                                                              ? " is-invalid"
-                                                              : "" // Conditional class based on validation
-                                                          }
-                                                          //   onChange={
-                                                          //     selectedOptions =>
-                                                          //       setFieldValue("city", selectedOptions) // Update Formik state
-                                                          //   }
-                                                          //   value={values.city} // Set the current selected values
-                                                          // />
-                                                          onChange={selectedOption => {
-                                                            setFieldValue(
-                                                              "city",
-                                                              selectedOption
-                                                                ? selectedOption.value
-                                                                : ""
-                                                            ); // Update Formik state with string value
-                                                          }}
-                                                          value={
-                                                            cityOptions.find(
-                                                              option =>
-                                                                option.value ===
-                                                                values.city
-                                                            ) || null
-                                                          } // Set the current selected value
-                                                          // menuPlacement="auto"
-                                                          // menuShouldScrollIntoView={false}
-                                                        />
-                                                        <ErrorMessage
-                                                          name="city" // Error for the city field
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
-                                                      </div>
-                                                    </Col>
-                                                  </Row>
-
-                                                  <Row>
-                                                    <Col sm={6} md={6} xl={6}>
-                                                      <div className="mb-3">
-                                                        <Label
-                                                          for="province"
-                                                          className="form-label"
-                                                        >
-                                                          Province
-                                                        </Label>
-                                                        <Select
-                                                          name="province" // The field name in Formik
-                                                          options={
-                                                            provinceOptions
-                                                          } // Options for the select
-                                                          styles={customStyles}
-                                                          className={
-                                                            errors.province &&
-                                                            touched.province
-                                                              ? " is-invalid"
-                                                              : ""
-                                                          }
-                                                          onChange={selectedOption => {
-                                                            setFieldValue(
-                                                              "province",
-                                                              selectedOption
-                                                                ? selectedOption.value
-                                                                : ""
-                                                            );
-                                                          }}
-                                                          value={
-                                                            provinceOptions.find(
-                                                              option =>
-                                                                option.value ===
-                                                                values.province
-                                                            ) || null
-                                                          } // Set the current selected value
-                                                        />
-                                                        <ErrorMessage
-                                                          name="province" // Error for the city field
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
-                                                      </div>
-                                                    </Col>
-                                                  </Row>
-                                                  <div>
-                                                    <h5>
-                                                      Notification Person
-                                                      Details
-                                                    </h5>
-                                                    {/* {/ Name and Contact No of Notification Person in one row /} */}
-                                                    <Row>
-                                                      <Col md={6}>
-                                                        <div className="mb-3">
-                                                          <Label className="form-label">
-                                                            Email
-                                                          </Label>
-                                                          <input
-                                                            type="email"
-                                                            value={
-                                                              values.email_participant
-                                                            }
-                                                            name="email_participant"
-                                                            className="form-control"
-                                                            placeholder="Enter Email"
-                                                            onChange={
-                                                              handleChange
-                                                            }
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                      <Col md={6}>
-                                                        <div className="mb-3">
-                                                          <Label className="form-label">
-                                                            Name
-                                                          </Label>
-                                                          <input
-                                                            type="text"
-                                                            value={
-                                                              values.lab_staff_name
-                                                            }
-                                                            name="lab_staff_name"
-                                                            className="form-control"
-                                                            placeholder="Enter Name"
-                                                            onChange={
-                                                              handleChange
-                                                            }
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                      <Col md={6}>
-                                                        <div className="mb-3">
-                                                          <Label className="form-label">
-                                                            Contact No
-                                                          </Label>
-                                                          <input
-                                                            type="text"
-                                                            value={
-                                                              values.landline_registered_by
-                                                            }
-                                                            name="landline_registered_by"
-                                                            className="form-control"
-                                                            placeholder="Enter Contact No"
-                                                            onChange={
-                                                              handleChange
-                                                            }
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                      <Col sm={6} md={6} xl={6}>
-                                                        <div className="mb-3">
-                                                          <Label
-                                                            for="designation"
-                                                            className="form-label"
-                                                          >
-                                                            Designation
-                                                          </Label>
-                                                          <Select
-                                                            name="province" // The field name in Formik
-                                                            options={
-                                                              designationOptions
-                                                            } // Options for the select
-                                                            styles={
-                                                              customStyles
-                                                            }
-                                                            className={
-                                                              errors.designation &&
-                                                              touched.designation
-                                                                ? " is-invalid"
-                                                                : ""
-                                                            }
-                                                            onChange={selectedOption => {
-                                                              setFieldValue(
-                                                                "designation",
-                                                                selectedOption
-                                                                  ? selectedOption.value
-                                                                  : ""
-                                                              );
-                                                            }}
-                                                            value={
-                                                              designationOptions.find(
-                                                                option =>
-                                                                  option.value ===
-                                                                  values.designation
-                                                              ) || null
-                                                            } // Set the current selected value
-                                                          />
-                                                          <ErrorMessage
-                                                            name="designation" // Error for the city field
-                                                            component="div"
-                                                            className="invalid-feedback"
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                    </Row>
-                                                  </div>
-                                                  {/* {/ Submit Button /} */}
-                                                  <div className="mb-3 text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-primary"
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
-                                          )}
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
+                                                                          isOpen={this.state.editModal}
+                                                                          toggle={this.toggleEditModal}
+                                                                          className={this.props.className}
+                                                                        >
+                                                                          <ModalHeader
+                                                                            toggle={this.toggleEditModal}
+                                                                          >
+                                                                            Edit Lab Details
+                                                                          </ModalHeader>
+                                                                          <ModalBody>
+                                                                            {this.state.successMessage && (
+                                                                              <div className="alert alert-success text-center">
+                                                                                {this.state.successMessage}
+                                                                              </div>
+                                                                            )}
+                                                                            <Formik
+                                                                              initialValues={{
+                                                                                id: this.state.id,
+                                                                                name: this.state.name,
+                                                                                email: this.state.email,
+                                                                                address: this.state.address,
+                                                                                district: this.state.district,
+                                                                                city: this.state.city,
+                                                                                province: this.state.province,
+                                                                                shipping_address:
+                                                                                  this.state.shipping_address,
+                                                                                billing_address:
+                                                                                  this.state.billing_address,
+                                                                                lab_staff_name:
+                                                                                  this.state.lab_staff_name,
+                                                                                email_participant:
+                                                                                  this.state.email_participant,
+                                                                                landline_registered_by:
+                                                                                  this.state.landline_registered_by,
+                                                                                designation: this.state.designation,
+                                                                                payment_status:
+                                                                                  this.state.payment_status,
+                                                                                payment_settlement:
+                                                                                  this.state.payment_settlement,
+                                                                              }}
+                                                                              onSubmit={this.handleEditSubmit}
+                                                                            >
+                                                                              {({
+                                                                                values,
+                                                                                errors,
+                                                                                setFieldValue,
+                                                                                handleChange,
+                                                                                handleSubmit,
+                                                                              }) => (
+                                                                                <Form onSubmit={handleSubmit}>
+                                                                                  <Row>
+                                                                                    <Col className="col-12">
+                                                                                      {/* {/ Name Field /} */}
+                                                                                      <div className="mb-3">
+                                                                                        <Label className="form-label">
+                                                                                          Name
+                                                                                        </Label>
+                                                                                        <input
+                                                                                          type="text"
+                                                                                          value={values.name}
+                                                                                          name="name"
+                                                                                          className="form-control"
+                                                                                          placeholder="Enter Name"
+                                                                                          onChange={handleChange}
+                                                                                        />
+                                                                                      </div>
+                                   
+                                                                                      {/* {/ Email Field /} */}
+                                                                                      <div className="mb-3">
+                                                                                        <Label className="form-label">
+                                                                                          Login Email
+                                                                                        </Label>
+                                                                                        <input
+                                                                                          type="email"
+                                                                                          value={values.email}
+                                                                                          name="email"
+                                                                                          className="form-control"
+                                                                                          placeholder="Enter Email"
+                                                                                          onChange={handleChange}
+                                                                                          readOnly={true}
+                                                                                          style={{
+                                                                                            backgroundColor:
+                                                                                              "#f0f0f0",
+                                                                                          }} // light grey
+                                                                                        />
+                                                                                      </div>
+                                   
+                                                                                      {/* {/ Address Field /} */}
+                                                                                      <div className="mb-3">
+                                                                                        <Label className="form-label">
+                                                                                          Address
+                                                                                        </Label>
+                                                                                        <input
+                                                                                          type="text"
+                                                                                          value={values.address}
+                                                                                          name="address"
+                                                                                          className="form-control"
+                                                                                          placeholder="Enter Address"
+                                                                                          onChange={handleChange}
+                                                                                        />
+                                                                                      </div>
+                                   
+                                                                                      {/* {/ District and City in one row /} */}
+                                   
+                                                                                      {/* {/ Shipping Address Field /} */}
+                                                                                      <div className="mb-3">
+                                                                                        <Label className="form-label">
+                                                                                          Shipping Address
+                                                                                        </Label>
+                                                                                        <input
+                                                                                          type="text"
+                                                                                          value={
+                                                                                            values.shipping_address
+                                                                                          }
+                                                                                          name="shipping_address"
+                                                                                          className="form-control"
+                                                                                          placeholder="Enter Shipping Address"
+                                                                                          onChange={handleChange}
+                                                                                        />
+                                                                                      </div>
+                                   
+                                                                                      {/* / Billing Address Field / */}
+                                                                                      <div className="mb-3">
+                                                                                        <Label className="form-label">
+                                                                                          Billing Address
+                                                                                        </Label>
+                                                                                        <input
+                                                                                          type="text"
+                                                                                          value={
+                                                                                            values.billing_address
+                                                                                          }
+                                                                                          name="billing_address"
+                                                                                          className="form-control"
+                                                                                          placeholder="Enter Billing Address"
+                                                                                          onChange={handleChange}
+                                                                                        />
+                                                                                      </div>
+                                                                                      {/* {/ Email of Notification Person /} */}
+                                   
+                                                                                      <Row>
+                                                                                        <Col sm={6} md={6} xl={6}>
+                                                                                          <div className="mb-3">
+                                                                                            <Label
+                                                                                              for="district"
+                                                                                              className="form-label"
+                                                                                            >
+                                                                                              District
+                                                                                            </Label>
+                                                                                            <Select
+                                                                                              name="district" // The field name in Formik
+                                                                                              options={
+                                                                                                districtOptions
+                                                                                              } // Options for the select
+                                                                                              styles={customStyles}
+                                                                                              className={
+                                                                                                errors.district &&
+                                                                                                touched.district
+                                                                                                  ? " is-invalid"
+                                                                                                  : ""
+                                                                                              }
+                                                                                              onChange={selectedOption => {
+                                                                                                setFieldValue(
+                                                                                                  "district",
+                                                                                                  selectedOption
+                                                                                                    ? selectedOption.value
+                                                                                                    : ""
+                                                                                                );
+                                                                                              }}
+                                                                                              value={
+                                                                                                districtOptions.find(
+                                                                                                  option =>
+                                                                                                    option.value ===
+                                                                                                    values.district
+                                                                                                ) || null
+                                                                                              } // Set the current selected value
+                                                                                            />
+                                                                                            <ErrorMessage
+                                                                                              name="district" // Error for the city field
+                                                                                              component="div"
+                                                                                              className="invalid-feedback"
+                                                                                            />
+                                                                                          </div>
+                                                                                        </Col>
+                                   
+                                                                                        <Col sm={6} md={6} xl={6}>
+                                                                                          <div className="mb-3">
+                                                                                            <Label
+                                                                                              for="city"
+                                                                                              className="form-label"
+                                                                                            >
+                                                                                              City
+                                                                                            </Label>
+                                                                                            <Select
+                                                                                              name="city" // The field name in Formik
+                                                                                              // isMulti // Enable multi-select
+                                                                                              options={cityOptions} // Options for the select
+                                                                                              styles={customStyles}
+                                                                                              className={
+                                                                                                // "form-control" +
+                                                                                                errors.city &&
+                                                                                                touched.city
+                                                                                                  ? " is-invalid"
+                                                                                                  : "" // Conditional class based on validation
+                                                                                              }
+                                                                                              //   onChange={
+                                                                                              //     selectedOptions =>
+                                                                                              //       setFieldValue("city", selectedOptions) // Update Formik state
+                                                                                              //   }
+                                                                                              //   value={values.city} // Set the current selected values
+                                                                                              // />
+                                                                                              onChange={selectedOption => {
+                                                                                                setFieldValue(
+                                                                                                  "city",
+                                                                                                  selectedOption
+                                                                                                    ? selectedOption.value
+                                                                                                    : ""
+                                                                                                ); // Update Formik state with string value
+                                                                                              }}
+                                                                                              value={
+                                                                                                cityOptions.find(
+                                                                                                  option =>
+                                                                                                    option.value ===
+                                                                                                    values.city
+                                                                                                ) || null
+                                                                                              } // Set the current selected value
+                                                                                              // menuPlacement="auto"
+                                                                                              // menuShouldScrollIntoView={false}
+                                                                                            />
+                                                                                            <ErrorMessage
+                                                                                              name="city" // Error for the city field
+                                                                                              component="div"
+                                                                                              className="invalid-feedback"
+                                                                                            />
+                                                                                          </div>
+                                                                                        </Col>
+                                                                                      </Row>
+                                   
+                                                                                      <Row>
+                                                                                        <Col sm={6} md={6} xl={6}>
+                                                                                          <div className="mb-3">
+                                                                                            <Label
+                                                                                              for="province"
+                                                                                              className="form-label"
+                                                                                            >
+                                                                                              Province
+                                                                                            </Label>
+                                                                                            <Select
+                                                                                              name="province" // The field name in Formik
+                                                                                              options={
+                                                                                                provinceOptions
+                                                                                              } // Options for the select
+                                                                                              styles={customStyles}
+                                                                                              className={
+                                                                                                errors.province &&
+                                                                                                touched.province
+                                                                                                  ? " is-invalid"
+                                                                                                  : ""
+                                                                                              }
+                                                                                              onChange={selectedOption => {
+                                                                                                setFieldValue(
+                                                                                                  "province",
+                                                                                                  selectedOption
+                                                                                                    ? selectedOption.value
+                                                                                                    : ""
+                                                                                                );
+                                                                                              }}
+                                                                                              value={
+                                                                                                provinceOptions.find(
+                                                                                                  option =>
+                                                                                                    option.value ===
+                                                                                                    values.province
+                                                                                                ) || null
+                                                                                              } // Set the current selected value
+                                                                                            />
+                                                                                            <ErrorMessage
+                                                                                              name="province" // Error for the city field
+                                                                                              component="div"
+                                                                                              className="invalid-feedback"
+                                                                                            />
+                                                                                          </div>
+                                                                                        </Col>
+                                                                                      </Row>
+                                                                                      <div>
+                                                                                        <h5>
+                                                                                          Notification Person
+                                                                                          Details
+                                                                                        </h5>
+                                                                                        {/* {/ Name and Contact No of Notification Person in one row /} */}
+                                                                                        <Row>
+                                                                                          <Col md={6}>
+                                                                                            <div className="mb-3">
+                                                                                              <Label className="form-label">
+                                                                                                Email
+                                                                                              </Label>
+                                                                                              <input
+                                                                                                type="email"
+                                                                                                value={
+                                                                                                  values.email_participant
+                                                                                                }
+                                                                                                name="email_participant"
+                                                                                                className="form-control"
+                                                                                                placeholder="Enter Email"
+                                                                                                onChange={
+                                                                                                  handleChange
+                                                                                                }
+                                                                                              />
+                                                                                            </div>
+                                                                                          </Col>
+                                                                                          <Col md={6}>
+                                                                                            <div className="mb-3">
+                                                                                              <Label className="form-label">
+                                                                                                Name
+                                                                                              </Label>
+                                                                                              <input
+                                                                                                type="text"
+                                                                                                value={
+                                                                                                  values.lab_staff_name
+                                                                                                }
+                                                                                                name="lab_staff_name"
+                                                                                                className="form-control"
+                                                                                                placeholder="Enter Name"
+                                                                                                onChange={
+                                                                                                  handleChange
+                                                                                                }
+                                                                                              />
+                                                                                            </div>
+                                                                                          </Col>
+                                                                                          <Col md={6}>
+                                                                                            <div className="mb-3">
+                                                                                              <Label className="form-label">
+                                                                                                Contact No
+                                                                                              </Label>
+                                                                                              <input
+                                                                                                type="text"
+                                                                                                value={
+                                                                                                  values.landline_registered_by
+                                                                                                }
+                                                                                                name="landline_registered_by"
+                                                                                                className="form-control"
+                                                                                                placeholder="Enter Contact No"
+                                                                                                onChange={
+                                                                                                  handleChange
+                                                                                                }
+                                                                                              />
+                                                                                            </div>
+                                                                                          </Col>
+                                                                                          <Col sm={6} md={6} xl={6}>
+                                                                                            <div className="mb-3">
+                                                                                              <Label
+                                                                                                for="designation"
+                                                                                                className="form-label"
+                                                                                              >
+                                                                                                Designation
+                                                                                              </Label>
+                                                                                              <Select
+                                                                                                name="province" // The field name in Formik
+                                                                                                options={
+                                                                                                  designationOptions
+                                                                                                } // Options for the select
+                                                                                                styles={
+                                                                                                  customStyles
+                                                                                                }
+                                                                                                className={
+                                                                                                  errors.designation &&
+                                                                                                  touched.designation
+                                                                                                    ? " is-invalid"
+                                                                                                    : ""
+                                                                                                }
+                                                                                                onChange={selectedOption => {
+                                                                                                  setFieldValue(
+                                                                                                    "designation",
+                                                                                                    selectedOption
+                                                                                                      ? selectedOption.value
+                                                                                                      : ""
+                                                                                                  );
+                                                                                                }}
+                                                                                                value={
+                                                                                                  designationOptions.find(
+                                                                                                    option =>
+                                                                                                      option.value ===
+                                                                                                      values.designation
+                                                                                                  ) || null
+                                                                                                } // Set the current selected value
+                                                                                              />
+                                                                                              <ErrorMessage
+                                                                                                name="designation" // Error for the city field
+                                                                                                component="div"
+                                                                                                className="invalid-feedback"
+                                                                                              />
+                                                                                            </div>
+                                                                                          </Col>
+                                                                                        </Row>
+                                                                                      </div>
+                                                                                      {/* {/ Submit Button /} */}
+                                                                                      <div className="mb-3 text-end">
+                                                                                        <button
+                                                                                          type="submit"
+                                                                                          className="btn btn-primary"
+                                                                                        >
+                                                                                          Save
+                                                                                        </button>
+                                                                                      </div>
+                                                                                    </Col>
+                                                                                  </Row>
+                                                                                </Form>
+                                                                              )}
+                                                                            </Formik>
+                                                                          </ModalBody>
+                                                                        </Modal>
                                     <Modal
                                       isOpen={this.state.isPaymentModalOpen}
                                       toggle={this.togglePaymentModal}
@@ -2492,12 +2490,6 @@ class PendingLabs extends Component {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      value={schemeOptions.filter(
-                                                        option =>
-                                                          values.scheme.includes(
-                                                            option.value
-                                                          )
-                                                      )}
                                                       onChange={selectedOptions => {
                                                         const selectedValues =
                                                           selectedOptions
@@ -2506,7 +2498,6 @@ class PendingLabs extends Component {
                                                                   option.value
                                                               )
                                                             : [];
-
                                                         setFieldValue(
                                                           "scheme",
                                                           selectedValues
@@ -2519,30 +2510,18 @@ class PendingLabs extends Component {
 
                                                         const totalPrice =
                                                           selectedValues.reduce(
-                                                            (
-                                                              sum,
-                                                              combinedId
-                                                            ) => {
-                                                              const [
-                                                                _,
-                                                                cycleId,
-                                                              ] = combinedId
-                                                                .split("-")
-                                                                .map(Number); // extract cycleId
+                                                            (sum, schemeId) => {
                                                               const scheme =
                                                                 this.props.CycleList.find(
                                                                   s =>
                                                                     s.id ===
-                                                                    cycleId
+                                                                    schemeId
                                                                 );
                                                               return (
                                                                 sum +
                                                                 (scheme
                                                                   ? parseFloat(
-                                                                      (
-                                                                        scheme.price ||
-                                                                        "0"
-                                                                      ).replace(
+                                                                      scheme.price.replace(
                                                                         /,/g,
                                                                         ""
                                                                       )
@@ -2558,15 +2537,23 @@ class PendingLabs extends Component {
                                                           totalPrice
                                                         ); // Debugging
 
+                                                        // Update the priceBeforeDiscount field
                                                         setFieldValue(
                                                           "priceBeforeDiscount",
                                                           totalPrice.toFixed(2)
                                                         );
+
                                                         setFieldValue(
                                                           "price",
                                                           totalPrice.toFixed(2)
                                                         );
                                                       }}
+                                                      value={schemeOptions.filter(
+                                                        option =>
+                                                          values.scheme.includes(
+                                                            option.value
+                                                          )
+                                                      )}
                                                     />
                                                   </Col>
                                                 </Row>
@@ -3671,9 +3658,9 @@ PendingLabs.propTypes = {
   ListCity: PropTypes.array,
   ListDistrict: PropTypes.array,
   ListProvince: PropTypes.array,
-  onGetdesignationlist: PropTypes.func,
-  ListDesignation: PropTypes.array,
-  onGetProvinceList: PropTypes.func,
+    onGetdesignationlist: PropTypes.func,
+    ListDesignation: PropTypes.array,
+    onGetProvinceList: PropTypes.func,
 };
 const mapStateToProps = ({
   Account,
