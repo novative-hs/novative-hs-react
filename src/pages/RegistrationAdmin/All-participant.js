@@ -541,7 +541,7 @@ class PendingLabs extends Component {
         !selectedScheme ||
         (Array.isArray(lab.schemes) &&
           lab.schemes.some(
-            scheme => scheme.scheme_id?.toString() === selectedScheme
+             scheme => scheme.scheme_id?.toString() === selectedScheme
           ));
 
       console.log(`Lab ${lab.id} matchesScheme:`, matchesScheme);
@@ -1216,7 +1216,9 @@ class PendingLabs extends Component {
                                                 filteredCycle => (
                                                   <option
                                                     key={filteredCycle.id}
-                                                    value={filteredCycle.id}
+                                                    value={
+                                                      filteredCycle.scheme_id
+                                                    }
                                                   >
                                                     {`${
                                                       filteredCycle.scheme_name
