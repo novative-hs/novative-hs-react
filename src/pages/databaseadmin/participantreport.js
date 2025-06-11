@@ -62,8 +62,8 @@ class Membershipstatusreport extends Component {
           dataField: "province",
           text: "Province",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "left" },
+          headerStyle: { textAlign: "center", width: "100px" },
+          style: { textAlign: "left", width: "100px" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -82,8 +82,8 @@ class Membershipstatusreport extends Component {
           dataField: "district",
           text: "District",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "left" },
+          headerStyle: { textAlign: "center", width: "100px" },
+          style: { textAlign: "left", width: "100px" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -97,8 +97,8 @@ class Membershipstatusreport extends Component {
           dataField: "city",
           text: "City",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "left" },
+          headerStyle: { textAlign: "center", width: "100px" },
+          style: { textAlign: "left", width: "100px" },
           filter: textFilter(),
           formatter: (cellContent, lab) => (
             <span
@@ -112,9 +112,20 @@ class Membershipstatusreport extends Component {
           dataField: "total_labs",
           text: "Total Labs",
           sort: true,
-          headerStyle: { textAlign: "center", backgroundColor: "#fff3cd" }, // Light Yellow
-          style: { backgroundColor: "#fff3cd", textAlign: "center" },
-          filter: textFilter(),
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#fff3cd",
+            width: "40px",
+          }, // Light Yellow
+          style: {
+            backgroundColor: "#fff3cd",
+            textAlign: "center",
+            width: "40px",
+          },
+          filter: textFilter({
+            placeholder: "", // no placeholder text
+            // style: { width: "70px" }, // set filter input width here
+          }),
           formatter: (cellContent, lab) => (
             <span
               style={{
@@ -133,21 +144,40 @@ class Membershipstatusreport extends Component {
           dataField: "new_register_labs",
           text: "New Register",
           sort: true,
-          headerStyle: { textAlign: "center", backgroundColor: "#e3f2fd" }, // Light Blue
-          style: { backgroundColor: "#e3f2fd", textAlign: "left" },
-          filter: textFilter(),
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#e3f2fd",
+            width: "40px",
+          }, // Light Blue
+          style: {
+            backgroundColor: "#e3f2fd",
+            textAlign: "left",
+            width: "40px",
+          },
+          filter: textFilter({
+            placeholder: "", // no placeholder text
+            // style: { width: "70px" }, // set filter input width here
+          }),
           formatter: (cellContent, lab) => (
             <span
               style={{
                 display: "flex",
                 justifyContent: "center",
-                width: "200px",
-                gap: "30px",
-                wordBreak: "break-word",
-                overflowWrap: "break-word",
+                cursor: "pointer",
+                color: lab.new_register_labs === 0 ? "gray" : "blue",
+              }}
+              onClick={() => {
+                if (lab.new_register_labs > 0) {
+                  this.openParticipantList(
+                    lab.province,
+                    lab.district,
+                    lab.city,
+                    "new reg"
+                  );
+                }
               }}
             >
-              {lab.new_register_labs}
+              {lab.new_register_labs === 0 ? "--" : lab.new_register_labs}
             </span>
           ),
         },
@@ -156,14 +186,37 @@ class Membershipstatusreport extends Component {
           dataField: "active_labs",
           text: "Active",
           sort: true,
-          headerStyle: { textAlign: "center", backgroundColor: "#f3e5f5" }, // Light Lavender
-          style: { backgroundColor: "#f3e5f5", textAlign: "center" },
-          filter: textFilter(),
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#f3e5f5",
+            width: "40px",
+          }, // Light Lavender
+          style: {
+            backgroundColor: "#f3e5f5",
+            textAlign: "center",
+            width: "40px",
+          },
+          filter: textFilter({
+            placeholder: "", // no placeholder text
+            // style: { width: "70px" }, // set filter input width here
+          }),
+
           formatter: (cellContent, lab) => (
             <span
-              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+              style={{
+                cursor: "pointer",
+                color: lab.active_labs === 0 ? "gray" : "blue",
+              }}
+              onClick={() =>
+                this.openParticipantList(
+                  lab.province,
+                  lab.district,
+                  lab.city,
+                  "active"
+                )
+              }
             >
-              {lab.active_labs}
+              {lab.active_labs === 0 ? "--" : lab.active_labs}
             </span>
           ),
         },
@@ -171,15 +224,38 @@ class Membershipstatusreport extends Component {
           dataField: "inactive_labs",
           text: "Inactive",
           sort: true,
-
-          headerStyle: { textAlign: "center", backgroundColor: "#d1e7dd" }, // Light Green
-          style: { backgroundColor: "#d1e7dd", textAlign: "left" },
-          filter: textFilter(),
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#d1e7dd",
+            width: "40px",
+          },
+          style: {
+            backgroundColor: "#d1e7dd",
+            textAlign: "center",
+            width: "40px",
+          },
+          filter: textFilter({
+            placeholder: "", // no placeholder text
+            // style: { width: "70px" }, // set filter input width here
+          }),
           formatter: (cellContent, lab) => (
             <span
-              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+              style={{
+                cursor: "pointer",
+                color: lab.inactive_labs === 0 ? "gray" : "blue",
+              }}
+              onClick={() => {
+                if (lab.inactive_labs > 0) {
+                  this.openParticipantList(
+                    lab.province,
+                    lab.district,
+                    lab.city,
+                    "inactive"
+                  );
+                }
+              }}
             >
-              {lab.inactive_labs}
+              {lab.inactive_labs === 0 ? "--" : lab.inactive_labs}
             </span>
           ),
         },
@@ -187,14 +263,38 @@ class Membershipstatusreport extends Component {
           dataField: "suspended_labs",
           text: "Suspended",
           sort: true,
-          headerStyle: { textAlign: "center", backgroundColor: "#f8d7da" }, // Light Red
-          style: { backgroundColor: "#f8d7da", textAlign: "center" },
-          filter: textFilter(),
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#f8d7da",
+            width: "40px", // set column width here
+          },
+          style: {
+            backgroundColor: "#f8d7da",
+            textAlign: "center",
+            width: "40px", // same width as header
+          },
+          filter: textFilter({
+            placeholder: "", // no placeholder text
+            // style: { width: "80px" }, // filter input width
+          }),
           formatter: (cellContent, lab) => (
             <span
-              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+              style={{
+                cursor: "pointer",
+                color: lab.suspended_labs === 0 ? "gray" : "blue",
+              }}
+              onClick={() => {
+                if (lab.suspended_labs > 0) {
+                  this.openParticipantList(
+                    lab.province,
+                    lab.district,
+                    lab.city,
+                    "suspended"
+                  );
+                }
+              }}
             >
-              {lab.suspended_labs}
+              {lab.suspended_labs === 0 ? "--" : lab.suspended_labs}
             </span>
           ),
         },
@@ -278,22 +378,25 @@ class Membershipstatusreport extends Component {
     return Object.values(grouped);
   }
 
-  openParticipantList = (province, district, city) => {
+  openParticipantList = (province, district, city, status = "all") => {
     const selectedParticipants = this.state.AllLabs.filter(
       lab =>
         lab.province === province &&
         lab.district === district &&
-        lab.city === city
+        lab.city === city &&
+        (status === "all" ||
+          lab.membership_status?.toLowerCase().includes(status.toLowerCase()))
     );
 
     this.setState({
       selectedParticipants,
-      LabModal: true, // Open the modal
-      modalProvince: province, // Update modal header info
+      LabModal: true,
+      modalProvince: province,
       modalDistrict: district,
       modalCity: city,
     });
   };
+
   toggleLabModal = () => {
     this.setState(prevState => ({
       LabModal: !prevState.LabModal,
