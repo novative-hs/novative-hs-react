@@ -14,6 +14,11 @@ import { getcitylist } from "store/participantcity/actions";
 import { getdistrictlist } from "store/participantdistrict/actions";
 import { getprovincelist } from "store/participantprovince/actions";
 import { getdesignationlist } from "store/participantdesignation/actions";
+import { getdepartmentlist } from "store/participantdepartment/actions";
+import { getcountrylist } from "store/participantcountry/actions";
+import { gettypelist } from "store/participanttype/actions";
+import { getsectorlist } from "store/participantsector/actions";
+
 
 import {
   Card,
@@ -57,6 +62,7 @@ import {
 
 import ApproveUnapproveModal from "components/Common/ApproveUnapproveModal";
 import "assets/scss/table.scss";
+import { countBy } from "lodash";
 
 class ParticipantListN extends Component {
   constructor(props) {
@@ -72,6 +78,10 @@ class ParticipantListN extends Component {
       ListDistrict: [],
       ListProvince: [],
       ListDesignation: [],
+      ListDepartment: [],
+      ListCountry: [],
+      ListType: [],
+      ListSector: [],
       CycleList: [],
       selectedScheme: null,
       id: "",
@@ -523,36 +533,49 @@ class ParticipantListN extends Component {
   };
 
   handleEditSubmit(values) {
-    console.log("Form values:", values);
+  console.log("Form values:", values);
 
-    const updatedData = {
-      id: values.id,
-      name: values.name,
-      email: values.email,
-      province: values.province, // ✅ Add this line
-      designation: values.designation,
-      address: values.address,
-      shipping_address: values.shipping_address,
-      billing_address: values.billing_address,
-      marketer_name: values.marketer_name,
-      city: values.city,
-      district: values.district,
-      lab_staff_name: values.lab_staff_name,
-      email_participant: values.email_participant,
-      landline_registered_by: values.landline_registered_by,
-      payment_status: values.payment_status,
-    };
+  const updatedData = {
+    id: values.id,
+    name: values.name,
+    email: values.email,
+    province: values.province,
+    designation: values.designation,
+    password_foradmins: values.password_foradmins,
+    department: values.department,
+    country: values.country,
+    type: values.type,
+    sector: values.sector,
+    address: values.address,
+    shipping_address: values.shipping_address,
+    billing_address: values.billing_address,
+    website: values.website,
+    marketer_name: values.marketer_name,
+    city: values.city,
+    district: values.district,
+    lab_staff_name: values.lab_staff_name,
+    email_participant: values.email_participant,
+    landline_registered_by: values.landline_registered_by,
+    payment_status: values.payment_status,
+  };
 
-    this.props.onupdateAllLabs(updatedData); // Dispatch update action
+  // Send update
+  this.props.onupdateAllLabs(updatedData);
 
-    // Show success message
-    this.setState({ successMessage: "Participant updated successfully" });
+  // Show temporary success message
+  this.setState({ successMessage: "Participant updated successfully" });
 
-    // Delay modal close by 2 seconds
-    setTimeout(() => {
-      this.setState({ editModal: false, successMessage: "" });
-    }, 2000);
-  }
+  // ✅ Fetch the updated lab list after 1s
+  setTimeout(() => {
+    this.props.ongetApprovedLabs(this.state.user_id); // or onGetPendingLabs
+  }, 1000);
+
+  // ✅ Close the modal after 2s
+  setTimeout(() => {
+    this.setState({ editModal: false, successMessage: "" });
+  }, 2000);
+}
+
 
   componentDidMount() {
     const { onGetCityList } = this.props;
@@ -566,6 +589,18 @@ class ParticipantListN extends Component {
 
     const { onGetdesignationlist } = this.props;
     onGetdesignationlist(this.state.user_id);
+
+    const { onGetDepartmentList } = this.props;
+    onGetDepartmentList(this.state.user_id);
+
+    const { onGetCountryList } = this.props;
+    onGetCountryList(this.state.user_id);
+
+    const { onGettypelist } = this.props;
+    onGettypelist(this.state.user_id);
+
+    const { onGetsectorlist } = this.props;
+    onGetsectorlist(this.state.user_id);
 
     console.log("Fetching data...");
 
@@ -642,6 +677,18 @@ class ParticipantListN extends Component {
     if (prevProps.ListDesignation !== this.props.ListDesignation) {
       this.setState({ ListDesignation: this.props.ListDesignation });
     }
+     if (prevProps.ListDepartment !== this.props.ListDepartment) {
+      this.setState({ ListDepartment: this.props.ListDepartment });
+    }
+    if (prevProps.ListCountry !== this.props.ListCountry) {
+      this.setState({ ListCountry: this.props.ListCountry });
+    }
+    if (prevProps.ListType !== this.props.ListType) {
+      this.setState({ ListType: this.props.ListType });
+    }
+    if (prevProps.ListSector !== this.props.ListSector) {
+      this.setState({ ListSector: this.props.ListSector });
+    }
     if (prevState.filteredLabs !== this.state.filteredLabs) {
       console.log("FilteredLabs updated:", this.state.filteredLabs);
     }
@@ -711,10 +758,16 @@ class ParticipantListN extends Component {
       city: data.city,
       shipping_address: data.shipping_address,
       billing_address: data.billing_address,
+      website: data.website,
       lab_staff_name: data.lab_staff_name,
       designation: data.lab_staff_designation,
+      department: data.department,
+      country: data.country,
+      type: data.type,
+      sector: data.sector,
       marketer_name: data.marketer_name,
       email_participant: data.email_participant,
+      password_foradmins: data.password_foradmins,
       landline_registered_by: data.landline_registered_by,
       payment_status: data.payment_status,
       payment_settlement: data.payment_settlement,
@@ -830,9 +883,12 @@ class ParticipantListN extends Component {
     const selectedFields = [
       { key: "name", label: "Name" },
       { key: "email", label: "Email" },
+      { key: "password_foradmins", label: "Password"},
+      { key: "sector", label: "Sector"},
       { key: "address", label: "Address" },
       { key: "shipping_address", label: "Shipping Address" },
       { key: "billing_address", label: "Billing Address" },
+      { key: "website", label: "Website" },
       { key: "email_participant", label: "Email of Notification Person" },
       { key: "district", label: "District" },
       { key: "city", label: "City" },
@@ -866,6 +922,9 @@ class ParticipantListN extends Component {
     const { ListDistrict } = this.state;
     const { ListProvince } = this.state;
     const { ListDesignation } = this.state;
+    const { ListDepartment } = this.state;
+     const { ListCountry } = this.state;
+     const { ListType, ListSector } = this.state;
     const cityOptions = ListCity.map(city => ({
       value: city.name,
       label: city.name,
@@ -881,6 +940,22 @@ class ParticipantListN extends Component {
     const designationOptions = ListDesignation.map(designation => ({
       value: designation.name,
       label: designation.name,
+    }));
+    const deptOptions = ListDepartment.map(department => ({
+      value: department.name,
+      label: department.name,
+    }));
+    const countryOptions = ListCountry.map(country => ({
+      value: country.name,
+      label: country.name,
+    }));
+    const typeOptions = ListType.map(type => ({
+      value: type.name,
+      label: type.name,
+    }));
+    const sectorOptions = ListSector.map(sector => ({
+      value: sector.name,
+      label: sector.name,
     }));
 
     const { AllLabs } = this.props;
@@ -1327,6 +1402,7 @@ class ParticipantListN extends Component {
                                             id: this.state.id,
                                             name: this.state.name,
                                             email: this.state.email,
+                                            password_foradmins: this.state.password_foradmins,
                                             address: this.state.address,
                                             district: this.state.district,
                                             city: this.state.city,
@@ -1335,6 +1411,8 @@ class ParticipantListN extends Component {
                                               this.state.shipping_address,
                                             billing_address:
                                               this.state.billing_address,
+                                            website:
+                                              this.state.website,
                                             lab_staff_name:
                                               this.state.lab_staff_name,
                                             email_participant:
@@ -1342,6 +1420,10 @@ class ParticipantListN extends Component {
                                             landline_registered_by:
                                               this.state.landline_registered_by,
                                             designation: this.state.designation,
+                                            department: this.state.department,
+                                            country: this.state.country,
+                                            type:this.state.type,
+                                            sector: this.state.sector,
                                             payment_status:
                                               this.state.payment_status,
                                             payment_settlement:
@@ -1375,7 +1457,10 @@ class ParticipantListN extends Component {
                                                   </div>
 
                                                   {/* {/ Email Field /} */}
-                                                  <div className="mb-3">
+                                                 
+                                                  <Row>
+                                                    <Col sm={6} md={6} xl={6}>
+                                                      <div className="mb-3">
                                                     <Label className="form-label">
                                                       Login Email
                                                     </Label>
@@ -1386,15 +1471,50 @@ class ParticipantListN extends Component {
                                                       className="form-control"
                                                       placeholder="Enter Email"
                                                       onChange={handleChange}
-                                                      readOnly={true}
-                                                      style={{
-                                                        backgroundColor:
-                                                          "#f0f0f0",
-                                                      }} // light grey
+                                                     
+                                                    />
+                                                  </div>
+                                                    </Col>
+
+                                                    <Col sm={6} md={6} xl={6}>
+                                                      <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Password
+                                                    </Label>
+                                                    <input
+                                                      type="text"
+                                                      value={values.password_foradmins}
+                                                      name="password_foradmins"
+                                                      className="form-control"
+                                                      onChange={handleChange}
+                                                    />
+                                                  </div>
+                                                    </Col>
+                                                  </Row>
+
+                                                  {/* {/ Address Field /} */}
+                                                 
+                                                   <Row>
+                                                    <Col sm={6} md={6} xl={6}>
+                                                      <div className="mb-3">
+                                                    <Label className="form-label">
+                                                      Website
+                                                    </Label>
+                                                    <input
+                                                      type="text"
+                                                      value={
+                                                        values.website
+                                                      }
+                                                      name="website"
+                                                      className="form-control"
+                                                      onChange={handleChange}
                                                     />
                                                   </div>
 
-                                                  {/* {/ Address Field /} */}
+                                                    </Col>
+
+                                                    <Col sm={6} md={6} xl={6}>
+                                                   
                                                   <div className="mb-3">
                                                     <Label className="form-label">
                                                       Address
@@ -1408,11 +1528,12 @@ class ParticipantListN extends Component {
                                                       onChange={handleChange}
                                                     />
                                                   </div>
+                                                    </Col>
+                                                  </Row>
 
-                                                  {/* {/ District and City in one row /} */}
-
-                                                  {/* {/ Shipping Address Field /} */}
-                                                  <div className="mb-3">
+                                                  <Row>
+                                                    <Col sm={6} md={6} xl={6}>
+                                                      <div className="mb-3">
                                                     <Label className="form-label">
                                                       Shipping Address
                                                     </Label>
@@ -1428,8 +1549,10 @@ class ParticipantListN extends Component {
                                                     />
                                                   </div>
 
-                                                  {/* / Billing Address Field / */}
-                                                  <div className="mb-3">
+                                                    </Col>
+
+                                                    <Col sm={6} md={6} xl={6}>
+                                                    <div className="mb-3">
                                                     <Label className="form-label">
                                                       Billing Address
                                                     </Label>
@@ -1444,6 +1567,15 @@ class ParticipantListN extends Component {
                                                       onChange={handleChange}
                                                     />
                                                   </div>
+                                                    </Col>
+                                                  </Row>
+
+                                                  {/* {/ District and City in one row /} */}
+
+                                                  {/* {/ Shipping Address Field /} */}
+                                                 
+                                                  {/* / Billing Address Field / */}
+                                                 
                                                   {/* {/ Email of Notification Person /} */}
 
                                                   <Row>
@@ -1588,6 +1720,171 @@ class ParticipantListN extends Component {
                                                         />
                                                       </div>
                                                     </Col>
+                                                    <Col sm={6} md={6} xl={6}>
+                                                        <div className="mb-3">
+                                                          <Label
+                                                            for="department"
+                                                            className="form-label"
+                                                          >
+                                                            Department
+                                                          </Label>
+                                                          <Select
+                                                            name="department" // The field name in Formik
+                                                            options={
+                                                              deptOptions
+                                                            } // Options for the select
+                                                            styles={
+                                                              customStyles
+                                                            }
+                                                            className={
+                                                              errors.department &&
+                                                              touched.department
+                                                                ? " is-invalid"
+                                                                : ""
+                                                            }
+                                                            onChange={selectedOption => {
+                                                              setFieldValue(
+                                                                "department",
+                                                                selectedOption
+                                                                  ? selectedOption.value
+                                                                  : ""
+                                                              );
+                                                            }}
+                                                            value={
+                                                              deptOptions.find(
+                                                                option =>
+                                                                  option.value ===
+                                                                  values.department
+                                                              ) || null
+                                                            } // Set the current selected value
+                                                          />
+                                                          <ErrorMessage
+                                                            name="department" // Error for the city field
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
+                                                      </Col>
+                                                  </Row>
+                                                  <Row>
+                                                    <Col sm={6} md={6} xl={6}>
+                                                      <div className="mb-3">
+                                                        <Label
+                                                          for="country"
+                                                          className="form-label"
+                                                        >
+                                                          Country
+                                                        </Label>
+                                                        <Select
+                                                          name="country" // The field name in Formik
+                                                          options={
+                                                            countryOptions
+                                                          } // Options for the select
+                                                          styles={customStyles}
+                                                          className={
+                                                            errors.country &&
+                                                            touched.country
+                                                              ? " is-invalid"
+                                                              : ""
+                                                          }
+                                                          onChange={selectedOption => {
+                                                            setFieldValue(
+                                                              "country",
+                                                              selectedOption
+                                                                ? selectedOption.value
+                                                                : ""
+                                                            );
+                                                          }}
+                                                          value={
+                                                            countryOptions.find(
+                                                              option =>
+                                                                option.value ===
+                                                                values.country
+                                                            ) || null
+                                                          } // Set the current selected value
+                                                        />
+                                                        <ErrorMessage
+                                                          name="country" // Error for the city field
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
+                                                      </div>
+                                                    </Col>
+                                                    <Col sm={6} md={6} xl={6}>
+                                                        <div className="mb-3">
+                                                          <Label
+                                                            for="type"
+                                                            className="form-label"
+                                                          >
+                                                            Type
+                                                          </Label>
+                                                          <Select
+                                                            name="type" // The field name in Formik
+                                                            options={
+                                                              typeOptions
+                                                            } // Options for the select
+                                                            styles={
+                                                              customStyles
+                                                            }
+                                                            className={
+                                                              errors.type &&
+                                                              touched.type
+                                                                ? " is-invalid"
+                                                                : ""
+                                                            }
+                                                            onChange={selectedOption => {
+                                                              setFieldValue(
+                                                                "type",
+                                                                selectedOption
+                                                                  ? selectedOption.value
+                                                                  : ""
+                                                              );
+                                                            }}
+                                                            value={
+                                                              typeOptions.find(
+                                                                option =>
+                                                                  option.value ===
+                                                                  values.type
+                                                              ) || null
+                                                            } // Set the current selected value
+                                                          />
+                                                          <ErrorMessage
+                                                            name="type" // Error for the city field
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
+                                                      </Col>
+                                                  </Row>
+                                                  <Row>
+                                                  <Col sm={6} md={6} xl={6}>
+                                                        <div className="mb-3">
+                                                          <Label
+                                                            for="sector"
+                                                            className="form-label"
+                                                          >
+                                                            Sector
+                                                          </Label>
+                                                          <Select
+  name="sector"
+  options={sectorOptions}
+  styles={customStyles}
+  onChange={selectedOption => {
+    setFieldValue("sector", selectedOption ? selectedOption.value : "");
+  }}
+  value={
+    sectorOptions.find(option => option.value === values.sector) ||
+    (values.sector ? { value: values.sector, label: values.sector } : null)
+  }
+/>
+
+                                                          <ErrorMessage
+                                                            name="sector" // Error for the city field
+                                                            component="div"
+                                                            className="invalid-feedback"
+                                                          />
+                                                        </div>
+                                                      </Col>
                                                   </Row>
                                                   <div>
                                                     <h5>
@@ -1662,7 +1959,7 @@ class ParticipantListN extends Component {
                                                             Designation
                                                           </Label>
                                                           <Select
-                                                            name="province" // The field name in Formik
+                                                            name="designation" // The field name in Formik
                                                             options={
                                                               designationOptions
                                                             } // Options for the select
@@ -2641,6 +2938,14 @@ ParticipantListN.propTypes = {
   ListProvince: PropTypes.array,
   onGetdesignationlist: PropTypes.func,
   ListDesignation: PropTypes.array,
+  onGetDepartmentList: PropTypes.func,
+  onGetCountryList: PropTypes.func,
+  onGettypelist: PropTypes.func,
+  onGetsectorlist: PropTypes.func,
+  ListDepartment: PropTypes.array,
+  ListCountry: PropTypes.array,
+  ListType: PropTypes.array,
+  ListSector: PropTypes.array,
 };
 const mapStateToProps = ({
   Account,
@@ -2651,6 +2956,10 @@ const mapStateToProps = ({
   CycleList,
   PaymentScheme,
   ListDesignation,
+  ListDepartment,
+  ListCountry,
+  ListType,
+  ListSector,
 }) => {
   const cycleList = registrationAdmin.CycleList || [];
   const paymentSchemeList = PaymentScheme?.PaymentSchemeList || [];
@@ -2669,6 +2978,10 @@ const mapStateToProps = ({
     ListDistrict: ListDistrict?.ListDistrict || [],
     ListProvince: ListProvince.ListProvince,
     ListDesignation: ListDesignation.ListDesignation,
+    ListDepartment: ListDepartment.ListDepartment,
+    ListCountry: ListCountry.ListCountry,
+    ListType: ListType.ListType,
+    ListSector: ListSector.ListSector,
   };
 };
 
@@ -2697,6 +3010,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     console.log("Updating Membership Status - ID:", id, "Status:", status);
     dispatch(updateMembershipStatus({ id, ...status }));
   },
+  onGetDepartmentList: id => dispatch(getdepartmentlist(id)),
+  onGetCountryList: id => dispatch(getcountrylist(id)),
+  onGettypelist: id => dispatch(gettypelist(id)),
+  onGetsectorlist: id => dispatch(getsectorlist(id)),
 });
 
 export default connect(

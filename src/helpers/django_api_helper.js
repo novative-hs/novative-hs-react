@@ -2872,8 +2872,7 @@ export const getAllLabs = (id) =>
   get(`${url.GET_ALL_PARTICIPANT}/${id}`, {
     headers: getHeader(authHeader()),
   });
-
-  export const updateAllLabs = (AllLabs) => {
+export const updateAllLabs = (AllLabs) => {
   let formData = new FormData();
   formData.append("name", AllLabs.name);
   formData.append("email", AllLabs.email);
@@ -2881,6 +2880,13 @@ export const getAllLabs = (id) =>
   formData.append("district", AllLabs.district);
   formData.append("city", AllLabs.city);
   formData.append("province", AllLabs.province);
+  formData.append("password_foradmins", AllLabs.password_foradmins);
+  formData.append("website", AllLabs.website);
+  formData.append("department", AllLabs.department);
+  formData.append("country", AllLabs.country);
+  formData.append("type", AllLabs.type);
+  formData.append("sector", AllLabs.sector);
+  // formData.append("province", AllLabs.province);
   formData.append("designation", AllLabs.designation);
   formData.append("shipping_address", AllLabs.shipping_address);
   formData.append("billing_address", AllLabs.billing_address);
