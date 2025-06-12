@@ -79,11 +79,11 @@ class SchemeDetailsReport extends Component {
       districtFilter: "",
     };
   }
-  openParticipantList = schemeName => {
+  openParticipantList = (schemeName) => {
     console.log("Looking for scheme:", schemeName);
 
     const scheme = this.state.SchemeList.find(
-      s => s.name.trim().toLowerCase() === schemeName.trim().toLowerCase()
+      (s) => s.name.trim().toLowerCase() === schemeName.trim().toLowerCase()
     );
 
     console.log("Scheme found:", scheme);
@@ -100,7 +100,7 @@ class SchemeDetailsReport extends Component {
   };
 
   toggleLabModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       LabModal: !prevState.LabModal,
     }));
   };
@@ -133,7 +133,7 @@ class SchemeDetailsReport extends Component {
     const value = e.target.value;
 
     if (isScheme) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         schemeFilters: {
           ...prevState.schemeFilters,
           [filterName]: value,
@@ -150,16 +150,16 @@ class SchemeDetailsReport extends Component {
     if (prevProps.SchemeList !== SchemeList) {
       console.log("Received SchemeList:", SchemeList);
 
-      const schemes = SchemeList.map(s => s.name);
+      const schemes = SchemeList.map((s) => s.name);
 
       // Create a map to accumulate rows by province/city/district
       const regionMap = {};
 
-      SchemeList.forEach(scheme => {
+      SchemeList.forEach((scheme) => {
         const schemeName = scheme.name;
         const labs = Array.isArray(scheme.labs) ? scheme.labs : [];
 
-        labs.forEach(lab => {
+        labs.forEach((lab) => {
           const key = `${lab.province}|${lab.city}|${lab.district}`;
           if (!regionMap[key]) {
             regionMap[key] = {
@@ -179,7 +179,6 @@ class SchemeDetailsReport extends Component {
       this.setState({ schemes, structuredData });
     }
   }
-
   generateColumns() {
     const { schemes } = this.state;
 
@@ -190,12 +189,11 @@ class SchemeDetailsReport extends Component {
         sort: true,
         headerFormatter: (column, colIndex) => (
           <div style={{ textAlign: "center" }}>
-          
             <div style={{ marginTop: "5px" }}>
               <input
                 type="text"
                 value={this.state.provinceFilter}
-                onChange={e => this.handleFilterChange("provinceFilter", e)}
+                onChange={(e) => this.handleFilterChange("provinceFilter", e)}
                 className="form-control"
                 style={{
                   textAlign: "center",
@@ -204,7 +202,7 @@ class SchemeDetailsReport extends Component {
                 }}
               />
             </div>
-              <div>{column.text}</div>
+            <div>{column.text}</div>
           </div>
         ),
         style: { textAlign: "center" },
@@ -215,12 +213,11 @@ class SchemeDetailsReport extends Component {
         sort: true,
         headerFormatter: (column, colIndex) => (
           <div style={{ textAlign: "center" }}>
-      
             <div style={{ marginTop: "5px" }}>
               <input
                 type="text"
                 value={this.state.cityFilter}
-                onChange={e => this.handleFilterChange("cityFilter", e)}
+                onChange={(e) => this.handleFilterChange("cityFilter", e)}
                 className="form-control"
                 style={{
                   textAlign: "center",
@@ -229,7 +226,7 @@ class SchemeDetailsReport extends Component {
                 }}
               />
             </div>
-                  <div>{column.text}</div>
+            <div>{column.text}</div>
           </div>
         ),
         style: { textAlign: "center" },
@@ -240,12 +237,11 @@ class SchemeDetailsReport extends Component {
         sort: true,
         headerFormatter: (column, colIndex) => (
           <div style={{ textAlign: "center" }}>
-           
             <div style={{ marginTop: "5px" }}>
               <input
                 type="text"
                 value={this.state.districtFilter}
-                onChange={e => this.handleFilterChange("districtFilter", e)}
+                onChange={(e) => this.handleFilterChange("districtFilter", e)}
                 className="form-control"
                 style={{
                   textAlign: "center",
@@ -254,33 +250,38 @@ class SchemeDetailsReport extends Component {
                 }}
               />
             </div>
-             <div>{column.text}</div>
+            <div>{column.text}</div>
           </div>
         ),
         style: { textAlign: "center" },
       },
     ];
 
-    const dynamicColumns = (schemes || []).map(scheme => ({
+    const dynamicColumns = (schemes || []).map((scheme) => ({
       dataField: scheme,
       text: scheme,
       sort: true,
       style: { textAlign: "center" },
-      // headerFormatter: (column, colIndex) => (
-      //   <div style={{ textAlign: "center" }}>
-       
-      //     <div style={{ marginTop: "5px" }}>
-      //       <input
-      //         type="text"
-      //         value={this.state.schemeFilters[scheme] || ""}
-      //         onChange={e => this.handleFilterChange(scheme, e, true)}
-      //         className="form-control"
-      //         style={{ textAlign: "center", width: "60px", margin: "auto" }}
-      //       />
-      //     </div>
-      //        <div>{column.text}</div>
-      //   </div>
-      // ),
+      headerStyle: { textAlign: "center", minWidth: "100px" },
+      headerFormatter: (column, colIndex) => {
+        const { structuredData = [] } = this.state;
+
+        // Calculate total labs across districts for this scheme
+        let totalCount = 0;
+        structuredData.forEach((row) => {
+          const count = parseInt(row[scheme], 10);
+          if (!isNaN(count)) totalCount += count;
+        });
+
+        return (
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontWeight: "bold" }}>{column.text}</div>
+            <div style={{ fontSize: "12px", color: "#555" }}>
+              Total: {totalCount}
+            </div>
+          </div>
+        );
+      },
       formatter: (cell, row) => {
         const count = parseInt(cell, 10);
         if (!count) return <span>--</span>;
@@ -297,15 +298,14 @@ class SchemeDetailsReport extends Component {
 
     return [...fixedColumns, ...dynamicColumns];
   }
-
   openCountModal = (row, schemeName) => {
     const { SchemeList } = this.props;
 
-    const scheme = SchemeList.find(s => s.name === schemeName);
+    const scheme = SchemeList.find((s) => s.name === schemeName);
     if (!scheme) return;
 
     const selectedParticipants = (scheme.labs || []).filter(
-      lab =>
+      (lab) =>
         lab.province === row.province &&
         lab.city === row.city &&
         lab.district === row.district
@@ -328,7 +328,7 @@ class SchemeDetailsReport extends Component {
       return []; // Return an empty array if schemes is not valid
     }
 
-    return schemes.map(scheme => ({
+    return schemes.map((scheme) => ({
       dataField: scheme,
       text: scheme,
       sort: true,
@@ -341,7 +341,7 @@ class SchemeDetailsReport extends Component {
     if (onGetPendingLabs) onGetPendingLabs(user_id);
   }
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -375,7 +375,7 @@ class SchemeDetailsReport extends Component {
     console.log("Generated Columns:", allColumns);
 
     // Filter data based on filters
-    const filteredData = structuredData.filter(entry => {
+    const filteredData = structuredData.filter((entry) => {
       const province = entry.province?.toLowerCase() || "";
       const city = entry.city?.toLowerCase() || "";
       const district = entry.district?.toLowerCase() || "";
@@ -408,7 +408,7 @@ class SchemeDetailsReport extends Component {
       totalSize: filteredData.length,
       custom: true,
     };
-const defaultSorted = [{ dataField: "province", order: "asc" }];
+    const defaultSorted = [{ dataField: "province", order: "asc" }];
     return (
       <React.Fragment>
         <div className="page-content">
@@ -439,7 +439,7 @@ const defaultSorted = [{ dataField: "province", order: "asc" }];
                           columns={allColumns}
                           search
                         >
-                          {toolkitProps => (
+                          {(toolkitProps) => (
                             <div>
                               <div className="table-responsive">
                                 <BootstrapTable
@@ -519,7 +519,7 @@ SchemeDetailsReport.propTypes = {
   onGetPendingLabs: PropTypes.func,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log("SchemeDetailsReport mapStateToProps state:", state);
 
   // Check if the required slices exist in the state
@@ -546,8 +546,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetScheme: id => dispatch(getSchemelist(id)),
-  onGetPendingLabs: user_id => dispatch(getAllLabs(user_id)),
+  onGetScheme: (id) => dispatch(getSchemelist(id)),
+  onGetPendingLabs: (user_id) => dispatch(getAllLabs(user_id)),
 });
 
 export default connect(
