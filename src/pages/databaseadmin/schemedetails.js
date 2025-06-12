@@ -266,21 +266,21 @@ class SchemeDetailsReport extends Component {
       text: scheme,
       sort: true,
       style: { textAlign: "center" },
-      headerFormatter: (column, colIndex) => (
-        <div style={{ textAlign: "center" }}>
+      // headerFormatter: (column, colIndex) => (
+      //   <div style={{ textAlign: "center" }}>
        
-          <div style={{ marginTop: "5px" }}>
-            <input
-              type="text"
-              value={this.state.schemeFilters[scheme] || ""}
-              onChange={e => this.handleFilterChange(scheme, e, true)}
-              className="form-control"
-              style={{ textAlign: "center", width: "60px", margin: "auto" }}
-            />
-          </div>
-             <div>{column.text}</div>
-        </div>
-      ),
+      //     <div style={{ marginTop: "5px" }}>
+      //       <input
+      //         type="text"
+      //         value={this.state.schemeFilters[scheme] || ""}
+      //         onChange={e => this.handleFilterChange(scheme, e, true)}
+      //         className="form-control"
+      //         style={{ textAlign: "center", width: "60px", margin: "auto" }}
+      //       />
+      //     </div>
+      //        <div>{column.text}</div>
+      //   </div>
+      // ),
       formatter: (cell, row) => {
         const count = parseInt(cell, 10);
         if (!count) return <span>--</span>;
