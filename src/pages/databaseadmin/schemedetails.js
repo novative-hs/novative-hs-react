@@ -190,7 +190,7 @@ class SchemeDetailsReport extends Component {
         sort: true,
         headerFormatter: (column, colIndex) => (
           <div style={{ textAlign: "center" }}>
-            <div>{column.text}</div>
+          
             <div style={{ marginTop: "5px" }}>
               <input
                 type="text"
@@ -204,6 +204,7 @@ class SchemeDetailsReport extends Component {
                 }}
               />
             </div>
+              <div>{column.text}</div>
           </div>
         ),
         style: { textAlign: "center" },
@@ -214,7 +215,7 @@ class SchemeDetailsReport extends Component {
         sort: true,
         headerFormatter: (column, colIndex) => (
           <div style={{ textAlign: "center" }}>
-            <div>{column.text}</div>
+      
             <div style={{ marginTop: "5px" }}>
               <input
                 type="text"
@@ -228,6 +229,7 @@ class SchemeDetailsReport extends Component {
                 }}
               />
             </div>
+                  <div>{column.text}</div>
           </div>
         ),
         style: { textAlign: "center" },
@@ -238,7 +240,7 @@ class SchemeDetailsReport extends Component {
         sort: true,
         headerFormatter: (column, colIndex) => (
           <div style={{ textAlign: "center" }}>
-            <div>{column.text}</div>
+           
             <div style={{ marginTop: "5px" }}>
               <input
                 type="text"
@@ -252,6 +254,7 @@ class SchemeDetailsReport extends Component {
                 }}
               />
             </div>
+             <div>{column.text}</div>
           </div>
         ),
         style: { textAlign: "center" },
@@ -265,7 +268,7 @@ class SchemeDetailsReport extends Component {
       style: { textAlign: "center" },
       headerFormatter: (column, colIndex) => (
         <div style={{ textAlign: "center" }}>
-          <div>{column.text}</div>
+       
           <div style={{ marginTop: "5px" }}>
             <input
               type="text"
@@ -275,6 +278,7 @@ class SchemeDetailsReport extends Component {
               style={{ textAlign: "center", width: "60px", margin: "auto" }}
             />
           </div>
+             <div>{column.text}</div>
         </div>
       ),
       formatter: (cell, row) => {
@@ -404,7 +408,7 @@ class SchemeDetailsReport extends Component {
       totalSize: filteredData.length,
       custom: true,
     };
-
+const defaultSorted = [{ dataField: "province", order: "asc" }];
     return (
       <React.Fragment>
         <div className="page-content">
@@ -422,7 +426,7 @@ class SchemeDetailsReport extends Component {
                   <CardBody>
                     <PaginationProvider
                       pagination={paginationFactory({
-                        sizePerPage: 10,
+                        sizePerPage: 50,
                         totalSize: filteredData.length,
                         showTotal: true,
                         custom: true,
@@ -444,6 +448,7 @@ class SchemeDetailsReport extends Component {
                                   hover
                                   striped
                                   headerWrapperClasses="table-light"
+                                  defaultSorted={defaultSorted}
                                   {...toolkitProps.baseProps}
                                   {...paginationTableProps}
                                   filter={filterFactory()}
