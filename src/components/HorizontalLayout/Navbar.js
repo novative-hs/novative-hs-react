@@ -280,6 +280,18 @@ class Navbar extends Component {
                               Scheme Detail
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              to={`/${organization_name}/payment-detail`}
+                              className={({ isActive }) =>
+                                `dropdown-item ${
+                                  isActive ? "active-dropdown" : ""
+                                }`
+                              }
+                            >
+                              Payment Detail
+                            </NavLink>
+                          </li>
                         </ul>
                       </li>
                       <li className="nav-item">
