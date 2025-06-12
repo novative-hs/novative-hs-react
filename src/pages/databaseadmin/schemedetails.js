@@ -37,6 +37,10 @@ import Breadcrumbs from "components/Common/Breadcrumb";
 // import DeleteModal from "components/Common/DeleteModal";
 
 import { getSchemelist } from "store/scheme/actions";
+import {
+  getAllLabs,
+  // getParticipantCount,
+} from "store/registration-admin/actions";
 
 import { isEmpty, size } from "lodash";
 import DeleteModal from "components/Common/DeleteModal";
@@ -51,6 +55,8 @@ class SchemeDetailsReport extends Component {
       nameFilter: "",
       priceFilter: "",
       dateofadditionFilter: "",
+      schemes: [], // Initialize schemes as an empty array
+      structuredData: [], // Also initialize structuredData
       noofanalytesFilter: "",
       addedbyFilter: "",
       statusFilter: "",
@@ -67,183 +73,10 @@ class SchemeDetailsReport extends Component {
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
-      ReagentsListColumns: [
-        {
-          dataField: "name",
-          text: "Scheme Name",
-          sort: true,
-          // filter: textFilter(),
-          style: { textAlign: "left" },
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "left",
-                    gap: "10px",
-                  }}
-                >
-                  <input
-                    type="text"
-                    value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange("nameFilter", e)}
-                    className="form-control"
-                  />
-                </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
-            );
-          },
-        },
-        {
-          dataField: "lab_count",
-          text: "Labs Count",
-          sort: true,
-          style: { textAlign: "center", cursor: "pointer" },
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <input
-                    type="text"
-                    value={this.state.labCountFilter}
-                    onChange={e => this.handleFilterChange("labCountFilter", e)}
-                    className="form-control"
-                    style={{ width: "80px", textAlign: "center" }}
-                    // We want the click on the input to be for filtering, no modal here
-                  />
-                </div>
-                <div style={{ textAlign: "center", marginTop: "5px" }}>
-                  {column.text}
-                </div>
-              </>
-            );
-          },
-          formatter: (cell, row) => {
-            return (
-              <span
-                onClick={() => this.openParticipantList(row.name)} // ✅ pass scheme name only
-                style={{
-                  color: "blue",
-                  cursor: "pointer",
-                }}
-                title="Click to view labs"
-              >
-                {cell}
-              </span>
-            );
-          },
-        },
-        {
-          dataField: "province",
-          text: "Province",
-          sort: true,
-          style: { textAlign: "center" },
-          formatter: (cell, row) => {
-            // Return first location_summary province or empty string if none
-            return row.location_summary && row.location_summary.length > 0
-              ? row.location_summary[0].province
-              : "";
-          },
-          headerFormatter: (column, colIndex) => (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                <input
-                  type="text"
-                  value={this.state.provinceFilter}
-                  onChange={e => this.handleFilterChange("provinceFilter", e)}
-                  className="form-control"
-                  style={{ width: "100px", textAlign: "center" }}
-                />
-              </div>
-              <div style={{ textAlign: "center", marginTop: "5px" }}>
-                {column.text}
-              </div>
-            </>
-          ),
-        },
-        {
-          dataField: "city",
-          text: "City",
-          sort: true,
-          style: { textAlign: "center" },
-          formatter: (cell, row) => {
-            return row.location_summary && row.location_summary.length > 0
-              ? row.location_summary[0].city
-              : "";
-          },
-          headerFormatter: (column, colIndex) => (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                <input
-                  type="text"
-                  value={this.state.cityFilter}
-                  onChange={e => this.handleFilterChange("cityFilter", e)}
-                  className="form-control"
-                  style={{ width: "100px", textAlign: "center" }}
-                />
-              </div>
-              <div style={{ textAlign: "center", marginTop: "5px" }}>
-                {column.text}
-              </div>
-            </>
-          ),
-        },
-        {
-          dataField: "district",
-          text: "District",
-          sort: true,
-          style: { textAlign: "center" },
-          formatter: (cell, row) => {
-            return row.location_summary && row.location_summary.length > 0
-              ? row.location_summary[0].district
-              : "";
-          },
-          headerFormatter: (column, colIndex) => (
-            <>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                <input
-                  type="text"
-                  value={this.state.districtFilter}
-                  onChange={e => this.handleFilterChange("districtFilter", e)}
-                  className="form-control"
-                  style={{ width: "100px", textAlign: "center" }}
-                />
-              </div>
-              <div style={{ textAlign: "center", marginTop: "5px" }}>
-                {column.text}
-              </div>
-            </>
-          ),
-        },
-      ],
+      schemeFilters: {}, // ✅ holds filters like { scheme12A: "", newww: "" }
+      provinceFilter: "",
+      cityFilter: "",
+      districtFilter: "",
     };
   }
   openParticipantList = schemeName => {
@@ -278,39 +111,230 @@ class SchemeDetailsReport extends Component {
       console.error("User ID is missing. Cannot proceed with API calls.");
       return;
     }
-    const { organization_name } = this.props.match.params || {};
-    if (organization_name) {
-      this.setState({ organization_name });
+
+    // Call fetchData to fetch AllLabs
+    this.fetchData(user_id);
+
+    const { onGetScheme } = this.props;
+    onGetScheme(user_id); // Fetch schemes
+  }
+  fetchData(user_id) {
+    const { onGetPendingLabs } = this.props;
+
+    if (onGetPendingLabs) {
+      console.log("Calling getAllLabs API with user_id:", user_id);
+      onGetPendingLabs(user_id); // Call the action
+    } else {
+      console.error("onGetPendingLabs action is not available.");
     }
-    const { SchemeList, onGetScheme } = this.props;
-    onGetScheme(this.state.user_id);
-    this.setState({ SchemeList });
   }
 
-  handleFilterChange = (filterName, e) => {
-    this.setState({ [filterName]: e.target.value });
+  handleFilterChange = (filterName, e, isScheme = false) => {
+    const value = e.target.value;
+
+    if (isScheme) {
+      this.setState(prevState => ({
+        schemeFilters: {
+          ...prevState.schemeFilters,
+          [filterName]: value,
+        },
+      }));
+    } else {
+      this.setState({ [filterName]: value });
+    }
   };
+
   componentDidUpdate(prevProps) {
-    const { AllLabs, SchemeList } = this.props;
+    const { SchemeList } = this.props;
 
-    // Debug AllLabs
-    if (
-      (!isEmpty(AllLabs) && size(prevProps.AllLabs) !== size(AllLabs)) ||
-      prevProps.AllLabs !== AllLabs
-    ) {
-      console.log("✅ Loaded AllLabs:", AllLabs); // You'll see this now
-      this.setState({ AllLabs: AllLabs || [], isEdit: false });
+    if (prevProps.SchemeList !== SchemeList) {
+      console.log("Received SchemeList:", SchemeList);
+
+      const schemes = SchemeList.map(s => s.name);
+
+      // Create a map to accumulate rows by province/city/district
+      const regionMap = {};
+
+      SchemeList.forEach(scheme => {
+        const schemeName = scheme.name;
+        const labs = Array.isArray(scheme.labs) ? scheme.labs : [];
+
+        labs.forEach(lab => {
+          const key = `${lab.province}|${lab.city}|${lab.district}`;
+          if (!regionMap[key]) {
+            regionMap[key] = {
+              province: lab.province,
+              city: lab.city,
+              district: lab.district,
+            };
+          }
+
+          // Increment count for this scheme in the region
+          regionMap[key][schemeName] = (regionMap[key][schemeName] || 0) + 1;
+        });
+      });
+
+      const structuredData = Object.values(regionMap);
+
+      this.setState({ schemes, structuredData });
+    }
+  }
+
+  generateColumns() {
+    const { schemes } = this.state;
+
+    const fixedColumns = [
+      {
+        dataField: "province",
+        text: "Province",
+        sort: true,
+        headerFormatter: (column, colIndex) => (
+          <div style={{ textAlign: "center" }}>
+            <div>{column.text}</div>
+            <div style={{ marginTop: "5px" }}>
+              <input
+                type="text"
+                value={this.state.provinceFilter}
+                onChange={e => this.handleFilterChange("provinceFilter", e)}
+                className="form-control"
+                style={{
+                  textAlign: "center",
+                  width: "100px",
+                  margin: "auto",
+                }}
+              />
+            </div>
+          </div>
+        ),
+        style: { textAlign: "center" },
+      },
+      {
+        dataField: "city",
+        text: "City",
+        sort: true,
+        headerFormatter: (column, colIndex) => (
+          <div style={{ textAlign: "center" }}>
+            <div>{column.text}</div>
+            <div style={{ marginTop: "5px" }}>
+              <input
+                type="text"
+                value={this.state.cityFilter}
+                onChange={e => this.handleFilterChange("cityFilter", e)}
+                className="form-control"
+                style={{
+                  textAlign: "center",
+                  width: "100px",
+                  margin: "auto",
+                }}
+              />
+            </div>
+          </div>
+        ),
+        style: { textAlign: "center" },
+      },
+      {
+        dataField: "district",
+        text: "District",
+        sort: true,
+        headerFormatter: (column, colIndex) => (
+          <div style={{ textAlign: "center" }}>
+            <div>{column.text}</div>
+            <div style={{ marginTop: "5px" }}>
+              <input
+                type="text"
+                value={this.state.districtFilter}
+                onChange={e => this.handleFilterChange("districtFilter", e)}
+                className="form-control"
+                style={{
+                  textAlign: "center",
+                  width: "100px",
+                  margin: "auto",
+                }}
+              />
+            </div>
+          </div>
+        ),
+        style: { textAlign: "center" },
+      },
+    ];
+
+    const dynamicColumns = (schemes || []).map(scheme => ({
+      dataField: scheme,
+      text: scheme,
+      sort: true,
+      style: { textAlign: "center" },
+      headerFormatter: (column, colIndex) => (
+        <div style={{ textAlign: "center" }}>
+          <div>{column.text}</div>
+          <div style={{ marginTop: "5px" }}>
+            <input
+              type="text"
+              value={this.state.schemeFilters[scheme] || ""}
+              onChange={e => this.handleFilterChange(scheme, e, true)}
+              className="form-control"
+              style={{ textAlign: "center", width: "60px", margin: "auto" }}
+            />
+          </div>
+        </div>
+      ),
+      formatter: (cell, row) => {
+        const count = parseInt(cell, 10);
+        if (!count) return <span>--</span>;
+        return (
+          <span
+            style={{ color: "blue", cursor: "pointer" }}
+            onClick={() => this.openCountModal(row, scheme)}
+          >
+            {count}
+          </span>
+        );
+      },
+    }));
+
+    return [...fixedColumns, ...dynamicColumns];
+  }
+
+  openCountModal = (row, schemeName) => {
+    const { SchemeList } = this.props;
+
+    const scheme = SchemeList.find(s => s.name === schemeName);
+    if (!scheme) return;
+
+    const selectedParticipants = (scheme.labs || []).filter(
+      lab =>
+        lab.province === row.province &&
+        lab.city === row.city &&
+        lab.district === row.district
+    );
+
+    this.setState({
+      selectedParticipants,
+      modalProvince: row.province,
+      modalCity: row.city,
+      modalDistrict: row.district,
+      modalSchemeName: schemeName,
+      LabModal: true,
+    });
+  };
+
+  generateSchemeColumns() {
+    const { schemes } = this.state;
+
+    if (!schemes || !Array.isArray(schemes)) {
+      return []; // Return an empty array if schemes is not valid
     }
 
-    // Debug SchemeList
-    if (
-      (!isEmpty(SchemeList) &&
-        size(prevProps.SchemeList) !== size(SchemeList)) ||
-      prevProps.SchemeList !== SchemeList
-    ) {
-      console.log("📦 Loaded SchemeList:", SchemeList); // 👈 Log scheme list
-      this.setState({ SchemeList: SchemeList || [], isEdit: false });
-    }
+    return schemes.map(scheme => ({
+      dataField: scheme,
+      text: scheme,
+      sort: true,
+      style: { textAlign: "center" },
+    }));
+  }
+  fetchData(user_id) {
+    const { onGetPendingLabs } = this.props;
+
+    if (onGetPendingLabs) onGetPendingLabs(user_id);
   }
 
   onPaginationPageChange = page => {
@@ -326,55 +350,60 @@ class SchemeDetailsReport extends Component {
   };
 
   render() {
-    const { SearchBar } = Search;
     const { SchemeList } = this.props;
-
     const {
-      nameFilter = "",
-      labCountFilter = "",
       provinceFilter = "",
       cityFilter = "",
       districtFilter = "",
+      schemeFilters = {},
+      structuredData = [],
     } = this.state;
 
-    const filteredData = SchemeList.filter(entry => {
-      // Modify accordingly for each filter condition
-      const name = entry.name ? entry.name.toString().toLowerCase() : "";
-      const lab_count = entry.lab_count
-        ? entry.lab_count.toString().toLowerCase()
-        : "";
-      const province = entry.province
-        ? entry.province.toString().toLowerCase()
-        : "";
-      const district = entry.district
-        ? entry.district.toString().toLowerCase()
-        : "";
-      const city = entry.city ? entry.city.toString().toLowerCase() : "";
+    // Loading state if structuredData is empty
+    if (!structuredData || structuredData.length === 0) {
+      return <div>Loading...</div>;
+    }
+
+    // Generate columns dynamically
+    const allColumns = this.generateColumns();
+
+    console.log("Structured Data:", structuredData);
+    console.log("Generated Columns:", allColumns);
+
+    // Filter data based on filters
+    const filteredData = structuredData.filter(entry => {
+      const province = entry.province?.toLowerCase() || "";
+      const city = entry.city?.toLowerCase() || "";
+      const district = entry.district?.toLowerCase() || "";
+
+      // Location filters
+      const matchesProvince = province.includes(
+        this.state.provinceFilter.toLowerCase()
+      );
+      const matchesCity = city.includes(this.state.cityFilter.toLowerCase());
+      const matchesDistrict = district.includes(
+        this.state.districtFilter.toLowerCase()
+      );
+
+      // Scheme filters
+      const matchesSchemes = Object.entries(schemeFilters).every(
+        ([scheme, filterVal]) => {
+          if (!filterVal) return true; // skip empty filters
+          const count = entry[scheme] || 0;
+          return count.toString().includes(filterVal); // allow partial match
+        }
+      );
 
       return (
-        name.includes(nameFilter.toLowerCase()) &&
-        lab_count.includes(labCountFilter.toLowerCase()) &&
-        province.includes(provinceFilter.toLowerCase()) &&
-        district.includes(districtFilter.toLowerCase()) &&
-        city.includes(cityFilter.toLowerCase())
+        matchesProvince && matchesCity && matchesDistrict && matchesSchemes
       );
     });
-
-    const { isEdit, deleteModal } = this.state;
-    const { onGetScheme } = this.props;
 
     const pageOptions = {
       sizePerPage: 50,
       totalSize: filteredData.length,
       custom: true,
     };
-
-    const defaultSorted = [
-      {
-        dataField: "province",
-        order: "asc",
-      },
-    ];
 
     return (
       <React.Fragment>
@@ -383,7 +412,6 @@ class SchemeDetailsReport extends Component {
             <title>Scheme List | NEQAS</title>
           </MetaTags>
           <Container fluid>
-            {/* Render Breadcrumbs */}
             <Breadcrumbs
               title="Scheme Details"
               breadcrumbItem="Scheme Details"
@@ -393,72 +421,74 @@ class SchemeDetailsReport extends Component {
                 <Card>
                   <CardBody>
                     <PaginationProvider
-                      pagination={paginationFactory(pageOptions)}
-                      keyField="id"
-                      columns={this.state.ReagentsListColumns}
-                      data={filteredData}
+                      pagination={paginationFactory({
+                        sizePerPage: 10,
+                        totalSize: filteredData.length,
+                        showTotal: true,
+                        custom: true,
+                      })}
                     >
                       {({ paginationProps, paginationTableProps }) => (
                         <ToolkitProvider
                           keyField="id"
-                          columns={this.state.ReagentsListColumns}
                           data={filteredData}
+                          columns={allColumns}
                           search
                         >
-                          {toolkitprops => (
-                            <React.Fragment>
-                              <Row className="mb-4">
-                                <Col xl="12">
-                                  <div className="table-responsive">
-                                    <BootstrapTable
-                                      {...toolkitprops.baseProps}
-                                      {...paginationTableProps}
-                                      defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
-                                      bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={"table-light"}
-                                      responsive
-                                      ref={this.node}
-                                      filter={filterFactory()}
-                                    />
-                                    <Modal
-                                      isOpen={this.state.LabModal}
-                                      toggle={this.toggleLabModal}
-                                    >
-                                      <ModalHeader toggle={this.toggleLabModal}>
-                                        Participants for Scheme:{" "}
-                                        {this.state.modalSchemeName}
-                                      </ModalHeader>
+                          {toolkitProps => (
+                            <div>
+                              <div className="table-responsive">
+                                <BootstrapTable
+                                  bootstrap4
+                                  bordered
+                                  hover
+                                  striped
+                                  headerWrapperClasses="table-light"
+                                  {...toolkitProps.baseProps}
+                                  {...paginationTableProps}
+                                  filter={filterFactory()}
+                                />
+                              </div>
 
-                                      <ModalBody>
-                                        {this.state.selectedParticipants
-                                          .length === 0 ? (
-                                          <p>No participants found.</p>
-                                        ) : (
-                                          <ul>
-                                            {this.state.selectedParticipants.map(
-                                              (lab, idx) => (
-                                                <li key={idx}>
-                                                  {lab.name || "Unnamed Lab"}
-                                                </li>
-                                              )
-                                            )}
-                                          </ul>
-                                        )}
-                                      </ModalBody>
-                                    </Modal>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row className="align-items-md-center mt-30">
-                                <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                  <PaginationListStandalone
-                                    {...paginationProps}
-                                  />
-                                </Col>
-                              </Row>
-                            </React.Fragment>
+                              <Modal
+                                isOpen={this.state.LabModal}
+                                toggle={this.toggleLabModal}
+                              >
+                                <ModalHeader
+                                  toggle={this.toggleLabModal}
+                                  tag="h4"
+                                >
+                                  Participants in {this.state.modalProvince},{" "}
+                                  {this.state.modalDistrict},{" "}
+                                  {this.state.modalCity} for{" "}
+                                  <strong>{this.state.modalSchemeName}</strong>
+                                </ModalHeader>
+
+                                <ModalBody>
+                                  {this.state.selectedParticipants.length ===
+                                  0 ? (
+                                    <p>
+                                      No participants found in this location.
+                                    </p>
+                                  ) : (
+                                    <ul>
+                                      {this.state.selectedParticipants.map(
+                                        (participant, idx) => (
+                                          <li key={idx}>
+                                            {participant.name || "Unnamed Lab"}
+                                            {participant.id
+                                              ? ` (ID: ${participant.id})`
+                                              : ""}
+                                          </li>
+                                        )
+                                      )}
+                                    </ul>
+                                  )}
+                                </ModalBody>
+                              </Modal>
+
+                              <PaginationListStandalone {...paginationProps} />
+                            </div>
                           )}
                         </ToolkitProvider>
                       )}
@@ -481,15 +511,38 @@ SchemeDetailsReport.propTypes = {
   className: PropTypes.any,
   createInstrumentType: PropTypes.array,
   onGetScheme: PropTypes.func,
+  onGetPendingLabs: PropTypes.func,
 };
 
-const mapStateToProps = ({ SchemeList }) => ({
-  SchemeList: SchemeList.SchemeList,
-  AllLabs: SchemeList.AllLabs, // ✅ this line is required
-});
+const mapStateToProps = state => {
+  console.log("SchemeDetailsReport mapStateToProps state:", state);
+
+  // Check if the required slices exist in the state
+  if (!state.SchemeList || !state.registrationAdmin) {
+    console.error("Required slices missing from Redux state");
+    return {
+      SchemeList: [],
+      AllLabs: [],
+    };
+  }
+
+  // Extract required properties with fallback to default values
+  const SchemeList = state.SchemeList.SchemeList || [];
+  const AllLabs = state.registrationAdmin.AllLabs || [];
+
+  // Logging for debugging purposes
+  console.log("SchemeDetailsReport mapStateToProps - SchemeList:", SchemeList);
+  console.log("SchemeDetailsReport mapStateToProps - AllLabs:", AllLabs);
+
+  return {
+    SchemeList,
+    AllLabs,
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetScheme: id => dispatch(getSchemelist(id)),
+  onGetPendingLabs: user_id => dispatch(getAllLabs(user_id)),
 });
 
 export default connect(
