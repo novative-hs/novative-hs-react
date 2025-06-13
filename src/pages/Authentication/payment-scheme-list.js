@@ -432,7 +432,9 @@ class PaymentSchemeList extends Component {
                                 {new Intl.NumberFormat("en-US", {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
-                                }).format(this.calculateTotalPaidAmount())}
+                                }).format(
+                                  parseFloat(this.props.paid_amount) || 0
+                                )}
                               </div>
                             </Col>
                           </Row>
