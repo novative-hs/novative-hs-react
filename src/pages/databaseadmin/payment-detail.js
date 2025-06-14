@@ -690,50 +690,38 @@ class ParticipantPayments extends Component {
       hoveredParticipantName: row.participant_name || "", // add this line
     });
   };
-  toggleEditModal = (row, participant = null) => {
-    console.log("🟢 toggleEditModal triggered");
-    console.log("row.scheme_names:", row?.scheme_names);
-    console.log("schemeOptions in state:", this.state.schemeOptions);
+toggleEditModal = (row, participant = null) => {
+  const matchedSchemes =
+    row?.scheme_names?.map(name => {
+      const found = this.state.CycleList?.find(option =>
+        option.scheme_name.trim().toLowerCase() === name.trim().toLowerCase()
+      );
+      return found;
+    }).filter(Boolean) || [];
 
-    // Match schemes from scheme_names against schemeOptions
-    const matchedSchemes =
-      row?.scheme_names
-        ?.map(name => {
-          const found = this.state.schemeOptions?.find(
-            option => option.label === name
-          );
-          console.log(`🔍 Matching scheme name: "${name}" →`, found);
-          return found;
-        })
-        .filter(Boolean) || [];
+  const scheme_ids = matchedSchemes.map(opt => `${opt.scheme_id}-${opt.id}`);
 
-    const scheme_ids = matchedSchemes.map(opt => opt.value);
-    const priceBeforeDiscount =
-      matchedSchemes.length > 0 ? matchedSchemes[0].price : 0;
+  const priceBeforeDiscount =
+    matchedSchemes.length > 0
+      ? matchedSchemes.reduce((sum, scheme) => sum + (scheme?.price || 0), 0)
+      : parseFloat(row.priceBeforeDiscount || row.price || 0); // Fallback if no matches
 
-    console.log("✅ matchedSchemes:", matchedSchemes);
-    console.log("✅ scheme_ids:", scheme_ids);
-    console.log("💰 Price from first matched scheme:", priceBeforeDiscount);
+  console.log("✅ matchedSchemes:", matchedSchemes);
+  console.log("💰 Total Payable (pre-filled):", priceBeforeDiscount);
 
-    this.setState(
-      {
-        editModalOpen: true,
-        selectedRow: row,
-        selectedScheme: scheme_ids,
-        selectedParticipant: participant || {
-          name: row?.participant_name || "",
-          district: row?.district || "",
-          id: row?.participant || "",
-        },
-        selectedPrice: priceBeforeDiscount,
-      },
-      () => {
-        console.log("🟢 State after toggleEditModal:");
-        console.log("selectedPrice (payable):", this.state.selectedPrice);
-        console.log("selectedScheme:", this.state.selectedScheme);
-      }
-    );
-  };
+  this.setState({
+    editModalOpen: true,
+    selectedRow: row,
+    selectedScheme: scheme_ids,
+    selectedParticipant: participant || {
+      name: row?.participant_name || "",
+      district: row?.district || "",
+      id: row?.participant || "",
+    },
+    selectedPrice: priceBeforeDiscount,
+  });
+};
+
 
   handleSchemeModalClose = () => {
     this.setState({
@@ -993,31 +981,41 @@ class ParticipantPayments extends Component {
                                         receivedby:
                                           this.state.selectedRow.receivedby,
                                       }}
-                                      onSubmit={(values, { setSubmitting }) => {
-                                        const payload = {
-                                          ...values,
-                                          scheme: values.scheme.join(","), // convert array to string
-                                          id: this.state.selectedRow?.id, // ✅ Add this!
-                                          added_by: this.state.user_id, // ✅ Add this if required
-                                          participant:
-                                            this.state.selectedRow
-                                              ?.participant ||
-                                            values.participant, // ✅ ensure it's set
-                                        };
+onSubmit={(values, { setSubmitting }) => {
+  const selectedSchemeDetails = (values.scheme || []).map(id => {
+    const [scheme_id, cycle_id] = id.split("-");
+    return this.state.CycleList.find(
+      scheme =>
+        String(scheme.scheme_id) === scheme_id &&
+        String(scheme.id) === cycle_id
+    );
+  });
 
-                                        this.props.onupdatePayment(payload);
+  const totalPriceBeforeDiscount = selectedSchemeDetails.reduce(
+    (sum, scheme) => sum + (scheme?.price || 0),
+    0
+  );
 
-                                        // Add a slight delay before re-fetching
-                                        setTimeout(() => {
-                                          if (this.state.user_id) {
-                                            this.props.onGetParticipantpayment(
-                                              this.state.user_id
-                                            );
-                                          }
-                                        }, 500);
+  const payload = {
+    ...values,
+    scheme: values.scheme.join(","),
+    id: this.state.selectedRow?.id,
+    added_by: this.state.user_id,
+    participant: this.state.selectedRow?.participant || values.participant,
+    priceBeforeDiscount: totalPriceBeforeDiscount.toFixed(2), // ✅ actual scheme price
+  };
 
-                                        this.setState({ editModalOpen: false });
-                                      }}
+  this.props.onupdatePayment(payload);
+
+  setTimeout(() => {
+    if (this.state.user_id) {
+      this.props.onGetParticipantpayment(this.state.user_id);
+    }
+  }, 500);
+
+  this.setState({ editModalOpen: false });
+}}
+
                                     >
                                       {({
                                         values,
