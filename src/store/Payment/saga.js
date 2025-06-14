@@ -1,9 +1,5 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import {
-  ADD_NEW_Payment,
-  GET_PARTICIPANT_PAYMENT,
-  GET_PARTICIPANT_SCHEME_LIST,
-} from "./actionTypes";
+import { ADD_NEW_Payment, GET_PARTICIPANT_PAYMENT, GET_PARTICIPANT_SCHEME_LIST, UPDATE_NEW_PAYMENT } from "./actionTypes";
 import {
   addNewPaymentSuccess,
   addNewPaymentFail,
@@ -11,12 +7,11 @@ import {
   getparticipantpaymentFail,
   getParticipantSchemelistSuccess,
   getParticipantSchemelistFail,
+  updatePayment,
+  updatePaymentSuccess,
+  updatePaymentFail,
 } from "./actions";
-import {
-  addNewPayment,
-  getParticipantPayment,
-  getParticipantSchemelist,
-} from "../../helpers/django_api_helper";
+import { addNewPayment, getParticipantPayment, getParticipantSchemelist, updateNewPayment} from "../../helpers/django_api_helper";
 
 function* onAddNewPayment(object) {
   console.log("data in saga1", object.payload.payment);
@@ -50,6 +45,18 @@ function* fetchParticipantPayment() {
     yield put(getparticipantpaymentFail(error));
   }
 }
+function* onUpdatePayment({ payload: payment }) {
+  try {
+    console.log("🧾 Saga received payment payload:", payment); // ✅ Check here
+
+    const response = yield call(updateNewPayment, payment);
+
+    yield put(updatePaymentSuccess({ ...response, id: payment.id }));
+  } catch (error) {
+    console.error("❌ Error in onUpdatePayment saga:", error);
+    yield put(updatePaymentFail(error));
+  }
+}
 
 function* fetchParticipantSchemelist(action) {
   try {
@@ -68,7 +75,8 @@ function* fetchParticipantSchemelist(action) {
     const pay_date = data.pay_date || "";
     const payment_mode = data.payment_mode || "";
     const received_by = data.received_by || "";
-    const photo_url = data.photo_url || ""; // <-- add this line
+    const photo_url = data.photo_url || "";   // <-- add this line
+
 
     // Dispatch success with all fields
     yield put(
@@ -82,9 +90,10 @@ function* fetchParticipantSchemelist(action) {
         pay_date,
         payment_mode,
         received_by,
-        photo_url, // <-- add here too
+        photo_url,   // <-- add here too
       })
     );
+
   } catch (error) {
     console.error("Error in Saga:", error);
     yield put(getParticipantSchemelistFail(error));
@@ -95,6 +104,7 @@ function* PaymentSaga() {
   yield takeEvery(ADD_NEW_Payment, onAddNewPayment);
   yield takeEvery(GET_PARTICIPANT_PAYMENT, fetchParticipantPayment);
   yield takeEvery(GET_PARTICIPANT_SCHEME_LIST, fetchParticipantSchemelist);
+ yield takeEvery(UPDATE_NEW_PAYMENT, onUpdatePayment);
 }
 
 export default PaymentSaga;

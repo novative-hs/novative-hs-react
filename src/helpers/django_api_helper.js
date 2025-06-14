@@ -4042,3 +4042,41 @@ export const deleteParticipant = (id) =>
   del(`${url.GET_DELETE_PARTICIPANTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
+  
+export const updateNewPayment = (payment) => {
+  console.log("Data in Django API Helper:", payment);
+
+  let formData = new FormData();
+  formData.append("payment", payment.participant);
+  formData.append("scheme", payment.scheme);
+  formData.append("cycle_id", payment.cycle_id);
+  formData.append("price", payment.price);
+  formData.append("discount", payment.discount);
+  formData.append("paymentmethod", payment.paymentmethod);
+  formData.append("paydate", payment.paydate);
+  formData.append("photo", payment.photo);
+  formData.append("payment_status", payment.payment_status);
+  formData.append("payment_settlement", payment.payment_settlement);
+  formData.append("purchase_order_copy", payment.purchase_order_copy);
+  formData.append("discountAmount", payment.discountAmount);
+  formData.append("added_by", payment.added_by);
+  formData.append("receivedby", payment.receivedby);
+  formData.append("taxDeduction", payment.taxDeduction);
+  formData.append("part_payment_amount", payment.part_payment_amount);
+  formData.append("priceBeforeDiscount", payment.priceBeforeDiscount);
+  if (payment.remaining_amount !== undefined && payment.remaining_amount !== null) {
+    formData.append("remaining_amount", payment.remaining_amount);
+  }
+
+  // ✅ FIXED: Append the ID to the URL
+  return axios.put(
+    `${url.UPDATE_NEW_PAYMENT}/${payment.id}`, // ✅ append the payment ID here
+    formData,
+    {
+      headers: {
+        ...getHeader(authHeader()),
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+};

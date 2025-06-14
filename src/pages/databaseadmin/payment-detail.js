@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import Select from "react-select"; // For Select component
 import { getcyclelist } from "store/cycle/actions";
+import { updatePayment } from "store/Payment/actions";
+import { getdistrictlist } from "store/participantdistrict/actions";
 import {
   Card,
   CardBody,
@@ -19,6 +21,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  Input,
 } from "reactstrap";
 import paginationFactory, {
   PaginationProvider,
@@ -27,7 +30,7 @@ import paginationFactory, {
 import filterFactory from "react-bootstrap-table2-filter";
 import Breadcrumbs from "components/Common/Breadcrumb";
 import { getParticipantPayment } from "store/Payment/actions";
-import { getParticipantSchemelist } from "store/Payment/actions";
+// import { getParticipantSchemelist } from "store/Payment/actions";
 import "assets/scss/table.scss";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 
@@ -47,6 +50,7 @@ class ParticipantPayments extends Component {
       hoveredSchemeNames: [],
       selectedScheme: null,
       CycleList: [],
+      ListDistrict: [],
       TaxFilter: "",
       hoveredSchemeNames: [],
       paymentmodeFilter: "",
@@ -569,7 +573,7 @@ class ParticipantPayments extends Component {
                 <button
                   type="button"
                   className="btn btn-link text-success p-0 m-0"
-                  onClick={() => this.toggleEditModal(row)}
+                  onClick={() => this.toggleEditModal(row, row)}
                   style={{ textDecoration: "none" }}
                 >
                   <i className="mdi mdi-pencil font-size-18"></i>
@@ -583,7 +587,8 @@ class ParticipantPayments extends Component {
   }
 
   componentDidMount() {
-    const { onGetParticipantpayment, ongetcyclelist } = this.props;
+    const { onGetParticipantpayment, ongetcyclelist, onGetDistrictList } =
+      this.props;
 
     console.log("Component Mounted");
     onGetParticipantpayment();
@@ -594,33 +599,34 @@ class ParticipantPayments extends Component {
     if (user_id) {
       console.log("Calling ongetcyclelist with user_id:", user_id);
       ongetcyclelist(user_id);
+
+      // ✅ Corrected: Set user_id first
+      this.setState({ user_id }, () => {
+        // ✅ Now call onGetDistrictList with the correct user_id
+        onGetDistrictList(this.state.user_id);
+
+        const { organization_name } = this.props.match.params || {};
+        console.log("organization_name from props:", organization_name);
+
+        if (organization_name) {
+          this.setState({ organization_name }, () => {
+            console.log("Organization name set:", this.state.organization_name);
+            this.fetchData(this.state.user_id);
+          });
+        } else {
+          console.error("Organization name is missing in URL parameters.");
+        }
+      });
     } else {
       console.log("No user_id found in localStorage");
     }
-    this.setState({ user_id }, () => {
-      // Get organization_name from URL params
-      const { organization_name } = this.props.match.params || {};
-      console.log("organization_name from props:", organization_name);
-
-      if (organization_name) {
-        this.setState({ organization_name }, () => {
-          console.log("Organization name set:", this.state.organization_name);
-
-          // // Initialize dropdown value
-          // this.setInitialDropdownValue();
-          this.fetchData(this.state.user_id);
-        });
-      } else {
-        console.error("Organization name is missing in URL parameters.");
-      }
-    });
   }
 
   fetchData(user_id) {
-    const { onGetParticipantPayment, ongetcyclelist } = this.props;
+    const { onGetParticipantpayment, ongetcyclelist } = this.props;
 
     // Call participant payment API
-    onGetParticipantPayment(user_id);
+    onGetParticipantpayment();
     console.log("onGetParticipantPayment called with user_id:", user_id);
 
     // Call cycle list API
@@ -636,39 +642,43 @@ class ParticipantPayments extends Component {
     });
   };
 
-componentDidUpdate(prevProps) {
-  // ✅ Update CycleList whenever it changes
-  if (this.props.CycleList !== prevProps.CycleList) {
-    console.log("Updated CycleList:", this.props.CycleList);
-    this.setState({ CycleList: this.props.CycleList });
-  }
+  componentDidUpdate(prevProps) {
+    // ✅ Update CycleList whenever it changes
+    if (this.props.CycleList !== prevProps.CycleList) {
+      console.log("Updated CycleList:", this.props.CycleList);
+      this.setState({ CycleList: this.props.CycleList });
+    }
+    if (prevProps.ListDistrict !== this.props.ListDistrict) {
+      console.log("Updated ListDistrict:", this.props.ListDistrict);
+      this.setState({ ListDistrict: this.props.ListDistrict });
+    }
+    // ✅ Only then update GetPayment
+    if (this.props.GetPayment !== prevProps.GetPayment) {
+      const transformedData = (this.props.GetPayment || []).map(payment => ({
+        id: payment.id,
+        participant_name: payment.participant_name,
+        district: payment.district,
+        // district: values.district,
+        scheme_count: payment.scheme_count,
+        scheme_names: payment.scheme_names || [],
+        price: payment.price,
+        priceBeforeDiscount: payment.priceBeforeDiscount,
+        discountAmount: payment.discountAmount,
+        taxDeduction: payment.taxDeduction,
+        payment_settlement: payment.payment_settlement,
+        paymentmethod: payment.paymentmethod,
+        payment_status: payment.payment_status,
+        part_payment_amount: payment.part_payment_amount,
+        remaining_amount: payment.remaining_amount,
+        paydate: payment.paydate,
+        photo_url: payment.photo_url,
+        receivedby: payment.receivedby,
+        membership_status: payment.membership_status,
+      }));
 
-  // ✅ Only then update GetPayment
-  if (this.props.GetPayment !== prevProps.GetPayment) {
-    const transformedData = (this.props.GetPayment || []).map(payment => ({
-      id: payment.id,
-      participant_name: payment.participant_name,
-      district: payment.district,
-      scheme_count: payment.scheme_count,
-      scheme_names: payment.scheme_names || [],
-      price: payment.price,
-      priceBeforeDiscount: payment.priceBeforeDiscount,
-      discountAmount: payment.discountAmount,
-      taxDeduction: payment.taxDeduction,
-      payment_settlement: payment.payment_settlement,
-      paymentmethod: payment.paymentmethod,
-      payment_status: payment.payment_status,
-      part_payment_amount: payment.part_payment_amount,
-      remaining_amount: payment.remaining_amount,
-      paydate: payment.paydate,
-      photo_url: payment.photo_url,
-      receivedby: payment.receivedby,
-      membership_status: payment.membership_status,
-    }));
-
-    this.setState({ GetPayment: transformedData });
+      this.setState({ GetPayment: transformedData });
+    }
   }
-}
 
   handleSchemeHover = row => {
     if (this.mouseExitTimeout) {
@@ -680,24 +690,44 @@ componentDidUpdate(prevProps) {
       hoveredParticipantName: row.participant_name || "", // add this line
     });
   };
-   toggleEditModal = (row, participant = null) => {
-  const scheme_ids =
-    row?.scheme_names?.map(scheme => `${scheme.scheme_id}-${scheme.cycle_id}`) || [];
+  toggleEditModal = (row, participant = null) => {
+    console.log("toggleEditModal called with:");
+    console.log("Row:", row);
+    console.log("Participant:", participant);
+    console.log("row.scheme_names:", row?.scheme_names); // Debug actual format
 
-  this.setState(
-    prevState => ({
-      editModalOpen: !prevState.editModalOpen,
-      selectedRow: row || null,
-      selectedScheme: scheme_ids,
-      selectedParticipant: participant,
-      isPaymentModalOpen: participant ? true : prevState.isPaymentModalOpen,
-    }),
-    () => {
-      console.log("Selected Scheme IDs for Edit Modal:", this.state.selectedScheme);
-    }
-  );
-};
+    // Normalize scheme_ids to handle both object and string formats
+    const scheme_ids =
+      row?.scheme_names?.map(scheme =>
+        typeof scheme === "object"
+          ? `${scheme.scheme_id}-${scheme.cycle_id}`
+          : scheme
+      ) || [];
 
+    console.log("Mapped scheme_ids:", scheme_ids);
+
+    this.setState(
+      prevState => ({
+        editModalOpen: !prevState.editModalOpen,
+        selectedRow: row || null,
+        selectedScheme: scheme_ids, // These will be passed to Formik
+        selectedParticipant: participant || {
+          name: row?.participant_name || "",
+          district: row?.district || "", // ✅ fixed
+          id: row?.participant || "",
+        },
+        isPaymentModalOpen: participant ? true : prevState.isPaymentModalOpen,
+      }),
+      () => {
+        console.log("State after toggleEditModal:");
+        console.log("editModalOpen:", this.state.editModalOpen);
+        console.log("selectedRow:", this.state.selectedRow);
+        console.log("selectedScheme:", this.state.selectedScheme); // ✅ confirm this gets to Formik
+        console.log("selectedParticipant:", this.state.selectedParticipant);
+        console.log("isPaymentModalOpen:", this.state.isPaymentModalOpen);
+      }
+    );
+  };
 
   handleSchemeModalClose = () => {
     this.setState({
@@ -718,6 +748,10 @@ componentDidUpdate(prevProps) {
     this.setState({ [filterName]: e.target.value });
   };
 
+  handleFileChange = (event, setFieldValue) => {
+    const file = event.currentTarget.files[0];
+    setFieldValue("photo", file);
+  };
   filterData = () => {
     const {
       GetPayment,
@@ -799,14 +833,16 @@ componentDidUpdate(prevProps) {
   render() {
     const { GetPayment } = this.state;
     const { CycleList } = this.state;
+    const { ListDistrict } = this.state;
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     const { editModalOpen, selectedRow } = this.state;
-  const schemeOptions = CycleList.map(scheme => ({
-  value: `${scheme.scheme_id}-${scheme.id}`,
-  label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
-  scheme_id: scheme.scheme_id,
-  cycle_id: scheme.id,
-}));
+    const schemeOptions = CycleList.map(scheme => ({
+      value: `${scheme.scheme_id}-${scheme.id}`,
+      label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
+      scheme_id: scheme.scheme_id,
+      cycle_id: scheme.id,
+      price: scheme.priceBeforeDiscount || scheme.price || 0, // ✅ Include price here
+    }));
 
     console.log("CycleList:", CycleList);
     console.log("Generated schemeOptions:", schemeOptions);
@@ -816,7 +852,20 @@ componentDidUpdate(prevProps) {
       totalSize: GetPayment.length,
       custom: true,
     };
+    const districtOptions = ListDistrict.map(district => ({
+      value: district.name,
+      label: district.name,
+    }));
 
+    console.log("District Options:", districtOptions); // ✅ Console log added here
+
+    const customStyles = {
+      // <-- This is invalid here
+      control: provided => ({
+        ...provided,
+        minHeight: "38px",
+      }),
+    };
     return (
       <React.Fragment>
         <div className="page-content">
@@ -864,13 +913,11 @@ componentDidUpdate(prevProps) {
                                 // className="modal-sm"
                                 // size="sm"  // Change this to 'lg' or 'xl' for bigger width
                               >
-                                <ModalHeader
-                                  toggle={this.handleSchemeModalClose}
-                                  tag="h4"
-                                >
-                                  Available Schemes for{" "}
-                                  {this.state.hoveredParticipantName}
+                                <ModalHeader toggle={this.togglePaymentModal}>
+                                  Update Payment for{" "}
+                                  {this.state.modalParticipantName || "Unknown"}
                                 </ModalHeader>
+
                                 <ModalBody>
                                   <ul>
                                     {this.state.hoveredSchemeNames.map(
@@ -885,13 +932,13 @@ componentDidUpdate(prevProps) {
                                 isOpen={this.state.editModalOpen}
                                 toggle={this.toggleEditModal}
                                 size="md"
-                                // onCloseClick={() => this.setState({ toggleEditModal: false })}
                               >
                                 <ModalHeader toggle={this.togglePaymentModal}>
                                   Update Payment for{" "}
-                                  {this.state.selectedParticipant?.name ||
+                                  {this.state.selectedRow?.participant_name ||
                                     "Unknown"}
                                 </ModalHeader>
+
                                 <ModalBody>
                                   {this.state.selectedRow && (
                                     <Formik
@@ -899,20 +946,20 @@ componentDidUpdate(prevProps) {
                                         participant_name:
                                           this.state.selectedRow
                                             .participant_name,
-                                        scheme: [],
+                                        // scheme: [],
                                         scheme: this.state.selectedScheme || [],
                                         participant:
                                           this.state.selectedParticipant?.id ||
                                           "",
-                                        scheme: [],
+                                        // scheme: [],
                                         district:
-                                          this.state.selectedRow.district,
+                                          this.state.selectedParticipant
+                                            ?.district || "",
                                         membership_status:
                                           this.state.selectedRow
                                             .membership_status,
                                         priceBeforeDiscount:
-                                          this.state.selectedRow
-                                            .priceBeforeDiscount,
+                                          this.state.calculatedPayable || 0,
                                         discountAmount:
                                           this.state.selectedRow.discountAmount,
                                         taxDeduction:
@@ -931,154 +978,775 @@ componentDidUpdate(prevProps) {
                                           this.state.selectedRow.paymentmethod,
                                         payment_status:
                                           this.state.selectedRow.payment_status,
-                                        paydate: this.state.selectedRow.paydate,
+                                        paydate:
+                                          this.state.selectedRow?.paydate &&
+                                          this.state.selectedRow.paydate !==
+                                            "null"
+                                            ? this.state.selectedRow.paydate
+                                            : "",
                                         receivedby:
                                           this.state.selectedRow.receivedby,
                                       }}
-                                      onSubmit={(
-                                        values,
-                                        setFieldValue,
-                                        errors,
-                                        { setSubmitting }
-                                      ) => {
+                                      onSubmit={(values, { setSubmitting }) => {
+                                        const safePaydate =
+                                          values.paydate &&
+                                          values.paydate.trim() !== ""
+                                            ? values.paydate
+                                            : null;
                                         const payload = {
-      ...values,
-      scheme: values.scheme, // use updated scheme from form
-    };
+                                          ...values,
+                                          scheme: values.scheme.join(","), // convert array to string
+                                          id: this.state.selectedRow?.id, // ✅ Add this!
+                                          added_by: this.state.user_id, // ✅ Add this if required
+                                          participant:
+                                            this.state.selectedRow
+                                              ?.participant ||
+                                            values.participant, // ✅ ensure it's set
+                                        };
 
-                                        console.log("Updated values:", payload);
+                                        this.props.onupdatePayment(payload);
 
-                                        // 👉 Dispatch update API call here if needed
-                                        // this.props.updatePayment(payload);
+                                        // Add a slight delay before re-fetching
+                                        setTimeout(() => {
+                                          if (this.state.user_id) {
+                                            this.props.onGetParticipantpayment(
+                                              this.state.user_id
+                                            );
+                                          }
+                                        }, 500);
 
                                         this.setState({ editModalOpen: false });
-                                        setSubmitting(false);
                                       }}
                                     >
-                                      {({ values, setFieldValue, isSubmitting, errors, touched }) => (
+                                      {({
+                                        values,
+                                        setFieldValue,
+                                        isSubmitting,
+                                        errors,
+                                        touched,
+                                      }) => (
                                         <Form>
+                                          {(() => {
+                                            if (
+                                              values.scheme &&
+                                              values.scheme.length > 0
+                                            ) {
+                                              const selectedSchemeDetails =
+                                                values.scheme.map(id => {
+                                                  const [scheme_id, cycle_id] =
+                                                    id.split("-");
+                                                  return this.state.CycleList.find(
+                                                    scheme =>
+                                                      String(
+                                                        scheme.scheme_id
+                                                      ) === scheme_id &&
+                                                      String(scheme.id) ===
+                                                        cycle_id
+                                                  );
+                                                });
+
+                                              const total =
+                                                selectedSchemeDetails.reduce(
+                                                  (sum, scheme) => {
+                                                    return (
+                                                      sum +
+                                                      (scheme?.price
+                                                        ? parseFloat(
+                                                            scheme.price
+                                                          )
+                                                        : 0)
+                                                    );
+                                                  },
+                                                  0
+                                                );
+
+                                              if (
+                                                values.priceBeforeDiscount !==
+                                                total.toFixed(2)
+                                              ) {
+                                                setFieldValue(
+                                                  "priceBeforeDiscount",
+                                                  total.toFixed(2)
+                                                );
+                                                setFieldValue(
+                                                  "price",
+                                                  total.toFixed(2)
+                                                ); // Optional: update final payable
+                                              }
+                                            }
+                                          })()}
                                           <Row>
-                                            <Col md="6">
+                                            {/* <Col md="6">
                                               <Label>Participant Name</Label>
                                               <Field
                                                 name="participant_name"
                                                 className="form-control"
                                               />
-                                            </Col>
-                                             <Row>
-                                                  <Col>
-                                                    <Label>Scheme</Label>
-                                               <Select
-  name="scheme"
-  isMulti
-  options={schemeOptions}
-  value={schemeOptions.filter(option =>
-    values.scheme.includes(option.value)
-  )}
-  onChange={selectedOptions => {
-    const selectedValues = selectedOptions
-      ? selectedOptions.map(option => option.value)
-      : [];
-    setFieldValue("scheme", selectedValues);
-  }}
-/>
+                                            </Col> */}
+                                            <Row>
+                                              <Col>
+                                                <Label>Scheme</Label>
+                                                <Select
+                                                  name="scheme"
+                                                  isMulti
+                                                  options={schemeOptions}
+                                                  value={schemeOptions.filter(
+                                                    option =>
+                                                      (
+                                                        values.scheme || []
+                                                      ).includes(option.value)
+                                                  )}
+                                                  onChange={selectedOptions => {
+                                                    const selectedValues =
+                                                      selectedOptions
+                                                        ? selectedOptions.map(
+                                                            option =>
+                                                              option.value
+                                                          )
+                                                        : [];
 
-                                                  </Col>
-                                                </Row>
+                                                    setFieldValue(
+                                                      "scheme",
+                                                      selectedValues
+                                                    );
 
-                                            <Col md="6">
-                                              <Label>District</Label>
-                                              <Field
-                                                name="district"
-                                                className="form-control"
-                                              />
+                                                    // Find price of the **first selected scheme** (you can adapt this logic)
+                                                    if (
+                                                      selectedOptions &&
+                                                      selectedOptions.length > 0
+                                                    ) {
+                                                      const selectedScheme =
+                                                        selectedOptions[0]; // take first scheme as example
+                                                      const price =
+                                                        selectedScheme.price ||
+                                                        0; // assuming `price` exists in options
+
+                                                      setFieldValue(
+                                                        "priceBeforeDiscount",
+                                                        price
+                                                      );
+                                                    }
+                                                  }}
+                                                />
+                                              </Col>
+                                            </Row>
+
+                                            <Col>
+                                              <div className="mb-3">
+                                                <Label
+                                                  htmlFor="priceBeforeDiscount"
+                                                  className="form-label"
+                                                >
+                                                  Payable
+                                                </Label>
+                                                <Field name="priceBeforeDiscount">
+                                                  {({ field }) => (
+                                                    <input
+                                                      {...field}
+                                                      type="text"
+                                                      className="form-control"
+                                                      value={new Intl.NumberFormat(
+                                                        "en-PK"
+                                                      ).format(
+                                                        values.priceBeforeDiscount ||
+                                                          0
+                                                      )}
+                                                      readOnly
+                                                      style={{
+                                                        backgroundColor:
+                                                          "#e9ecef",
+                                                      }}
+                                                    />
+                                                  )}
+                                                </Field>
+                                                <ErrorMessage
+                                                  name="priceBeforeDiscount"
+                                                  component="div"
+                                                  className="invalid-feedback"
+                                                />
+                                              </div>
                                             </Col>
                                           </Row>
 
                                           <Row className="mt-3">
-                                            <Col md="6">
+                                            {/* <Col md="6">
                                               <Label>Membership Status</Label>
                                               <Field
                                                 name="membership_status"
                                                 className="form-control"
                                               />
-                                            </Col>
-                                            <Col md="6">
-                                              <Label>Payment Method</Label>
-                                              <Field
-                                                name="paymentmethod"
-                                                className="form-control"
-                                              />
-                                            </Col>
-                                          </Row>
+                                            </Col> */}
+                                            <Col md={6}>
+                                              <Label>Discount in (%)</Label>
+                                              <Field name="discount">
+                                                {({ field }) => (
+                                                  <input
+                                                    {...field}
+                                                    type="text"
+                                                    className="form-control"
+                                                    onChange={e => {
+                                                      const discountPercent =
+                                                        parseFloat(
+                                                          e.target.value
+                                                        );
+                                                      setFieldValue(
+                                                        "discount",
+                                                        e.target.value
+                                                      );
 
-                                          <Row className="mt-3">
-                                            <Col md="6">
-                                              <Label>Final Payable</Label>
-                                              <Field
-                                                name="price"
-                                                className="form-control"
+                                                      const payable =
+                                                        parseFloat(
+                                                          values.priceBeforeDiscount
+                                                        ) || 0;
+                                                      if (
+                                                        !isNaN(discountPercent)
+                                                      ) {
+                                                        const discountAmount =
+                                                          (payable *
+                                                            discountPercent) /
+                                                          100;
+                                                        setFieldValue(
+                                                          "discountAmount",
+                                                          discountAmount.toFixed(
+                                                            2
+                                                          )
+                                                        );
+                                                        const tax =
+                                                          parseFloat(
+                                                            values.taxDeduction
+                                                          ) || 0;
+                                                        const finalPrice =
+                                                          payable -
+                                                          discountAmount -
+                                                          tax;
+                                                        setFieldValue(
+                                                          "price",
+                                                          finalPrice.toFixed(2)
+                                                        );
+                                                      }
+                                                    }}
+                                                  />
+                                                )}
+                                              </Field>
+                                              <ErrorMessage
+                                                name="discount"
+                                                component="div"
+                                                className="invalid-feedback"
                                               />
                                             </Col>
-                                            <Col md="6">
-                                              <Label>Paid Amount</Label>
-                                              <Field
-                                                name="part_payment_amount"
-                                                className="form-control"
-                                              />
-                                            </Col>
-                                          </Row>
+                                            <Col md={6}>
+                                              <Label>
+                                                Discount Amount (Rs)
+                                              </Label>
+                                              <Field name="discountAmount">
+                                                {({ field }) => (
+                                                  <input
+                                                    {...field}
+                                                    type="text"
+                                                    className="form-control"
+                                                    value={field.value || ""} // Ensures controlled input
+                                                    onChange={e => {
+                                                      const discountAmount =
+                                                        parseFloat(
+                                                          e.target.value
+                                                        );
+                                                      setFieldValue(
+                                                        "discountAmount",
+                                                        e.target.value
+                                                      );
 
-                                          <Row className="mt-3">
-                                            <Col md="6">
-                                              <Label>Remaining Amount</Label>
-                                              <Field
-                                                name="remaining_amount"
-                                                className="form-control"
-                                              />
-                                            </Col>
-                                            <Col md="6">
-                                              <Label>Tax Deduction</Label>
-                                              <Field
-                                                name="taxDeduction"
-                                                className="form-control"
-                                              />
-                                            </Col>
-                                          </Row>
+                                                      const payable =
+                                                        parseFloat(
+                                                          values.priceBeforeDiscount
+                                                        ) || 0;
+                                                      if (
+                                                        !isNaN(
+                                                          discountAmount
+                                                        ) &&
+                                                        payable > 0
+                                                      ) {
+                                                        const percent =
+                                                          (discountAmount /
+                                                            payable) *
+                                                          100;
+                                                        setFieldValue(
+                                                          "discount",
+                                                          percent.toFixed(2)
+                                                        );
+                                                        const tax =
+                                                          parseFloat(
+                                                            values.taxDeduction
+                                                          ) || 0;
+                                                        const finalPrice =
+                                                          payable -
+                                                          discountAmount -
+                                                          tax;
+                                                        setFieldValue(
+                                                          "price",
+                                                          finalPrice.toFixed(2)
+                                                        );
+                                                      }
+                                                    }}
+                                                  />
+                                                )}
+                                              </Field>
 
-                                          <Row className="mt-3">
-                                            <Col md="6">
-                                              <Label>Discount</Label>
-                                              <Field
+                                              <ErrorMessage
                                                 name="discountAmount"
-                                                className="form-control"
+                                                component="div"
+                                                className="invalid-feedback"
                                               />
                                             </Col>
-                                            <Col md="6">
-                                              <Label>Received By</Label>
-                                              <Field
-                                                name="receivedby"
-                                                className="form-control"
-                                              />
-                                            </Col>
-                                          </Row>
+                                            <Row>
+                                              <Col>
+                                                <Label>
+                                                  Tax Deduction Amount
+                                                </Label>
+                                                <Field name="taxDeduction">
+                                                  {({ field }) => (
+                                                    <input
+                                                      {...field}
+                                                      type="text"
+                                                      className="form-control"
+                                                      placeholder="Enter tax deduction amount"
+                                                      onChange={e => {
+                                                        const tax = parseFloat(
+                                                          e.target.value
+                                                        );
+                                                        setFieldValue(
+                                                          "taxDeduction",
+                                                          e.target.value
+                                                        );
 
-                                          <Row className="mt-3">
-                                            <Col md="6">
-                                              <Label>Payment Status</Label>
-                                              <Field
-                                                name="payment_status"
-                                                className="form-control"
-                                              />
-                                            </Col>
-                                            <Col md="6">
-                                              <Label>Pay Date</Label>
-                                              <Field
-                                                name="paydate"
-                                                type="date"
-                                                className="form-control"
-                                              />
-                                            </Col>
+                                                        const payable =
+                                                          parseFloat(
+                                                            values.priceBeforeDiscount
+                                                          ) || 0;
+                                                        const discount =
+                                                          parseFloat(
+                                                            values.discountAmount
+                                                          ) || 0;
+                                                        if (!isNaN(tax)) {
+                                                          const finalPrice =
+                                                            payable -
+                                                            discount -
+                                                            tax;
+                                                          setFieldValue(
+                                                            "price",
+                                                            finalPrice.toFixed(
+                                                              2
+                                                            )
+                                                          );
+                                                        }
+                                                      }}
+                                                    />
+                                                  )}
+                                                </Field>
+                                                <ErrorMessage
+                                                  name="taxDeduction"
+                                                  component="div"
+                                                  className="invalid-feedback"
+                                                />
+                                              </Col>
+                                              <Row>
+                                                <Col>
+                                                  <Label>Payment Status</Label>
+                                                  <Select
+                                                    name="payment_status"
+                                                    options={[
+                                                      {
+                                                        value: "Paid",
+                                                        label: "Paid",
+                                                      },
+                                                      {
+                                                        value:
+                                                          "Payment In process",
+                                                        label:
+                                                          "Payment In process",
+                                                      },
+                                                    ]}
+                                                    onChange={selectedOption => {
+                                                      const status =
+                                                        selectedOption?.value ||
+                                                        "";
+                                                      setFieldValue(
+                                                        "payment_status",
+                                                        status
+                                                      );
+
+                                                      if (
+                                                        status === "Paid" ||
+                                                        status ===
+                                                          "Payment In process"
+                                                      ) {
+                                                        setFieldValue(
+                                                          "is_active",
+                                                          true
+                                                        );
+                                                      }
+                                                    }}
+                                                    value={
+                                                      values.payment_status
+                                                        ? {
+                                                            value:
+                                                              values.payment_status,
+                                                            label:
+                                                              values.payment_status,
+                                                          }
+                                                        : null
+                                                    }
+                                                    placeholder="Select"
+                                                    className={
+                                                      errors.payment_status &&
+                                                      touched.payment_status
+                                                        ? "is-invalid"
+                                                        : ""
+                                                    }
+                                                  />
+                                                  <ErrorMessage
+                                                    name="payment_status"
+                                                    component="div"
+                                                    className="invalid-feedback"
+                                                  />
+                                                </Col>
+                                                {values.payment_status ===
+                                                  "Payment In process" && (
+                                                  <div className="form-group">
+                                                    <label>
+                                                      Upload Copy of Purchase
+                                                      Order
+                                                    </label>
+                                                    <input
+                                                      type="file"
+                                                      name="purchase_order_copy"
+                                                      onChange={event =>
+                                                        setFieldValue(
+                                                          "purchase_order_copy",
+                                                          event.currentTarget
+                                                            .files[0]
+                                                        )
+                                                      }
+                                                      className="form-control"
+                                                    />
+                                                    {errors.purchase_order_copy &&
+                                                      touched.purchase_order_copy && (
+                                                        <div className="text-danger">
+                                                          {
+                                                            errors.purchase_order_copy
+                                                          }
+                                                        </div>
+                                                      )}
+                                                  </div>
+                                                )}
+                                              </Row>
+                                              {values.payment_status ===
+                                                "Paid" && (
+                                                <>
+                                                  <Row>
+                                                    <Col>
+                                                      <div className="mb-3">
+                                                        <Label
+                                                          htmlFor="price"
+                                                          className="form-label"
+                                                        >
+                                                          Payable after Discount
+                                                          & Tax Deduction
+                                                        </Label>
+                                                        <Field name="price">
+                                                          {({ field }) => (
+                                                            <input
+                                                              {...field}
+                                                              type="text"
+                                                              className="form-control"
+                                                              value={new Intl.NumberFormat(
+                                                                "en-PK",
+                                                                {
+                                                                  style:
+                                                                    "currency",
+                                                                  currency:
+                                                                    "PKR",
+                                                                }
+                                                              ).format(
+                                                                values.price ||
+                                                                  0
+                                                              )}
+                                                              readOnly
+                                                              style={{
+                                                                backgroundColor:
+                                                                  "#e9ecef",
+                                                              }}
+                                                            />
+                                                          )}
+                                                        </Field>
+                                                        <ErrorMessage
+                                                          name="price"
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
+                                                      </div>
+                                                    </Col>
+                                                  </Row>
+
+                                                  <Col>
+                                                    <Label>
+                                                      Payment Settlement
+                                                    </Label>
+                                                    <Select
+                                                      name="payment_settlement"
+                                                      options={[
+                                                        {
+                                                          value: "Full",
+                                                          label: "Full",
+                                                        },
+                                                        {
+                                                          value: "Part",
+                                                          label: "Part",
+                                                        },
+                                                      ]}
+                                                      onChange={selectedOption => {
+                                                        const settlement =
+                                                          selectedOption?.value ||
+                                                          "";
+                                                        setFieldValue(
+                                                          "payment_settlement",
+                                                          settlement
+                                                        );
+                                                        if (
+                                                          settlement ===
+                                                            "Full" ||
+                                                          settlement === "Part"
+                                                        ) {
+                                                          setFieldValue(
+                                                            "is_active",
+                                                            true
+                                                          );
+                                                        }
+                                                      }}
+                                                      value={
+                                                        values.payment_settlement
+                                                          ? {
+                                                              value:
+                                                                values.payment_settlement,
+                                                              label:
+                                                                values.payment_settlement,
+                                                            }
+                                                          : null
+                                                      }
+                                                      placeholder="Select"
+                                                      className={
+                                                        errors.payment_settlement &&
+                                                        touched.payment_settlement
+                                                          ? "is-invalid"
+                                                          : ""
+                                                      }
+                                                    />
+                                                    <ErrorMessage
+                                                      name="payment_settlement"
+                                                      component="div"
+                                                      className="invalid-feedback"
+                                                    />
+                                                  </Col>
+
+                                                  {values.payment_settlement ===
+                                                    "Part" && (
+                                                    <>
+                                                      <Col className="mt-3">
+                                                        <Label>
+                                                          Part Payment Amount
+                                                        </Label>
+                                                        <Field name="part_payment_amount">
+                                                          {({ field }) => (
+                                                            <input
+                                                              {...field}
+                                                              type="number"
+                                                              className={
+                                                                errors.part_payment_amount &&
+                                                                touched.part_payment_amount
+                                                                  ? "form-control is-invalid"
+                                                                  : "form-control"
+                                                              }
+                                                              value={
+                                                                field.value ===
+                                                                  undefined ||
+                                                                field.value ===
+                                                                  null
+                                                                  ? ""
+                                                                  : field.value
+                                                              }
+                                                              onChange={e => {
+                                                                const partAmount =
+                                                                  parseFloat(
+                                                                    e.target
+                                                                      .value
+                                                                  ) || 0;
+                                                                const totalAmount =
+                                                                  parseFloat(
+                                                                    values.price
+                                                                  ) || 0;
+                                                                const remaining =
+                                                                  totalAmount -
+                                                                  partAmount;
+                                                                setFieldValue(
+                                                                  "part_payment_amount",
+                                                                  e.target.value
+                                                                );
+                                                                setFieldValue(
+                                                                  "remaining_amount",
+                                                                  remaining >= 0
+                                                                    ? remaining
+                                                                    : 0
+                                                                );
+                                                              }}
+                                                            />
+                                                          )}
+                                                        </Field>
+                                                        <ErrorMessage
+                                                          name="part_payment_amount"
+                                                          component="div"
+                                                          className="invalid-feedback"
+                                                        />
+                                                      </Col>
+
+                                                      <Col className="mt-3">
+                                                        <Label>
+                                                          Remaining Amount
+                                                        </Label>
+                                                        <Field
+                                                          name="remaining_amount"
+                                                          type="number"
+                                                          disabled
+                                                          className="form-control"
+                                                        />
+                                                      </Col>
+                                                    </>
+                                                  )}
+                                                  <Row>
+                                                    <Col>
+                                                      <Label>Pay Date</Label>
+                                                      <Field
+                                                        name="paydate"
+                                                        type="date"
+                                                        className="form-control"
+                                                      />
+                                                      <ErrorMessage
+                                                        name="paydate"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </Col>
+                                                  </Row>
+
+                                                  <Row>
+                                                    <Col>
+                                                      <Label>Pay Copy</Label>
+                                                      <Input
+                                                        id="formFile"
+                                                        name="photo"
+                                                        type="file"
+                                                        multiple={false}
+                                                        accept=".jpg,.jpeg,.png,.pdf"
+                                                        onChange={event =>
+                                                          this.handleFileChange(
+                                                            event,
+                                                            setFieldValue
+                                                          )
+                                                        }
+                                                        className={
+                                                          "form-control" +
+                                                          (errors.photo &&
+                                                          touched.photo
+                                                            ? " is-invalid"
+                                                            : "")
+                                                        }
+                                                      />
+                                                      <small
+                                                        style={{
+                                                          color: "#007bff",
+                                                        }}
+                                                      >
+                                                        Only JPEG, PNG, or PDF
+                                                        files up to 2MB in size
+                                                        are allowed.
+                                                      </small>
+                                                      <ErrorMessage
+                                                        name="photo"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </Col>
+                                                  </Row>
+
+                                                  <Row>
+                                                    <Col>
+                                                      <Label>
+                                                        Payment Method
+                                                      </Label>
+                                                      <Select
+                                                        name="paymentmethod"
+                                                        options={[
+                                                          {
+                                                            value: "Online",
+                                                            label: "Online",
+                                                          },
+                                                          {
+                                                            value: "Cheque",
+                                                            label: "Cheque",
+                                                          },
+                                                          {
+                                                            value: "Cash",
+                                                            label: "Cash",
+                                                          },
+                                                        ]}
+                                                        onChange={selectedOption =>
+                                                          setFieldValue(
+                                                            "paymentmethod",
+                                                            selectedOption?.value ||
+                                                              ""
+                                                          )
+                                                        }
+                                                        value={
+                                                          values.paymentmethod
+                                                            ? {
+                                                                value:
+                                                                  values.paymentmethod,
+                                                                label:
+                                                                  values.paymentmethod,
+                                                              }
+                                                            : null
+                                                        }
+                                                        className={
+                                                          errors.paymentmethod &&
+                                                          touched.paymentmethod
+                                                            ? "is-invalid"
+                                                            : ""
+                                                        }
+                                                      />
+                                                      <ErrorMessage
+                                                        name="paymentmethod"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </Col>
+                                                  </Row>
+
+                                                  <Row>
+                                                    <Col>
+                                                      <Label>Received By</Label>
+                                                      <Field
+                                                        name="receivedby"
+                                                        type="text"
+                                                        className="form-control"
+                                                      />
+                                                      <ErrorMessage
+                                                        name="receivedby"
+                                                        component="div"
+                                                        className="invalid-feedback"
+                                                      />
+                                                    </Col>
+                                                  </Row>
+                                                </>
+                                              )}
+                                            </Row>
                                           </Row>
 
                                           <div className="mt-4 text-end">
@@ -1146,27 +1814,36 @@ ParticipantPayments.propTypes = {
   GetPayment: PropTypes.array,
   onGetParticipantpayment: PropTypes.func,
   CycleList: PropTypes.array,
-  onGetParticipantPayment: PropTypes.func,
+  onGetParticipantpayment: PropTypes.func,
   ongetcyclelist: PropTypes.func,
   match: PropTypes.object,
+  onupdatePayment: PropTypes.func,
+  ListDistrict: PropTypes.array,
+  onGetDistrictList: PropTypes.func,
 };
 
 const mapStateToProps = state => {
   const cycleList = state.CycleList?.CycleList || [];
+  const ListDistrict = state.ListDistrict?.ListDistrict || [];
+
   console.log("CycleList:", cycleList);
+  console.log("ListDistrict:", ListDistrict);
 
   return {
     userID: state.Account?.userID || null,
     CycleList: cycleList,
     PaymentSchemeList: state.PaymentScheme?.PaymentSchemeList || [],
     GetPayment: state.AddPayment?.GetPayment ?? [],
+    ListDistrict, // ✅ Now correctly passing the declared ListDistrict
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  onGetParticipantpayment: () => dispatch(getParticipantPayment()),
-  onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
+  //  onGetParticipantpayment: () => dispatch(getParticipantPayment()),
+  onGetParticipantpayment: id => dispatch(getParticipantPayment(id)),
   ongetcyclelist: id => dispatch(getcyclelist(id)),
+  onupdatePayment: payload => dispatch(updatePayment(payload)),
+  onGetDistrictList: id => dispatch(getdistrictlist(id)),
 });
 
 export default connect(

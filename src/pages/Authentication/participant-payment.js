@@ -42,6 +42,7 @@ class ParticipantPayments extends Component {
       schemepriceFilter: "",
       hoveredSchemeNames: [],
       TaxFilter: "",
+      dateFilter: "", // Add this if `dateFilter` is intended
       filtersApplied: false,
       hoveredSchemeNames: [],
       paymentmodeFilter: "",
@@ -49,6 +50,9 @@ class ParticipantPayments extends Component {
       paymentreceivedFilter: "",
       selectedCheckboxes: {},
       tableKey: 0,
+      dateTo: new Date().toISOString().split("T")[0], // Show current date
+      dateToActive: false, // Tracks whether the user activated the filter
+      filtersApplied: false, // Prevent data from loading by default
       GetPayment: [],
       feedbackMessage: "",
       errorMessage: "",
@@ -578,6 +582,9 @@ class ParticipantPayments extends Component {
   componentDidMount() {
     const { onGetParticipantpayment } = this.props;
     console.log("Component Mounted");
+    this.setState({
+      dateTo: new Date().toISOString().split("T")[0], // Set today's date
+    });
 
     // Dispatch action to fetch all participant payments (without specific ID)
     onGetParticipantpayment();
@@ -643,9 +650,11 @@ class ParticipantPayments extends Component {
     const value = e.target.value;
 
     this.setState(
-      {
+      prevState => ({
         [filterName]: value,
-      },
+        // Mark dateToActive only when dateTo changes
+        dateToActive: filterName === "dateTo" ? true : prevState.dateToActive,
+      }),
       this.checkFiltersApplied
     );
   };
@@ -669,7 +678,7 @@ class ParticipantPayments extends Component {
       paymentreceivedFilter,
       membershipStatusFilter,
       dateFrom,
-      dateTo,
+      dateToActive, // Include activation flag
     } = this.state;
 
     // Check if ANY filter is applied AND has a NON-EMPTY value
@@ -692,104 +701,126 @@ class ParticipantPayments extends Component {
       paymentreceivedFilter,
       membershipStatusFilter,
       dateFrom,
-      dateTo,
+      dateToActive ? "active" : "", // Only consider dateTo if active
     ];
 
-    // ✅ At least one non-empty, non-default filter must be selected
     const anyFilterSelected = filters.some(f => f && f.trim() !== "");
 
     this.setState({ filtersApplied: anyFilterSelected });
   };
 
   filterData = () => {
-    // 🚫 Return empty array if no filters are applied
-    if (!this.state.filtersApplied) return [];
-
     const {
       GetPayment,
-      nameFilter = "",
-      idFilter = "",
-      districtFilter = "",
-      schemeFilter = "",
-      schemepriceFilter = "",
-      amountFilter = "",
-      discountFilter = "",
-      TaxFilter = "",
-      paymentsettlementFilter = "",
-      paymentMethodFilter = "",
-      paymentStatusFilter = "",
-      paidamountFilter = "",
-      remainingAmountFilter = "",
-      finalpayableFilter = "",
+      nameFilter = "Select",
+      idFilter = "Select",
+      districtFilter = "Select",
+      schemeFilter = "Select",
+      schemepriceFilter = "Select",
+      amountFilter = "Select",
+      discountFilter = "Select",
+      TaxFilter = "Select",
+      paymentsettlementFilter = "Select",
+      paymentreceivedFilter = "Select",
+      membershipStatusFilter = "Select",
+      paymentMethodFilter = "Select",
+      paymentStatusFilter = "Select",
+      paidamountFilter = "Select",
+      remainingAmountFilter = "Select",
+      finalpayableFilter = "Select",
       dateFilter = "",
-      paymentreceivedFilter = "",
-      membershipStatusFilter = "",
+      dateFrom,
+      dateTo,
+      dateToActive, // Include activation flag
     } = this.state;
 
-    return GetPayment.filter(
-      entry =>
-        (entry.id ? entry.id.toString() : "").includes(idFilter) &&
-        (entry.participant_name || "")
-          .toLowerCase()
-          .includes(nameFilter.toLowerCase()) &&
-        (entry.district || "")
-          .toLowerCase()
-          .includes(districtFilter.toLowerCase()) &&
-        (this.state.schemeFilter === "" ||
-          (entry.scheme_names || []).some(s =>
-            s.toLowerCase().includes(this.state.schemeFilter.toLowerCase())
-          )) &&
-        (entry.price || "")
-          .toLowerCase()
-          .includes(amountFilter.toLowerCase()) &&
-        (entry.priceBeforeDiscount || "")
-          .toLowerCase()
-          .includes(schemepriceFilter.toLowerCase()) &&
-        (entry.discount || "")
-          .toLowerCase()
-          .includes(discountFilter.toLowerCase()) &&
-        (entry.taxDeduction || "")
-          .toLowerCase()
-          .includes(TaxFilter.toLowerCase()) &&
-        (entry.payment_settlement || "")
-          .toLowerCase()
-          .includes(paymentsettlementFilter.toLowerCase()) &&
-        (entry.price || "")
-          .toLowerCase()
-          .includes(finalpayableFilter.toLowerCase()) &&
-        (entry.part_payment_amount
-          ? entry.part_payment_amount.toString()
-          : ""
-        ).includes(paidamountFilter) &&
-        (entry.remaining_amount
-          ? entry.remaining_amount.toString()
-          : ""
-        ).includes(remainingAmountFilter) &&
-        (entry.payment_status || "")
-          .toLowerCase()
-          .includes(paymentStatusFilter.toLowerCase()) &&
-        (entry.paymentmethod || "")
-          .toLowerCase()
-          .includes(paymentMethodFilter.toLowerCase()) &&
-        (() => {
-          if (!entry.paydate) return true;
-          const entryDate = new Date(entry.paydate);
-          const fromDate = this.state.dateFrom
-            ? new Date(this.state.dateFrom)
-            : null;
-          const toDate = this.state.dateTo ? new Date(this.state.dateTo) : null;
+    // Return empty array if no filters are applied
+    const filters = [
+      nameFilter,
+      idFilter,
+      districtFilter,
+      schemeFilter,
+      schemepriceFilter,
+      amountFilter,
+      discountFilter,
+      TaxFilter,
+      paymentsettlementFilter,
+      paymentMethodFilter,
+      paymentStatusFilter,
+      paidamountFilter,
+      remainingAmountFilter,
+      finalpayableFilter,
+      dateFilter,
+      paymentreceivedFilter,
+      membershipStatusFilter,
+      dateFrom,
+      dateToActive ? dateTo : "", // Only use dateTo if active
+    ];
 
-          if (fromDate && entryDate < fromDate) return false;
-          if (toDate && entryDate > toDate) return false;
-          return true;
-        })() &&
-        (entry.receivedby || "")
-          .toLowerCase()
-          .includes(paymentreceivedFilter.toLowerCase()) &&
-        (entry.membership_status || "")
-          .toLowerCase()
-          .includes(membershipStatusFilter.toLowerCase())
+    const isAnyFilterApplied = filters.some(
+      filter => filter !== "Select" && filter !== ""
     );
+    if (!isAnyFilterApplied) return [];
+
+    return GetPayment.filter(entry => {
+      return (
+        (idFilter === "All" ||
+          (entry.id && entry.id.toString().includes(idFilter))) &&
+        (nameFilter === "All" ||
+          (entry.participant_name || "")
+            .toLowerCase()
+            .includes(nameFilter.toLowerCase())) &&
+        (districtFilter === "All" ||
+          (entry.district || "")
+            .toLowerCase()
+            .includes(districtFilter.toLowerCase())) &&
+        (schemeFilter === "All" ||
+          (entry.scheme_names || []).some(scheme =>
+            scheme.toLowerCase().includes(schemeFilter.toLowerCase())
+          )) &&
+        (schemepriceFilter === "All" ||
+          (entry.priceBeforeDiscount || "").includes(schemepriceFilter)) &&
+        (amountFilter === "All" ||
+          (entry.price || "").includes(amountFilter)) &&
+        (discountFilter === "All" ||
+          (entry.discountAmount || "").includes(discountFilter)) &&
+        (TaxFilter === "All" ||
+          (entry.taxDeduction || "").includes(TaxFilter)) &&
+        (dateFilter === "All" || (entry.paydate || "").includes(dateFilter)) &&
+        (paymentsettlementFilter === "All" ||
+          (entry.payment_settlement || "")
+            .toLowerCase()
+            .includes(paymentsettlementFilter.toLowerCase())) &&
+        (paymentreceivedFilter === "All" ||
+          (entry.receivedby || "")
+            .toLowerCase()
+            .includes(paymentreceivedFilter.toLowerCase())) &&
+        (membershipStatusFilter === "All" ||
+          (entry.membership_status || "")
+            .toLowerCase()
+            .includes(membershipStatusFilter.toLowerCase())) &&
+        (paymentMethodFilter === "All" ||
+          (entry.paymentmethod || "")
+            .toLowerCase()
+            .includes(paymentMethodFilter.toLowerCase())) &&
+        (paymentStatusFilter === "All" ||
+          (entry.payment_status || "")
+            .toLowerCase()
+            .includes(paymentStatusFilter.toLowerCase())) &&
+        (paidamountFilter === "All" ||
+          (entry.part_payment_amount || "")
+            .toString()
+            .includes(paidamountFilter)) &&
+        (remainingAmountFilter === "All" ||
+          (entry.remaining_amount || "")
+            .toString()
+            .includes(remainingAmountFilter)) &&
+        (finalpayableFilter === "All" ||
+          (entry.price || "").toString().includes(finalpayableFilter)) &&
+        (!dateFrom || new Date(entry.paydate) >= new Date(dateFrom)) &&
+        (!dateToActive || new Date(entry.paydate) <= new Date(dateTo)) // Check if dateTo is active
+      );
+    });
   };
 
   getUniqueOptions = fieldName => {
@@ -887,7 +918,7 @@ class ParticipantPayments extends Component {
                               <Row className="mb-3">
                                 <Col md={4}>
                                   <Label for="nameFilter">
-                                    Filter by Participant Name
+                                    Participant Name
                                   </Label>
                                   <select
                                     id="nameFilter"
@@ -897,7 +928,10 @@ class ParticipantPayments extends Component {
                                       this.handleFilterChange("nameFilter", e)
                                     }
                                   >
-                                    <option value="">All Participants</option>
+                                    <option value="Select">Select</option>
+                                    <option value="All">
+                                      All Participants
+                                    </option>
                                     {this.getUniqueOptions(
                                       "participant_name"
                                     ).map((option, idx) => (
@@ -908,9 +942,7 @@ class ParticipantPayments extends Component {
                                   </select>
                                 </Col>
                                 <Col md={4}>
-                                  <Label for="schemeFilter">
-                                    Filter by Scheme
-                                  </Label>
+                                  <Label for="schemeFilter">Scheme</Label>
                                   <select
                                     id="schemeFilter"
                                     className="form-control"
@@ -919,7 +951,8 @@ class ParticipantPayments extends Component {
                                       this.handleFilterChange("schemeFilter", e)
                                     }
                                   >
-                                    <option value="">All Schemes</option>
+                                    <option value="Select">Select</option>
+                                    <option value="All">All Schemes</option>
                                     {this.getUniqueOptions("scheme_names").map(
                                       (option, idx) => (
                                         <option key={idx} value={option}>
@@ -931,9 +964,7 @@ class ParticipantPayments extends Component {
                                 </Col>
 
                                 <Col md={4}>
-                                  <Label for="districtFilter">
-                                    Filter by District
-                                  </Label>
+                                  <Label for="districtFilter">District</Label>
                                   <select
                                     id="districtFilter"
                                     className="form-control"
@@ -945,7 +976,8 @@ class ParticipantPayments extends Component {
                                       )
                                     }
                                   >
-                                    <option value="">All Districts</option>
+                                    <option value="Select">Select</option>
+                                    <option value="All">All District</option>
                                     {this.getUniqueOptions("district").map(
                                       (option, idx) => (
                                         <option key={idx} value={option}>
@@ -958,7 +990,7 @@ class ParticipantPayments extends Component {
 
                                 <Col md={4}>
                                   <Label for="paymentsettlementFilter">
-                                    Filter by Payment Settlement
+                                    Payment Settlement
                                   </Label>
                                   <select
                                     id="paymentsettlementFilter"
@@ -971,7 +1003,10 @@ class ParticipantPayments extends Component {
                                       )
                                     }
                                   >
-                                    <option value="">All Statuses</option>
+                                    <option value="Select">Select</option>
+                                    <option value="All">
+                                      All Payment Settlement
+                                    </option>
                                     {this.getUniqueOptions(
                                       "payment_settlement"
                                     ).map((option, idx) => (
@@ -981,33 +1016,65 @@ class ParticipantPayments extends Component {
                                     ))}
                                   </select>
                                 </Col>
-                                <Col md={3}>
-                                  <Label for="dateFrom">From Date</Label>
-                                  <input
-                                    type="date"
-                                    id="dateFrom"
+                                <Col md={4}>
+                                  <Label for="paymentStatusFilter">
+                                    Payment Status
+                                  </Label>
+                                  <select
+                                    id="paymentStatusFilter"
                                     className="form-control"
-                                    value={this.state.dateFrom}
+                                    value={this.state.paymentStatusFilter}
                                     onChange={e =>
-                                      this.setState({
-                                        dateFrom: e.target.value,
-                                      })
+                                      this.handleFilterChange(
+                                        "paymentStatusFilter",
+                                        e
+                                      )
                                     }
-                                  />
+                                  >
+                                    <option value="Select">Select</option>
+                                    <option value="All">
+                                      All Payment Statuses
+                                    </option>
+                                    {this.getUniqueOptions(
+                                      "payment_status"
+                                    ).map((option, idx) => (
+                                      <option key={idx} value={option}>
+                                        {option}
+                                      </option>
+                                    ))}
+                                  </select>
                                 </Col>
+                                <Row>
+                                  <Col md={3}>
+                                    <Label for="dateFrom">Date From </Label>
+                                    <input
+                                      type="date"
+                                      id="dateFrom"
+                                      className="form-control"
+                                      value={this.state.dateFrom}
+                                      onChange={e =>
+                                        this.setState({
+                                          dateFrom: e.target.value,
+                                        })
+                                      }
+                                    />
+                                  </Col>
 
-                                <Col md={3}>
-                                  <Label for="dateTo">To Date</Label>
-                                  <input
-                                    type="date"
-                                    id="dateTo"
-                                    className="form-control"
-                                    value={this.state.dateTo}
-                                    onChange={e =>
-                                      this.setState({ dateTo: e.target.value })
-                                    }
-                                  />
-                                </Col>
+                                  <Col md={3}>
+                                    <Label for="dateTo">Date To</Label>
+                                    <input
+                                      type="date"
+                                      id="dateTo"
+                                      className="form-control"
+                                      value={this.state.dateTo}
+                                      onChange={e =>
+                                        this.setState({
+                                          dateTo: e.target.value,
+                                        })
+                                      }
+                                    />
+                                  </Col>
+                                </Row>
                               </Row>
 
                               <Row className="mb-4">
