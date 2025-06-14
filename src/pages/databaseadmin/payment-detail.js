@@ -691,40 +691,46 @@ class ParticipantPayments extends Component {
     });
   };
   toggleEditModal = (row, participant = null) => {
-    console.log("toggleEditModal called with:");
-    console.log("Row:", row);
-    console.log("Participant:", participant);
-    console.log("row.scheme_names:", row?.scheme_names); // Debug actual format
+    console.log("🟢 toggleEditModal triggered");
+    console.log("row.scheme_names:", row?.scheme_names);
+    console.log("schemeOptions in state:", this.state.schemeOptions);
 
-    // Normalize scheme_ids to handle both object and string formats
-    const scheme_ids =
-      row?.scheme_names?.map(scheme =>
-        typeof scheme === "object"
-          ? `${scheme.scheme_id}-${scheme.cycle_id}`
-          : scheme
-      ) || [];
+    // Match schemes from scheme_names against schemeOptions
+    const matchedSchemes =
+      row?.scheme_names
+        ?.map(name => {
+          const found = this.state.schemeOptions?.find(
+            option => option.label === name
+          );
+          console.log(`🔍 Matching scheme name: "${name}" →`, found);
+          return found;
+        })
+        .filter(Boolean) || [];
 
-    console.log("Mapped scheme_ids:", scheme_ids);
+    const scheme_ids = matchedSchemes.map(opt => opt.value);
+    const priceBeforeDiscount =
+      matchedSchemes.length > 0 ? matchedSchemes[0].price : 0;
+
+    console.log("✅ matchedSchemes:", matchedSchemes);
+    console.log("✅ scheme_ids:", scheme_ids);
+    console.log("💰 Price from first matched scheme:", priceBeforeDiscount);
 
     this.setState(
-      prevState => ({
-        editModalOpen: !prevState.editModalOpen,
-        selectedRow: row || null,
-        selectedScheme: scheme_ids, // These will be passed to Formik
+      {
+        editModalOpen: true,
+        selectedRow: row,
+        selectedScheme: scheme_ids,
         selectedParticipant: participant || {
           name: row?.participant_name || "",
-          district: row?.district || "", // ✅ fixed
+          district: row?.district || "",
           id: row?.participant || "",
         },
-        isPaymentModalOpen: participant ? true : prevState.isPaymentModalOpen,
-      }),
+        selectedPrice: priceBeforeDiscount,
+      },
       () => {
-        console.log("State after toggleEditModal:");
-        console.log("editModalOpen:", this.state.editModalOpen);
-        console.log("selectedRow:", this.state.selectedRow);
-        console.log("selectedScheme:", this.state.selectedScheme); // ✅ confirm this gets to Formik
-        console.log("selectedParticipant:", this.state.selectedParticipant);
-        console.log("isPaymentModalOpen:", this.state.isPaymentModalOpen);
+        console.log("🟢 State after toggleEditModal:");
+        console.log("selectedPrice (payable):", this.state.selectedPrice);
+        console.log("selectedScheme:", this.state.selectedScheme);
       }
     );
   };
@@ -947,7 +953,7 @@ class ParticipantPayments extends Component {
                                           this.state.selectedRow
                                             .participant_name,
                                         // scheme: [],
-                                        scheme: this.state.selectedScheme || [],
+                                        scheme: this.state.selectedScheme,
                                         participant:
                                           this.state.selectedParticipant?.id ||
                                           "",
@@ -959,7 +965,7 @@ class ParticipantPayments extends Component {
                                           this.state.selectedRow
                                             .membership_status,
                                         priceBeforeDiscount:
-                                          this.state.calculatedPayable || 0,
+                                          this.state.selectedPrice || 0,
                                         discountAmount:
                                           this.state.selectedRow.discountAmount,
                                         taxDeduction:
@@ -988,11 +994,6 @@ class ParticipantPayments extends Component {
                                           this.state.selectedRow.receivedby,
                                       }}
                                       onSubmit={(values, { setSubmitting }) => {
-                                        const safePaydate =
-                                          values.paydate &&
-                                          values.paydate.trim() !== ""
-                                            ? values.paydate
-                                            : null;
                                         const payload = {
                                           ...values,
                                           scheme: values.scheme.join(","), // convert array to string
@@ -1090,6 +1091,11 @@ class ParticipantPayments extends Component {
                                                   name="scheme"
                                                   isMulti
                                                   options={schemeOptions}
+                                                  placeholder={
+                                                    this.state.selectedRow?.scheme_names?.join(
+                                                      ", "
+                                                    ) || "Select schemes"
+                                                  }
                                                   value={schemeOptions.filter(
                                                     option =>
                                                       (
@@ -1110,16 +1116,16 @@ class ParticipantPayments extends Component {
                                                       selectedValues
                                                     );
 
-                                                    // Find price of the **first selected scheme** (you can adapt this logic)
+                                                    // Set price from first selected option
                                                     if (
                                                       selectedOptions &&
                                                       selectedOptions.length > 0
                                                     ) {
                                                       const selectedScheme =
-                                                        selectedOptions[0]; // take first scheme as example
+                                                        selectedOptions[0];
                                                       const price =
                                                         selectedScheme.price ||
-                                                        0; // assuming `price` exists in options
+                                                        0;
 
                                                       setFieldValue(
                                                         "priceBeforeDiscount",
@@ -1159,6 +1165,7 @@ class ParticipantPayments extends Component {
                                                     />
                                                   )}
                                                 </Field>
+
                                                 <ErrorMessage
                                                   name="priceBeforeDiscount"
                                                   component="div"
