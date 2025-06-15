@@ -691,21 +691,39 @@ class ParticipantPayments extends Component {
     });
   };
 toggleEditModal = (row, participant = null) => {
+  // 🧼 Normalize scheme names for matching
   const matchedSchemes =
     row?.scheme_names?.map(name => {
-      const found = this.state.CycleList?.find(option =>
-        option.scheme_name.trim().toLowerCase() === name.trim().toLowerCase()
-      );
+      const cleanedName = name.replace(/,/g, "").trim().toLowerCase();
+      const found = this.state.CycleList?.find(option => {
+        const optionName = option.scheme_name.replace(/,/g, "").trim().toLowerCase();
+        return optionName === cleanedName;
+      });
       return found;
     }).filter(Boolean) || [];
 
+  // 🧠 Log actual price data for debug
+  matchedSchemes.forEach((scheme, index) => {
+    const raw = scheme?.priceBeforeDiscount || scheme?.price;
+    const cleaned = parseFloat(raw?.toString().replace(/,/g, ""));
+    console.log(`🔎 Scheme ${index + 1}`, {
+      schemeName: scheme.scheme_name,
+      rawPrice: raw,
+      cleanedPrice: cleaned,
+    });
+  });
+
+  // 💰 Corrected total price calculation
+  const priceBeforeDiscount = matchedSchemes.reduce((sum, scheme) => {
+    const raw = scheme?.priceBeforeDiscount || scheme?.price || 0;
+    const cleaned = parseFloat(raw.toString().replace(/,/g, ""));
+    return sum + (isNaN(cleaned) ? 0 : cleaned);
+  }, 0);
+
+  // 🪪 Format scheme IDs
   const scheme_ids = matchedSchemes.map(opt => `${opt.scheme_id}-${opt.id}`);
 
-  const priceBeforeDiscount =
-    matchedSchemes.length > 0
-      ? matchedSchemes.reduce((sum, scheme) => sum + (scheme?.price || 0), 0)
-      : parseFloat(row.priceBeforeDiscount || row.price || 0); // Fallback if no matches
-
+  // 🧾 Debug final total
   console.log("✅ matchedSchemes:", matchedSchemes);
   console.log("💰 Total Payable (pre-filled):", priceBeforeDiscount);
 
@@ -835,7 +853,7 @@ toggleEditModal = (row, participant = null) => {
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
       scheme_id: scheme.scheme_id,
       cycle_id: scheme.id,
-      price: scheme.priceBeforeDiscount || scheme.price || 0, // ✅ Include price here
+     price: parseFloat(scheme.priceBeforeDiscount || scheme.price || 0), // ✅ Include price here
     }));
 
     console.log("CycleList:", CycleList);
@@ -952,8 +970,7 @@ toggleEditModal = (row, participant = null) => {
                                         membership_status:
                                           this.state.selectedRow
                                             .membership_status,
-                                        priceBeforeDiscount:
-                                          this.state.selectedPrice || 0,
+                                        priceBeforeDiscount: this.state.selectedPrice, 
                                         discountAmount:
                                           this.state.selectedRow.discountAmount,
                                         taxDeduction:
@@ -992,7 +1009,7 @@ onSubmit={(values, { setSubmitting }) => {
   });
 
   const totalPriceBeforeDiscount = selectedSchemeDetails.reduce(
-    (sum, scheme) => sum + (scheme?.price || 0),
+    (sum, scheme) => sum + (parseFloat(scheme?.price) || 0),
     0
   );
 
@@ -1025,55 +1042,7 @@ onSubmit={(values, { setSubmitting }) => {
                                         touched,
                                       }) => (
                                         <Form>
-                                          {(() => {
-                                            if (
-                                              values.scheme &&
-                                              values.scheme.length > 0
-                                            ) {
-                                              const selectedSchemeDetails =
-                                                values.scheme.map(id => {
-                                                  const [scheme_id, cycle_id] =
-                                                    id.split("-");
-                                                  return this.state.CycleList.find(
-                                                    scheme =>
-                                                      String(
-                                                        scheme.scheme_id
-                                                      ) === scheme_id &&
-                                                      String(scheme.id) ===
-                                                        cycle_id
-                                                  );
-                                                });
-
-                                              const total =
-                                                selectedSchemeDetails.reduce(
-                                                  (sum, scheme) => {
-                                                    return (
-                                                      sum +
-                                                      (scheme?.price
-                                                        ? parseFloat(
-                                                            scheme.price
-                                                          )
-                                                        : 0)
-                                                    );
-                                                  },
-                                                  0
-                                                );
-
-                                              if (
-                                                values.priceBeforeDiscount !==
-                                                total.toFixed(2)
-                                              ) {
-                                                setFieldValue(
-                                                  "priceBeforeDiscount",
-                                                  total.toFixed(2)
-                                                );
-                                                setFieldValue(
-                                                  "price",
-                                                  total.toFixed(2)
-                                                ); // Optional: update final payable
-                                              }
-                                            }
-                                          })()}
+                                        
                                           <Row>
                                             {/* <Col md="6">
                                               <Label>Participant Name</Label>
@@ -1100,77 +1069,59 @@ onSubmit={(values, { setSubmitting }) => {
                                                         values.scheme || []
                                                       ).includes(option.value)
                                                   )}
-                                                  onChange={selectedOptions => {
-                                                    const selectedValues =
-                                                      selectedOptions
-                                                        ? selectedOptions.map(
-                                                            option =>
-                                                              option.value
-                                                          )
-                                                        : [];
+                                              onChange={selectedOptions => {
+  const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
+  setFieldValue("scheme", selectedValues);
 
-                                                    setFieldValue(
-                                                      "scheme",
-                                                      selectedValues
-                                                    );
+  // ✅ Calculate total price from all selected schemes
+  const total = selectedOptions.reduce((sum, option) => {
+    const raw = option.price || 0;
+    const num = parseFloat(raw.toString().replace(/,/g, ""));
+    return sum + (isNaN(num) ? 0 : num);
+  }, 0);
 
-                                                    // Set price from first selected option
-                                                    if (
-                                                      selectedOptions &&
-                                                      selectedOptions.length > 0
-                                                    ) {
-                                                      const selectedScheme =
-                                                        selectedOptions[0];
-                                                      const price =
-                                                        selectedScheme.price ||
-                                                        0;
+  // ✅ Update total in the form
+  setFieldValue("priceBeforeDiscount", total.toFixed(2));
+  setFieldValue("price", total.toFixed(2)); // optional
+}}
 
-                                                      setFieldValue(
-                                                        "priceBeforeDiscount",
-                                                        price
-                                                      );
-                                                    }
-                                                  }}
                                                 />
                                               </Col>
                                             </Row>
+<Col>
+  <div className="mb-3">
+    <Label
+      htmlFor="priceBeforeDiscount"
+      className="form-label"
+    >
+      Payable
+    </Label>
+   <Field name="priceBeforeDiscount">
+  {({ field }) => {
+    const value = Number(values.priceBeforeDiscount || 0);
+    console.log("💰 priceBeforeDiscount raw:", value);
+    return (
+      <input
+        {...field}
+        type="text"
+        className="form-control"
+       value={typeof value === 'number' ? value.toLocaleString("en-PK") : value}
+        readOnly
+        style={{ backgroundColor: "#e9ecef" }}
+      />
+    );
+  }}
+</Field>
 
-                                            <Col>
-                                              <div className="mb-3">
-                                                <Label
-                                                  htmlFor="priceBeforeDiscount"
-                                                  className="form-label"
-                                                >
-                                                  Payable
-                                                </Label>
-                                                <Field name="priceBeforeDiscount">
-                                                  {({ field }) => (
-                                                    <input
-                                                      {...field}
-                                                      type="text"
-                                                      className="form-control"
-                                                      value={new Intl.NumberFormat(
-                                                        "en-PK"
-                                                      ).format(
-                                                        values.priceBeforeDiscount ||
-                                                          0
-                                                      )}
-                                                      readOnly
-                                                      style={{
-                                                        backgroundColor:
-                                                          "#e9ecef",
-                                                      }}
-                                                    />
-                                                  )}
-                                                </Field>
 
-                                                <ErrorMessage
-                                                  name="priceBeforeDiscount"
-                                                  component="div"
-                                                  className="invalid-feedback"
-                                                />
-                                              </div>
-                                            </Col>
+    <ErrorMessage
+      name="priceBeforeDiscount"
+      component="div"
+      className="invalid-feedback"
+    />
+  </div>
+</Col>
+
                                           </Row>
 
                                           <Row className="mt-3">
