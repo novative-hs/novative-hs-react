@@ -853,7 +853,11 @@ toggleEditModal = (row, participant = null) => {
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
       scheme_id: scheme.scheme_id,
       cycle_id: scheme.id,
-     price: parseFloat(scheme.priceBeforeDiscount || scheme.price || 0), // ✅ Include price here
+     price: parseFloat(
+        (scheme.priceBeforeDiscount || scheme.price || "0")
+          .toString()
+          .replace(/,/g, "")
+      ),
     }));
 
     console.log("CycleList:", CycleList);
