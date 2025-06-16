@@ -71,6 +71,14 @@ class ParticipantPayments extends Component {
           dataField: "id",
           sort: true,
           hidden: false,
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            // backgroundColor: "#87ceeb", // 🌤 sky blue for cells
+            textAlign: "right",
+          },
           formatter: (cellContent, methodlist) => <>P-{methodlist.id}</>,
           headerFormatter: (column, colIndex) => (
             <>
@@ -98,7 +106,13 @@ class ParticipantPayments extends Component {
           dataField: "participant_name",
           text: "Participant Name",
           sort: true,
-          style: { textAlign: "left" },
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            textAlign: "left",
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -122,6 +136,13 @@ class ParticipantPayments extends Component {
           dataField: "membership_status",
           text: "Participant Status",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            textAlign: "right",
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -147,6 +168,13 @@ class ParticipantPayments extends Component {
           dataField: "district",
           text: "District",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            textAlign: "right",
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -170,6 +198,13 @@ class ParticipantPayments extends Component {
           dataField: "scheme_count",
           text: "Scheme",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            textAlign: "right",
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -205,10 +240,17 @@ class ParticipantPayments extends Component {
           dataField: "priceBeforeDiscount",
           text: "Payable",
           sort: true,
-          style: { textAlign: "right" },
+          headerStyle: {
+            backgroundColor: "#fff9c4",
+            textAlign: "center",
+          },
+          style: {
+            backgroundColor: "#fff9c4",
+            textAlign: "right",
+          },
           formatter: cell => this.formatNumber(cell),
           headerFormatter: (column, colIndex) => (
-            <div style={{ textAlign: "center" }}>
+            <div>
               <div>{column.text}</div>
               <div style={{ marginTop: "5px" }}>
                 <input
@@ -232,7 +274,14 @@ class ParticipantPayments extends Component {
           dataField: "discountAmount",
           text: "Discount Amount",
           sort: true,
-          style: { textAlign: "right" },
+          headerStyle: {
+            backgroundColor: "#fff9c4",
+            textAlign: "center",
+          },
+          style: {
+            backgroundColor: "#fff9c4",
+            textAlign: "right",
+          },
           formatter: cell => this.formatNumber(cell),
 
           headerFormatter: (column, colIndex) => (
@@ -258,7 +307,14 @@ class ParticipantPayments extends Component {
           dataField: "taxDeduction",
           text: "Tax",
           sort: true,
-          style: { textAlign: "right" },
+          headerStyle: {
+            backgroundColor: "#fff9c4",
+            textAlign: "center",
+          },
+          style: {
+            backgroundColor: "#fff9c4",
+            textAlign: "right",
+          },
           formatter: cell => {
             const value = Number(cell);
             return value === 0 || isNaN(value) ? "--" : value.toLocaleString();
@@ -286,7 +342,14 @@ class ParticipantPayments extends Component {
           dataField: "price",
           text: "Final Payable",
           sort: true,
-          style: { textAlign: "right" },
+          headerStyle: {
+            backgroundColor: "#fff9c4",
+            textAlign: "center",
+          },
+          style: {
+            backgroundColor: "#fff9c4",
+            textAlign: "right",
+          },
           formatter: (cell, row) => {
             const price = parseFloat(row.price) || 0;
             const discount = parseFloat(row.discount) || 0;
@@ -321,6 +384,14 @@ class ParticipantPayments extends Component {
           dataField: "payment_settlement",
           text: "Payment Settlement",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#d0e2ff", // 🔵 light blue for header
+            textAlign: "center",
+          },
+          style: {
+            backgroundColor: "#d0e2ff", // 🔵 light blue for cells
+            textAlign: "right",
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -347,6 +418,14 @@ class ParticipantPayments extends Component {
           dataField: "payment_status",
           text: "Payment Status",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#d0e2ff", // 🔵 light blue for header
+            textAlign: "center",
+          },
+          style: {
+            backgroundColor: "#d0e2ff", // 🔵 light blue for cells
+            textAlign: "right",
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -372,7 +451,14 @@ class ParticipantPayments extends Component {
           dataField: "part_payment_amount",
           text: "Paid Amount",
           sort: true,
-          style: { textAlign: "right" },
+          headerStyle: {
+            backgroundColor: "#d0e2ff", // 🔵 light blue for header
+            textAlign: "center",
+          },
+          style: {
+            backgroundColor: "#d0e2ff", // 🔵 light blue for cells
+            textAlign: "right",
+          },
           formatter: cell => this.formatNumber(cell),
 
           headerFormatter: (column, colIndex) => (
@@ -398,7 +484,13 @@ class ParticipantPayments extends Component {
           dataField: "remaining_amount",
           text: "Remaining Amount",
           sort: true,
-          style: { textAlign: "right" },
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            textAlign: "right",
+          },
           formatter: cell => this.formatNumber(cell),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
@@ -425,7 +517,13 @@ class ParticipantPayments extends Component {
           dataField: "paymentmethod",
           text: "Payment Mode",
           sort: true,
-
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            textAlign: "right",
+          },
           formatter: (cell, row) => {
             const receiptUrl = row.photo_url || null;
             const paymentMethod = row.paymentmethod || "-";
@@ -483,6 +581,13 @@ class ParticipantPayments extends Component {
           dataField: "paydate",
           text: "Payment Date",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            textAlign: "right",
+          },
           formatter: cell => {
             if (!cell) return "-";
             const dateObj = new Date(cell);
@@ -517,6 +622,13 @@ class ParticipantPayments extends Component {
           dataField: "receivedby",
           text: "Payment Received by",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            textAlign: "right",
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -542,8 +654,11 @@ class ParticipantPayments extends Component {
           dataField: "action_item",
           text: "Action",
           headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
             textAlign: "center",
-            verticalAlign: "middle",
+          },
+          style: {
+            textAlign: "right",
           },
           formatter: (cell, row) => (
             <div
@@ -1085,13 +1200,11 @@ class ParticipantPayments extends Component {
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
                                       classes={
-                                        "table align-middle table-condensed table-hover"
+                                        "table align-middle table-condensed"
                                       }
                                       bordered={false}
-                                      striped={true}
-                                      headerWrapperClasses={
-                                        "table-header-sky-blue"
-                                      }
+                                      striped={false} // or remove entirely
+                                      headerWrapperClasses="custom-header"
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}
