@@ -92,7 +92,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={e => this.handleFilterChange("idFilter", e)}
+                  onChange={(e) => this.handleFilterChange("idFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -111,7 +111,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange("nameFilter", e)}
+                  onChange={(e) => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -134,7 +134,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.membershipStatusFilter || ""}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("membershipStatusFilter", e)
                   }
                   className="form-control"
@@ -159,7 +159,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.districtFilter}
-                  onChange={e => this.handleFilterChange("districtFilter", e)}
+                  onChange={(e) => this.handleFilterChange("districtFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -182,7 +182,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemeFilter}
-                  onChange={e => this.handleFilterChange("schemeFilter", e)}
+                  onChange={(e) => this.handleFilterChange("schemeFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -211,7 +211,7 @@ class ParticipantPayments extends Component {
           text: "Payable",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell => Number(cell).toLocaleString(),
+          formatter: (cell) => Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -219,7 +219,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemepriceFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("schemepriceFilter", e)
                   }
                   className="form-control"
@@ -238,7 +238,7 @@ class ParticipantPayments extends Component {
           text: "Discount Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell => {
+          formatter: (cell) => {
             // Format number with comma as thousands separator
             return cell != null ? Number(cell).toLocaleString() : "-";
           },
@@ -249,7 +249,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.discountFilter}
-                  onChange={e => this.handleFilterChange("discountFilter", e)}
+                  onChange={(e) => this.handleFilterChange("discountFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -267,7 +267,7 @@ class ParticipantPayments extends Component {
           text: "Tax",
           sort: true,
           style: { textAlign: "right" },
-          formatter: cell => Number(cell).toLocaleString(),
+          formatter: (cell) => Number(cell).toLocaleString(),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -275,7 +275,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.TaxFilter}
-                  onChange={e => this.handleFilterChange("TaxFilter", e)}
+                  onChange={(e) => this.handleFilterChange("TaxFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -312,7 +312,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.finalpayableFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("finalpayableFilter", e)
                   }
                   className="form-control"
@@ -337,7 +337,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentsettlementFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentsettlementFilter", e)
                   }
                   className="form-control"
@@ -363,7 +363,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentStatusFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentStatusFilter", e)
                   }
                   className="form-control"
@@ -389,7 +389,9 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paidamountFilter}
-                  onChange={e => this.handleFilterChange("paidamountFilter", e)}
+                  onChange={(e) =>
+                    this.handleFilterChange("paidamountFilter", e)
+                  }
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -413,7 +415,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.remainingAmountFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("remainingAmountFilter", e)
                   }
                   className="form-control"
@@ -469,7 +471,7 @@ class ParticipantPayments extends Component {
                   <input
                     type="text"
                     value={this.state.paymentMethodFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("paymentMethodFilter", e)
                     }
                     className="form-control"
@@ -489,7 +491,7 @@ class ParticipantPayments extends Component {
           dataField: "paydate",
           text: "Payment Date",
           sort: true,
-          formatter: cell => {
+          formatter: (cell) => {
             if (!cell) return "-";
             const dateObj = new Date(cell);
             if (isNaN(dateObj.getTime())) return "-";
@@ -507,7 +509,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.dateFilter}
-                  onChange={e => this.handleFilterChange("dateFilter", e)}
+                  onChange={(e) => this.handleFilterChange("dateFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -530,7 +532,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentreceivedFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentreceivedFilter", e)
                   }
                   className="form-control"
@@ -633,7 +635,7 @@ class ParticipantPayments extends Component {
     ongetcyclelist(user_id);
     console.log("ongetcyclelist called with user_id:", user_id);
   }
-  handleSchemeChange = event => {
+  handleSchemeChange = (event) => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
 
@@ -654,7 +656,7 @@ class ParticipantPayments extends Component {
     }
     // ✅ Only then update GetPayment
     if (this.props.GetPayment !== prevProps.GetPayment) {
-      const transformedData = (this.props.GetPayment || []).map(payment => ({
+      const transformedData = (this.props.GetPayment || []).map((payment) => ({
         id: payment.id,
         participant_name: payment.participant_name,
         district: payment.district,
@@ -680,7 +682,7 @@ class ParticipantPayments extends Component {
     }
   }
 
-  handleSchemeHover = row => {
+  handleSchemeHover = (row) => {
     if (this.mouseExitTimeout) {
       clearTimeout(this.mouseExitTimeout);
     }
@@ -690,56 +692,62 @@ class ParticipantPayments extends Component {
       hoveredParticipantName: row.participant_name || "", // add this line
     });
   };
-toggleEditModal = (row, participant = null) => {
-  // 🧼 Normalize scheme names for matching
-  const matchedSchemes =
-    row?.scheme_names?.map(name => {
-      const cleanedName = name.replace(/,/g, "").trim().toLowerCase();
-      const found = this.state.CycleList?.find(option => {
-        const optionName = option.scheme_name.replace(/,/g, "").trim().toLowerCase();
-        return optionName === cleanedName;
+  toggleEditModal = (row, participant = null) => {
+    // 🧼 Normalize scheme names for matching
+    const matchedSchemes =
+      row?.scheme_names
+        ?.map((name) => {
+          const cleanedName = name.replace(/,/g, "").trim().toLowerCase();
+          const found = this.state.CycleList?.find((option) => {
+            const optionName = option.scheme_name
+              .replace(/,/g, "")
+              .trim()
+              .toLowerCase();
+            return optionName === cleanedName;
+          });
+          return found;
+        })
+        .filter(Boolean) || [];
+
+    // 🧠 Log actual price data for debug
+    matchedSchemes.forEach((scheme, index) => {
+      const raw = scheme?.priceBeforeDiscount || scheme?.price;
+      const cleaned = parseFloat(raw?.toString().replace(/,/g, ""));
+      console.log(`🔎 Scheme ${index + 1}`, {
+        schemeName: scheme.scheme_name,
+        rawPrice: raw,
+        cleanedPrice: cleaned,
       });
-      return found;
-    }).filter(Boolean) || [];
-
-  // 🧠 Log actual price data for debug
-  matchedSchemes.forEach((scheme, index) => {
-    const raw = scheme?.priceBeforeDiscount || scheme?.price;
-    const cleaned = parseFloat(raw?.toString().replace(/,/g, ""));
-    console.log(`🔎 Scheme ${index + 1}`, {
-      schemeName: scheme.scheme_name,
-      rawPrice: raw,
-      cleanedPrice: cleaned,
     });
-  });
 
-  // 💰 Corrected total price calculation
-  const priceBeforeDiscount = matchedSchemes.reduce((sum, scheme) => {
-    const raw = scheme?.priceBeforeDiscount || scheme?.price || 0;
-    const cleaned = parseFloat(raw.toString().replace(/,/g, ""));
-    return sum + (isNaN(cleaned) ? 0 : cleaned);
-  }, 0);
+    // 💰 Corrected total price calculation
+    const priceBeforeDiscount = matchedSchemes.reduce((sum, scheme) => {
+      const raw = scheme?.priceBeforeDiscount || scheme?.price || 0;
+      const cleaned = parseFloat(raw.toString().replace(/,/g, ""));
+      return sum + (isNaN(cleaned) ? 0 : cleaned);
+    }, 0);
 
-  // 🪪 Format scheme IDs
-  const scheme_ids = matchedSchemes.map(opt => `${opt.scheme_id}-${opt.id}`);
+    // 🪪 Format scheme IDs
+    const scheme_ids = matchedSchemes.map(
+      (opt) => `${opt.scheme_id}-${opt.id}`
+    );
 
-  // 🧾 Debug final total
-  console.log("✅ matchedSchemes:", matchedSchemes);
-  console.log("💰 Total Payable (pre-filled):", priceBeforeDiscount);
+    // 🧾 Debug final total
+    console.log("✅ matchedSchemes:", matchedSchemes);
+    console.log("💰 Total Payable (pre-filled):", priceBeforeDiscount);
 
-  this.setState({
-    editModalOpen: true,
-    selectedRow: row,
-    selectedScheme: scheme_ids,
-    selectedParticipant: participant || {
-      name: row?.participant_name || "",
-      district: row?.district || "",
-      id: row?.participant || "",
-    },
-    selectedPrice: priceBeforeDiscount,
-  });
-};
-
+    this.setState({
+      editModalOpen: true,
+      selectedRow: row,
+      selectedScheme: scheme_ids,
+      selectedParticipant: participant || {
+        name: row?.participant_name || "",
+        district: row?.district || "",
+        id: row?.participant || "",
+      },
+      selectedPrice: priceBeforeDiscount,
+    });
+  };
 
   handleSchemeModalClose = () => {
     this.setState({
@@ -787,7 +795,7 @@ toggleEditModal = (row, participant = null) => {
     } = this.state;
 
     return GetPayment.filter(
-      entry =>
+      (entry) =>
         (entry.id ? entry.id.toString() : "").includes(idFilter) &&
         (entry.participant_name || "")
           .toLowerCase()
@@ -848,12 +856,12 @@ toggleEditModal = (row, participant = null) => {
     const { ListDistrict } = this.state;
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     const { editModalOpen, selectedRow } = this.state;
-    const schemeOptions = CycleList.map(scheme => ({
+    const schemeOptions = CycleList.map((scheme) => ({
       value: `${scheme.scheme_id}-${scheme.id}`,
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
       scheme_id: scheme.scheme_id,
       cycle_id: scheme.id,
-     price: parseFloat(
+      price: parseFloat(
         (scheme.priceBeforeDiscount || scheme.price || "0")
           .toString()
           .replace(/,/g, "")
@@ -868,7 +876,7 @@ toggleEditModal = (row, participant = null) => {
       totalSize: GetPayment.length,
       custom: true,
     };
-    const districtOptions = ListDistrict.map(district => ({
+    const districtOptions = ListDistrict.map((district) => ({
       value: district.name,
       label: district.name,
     }));
@@ -877,7 +885,7 @@ toggleEditModal = (row, participant = null) => {
 
     const customStyles = {
       // <-- This is invalid here
-      control: provided => ({
+      control: (provided) => ({
         ...provided,
         minHeight: "38px",
       }),
@@ -917,7 +925,7 @@ toggleEditModal = (row, participant = null) => {
                           data={this.filterData()}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Modal
                                 isOpen={this.state.schemeModalOpen}
@@ -929,7 +937,11 @@ toggleEditModal = (row, participant = null) => {
                                 // className="modal-sm"
                                 // size="sm"  // Change this to 'lg' or 'xl' for bigger width
                               >
-                                <ModalHeader toggle={this.togglePaymentModal}>
+                                <ModalHeader
+                                  toggle={() =>
+                                    this.setState({ editModalOpen: false })
+                                  }
+                                >
                                   Update Payment for{" "}
                                   {this.state.modalParticipantName || "Unknown"}
                                 </ModalHeader>
@@ -949,7 +961,11 @@ toggleEditModal = (row, participant = null) => {
                                 toggle={this.toggleEditModal}
                                 size="md"
                               >
-                                <ModalHeader toggle={this.togglePaymentModal}>
+                                <ModalHeader
+                                  toggle={() =>
+                                    this.setState({ editModalOpen: false })
+                                  }
+                                >
                                   Update Payment for{" "}
                                   {this.state.selectedRow?.participant_name ||
                                     "Unknown"}
@@ -974,7 +990,8 @@ toggleEditModal = (row, participant = null) => {
                                         membership_status:
                                           this.state.selectedRow
                                             .membership_status,
-                                        priceBeforeDiscount: this.state.selectedPrice, 
+                                        priceBeforeDiscount:
+                                          this.state.selectedPrice,
                                         discountAmount:
                                           this.state.selectedRow.discountAmount,
                                         taxDeduction:
@@ -1002,41 +1019,53 @@ toggleEditModal = (row, participant = null) => {
                                         receivedby:
                                           this.state.selectedRow.receivedby,
                                       }}
-onSubmit={(values, { setSubmitting }) => {
-  const selectedSchemeDetails = (values.scheme || []).map(id => {
-    const [scheme_id, cycle_id] = id.split("-");
-    return this.state.CycleList.find(
-      scheme =>
-        String(scheme.scheme_id) === scheme_id &&
-        String(scheme.id) === cycle_id
-    );
-  });
+                                      onSubmit={(values, { setSubmitting }) => {
+                                        const selectedSchemeDetails = (
+                                          values.scheme || []
+                                        ).map((id) => {
+                                          const [scheme_id, cycle_id] =
+                                            id.split("-");
+                                          return this.state.CycleList.find(
+                                            (scheme) =>
+                                              String(scheme.scheme_id) ===
+                                                scheme_id &&
+                                              String(scheme.id) === cycle_id
+                                          );
+                                        });
 
-  const totalPriceBeforeDiscount = selectedSchemeDetails.reduce(
-    (sum, scheme) => sum + (parseFloat(scheme?.price) || 0),
-    0
-  );
+                                        const totalPriceBeforeDiscount =
+                                          selectedSchemeDetails.reduce(
+                                            (sum, scheme) =>
+                                              sum +
+                                              (parseFloat(scheme?.price) || 0),
+                                            0
+                                          );
 
-  const payload = {
-    ...values,
-    scheme: values.scheme.join(","),
-    id: this.state.selectedRow?.id,
-    added_by: this.state.user_id,
-    participant: this.state.selectedRow?.participant || values.participant,
-    priceBeforeDiscount: totalPriceBeforeDiscount.toFixed(2), // ✅ actual scheme price
-  };
+                                        const payload = {
+                                          ...values,
+                                          scheme: values.scheme.join(","),
+                                          id: this.state.selectedRow?.id,
+                                          added_by: this.state.user_id,
+                                          participant:
+                                            this.state.selectedRow
+                                              ?.participant ||
+                                            values.participant,
+                                          priceBeforeDiscount:
+                                            totalPriceBeforeDiscount.toFixed(2), // ✅ actual scheme price
+                                        };
 
-  this.props.onupdatePayment(payload);
+                                        this.props.onupdatePayment(payload);
 
-  setTimeout(() => {
-    if (this.state.user_id) {
-      this.props.onGetParticipantpayment(this.state.user_id);
-    }
-  }, 500);
+                                        setTimeout(() => {
+                                          if (this.state.user_id) {
+                                            this.props.onGetParticipantpayment(
+                                              this.state.user_id
+                                            );
+                                          }
+                                        }, 500);
 
-  this.setState({ editModalOpen: false });
-}}
-
+                                        this.setState({ editModalOpen: false });
+                                      }}
                                     >
                                       {({
                                         values,
@@ -1046,7 +1075,55 @@ onSubmit={(values, { setSubmitting }) => {
                                         touched,
                                       }) => (
                                         <Form>
-                                        
+                                          {/* {(() => {
+                                            if (
+                                              values.scheme &&
+                                              values.scheme.length > 0
+                                            ) {
+                                              const selectedSchemeDetails =
+                                                values.scheme.map(id => {
+                                                  const [scheme_id, cycle_id] =
+                                                    id.split("-");
+                                                  return this.state.CycleList.find(
+                                                    scheme =>
+                                                      String(
+                                                        scheme.scheme_id
+                                                      ) === scheme_id &&
+                                                      String(scheme.id) ===
+                                                        cycle_id
+                                                  );
+                                                });
+
+                                              const total =
+                                                selectedSchemeDetails.reduce(
+                                                  (sum, scheme) => {
+                                                    return (
+                                                      sum +
+                                                      (scheme?.price
+                                                        ? parseFloat(
+                                                            scheme.price
+                                                          )
+                                                        : 0)
+                                                    );
+                                                  },
+                                                  0
+                                                );
+
+                                              if (
+                                                values.priceBeforeDiscount !==
+                                                total.toFixed(2)
+                                              ) {
+                                                setFieldValue(
+                                                  "priceBeforeDiscount",
+                                                  total.toFixed(2)
+                                                );
+                                                setFieldValue(
+                                                  "price",
+                                                  total.toFixed(2)
+                                                ); // Optional: update final payable
+                                              }
+                                            }
+                                          })()} */}
                                           <Row>
                                             {/* <Col md="6">
                                               <Label>Participant Name</Label>
@@ -1068,64 +1145,111 @@ onSubmit={(values, { setSubmitting }) => {
                                                     ) || "Select schemes"
                                                   }
                                                   value={schemeOptions.filter(
-                                                    option =>
+                                                    (option) =>
                                                       (
                                                         values.scheme || []
                                                       ).includes(option.value)
                                                   )}
-                                              onChange={selectedOptions => {
-  const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
-  setFieldValue("scheme", selectedValues);
+                                                  onChange={(
+                                                    selectedOptions
+                                                  ) => {
+                                                    const selectedValues =
+                                                      selectedOptions
+                                                        ? selectedOptions.map(
+                                                            (option) =>
+                                                              option.value
+                                                          )
+                                                        : [];
+                                                    setFieldValue(
+                                                      "scheme",
+                                                      selectedValues
+                                                    );
 
-  // ✅ Calculate total price from all selected schemes
-  const total = selectedOptions.reduce((sum, option) => {
-    const raw = option.price || 0;
-    const num = parseFloat(raw.toString().replace(/,/g, ""));
-    return sum + (isNaN(num) ? 0 : num);
-  }, 0);
+                                                    // ✅ Calculate total price from all selected schemes
+                                                    const total =
+                                                      selectedOptions.reduce(
+                                                        (sum, option) => {
+                                                          const raw =
+                                                            option.price || 0;
+                                                          const num =
+                                                            parseFloat(
+                                                              raw
+                                                                .toString()
+                                                                .replace(
+                                                                  /,/g,
+                                                                  ""
+                                                                )
+                                                            );
+                                                          return (
+                                                            sum +
+                                                            (isNaN(num)
+                                                              ? 0
+                                                              : num)
+                                                          );
+                                                        },
+                                                        0
+                                                      );
 
-  // ✅ Update total in the form
-  setFieldValue("priceBeforeDiscount", total.toFixed(2));
-  setFieldValue("price", total.toFixed(2)); // optional
-}}
-
+                                                    // ✅ Update total in the form
+                                                    setFieldValue(
+                                                      "price",
+                                                      total.toFixed(2)
+                                                    );
+                                                    setFieldValue(
+                                                      "price",
+                                                      total.toFixed(2)
+                                                    ); // optional
+                                                  }}
                                                 />
                                               </Col>
                                             </Row>
-<Col>
-  <div className="mb-3">
-    <Label
-      htmlFor="priceBeforeDiscount"
-      className="form-label"
-    >
-      Payable
-    </Label>
-   <Field name="priceBeforeDiscount">
-  {({ field }) => {
-    const value = Number(values.priceBeforeDiscount || 0);
-    console.log("💰 priceBeforeDiscount raw:", value);
-    return (
-      <input
-        {...field}
-        type="text"
-        className="form-control"
-       value={typeof value === 'number' ? value.toLocaleString("en-PK") : value}
-        readOnly
-        style={{ backgroundColor: "#e9ecef" }}
-      />
-    );
-  }}
-</Field>
+                                            <Col>
+                                              <div className="mb-3">
+                                                <Label
+                                                  htmlFor="price"
+                                                  className="form-label"
+                                                >
+                                                  Payable
+                                                </Label>
+                                                <Field name="price">
+                                                  {({ field }) => {
+                                                    const value = Number(
+                                                      values.price || 0
+                                                    );
+                                                    console.log(
+                                                      "💰 price raw:",
+                                                      value
+                                                    );
+                                                    return (
+                                                      <input
+                                                        {...field}
+                                                        type="text"
+                                                        className="form-control"
+                                                        value={
+                                                          typeof value ===
+                                                          "number"
+                                                            ? value.toLocaleString(
+                                                                "en-PK"
+                                                              )
+                                                            : value
+                                                        }
+                                                        readOnly
+                                                        style={{
+                                                          backgroundColor:
+                                                            "#e9ecef",
+                                                        }}
+                                                      />
+                                                    );
+                                                  }}
+                                                </Field>
 
-
-    <ErrorMessage
-      name="priceBeforeDiscount"
-      component="div"
-      className="invalid-feedback"
-    />
-  </div>
-</Col>
-
+                                                <ErrorMessage
+                                                  name="priceBeforeDiscount"
+                                                  component="div"
+                                                  className="invalid-feedback"
+                                                />
+                                              </div>
+                                            </Col>
                                           </Row>
 
                                           <Row className="mt-3">
@@ -1144,7 +1268,7 @@ onSubmit={(values, { setSubmitting }) => {
                                                     {...field}
                                                     type="text"
                                                     className="form-control"
-                                                    onChange={e => {
+                                                    onChange={(e) => {
                                                       const discountPercent =
                                                         parseFloat(
                                                           e.target.value
@@ -1205,7 +1329,7 @@ onSubmit={(values, { setSubmitting }) => {
                                                     type="text"
                                                     className="form-control"
                                                     value={field.value || ""} // Ensures controlled input
-                                                    onChange={e => {
+                                                    onChange={(e) => {
                                                       const discountAmount =
                                                         parseFloat(
                                                           e.target.value
@@ -1269,7 +1393,7 @@ onSubmit={(values, { setSubmitting }) => {
                                                       type="text"
                                                       className="form-control"
                                                       placeholder="Enter tax deduction amount"
-                                                      onChange={e => {
+                                                      onChange={(e) => {
                                                         const tax = parseFloat(
                                                           e.target.value
                                                         );
@@ -1325,7 +1449,9 @@ onSubmit={(values, { setSubmitting }) => {
                                                           "Payment In process",
                                                       },
                                                     ]}
-                                                    onChange={selectedOption => {
+                                                    onChange={(
+                                                      selectedOption
+                                                    ) => {
                                                       const status =
                                                         selectedOption?.value ||
                                                         "";
@@ -1379,7 +1505,7 @@ onSubmit={(values, { setSubmitting }) => {
                                                     <input
                                                       type="file"
                                                       name="purchase_order_copy"
-                                                      onChange={event =>
+                                                      onChange={(event) =>
                                                         setFieldValue(
                                                           "purchase_order_copy",
                                                           event.currentTarget
@@ -1463,7 +1589,9 @@ onSubmit={(values, { setSubmitting }) => {
                                                           label: "Part",
                                                         },
                                                       ]}
-                                                      onChange={selectedOption => {
+                                                      onChange={(
+                                                        selectedOption
+                                                      ) => {
                                                         const settlement =
                                                           selectedOption?.value ||
                                                           "";
@@ -1533,7 +1661,7 @@ onSubmit={(values, { setSubmitting }) => {
                                                                   ? ""
                                                                   : field.value
                                                               }
-                                                              onChange={e => {
+                                                              onChange={(e) => {
                                                                 const partAmount =
                                                                   parseFloat(
                                                                     e.target
@@ -1605,7 +1733,7 @@ onSubmit={(values, { setSubmitting }) => {
                                                         type="file"
                                                         multiple={false}
                                                         accept=".jpg,.jpeg,.png,.pdf"
-                                                        onChange={event =>
+                                                        onChange={(event) =>
                                                           this.handleFileChange(
                                                             event,
                                                             setFieldValue
@@ -1657,7 +1785,9 @@ onSubmit={(values, { setSubmitting }) => {
                                                             label: "Cash",
                                                           },
                                                         ]}
-                                                        onChange={selectedOption =>
+                                                        onChange={(
+                                                          selectedOption
+                                                        ) =>
                                                           setFieldValue(
                                                             "paymentmethod",
                                                             selectedOption?.value ||
@@ -1782,7 +1912,7 @@ ParticipantPayments.propTypes = {
   onGetDistrictList: PropTypes.func,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const cycleList = state.CycleList?.CycleList || [];
   const ListDistrict = state.ListDistrict?.ListDistrict || [];
 
@@ -1798,12 +1928,12 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   //  onGetParticipantpayment: () => dispatch(getParticipantPayment()),
-  onGetParticipantpayment: id => dispatch(getParticipantPayment(id)),
-  ongetcyclelist: id => dispatch(getcyclelist(id)),
-  onupdatePayment: payload => dispatch(updatePayment(payload)),
-  onGetDistrictList: id => dispatch(getdistrictlist(id)),
+  onGetParticipantpayment: (id) => dispatch(getParticipantPayment(id)),
+  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
+  onupdatePayment: (payload) => dispatch(updatePayment(payload)),
+  onGetDistrictList: (id) => dispatch(getdistrictlist(id)),
 });
 
 export default connect(
