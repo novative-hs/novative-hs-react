@@ -7,6 +7,7 @@ import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import Select from "react-select";
 import {
   Card,
   CardBody,
@@ -1029,148 +1030,210 @@ class ParticipantPayments extends Component {
                                 </ModalBody>
                               </Modal>
 
-                              <Row className="mb-2 mt-3"></Row>
                               <Row className="mb-3">
                                 <Col md={4}>
                                   <Label for="nameFilter">
                                     Participant Name
                                   </Label>
-                                  <select
+                                  <Select
                                     id="nameFilter"
-                                    className="form-control"
-                                    value={this.state.nameFilter}
-                                    onChange={e =>
-                                      this.handleFilterChange("nameFilter", e)
+                                    options={[
+                                      {
+                                        value: "All",
+                                        label: "All Participants",
+                                      },
+                                      ...this.getUniqueOptions(
+                                        "participant_name"
+                                      ).map(option => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.nameFilter
+                                        ? {
+                                            value: this.state.nameFilter,
+                                            label: this.state.nameFilter,
+                                          }
+                                        : null
                                     }
-                                  >
-                                    <option value="Select">Select</option>
-                                    <option value="All">
-                                      All Participants
-                                    </option>
-                                    {this.getUniqueOptions(
-                                      "participant_name"
-                                    ).map((option, idx) => (
-                                      <option key={idx} value={option}>
-                                        {option}
-                                      </option>
-                                    ))}
-                                  </select>
+                                    onChange={selected =>
+                                      this.handleFilterChange("nameFilter", {
+                                        target: {
+                                          value: selected?.value || "",
+                                        },
+                                      })
+                                    }
+                                    isClearable
+                                  />
                                 </Col>
+
                                 <Col md={4}>
                                   <Label for="schemeFilter">Scheme</Label>
-                                  <select
+                                  <Select
                                     id="schemeFilter"
-                                    className="form-control"
-                                    value={this.state.schemeFilter}
-                                    onChange={e =>
-                                      this.handleFilterChange("schemeFilter", e)
+                                    options={[
+                                      { value: "All", label: "All Schemes" },
+                                      ...this.getUniqueOptions(
+                                        "scheme_names"
+                                      ).map(option => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.schemeFilter
+                                        ? {
+                                            value: this.state.schemeFilter,
+                                            label: this.state.schemeFilter,
+                                          }
+                                        : null
                                     }
-                                  >
-                                    <option value="Select">Select</option>
-                                    <option value="All">All Schemes</option>
-                                    {this.getUniqueOptions("scheme_names").map(
-                                      (option, idx) => (
-                                        <option key={idx} value={option}>
-                                          {option}
-                                        </option>
-                                      )
-                                    )}
-                                  </select>
+                                    onChange={selected =>
+                                      this.handleFilterChange("schemeFilter", {
+                                        target: {
+                                          value: selected?.value || "",
+                                        },
+                                      })
+                                    }
+                                    isClearable
+                                  />
                                 </Col>
 
                                 <Col md={4}>
                                   <Label for="districtFilter">District</Label>
-                                  <select
+                                  <Select
                                     id="districtFilter"
-                                    className="form-control"
-                                    value={this.state.districtFilter}
-                                    onChange={e =>
+                                    options={[
+                                      { value: "All", label: "All Districts" },
+                                      ...this.getUniqueOptions("district").map(
+                                        option => ({
+                                          value: option,
+                                          label: option,
+                                        })
+                                      ),
+                                    ]}
+                                    value={
+                                      this.state.districtFilter
+                                        ? {
+                                            value: this.state.districtFilter,
+                                            label: this.state.districtFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={selected =>
                                       this.handleFilterChange(
                                         "districtFilter",
-                                        e
+                                        {
+                                          target: {
+                                            value: selected?.value || "",
+                                          },
+                                        }
                                       )
                                     }
-                                  >
-                                    <option value="Select">Select</option>
-                                    <option value="All">All District</option>
-                                    {this.getUniqueOptions("district").map(
-                                      (option, idx) => (
-                                        <option key={idx} value={option}>
-                                          {option}
-                                        </option>
-                                      )
-                                    )}
-                                  </select>
+                                    isClearable
+                                  />
                                 </Col>
 
                                 <Col md={4}>
                                   <Label for="paymentsettlementFilter">
                                     Payment Settlement
                                   </Label>
-                                  <select
+                                  <Select
                                     id="paymentsettlementFilter"
-                                    className="form-control"
-                                    value={this.state.paymentsettlementFilter}
-                                    onChange={e =>
+                                    options={[
+                                      {
+                                        value: "All",
+                                        label: "All Payment Settlement",
+                                      },
+                                      ...this.getUniqueOptions(
+                                        "payment_settlement"
+                                      ).map(option => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.paymentsettlementFilter
+                                        ? {
+                                            value:
+                                              this.state
+                                                .paymentsettlementFilter,
+                                            label:
+                                              this.state
+                                                .paymentsettlementFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={selected =>
                                       this.handleFilterChange(
                                         "paymentsettlementFilter",
-                                        e
+                                        {
+                                          target: {
+                                            value: selected?.value || "",
+                                          },
+                                        }
                                       )
                                     }
-                                  >
-                                    <option value="Select">Select</option>
-                                    <option value="All">
-                                      All Payment Settlement
-                                    </option>
-                                    {this.getUniqueOptions(
-                                      "payment_settlement"
-                                    ).map((option, idx) => (
-                                      <option key={idx} value={option}>
-                                        {option}
-                                      </option>
-                                    ))}
-                                  </select>
+                                    isClearable
+                                  />
                                 </Col>
+
                                 <Col md={4}>
                                   <Label for="paymentStatusFilter">
                                     Payment Status
                                   </Label>
-                                  <select
+                                  <Select
                                     id="paymentStatusFilter"
-                                    className="form-control"
-                                    value={this.state.paymentStatusFilter}
-                                    onChange={e =>
+                                    options={[
+                                      {
+                                        value: "All",
+                                        label: "All Payment Statuses",
+                                      },
+                                      ...this.getUniqueOptions(
+                                        "payment_status"
+                                      ).map(option => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.paymentStatusFilter
+                                        ? {
+                                            value:
+                                              this.state.paymentStatusFilter,
+                                            label:
+                                              this.state.paymentStatusFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={selected =>
                                       this.handleFilterChange(
                                         "paymentStatusFilter",
-                                        e
+                                        {
+                                          target: {
+                                            value: selected?.value || "",
+                                          },
+                                        }
                                       )
                                     }
-                                  >
-                                    <option value="Select">Select</option>
-                                    <option value="All">
-                                      All Payment Statuses
-                                    </option>
-                                    {this.getUniqueOptions(
-                                      "payment_status"
-                                    ).map((option, idx) => (
-                                      <option key={idx} value={option}>
-                                        {option}
-                                      </option>
-                                    ))}
-                                  </select>
+                                    isClearable
+                                  />
                                 </Col>
+
                                 <Row>
                                   <Col md={3}>
-                                    <Label for="dateFrom">Date From </Label>
+                                    <Label for="dateFrom">Date From</Label>
                                     <input
                                       type="date"
                                       id="dateFrom"
                                       className="form-control"
                                       value={this.state.dateFrom}
                                       onChange={e =>
-                                        this.setState({
-                                          dateFrom: e.target.value,
-                                        })
+                                        this.setState(
+                                          { dateFrom: e.target.value },
+                                          this.checkFiltersApplied
+                                        )
                                       }
                                     />
                                   </Col>
@@ -1183,9 +1246,13 @@ class ParticipantPayments extends Component {
                                       className="form-control"
                                       value={this.state.dateTo}
                                       onChange={e =>
-                                        this.setState({
-                                          dateTo: e.target.value,
-                                        })
+                                        this.setState(
+                                          {
+                                            dateTo: e.target.value,
+                                            dateToActive: true,
+                                          },
+                                          this.checkFiltersApplied
+                                        )
                                       }
                                     />
                                   </Col>
