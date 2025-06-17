@@ -52,32 +52,40 @@ const AddPayment = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-   case UPDATE_NEW_PAYMENT_SUCCESS:
-  console.log("✅ Reducer received payment update payload:", action.payload);
+    case UPDATE_NEW_PAYMENT_SUCCESS:
+      console.log(
+        "✅ Reducer received payment update payload:",
+        action.payload
+      );
 
-  if (!action.payload || !action.payload.id) {
-    console.error("❌ UPDATE_NEW_PAYMENT_SUCCESS failed: payload.id is missing");
-    return state; // return unchanged state to prevent crashing
-  }
+      if (!action.payload || !action.payload.id) {
+        console.error(
+          "❌ UPDATE_NEW_PAYMENT_SUCCESS failed: payload.id is missing"
+        );
+        return state; // return unchanged state to prevent crashing
+      }
 
-  return {
-    ...state,
-    GetPayment: state.GetPayment.map(payment =>
-      payment?.id?.toString() === action.payload.id.toString()
-        ? { ...payment, ...action.payload }
-        : payment
-    ),
-  };
+      return {
+        ...state,
+        GetPayment: state.GetPayment.map((payment) =>
+          payment?.id?.toString() === action.payload.id.toString()
+            ? { ...payment, ...action.payload }
+            : payment
+        ),
+      };
 
-case UPDATE_NEW_PAYMENT_FAIL:
-  console.error("❌ UPDATE_NEW_PAYMENT_FAIL error:", action.payload);
-  return {
-    ...state,
-    error: action.payload,
-  };
-
+    case UPDATE_NEW_PAYMENT_FAIL:
+      console.error("❌ UPDATE_NEW_PAYMENT_FAIL error:", action.payload);
+      return {
+        ...state,
+        error: action.payload,
+      };
 
     case GET_PARTICIPANT_SCHEME_LIST_SUCCESS:
+      console.log(
+        "GET_PARTICIPANT_SCHEME_LIST_SUCCESS action.payload:",
+        action.payload
+      );
       return {
         ...state,
         PaymentSchemeList: Array.isArray(action.payload.schemes)
@@ -91,7 +99,8 @@ case UPDATE_NEW_PAYMENT_FAIL:
         pay_date: action.payload.pay_date || "",
         payment_mode: action.payload.payment_mode || "",
         received_by: action.payload.received_by || "",
-        photo_url: action.payload.photo_url || "",
+        original_price: action.payload.original_price || "",
+        photo_url: action.payload.photo_url || "", // <-- add here too!
         error: null,
       };
 

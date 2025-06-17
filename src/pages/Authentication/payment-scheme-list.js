@@ -25,6 +25,7 @@ class PaymentSchemeList extends Component {
       tableKey: 0,
       PaymentSchemeList: [],
       feedbackMessage: "",
+      originalPriceFilter: "",
       errorMessage: "", // State for error message
       cycleNumberFilter: "",
       priceFilter: "",
@@ -47,7 +48,7 @@ class PaymentSchemeList extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={(e) => this.handleFilterChange("nameFilter", e)}
+                  onChange={e => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -61,13 +62,13 @@ class PaymentSchemeList extends Component {
           text: "Cycle",
           dataField: "cycle_number",
           sort: true,
-          headerFormatter: (column) => (
+          headerFormatter: column => (
             <>
               <div>
                 <input
                   type="text"
                   value={this.state.cycleNumberFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("cycleNumberFilter", e)
                   }
                   className="form-control"
@@ -81,26 +82,27 @@ class PaymentSchemeList extends Component {
           style: { width: "120px" },
         },
         {
-          text: "Price",
-          dataField: "price",
+          text: "Payable",
+          dataField: "original_price",
           sort: true,
-          headerFormatter: (column) => (
+          align: "right",
+          headerFormatter: column => (
             <>
               <div>
                 <input
                   type="text"
-                  value={this.state.priceFilter}
-                  onChange={(e) => this.handleFilterChange("priceFilter", e)}
+                  value={this.state.originalPriceFilter}
+                  onChange={e =>
+                    this.handleFilterChange("originalPriceFilter", e)
+                  }
                   className="form-control"
                 />
               </div>
               <div>{column.text}</div>
             </>
           ),
-          align: "right",
-          formatter: (cell) => {
+          formatter: cell => {
             if (cell === null || cell === undefined || cell === "") return "-";
-            // Format number with commas and 2 decimals
             return new Intl.NumberFormat("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
@@ -111,13 +113,13 @@ class PaymentSchemeList extends Component {
           text: "Discount",
           dataField: "discount",
           sort: true,
-          headerFormatter: (column) => (
+          headerFormatter: column => (
             <>
               <div>
                 <input
                   type="text"
                   value={this.state.discountFilter}
-                  onChange={(e) => this.handleFilterChange("discountFilter", e)}
+                  onChange={e => this.handleFilterChange("discountFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -126,26 +128,24 @@ class PaymentSchemeList extends Component {
           ),
         },
         {
-          text: "Paid Amount",
-          dataField: "paid_amount",
+          text: "Final Payable",
+          dataField: "price",
           sort: true,
-          headerFormatter: (column) => (
+          align: "right",
+          headerFormatter: column => (
             <>
               <div>
                 <input
                   type="text"
-                  value={this.state.paidAmountFilter}
-                  onChange={(e) =>
-                    this.handleFilterChange("paidAmountFilter", e)
-                  }
+                  value={this.state.priceFilter}
+                  onChange={e => this.handleFilterChange("priceFilter", e)}
                   className="form-control"
                 />
               </div>
               <div>{column.text}</div>
             </>
           ),
-          align: "right",
-          formatter: (cell) => {
+          formatter: cell => {
             if (cell === null || cell === undefined || cell === "") return "-";
             return new Intl.NumberFormat("en-US", {
               minimumFractionDigits: 2,
@@ -157,7 +157,7 @@ class PaymentSchemeList extends Component {
           text: "Pay Date",
           dataField: "pay_date",
           sort: true,
-          formatter: (cell) => {
+          formatter: cell => {
             console.log("pay_date cell:", cell);
             if (!cell) return "-";
             const dateObj = new Date(cell);
@@ -169,13 +169,13 @@ class PaymentSchemeList extends Component {
 
             return `${day}-${month}-${year}`;
           },
-          headerFormatter: (column) => (
+          headerFormatter: column => (
             <>
               <div>
                 <input
                   type="text"
                   value={this.state.payDateFilter}
-                  onChange={(e) => this.handleFilterChange("payDateFilter", e)}
+                  onChange={e => this.handleFilterChange("payDateFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -222,7 +222,7 @@ class PaymentSchemeList extends Component {
                   <input
                     type="text"
                     value={this.state.paymentModeFilter}
-                    onChange={(e) =>
+                    onChange={e =>
                       this.handleFilterChange("paymentModeFilter", e)
                     }
                     className="form-control"
@@ -242,15 +242,13 @@ class PaymentSchemeList extends Component {
           text: "Received By",
           dataField: "received_by",
           sort: true,
-          headerFormatter: (column) => (
+          headerFormatter: column => (
             <>
               <div>
                 <input
                   type="text"
                   value={this.state.receivedByFilter}
-                  onChange={(e) =>
-                    this.handleFilterChange("receivedByFilter", e)
-                  }
+                  onChange={e => this.handleFilterChange("receivedByFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -278,6 +276,7 @@ class PaymentSchemeList extends Component {
           paid_amount,
           pay_date,
           payment_mode,
+          original_price,
           received_by,
           photo_url, // <- pull from props, not scheme
         } = this.props;
@@ -290,6 +289,7 @@ class PaymentSchemeList extends Component {
               name: scheme.scheme_name || "Unnamed Scheme",
               cycle_number: scheme.cycle_no || "-",
               price: price || "-",
+              original_price: original_price || "-",
               discount: discount || "-",
               paid_amount: paid_amount || "-",
               pay_date: pay_date || "-",
@@ -333,6 +333,7 @@ class PaymentSchemeList extends Component {
       discountFilter,
       paidAmountFilter,
       payDateFilter,
+      originalPriceFilter,
       paymentModeFilter,
       receivedByFilter,
       photoUrlFilter,
@@ -342,7 +343,7 @@ class PaymentSchemeList extends Component {
       return [];
     }
 
-    return PaymentSchemeList.filter((entry) => {
+    return PaymentSchemeList.filter(entry => {
       return (
         (entry.name || "")
           .toLowerCase()
@@ -353,6 +354,7 @@ class PaymentSchemeList extends Component {
         entry.discount?.toString().includes(discountFilter || "") &&
         entry.paid_amount?.toString().includes(paidAmountFilter || "") &&
         entry.pay_date?.toString().includes(payDateFilter || "") &&
+        entry.original_price?.toString().includes(originalPriceFilter || "") &&
         (entry.payment_mode || "")
           .toLowerCase()
           .includes((paymentModeFilter || "").toLowerCase()) &&
@@ -409,7 +411,7 @@ class PaymentSchemeList extends Component {
                       data={PaymentSchemeList}
                       search
                     >
-                      {(toolkitprops) => (
+                      {toolkitprops => (
                         <React.Fragment>
                           <Row className="mb-4">
                             <Col xl="12">
@@ -432,9 +434,7 @@ class PaymentSchemeList extends Component {
                                 {new Intl.NumberFormat("en-US", {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
-                                }).format(
-                                  parseFloat(this.props.paid_amount) || 0
-                                )}
+                                }).format(parseFloat(this.props.price) || 0)}
                               </div>
                             </Col>
                           </Row>
@@ -467,8 +467,9 @@ PaymentSchemeList.propTypes = {
   payment_mode: PropTypes.string,
   received_by: PropTypes.string,
   photo_url: PropTypes.string,
+  original_price: PropTypes.string,
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   console.log("Redux State in mapStateToProps:", state);
   console.log("ParticipantSchemeList Slice:", state.AddPayment);
   console.log(
@@ -491,11 +492,12 @@ const mapStateToProps = (state) => {
     payment_mode: state.AddPayment?.payment_mode || "",
     received_by: state.AddPayment?.received_by || "",
     photo_url: state.AddPayment?.photo_url || "", // ✅ Add this line
+    original_price: state.AddPayment?.original_price || "",
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetParticipantPayment: (id) => dispatch(getParticipantSchemelist(id)),
+  onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
 });
 
 export default connect(

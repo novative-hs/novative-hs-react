@@ -92,7 +92,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={(e) => this.handleFilterChange("idFilter", e)}
+                  onChange={e => this.handleFilterChange("idFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -111,7 +111,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={(e) => this.handleFilterChange("nameFilter", e)}
+                  onChange={e => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -134,7 +134,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.membershipStatusFilter || ""}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("membershipStatusFilter", e)
                   }
                   className="form-control"
@@ -159,7 +159,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.districtFilter}
-                  onChange={(e) => this.handleFilterChange("districtFilter", e)}
+                  onChange={e => this.handleFilterChange("districtFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -182,7 +182,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemeFilter}
-                  onChange={(e) => this.handleFilterChange("schemeFilter", e)}
+                  onChange={e => this.handleFilterChange("schemeFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -195,11 +195,7 @@ class ParticipantPayments extends Component {
           ),
           formatter: (cell, row) => (
             <div
-              onMouseEnter={() => {
-                clearTimeout(this.mouseExitTimeout);
-                this.handleSchemeHover(row);
-              }}
-              onPointerLeave={this.handleMouseExit}
+              onClick={() => this.handleSchemeClick(row)}
               style={{ cursor: "pointer", textAlign: "center", color: "blue" }}
             >
               {cell}
@@ -211,7 +207,10 @@ class ParticipantPayments extends Component {
           text: "Payable",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => Number(cell).toLocaleString(),
+          formatter: cell => {
+            const value = parseFloat(cell);
+            return value === 0 || isNaN(value) ? "--" : value.toLocaleString();
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -219,7 +218,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemepriceFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("schemepriceFilter", e)
                   }
                   className="form-control"
@@ -233,12 +232,13 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
+
         {
           dataField: "discountAmount",
           text: "Discount Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => {
+          formatter: cell => {
             // Format number with comma as thousands separator
             return cell != null ? Number(cell).toLocaleString() : "-";
           },
@@ -249,7 +249,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.discountFilter}
-                  onChange={(e) => this.handleFilterChange("discountFilter", e)}
+                  onChange={e => this.handleFilterChange("discountFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -267,7 +267,10 @@ class ParticipantPayments extends Component {
           text: "Tax",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => Number(cell).toLocaleString(),
+          formatter: cell => {
+            const value = parseFloat(cell);
+            return value === 0 || isNaN(value) ? "--" : value.toLocaleString();
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -275,7 +278,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.TaxFilter}
-                  onChange={(e) => this.handleFilterChange("TaxFilter", e)}
+                  onChange={e => this.handleFilterChange("TaxFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -312,7 +315,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.finalpayableFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("finalpayableFilter", e)
                   }
                   className="form-control"
@@ -330,6 +333,9 @@ class ParticipantPayments extends Component {
           dataField: "payment_settlement",
           text: "Payment Settlement",
           sort: true,
+          formatter: cell => {
+            return cell ? cell : "--";
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -337,7 +343,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentsettlementFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("paymentsettlementFilter", e)
                   }
                   className="form-control"
@@ -351,7 +357,6 @@ class ParticipantPayments extends Component {
             </div>
           ),
         },
-
         {
           dataField: "payment_status",
           text: "Payment Status",
@@ -363,7 +368,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentStatusFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("paymentStatusFilter", e)
                   }
                   className="form-control"
@@ -382,6 +387,9 @@ class ParticipantPayments extends Component {
           text: "Paid Amount",
           sort: true,
           style: { textAlign: "right" },
+          formatter: cell => {
+            return cell ? cell : "--";
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -389,9 +397,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paidamountFilter}
-                  onChange={(e) =>
-                    this.handleFilterChange("paidamountFilter", e)
-                  }
+                  onChange={e => this.handleFilterChange("paidamountFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -408,6 +414,10 @@ class ParticipantPayments extends Component {
           text: "Remaining Amount",
           sort: true,
           style: { textAlign: "right" },
+          formatter: cell => {
+            const value = parseFloat(cell);
+            return value === 0 || isNaN(value) ? "--" : value.toLocaleString();
+          },
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -415,7 +425,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.remainingAmountFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("remainingAmountFilter", e)
                   }
                   className="form-control"
@@ -471,7 +481,7 @@ class ParticipantPayments extends Component {
                   <input
                     type="text"
                     value={this.state.paymentMethodFilter}
-                    onChange={(e) =>
+                    onChange={e =>
                       this.handleFilterChange("paymentMethodFilter", e)
                     }
                     className="form-control"
@@ -491,7 +501,7 @@ class ParticipantPayments extends Component {
           dataField: "paydate",
           text: "Payment Date",
           sort: true,
-          formatter: (cell) => {
+          formatter: cell => {
             if (!cell) return "-";
             const dateObj = new Date(cell);
             if (isNaN(dateObj.getTime())) return "-";
@@ -509,7 +519,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.dateFilter}
-                  onChange={(e) => this.handleFilterChange("dateFilter", e)}
+                  onChange={e => this.handleFilterChange("dateFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -532,7 +542,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentreceivedFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("paymentreceivedFilter", e)
                   }
                   className="form-control"
@@ -635,7 +645,7 @@ class ParticipantPayments extends Component {
     ongetcyclelist(user_id);
     console.log("ongetcyclelist called with user_id:", user_id);
   }
-  handleSchemeChange = (event) => {
+  handleSchemeChange = event => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
 
@@ -656,7 +666,7 @@ class ParticipantPayments extends Component {
     }
     // ✅ Only then update GetPayment
     if (this.props.GetPayment !== prevProps.GetPayment) {
-      const transformedData = (this.props.GetPayment || []).map((payment) => ({
+      const transformedData = (this.props.GetPayment || []).map(payment => ({
         id: payment.id,
         participant_name: payment.participant_name,
         district: payment.district,
@@ -682,23 +692,21 @@ class ParticipantPayments extends Component {
     }
   }
 
-  handleSchemeHover = (row) => {
-    if (this.mouseExitTimeout) {
-      clearTimeout(this.mouseExitTimeout);
-    }
+  handleSchemeClick = row => {
     this.setState({
       hoveredSchemeNames: row.scheme_names || [],
       schemeModalOpen: true,
-      hoveredParticipantName: row.participant_name || "", // add this line
+      modalParticipantName: row.participant_name || "", // ✅ Matches modal
     });
   };
+
   toggleEditModal = (row, participant = null) => {
     // 🧼 Normalize scheme names for matching
     const matchedSchemes =
       row?.scheme_names
-        ?.map((name) => {
+        ?.map(name => {
           const cleanedName = name.replace(/,/g, "").trim().toLowerCase();
-          const found = this.state.CycleList?.find((option) => {
+          const found = this.state.CycleList?.find(option => {
             const optionName = option.scheme_name
               .replace(/,/g, "")
               .trim()
@@ -728,9 +736,7 @@ class ParticipantPayments extends Component {
     }, 0);
 
     // 🪪 Format scheme IDs
-    const scheme_ids = matchedSchemes.map(
-      (opt) => `${opt.scheme_id}-${opt.id}`
-    );
+    const scheme_ids = matchedSchemes.map(opt => `${opt.scheme_id}-${opt.id}`);
 
     // 🧾 Debug final total
     console.log("✅ matchedSchemes:", matchedSchemes);
@@ -795,7 +801,7 @@ class ParticipantPayments extends Component {
     } = this.state;
 
     return GetPayment.filter(
-      (entry) =>
+      entry =>
         (entry.id ? entry.id.toString() : "").includes(idFilter) &&
         (entry.participant_name || "")
           .toLowerCase()
@@ -856,7 +862,7 @@ class ParticipantPayments extends Component {
     const { ListDistrict } = this.state;
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     const { editModalOpen, selectedRow } = this.state;
-    const schemeOptions = CycleList.map((scheme) => ({
+    const schemeOptions = CycleList.map(scheme => ({
       value: `${scheme.scheme_id}-${scheme.id}`,
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
       scheme_id: scheme.scheme_id,
@@ -876,7 +882,7 @@ class ParticipantPayments extends Component {
       totalSize: GetPayment.length,
       custom: true,
     };
-    const districtOptions = ListDistrict.map((district) => ({
+    const districtOptions = ListDistrict.map(district => ({
       value: district.name,
       label: district.name,
     }));
@@ -885,7 +891,7 @@ class ParticipantPayments extends Component {
 
     const customStyles = {
       // <-- This is invalid here
-      control: (provided) => ({
+      control: provided => ({
         ...provided,
         minHeight: "38px",
       }),
@@ -925,25 +931,18 @@ class ParticipantPayments extends Component {
                           data={this.filterData()}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Modal
                                 isOpen={this.state.schemeModalOpen}
                                 toggle={this.handleSchemeModalClose}
-                                onMouseEnter={() =>
-                                  clearTimeout(this.mouseExitTimeout)
-                                }
-                                onMouseLeave={this.handleMouseExit}
-                                // className="modal-sm"
-                                // size="sm"  // Change this to 'lg' or 'xl' for bigger width
                               >
                                 <ModalHeader
-                                  toggle={() =>
-                                    this.setState({ editModalOpen: false })
-                                  }
+                                  toggle={this.handleSchemeModalClose}
                                 >
-                                  Update Payment for{" "}
-                                  {this.state.modalParticipantName || "Unknown"}
+                                  Scheme Details for{" "}
+                                  {this.state.modalParticipantName || "Unknown"}{" "}
+                                  {/* 👈 use this instead */}
                                 </ModalHeader>
 
                                 <ModalBody>
@@ -994,6 +993,21 @@ class ParticipantPayments extends Component {
                                           this.state.selectedPrice,
                                         discountAmount:
                                           this.state.selectedRow.discountAmount,
+                                        discount:
+                                          this.state.selectedRow
+                                            ?.discountAmount &&
+                                          this.state.selectedPrice
+                                            ? (
+                                                (parseFloat(
+                                                  this.state.selectedRow
+                                                    .discountAmount
+                                                ) *
+                                                  100) /
+                                                parseFloat(
+                                                  this.state.selectedPrice
+                                                )
+                                              ).toFixed(2)
+                                            : "",
                                         taxDeduction:
                                           this.state.selectedRow.taxDeduction,
                                         price: this.state.selectedRow.price,
@@ -1022,11 +1036,11 @@ class ParticipantPayments extends Component {
                                       onSubmit={(values, { setSubmitting }) => {
                                         const selectedSchemeDetails = (
                                           values.scheme || []
-                                        ).map((id) => {
+                                        ).map(id => {
                                           const [scheme_id, cycle_id] =
                                             id.split("-");
                                           return this.state.CycleList.find(
-                                            (scheme) =>
+                                            scheme =>
                                               String(scheme.scheme_id) ===
                                                 scheme_id &&
                                               String(scheme.id) === cycle_id
@@ -1035,9 +1049,19 @@ class ParticipantPayments extends Component {
 
                                         const totalPriceBeforeDiscount =
                                           selectedSchemeDetails.reduce(
-                                            (sum, scheme) =>
-                                              sum +
-                                              (parseFloat(scheme?.price) || 0),
+                                            (sum, scheme) => {
+                                              const raw =
+                                                scheme?.priceBeforeDiscount ??
+                                                scheme?.price ??
+                                                0;
+                                              const cleaned = parseFloat(
+                                                raw.toString().replace(/,/g, "")
+                                              );
+                                              return (
+                                                sum +
+                                                (isNaN(cleaned) ? 0 : cleaned)
+                                              );
+                                            },
                                             0
                                           );
 
@@ -1050,10 +1074,17 @@ class ParticipantPayments extends Component {
                                             this.state.selectedRow
                                               ?.participant ||
                                             values.participant,
-                                          priceBeforeDiscount:
-                                            totalPriceBeforeDiscount.toFixed(2), // ✅ actual scheme price
+                                          priceBeforeDiscount: parseFloat(
+                                            totalPriceBeforeDiscount
+                                              .toString()
+                                              .replace(/,/g, "")
+                                          ).toFixed(2),
+                                          // ✅ actual scheme price
                                         };
-
+                                        console.log(
+                                          "✅ Final priceBeforeDiscount to send:",
+                                          totalPriceBeforeDiscount
+                                        );
                                         this.props.onupdatePayment(payload);
 
                                         setTimeout(() => {
@@ -1145,18 +1176,16 @@ class ParticipantPayments extends Component {
                                                     ) || "Select schemes"
                                                   }
                                                   value={schemeOptions.filter(
-                                                    (option) =>
+                                                    option =>
                                                       (
                                                         values.scheme || []
                                                       ).includes(option.value)
                                                   )}
-                                                  onChange={(
-                                                    selectedOptions
-                                                  ) => {
+                                                  onChange={selectedOptions => {
                                                     const selectedValues =
                                                       selectedOptions
                                                         ? selectedOptions.map(
-                                                            (option) =>
+                                                            option =>
                                                               option.value
                                                           )
                                                         : [];
@@ -1165,7 +1194,7 @@ class ParticipantPayments extends Component {
                                                       selectedValues
                                                     );
 
-                                                    // ✅ Calculate total price from all selected schemes
+                                                    // ✅ Calculate total price from selected schemes
                                                     const total =
                                                       selectedOptions.reduce(
                                                         (sum, option) => {
@@ -1190,15 +1219,26 @@ class ParticipantPayments extends Component {
                                                         0
                                                       );
 
-                                                    // ✅ Update total in the form
+                                                    // ✅ Set both base and final price correctly
+                                                    setFieldValue(
+                                                      "priceBeforeDiscount",
+                                                      total.toFixed(2)
+                                                    ); // <-- this was missing
+                                                    const discount =
+                                                      parseFloat(
+                                                        values.discountAmount
+                                                      ) || 0;
+                                                    const tax =
+                                                      parseFloat(
+                                                        values.taxDeduction
+                                                      ) || 0;
+                                                    const finalPayable =
+                                                      total - discount - tax;
+
                                                     setFieldValue(
                                                       "price",
-                                                      total.toFixed(2)
+                                                      finalPayable.toFixed(2)
                                                     );
-                                                    setFieldValue(
-                                                      "price",
-                                                      total.toFixed(2)
-                                                    ); // optional
                                                   }}
                                                 />
                                               </Col>
@@ -1206,19 +1246,20 @@ class ParticipantPayments extends Component {
                                             <Col>
                                               <div className="mb-3">
                                                 <Label
-                                                  htmlFor="price"
+                                                  htmlFor="priceBeforeDiscount"
                                                   className="form-label"
                                                 >
                                                   Payable
                                                 </Label>
-                                                <Field name="price">
+                                                <Field name="priceBeforeDiscount">
                                                   {({ field }) => {
                                                     const value = Number(
-                                                      values.price || 0
-                                                    );
-                                                    console.log(
-                                                      "💰 price raw:",
-                                                      value
+                                                      (
+                                                        values.priceBeforeDiscount ||
+                                                        "0"
+                                                      )
+                                                        .toString()
+                                                        .replace(/,/g, "")
                                                     );
                                                     return (
                                                       <input
@@ -1242,7 +1283,6 @@ class ParticipantPayments extends Component {
                                                     );
                                                   }}
                                                 </Field>
-
                                                 <ErrorMessage
                                                   name="priceBeforeDiscount"
                                                   component="div"
@@ -1268,7 +1308,7 @@ class ParticipantPayments extends Component {
                                                     {...field}
                                                     type="text"
                                                     className="form-control"
-                                                    onChange={(e) => {
+                                                    onChange={e => {
                                                       const discountPercent =
                                                         parseFloat(
                                                           e.target.value
@@ -1278,34 +1318,53 @@ class ParticipantPayments extends Component {
                                                         e.target.value
                                                       );
 
-                                                      const payable =
+                                                      // Always read original price from priceBeforeDiscount only
+                                                      const basePrice =
                                                         parseFloat(
                                                           values.priceBeforeDiscount
                                                         ) || 0;
+
                                                       if (
                                                         !isNaN(discountPercent)
                                                       ) {
                                                         const discountAmount =
-                                                          (payable *
+                                                          (basePrice *
                                                             discountPercent) /
                                                           100;
+                                                        const tax = parseFloat(
+                                                          values.taxDeduction ||
+                                                            0
+                                                        );
+                                                        const finalPrice =
+                                                          basePrice -
+                                                          discountAmount -
+                                                          tax;
+
                                                         setFieldValue(
                                                           "discountAmount",
                                                           discountAmount.toFixed(
                                                             2
                                                           )
                                                         );
-                                                        const tax =
-                                                          parseFloat(
-                                                            values.taxDeduction
-                                                          ) || 0;
-                                                        const finalPrice =
-                                                          payable -
-                                                          discountAmount -
-                                                          tax;
                                                         setFieldValue(
                                                           "price",
                                                           finalPrice.toFixed(2)
+                                                        );
+                                                      } else {
+                                                        // If cleared, also clear discountAmount
+                                                        setFieldValue(
+                                                          "discountAmount",
+                                                          ""
+                                                        );
+                                                        const tax = parseFloat(
+                                                          values.taxDeduction ||
+                                                            0
+                                                        );
+                                                        setFieldValue(
+                                                          "price",
+                                                          (
+                                                            basePrice - tax
+                                                          ).toFixed(2)
                                                         );
                                                       }
                                                     }}
@@ -1318,6 +1377,7 @@ class ParticipantPayments extends Component {
                                                 className="invalid-feedback"
                                               />
                                             </Col>
+
                                             <Col md={6}>
                                               <Label>
                                                 Discount Amount (Rs)
@@ -1328,8 +1388,8 @@ class ParticipantPayments extends Component {
                                                     {...field}
                                                     type="text"
                                                     className="form-control"
-                                                    value={field.value || ""} // Ensures controlled input
-                                                    onChange={(e) => {
+                                                    value={field.value || ""}
+                                                    onChange={e => {
                                                       const discountAmount =
                                                         parseFloat(
                                                           e.target.value
@@ -1339,48 +1399,69 @@ class ParticipantPayments extends Component {
                                                         e.target.value
                                                       );
 
-                                                      const payable =
+                                                      const payableBeforeDiscount =
                                                         parseFloat(
-                                                          values.priceBeforeDiscount
+                                                          values.priceBeforeDiscount ||
+                                                            values.price
                                                         ) || 0;
+
                                                       if (
                                                         !isNaN(
                                                           discountAmount
                                                         ) &&
-                                                        payable > 0
+                                                        payableBeforeDiscount >
+                                                          0
                                                       ) {
                                                         const percent =
                                                           (discountAmount /
-                                                            payable) *
+                                                            payableBeforeDiscount) *
                                                           100;
+                                                        const tax = parseFloat(
+                                                          values.taxDeduction ||
+                                                            0
+                                                        );
+                                                        const finalPrice =
+                                                          payableBeforeDiscount -
+                                                          discountAmount -
+                                                          tax;
+
                                                         setFieldValue(
                                                           "discount",
                                                           percent.toFixed(2)
                                                         );
-                                                        const tax =
-                                                          parseFloat(
-                                                            values.taxDeduction
-                                                          ) || 0;
-                                                        const finalPrice =
-                                                          payable -
-                                                          discountAmount -
-                                                          tax;
                                                         setFieldValue(
                                                           "price",
                                                           finalPrice.toFixed(2)
+                                                        );
+                                                      } else {
+                                                        // If cleared, also clear discount percent
+                                                        setFieldValue(
+                                                          "discount",
+                                                          ""
+                                                        );
+                                                        const tax = parseFloat(
+                                                          values.taxDeduction ||
+                                                            0
+                                                        );
+                                                        setFieldValue(
+                                                          "price",
+                                                          (
+                                                            payableBeforeDiscount -
+                                                            tax
+                                                          ).toFixed(2)
                                                         );
                                                       }
                                                     }}
                                                   />
                                                 )}
                                               </Field>
-
                                               <ErrorMessage
                                                 name="discountAmount"
                                                 component="div"
                                                 className="invalid-feedback"
                                               />
                                             </Col>
+
                                             <Row>
                                               <Col>
                                                 <Label>
@@ -1393,7 +1474,7 @@ class ParticipantPayments extends Component {
                                                       type="text"
                                                       className="form-control"
                                                       placeholder="Enter tax deduction amount"
-                                                      onChange={(e) => {
+                                                      onChange={e => {
                                                         const tax = parseFloat(
                                                           e.target.value
                                                         );
@@ -1404,7 +1485,8 @@ class ParticipantPayments extends Component {
 
                                                         const payable =
                                                           parseFloat(
-                                                            values.priceBeforeDiscount
+                                                            values.priceBeforeDiscount ||
+                                                              values.price
                                                           ) || 0;
                                                         const discount =
                                                           parseFloat(
@@ -1449,9 +1531,7 @@ class ParticipantPayments extends Component {
                                                           "Payment In process",
                                                       },
                                                     ]}
-                                                    onChange={(
-                                                      selectedOption
-                                                    ) => {
+                                                    onChange={selectedOption => {
                                                       const status =
                                                         selectedOption?.value ||
                                                         "";
@@ -1505,7 +1585,7 @@ class ParticipantPayments extends Component {
                                                     <input
                                                       type="file"
                                                       name="purchase_order_copy"
-                                                      onChange={(event) =>
+                                                      onChange={event =>
                                                         setFieldValue(
                                                           "purchase_order_copy",
                                                           event.currentTarget
@@ -1589,9 +1669,7 @@ class ParticipantPayments extends Component {
                                                           label: "Part",
                                                         },
                                                       ]}
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         const settlement =
                                                           selectedOption?.value ||
                                                           "";
@@ -1657,15 +1735,19 @@ class ParticipantPayments extends Component {
                                                                 field.value ===
                                                                   undefined ||
                                                                 field.value ===
-                                                                  null
-                                                                  ? ""
+                                                                  null ||
+                                                                field.value ===
+                                                                  ""
+                                                                  ? 0
                                                                   : field.value
                                                               }
-                                                              onChange={(e) => {
+                                                              onChange={e => {
+                                                                const input =
+                                                                  e.target
+                                                                    .value;
                                                                 const partAmount =
                                                                   parseFloat(
-                                                                    e.target
-                                                                      .value
+                                                                    input
                                                                   ) || 0;
                                                                 const totalAmount =
                                                                   parseFloat(
@@ -1674,9 +1756,12 @@ class ParticipantPayments extends Component {
                                                                 const remaining =
                                                                   totalAmount -
                                                                   partAmount;
+
                                                                 setFieldValue(
                                                                   "part_payment_amount",
-                                                                  e.target.value
+                                                                  input === ""
+                                                                    ? 0
+                                                                    : input
                                                                 );
                                                                 setFieldValue(
                                                                   "remaining_amount",
@@ -1733,7 +1818,7 @@ class ParticipantPayments extends Component {
                                                         type="file"
                                                         multiple={false}
                                                         accept=".jpg,.jpeg,.png,.pdf"
-                                                        onChange={(event) =>
+                                                        onChange={event =>
                                                           this.handleFileChange(
                                                             event,
                                                             setFieldValue
@@ -1785,9 +1870,7 @@ class ParticipantPayments extends Component {
                                                             label: "Cash",
                                                           },
                                                         ]}
-                                                        onChange={(
-                                                          selectedOption
-                                                        ) =>
+                                                        onChange={selectedOption =>
                                                           setFieldValue(
                                                             "paymentmethod",
                                                             selectedOption?.value ||
@@ -1912,7 +1995,7 @@ ParticipantPayments.propTypes = {
   onGetDistrictList: PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const cycleList = state.CycleList?.CycleList || [];
   const ListDistrict = state.ListDistrict?.ListDistrict || [];
 
@@ -1928,12 +2011,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   //  onGetParticipantpayment: () => dispatch(getParticipantPayment()),
-  onGetParticipantpayment: (id) => dispatch(getParticipantPayment(id)),
-  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
-  onupdatePayment: (payload) => dispatch(updatePayment(payload)),
-  onGetDistrictList: (id) => dispatch(getdistrictlist(id)),
+  onGetParticipantpayment: id => dispatch(getParticipantPayment(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
+  onupdatePayment: payload => dispatch(updatePayment(payload)),
+  onGetDistrictList: id => dispatch(getdistrictlist(id)),
 });
 
 export default connect(

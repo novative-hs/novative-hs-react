@@ -1,5 +1,10 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { ADD_NEW_Payment, GET_PARTICIPANT_PAYMENT, GET_PARTICIPANT_SCHEME_LIST, UPDATE_NEW_PAYMENT } from "./actionTypes";
+import {
+  ADD_NEW_Payment,
+  GET_PARTICIPANT_PAYMENT,
+  GET_PARTICIPANT_SCHEME_LIST,
+  UPDATE_NEW_PAYMENT,
+} from "./actionTypes";
 import {
   addNewPaymentSuccess,
   addNewPaymentFail,
@@ -11,7 +16,12 @@ import {
   updatePaymentSuccess,
   updatePaymentFail,
 } from "./actions";
-import { addNewPayment, getParticipantPayment, getParticipantSchemelist, updateNewPayment} from "../../helpers/django_api_helper";
+import {
+  addNewPayment,
+  getParticipantPayment,
+  getParticipantSchemelist,
+  updateNewPayment,
+} from "../../helpers/django_api_helper";
 
 function* onAddNewPayment(object) {
   console.log("data in saga1", object.payload.payment);
@@ -75,8 +85,8 @@ function* fetchParticipantSchemelist(action) {
     const pay_date = data.pay_date || "";
     const payment_mode = data.payment_mode || "";
     const received_by = data.received_by || "";
-    const photo_url = data.photo_url || "";   // <-- add this line
-
+    const original_price = data.original_price || "";
+    const photo_url = data.photo_url || ""; // <-- add this line
 
     // Dispatch success with all fields
     yield put(
@@ -87,13 +97,13 @@ function* fetchParticipantSchemelist(action) {
         price,
         discount,
         paid_amount,
+        original_price,
         pay_date,
         payment_mode,
         received_by,
-        photo_url,   // <-- add here too
+        photo_url, // <-- add here too
       })
     );
-
   } catch (error) {
     console.error("Error in Saga:", error);
     yield put(getParticipantSchemelistFail(error));
@@ -104,7 +114,7 @@ function* PaymentSaga() {
   yield takeEvery(ADD_NEW_Payment, onAddNewPayment);
   yield takeEvery(GET_PARTICIPANT_PAYMENT, fetchParticipantPayment);
   yield takeEvery(GET_PARTICIPANT_SCHEME_LIST, fetchParticipantSchemelist);
- yield takeEvery(UPDATE_NEW_PAYMENT, onUpdatePayment);
+  yield takeEvery(UPDATE_NEW_PAYMENT, onUpdatePayment);
 }
 
 export default PaymentSaga;
