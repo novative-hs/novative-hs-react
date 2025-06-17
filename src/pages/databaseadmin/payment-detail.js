@@ -67,6 +67,9 @@ class ParticipantPayments extends Component {
       finalpayableFilter: "",
       paidamountFilter: "",
       remainingAmountFilter: "",
+      dateTo: new Date().toISOString().split("T")[0], // Show current date
+      dateToActive: false, // Tracks whether the user activated the filter
+      filtersApplied: false,
       membershipStatusFilter: "",
       editModalOpen: false,
       selectedRow: null,
@@ -76,6 +79,14 @@ class ParticipantPayments extends Component {
           dataField: "id",
           sort: true,
           hidden: false,
+          headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
+            textAlign: "center",
+          },
+          style: {
+            // backgroundColor: "#87ceeb", // 🌤 sky blue for cells
+            textAlign: "right",
+          },
           formatter: (cellContent, methodlist) => <>P-{methodlist.id}</>,
           headerFormatter: (column, colIndex) => (
             <>
@@ -92,7 +103,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={(e) => this.handleFilterChange("idFilter", e)}
+                  onChange={e => this.handleFilterChange("idFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -111,7 +122,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={(e) => this.handleFilterChange("nameFilter", e)}
+                  onChange={e => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -134,7 +145,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.membershipStatusFilter || ""}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("membershipStatusFilter", e)
                   }
                   className="form-control"
@@ -159,7 +170,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.districtFilter}
-                  onChange={(e) => this.handleFilterChange("districtFilter", e)}
+                  onChange={e => this.handleFilterChange("districtFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -182,7 +193,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemeFilter}
-                  onChange={(e) => this.handleFilterChange("schemeFilter", e)}
+                  onChange={e => this.handleFilterChange("schemeFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -207,7 +218,7 @@ class ParticipantPayments extends Component {
           text: "Payable",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => {
+          formatter: cell => {
             const value = parseFloat(cell);
             return value === 0 || isNaN(value) ? "--" : value.toLocaleString();
           },
@@ -218,7 +229,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemepriceFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("schemepriceFilter", e)
                   }
                   className="form-control"
@@ -238,7 +249,7 @@ class ParticipantPayments extends Component {
           text: "Discount Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => {
+          formatter: cell => {
             // Format number with comma as thousands separator
             return cell != null ? Number(cell).toLocaleString() : "-";
           },
@@ -249,7 +260,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.discountFilter}
-                  onChange={(e) => this.handleFilterChange("discountFilter", e)}
+                  onChange={e => this.handleFilterChange("discountFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -267,7 +278,7 @@ class ParticipantPayments extends Component {
           text: "Tax",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => {
+          formatter: cell => {
             const value = parseFloat(cell);
             return value === 0 || isNaN(value) ? "--" : value.toLocaleString();
           },
@@ -278,7 +289,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.TaxFilter}
-                  onChange={(e) => this.handleFilterChange("TaxFilter", e)}
+                  onChange={e => this.handleFilterChange("TaxFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -315,7 +326,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.finalpayableFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("finalpayableFilter", e)
                   }
                   className="form-control"
@@ -333,7 +344,7 @@ class ParticipantPayments extends Component {
           dataField: "payment_settlement",
           text: "Payment Settlement",
           sort: true,
-          formatter: (cell) => {
+          formatter: cell => {
             return cell ? cell : "--";
           },
           headerFormatter: (column, colIndex) => (
@@ -343,7 +354,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentsettlementFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("paymentsettlementFilter", e)
                   }
                   className="form-control"
@@ -368,7 +379,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentStatusFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("paymentStatusFilter", e)
                   }
                   className="form-control"
@@ -387,7 +398,7 @@ class ParticipantPayments extends Component {
           text: "Paid Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => {
+          formatter: cell => {
             return cell ? cell : "--";
           },
           headerFormatter: (column, colIndex) => (
@@ -397,9 +408,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paidamountFilter}
-                  onChange={(e) =>
-                    this.handleFilterChange("paidamountFilter", e)
-                  }
+                  onChange={e => this.handleFilterChange("paidamountFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -416,7 +425,7 @@ class ParticipantPayments extends Component {
           text: "Remaining Amount",
           sort: true,
           style: { textAlign: "right" },
-          formatter: (cell) => {
+          formatter: cell => {
             const value = parseFloat(cell);
             return value === 0 || isNaN(value) ? "--" : value.toLocaleString();
           },
@@ -427,7 +436,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.remainingAmountFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("remainingAmountFilter", e)
                   }
                   className="form-control"
@@ -483,7 +492,7 @@ class ParticipantPayments extends Component {
                   <input
                     type="text"
                     value={this.state.paymentMethodFilter}
-                    onChange={(e) =>
+                    onChange={e =>
                       this.handleFilterChange("paymentMethodFilter", e)
                     }
                     className="form-control"
@@ -503,7 +512,7 @@ class ParticipantPayments extends Component {
           dataField: "paydate",
           text: "Payment Date",
           sort: true,
-          formatter: (cell) => {
+          formatter: cell => {
             if (!cell) return "-";
             const dateObj = new Date(cell);
             if (isNaN(dateObj.getTime())) return "-";
@@ -521,7 +530,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.dateFilter}
-                  onChange={(e) => this.handleFilterChange("dateFilter", e)}
+                  onChange={e => this.handleFilterChange("dateFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -544,7 +553,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentreceivedFilter}
-                  onChange={(e) =>
+                  onChange={e =>
                     this.handleFilterChange("paymentreceivedFilter", e)
                   }
                   className="form-control"
@@ -647,7 +656,7 @@ class ParticipantPayments extends Component {
     ongetcyclelist(user_id);
     console.log("ongetcyclelist called with user_id:", user_id);
   }
-  handleSchemeChange = (event) => {
+  handleSchemeChange = event => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
 
@@ -668,7 +677,7 @@ class ParticipantPayments extends Component {
     }
     // ✅ Only then update GetPayment
     if (this.props.GetPayment !== prevProps.GetPayment) {
-      const transformedData = (this.props.GetPayment || []).map((payment) => ({
+      const transformedData = (this.props.GetPayment || []).map(payment => ({
         id: payment.id,
         participant_name: payment.participant_name,
         district: payment.district,
@@ -694,7 +703,7 @@ class ParticipantPayments extends Component {
     }
   }
 
-  handleSchemeClick = (row) => {
+  handleSchemeClick = row => {
     this.setState({
       hoveredSchemeNames: row.scheme_names || [],
       schemeModalOpen: true,
@@ -706,9 +715,9 @@ class ParticipantPayments extends Component {
     // 🧼 Normalize scheme names for matching
     const matchedSchemes =
       row?.scheme_names
-        ?.map((name) => {
+        ?.map(name => {
           const cleanedName = name.replace(/,/g, "").trim().toLowerCase();
-          const found = this.state.CycleList?.find((option) => {
+          const found = this.state.CycleList?.find(option => {
             const optionName = option.scheme_name
               .replace(/,/g, "")
               .trim()
@@ -738,9 +747,7 @@ class ParticipantPayments extends Component {
     }, 0);
 
     // 🪪 Format scheme IDs
-    const scheme_ids = matchedSchemes.map(
-      (opt) => `${opt.scheme_id}-${opt.id}`
-    );
+    const scheme_ids = matchedSchemes.map(opt => `${opt.scheme_id}-${opt.id}`);
 
     // 🧾 Debug final total
     console.log("✅ matchedSchemes:", matchedSchemes);
@@ -805,7 +812,7 @@ class ParticipantPayments extends Component {
     } = this.state;
 
     return GetPayment.filter(
-      (entry) =>
+      entry =>
         (entry.id ? entry.id.toString() : "").includes(idFilter) &&
         (entry.participant_name || "")
           .toLowerCase()
@@ -859,6 +866,196 @@ class ParticipantPayments extends Component {
           .includes(membershipStatusFilter.toLowerCase())
     );
   };
+  getUniqueOptions = fieldName => {
+    const { GetPayment } = this.state;
+    const options = new Set();
+
+    GetPayment.forEach(item => {
+      const value = item[fieldName];
+      if (Array.isArray(value)) {
+        value.forEach(v => options.add(v));
+      } else if (value) {
+        options.add(value);
+      }
+    });
+
+    return Array.from(options);
+  };
+  handleFilterChange = (filterName, e) => {
+    const value = e.target.value;
+
+    this.setState(
+      prevState => ({
+        [filterName]: value,
+
+        dateToActive: filterName === "dateTo" ? true : prevState.dateToActive,
+      }),
+      this.checkFiltersApplied
+    );
+  };
+  checkFiltersApplied = () => {
+    const {
+      nameFilter,
+      idFilter,
+      districtFilter,
+      schemeFilter,
+      schemepriceFilter,
+      amountFilter,
+      discountFilter,
+      TaxFilter,
+      paymentsettlementFilter,
+      paymentMethodFilter,
+      paymentStatusFilter,
+      paidamountFilter,
+      remainingAmountFilter,
+      finalpayableFilter,
+      dateFilter,
+      paymentreceivedFilter,
+      membershipStatusFilter,
+      dateFrom,
+      dateToActive, // Include activation flag
+    } = this.state;
+
+    // Check if ANY filter is applied AND has a NON-EMPTY value
+    const filters = [
+      nameFilter,
+      idFilter,
+      districtFilter,
+      schemeFilter,
+      schemepriceFilter,
+      amountFilter,
+      discountFilter,
+      TaxFilter,
+      paymentsettlementFilter,
+      paymentMethodFilter,
+      paymentStatusFilter,
+      paidamountFilter,
+      remainingAmountFilter,
+      finalpayableFilter,
+      dateFilter,
+      paymentreceivedFilter,
+      membershipStatusFilter,
+      dateFrom,
+      dateToActive ? "active" : "", // Only consider dateTo if active
+    ];
+
+    const anyFilterSelected = filters.some(f => f && f.trim() !== "");
+
+    this.setState({ filtersApplied: anyFilterSelected });
+  };
+  filterData = () => {
+    const {
+      GetPayment,
+      nameFilter = "Select",
+      idFilter = "Select",
+      districtFilter = "Select",
+      schemeFilter = "Select",
+      schemepriceFilter = "Select",
+      amountFilter = "Select",
+      discountFilter = "Select",
+      TaxFilter = "Select",
+      paymentsettlementFilter = "Select",
+      paymentreceivedFilter = "Select",
+      membershipStatusFilter = "Select",
+      paymentMethodFilter = "Select",
+      paymentStatusFilter = "Select",
+      paidamountFilter = "Select",
+      remainingAmountFilter = "Select",
+      finalpayableFilter = "Select",
+      dateFilter = "",
+      dateFrom,
+      dateTo,
+      dateToActive, // Include activation flag
+    } = this.state;
+
+    // Return empty array if no filters are applied
+    const filters = [
+      nameFilter,
+      idFilter,
+      districtFilter,
+      schemeFilter,
+      schemepriceFilter,
+      amountFilter,
+      discountFilter,
+      TaxFilter,
+      paymentsettlementFilter,
+      paymentMethodFilter,
+      paymentStatusFilter,
+      paidamountFilter,
+      remainingAmountFilter,
+      finalpayableFilter,
+      dateFilter,
+      paymentreceivedFilter,
+      membershipStatusFilter,
+      dateFrom,
+      dateToActive ? dateTo : "", // Only use dateTo if active
+    ];
+
+    const isAnyFilterApplied = filters.some(
+      filter => filter !== "Select" && filter !== ""
+    );
+    if (!isAnyFilterApplied) return [];
+
+    return GetPayment.filter(entry => {
+      return (
+        (idFilter === "All" ||
+          (entry.id && entry.id.toString().includes(idFilter))) &&
+        (nameFilter === "All" ||
+          (entry.participant_name || "")
+            .toLowerCase()
+            .includes(nameFilter.toLowerCase())) &&
+        (districtFilter === "All" ||
+          (entry.district || "")
+            .toLowerCase()
+            .includes(districtFilter.toLowerCase())) &&
+        (schemeFilter === "All" ||
+          (entry.scheme_names || []).some(name =>
+            name.toLowerCase().includes(schemeFilter.toLowerCase())
+          )) &&
+        (schemepriceFilter === "All" ||
+          (entry.priceBeforeDiscount || "").includes(schemepriceFilter)) &&
+        (amountFilter === "All" ||
+          (entry.price || "").includes(amountFilter)) &&
+        (discountFilter === "All" ||
+          (entry.discountAmount || "").includes(discountFilter)) &&
+        (TaxFilter === "All" ||
+          (entry.taxDeduction || "").includes(TaxFilter)) &&
+        (dateFilter === "All" || (entry.paydate || "").includes(dateFilter)) &&
+        (paymentsettlementFilter === "All" ||
+          (entry.payment_settlement || "")
+            .toLowerCase()
+            .includes(paymentsettlementFilter.toLowerCase())) &&
+        (paymentreceivedFilter === "All" ||
+          (entry.receivedby || "")
+            .toLowerCase()
+            .includes(paymentreceivedFilter.toLowerCase())) &&
+        (membershipStatusFilter === "All" ||
+          (entry.membership_status || "")
+            .toLowerCase()
+            .includes(membershipStatusFilter.toLowerCase())) &&
+        (paymentMethodFilter === "All" ||
+          (entry.paymentmethod || "")
+            .toLowerCase()
+            .includes(paymentMethodFilter.toLowerCase())) &&
+        (paymentStatusFilter === "All" ||
+          (entry.payment_status || "")
+            .toLowerCase()
+            .includes(paymentStatusFilter.toLowerCase())) &&
+        (paidamountFilter === "All" ||
+          (entry.part_payment_amount || "")
+            .toString()
+            .includes(paidamountFilter)) &&
+        (remainingAmountFilter === "All" ||
+          (entry.remaining_amount || "")
+            .toString()
+            .includes(remainingAmountFilter)) &&
+        (finalpayableFilter === "All" ||
+          (entry.price || "").toString().includes(finalpayableFilter)) &&
+        (!dateFrom || new Date(entry.paydate) >= new Date(dateFrom)) &&
+        (!dateToActive || new Date(entry.paydate) <= new Date(dateTo)) // Check if dateTo is active
+      );
+    });
+  };
 
   render() {
     const { GetPayment } = this.state;
@@ -866,7 +1063,7 @@ class ParticipantPayments extends Component {
     const { ListDistrict } = this.state;
     const defaultSorted = [{ dataField: "id", order: "desc" }];
     const { editModalOpen, selectedRow } = this.state;
-    const schemeOptions = CycleList.map((scheme) => ({
+    const schemeOptions = CycleList.map(scheme => ({
       value: `${scheme.scheme_id}-${scheme.id}`,
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
       scheme_id: scheme.scheme_id,
@@ -886,7 +1083,7 @@ class ParticipantPayments extends Component {
       totalSize: GetPayment.length,
       custom: true,
     };
-    const districtOptions = ListDistrict.map((district) => ({
+    const districtOptions = ListDistrict.map(district => ({
       value: district.name,
       label: district.name,
     }));
@@ -895,7 +1092,7 @@ class ParticipantPayments extends Component {
 
     const customStyles = {
       // <-- This is invalid here
-      control: (provided) => ({
+      control: provided => ({
         ...provided,
         minHeight: "38px",
       }),
@@ -935,7 +1132,7 @@ class ParticipantPayments extends Component {
                           data={this.filterData()}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Modal
                                 isOpen={this.state.schemeModalOpen}
@@ -1040,11 +1237,11 @@ class ParticipantPayments extends Component {
                                       onSubmit={(values, { setSubmitting }) => {
                                         const selectedSchemeDetails = (
                                           values.scheme || []
-                                        ).map((id) => {
+                                        ).map(id => {
                                           const [scheme_id, cycle_id] =
                                             id.split("-");
                                           return this.state.CycleList.find(
-                                            (scheme) =>
+                                            scheme =>
                                               String(scheme.scheme_id) ===
                                                 scheme_id &&
                                               String(scheme.id) === cycle_id
@@ -1180,18 +1377,16 @@ class ParticipantPayments extends Component {
                                                     ) || "Select schemes"
                                                   }
                                                   value={schemeOptions.filter(
-                                                    (option) =>
+                                                    option =>
                                                       (
                                                         values.scheme || []
                                                       ).includes(option.value)
                                                   )}
-                                                  onChange={(
-                                                    selectedOptions
-                                                  ) => {
+                                                  onChange={selectedOptions => {
                                                     const selectedValues =
                                                       selectedOptions
                                                         ? selectedOptions.map(
-                                                            (option) =>
+                                                            option =>
                                                               option.value
                                                           )
                                                         : [];
@@ -1314,7 +1509,7 @@ class ParticipantPayments extends Component {
                                                     {...field}
                                                     type="text"
                                                     className="form-control"
-                                                    onChange={(e) => {
+                                                    onChange={e => {
                                                       const discountPercent =
                                                         parseFloat(
                                                           e.target.value
@@ -1395,7 +1590,7 @@ class ParticipantPayments extends Component {
                                                     type="text"
                                                     className="form-control"
                                                     value={field.value || ""}
-                                                    onChange={(e) => {
+                                                    onChange={e => {
                                                       const discountAmount =
                                                         parseFloat(
                                                           e.target.value
@@ -1480,7 +1675,7 @@ class ParticipantPayments extends Component {
                                                       type="text"
                                                       className="form-control"
                                                       placeholder="Enter tax deduction amount"
-                                                      onChange={(e) => {
+                                                      onChange={e => {
                                                         const tax = parseFloat(
                                                           e.target.value
                                                         );
@@ -1537,9 +1732,7 @@ class ParticipantPayments extends Component {
                                                           "Payment In process",
                                                       },
                                                     ]}
-                                                    onChange={(
-                                                      selectedOption
-                                                    ) => {
+                                                    onChange={selectedOption => {
                                                       const status =
                                                         selectedOption?.value ||
                                                         "";
@@ -1593,7 +1786,7 @@ class ParticipantPayments extends Component {
                                                     <input
                                                       type="file"
                                                       name="purchase_order_copy"
-                                                      onChange={(event) =>
+                                                      onChange={event =>
                                                         setFieldValue(
                                                           "purchase_order_copy",
                                                           event.currentTarget
@@ -1677,9 +1870,7 @@ class ParticipantPayments extends Component {
                                                           label: "Part",
                                                         },
                                                       ]}
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         const settlement =
                                                           selectedOption?.value ||
                                                           "";
@@ -1751,7 +1942,7 @@ class ParticipantPayments extends Component {
                                                                   ? 0
                                                                   : field.value
                                                               }
-                                                              onChange={(e) => {
+                                                              onChange={e => {
                                                                 const input =
                                                                   e.target
                                                                     .value;
@@ -1828,7 +2019,7 @@ class ParticipantPayments extends Component {
                                                         type="file"
                                                         multiple={false}
                                                         accept=".jpg,.jpeg,.png,.pdf"
-                                                        onChange={(event) =>
+                                                        onChange={event =>
                                                           this.handleFileChange(
                                                             event,
                                                             setFieldValue
@@ -1900,9 +2091,7 @@ class ParticipantPayments extends Component {
                                                             label: "Cash",
                                                           },
                                                         ]}
-                                                        onChange={(
-                                                          selectedOption
-                                                        ) =>
+                                                        onChange={selectedOption =>
                                                           setFieldValue(
                                                             "paymentmethod",
                                                             selectedOption?.value ||
@@ -1969,6 +2158,250 @@ class ParticipantPayments extends Component {
                                   )}
                                 </ModalBody>
                               </Modal>
+
+                              <Row className="mb-3">
+                                <Col md={4}>
+                                  <Label for="nameFilter">
+                                    Participant Name
+                                  </Label>
+                                  <Select
+                                    id="nameFilter"
+                                    options={[
+                                      {
+                                        value: "All",
+                                        label: "All Participants",
+                                      },
+                                      ...this.getUniqueOptions(
+                                        "participant_name"
+                                      ).map(option => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.nameFilter
+                                        ? {
+                                            value: this.state.nameFilter,
+                                            label: this.state.nameFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={selected =>
+                                      this.handleFilterChange("nameFilter", {
+                                        target: {
+                                          value:
+                                            selected?.value === "All"
+                                              ? ""
+                                              : selected?.value || "",
+                                        },
+                                      })
+                                    }
+                                    isClearable
+                                  />
+                                </Col>
+
+                                <Col md={4}>
+                                  <Label for="schemeFilter">Scheme</Label>
+                                  <Select
+                                    id="schemeFilter"
+                                    options={[
+                                      { value: "All", label: "All Schemes" },
+                                      ...this.getUniqueOptions(
+                                        "scheme_names"
+                                      ).map(option => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.schemeFilter
+                                        ? {
+                                            value: this.state.schemeFilter,
+                                            label: this.state.schemeFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={selected =>
+                                      this.handleFilterChange("schemeFilter", {
+                                        target: {
+                                          value:
+                                            selected?.value === "All"
+                                              ? ""
+                                              : selected?.value || "",
+                                        },
+                                      })
+                                    }
+                                    isClearable
+                                  />
+                                </Col>
+
+                                <Col md={4}>
+                                  <Label for="districtFilter">District</Label>
+                                  <Select
+                                    id="districtFilter"
+                                    options={[
+                                      { value: "All", label: "All Districts" },
+                                      ...this.getUniqueOptions("district").map(
+                                        option => ({
+                                          value: option,
+                                          label: option,
+                                        })
+                                      ),
+                                    ]}
+                                    value={
+                                      this.state.districtFilter
+                                        ? {
+                                            value: this.state.districtFilter,
+                                            label: this.state.districtFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={selected =>
+                                      this.handleFilterChange(
+                                        "districtFilter",
+                                        {
+                                          target: {
+                                            value:
+                                              selected?.value === "All"
+                                                ? ""
+                                                : selected?.value || "",
+                                          },
+                                        }
+                                      )
+                                    }
+                                    isClearable
+                                  />
+                                </Col>
+
+                                <Col md={4}>
+                                  <Label for="paymentsettlementFilter">
+                                    Payment Settlement
+                                  </Label>
+                                  <Select
+                                    id="paymentsettlementFilter"
+                                    options={[
+                                      {
+                                        value: "All",
+                                        label: "All Payment Settlement",
+                                      },
+                                      ...this.getUniqueOptions(
+                                        "payment_settlement"
+                                      ).map(option => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.paymentsettlementFilter
+                                        ? {
+                                            value:
+                                              this.state
+                                                .paymentsettlementFilter,
+                                            label:
+                                              this.state
+                                                .paymentsettlementFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={selected =>
+                                      this.handleFilterChange(
+                                        "paymentsettlementFilter",
+                                        {
+                                          target: {
+                                            value:
+                                              selected?.value === "All"
+                                                ? ""
+                                                : selected?.value || "",
+                                          },
+                                        }
+                                      )
+                                    }
+                                    isClearable
+                                  />
+                                </Col>
+
+                                <Col md={4}>
+                                  <Label for="paymentStatusFilter">
+                                    Payment Status
+                                  </Label>
+                                  <Select
+                                    id="paymentStatusFilter"
+                                    options={[
+                                      {
+                                        value: "All",
+                                        label: "All Payment Statuses",
+                                      },
+                                      ...this.getUniqueOptions(
+                                        "payment_status"
+                                      ).map(option => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.paymentStatusFilter
+                                        ? {
+                                            value:
+                                              this.state.paymentStatusFilter,
+                                            label:
+                                              this.state.paymentStatusFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={selected =>
+                                      this.handleFilterChange(
+                                        "paymentStatusFilter",
+                                        {
+                                          target: {
+                                            value:
+                                              selected?.value === "All"
+                                                ? ""
+                                                : selected?.value || "",
+                                          },
+                                        }
+                                      )
+                                    }
+                                    isClearable
+                                  />
+                                </Col>
+
+                                <Row>
+                                  <Col md={3}>
+                                    <Label for="dateFrom">Date From</Label>
+                                    <input
+                                      type="date"
+                                      id="dateFrom"
+                                      className="form-control"
+                                      value={this.state.dateFrom}
+                                      onChange={e =>
+                                        this.setState(
+                                          { dateFrom: e.target.value },
+                                          this.checkFiltersApplied
+                                        )
+                                      }
+                                    />
+                                  </Col>
+
+                                  <Col md={3}>
+                                    <Label for="dateTo">Date To</Label>
+                                    <input
+                                      type="date"
+                                      id="dateTo"
+                                      className="form-control"
+                                      value={this.state.dateTo}
+                                      onChange={e =>
+                                        this.setState(
+                                          {
+                                            dateTo: e.target.value,
+                                            dateToActive: true,
+                                          },
+                                          this.checkFiltersApplied
+                                        )
+                                      }
+                                    />
+                                  </Col>
+                                </Row>
+                              </Row>
                               <Row className="mb-2 mt-3"></Row>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -2027,7 +2460,7 @@ ParticipantPayments.propTypes = {
   onGetDistrictList: PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const cycleList = state.CycleList?.CycleList || [];
   const ListDistrict = state.ListDistrict?.ListDistrict || [];
 
@@ -2043,12 +2476,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   //  onGetParticipantpayment: () => dispatch(getParticipantPayment()),
-  onGetParticipantpayment: (id) => dispatch(getParticipantPayment(id)),
-  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
-  onupdatePayment: (payload) => dispatch(updatePayment(payload)),
-  onGetDistrictList: (id) => dispatch(getdistrictlist(id)),
+  onGetParticipantpayment: id => dispatch(getParticipantPayment(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
+  onupdatePayment: payload => dispatch(updatePayment(payload)),
+  onGetDistrictList: id => dispatch(getdistrictlist(id)),
 });
 
 export default connect(
