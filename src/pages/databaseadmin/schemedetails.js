@@ -447,8 +447,8 @@ const defaultSorted = [{ dataField: "province", order: "asc" }];
               <Col lg="10">
                 <Card>
                   <Row className="mb-3">
-  <Col md={4}>
-    <Label>Filter by Scheme Name</Label>
+ <Col md={4} style={{ paddingLeft: "50px", paddingTop: "10px" }}>
+    <Label>Select Scheme</Label>
     <Input
       type="select"
       value={this.state.schemeNameDropdownFilter}

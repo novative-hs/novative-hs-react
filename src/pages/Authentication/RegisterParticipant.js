@@ -152,20 +152,21 @@ class StaffRegister extends Component {
       importFile: file,
     });
   };
-/////////////////////////////////
- generateRandomPassword = () => {
+  /////////////////////////////////
+  generateRandomPassword = () => {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     const numbers = "0123456789";
 
-    const randomLetters = Array.from({ length: 4 }, () =>
-      letters[Math.floor(Math.random() * letters.length)]
+    const randomLetters = Array.from(
+      { length: 4 },
+      () => letters[Math.floor(Math.random() * letters.length)]
     );
-    const randomNumbers = Array.from({ length: 4 }, () =>
-      numbers[Math.floor(Math.random() * numbers.length)]
+    const randomNumbers = Array.from(
+      { length: 4 },
+      () => numbers[Math.floor(Math.random() * numbers.length)]
     );
 
     const combined = [...randomLetters, ...randomNumbers];
-
     for (let i = combined.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [combined[i], combined[j]] = [combined[j], combined[i]];
@@ -176,77 +177,89 @@ class StaffRegister extends Component {
 
   generateLabCode = () => {
     const prefix = "LAB";
+    const suffix = Math.floor(100000 + Math.random() * 900000);
+    return `${prefix}${suffix}`;
+  };
+
+  generateLabCode = () => {
+    const prefix = "LAB";
     const randomNumber = Math.floor(1000 + Math.random() * 9000);
     return `${prefix}${randomNumber}`;
   };
 
   /////////////////////////////////
-handleImport = async () => {
-  const { importFile } = this.state;
-  if (!importFile) {
-    this.setState({
-      importError: "Please select a file.",
-    });
-    return;
-  }
+  handleImport = async () => {
+    const { importFile, account_type } = this.state;
+    if (!importFile) {
+      this.setState({
+        importError: "Please select a file.",
+      });
+      return;
+    }
 
-  try {
-    const reader = new FileReader();
-    const self = this; // ✅ capture 'this' from component context
+    try {
+      const reader = new FileReader();
+      const self = this;
 
-    reader.onload = async e => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const jsonData = XLSX.utils.sheet_to_json(sheet);
+      reader.onload = async e => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
 
-      for (let i = 0; i < jsonData.length; i++) {
-        const item = jsonData[i];
+        const addedBy = localStorage.getItem("authUser")
+          ? JSON.parse(localStorage.getItem("authUser")).user_id
+          : "";
 
-        const generatedPassword = self.generateRandomPassword();
-        const generatedLabCode = self.generateLabCode();
+        const registrationPromises = jsonData.map(async item => {
+          try {
+            const generatedPassword = self.generateRandomPassword();
+            const generatedLabCode = self.generateLabCode();
 
-        await self.props.registerUser({
-          name: item.name,
-          username: item.username,
-          email_participant: item.email_participant,
-          password: generatedPassword,
-          lab_code: generatedLabCode,
-          city: item.city,
-          phone: item.phone,
-          type: item.type,
-          sector: item.sector,
-          address: item.address,
-          designation: item.designation,
-          country: item.country,
-          province: item.province,
-          billing_address: item.billing_address,
-          shipping_address: item.shipping_address,
-          department: item.department,
-          district: item.district,
-          lab_staff_name: item.lab_staff_name,
-          landline_registered_by: item.landline_registered_by,
-          website: item.website,
-          account_type: self.state.account_type || "labowner",
-          added_by: localStorage.getItem("authUser")
-            ? JSON.parse(localStorage.getItem("authUser")).user_id
-            : "",
+            return await self.props.registerUser({
+              name: item.name,
+              username: item.username,
+              email_participant: item.email_participant,
+              password: generatedPassword,
+              lab_code: generatedLabCode,
+              city: item.city,
+              phone: item.phone,
+              type: item.type,
+              sector: item.sector,
+              address: item.address,
+              designation: item.designation,
+              country: item.country,
+              province: item.province,
+              billing_address: item.billing_address,
+              shipping_address: item.shipping_address,
+              department: item.department,
+              district: item.district,
+              lab_staff_name: item.lab_staff_name,
+              landline_registered_by: item.landline_registered_by,
+              website: item.website,
+              account_type: account_type || "labowner",
+              added_by: addedBy,
+            });
+          } catch (err) {
+            console.error("Failed to register user:", item.username, err);
+          }
         });
-      }
 
-      self.toggleImportModal();
-      self.displaySuccessMessage("Data imported successfully!");
-    };
+        await Promise.all(registrationPromises);
 
-    reader.readAsArrayBuffer(importFile);
-  } catch (error) {
-    console.error("Error importing data:", error);
-    this.setState({
-      importError: "Error importing data. Please try again.",
-    });
-  }
-};
+        self.toggleImportModal();
+        self.displaySuccessMessage("Data imported successfully!");
+      };
+
+      reader.readAsArrayBuffer(importFile);
+    } catch (error) {
+      console.error("Error importing data:", error);
+      this.setState({
+        importError: "Error importing data. Please try again.",
+      });
+    }
+  };
 
   scrollToTop = () => {
     window.scrollTo({
@@ -307,40 +320,40 @@ handleImport = async () => {
       }),
     };
 
+    const generateRandomPassword = () => {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      const numbers = "0123456789";
 
-    
-  const generateRandomPassword = () => {
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  const numbers = "0123456789";
+      // Generate 4 random letters
+      const randomLetters = Array.from(
+        { length: 4 },
+        () => letters[Math.floor(Math.random() * letters.length)]
+      );
 
-  // Generate 4 random letters
-  const randomLetters = Array.from({ length: 4 }, () =>
-    letters[Math.floor(Math.random() * letters.length)]
-  );
+      // Generate 4 random digits
+      const randomNumbers = Array.from(
+        { length: 4 },
+        () => numbers[Math.floor(Math.random() * numbers.length)]
+      );
 
-  // Generate 4 random digits
-  const randomNumbers = Array.from({ length: 4 }, () =>
-    numbers[Math.floor(Math.random() * numbers.length)]
-  );
+      // Combine and shuffle the characters
+      const combined = [...randomLetters, ...randomNumbers];
 
-  // Combine and shuffle the characters
-  const combined = [...randomLetters, ...randomNumbers];
+      // Shuffle the combined characters
+      for (let i = combined.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [combined[i], combined[j]] = [combined[j], combined[i]];
+      }
 
-  // Shuffle the combined characters
-  for (let i = combined.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [combined[i], combined[j]] = [combined[j], combined[i]];
-  }
+      return combined.join("");
+    };
 
-  return combined.join("");
-};
-
-// Generate Lab Code: LAB + 4 digits
-const generateLabCode = () => {
-  const prefix = "LAB";
-  const randomNumber = Math.floor(1000 + Math.random() * 9000); // ensures 4-digit number
-  return `${prefix}${randomNumber}`;
-};
+    // Generate Lab Code: LAB + 4 digits
+    const generateLabCode = () => {
+      const prefix = "LAB";
+      const randomNumber = Math.floor(1000 + Math.random() * 9000); // ensures 4-digit number
+      return `${prefix}${randomNumber}`;
+    };
     return (
       <React.Fragment>
         <div className="page-content">
@@ -455,7 +468,7 @@ const generateLabCode = () => {
                   <h5 className="text-danger">Important Note:</h5>
                   <p className="text-muted text-left">
                     When uploading the file, please ensure that each participant
-                    has a unique 
+                    has a unique
                     <strong> Login email</strong>
                   </p>
                 </div>
@@ -485,6 +498,8 @@ const generateLabCode = () => {
                           cnic: (this.state && this.state.cnic) || "",
                           city: (this.state && this.state.city) || "",
                           province: (this.state && this.state.province) || "",
+                          sameAddress: false,
+
                           country: (this.state && this.state.country) || "",
                           billing_address:
                             (this.state && this.state.billing_address) || "",
@@ -615,39 +630,39 @@ const generateLabCode = () => {
                           // website: Yup.string().url("Invalid URL"),
                           // .required("Website is required"),
                         })}
-                     onSubmit={(values, { setSubmitting, resetForm }) => {
-  this.scrollToTop();
+                        onSubmit={(values, { setSubmitting, resetForm }) => {
+                          this.scrollToTop();
 
-  // Create payload conditionally
-  let payload = { ...values };
+                          // Create payload conditionally
+                          let payload = { ...values };
 
-  // If lab type is "Participant", include lab_code
-  if (values.type === "Participant") {
-    payload.lab_code = values.lab_code;
-  } else {
-    // If not a participant, you may optionally remove lab_code
-    delete payload.lab_code;
-  }
+                          // If lab type is "Participant", include lab_code
+                          if (values.type === "Participant") {
+                            payload.lab_code = values.lab_code;
+                          } else {
+                            // If not a participant, you may optionally remove lab_code
+                            delete payload.lab_code;
+                          }
 
-  this.props.registerUser(payload);
-  setSubmitting(false);
+                          this.props.registerUser(payload);
+                          setSubmitting(false);
 
-  setTimeout(() => {
-    if (
-      !this.state.usernameFieldError &&
-      !this.state.incompleteRegistrationError
-    ) {
-      this.setState({
-        submittedMessage: "Participant added successfully.",
-      });
-      setTimeout(() => {
-        this.setState({ submittedMessage: "" });
-        resetForm();
-      }, 2000);
-    }
-  }, 1000);
-}}
-
+                          setTimeout(() => {
+                            if (
+                              !this.state.usernameFieldError &&
+                              !this.state.incompleteRegistrationError
+                            ) {
+                              this.setState({
+                                submittedMessage:
+                                  "Participant added successfully.",
+                              });
+                              setTimeout(() => {
+                                this.setState({ submittedMessage: "" });
+                                resetForm();
+                              }, 2000);
+                            }
+                          }, 1000);
+                        }}
                       >
                         {({
                           values,
@@ -880,14 +895,12 @@ const generateLabCode = () => {
                             </Row>
                             <Row>
                               <Col sm={6} md={6} xl={6}>
-                                {/* Lab Staff Name field */}
-                                <div className="mb-3">
+                                <div className="mb-6">
                                   <Label
                                     for="address"
                                     className="form-label"
                                     style={{ color: "blue" }}
                                   >
-                                    {/* Registered by (Name) */}
                                     Address
                                   </Label>
                                   <Field
@@ -897,7 +910,7 @@ const generateLabCode = () => {
                                     placeholder="Please enter Complete Address."
                                     style={{
                                       borderColor:
-                                        errors.name && touched.name
+                                        errors.address && touched.address
                                           ? "red"
                                           : "black",
                                     }}
@@ -914,6 +927,37 @@ const generateLabCode = () => {
                                     className="invalid-feedback"
                                   />
                                 </div>
+
+                                {/* Checkbox - Only show if address is filled */}
+                                {values.address && (
+                                  <div className="mb-3 form-check">
+                                    <Input
+                                      type="checkbox"
+                                      id="sameAsAddress"
+                                      className="form-check-input"
+                                      onChange={e => {
+                                        const checked = e.target.checked;
+                                        if (checked) {
+                                          setFieldValue(
+                                            "billing_address",
+                                            values.address
+                                          );
+                                          setFieldValue(
+                                            "shipping_address",
+                                            values.address
+                                          );
+                                        }
+                                      }}
+                                    />
+                                    <Label
+                                      for="sameAsAddress"
+                                      className="form-check-label"
+                                    >
+                                      Check Mark if the address is same as
+                                      Shipping & Billing Address
+                                    </Label>
+                                  </div>
+                                )}
                               </Col>
                               {/* city */}
                               <Col sm={6} md={6} xl={6}>
@@ -1196,6 +1240,7 @@ const generateLabCode = () => {
                                     name="shipping_address"
                                     type="text"
                                     placeholder="Please enter your Shipping address"
+                                    readOnly={values.sameAddress}
                                     style={{
                                       borderColor:
                                         errors.name && touched.name
@@ -1232,6 +1277,7 @@ const generateLabCode = () => {
                                     name="billing_address"
                                     type="text"
                                     placeholder="Please enter your Billing address"
+                                    readOnly={values.sameAddress}
                                     style={{
                                       borderColor:
                                         errors.name && touched.name
@@ -1305,7 +1351,7 @@ const generateLabCode = () => {
                                       style={{ color: "blue" }}
                                     >
                                       {/* Registered by (Name) */}
-                                      Name 
+                                      Name
                                     </Label>
                                     <Field
                                       id="lab_staff_name"
