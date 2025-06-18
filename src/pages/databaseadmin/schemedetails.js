@@ -62,6 +62,8 @@ class SchemeDetailsReport extends Component {
       statusFilter: "",
       analytetypeFilter: "",
       SchemeList: [],
+      schemeNameDropdownFilter: "",
+  addedByDropdownFilter: "",
       analyte: "",
       modal: false,
       // Add these for your modal
@@ -79,11 +81,11 @@ class SchemeDetailsReport extends Component {
       districtFilter: "",
     };
   }
-  openParticipantList = (schemeName) => {
+  openParticipantList = schemeName => {
     console.log("Looking for scheme:", schemeName);
 
     const scheme = this.state.SchemeList.find(
-      (s) => s.name.trim().toLowerCase() === schemeName.trim().toLowerCase()
+      s => s.name.trim().toLowerCase() === schemeName.trim().toLowerCase()
     );
 
     console.log("Scheme found:", scheme);
@@ -100,7 +102,7 @@ class SchemeDetailsReport extends Component {
   };
 
   toggleLabModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       LabModal: !prevState.LabModal,
     }));
   };
@@ -133,7 +135,7 @@ class SchemeDetailsReport extends Component {
     const value = e.target.value;
 
     if (isScheme) {
-      this.setState((prevState) => ({
+      this.setState(prevState => ({
         schemeFilters: {
           ...prevState.schemeFilters,
           [filterName]: value,
@@ -150,16 +152,16 @@ class SchemeDetailsReport extends Component {
     if (prevProps.SchemeList !== SchemeList) {
       console.log("Received SchemeList:", SchemeList);
 
-      const schemes = SchemeList.map((s) => s.name);
+      const schemes = SchemeList.map(s => s.name);
 
       // Create a map to accumulate rows by province/city/district
       const regionMap = {};
 
-      SchemeList.forEach((scheme) => {
+      SchemeList.forEach(scheme => {
         const schemeName = scheme.name;
         const labs = Array.isArray(scheme.labs) ? scheme.labs : [];
 
-        labs.forEach((lab) => {
+        labs.forEach(lab => {
           const key = `${lab.province}|${lab.city}|${lab.district}`;
           if (!regionMap[key]) {
             regionMap[key] = {
@@ -179,7 +181,8 @@ class SchemeDetailsReport extends Component {
       this.setState({ schemes, structuredData });
     }
   }
-  generateColumns() {
+
+generateColumns() {
     const { schemes } = this.state;
 
     const fixedColumns = [
@@ -193,7 +196,7 @@ class SchemeDetailsReport extends Component {
               <input
                 type="text"
                 value={this.state.provinceFilter}
-                onChange={(e) => this.handleFilterChange("provinceFilter", e)}
+                onChange={e => this.handleFilterChange("provinceFilter", e)}
                 className="form-control"
                 style={{
                   textAlign: "center",
@@ -217,7 +220,7 @@ class SchemeDetailsReport extends Component {
               <input
                 type="text"
                 value={this.state.cityFilter}
-                onChange={(e) => this.handleFilterChange("cityFilter", e)}
+                onChange={e => this.handleFilterChange("cityFilter", e)}
                 className="form-control"
                 style={{
                   textAlign: "center",
@@ -241,7 +244,7 @@ class SchemeDetailsReport extends Component {
               <input
                 type="text"
                 value={this.state.districtFilter}
-                onChange={(e) => this.handleFilterChange("districtFilter", e)}
+                onChange={e => this.handleFilterChange("districtFilter", e)}
                 className="form-control"
                 style={{
                   textAlign: "center",
@@ -257,7 +260,7 @@ class SchemeDetailsReport extends Component {
       },
     ];
 
-    const dynamicColumns = (schemes || []).map((scheme) => ({
+    const dynamicColumns = (schemes || []).map(scheme => ({
       dataField: scheme,
       text: scheme,
       sort: true,
@@ -268,7 +271,7 @@ class SchemeDetailsReport extends Component {
 
         // Calculate total labs across districts for this scheme
         let totalCount = 0;
-        structuredData.forEach((row) => {
+        structuredData.forEach(row => {
           const count = parseInt(row[scheme], 10);
           if (!isNaN(count)) totalCount += count;
         });
@@ -301,11 +304,11 @@ class SchemeDetailsReport extends Component {
   openCountModal = (row, schemeName) => {
     const { SchemeList } = this.props;
 
-    const scheme = SchemeList.find((s) => s.name === schemeName);
+    const scheme = SchemeList.find(s => s.name === schemeName);
     if (!scheme) return;
 
     const selectedParticipants = (scheme.labs || []).filter(
-      (lab) =>
+      lab =>
         lab.province === row.province &&
         lab.city === row.city &&
         lab.district === row.district
@@ -328,7 +331,7 @@ class SchemeDetailsReport extends Component {
       return []; // Return an empty array if schemes is not valid
     }
 
-    return schemes.map((scheme) => ({
+    return schemes.map(scheme => ({
       dataField: scheme,
       text: scheme,
       sort: true,
@@ -341,7 +344,7 @@ class SchemeDetailsReport extends Component {
     if (onGetPendingLabs) onGetPendingLabs(user_id);
   }
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -375,40 +378,60 @@ class SchemeDetailsReport extends Component {
     console.log("Generated Columns:", allColumns);
 
     // Filter data based on filters
-    const filteredData = structuredData.filter((entry) => {
-      const province = entry.province?.toLowerCase() || "";
-      const city = entry.city?.toLowerCase() || "";
-      const district = entry.district?.toLowerCase() || "";
+const filteredData = structuredData.filter(entry => {
+  const province = entry.province?.toLowerCase() || "";
+  const city = entry.city?.toLowerCase() || "";
+  const district = entry.district?.toLowerCase() || "";
 
-      // Location filters
-      const matchesProvince = province.includes(
-        this.state.provinceFilter.toLowerCase()
-      );
-      const matchesCity = city.includes(this.state.cityFilter.toLowerCase());
-      const matchesDistrict = district.includes(
-        this.state.districtFilter.toLowerCase()
-      );
+  // Location filters
+  const matchesProvince = province.includes(this.state.provinceFilter.toLowerCase());
+  const matchesCity = city.includes(this.state.cityFilter.toLowerCase());
+  const matchesDistrict = district.includes(this.state.districtFilter.toLowerCase());
 
-      // Scheme filters
-      const matchesSchemes = Object.entries(schemeFilters).every(
-        ([scheme, filterVal]) => {
-          if (!filterVal) return true; // skip empty filters
-          const count = entry[scheme] || 0;
-          return count.toString().includes(filterVal); // allow partial match
-        }
-      );
+  // Scheme input filters (numeric column filters)
+  const matchesSchemes = Object.entries(schemeFilters).every(([scheme, filterVal]) => {
+    if (!filterVal) return true;
+    const count = entry[scheme] || 0;
+    return count.toString().includes(filterVal);
+  });
 
-      return (
-        matchesProvince && matchesCity && matchesDistrict && matchesSchemes
-      );
-    });
+  // Scheme Name dropdown filter (i.e., hide rows that don't have this scheme at all)
+  const matchesSchemeNameDropdown =
+    !this.state.schemeNameDropdownFilter ||
+    Object.keys(entry).includes(this.state.schemeNameDropdownFilter);
+
+  // Added By dropdown filter
+  const matchesAddedByDropdown =
+    !this.state.addedByDropdownFilter ||
+    this.props.SchemeList.some(
+      s =>
+        s.name in entry &&
+        s.added_by === this.state.addedByDropdownFilter &&
+        s.labs?.some(
+          lab =>
+            lab.province === entry.province &&
+            lab.city === entry.city &&
+            lab.district === entry.district
+        )
+    );
+
+  return (
+    matchesProvince &&
+    matchesCity &&
+    matchesDistrict &&
+    matchesSchemes &&
+    matchesSchemeNameDropdown &&
+    matchesAddedByDropdown
+  );
+});
+
 
     const pageOptions = {
       sizePerPage: 50,
       totalSize: filteredData.length,
       custom: true,
     };
-    const defaultSorted = [{ dataField: "province", order: "asc" }];
+const defaultSorted = [{ dataField: "province", order: "asc" }];
     return (
       <React.Fragment>
         <div className="page-content">
@@ -423,6 +446,42 @@ class SchemeDetailsReport extends Component {
             <Row className="justify-content-center">
               <Col lg="10">
                 <Card>
+                  <Row className="mb-3">
+  <Col md={4}>
+    <Label>Filter by Scheme Name</Label>
+    <Input
+      type="select"
+      value={this.state.schemeNameDropdownFilter}
+      onChange={e => this.setState({ schemeNameDropdownFilter: e.target.value })}
+    >
+      <option value="">All Schemes</option>
+      {this.state.schemes.map((scheme, idx) => (
+        <option key={idx} value={scheme}>
+          {scheme}
+        </option>
+      ))}
+    </Input>
+  </Col>
+{/* 
+  <Col md={4}>
+    <Label>Filter by Added By</Label>
+    <Input
+      type="select"
+      value={this.state.addedByDropdownFilter}
+      onChange={e => this.setState({ addedByDropdownFilter: e.target.value })}
+    >
+      <option value="">All Users</option>
+      {[...new Set(
+        this.props.SchemeList.map(s => s.added_by).filter(Boolean)
+      )].map((user, idx) => (
+        <option key={idx} value={user}>
+          {user}
+        </option>
+      ))}
+    </Input>
+  </Col> */}
+</Row>
+
                   <CardBody>
                     <PaginationProvider
                       pagination={paginationFactory({
@@ -439,7 +498,7 @@ class SchemeDetailsReport extends Component {
                           columns={allColumns}
                           search
                         >
-                          {(toolkitProps) => (
+                          {toolkitProps => (
                             <div>
                               <div className="table-responsive">
                                 <BootstrapTable
@@ -519,7 +578,7 @@ SchemeDetailsReport.propTypes = {
   onGetPendingLabs: PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   console.log("SchemeDetailsReport mapStateToProps state:", state);
 
   // Check if the required slices exist in the state
@@ -546,8 +605,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetScheme: (id) => dispatch(getSchemelist(id)),
-  onGetPendingLabs: (user_id) => dispatch(getAllLabs(user_id)),
+  onGetScheme: id => dispatch(getSchemelist(id)),
+  onGetPendingLabs: user_id => dispatch(getAllLabs(user_id)),
 });
 
 export default connect(
