@@ -2191,12 +2191,12 @@ class PendingLabs extends Component {
                                                     : value
                                               )
                                               .min(
-                                                -100,
-                                                "Discount cannot be less than -100%"
+                                                -1000,
+                                                "Discount cannot be less than -1000%"
                                               )
                                               .max(
-                                                100,
-                                                "Discount cannot be more than 100%"
+                                                1000,
+                                                "Discount cannot be more than 1000%"
                                               ),
                                           })}
                                           onSubmit={async (
