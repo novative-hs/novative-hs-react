@@ -193,8 +193,8 @@ updateSelectedCheckboxes() {
 
   if (ParticipantList && Array.isArray(ParticipantList)) {
     ParticipantList.forEach(participant => {
-      const isChecked = participant.manually_selected || false;  // ✅ Use manually_selected here
-      console.log(`🔍 Participant ID: ${participant.id} | manually_selected: ${isChecked}`);
+      const isChecked = participant.manually_selected === true; // ✅ Only manually selected
+      console.log(`🔍 ID: ${participant.id} | manually_selected: ${participant.manually_selected} | auto_selected: ${participant.auto_selected}`);
       if (isChecked) {
         selectedCheckboxes[participant.id] = true;
       }
@@ -202,9 +202,10 @@ updateSelectedCheckboxes() {
   }
 
   this.setState({ selectedCheckboxes, tableKey: this.state.tableKey + 1 }, () => {
-    console.log("📌 State updated! New selectedCheckboxes:", this.state.selectedCheckboxes);
+    console.log("📌 Updated checkboxes:", this.state.selectedCheckboxes);
   });
 }
+
 
 
   handleSave = () => {
