@@ -186,27 +186,26 @@ class RoundAddParticipant extends Component {
 // }
 updateSelectedCheckboxes() {
   const selectedCheckboxes = {};
-  const { ParticipantList } = this.props; // Use ParticipantList here
+  const { ParticipantList } = this.props;
 
   console.log("🚀 Running updateSelectedCheckboxes...");
   console.log("📝 Full ParticipantList:", JSON.stringify(ParticipantList, null, 2));
 
   if (ParticipantList && Array.isArray(ParticipantList)) {
     ParticipantList.forEach(participant => {
-      console.log(`🔍 Checking participant ID: ${participant.id}, auto_selected: ${participant.auto_selected}`);
-      if (participant.auto_selected) {  
-        console.log(`✅ Participant ID ${participant.id} is auto-selected. Marking checkbox as checked.`);
+      const isChecked = participant.manually_selected || false;  // ✅ Use manually_selected here
+      console.log(`🔍 Participant ID: ${participant.id} | manually_selected: ${isChecked}`);
+      if (isChecked) {
         selectedCheckboxes[participant.id] = true;
       }
     });
   }
 
-  console.log("🎯 Final selectedCheckboxes state before update:", selectedCheckboxes);
-
   this.setState({ selectedCheckboxes, tableKey: this.state.tableKey + 1 }, () => {
     console.log("📌 State updated! New selectedCheckboxes:", this.state.selectedCheckboxes);
   });
 }
+
 
   handleSave = () => {
     const { selectedCheckboxes } = this.state;

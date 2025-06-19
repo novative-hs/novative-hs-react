@@ -468,6 +468,27 @@ export const addNews = (news) => {
 //   });
 // };
 
+export const getComments = (id) =>
+  get(`${url.GET_COMMENTS}?participant_id=${id}`, {
+    headers: getHeader(authHeader()),
+  });
+
+export const addComments = (comment) => {
+  console.log("Calling addComments function with data:", comment);
+  let formData = new FormData();
+
+  formData.append("text", comment.text);         // required
+  formData.append("added_by", comment.added_by); // required
+  formData.append("participant", comment.participant); // ✅ ADD THIS LINE
+
+  if (comment.picture) {
+    formData.append("picture", comment.picture);
+  }
+
+  return axios.post(`${url.ADD_COMMENTS}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
 export const addParticipants = (register) => {
   let formData = new FormData();
   formData.append("name", register.name);

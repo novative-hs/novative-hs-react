@@ -139,6 +139,7 @@ import rounds from "pages/RegistrationAdmin/rounds";
 import ReferrelLab from "pages/RegistrationAdmin/referrelfeelab";
 import ApproveReferrelLab from "pages/RegistrationAdmin/Approvereferrelfeelab";
 import News from "pages/RegistrationAdmin/news";
+import Comments from "pages/RegistrationAdmin/comments";
 import Statistics from "pages/RegistrationAdmin/statics";
 import SelectValues from "pages/RegistrationAdmin/reportValues";
 import DisplayValues from "pages/RegistrationAdmin/analteTypeValues";
@@ -459,6 +460,7 @@ const registrationAdminAuthProtectedRoutes = [
   },
   { path: "/:organization_name/all-participant1", component: AllParticipant1 },
   { path: "/:organization_name/news", component: News },
+  {path: "/comments/:id", component: Comments},
   { path: "/:organization_name/statistics/:id", component: Statistics },
   { path: "/:organization_name/slectValues/:id", component: SelectValues },
   { path: "/:organization_name/displayValues/:id", component: DisplayValues },

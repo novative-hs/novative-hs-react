@@ -179,6 +179,8 @@ export const REGISTER_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/register-parti
 export const GET_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
 export const ADD_NEWS = `${API_ENDPOINT}/api/database-admin/news-add`;
 
+export const GET_COMMENTS = `${API_ENDPOINT}/api/database-admin/comments-list`;
+export const ADD_COMMENTS = `${API_ENDPOINT}/api/database-admin/comments-add`;
 
 export const GET_INSTRUMENT_LIST = `${API_ENDPOINT}/api/database-admin/instrument-list`;
 export const ADD_NEW_INSTRUMENT = `${API_ENDPOINT}/api/database-admin/instrument-create`;
