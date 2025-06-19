@@ -467,7 +467,6 @@ export const addNews = (news) => {
 //     throw error; // Throw error to handle it in your Redux action or component
 //   });
 // };
-
 export const getComments = (id) =>
   get(`${url.GET_COMMENTS}?participant_id=${id}`, {
     headers: getHeader(authHeader()),
