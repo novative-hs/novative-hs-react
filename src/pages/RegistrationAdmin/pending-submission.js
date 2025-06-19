@@ -20,6 +20,12 @@ class PendingSubmission extends Component {
     this.state = {
       nameFilter: "",
       idFilter: "",
+      contactPersonFilter: "",
+      cityFilter: "",
+      districtFilter: "",
+      phoneFilter: "",
+      emailFilter:"",
+      provinceFilter:"",
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
       RoundParticipantlist: [],
@@ -78,8 +84,8 @@ class PendingSubmission extends Component {
               <div>
                 <input
                   type="text"
-                  value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange("nameFilter", e)}
+                  value={this.state.emailFilter}
+                  onChange={e => this.handleFilterChange("emailFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -90,26 +96,28 @@ class PendingSubmission extends Component {
           align: "left",
         },
         {
-    dataField: "contact_person_name",
-    text: "Contact Person",
-    sort: true,
-    headerFormatter: (column, colIndex) => (
-      <>
-        <div>
-          <input
-            type="text"
-            value={this.state.contactPersonFilter}
-            onChange={e => this.handleFilterChange("contactPersonFilter", e)}
-            className="form-control"
-          />
-        </div>
-        <div>{column.text}</div>
-      </>
-    ),
-    headerAlign: "center",
-    align: "center",
-  },
-    
+          dataField: "contact_person_name",
+          text: "Contact Person",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.contactPersonFilter}
+                  onChange={e =>
+                    this.handleFilterChange("contactPersonFilter", e)
+                  }
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "center",
+        },
+
         {
           dataField: "contact", // or "phone" depending on your data field name
           text: "Phone",
@@ -131,83 +139,93 @@ class PendingSubmission extends Component {
           headerAlign: "center",
           align: "center",
         },
-         {
-    dataField: "province",
-    text: "Province",
-    sort: true,
-    headerFormatter: (column, colIndex) => (
-      <>
-        <div>
-          <input
-            type="text"
-            value={this.state.provinceFilter}
-            onChange={e => this.handleFilterChange("provinceFilter", e)}
-            className="form-control"
-          />
-        </div>
-        <div>{column.text}</div>
-      </>
-    ),
-    headerAlign: "center",
-    align: "center",
-  },
-  {
-    dataField: "district",
-    text: "District",
-    sort: true,
-    headerFormatter: (column, colIndex) => (
-      <>
-        <div>
-          <input
-            type="text"
-            value={this.state.districtFilter}
-            onChange={e => this.handleFilterChange("districtFilter", e)}
-            className="form-control"
-          />
-        </div>
-        <div>{column.text}</div>
-      </>
-    ),
-    headerAlign: "center",
-    align: "center",
-  },
-  {
-    dataField: "city",
-    text: "City",
-    sort: true,
-    headerFormatter: (column, colIndex) => (
-      <>
-        <div>
-          <input
-            type="text"
-            value={this.state.cityFilter}
-            onChange={e => this.handleFilterChange("cityFilter", e)}
-            className="form-control"
-          />
-        </div>
-        <div>{column.text}</div>
-      </>
-    ),
-    headerAlign: "center",
-    align: "center",
-  },
-      {
+        {
+          dataField: "province",
+          text: "Province",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.provinceFilter}
+                  onChange={e => this.handleFilterChange("provinceFilter", e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "center",
+        },
+        {
+          dataField: "district",
+          text: "District",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.districtFilter}
+                  onChange={e => this.handleFilterChange("districtFilter", e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "center",
+        },
+        {
+          dataField: "city",
+          text: "City",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.cityFilter}
+                  onChange={e => this.handleFilterChange("cityFilter", e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "center",
+        },
+        {
           dataField: "comments",
           text: "Comments",
-           formatter: (cell, row) => (
-    <Link to={`/comments/${row.AccountID}`} title="Add/View Comments">
-      <button
-        style={{
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          color: "#007bff",
-        }}
-      >
-        <i className="fas fa-comments"></i>
-      </button>
-    </Link>
-  ),
+          formatter: (cell, row) => {
+            const participantId = row.id; // or row.participant_id, etc.
+            return (
+              <Link
+                to={{
+                  pathname: `/comments/${participantId}`,
+                  state: { fromSubmissionPage: true }, // ✅ this is the key addition
+                }}
+                title="Add/View Comments"
+              >
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#007bff",
+                  }}
+                >
+                  <i className="fas fa-comments" />
+                </button>
+              </Link>
+            );
+          },
+
           headerAlign: "center",
           align: "center",
         },
@@ -225,26 +243,39 @@ class PendingSubmission extends Component {
       }`,
     }));
   }
+checkRefreshAndFetch = () => {
+  const shouldRefresh = this.props.location?.state?.shouldRefresh;
 
-  componentDidMount() {
+  if (shouldRefresh) {
+    console.log("🔁 Refresh triggered via navigation state");
     this.fetchData();
+
+    // Clear the state to avoid repeat triggering
+    this.props.history.replace({
+      ...this.props.location,
+      state: {},
+    });
+  }
+};
+
+componentDidMount() {
+  this.fetchData(); // 🔁 keep your existing fetch
+  this.checkRefreshAndFetch(); // ✅ NEW: only fetch again if coming back with refresh flag
+}
+
+componentDidUpdate(prevProps) {
+  // ✅ NEW: If coming back from comments page with refresh flag
+  if (this.props.location !== prevProps.location) {
+    this.checkRefreshAndFetch();
   }
 
-  componentDidUpdate(prevProps) {
-    console.log(
-      "Previous RoundParticipantlist:",
-      prevProps.RoundParticipantlist
-    );
-    console.log(
-      "Current RoundParticipantlist:",
-      this.props.RoundParticipantlist
-    );
-
-    if (prevProps.RoundParticipantlist !== this.props.RoundParticipantlist) {
-      console.log("Detected change in RoundParticipantlist. Updating state...");
-      this.setState({ RoundParticipantlist: this.props.RoundParticipantlist });
-    }
+  // ✅ KEEP this: update state if Redux list changes
+  if (prevProps.RoundParticipantlist !== this.props.RoundParticipantlist) {
+    console.log("Detected change in RoundParticipantlist. Updating state...");
+    this.setState({ RoundParticipantlist: this.props.RoundParticipantlist });
   }
+}
+
 
   fetchData = async () => {
     const { ongetUnsubmittedparticipants } = this.props;
@@ -275,19 +306,33 @@ class PendingSubmission extends Component {
 
   filterData = () => {
     const { RoundParticipantlist } = this.state;
-    const { nameFilter, idFilter } = this.state;
+    const { nameFilter, idFilter, emailFilter, contactPersonFilter, phoneFilter, provinceFilter, cityFilter,districtFilter } = this.state;
 
     if (!Array.isArray(RoundParticipantlist)) {
       return []; // Return empty array if not an array
     }
 
     return RoundParticipantlist.filter(entry => {
-      const name =
-        typeof entry.name === "string" ? entry.name.toLowerCase() : "";
-      const id = entry.id ? entry.id.toString() : "";
+    const name = typeof entry.name === "string" ? entry.name.toLowerCase() : "";
+    const id = entry.id ? entry.id.toString() : "";
+    const email = typeof entry.email === "string" ? entry.email.toLowerCase() : "";
+    const contactPerson = typeof entry.contact_person === "string" ? entry.contact_person.toLowerCase() : "";
+    const phone = typeof entry.phone === "string" ? entry.phone.toLowerCase() : "";
+    const province = typeof entry.province === "string" ? entry.province.toLowerCase() : "";
+    const city = typeof entry.city === "string" ? entry.city.toLowerCase() : "";
+    const district = typeof entry.district === "string" ? entry.district.toLowerCase() : "";
 
-      return name.includes(nameFilter.toLowerCase()) && id.includes(idFilter);
-    });
+    return (
+      name.includes(nameFilter.toLowerCase()) &&
+      id.includes(idFilter) &&
+      email.includes(emailFilter.toLowerCase()) &&
+      contactPerson.includes(contactPersonFilter.toLowerCase()) &&
+      phone.includes(phoneFilter.toLowerCase()) &&
+      province.includes(provinceFilter.toLowerCase()) &&
+      city.includes(cityFilter.toLowerCase()) &&
+      district.includes(districtFilter.toLowerCase())
+    );
+  });
   };
 
   render() {
@@ -302,6 +347,29 @@ class PendingSubmission extends Component {
       const [year, month, day] = date.split("-");
       return `${day}-${month}-${year}`;
     };
+
+    // const {
+    //   idFilter,
+    //   nameFilter,
+    //   emailFilter,
+    //   contactPersonFilter,
+    //   phoneFilter,
+    //   provinceFilter,
+    //   cityFilter,
+    //   districtFilter,
+    // } = this.state;
+
+    // return (
+    //     id.includes(idFilter.toLowerCase()) &&
+    //     samplename.includes(nameFilter.toLowerCase()) &&
+    //     id.includes(idFilter) &&
+    //     email.includes(emailFilter) &&
+    //     contact_person_name.includes(contactPersonFilter) &&
+    //     contact.includes(phoneFilter) &&
+    //     province.includes(provinceFilter) &&
+    //     city.includes(cityFilter) &&
+    //     districtFilter.includes(districtFilter) 
+    //   );
 
     const breadcrumbItem = roundDetails
       ? `Round Number: ${roundDetails.rounds || "No Round Number"}, 
@@ -410,7 +478,7 @@ class PendingSubmission extends Component {
                     <ToolkitProvider
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={RoundParticipantlist}
+                      data={this.filterData()}
                       search
                     >
                       {toolkitprops => (
@@ -427,7 +495,7 @@ class PendingSubmission extends Component {
                                   striped={true}
                                   headerWrapperClasses={"table-light"}
                                   responsive
-                                  data={RoundParticipantlist} // Use Redux data directly
+                                  data={this.filterData()}
                                   columns={this.state.feedbackListColumns}
                                 />
                               </div>
@@ -453,6 +521,11 @@ PendingSubmission.propTypes = {
   roundDetails: PropTypes.object,
   history: PropTypes.object,
   ongetUnsubmittedparticipants: PropTypes.func,
+   location: PropTypes.shape({
+    state: PropTypes.shape({
+      shouldRefresh: PropTypes.bool,
+    }),
+  }),
 };
 
 const mapStateToProps = state => {
@@ -475,4 +548,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(PendingSubmission));
-
