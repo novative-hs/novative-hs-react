@@ -156,7 +156,7 @@ class PendingLabs extends Component {
             >
               <Link
                 to="#"
-                onClick={(e) => this.openLabModal(e, AllLabs)} // ← Open on click
+                onClick={e => this.openLabModal(e, AllLabs)} // ← Open on click
                 style={{ cursor: "pointer" }} // Optional: ensure pointer cursor
               >
                 {AllLabs.name}
@@ -241,9 +241,9 @@ class PendingLabs extends Component {
             onFilter: (filterValue, data) => {
               // Custom filtering logic
               return data.filter(
-                (row) =>
+                row =>
                   Array.isArray(row.schemes) &&
-                  row.schemes.some((scheme) =>
+                  row.schemes.some(scheme =>
                     scheme.scheme_name
                       .toLowerCase()
                       .includes(filterValue.toLowerCase())
@@ -258,7 +258,7 @@ class PendingLabs extends Component {
               // Create a unique set of scheme names
               const uniqueSchemes = [
                 ...new Map(
-                  row.schemes.map((scheme) => [scheme.scheme_name, scheme])
+                  row.schemes.map(scheme => [scheme.scheme_name, scheme])
                 ).values(),
               ];
 
@@ -435,7 +435,7 @@ class PendingLabs extends Component {
   //  alert(message); // Replace this with your desired success message logic
   // }
 
-  isPaymentModalOpen = (participant) => {
+  isPaymentModalOpen = participant => {
     this.setState(
       {
         isPaymentModalOpen: true,
@@ -445,7 +445,7 @@ class PendingLabs extends Component {
     );
   };
 
-  isMembershipModalOpen = (participant) => {
+  isMembershipModalOpen = participant => {
     console.log("Opening Membership Modal for Participant:", participant); // Debug log
     this.setState(
       {
@@ -477,7 +477,7 @@ class PendingLabs extends Component {
     });
   }
 
-  handleSchemeChange = (event) => {
+  handleSchemeChange = event => {
     const selectedScheme = event.target.value;
     console.log("Scheme selected:", selectedScheme);
 
@@ -501,7 +501,7 @@ class PendingLabs extends Component {
       AllLabs,
     });
 
-    const filteredData = AllLabs.filter((lab) => {
+    const filteredData = AllLabs.filter(lab => {
       const membershipStatus = lab.membership_status?.trim().toLowerCase();
       const membershipDetail = lab.membership_status_detail
         ? lab.membership_status_detail.trim().toLowerCase()
@@ -541,7 +541,7 @@ class PendingLabs extends Component {
         !selectedScheme ||
         (Array.isArray(lab.schemes) &&
           lab.schemes.some(
-            (scheme) => scheme.scheme_id?.toString() === selectedScheme
+            scheme => scheme.scheme_id?.toString() === selectedScheme
           ));
 
       console.log(`Lab ${lab.id} matchesScheme:`, matchesScheme);
@@ -599,7 +599,7 @@ class PendingLabs extends Component {
   };
   toggleMembershipModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isMembershipModalOpen: !prevState.isMembershipModalOpen,
       }),
       () => {
@@ -612,7 +612,7 @@ class PendingLabs extends Component {
   };
   togglePaymentModal = () => {
     this.setState(
-      (prevState) => ({
+      prevState => ({
         isPaymentModalOpen: !prevState.isPaymentModalOpen,
       }),
       () => {
@@ -776,12 +776,12 @@ class PendingLabs extends Component {
       // Extract unique scheme names from AllLabs
       const participantSchemes = new Set(
         this.props.AllLabs.flatMap(
-          (lab) => lab.schemes?.map((scheme) => scheme.scheme_name) || []
+          lab => lab.schemes?.map(scheme => scheme.scheme_name) || []
         )
       );
 
       // Generate the filtered list for participant dropdown
-      const filteredCycleList = this.props.CycleList.filter((cycle) =>
+      const filteredCycleList = this.props.CycleList.filter(cycle =>
         participantSchemes.has(cycle.scheme_name)
       );
 
@@ -851,7 +851,7 @@ class PendingLabs extends Component {
     });
   };
 
-  toggleEditModal = (data) => {
+  toggleEditModal = data => {
     console.log("Edit Modal Data:", data); // Add this line
     this.setState({
       editModal: !this.state.editModal,
@@ -874,7 +874,7 @@ class PendingLabs extends Component {
     });
   };
   toggleLabModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       LabModal: !prevState.LabModal,
     }));
     this.state.btnText === "Copy"
@@ -882,7 +882,7 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggleModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isModalOpen: !prevState.isModalOpen,
     }));
   };
@@ -903,7 +903,7 @@ class PendingLabs extends Component {
     });
   };
   togglePatientModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       PatientModal: !prevState.PatientModal,
     }));
     this.state.btnText === "Copy"
@@ -918,7 +918,7 @@ class PendingLabs extends Component {
     });
   };
   toggleMarketerModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       MarketerModal: !prevState.MarketerModal,
     }));
     this.state.btnText === "Copy"
@@ -926,16 +926,16 @@ class PendingLabs extends Component {
       : this.setState({ btnText: "Copy" });
   };
   toggle() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       modal: !prevState.modal,
     }));
   }
 
-  handleApprovedEvent = (id) => {
+  handleApprovedEvent = id => {
     this.setState({ id: id, isApproved: true, unapprovedModal: true });
   };
 
-  handleUnapprovedEvent = (id) => {
+  handleUnapprovedEvent = id => {
     this.setState({ id: id, isApproved: false, unapprovedModal: true });
   };
 
@@ -959,7 +959,7 @@ class PendingLabs extends Component {
     this.setState({ unapprovedModal: false });
   };
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -970,66 +970,87 @@ class PendingLabs extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
+  exportToExcel = () => {
+    const { filteredLabs, selectedScheme } = this.state;
 
-exportToExcel = () => {
-  const { filteredLabs, selectedScheme } = this.state;
+    if (!filteredLabs || filteredLabs.length === 0) {
+      console.error("No data available to export.");
+      alert("No data available to export.");
+      return;
+    }
 
-  if (!filteredLabs || filteredLabs.length === 0) {
-    console.error("No data available to export.");
-    alert("No data available to export.");
-    return;
-  }
+    const selectedFields = [
+      { key: "name", label: "Name" },
+      { key: "email", label: "Email" },
+      { key: "address", label: "Address" },
+      { key: "shipping_address", label: "Shipping Address" },
+      { key: "billing_address", label: "Billing Address" },
+      { key: "email_participant", label: "Email of Notification Person" },
+      { key: "district", label: "District" },
+      { key: "city", label: "City" },
+      { key: "lab_staff_name", label: "Name of Notification Person" },
+      { key: "designation", label: "Designation" },
+      {
+        key: "landline_registered_by",
+        label: "Contact No of Notification Person",
+      },
+      { key: "schemes", label: "Schemes" },
+      { key: "payment_status", label: "Payment Status" },
+      { key: "payment_settlement", label: "Payment Settlement" },
+      { key: "membership_status", label: "Membership Status" },
+    ];
 
-  const selectedFields = [
-    { key: "name", label: "Name" },
-    { key: "email", label: "Email" },
-    { key: "address", label: "Address" },
-    { key: "shipping_address", label: "Shipping Address" },
-    { key: "billing_address", label: "Billing Address" },
-    { key: "email_participant", label: "Email of Notification Person" },
-    { key: "district", label: "District" },
-    { key: "city", label: "City" },
-    { key: "lab_staff_name", label: "Name of Notification Person" },
-    { key: "designation", label: "Designation" },
-    { key: "landline_registered_by", label: "Contact No of Notification Person" },
-    { key: "schemes", label: "Schemes" },
-    { key: "payment_status", label: "Payment Status" },
-    { key: "payment_settlement", label: "Payment Settlement" },
-    { key: "membership_status", label: "Membership Status" },
-  ];
-
-  const dataToExport = filteredLabs.map(item => {
-    const row = {};
-    selectedFields.forEach(({ key, label }) => {
-      if (key === "schemes") {
-        if (Array.isArray(item.schemes)) {
-          const uniqueSchemeNames = [...new Set(item.schemes.map(s => s.scheme_name))];
-          row[label] = uniqueSchemeNames.join(", ");
+    const dataToExport = filteredLabs.map(item => {
+      const row = {};
+      selectedFields.forEach(({ key, label }) => {
+        if (key === "schemes") {
+          if (Array.isArray(item.schemes)) {
+            const uniqueSchemeNames = [
+              ...new Set(item.schemes.map(s => s.scheme_name)),
+            ];
+            row[label] = uniqueSchemeNames.join(", ");
+          } else {
+            row[label] = "N/A";
+          }
         } else {
-          row[label] = "N/A";
+          row[label] = item[key] || "N/A";
         }
-      } else {
-        row[label] = item[key] || "N/A";
+      });
+      return row;
+    });
+
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = { Sheets: { Participants: ws }, SheetNames: ["Participants"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+
+    // 🆕 Extract scheme_id and cycle_id from selectedScheme if available
+    const [schemeId, cycleId] = (selectedScheme || "").split("-");
+    const fileName = schemeId
+      ? `Participants_Scheme_${schemeId}_Cycle_${cycleId}.xlsx`
+      : "All_Participants.xlsx";
+
+    saveAs(data, fileName);
+  };
+
+  getSchemeCounts = () => {
+    const { filteredLabs } = this.state;
+
+    const schemeCounts = {};
+
+    filteredLabs.forEach(lab => {
+      if (Array.isArray(lab.schemes)) {
+        lab.schemes.forEach(scheme => {
+          const name = scheme.scheme_name;
+          schemeCounts[name] = (schemeCounts[name] || 0) + 1;
+        });
       }
     });
-    return row;
-  });
 
-  const ws = XLSX.utils.json_to_sheet(dataToExport);
-  const wb = { Sheets: { Participants: ws }, SheetNames: ["Participants"] };
-  const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-  });
-
-  // 🆕 Extract scheme_id and cycle_id from selectedScheme if available
-  const [schemeId, cycleId] = (selectedScheme || "").split("-");
-  const fileName = schemeId
-    ? `Participants_Scheme_${schemeId}_Cycle_${cycleId}.xlsx`
-    : "All_Participants.xlsx";
-
-  saveAs(data, fileName);
-};
+    return schemeCounts;
+  };
 
   // handleSelectChange = (event) => {
   //   const selectedValue = event.target.value;
@@ -1064,19 +1085,20 @@ exportToExcel = () => {
     const { ListDistrict } = this.state;
     const { ListProvince } = this.state;
     const { ListDesignation } = this.state;
-    const cityOptions = ListCity.map((city) => ({
+    const schemeCounts = this.getSchemeCounts();
+    const cityOptions = ListCity.map(city => ({
       value: city.name,
       label: city.name,
     }));
-    const districtOptions = ListDistrict.map((district) => ({
+    const districtOptions = ListDistrict.map(district => ({
       value: district.name,
       label: district.name,
     }));
-    const provinceOptions = ListProvince.map((province) => ({
+    const provinceOptions = ListProvince.map(province => ({
       value: province.name,
       label: province.name,
     }));
-    const designationOptions = ListDesignation.map((designation) => ({
+    const designationOptions = ListDesignation.map(designation => ({
       value: designation.name,
       label: designation.name,
     }));
@@ -1099,14 +1121,14 @@ exportToExcel = () => {
     const { approvedLabs, CycleList } = this.state;
 
     const participantOptions = (this.props.approvedLabs || []).map(
-      (participant) => ({
+      participant => ({
         value: participant.id, // ensure this is the correct unique identifier
         label: participant.name, // or any other field you'd like to display
       })
     );
     const schemeOptions = CycleList.filter(
-      (scheme) => scheme.status && scheme.status.toLowerCase() === "active"
-    ).map((scheme) => ({
+      scheme => scheme.status && scheme.status.toLowerCase() === "active"
+    ).map(scheme => ({
       value: `${scheme.scheme_id}-${scheme.id}`,
       label: `(Scheme Name: ${scheme.scheme_name}) - (Cycle Number: ${scheme.cycle_no})`,
       scheme_id: scheme.scheme_id,
@@ -1123,7 +1145,7 @@ exportToExcel = () => {
     ];
     const customStyles = {
       // <-- This is invalid here
-      control: (provided) => ({
+      control: provided => ({
         ...provided,
         minHeight: "38px",
       }),
@@ -1149,6 +1171,36 @@ exportToExcel = () => {
               <Col lg="10">
                 <Card>
                   <CardBody>
+                    {Object.keys(schemeCounts).length > 0 && (
+                      <div className="mb-4">
+                        <h5 className="mb-3">
+                          📊 Scheme-wise Participant Count
+                        </h5>
+                        <div className="row">
+                          {Object.entries(schemeCounts)
+                            .sort(([a], [b]) => a.localeCompare(b)) // sort alphabetically
+                            .map(([scheme, count]) => (
+                              <div
+                                className="col-md-3 col-sm-4 col-6 mb-2"
+                                key={scheme}
+                              >
+                                <div
+                                  className="border rounded p-2 text-center bg-light"
+                                  style={{
+                                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                                  }}
+                                >
+                                  <strong>{scheme}</strong>
+                                  <div className="text-muted">
+                                    Total Count: {count}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
+
                     <Row className="justify-content-end">
                       <Col lg="auto" className="text-end">
                         <Button
@@ -1177,7 +1229,7 @@ exportToExcel = () => {
                           data={this.state.filteredLabs}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 <Col sm="8">
@@ -1233,12 +1285,12 @@ exportToExcel = () => {
                                             ) &&
                                               this.state.filteredCycleList
                                                 .filter(
-                                                  (filteredCycle) =>
+                                                  filteredCycle =>
                                                     filteredCycle.status &&
                                                     filteredCycle.status.toLowerCase() ===
                                                       "active"
                                                 )
-                                                .map((filteredCycle) => (
+                                                .map(filteredCycle => (
                                                   <option
                                                     key={filteredCycle.id}
                                                     value={
@@ -1683,9 +1735,7 @@ exportToExcel = () => {
                                                               ? " is-invalid"
                                                               : ""
                                                           }
-                                                          onChange={(
-                                                            selectedOption
-                                                          ) => {
+                                                          onChange={selectedOption => {
                                                             setFieldValue(
                                                               "district",
                                                               selectedOption
@@ -1695,7 +1745,7 @@ exportToExcel = () => {
                                                           }}
                                                           value={
                                                             districtOptions.find(
-                                                              (option) =>
+                                                              option =>
                                                                 option.value ===
                                                                 values.district
                                                             ) || null
@@ -1735,9 +1785,7 @@ exportToExcel = () => {
                                                           //   }
                                                           //   value={values.city} // Set the current selected values
                                                           // />
-                                                          onChange={(
-                                                            selectedOption
-                                                          ) => {
+                                                          onChange={selectedOption => {
                                                             setFieldValue(
                                                               "city",
                                                               selectedOption
@@ -1747,7 +1795,7 @@ exportToExcel = () => {
                                                           }}
                                                           value={
                                                             cityOptions.find(
-                                                              (option) =>
+                                                              option =>
                                                                 option.value ===
                                                                 values.city
                                                             ) || null
@@ -1785,9 +1833,7 @@ exportToExcel = () => {
                                                               ? " is-invalid"
                                                               : ""
                                                           }
-                                                          onChange={(
-                                                            selectedOption
-                                                          ) => {
+                                                          onChange={selectedOption => {
                                                             setFieldValue(
                                                               "province",
                                                               selectedOption
@@ -1797,7 +1843,7 @@ exportToExcel = () => {
                                                           }}
                                                           value={
                                                             provinceOptions.find(
-                                                              (option) =>
+                                                              option =>
                                                                 option.value ===
                                                                 values.province
                                                             ) || null
@@ -1897,9 +1943,7 @@ exportToExcel = () => {
                                                                 ? " is-invalid"
                                                                 : ""
                                                             }
-                                                            onChange={(
-                                                              selectedOption
-                                                            ) => {
+                                                            onChange={selectedOption => {
                                                               setFieldValue(
                                                                 "designation",
                                                                 selectedOption
@@ -1909,7 +1953,7 @@ exportToExcel = () => {
                                                             }}
                                                             value={
                                                               designationOptions.find(
-                                                                (option) =>
+                                                                option =>
                                                                   option.value ===
                                                                   values.designation
                                                               ) || null
@@ -2017,7 +2061,7 @@ exportToExcel = () => {
                                               Yup.mixed().when(
                                                 "payment_status",
                                                 {
-                                                  is: (val) =>
+                                                  is: val =>
                                                     val !==
                                                     "Payment In process", // required only if NOT "Payment In process"
                                                   then: Yup.mixed().required(
@@ -2030,13 +2074,13 @@ exportToExcel = () => {
                                             price: Yup.string().when(
                                               "discount",
                                               {
-                                                is: (discount) =>
+                                                is: discount =>
                                                   discount === 100,
                                                 then: Yup.string()
                                                   .test(
                                                     "price-zero-if-100-discount",
                                                     "Price must be 0 if discount is 100%",
-                                                    (value) =>
+                                                    value =>
                                                       parseFloat(value) === 0
                                                   )
                                                   .required(
@@ -2116,7 +2160,7 @@ exportToExcel = () => {
                                                   .test(
                                                     "fileSize",
                                                     "File too large",
-                                                    (value) =>
+                                                    value =>
                                                       !value ||
                                                       (value &&
                                                         value.size <=
@@ -2125,7 +2169,7 @@ exportToExcel = () => {
                                                   .test(
                                                     "fileType",
                                                     "Unsupported file format",
-                                                    (value) =>
+                                                    value =>
                                                       !value ||
                                                       (value &&
                                                         [
@@ -2195,7 +2239,7 @@ exportToExcel = () => {
                                               Yup.mixed().when(
                                                 "payment_status",
                                                 {
-                                                  is: (val) =>
+                                                  is: val =>
                                                     val ===
                                                     "Payment In process", // <-- Make it required if status is "Payment In process"
                                                   then: Yup.mixed().required(
@@ -2357,60 +2401,57 @@ exportToExcel = () => {
                                             setFieldValue,
                                             submitForm, // <-- add this
                                           }) => {
-                                            const handleSchemeChange = (
-                                              selectedOptions
-                                            ) => {
-                                              const selectedValues =
-                                                selectedOptions
-                                                  ? selectedOptions.map(
-                                                      (option) => option.value
-                                                    )
-                                                  : [];
-                                              setFieldValue(
-                                                "scheme",
-                                                selectedValues
-                                              );
-
-                                              const totalPrice =
-                                                selectedValues.reduce(
-                                                  (sum, schemeId) => {
-                                                    const scheme =
-                                                      CycleList.find(
-                                                        (s) => s.id === schemeId
-                                                      );
-                                                    return (
-                                                      sum +
-                                                      (scheme
-                                                        ? parseFloat(
-                                                            scheme.price
-                                                          )
-                                                        : 0)
-                                                    );
-                                                  },
-                                                  0
+                                            const handleSchemeChange =
+                                              selectedOptions => {
+                                                const selectedValues =
+                                                  selectedOptions
+                                                    ? selectedOptions.map(
+                                                        option => option.value
+                                                      )
+                                                    : [];
+                                                setFieldValue(
+                                                  "scheme",
+                                                  selectedValues
                                                 );
 
-                                              // Set priceBeforeDiscount only once when schemes are selected
-                                              if (
-                                                !values.priceBeforeDiscount ||
-                                                values.scheme.length === 0
-                                              ) {
+                                                const totalPrice =
+                                                  selectedValues.reduce(
+                                                    (sum, schemeId) => {
+                                                      const scheme =
+                                                        CycleList.find(
+                                                          s => s.id === schemeId
+                                                        );
+                                                      return (
+                                                        sum +
+                                                        (scheme
+                                                          ? parseFloat(
+                                                              scheme.price
+                                                            )
+                                                          : 0)
+                                                      );
+                                                    },
+                                                    0
+                                                  );
+
+                                                // Set priceBeforeDiscount only once when schemes are selected
+                                                if (
+                                                  !values.priceBeforeDiscount ||
+                                                  values.scheme.length === 0
+                                                ) {
+                                                  setFieldValue(
+                                                    "priceBeforeDiscount",
+                                                    totalPrice.toFixed(2)
+                                                  );
+                                                }
+
+                                                // Update the price to reflect the total (will be modified later by discount)
                                                 setFieldValue(
-                                                  "priceBeforeDiscount",
+                                                  "price",
                                                   totalPrice.toFixed(2)
                                                 );
-                                              }
+                                              };
 
-                                              // Update the price to reflect the total (will be modified later by discount)
-                                              setFieldValue(
-                                                "price",
-                                                totalPrice.toFixed(2)
-                                              );
-                                            };
-
-                                            const handleDiscountChange = (
-                                              e
-                                            ) => {
+                                            const handleDiscountChange = e => {
                                               let discountValue = parseFloat(
                                                 e.target.value
                                               );
@@ -2461,7 +2502,7 @@ exportToExcel = () => {
                                               }
                                             };
 
-                                            const handleTaxChange = (e) => {
+                                            const handleTaxChange = e => {
                                               let taxDeduction = parseFloat(
                                                 e.target.value
                                               );
@@ -2523,18 +2564,16 @@ exportToExcel = () => {
                                                           : ""
                                                       }
                                                       value={schemeOptions.filter(
-                                                        (option) =>
+                                                        option =>
                                                           values.scheme.includes(
                                                             option.value
                                                           )
                                                       )}
-                                                      onChange={(
-                                                        selectedOptions
-                                                      ) => {
+                                                      onChange={selectedOptions => {
                                                         const selectedValues =
                                                           selectedOptions
                                                             ? selectedOptions.map(
-                                                                (option) =>
+                                                                option =>
                                                                   option.value
                                                               )
                                                             : [];
@@ -2563,7 +2602,7 @@ exportToExcel = () => {
                                                                 .map(Number); // extract cycleId
                                                               const scheme =
                                                                 this.props.CycleList.find(
-                                                                  (s) =>
+                                                                  s =>
                                                                     s.id ===
                                                                     cycleId
                                                                 );
@@ -2651,7 +2690,7 @@ exportToExcel = () => {
                                                           {...field}
                                                           type="text"
                                                           className="form-control"
-                                                          onChange={(e) => {
+                                                          onChange={e => {
                                                             const discountPercent =
                                                               parseFloat(
                                                                 e.target.value
@@ -2719,7 +2758,7 @@ exportToExcel = () => {
                                                           value={
                                                             field.value || ""
                                                           } // Ensures controlled input
-                                                          onChange={(e) => {
+                                                          onChange={e => {
                                                             const discountAmount =
                                                               parseFloat(
                                                                 e.target.value
@@ -2789,7 +2828,7 @@ exportToExcel = () => {
                                                           type="text"
                                                           className="form-control"
                                                           placeholder="Enter tax deduction amount"
-                                                          onChange={(e) => {
+                                                          onChange={e => {
                                                             const tax =
                                                               parseFloat(
                                                                 e.target.value
@@ -2849,9 +2888,7 @@ exportToExcel = () => {
                                                             "Payment In process",
                                                         },
                                                       ]}
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         const status =
                                                           selectedOption?.value ||
                                                           "";
@@ -2905,7 +2942,7 @@ exportToExcel = () => {
                                                       <input
                                                         type="file"
                                                         name="purchase_order_copy"
-                                                        onChange={(event) =>
+                                                        onChange={event =>
                                                           setFieldValue(
                                                             "purchase_order_copy",
                                                             event.currentTarget
@@ -2990,9 +3027,7 @@ exportToExcel = () => {
                                                             label: "Part",
                                                           },
                                                         ]}
-                                                        onChange={(
-                                                          selectedOption
-                                                        ) => {
+                                                        onChange={selectedOption => {
                                                           const settlement =
                                                             selectedOption?.value ||
                                                             "";
@@ -3063,9 +3098,7 @@ exportToExcel = () => {
                                                                     ? ""
                                                                     : field.value
                                                                 }
-                                                                onChange={(
-                                                                  e
-                                                                ) => {
+                                                                onChange={e => {
                                                                   const partAmount =
                                                                     parseFloat(
                                                                       e.target
@@ -3139,7 +3172,7 @@ exportToExcel = () => {
                                                           type="file"
                                                           multiple={false}
                                                           accept=".jpg,.jpeg,.png,.pdf"
-                                                          onChange={(event) =>
+                                                          onChange={event =>
                                                             this.handleFileChange(
                                                               event,
                                                               setFieldValue
@@ -3191,9 +3224,7 @@ exportToExcel = () => {
                                                               label: "Cash",
                                                             },
                                                           ]}
-                                                          onChange={(
-                                                            selectedOption
-                                                          ) =>
+                                                          onChange={selectedOption =>
                                                             setFieldValue(
                                                               "paymentmethod",
                                                               selectedOption?.value ||
@@ -3420,9 +3451,7 @@ exportToExcel = () => {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
@@ -3431,7 +3460,7 @@ exportToExcel = () => {
                                                       }}
                                                       value={
                                                         membershipOptions.find(
-                                                          (option) =>
+                                                          option =>
                                                             option.value ===
                                                             values.membership
                                                         ) || null
@@ -3620,9 +3649,7 @@ exportToExcel = () => {
                                                           ? "is-invalid"
                                                           : ""
                                                       }
-                                                      onChange={(
-                                                        selectedOption
-                                                      ) => {
+                                                      onChange={selectedOption => {
                                                         setFieldValue(
                                                           "membership",
                                                           selectedOption?.value ||
@@ -3631,7 +3658,7 @@ exportToExcel = () => {
                                                       }}
                                                       value={
                                                         membershipOptions.find(
-                                                          (option) =>
+                                                          option =>
                                                             option.value ===
                                                             values.membership
                                                         ) || null
@@ -3751,23 +3778,23 @@ const mapStateToProps = ({
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onApproveUnapproveLab: (data) => dispatch(approveUnapproveLab(data)),
-  onGetPendingLabs: (id) => dispatch(getAllLabs(id)),
-  onGetInstrumentTypeList: (id) => dispatch(getSchemelist(id)),
+  onApproveUnapproveLab: data => dispatch(approveUnapproveLab(data)),
+  onGetPendingLabs: id => dispatch(getAllLabs(id)),
+  onGetInstrumentTypeList: id => dispatch(getSchemelist(id)),
   onAddNewType: (id, createUnit) => dispatch(addNewSchemeList(id, createUnit)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateSchemeList({ id, ...methodlist })),
-  onupdateAllLabs: (updatedData) => {
+  onupdateAllLabs: updatedData => {
     console.log("Dispatching updatedData:", updatedData); // Check if updated data is being passed
     dispatch(updateAllLabs(updatedData));
   },
-  onGetCityList: (id) => dispatch(getcitylist(id)),
-  onGetDistrictList: (id) => dispatch(getdistrictlist(id)),
-  onGetdesignationlist: (id) => dispatch(getdesignationlist(id)),
-  onGetProvinceList: (id) => dispatch(getprovincelist(id)),
-  onGetParticipantPayment: (id) => dispatch(getParticipantSchemelist(id)),
-  ongetApprovedLabs: (id) => dispatch(getApprovedLabs(id)),
-  ongetcyclelist: (id) => dispatch(getcyclelist(id)),
+  onGetCityList: id => dispatch(getcitylist(id)),
+  onGetDistrictList: id => dispatch(getdistrictlist(id)),
+  onGetdesignationlist: id => dispatch(getdesignationlist(id)),
+  onGetProvinceList: id => dispatch(getprovincelist(id)),
+  onGetParticipantPayment: id => dispatch(getParticipantSchemelist(id)),
+  ongetApprovedLabs: id => dispatch(getApprovedLabs(id)),
+  ongetcyclelist: id => dispatch(getcyclelist(id)),
   onAddNewPayment: (id, payment) => dispatch(addNewPayment(id, payment)),
   onupdateMembershipStatus: (id, status) => {
     console.log("Updating Membership Status - ID:", id, "Status:", status);
