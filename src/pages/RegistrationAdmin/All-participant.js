@@ -972,7 +972,7 @@ class PendingLabs extends Component {
   };
 
 exportToExcel = () => {
-  const { filteredLabs } = this.state;
+  const { filteredLabs, selectedScheme } = this.state;
 
   if (!filteredLabs || filteredLabs.length === 0) {
     console.error("No data available to export.");
@@ -992,11 +992,10 @@ exportToExcel = () => {
     { key: "lab_staff_name", label: "Name of Notification Person" },
     { key: "designation", label: "Designation" },
     { key: "landline_registered_by", label: "Contact No of Notification Person" },
-    { key: "schemes", label: "Schemes" }, // <-- add this line
+    { key: "schemes", label: "Schemes" },
     { key: "payment_status", label: "Payment Status" },
     { key: "payment_settlement", label: "Payment Settlement" },
-    { key: "membership_status", label: "Membership Status" }, // <-- Added this
-    
+    { key: "membership_status", label: "Membership Status" },
   ];
 
   const dataToExport = filteredLabs.map(item => {
@@ -1004,9 +1003,7 @@ exportToExcel = () => {
     selectedFields.forEach(({ key, label }) => {
       if (key === "schemes") {
         if (Array.isArray(item.schemes)) {
-          const uniqueSchemeNames = [
-            ...new Set(item.schemes.map(s => s.scheme_name))
-          ];
+          const uniqueSchemeNames = [...new Set(item.schemes.map(s => s.scheme_name))];
           row[label] = uniqueSchemeNames.join(", ");
         } else {
           row[label] = "N/A";
@@ -1025,7 +1022,13 @@ exportToExcel = () => {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
   });
 
-  saveAs(data, "Filtered_Participants.xlsx");
+  // 🆕 Extract scheme_id and cycle_id from selectedScheme if available
+  const [schemeId, cycleId] = (selectedScheme || "").split("-");
+  const fileName = schemeId
+    ? `Participants_Scheme_${schemeId}_Cycle_${cycleId}.xlsx`
+    : "All_Participants.xlsx";
+
+  saveAs(data, fileName);
 };
 
   // handleSelectChange = (event) => {
