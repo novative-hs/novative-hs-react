@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -55,6 +54,7 @@ class SampleList extends Component {
     this.state = {
       isEdit: false,
       ListUnitt: [],
+      analyteList: [], // Add this state
       sample: [],
       CycleList: [],
       SchemeList: [],
@@ -80,7 +80,6 @@ class SampleList extends Component {
           text: "Sample ID",
           sort: true,
           style: { textAlign: "center" },
-          formatter: (cellContent, row) => <>S-{row.id}</>,
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -139,7 +138,6 @@ class SampleList extends Component {
           dataField: "scheme",
           text: "Scheme Name",
           sort: true,
-          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -192,52 +190,52 @@ class SampleList extends Component {
             );
           },
         },
-        {
-          dataField: "noofanalytes",
-          text: "No of Analytes",
-          sort: true,
-          headerFormatter: (column, colIndex) => {
-            return (
-              <>
-                <div>
-                  <input
-                    style={{
-                      width: "150px", // Set your desired width here
-                      fontSize: "14px",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "prewrap",
-                      textAlign: "center", // Align text to the left
-                      display: "block",
-                    }}
-                    type="text"
-                    value={this.state.analyteFilter}
-                    onChange={e => this.handleFilterChange("analyteFilter", e)}
-                    className="form-control"
-                  />
-                </div>
-                <div>{column.text}</div>
-              </>
-            );
-          },
-          formatter: (cellContent, unitlist) => {
-            const { organization_name } = this.state;
-            return (
-              <div>
-                <Link
-                  to={`/${organization_name}/sample-analyte/${unitlist.id}`}
-                  style={{
-                    textDecoration: "underline",
-                    color: "#0000CD",
-                    display: "block",
-                    marginTop: "5px",
-                  }}
-                >
-                  {unitlist.noofanalytes}
-                </Link>
-              </div>
-            );
-          },
-        },
+{
+  dataField: "no_of_analytes",
+  text: "No of Analytes",
+  sort: true,
+  headerStyle: { textAlign: "center" },
+  style: { textAlign: "center" },
+  filter: textFilter(),
+  headerFormatter: (column, colIndex) => (
+    <>
+      <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+        <input
+          type="text"
+          value={this.state.noOfAnalytesFilter}
+          onChange={(e) =>
+            this.handleFilterChange("noOfAnalytesFilter", e)
+          }
+          className="form-control"
+          style={{ textAlign: "center", width: "100px" }}
+        />
+      </div>
+      <div style={{ textAlign: "center", marginTop: "5px" }}>
+        {column.text}
+      </div>
+    </>
+  ),
+  formatter: (cellContent, row) => {
+    const organizationName = localStorage.getItem("organization_name");
+
+    return (
+      <div>
+        <Link
+          to={`/${organizationName}/sample-analyte/${row.id}`}
+          style={{
+            textDecoration: "underline",
+            color: "#0000CD",
+            display: "block",
+            marginTop: "5px",
+          }}
+        >
+          {row.no_of_analytes || 0}
+        </Link>
+      </div>
+    );
+  },
+},
+
         {
           dataField: "analytetype",
           text: "Type",
@@ -314,7 +312,7 @@ class SampleList extends Component {
           formatter: (cellContent, sample) => (
             <div className="d-flex gap-3 ml-3">
               {/* Always allow adding analytes */}
-              <Tooltip title="Add Analytes">
+              {/* <Tooltip title="Add Analytes">
                 <Link
                   to={`/add-analytes-sample-page/${sample.id}`}
                   style={{ textDecoration: "underline", color: "#008000" }}
@@ -324,7 +322,7 @@ class SampleList extends Component {
                     id="analyteIcon"
                   ></i>
                 </Link>
-              </Tooltip>
+              </Tooltip> */}
 
               {/* Show Edit and Delete only if status is "Created" */}
               {sample.status === "Created" ? (
@@ -521,7 +519,7 @@ class SampleList extends Component {
     });
 
     const pageOptions = {
-      sizePerPage: 50,
+      sizePerPage: 10,
       totalSize: filteredData.length,
       custom: true,
     };
@@ -626,11 +624,7 @@ class SampleList extends Component {
                                             notes: this.state.selectedSample
                                               ? this.state.selectedSample.notes
                                               : "",
-                                            analytetype: this.state
-                                              .selectedSample
-                                              ? this.state.selectedSample
-                                                  .analytetype
-                                              : "",
+                                            
                                             // status: this.state.selectedSample ? this.state.selectedSample.status : "",
                                           }}
                                           validationSchema={Yup.object().shape({
@@ -644,18 +638,14 @@ class SampleList extends Component {
                                               Yup.string().required(
                                                 "Scheme is required"
                                               ),
-                                            detail: Yup.string().required(
-                                              "Details is required"
-                                            ),
-                                            notes:
-                                              Yup.string().required(
-                                                "Notes are required"
-                                              ),
-                                            analytetype: Yup.string()
-                                              .trim()
-                                              .required(
-                                                "Please select the Type from dropdown"
-                                              ),
+                                            // detail: Yup.string().required(
+                                            //   "Details is required"
+                                            // ),
+                                            // notes:
+                                            //   Yup.string().required(
+                                            //     "Notes are required"
+                                            //   ),
+                                           
                                             // status: Yup.string().required("Please select the Status from dropdown"),
                                           })}
                                           onSubmit={async (
@@ -679,7 +669,7 @@ class SampleList extends Component {
                                               detail: values.detail,
                                               notes: values.notes,
                                               added_by: userId,
-                                              analytetype: values.analytetype,
+                                             
                                             };
 
                                             try {
@@ -727,7 +717,7 @@ class SampleList extends Component {
                                             setSubmitting(false);
                                           }}
                                         >
-                                          {({ errors, status, touched }) => (
+                                          {({ errors, status, touched, setFieldValue }) => (
                                             <Form>
                                               <Row>
                                                 <Col className="col-12">
@@ -761,82 +751,99 @@ class SampleList extends Component {
                                                       className="text-danger"
                                                     />
                                                   </div>
-                                                  {this.state.isEdit ? (
-                                                    <div className="mb-3">
-                                                      <Label for="scheme">
-                                                        Selected Scheme
-                                                      </Label>
-                                                      {/* Displaying the scheme as a non-editable field with the scheme name */}
-                                                      <Field
-                                                        name="scheme"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.scheme &&
-                                                          touched.scheme
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                        component="input"
-                                                        value={
-                                                          this.state
-                                                            .selectedSample &&
-                                                          this.state
-                                                            .selectedSample
-                                                            .scheme
-                                                            ? this.state
-                                                                .selectedSample
-                                                                .scheme
-                                                            : ""
-                                                        } // Change this line
-                                                        disabled // Make it non-editable
-                                                      />
-                                                      <ErrorMessage
-                                                        name="scheme"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                  ) : (
-                                                    <div className="mb-3">
-                                                      <Label for="scheme">
-                                                        Select Scheme
-                                                      </Label>
-                                                      {/* Editable dropdown for adding a new sample */}
-                                                      <Field
-                                                        as="select"
-                                                        name="scheme"
-                                                        className={
-                                                          "form-control" +
-                                                          (errors.scheme &&
-                                                          touched.scheme
-                                                            ? " is-invalid"
-                                                            : "")
-                                                        }
-                                                      >
-                                                        <option value="">
-                                                          Select Scheme
-                                                        </option>
-                                                        {SchemeList &&
-                                                          SchemeList.map(
-                                                            scheme => (
-                                                              <option
-                                                                key={scheme.id}
-                                                                value={
-                                                                  scheme.id
-                                                                }
-                                                              >
-                                                                {scheme.name}
-                                                              </option>
-                                                            )
-                                                          )}
-                                                      </Field>
-                                                      <ErrorMessage
-                                                        name="scheme"
-                                                        component="div"
-                                                        className="invalid-feedback"
-                                                      />
-                                                    </div>
-                                                  )}
+          {this.state.isEdit ? (
+  <div className="mb-3">
+    <Label for="scheme">Selected Scheme</Label>
+    {/* Displaying the scheme as a non-editable field with the scheme name */}
+    <Field
+      name="scheme"
+      className={`form-control ${
+        errors.scheme && touched.scheme ? "is-invalid" : ""
+      }`}
+      component="input"
+      value={
+        this.state.selectedSample && this.state.selectedSample.scheme
+          ? this.state.selectedSample.scheme
+          : ""
+      }
+      disabled // Make it non-editable
+    />
+    <ErrorMessage
+      name="scheme"
+      component="div"
+      className="invalid-feedback"
+    />
+  </div>
+) : (
+  <div className="mb-3">
+    <Label for="scheme">Select Scheme</Label>
+    {/* Editable dropdown for adding a new sample */}
+   <Field
+  as="select"
+  name="scheme"
+  className={`form-control ${errors.scheme && touched.scheme ? "is-invalid" : ""}`}
+  onChange={async (e) => {
+    const selectedSchemeId = e.target.value;
+    setFieldValue("scheme", selectedSchemeId); // Update Formik state
+
+    // Fetch analytes for the selected scheme
+    const selectedScheme = SchemeList.find(
+      (scheme) => scheme.id === parseInt(selectedSchemeId, 10)
+    );
+
+    if (selectedScheme) {
+      // Simulate fetching analytes from the backend (or use existing SchemeList data)
+      const analytes =
+        Array.isArray(selectedScheme.analytes)
+          ? selectedScheme.analytes
+          : typeof selectedScheme.analytes === "string"
+          ? selectedScheme.analytes.split(",").map((analyte) => analyte.trim())
+          : []; // Default to empty array for invalid data
+
+      console.log("Fetched Analytes:", analytes);
+
+      // Update state with the fetched analytes
+      this.setState({
+        analyteList: analytes,
+      });
+    } else {
+      this.setState({ analyteList: [] }); // Clear analytes if no scheme selected
+    }
+  }}
+>
+  <option value="">Select Scheme</option>
+  {SchemeList &&
+    SchemeList.map((scheme) => (
+      <option key={scheme.id} value={scheme.id}>
+        {scheme.name}
+      </option>
+    ))}
+</Field>
+
+    <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
+  </div>
+)}
+
+{/* Display Analyte List Below Dropdown  */}
+{/* Display Analyte List Below Dropdown
+{!this.state.isEdit && this.state.analyteList.length > 0 && (
+  <div className="mb-3">
+    <Label className="form-label">Analytes</Label>
+    <ul>
+      {this.state.analyteList.map((analyte, index) => {
+        if (typeof analyte !== "string" || !analyte.trim()) {
+          // Log invalid analyte data for debugging
+          console.warn("Skipping invalid analyte:", analyte);
+          return null;
+        }
+
+        return <li key={index}>{analyte.trim()}</li>;
+      })}
+    </ul>
+  </div>
+)} */}
+
+
                                                   {/* <div className="mb-3">
                                                     <Label for="scheme">Select Cycle No</Label>
                                                     <Field
@@ -853,7 +860,7 @@ class SampleList extends Component {
                                                     </Field>
                                                     <ErrorMessage name="scheme" component="div" className="invalid-feedback" />
                                                   </div> */}
-                                                  <div className="mb-3">
+                                                  {/* <div className="mb-3">
                                                     <Label className="form-label">
                                                       Type
                                                       <span className="text-danger">
@@ -886,7 +893,7 @@ class SampleList extends Component {
                                                       component="div"
                                                       className="invalid-feedback"
                                                     />
-                                                  </div>
+                                                  </div> */}
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
                                                       Details
@@ -1041,4 +1048,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(SampleList));
-

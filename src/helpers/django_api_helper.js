@@ -671,7 +671,7 @@ export const addNewSampleList = (sample) => {
   formData.append("sampleno", sample.sampleno);
   formData.append("scheme", sample.scheme);
   formData.append("detail", sample.detail);
-  formData.append("analytetype", sample.analytetype);
+  // formData.append("analytetype", sample.analytetype);
   formData.append("notes", sample.notes);
   formData.append("status", sample.status);
   return axios.post(`${url.ADD_NEW_SAMPLE_LIST}`, formData, {
