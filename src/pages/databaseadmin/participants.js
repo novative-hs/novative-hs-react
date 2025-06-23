@@ -1116,12 +1116,13 @@ class ParticipantListN extends Component {
                                         </div>
 
                                         {/* Filter 2 */}
-                                        <div className="col">
+                                       
+<div className="col">
                                           <select
                                             className="form-select"
                                             onChange={this.handleSchemeChange}
                                             value={this.state.selectedScheme}
-                                            style={{ width: "200px" }}
+                                            style={{ width: "300px" }} // Increased width for longer text
                                           >
                                             <option value="">
                                               Select Scheme
@@ -1133,9 +1134,18 @@ class ParticipantListN extends Component {
                                                 filteredCycle => (
                                                   <option
                                                     key={filteredCycle.id}
-                                                    value={filteredCycle.id}
+                                                    value={
+                                                      filteredCycle.scheme_id
+                                                    }
                                                   >
-                                                    {`${filteredCycle.scheme_name} - Cycle ${filteredCycle.cycle_no}`}
+                                                    {`${
+                                                      filteredCycle.scheme_name
+                                                    } - Cycle ${
+                                                      filteredCycle.cycle_no
+                                                    } (${
+                                                      filteredCycle.status ||
+                                                      "No Status"
+                                                    })`}
                                                   </option>
                                                 )
                                               )}
