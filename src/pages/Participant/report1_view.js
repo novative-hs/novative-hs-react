@@ -85,6 +85,7 @@ class ReportParticipant extends Component {
           evaluation: result.evaluation || "--", // Always shown
           acceptedResults: result.accepted_results || 0,
           rejectedResults: result.rejected_results || 0,
+          mu_robust_mean: isNotSubmitted ? "--" : result.mu_robust_mean || "--",
         };
       });
 
@@ -108,7 +109,6 @@ class ReportParticipant extends Component {
         robust_sd: robust_sd,
       };
 
-      // ✅ Update state with everything, including acceptedResults
       this.setState({ reportDetails, analyteData, zScoreChartData });
     }
   }
@@ -723,7 +723,7 @@ class ReportParticipant extends Component {
                             border: "1px solid #dee2e6",
                           }}
                         >
-                          <strong>{}</strong>
+                          <strong>{analyte.mu_robust_mean}</strong>
                         </td>
                       </tr>
                     </tbody>
