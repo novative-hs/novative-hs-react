@@ -689,7 +689,7 @@ export const updateSampleList = sample => {
   formData.append("detail", sample.detail);
   formData.append("notes", sample.notes);
   formData.append("added_by", sample.added_by);
-  formData.append("analytetype", sample.analytetype); 
+  // formData.append("analytetype", sample.analytetype); 
   
   return axios.put(
     `${url.UPDATE_SAMPLE_LIST}/${sample.id}`,
