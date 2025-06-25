@@ -8,6 +8,9 @@ import {
   GET_PARTICIPANT_SCHEME_LIST_FAIL,
   UPDATE_NEW_PAYMENT_SUCCESS,
   UPDATE_NEW_PAYMENT_FAIL,
+  
+ CONFIRM_PAYMENT_SUCCESS,
+  CONFIRM_PAYMENT_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -112,6 +115,19 @@ const AddPayment = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
+case CONFIRM_PAYMENT_SUCCESS:
+        console.log("CONFIRM_PAYMENT_SUCCESS:", action.payload);
+        return {
+          ...state,
+          confirmpayment: action.payload || [],  // Ensure it's always an array
+        };
+      
+
+    case CONFIRM_PAYMENT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }
