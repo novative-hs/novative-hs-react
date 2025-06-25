@@ -11,14 +11,7 @@ import {
   GET_PARTICIPANT_SCHEME_LIST_FAIL,
   UPDATE_NEW_PAYMENT, 
   UPDATE_NEW_PAYMENT_SUCCESS,
-  UPDATE_NEW_PAYMENT_FAIL,
-  DELETE_PAYMENT,
-  DELETE_PAYMENT_SUCCESS,
-  DELETE_PAYMENT_FAIL, 
-  
-CONFIRM_PAYMENT,
-  CONFIRM_PAYMENT_SUCCESS,
-  CONFIRM_PAYMENT_FAIL
+  UPDATE_NEW_PAYMENT_FAIL
 } from "./actionTypes";
 
 
@@ -103,35 +96,5 @@ export const getParticipantSchemelistSuccess = GetPayment => ({
 
 export const getParticipantSchemelistFail = error => ({
   type: GET_PARTICIPANT_SCHEME_LIST_FAIL,
-  payload: error,
-});
-
-export const deletePayment = payment => ({
-  type: DELETE_PAYMENT,
-  payload: payment,
-});
-
-export const deletePaymentSuccess = id => ({
-  type: DELETE_PAYMENT_SUCCESS,
-  payload: id,
-});
-
-export const deletePaymentFail = error => ({
-  type: DELETE_PAYMENT_FAIL,
-  payload: error,
-});
-
-export const confirmpayment = (id) => ({
-  type: CONFIRM_PAYMENT,
-  payload: id,
-});
-
-export const confirmpaymentSuccess = GetPayment => ({
-  type: CONFIRM_PAYMENT_SUCCESS,
-  payload: GetPayment
-});
-
-export const confirmpaymentFail = error => ({
-  type: CONFIRM_PAYMENT_FAIL,
   payload: error,
 });

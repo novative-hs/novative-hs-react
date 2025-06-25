@@ -4,8 +4,6 @@ import {
   GET_PARTICIPANT_PAYMENT,
   GET_PARTICIPANT_SCHEME_LIST,
   UPDATE_NEW_PAYMENT,
-  DELETE_PAYMENT,
-  CONFIRM_PAYMENT,
 } from "./actionTypes";
 import {
   addNewPaymentSuccess,
@@ -17,18 +15,12 @@ import {
   updatePayment,
   updatePaymentSuccess,
   updatePaymentFail,
-  deletePaymentSuccess,
-  deletePaymentFail,
-  confirmpaymentSuccess,
-  confirmpaymentFail,
 } from "./actions";
 import {
   addNewPayment,
   getParticipantPayment,
   getParticipantSchemelist,
   updateNewPayment,
-  deletePayment,
-  confirmpayment,
 } from "../../helpers/django_api_helper";
 
 function* onAddNewPayment(object) {
@@ -118,38 +110,11 @@ function* fetchParticipantSchemelist(action) {
   }
 }
 
-function* onDeletePayment({ payload }) {
-  try {
-    const response = yield call(deletePayment, payload);
-    yield put(deletePaymentSuccess(payload.id));
-  } catch (error) {
-    console.error("❌ Error deleting payment:", error);
-    yield put(deletePaymentFail(error));
-  }
-}
-
-function* confirmPaymentSaga(action) {
-  try {
-    const response = yield call(confirmpayment, action.payload);
-    console.log("✅ Full API Response:", response);
-
-    if (response && response.message === "Payment confirmed") {
-      yield put(confirmpaymentSuccess(response)); // send success action
-    } else {
-      throw new Error("Unexpected response");
-    }
-  } catch (error) {
-    console.error("❌ Error confirming payment:", error);
-    yield put(confirmpaymentFail(error));
-  }
-}
-
 function* PaymentSaga() {
   yield takeEvery(ADD_NEW_Payment, onAddNewPayment);
   yield takeEvery(GET_PARTICIPANT_PAYMENT, fetchParticipantPayment);
   yield takeEvery(GET_PARTICIPANT_SCHEME_LIST, fetchParticipantSchemelist);
   yield takeEvery(UPDATE_NEW_PAYMENT, onUpdatePayment);
-  yield takeEvery(DELETE_PAYMENT, onDeletePayment); // ✅ Add this line
-  yield takeEvery(CONFIRM_PAYMENT, confirmPaymentSaga);
 }
+
 export default PaymentSaga;

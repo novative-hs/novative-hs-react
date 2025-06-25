@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { FaDownload } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -26,7 +25,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 import filterFactory from "react-bootstrap-table2-filter";
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getParticipantPayment, confirmpayment } from "store/Payment/actions";
+import { getParticipantPayment } from "store/Payment/actions";
 import "assets/scss/table.scss";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 
@@ -44,7 +43,7 @@ class ParticipantPayments extends Component {
       schemepriceFilter: "",
       hoveredSchemeNames: [],
       TaxFilter: "",
-      dateFilter: "",
+      dateFilter: "", // Add this if `dateFilter` is intended
       filtersApplied: false,
       hoveredSchemeNames: [],
       paymentmodeFilter: "",
@@ -656,70 +655,34 @@ class ParticipantPayments extends Component {
           dataField: "action_item",
           text: "Action",
           headerStyle: {
+            backgroundColor: "#87ceeb", // 🌤 sky blue for header
             textAlign: "center",
-            verticalAlign: "middle",
           },
-          formatter: (cell, row) => {
-            const { paymentConfirmState } = this.state;
-            const rowState = paymentConfirmState?.[row.id] || {};
-
-            return (
-              <div
-                className="d-flex flex-column align-items-center gap-2"
-                onClick={e => e.stopPropagation()} // ⛔ prevent parent row click
-              >
-                {/* Payment details link */}
-                <Tooltip title="Payment Details">
-                  <Link
-                    to={`/payment-scheme-list/${row.id}`}
-                    style={{ textDecoration: "underline", color: "#0000CD" }}
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <i className="mdi mdi-credit-card-outline font-size-18" />
-                  </Link>
-                </Tooltip>
-
-                {rowState.confirmed ? (
-                  <span className="fw-bold" style={{ color: "#007bff" }}>
-                    Payment Confirmed
-                  </span>
-                ) : (
-                  <div className="d-flex align-items-center gap-2">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      style={{ accentColor: "#007bff" }} // ✅ Bootstrap blue
-                      checked={!!rowState.checked}
-                      onChange={() => {
-                        console.log("Checkbox clicked");
-                        this.handleCheckboxToggle(row.id);
-                      }}
-                      onClick={e => e.stopPropagation()}
-                    />
-                    {rowState.checked && (
-                      <button
-                        className="btn btn-sm"
-                        style={{
-                          backgroundColor: "#007bff",
-                          color: "#fff",
-                          border: "none",
-                        }} // ✅ Blue background
-                        onClick={e => {
-                          e.stopPropagation();
-                          this.handleSaveConfirmation(row.id);
-                        }}
-                      >
-                        Save
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
+          style: {
+            textAlign: "right",
           },
+          formatter: (cell, row) => (
+            <div
+              className="d-flex gap-3 ml-3"
+              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
+            >
+              <Tooltip title="Payment Details">
+                <Link
+                  to={`/payment-scheme-list/${row.id}`}
+                  style={{ textDecoration: "underline", color: "#0000CD" }}
+                  onClick={() =>
+                    console.log(
+                      `Navigating to payment-scheme-list with ID: ${row.id}`
+                    )
+                  }
+                >
+                  <i className="mdi mdi-credit-card-outline font-size-18" />
+                </Link>
+              </Tooltip>
+            </div>
+          ),
         },
       ],
-      tableKey: Date.now(), // ✅ so you can force re-render
     };
   }
   formatNumber = (value, options = {}) => {
@@ -732,42 +695,8 @@ class ParticipantPayments extends Component {
           ...options,
         });
   };
-
-  handleCheckboxToggle = rowId => {
-    this.setState(prevState => ({
-      paymentConfirmState: {
-        ...prevState.paymentConfirmState,
-        [rowId]: {
-          ...prevState.paymentConfirmState[rowId],
-          checked: !prevState.paymentConfirmState[rowId]?.checked,
-        },
-      },
-      tableKey: Date.now(), // trigger full re-render of table
-    }));
-  };
-
-  handleSaveConfirmation = rowId => {
-    if (!rowId) {
-      console.error("❌ rowId is undefined");
-      return;
-    }
-
-    this.props.confirmpayment(rowId);
-
-    this.setState(prevState => ({
-      paymentConfirmState: {
-        ...prevState.paymentConfirmState,
-        [rowId]: {
-          checked: false,
-          confirmed: true,
-        },
-      },
-      tableKey: Date.now(), // 🔁 this will trigger <BootstrapTable> to fully re-render
-    }));
-  };
-
   componentDidMount() {
-    const { onGetParticipantpayment, confirmpayment } = this.props;
+    const { onGetParticipantpayment } = this.props;
     console.log("Component Mounted");
     this.setState({
       dateTo: new Date().toISOString().split("T")[0], // Set today's date
@@ -775,7 +704,6 @@ class ParticipantPayments extends Component {
 
     // Dispatch action to fetch all participant payments (without specific ID)
     onGetParticipantpayment();
-    confirmpayment();
   }
 
   componentDidUpdate(prevProps) {
@@ -784,8 +712,8 @@ class ParticipantPayments extends Component {
         id: payment.id,
         participant_name: payment.participant_name,
         district: payment.district,
-        scheme_count: payment.scheme_count,
-        scheme_names: payment.scheme_names || [],
+        scheme_count: payment.scheme_count, // Display count of schemes
+        scheme_names: payment.scheme_names || [], // <-- add this line
         price: payment.price,
         priceBeforeDiscount: payment.priceBeforeDiscount,
         discountAmount: payment.discountAmount,
@@ -798,28 +726,13 @@ class ParticipantPayments extends Component {
         paydate: payment.paydate,
         photo_url: payment.photo_url,
         receivedby: payment.receivedby,
-        membership_status: payment.membership_status,
-
-        // ✅ Pull confirmed flag from backend (make sure API includes this)
-        confirmed: payment.payment_confirmed === true,
+        membership_status: payment.membership_status, // ✅ include this
       }));
-
-      // ✅ Build confirmation state per row
-      const paymentConfirmState = {};
-      transformedData.forEach(row => {
-        paymentConfirmState[row.id] = {
-          confirmed: row.confirmed,
-          checked: false, // checkbox should start unchecked
-        };
-      });
-
       this.setState({
         GetPayment: transformedData,
-        paymentConfirmState, // ✅ track confirmation status
       });
     }
   }
-
   handleSchemeClick = row => {
     // If there's any timeout still running from previous hover, clear it
     if (this.mouseExitTimeout) {
@@ -840,13 +753,22 @@ class ParticipantPayments extends Component {
     });
   };
 
+  // handleMouseExit = () => {
+  //   this.setState({
+  //     PatientModal: false,
+  //     MarketerModal: false,
+  //     LabModal: false,
+  //     isHovered: false,
+  //   });
+  // };
+
   handleFilterChange = (filterName, e) => {
     const value = e.target.value;
 
     this.setState(
       prevState => ({
         [filterName]: value,
-
+        // Mark dateToActive only when dateTo changes
         dateToActive: filterName === "dateTo" ? true : prevState.dateToActive,
       }),
       this.checkFiltersApplied
@@ -1341,17 +1263,18 @@ class ParticipantPayments extends Component {
                                 <Col xl="12">
                                   <div className="table-responsive">
                                     <BootstrapTable
-                                      key={this.state.tableKey} // ✅ This is critical!
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={"table align-middle table-hover"}
+                                      classes={
+                                        "table align-middle table-condensed"
+                                      }
                                       bordered={false}
-                                      striped={false}
-                                      headerWrapperClasses={"table-light"}
+                                      striped={false} // or remove entirely
+                                      headerWrapperClasses="custom-header"
                                       responsive
                                       ref={this.node}
-                                      filter={filterFactory()} // Ensure filterFactory is applied correctly
+                                      filter={filterFactory()}
                                     />
                                   </div>
                                 </Col>
@@ -1382,9 +1305,6 @@ class ParticipantPayments extends Component {
 ParticipantPayments.propTypes = {
   GetPayment: PropTypes.array,
   onGetParticipantpayment: PropTypes.func,
-  onconfirmpayment: PropTypes.func,
-  dispatch: PropTypes.func.isRequired,
-  confirmpayment: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
@@ -1393,7 +1313,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onGetParticipantpayment: () => dispatch(getParticipantPayment()),
-  confirmpayment: id => dispatch(confirmpayment(id)),
 });
 
 export default connect(

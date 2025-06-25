@@ -8,11 +8,6 @@ import {
   GET_PARTICIPANT_SCHEME_LIST_FAIL,
   UPDATE_NEW_PAYMENT_SUCCESS,
   UPDATE_NEW_PAYMENT_FAIL,
-  DELETE_PAYMENT_SUCCESS,
-  
- CONFIRM_PAYMENT_SUCCESS,
-  CONFIRM_PAYMENT_FAIL,
-  // DELETE_PAYMENT_FAIL
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -72,7 +67,7 @@ const AddPayment = (state = INIT_STATE, action) => {
 
       return {
         ...state,
-        GetPayment: state.GetPayment.map(payment =>
+        GetPayment: state.GetPayment.map((payment) =>
           payment?.id?.toString() === action.payload.id.toString()
             ? { ...payment, ...action.payload }
             : payment
@@ -109,28 +104,11 @@ const AddPayment = (state = INIT_STATE, action) => {
         error: null,
       };
 
-    case DELETE_PAYMENT_SUCCESS:
+    case GET_PARTICIPANT_SCHEME_LIST_FAIL:
       return {
         ...state,
-        payments: state.payments.filter(p => p.id !== action.payload),
-      };
-    case DELETE_PAYMENT_SUCCESS:
-  return {
-    ...state,
-    GetPayment: state.GetPayment.filter(p => p.id !== action.payload),
-  };
-
-case CONFIRM_PAYMENT_SUCCESS:
-        console.log("CONFIRM_PAYMENT_SUCCESS:", action.payload);
-        return {
-          ...state,
-          confirmpayment: action.payload || [],  // Ensure it's always an array
-        };
-      
-
-    case CONFIRM_PAYMENT_FAIL:
-      return {
-        ...state,
+        PaymentSchemeList: [],
+        participant_name: "Unknown",
         error: action.payload,
       };
 
