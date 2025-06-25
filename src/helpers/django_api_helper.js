@@ -4100,7 +4100,7 @@ export const updateNewPayment = (payment) => {
     }
   );
 };
-export const confirmpayment = (id) => {
+  export const confirmpayment = (id) => {
   console.log("Calling API:", `${url.CONFIRM_PAYMENT}/${id}/`); // ✅ ADD SLASH
   return post(`${url.CONFIRM_PAYMENT}/${id}/`, {
     headers: getHeader(authHeader()),
