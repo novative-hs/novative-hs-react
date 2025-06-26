@@ -884,15 +884,15 @@ class ParticipantListN extends Component {
     }
   };
 
-  exportToExcel = () => {
-    const { AllLabs } = this.state;
-    if (!AllLabs || AllLabs.length === 0) {
+   exportToExcel = () => {
+    const { filteredLabs, selectedScheme } = this.state;
+
+    if (!filteredLabs || filteredLabs.length === 0) {
       console.error("No data available to export.");
       alert("No data available to export.");
       return;
     }
 
-    // Use actual keys from payload and provide friendly Excel headers
     const selectedFields = [
       { key: "name", label: "Name" },
       { key: "email", label: "Email" },
@@ -903,31 +903,29 @@ class ParticipantListN extends Component {
       { key: "district", label: "District" },
       { key: "city", label: "City" },
       { key: "lab_staff_name", label: "Name of Notification Person" },
-      // { key: "designation", label: "designation" },
-      { key: "phone", label: "Contact No of Notification Person" },
+      { key: "designation", label: "Designation" },
+      {
+        key: "landline_registered_by",
+        label: "Contact No of Notification Person",
+      },
+      { key: "schemes", label: "Schemes" },
       { key: "payment_status", label: "Payment Status" },
       { key: "payment_settlement", label: "Payment Settlement" },
-      { key: "schemes", label: "Scheme" },
       { key: "membership_status", label: "Membership Status" },
-      { key: "lab_code", label: "Lab Code" },
     ];
 
-    const dataToExport = AllLabs.map(item => {
+    const dataToExport = filteredLabs.map(item => {
       const row = {};
       selectedFields.forEach(({ key, label }) => {
         if (key === "schemes") {
-          row[label] = Array.isArray(item[key])
-            ? item[key].map(s => s.scheme_name).join(", ")
-            : item[key] || "N/A";
-        } else if (key === "membership_status") {
-          const cycleStatus = item.cycle_status || "";
-          const displayStatus =
-            cycleStatus.toLowerCase() === "active"
-              ? "Active"
-              : item.membership_status
-              ? item.membership_status
-              : "Inactive";
-          row[label] = displayStatus;
+          if (Array.isArray(item.schemes)) {
+            const uniqueSchemeNames = [
+              ...new Set(item.schemes.map(s => s.scheme_name)),
+            ];
+            row[label] = uniqueSchemeNames.join(", ");
+          } else {
+            row[label] = "N/A";
+          }
         } else {
           row[label] = item[key] || "N/A";
         }
@@ -942,8 +940,15 @@ class ParticipantListN extends Component {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
     });
 
-    saveAs(data, "Filtered_Participants.xlsx");
+    // 🆕 Extract scheme_id and cycle_id from selectedScheme if available
+    const [schemeId, cycleId] = (selectedScheme || "").split("-");
+    const fileName = schemeId
+      ? `Participants_Scheme_${schemeId}_Cycle_${cycleId}.xlsx`
+      : "All_Participants.xlsx";
+
+    saveAs(data, fileName);
   };
+
 
   render() {
     console.log("Rendering table with data:", this.state.filteredLabs);
