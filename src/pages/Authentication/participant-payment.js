@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 import { FaDownload } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -8,6 +9,7 @@ import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import Select from "react-select";
+// import { Button } from "react-bootstrap";
 import {
   Card,
   CardBody,
@@ -18,6 +20,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  Button, // ✅ Add this here
 } from "reactstrap";
 import paginationFactory, {
   PaginationProvider,
@@ -25,7 +28,7 @@ import paginationFactory, {
 } from "react-bootstrap-table2-paginator";
 import filterFactory from "react-bootstrap-table2-filter";
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getParticipantPayment } from "store/Payment/actions";
+import { getParticipantPayment, confirmpayment } from "store/Payment/actions";
 import "assets/scss/table.scss";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 
@@ -42,8 +45,11 @@ class ParticipantPayments extends Component {
       discountFilter: "",
       schemepriceFilter: "",
       hoveredSchemeNames: [],
+      showReconcileModal: false,
+      activeRowId: null,
+      paymentConfirmState: {},
       TaxFilter: "",
-      dateFilter: "", // Add this if `dateFilter` is intended
+      dateFilter: "",
       filtersApplied: false,
       hoveredSchemeNames: [],
       paymentmodeFilter: "",
@@ -60,6 +66,7 @@ class ParticipantPayments extends Component {
       paymentsettlementFilter: "",
       paymentMethodFilter: "",
       paymentStatusFilter: "",
+      reconcileStatusFilter: "",
       finalpayableFilter: "",
       paidamountFilter: "",
       remainingAmountFilter: "",
@@ -96,7 +103,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={e => this.handleFilterChange("idFilter", e)}
+                  onChange={(e) => this.handleFilterChange("idFilter", e)}
                   className="form-control"
                 />
               </div>
@@ -121,7 +128,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange("nameFilter", e)}
+                  onChange={(e) => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -151,7 +158,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.membershipStatusFilter || ""}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("membershipStatusFilter", e)
                   }
                   className="form-control"
@@ -183,7 +190,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.districtFilter}
-                  onChange={e => this.handleFilterChange("districtFilter", e)}
+                  onChange={(e) => this.handleFilterChange("districtFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -213,7 +220,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemeFilter}
-                  onChange={e => this.handleFilterChange("schemeFilter", e)}
+                  onChange={(e) => this.handleFilterChange("schemeFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -249,7 +256,7 @@ class ParticipantPayments extends Component {
             backgroundColor: "#fff9c4",
             textAlign: "right",
           },
-          formatter: cell => this.formatNumber(cell),
+          formatter: (cell) => this.formatNumber(cell),
           headerFormatter: (column, colIndex) => (
             <div>
               <div>{column.text}</div>
@@ -257,7 +264,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.schemepriceFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("schemepriceFilter", e)
                   }
                   className="form-control"
@@ -283,7 +290,7 @@ class ParticipantPayments extends Component {
             backgroundColor: "#fff9c4",
             textAlign: "right",
           },
-          formatter: cell => this.formatNumber(cell),
+          formatter: (cell) => this.formatNumber(cell),
 
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
@@ -292,7 +299,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.discountFilter}
-                  onChange={e => this.handleFilterChange("discountFilter", e)}
+                  onChange={(e) => this.handleFilterChange("discountFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -316,7 +323,7 @@ class ParticipantPayments extends Component {
             backgroundColor: "#fff9c4",
             textAlign: "right",
           },
-          formatter: cell => {
+          formatter: (cell) => {
             const value = Number(cell);
             return value === 0 || isNaN(value) ? "--" : value.toLocaleString();
           },
@@ -327,7 +334,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.TaxFilter}
-                  onChange={e => this.handleFilterChange("TaxFilter", e)}
+                  onChange={(e) => this.handleFilterChange("TaxFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -367,7 +374,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.finalpayableFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("finalpayableFilter", e)
                   }
                   className="form-control"
@@ -400,7 +407,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentsettlementFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentsettlementFilter", e)
                   }
                   className="form-control"
@@ -434,13 +441,55 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentStatusFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentStatusFilter", e)
                   }
                   className="form-control"
                   style={{
                     textAlign: "center",
                     width: "100px",
+                    margin: "auto",
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        },
+        {
+          dataField: "payment_reconcile_status",
+          text: "Reconciliation Status",
+          sort: true,
+          headerStyle: {
+            backgroundColor: "#d0e2ff", // 🔵 light blue for header
+            textAlign: "center",
+          },
+          style: {
+            backgroundColor: "#d0e2ff", // 🔵 light blue for cells
+            textAlign: "center",
+          },
+          formatter: (cell, row) => {
+            const status = row.payment_reconcile_status;
+
+            if (!status) return <span className="text-muted">--</span>;
+
+            return (
+              <span>{status}</span> // 🔁 plain, normal text
+            );
+          },
+          headerFormatter: (column, colIndex) => (
+            <div style={{ textAlign: "center" }}>
+              <div>{column.text}</div>
+              <div style={{ marginTop: "5px" }}>
+                <input
+                  type="text"
+                  value={this.state.reconcileStatusFilter || ""}
+                  onChange={(e) =>
+                    this.handleFilterChange("reconcileStatusFilter", e)
+                  }
+                  className="form-control"
+                  style={{
+                    textAlign: "center",
+                    width: "120px",
                     margin: "auto",
                   }}
                 />
@@ -460,7 +509,7 @@ class ParticipantPayments extends Component {
             backgroundColor: "#d0e2ff", // 🔵 light blue for cells
             textAlign: "right",
           },
-          formatter: cell => this.formatNumber(cell),
+          formatter: (cell) => this.formatNumber(cell),
 
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
@@ -469,7 +518,9 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paidamountFilter}
-                  onChange={e => this.handleFilterChange("paidamountFilter", e)}
+                  onChange={(e) =>
+                    this.handleFilterChange("paidamountFilter", e)
+                  }
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -492,7 +543,7 @@ class ParticipantPayments extends Component {
           style: {
             textAlign: "right",
           },
-          formatter: cell => this.formatNumber(cell),
+          formatter: (cell) => this.formatNumber(cell),
           headerFormatter: (column, colIndex) => (
             <div style={{ textAlign: "center" }}>
               <div>{column.text}</div>
@@ -500,7 +551,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.remainingAmountFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("remainingAmountFilter", e)
                   }
                   className="form-control"
@@ -562,7 +613,7 @@ class ParticipantPayments extends Component {
                   <input
                     type="text"
                     value={this.state.paymentMethodFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("paymentMethodFilter", e)
                     }
                     className="form-control"
@@ -589,7 +640,7 @@ class ParticipantPayments extends Component {
           style: {
             textAlign: "right",
           },
-          formatter: cell => {
+          formatter: (cell) => {
             if (!cell) return "-";
             const dateObj = new Date(cell);
             if (isNaN(dateObj.getTime())) return "-";
@@ -607,7 +658,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.dateFilter}
-                  onChange={e => this.handleFilterChange("dateFilter", e)}
+                  onChange={(e) => this.handleFilterChange("dateFilter", e)}
                   className="form-control"
                   style={{
                     textAlign: "center",
@@ -637,7 +688,7 @@ class ParticipantPayments extends Component {
                 <input
                   type="text"
                   value={this.state.paymentreceivedFilter}
-                  onChange={e =>
+                  onChange={(e) =>
                     this.handleFilterChange("paymentreceivedFilter", e)
                   }
                   className="form-control"
@@ -655,34 +706,48 @@ class ParticipantPayments extends Component {
           dataField: "action_item",
           text: "Action",
           headerStyle: {
-            backgroundColor: "#87ceeb", // 🌤 sky blue for header
             textAlign: "center",
+            verticalAlign: "middle",
           },
-          style: {
-            textAlign: "right",
+          formatter: (cell, row) => {
+            const { paymentConfirmState } = this.state;
+            const rowState = paymentConfirmState?.[row.id] || {};
+            const status =
+              row.payment_reconcile_status || rowState.reconcileStatus || "";
+
+            return (
+              <div
+                className="d-flex flex-row align-items-center gap-2"
+                onClick={(e) => e.stopPropagation()} // ⛔ prevent parent row click
+              >
+                {/* Payment details link */}
+                <Tooltip title="Payment Details">
+                  <Link
+                    to={`/payment-scheme-list/${row.id}`}
+                    style={{ textDecoration: "underline", color: "#0000CD" }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <i className="mdi mdi-credit-card-outline font-size-18" />
+                  </Link>
+                </Tooltip>
+
+                <Tooltip title="Set Reconciliation Status">
+                  <i
+                    className="mdi mdi-checkbox-marked-circle-outline"
+                    style={{
+                      cursor: "pointer",
+                      fontSize: "20px",
+                      color: "#0000CD", // Dark blue
+                    }}
+                    onClick={() => this.handleOpenModal(row.id)}
+                  />
+                </Tooltip>
+              </div>
+            );
           },
-          formatter: (cell, row) => (
-            <div
-              className="d-flex gap-3 ml-3"
-              style={{ display: "flex", justifyContent: "center", gap: "10px" }}
-            >
-              <Tooltip title="Payment Details">
-                <Link
-                  to={`/payment-scheme-list/${row.id}`}
-                  style={{ textDecoration: "underline", color: "#0000CD" }}
-                  onClick={() =>
-                    console.log(
-                      `Navigating to payment-scheme-list with ID: ${row.id}`
-                    )
-                  }
-                >
-                  <i className="mdi mdi-credit-card-outline font-size-18" />
-                </Link>
-              </Tooltip>
-            </div>
-          ),
         },
       ],
+      tableKey: Date.now(), // ✅ so you can force re-render
     };
   }
   formatNumber = (value, options = {}) => {
@@ -695,8 +760,87 @@ class ParticipantPayments extends Component {
           ...options,
         });
   };
+
+  handleCheckboxToggle = (rowId) => {
+    this.setState((prevState) => ({
+      paymentConfirmState: {
+        ...prevState.paymentConfirmState,
+        [rowId]: {
+          ...prevState.paymentConfirmState[rowId],
+          checked: !prevState.paymentConfirmState[rowId]?.checked,
+        },
+      },
+      tableKey: Date.now(), // trigger full re-render of table
+    }));
+  };
+
+  handleSaveConfirmation = (rowId) => {
+    if (!rowId) {
+      console.error("❌ rowId is undefined");
+      return;
+    }
+
+    this.props.confirmpayment(rowId);
+
+    this.setState((prevState) => ({
+      paymentConfirmState: {
+        ...prevState.paymentConfirmState,
+        [rowId]: {
+          checked: false,
+          confirmed: true,
+        },
+      },
+      tableKey: Date.now(), // 🔁 this will trigger <BootstrapTable> to fully re-render
+    }));
+  };
+  handleOpenModal = (rowId) => {
+    const row = this.state.GetPayment.find((row) => row.id === rowId);
+    this.setState({
+      showReconcileModal: true,
+      activeRowId: rowId,
+      activeParticipantName: row?.participant_name || "Unknown",
+      selectedReconcileStatus: "", // Clear previous selection
+    });
+  };
+
+  handleCloseModal = () => {
+    this.setState({
+      showReconcileModal: false,
+      activeRowId: null,
+      activeParticipantName: "",
+      selectedReconcileStatus: "",
+    });
+  };
+
+  setReconcileStatus = (status) => {
+    const rowId = this.state.activeRowId;
+
+    // Dispatch saga
+    this.props.confirmpayment({ id: rowId, status });
+
+    // Update UI locally
+    this.setState((prevState) => {
+      const updatedData = prevState.GetPayment.map((item) =>
+        item.id === rowId ? { ...item, payment_reconcile_status: status } : item
+      );
+
+      return {
+        GetPayment: updatedData, // ✅ update row status
+        paymentConfirmState: {
+          ...prevState.paymentConfirmState,
+          [rowId]: {
+            ...prevState.paymentConfirmState[rowId],
+            reconcileStatus: status,
+          },
+        },
+        showReconcileModal: false,
+        activeRowId: null,
+      };
+    });
+  };
+
   componentDidMount() {
-    const { onGetParticipantpayment } = this.props;
+    const { onGetParticipantpayment, confirmpayment } = this.props;
     console.log("Component Mounted");
     this.setState({
       dateTo: new Date().toISOString().split("T")[0], // Set today's date
@@ -704,16 +848,17 @@ class ParticipantPayments extends Component {
 
     // Dispatch action to fetch all participant payments (without specific ID)
     onGetParticipantpayment();
+    confirmpayment();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.GetPayment !== prevProps.GetPayment) {
-      const transformedData = (this.props.GetPayment || []).map(payment => ({
+      const transformedData = (this.props.GetPayment || []).map((payment) => ({
         id: payment.id,
         participant_name: payment.participant_name,
         district: payment.district,
-        scheme_count: payment.scheme_count, // Display count of schemes
-        scheme_names: payment.scheme_names || [], // <-- add this line
+        scheme_count: payment.scheme_count,
+        scheme_names: payment.scheme_names || [],
         price: payment.price,
         priceBeforeDiscount: payment.priceBeforeDiscount,
         discountAmount: payment.discountAmount,
@@ -726,14 +871,31 @@ class ParticipantPayments extends Component {
         paydate: payment.paydate,
         photo_url: payment.photo_url,
         receivedby: payment.receivedby,
-        membership_status: payment.membership_status, // ✅ include this
+        membership_status: payment.membership_status,
+
+        // ✅ Make it available to table column
+        payment_reconcile_status: payment.payment_reconcile_status || "",
+
+        // ✅ You can keep reconcileStatus for internal state tracking
+        reconcileStatus: payment.payment_reconcile_status || "",
       }));
+
+      // ✅ Build confirmation state per row
+      const paymentConfirmState = {};
+      transformedData.forEach((row) => {
+        paymentConfirmState[row.id] = {
+          reconcileStatus: row.reconcileStatus, // ✅ use this
+        };
+      });
+
       this.setState({
         GetPayment: transformedData,
+        paymentConfirmState, // ✅ track confirmation status
       });
     }
   }
-  handleSchemeClick = row => {
+
+  handleSchemeClick = (row) => {
     // If there's any timeout still running from previous hover, clear it
     if (this.mouseExitTimeout) {
       clearTimeout(this.mouseExitTimeout);
@@ -753,22 +915,13 @@ class ParticipantPayments extends Component {
     });
   };
 
-  // handleMouseExit = () => {
-  //   this.setState({
-  //     PatientModal: false,
-  //     MarketerModal: false,
-  //     LabModal: false,
-  //     isHovered: false,
-  //   });
-  // };
-
   handleFilterChange = (filterName, e) => {
     const value = e.target.value;
 
     this.setState(
-      prevState => ({
+      (prevState) => ({
         [filterName]: value,
-        // Mark dateToActive only when dateTo changes
+
         dateToActive: filterName === "dateTo" ? true : prevState.dateToActive,
       }),
       this.checkFiltersApplied
@@ -787,6 +940,7 @@ class ParticipantPayments extends Component {
       paymentsettlementFilter,
       paymentMethodFilter,
       paymentStatusFilter,
+      reconcileStatusFilter,
       paidamountFilter,
       remainingAmountFilter,
       finalpayableFilter,
@@ -810,6 +964,7 @@ class ParticipantPayments extends Component {
       paymentsettlementFilter,
       paymentMethodFilter,
       paymentStatusFilter,
+      reconcileStatusFilter,
       paidamountFilter,
       remainingAmountFilter,
       finalpayableFilter,
@@ -820,7 +975,7 @@ class ParticipantPayments extends Component {
       dateToActive ? "active" : "", // Only consider dateTo if active
     ];
 
-    const anyFilterSelected = filters.some(f => f && f.trim() !== "");
+    const anyFilterSelected = filters.some((f) => f && f.trim() !== "");
 
     this.setState({ filtersApplied: anyFilterSelected });
   };
@@ -841,6 +996,7 @@ class ParticipantPayments extends Component {
       membershipStatusFilter = "Select",
       paymentMethodFilter = "Select",
       paymentStatusFilter = "Select",
+      reconcileStatusFilter = "Select",
       paidamountFilter = "Select",
       remainingAmountFilter = "Select",
       finalpayableFilter = "Select",
@@ -863,6 +1019,7 @@ class ParticipantPayments extends Component {
       paymentsettlementFilter,
       paymentMethodFilter,
       paymentStatusFilter,
+      reconcileStatusFilter,
       paidamountFilter,
       remainingAmountFilter,
       finalpayableFilter,
@@ -874,11 +1031,11 @@ class ParticipantPayments extends Component {
     ];
 
     const isAnyFilterApplied = filters.some(
-      filter => filter !== "Select" && filter !== ""
+      (filter) => filter !== "Select" && filter !== ""
     );
     if (!isAnyFilterApplied) return [];
 
-    return GetPayment.filter(entry => {
+    return GetPayment.filter((entry) => {
       return (
         (idFilter === "All" ||
           (entry.id && entry.id.toString().includes(idFilter))) &&
@@ -891,7 +1048,7 @@ class ParticipantPayments extends Component {
             .toLowerCase()
             .includes(districtFilter.toLowerCase())) &&
         (schemeFilter === "All" ||
-          (entry.scheme_names || []).some(scheme =>
+          (entry.scheme_names || []).some((scheme) =>
             scheme.toLowerCase().includes(schemeFilter.toLowerCase())
           )) &&
         (schemepriceFilter === "All" ||
@@ -923,6 +1080,10 @@ class ParticipantPayments extends Component {
           (entry.payment_status || "")
             .toLowerCase()
             .includes(paymentStatusFilter.toLowerCase())) &&
+        (reconcileStatusFilter === "All" ||
+          (entry.payment_reconcile_status || "")
+            .toLowerCase()
+            .includes(reconcileStatusFilter.toLowerCase())) &&
         (paidamountFilter === "All" ||
           (entry.part_payment_amount || "")
             .toString()
@@ -939,14 +1100,14 @@ class ParticipantPayments extends Component {
     });
   };
 
-  getUniqueOptions = fieldName => {
+  getUniqueOptions = (fieldName) => {
     const { GetPayment } = this.state;
     const options = new Set();
 
-    GetPayment.forEach(item => {
+    GetPayment.forEach((item) => {
       const value = item[fieldName];
       if (Array.isArray(value)) {
-        value.forEach(v => options.add(v));
+        value.forEach((v) => options.add(v));
       } else if (value) {
         options.add(value);
       }
@@ -1000,7 +1161,7 @@ class ParticipantPayments extends Component {
                           data={this.filterData()}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Modal
                                 isOpen={this.state.schemeModalOpen}
@@ -1044,7 +1205,7 @@ class ParticipantPayments extends Component {
                                       },
                                       ...this.getUniqueOptions(
                                         "participant_name"
-                                      ).map(option => ({
+                                      ).map((option) => ({
                                         value: option,
                                         label: option,
                                       })),
@@ -1057,7 +1218,7 @@ class ParticipantPayments extends Component {
                                           }
                                         : null
                                     }
-                                    onChange={selected =>
+                                    onChange={(selected) =>
                                       this.handleFilterChange("nameFilter", {
                                         target: {
                                           value: selected?.value || "",
@@ -1076,7 +1237,7 @@ class ParticipantPayments extends Component {
                                       { value: "All", label: "All Schemes" },
                                       ...this.getUniqueOptions(
                                         "scheme_names"
-                                      ).map(option => ({
+                                      ).map((option) => ({
                                         value: option,
                                         label: option,
                                       })),
@@ -1089,7 +1250,7 @@ class ParticipantPayments extends Component {
                                           }
                                         : null
                                     }
-                                    onChange={selected =>
+                                    onChange={(selected) =>
                                       this.handleFilterChange("schemeFilter", {
                                         target: {
                                           value: selected?.value || "",
@@ -1107,7 +1268,7 @@ class ParticipantPayments extends Component {
                                     options={[
                                       { value: "All", label: "All Districts" },
                                       ...this.getUniqueOptions("district").map(
-                                        option => ({
+                                        (option) => ({
                                           value: option,
                                           label: option,
                                         })
@@ -1121,7 +1282,7 @@ class ParticipantPayments extends Component {
                                           }
                                         : null
                                     }
-                                    onChange={selected =>
+                                    onChange={(selected) =>
                                       this.handleFilterChange(
                                         "districtFilter",
                                         {
@@ -1148,7 +1309,7 @@ class ParticipantPayments extends Component {
                                       },
                                       ...this.getUniqueOptions(
                                         "payment_settlement"
-                                      ).map(option => ({
+                                      ).map((option) => ({
                                         value: option,
                                         label: option,
                                       })),
@@ -1165,7 +1326,7 @@ class ParticipantPayments extends Component {
                                           }
                                         : null
                                     }
-                                    onChange={selected =>
+                                    onChange={(selected) =>
                                       this.handleFilterChange(
                                         "paymentsettlementFilter",
                                         {
@@ -1192,7 +1353,7 @@ class ParticipantPayments extends Component {
                                       },
                                       ...this.getUniqueOptions(
                                         "payment_status"
-                                      ).map(option => ({
+                                      ).map((option) => ({
                                         value: option,
                                         label: option,
                                       })),
@@ -1207,9 +1368,50 @@ class ParticipantPayments extends Component {
                                           }
                                         : null
                                     }
-                                    onChange={selected =>
+                                    onChange={(selected) =>
                                       this.handleFilterChange(
                                         "paymentStatusFilter",
+                                        {
+                                          target: {
+                                            value: selected?.value || "",
+                                          },
+                                        }
+                                      )
+                                    }
+                                    isClearable
+                                  />
+                                </Col>
+                                <Col md={4}>
+                                  <Label for="reconcileStatusFilter">
+                                    Reconsile Status
+                                  </Label>
+                                  <Select
+                                    id="reconcileStatusFilter"
+                                    options={[
+                                      {
+                                        value: "All",
+                                        label: "All Payment Statuses",
+                                      },
+                                      ...this.getUniqueOptions(
+                                        "payment_reconcile_status"
+                                      ).map((option) => ({
+                                        value: option,
+                                        label: option,
+                                      })),
+                                    ]}
+                                    value={
+                                      this.state.reconcileStatusFilter
+                                        ? {
+                                            value:
+                                              this.state.reconcileStatusFilter,
+                                            label:
+                                              this.state.reconcileStatusFilter,
+                                          }
+                                        : null
+                                    }
+                                    onChange={(selected) =>
+                                      this.handleFilterChange(
+                                        "reconcileStatusFilter",
                                         {
                                           target: {
                                             value: selected?.value || "",
@@ -1229,7 +1431,7 @@ class ParticipantPayments extends Component {
                                       id="dateFrom"
                                       className="form-control"
                                       value={this.state.dateFrom}
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.setState(
                                           { dateFrom: e.target.value },
                                           this.checkFiltersApplied
@@ -1245,7 +1447,7 @@ class ParticipantPayments extends Component {
                                       id="dateTo"
                                       className="form-control"
                                       value={this.state.dateTo}
-                                      onChange={e =>
+                                      onChange={(e) =>
                                         this.setState(
                                           {
                                             dateTo: e.target.value,
@@ -1258,20 +1460,82 @@ class ParticipantPayments extends Component {
                                   </Col>
                                 </Row>
                               </Row>
+                              <Modal
+                                isOpen={this.state.showReconcileModal}
+                                toggle={this.handleCloseModal}
+                                centered
+                              >
+                                <ModalHeader toggle={this.handleCloseModal}>
+                                  Reconciliation Status –{" "}
+                                  {this.state.activeParticipantName}
+                                </ModalHeader>
+                                <ModalBody>
+                                  <div className="d-flex justify-content-center mb-4">
+                                    <Select
+                                      options={[
+                                        {
+                                          value: "Reconcile",
+                                          label: "Reconcile",
+                                        },
+                                        {
+                                          value: "Non-Reconcile",
+                                          label: "Non-Reconcile",
+                                        },
+                                      ]}
+                                      value={
+                                        this.state.selectedReconcileStatus
+                                          ? {
+                                              value:
+                                                this.state
+                                                  .selectedReconcileStatus,
+                                              label:
+                                                this.state
+                                                  .selectedReconcileStatus,
+                                            }
+                                          : null
+                                      }
+                                      onChange={(selected) =>
+                                        this.setState({
+                                          selectedReconcileStatus:
+                                            selected?.value,
+                                        })
+                                      }
+                                      placeholder="Select status"
+                                      isClearable
+                                      className="w-100" // ⬅️ Wider dropdown (75% of modal width)
+                                    />
+                                  </div>
+
+                                  <div className="d-flex justify-content-end">
+                                    <Button
+                                      color="primary"
+                                      disabled={
+                                        !this.state.selectedReconcileStatus
+                                      }
+                                      onClick={() =>
+                                        this.setReconcileStatus(
+                                          this.state.selectedReconcileStatus
+                                        )
+                                      }
+                                    >
+                                      Save
+                                    </Button>
+                                  </div>
+                                </ModalBody>
+                              </Modal>
 
                               <Row className="mb-4">
                                 <Col xl="12">
                                   <div className="table-responsive">
                                     <BootstrapTable
+                                      key={this.state.tableKey}
                                       {...toolkitprops.baseProps}
                                       {...paginationTableProps}
                                       defaultSorted={defaultSorted}
-                                      classes={
-                                        "table align-middle table-condensed"
-                                      }
+                                      classes={"table align-middle"} // 🚫 Removed 'table-hover'
                                       bordered={false}
-                                      striped={false} // or remove entirely
-                                      headerWrapperClasses="custom-header"
+                                      striped={false}
+                                      headerWrapperClasses={"table-light"}
                                       responsive
                                       ref={this.node}
                                       filter={filterFactory()}
@@ -1305,14 +1569,18 @@ class ParticipantPayments extends Component {
 ParticipantPayments.propTypes = {
   GetPayment: PropTypes.array,
   onGetParticipantpayment: PropTypes.func,
+  onconfirmpayment: PropTypes.func,
+  dispatch: PropTypes.func.isRequired,
+  confirmpayment: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   GetPayment: state.AddPayment?.GetPayment ?? [],
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   onGetParticipantpayment: () => dispatch(getParticipantPayment()),
+  confirmpayment: (id) => dispatch(confirmpayment(id)),
 });
 
 export default connect(

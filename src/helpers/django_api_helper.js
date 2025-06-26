@@ -4100,3 +4100,19 @@ export const updateNewPayment = (payment) => {
     }
   );
 };
+export const confirmpayment = (payload) => {
+  const { id, status } = payload;
+
+  const formData = new FormData();
+  formData.append("status", status);
+
+  console.log("✅ Sending to:", `${url.CONFIRM_PAYMENT}/${id}/`);
+  console.log("✅ Status value:", status);
+
+  return axios.post(`${url.CONFIRM_PAYMENT}/${id}/`, formData, {
+    headers: {
+      ...getHeader(authHeader()),
+      "Content-Type": "multipart/form-data", // ⬅️ important for FormData
+    },
+  });
+};
