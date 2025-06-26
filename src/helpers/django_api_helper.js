@@ -1363,7 +1363,10 @@ export const confirmpayment = (payload) => {
     },
   });
 };
-
+export const  deletePayment = payment =>
+    del(`${url.DELETE_NEW_PAYMENT}/${payment.id}`, {
+      headers: getHeader(authHeader()),
+    });
 // ---------------Scheme add Analytes-------
 export const getSchemeAnalytelist = (id) =>
   get(`${url.GET_SCHEME_ANALYTE}/${id}`, {

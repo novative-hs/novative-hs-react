@@ -89,6 +89,7 @@ export const DELETE_PARTICIPANT = `${API_ENDPOINT}/api/registration-admin/remove
 export const GET_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-labs-list`;
 export const ADD_NEW_PAYMENT = `${API_ENDPOINT}/api/registration-admin/add-payment`;
 export const UPDATE_NEW_PAYMENT = `${API_ENDPOINT}/api/registration-admin/update-payment`;
+export const DELETE_NEW_PAYMENT = `${API_ENDPOINT}/api/registration-admin/delete-payment`;
 export const ADD_ROUND_LABS = `${API_ENDPOINT}/api/registration-admin/round-add-lab`;
 export const UPDATE_ROUNDLABS = `${API_ENDPOINT}/api/registration-admin/round-update-lab`;
 export const GET_ROUND_PARTICIPANT_LIST = `${API_ENDPOINT}/api/registration-admin/round-participant-list`;
