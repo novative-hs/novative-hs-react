@@ -248,22 +248,32 @@ class Results extends Component {
     }
   };
 
-  handleCalculate = () => {
-    const { onGetSchemeAnalyte, onGetResultSubmit } = this.props;
-    const id = this.props.match.params.id;
+handleCalculate = async () => {
+  const { onGetSchemeAnalyte, onGetResultSubmit, onUpdateRound } = this.props;
+  const id = this.props.match.params.id;
 
-    // Call the necessary functions with the id
-    onGetSchemeAnalyte(id);
-    onGetResultSubmit(id);
+  // Step 1: Get fresh analytes and result submissions
+  await onGetSchemeAnalyte(id);
+  await onGetResultSubmit(id);
 
-    // Combine data using ResultSubmit for calculation
-    this.setState((prevState) => ({
-      combinedData: this.combineData(
-        prevState.SchemeAnalytesList,
-        this.props.ResultSubmit
-      ),
-    }));
-  };
+  // Step 2: Combine data for UI display
+  const combinedData = this.combineData(
+    this.props.SchemeAnalytesList,
+    this.props.ResultSubmit
+  );
+  this.setState({ combinedData });
+
+  // Step 3: Update round status to "Statistics Done"
+const updatedRound = {
+  status: "Statistics Done",
+  added_by: this.state.user_id,
+};
+this.props.onUpdateRound(id, updatedRound);
+  this.props.onUpdateRound(id, updatedRound);
+
+  // Step 4: Show success message
+  this.displaySuccessMessage("Statistics calculated and status updated!");
+};
 
   handleReport = (round) => {
     if (round && round.id) {

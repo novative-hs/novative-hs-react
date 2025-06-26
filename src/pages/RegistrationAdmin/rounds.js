@@ -414,10 +414,7 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             const canShowReportAvailable = this.props.RoundList?.some(
               (round) => {
-                return (
-                  round.status === "Closed" &&
-                  round.statistics_status === "Complete"
-                );
+                return round.status === "Statistics Done";
               }
             );
 
@@ -440,9 +437,10 @@ class InstrumentType extends Component {
                     <option value="Ready">Ready</option>
                     <option value="Open">Open</option>
                     <option value="Closed">Closed</option>
-                    {/* {canShowReportAvailable && (
+                    <option value="Statistics Done">Statistics Done</option>
+                    {canShowReportAvailable && (
                       <option value="Report Available">Report Available</option>
-                    )} */}
+                    )}
                   </select>
                 </div>
               </div>
@@ -531,7 +529,7 @@ class InstrumentType extends Component {
 
                 {/* {/ Show statistics icon only when the status is "Closed" or "Report Available" /} */}
                 {(round.status === "Closed" ||
-                  round.status === "Report Available") && (
+                  round.status === "Statistics Done") && (
                   <Tooltip title="Statistics">
                     <Link
                       to="#"
@@ -718,27 +716,26 @@ class InstrumentType extends Component {
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
   };
-
   onClickStatistics = (round) => {
     if (round && round.id) {
-      if (round.status === "Closed") {
-        // Automatically change status to "Report Available" if Statistics completed
-        const updatedRound = {
-          ...round,
-          status: "Report Available",
-        };
+      const updatedRound = {
+        ...round,
+        status: "Statistics Done",
+      };
 
-        this.props.onUpdateRound(round.id, updatedRound);
+      this.props.onUpdateRound(round.id, updatedRound);
 
-        // OPTIONAL: reload RoundList after small delay
-        setTimeout(() => {
-          this.props.onGetRoundList(this.state.user_id);
-        }, 500);
-      }
+      // Reload RoundList after update
+      setTimeout(() => {
+        this.props.onGetRoundList(this.state.user_id);
+      }, 500);
 
-      this.props.history.push(
-        `/${this.state.organization_name}/statistics/${round.id}`
-      );
+      // Navigate after update
+      setTimeout(() => {
+        this.props.history.push(
+          `/${this.state.organization_name}/statistics/${round.id}`
+        );
+      }, 600); // Slight delay to give update a chance
     }
   };
 
@@ -1497,9 +1494,15 @@ class InstrumentType extends Component {
                                                           <option value="Closed">
                                                             Closed
                                                           </option>
-                                                          {/* <option value="Report Available">
-                                                            Report Available
-                                                          </option> */}
+                                                          {this.props.RoundList?.some(
+                                                            (round) =>
+                                                              round.status ===
+                                                              "Statistics Done"
+                                                          ) && (
+                                                            <option value="Report Available">
+                                                              Report Available
+                                                            </option>
+                                                          )}
                                                         </Field>
                                                         <ErrorMessage
                                                           name="status"
