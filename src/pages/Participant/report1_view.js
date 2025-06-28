@@ -436,7 +436,7 @@ class ReportParticipant extends Component {
                 <td style={{ border: "1px solid #dee2e6" }}>
                   {analyte.result}
                 </td>
-                <td style={{ border: "1px solid #dee2e6" }}>{analyte.robust_deviation}</td>
+                <td style={{ border: "1px solid #dee2e6" }}>{analyte.mean}</td>
                 <td style={{ border: "1px solid #dee2e6" }}>
                   {analyte.zScore}
                 </td>
