@@ -61,6 +61,7 @@ import PaymentDetail from "pages/databaseadmin/payment-detail";
 import AnalyteAddReagents from "pages/databaseadmin/analyte-add-reagents";
 import AnalyteAddEuipments from "pages/databaseadmin/analyte-add-equipments";
 import DatabaseOfParticipantCity from "pages/databaseadmin/database-of-participantcity";
+import Banks from "pages/databaseadmin/banks";
 import DatabaseOfParticipantCountry from "pages/databaseadmin/database-of-participantcountry";
 import DatabaseOfParticipantProvince from "pages/databaseadmin/database-of-participantprovince";
 import InstrumentDetail from "pages/databaseadmin/instrument-list-detail";
@@ -348,6 +349,9 @@ const databaseAdminAuthProtectedRoutes = [
     path: "/:organization_name/database-of-participantcity",
     component: DatabaseOfParticipantCity,
   },
+  
+ { path: "/:organization_name/banks", component: Banks },
+
   {
     path: "/:organization_name/database-of-participantcountry",
     component: DatabaseOfParticipantCountry,

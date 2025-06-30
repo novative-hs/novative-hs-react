@@ -77,6 +77,7 @@ import NewsSaga from "./news/saga";
 import MethodsListSaga from "./methods/sagas";
 
 import CityListSaga from "./participantcity/sagas";
+import BankListSaga from "./banks/sagas";
 import CountryListSaga from "./participantcountry/sagas";
 import ProvinceListSaga from "./participantprovince/sagas";
 import DistrictListSaga from "./participantdistrict/sagas";
@@ -104,6 +105,7 @@ export  default function* rootSaga() {
     fork(DepartmentListSaga),
     fork(DistrictListSaga),
     fork(CityListSaga),
+    fork(BankListSaga),
     fork(SampleSaga),
     fork(organizationaccountSaga),
     fork(NewsSaga),

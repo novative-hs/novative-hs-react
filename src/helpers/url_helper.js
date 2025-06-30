@@ -145,6 +145,10 @@ export const GET_CITY_LIST = `${API_ENDPOINT}/api/database-admin/city_list`;
 export const ADD_NEW_CITY = `${API_ENDPOINT}/api/database-admin/city_create`;
 export const UPDATE_CITY = `${API_ENDPOINT}/api/database-admin/city_update`;
 
+export const GET_BANK_LIST = `${API_ENDPOINT}/api/database-admin/bank_list`;
+export const ADD_NEW_BANK = `${API_ENDPOINT}/api/database-admin/bank_create`;
+export const UPDATE_BANK = `${API_ENDPOINT}/api/database-admin/bank_update`;
+
 export const GET_COUNTRY_LIST = `${API_ENDPOINT}/api/database-admin/country_list`;
 export const ADD_NEW_COUNTRY = `${API_ENDPOINT}/api/database-admin/country_create`;
 export const UPDATE_COUNTRY = `${API_ENDPOINT}/api/database-admin/country_update`;

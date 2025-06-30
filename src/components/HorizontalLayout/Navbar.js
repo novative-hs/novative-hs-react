@@ -329,6 +329,17 @@ class Navbar extends Component {
                             })
                           }
                         >
+                           <li>
+                            <NavLink
+                              to={`/${organization_name}/banks`}
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
+                            >
+                              Banks
+                            </NavLink>
+                          </li>
+
                           <li>
                             <NavLink
                               to={`/${organization_name}/database-of-participantcity`}

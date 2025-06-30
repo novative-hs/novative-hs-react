@@ -1348,13 +1348,16 @@ export const addNewPayment = (payment, id) => {
   });
 };
 export const confirmpayment = (payload) => {
-  const { id, status } = payload;
+  const { id, status, account_number } = payload;
 
   const formData = new FormData();
   formData.append("status", status);
+  if (account_number) {
+    formData.append("account_number", account_number); // Add account_number
+  }
 
   console.log("✅ Sending to:", `${url.CONFIRM_PAYMENT}/${id}/`);
-  console.log("✅ Status value:", status);
+  console.log("✅ Payload:", { status, account_number });
 
   return axios.post(`${url.CONFIRM_PAYMENT}/${id}/`, formData, {
     headers: {
@@ -1471,7 +1474,34 @@ export const updateCity = (city) => {
     headers: getHeader(authHeader()),
   });
 };
+////participant city
+export const getBankList = (id) =>
+  get(`${url.GET_BANK_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 
+export const addNewCreateBank = (createBank) => {
+  console.log("🚀 createBank received in API call:", createBank);
+  let formData = new FormData();
+  formData.append("name", createBank.name);
+  formData.append("added_by", createBank.added_by);
+  formData.append("account_number", createBank.account_number);
+
+  return axios.post(`${url.ADD_NEW_BANK}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const updateBank = (bank) => {
+  console.log("🔧 Updating bank with ID:", bank.id);
+
+  return axios.put(`${url.UPDATE_BANK}/${bank.id}`, bank, {
+    headers: {
+      ...getHeader(authHeader()),
+      "Content-Type": "application/json", // important
+    },
+  });
+};
 ////participant country
 export const getCountryList = (id) =>
   get(`${url.GET_COUNTRY_LIST}/${id}`, {

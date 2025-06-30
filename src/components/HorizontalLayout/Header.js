@@ -429,6 +429,14 @@ class Header extends Component {
                           >
                             <li>
                               <NavLink
+                                to={`/${organization_name}/banks`}
+                                className="dropdown-item"
+                              >
+                                Banks
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
                                 to={`/${organization_name}/database-of-participantcity`}
                                 className="dropdown-item"
                               >
