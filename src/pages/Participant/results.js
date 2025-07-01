@@ -342,30 +342,35 @@ class Results extends Component {
             </div>
           ),
         },
-{
-          text: "Result Value",
-          dataField: "result",
-          sort: true,
-          formatter: (cellContent, list) => (
-            <div className="text-start">
-              <input
-                type="text"
-                ref={el => (this[`resultRef_${list.id}`] = el)}
-                defaultValue={list.result || ""}
-                placeholder="Enter result"
-                onChange={e => {
-                  let value = e.target.value;
-                  // Allow only numbers and a single decimal point
-                  if (/^\d*\.?\d*$/.test(value)) {
-                    e.target.value = value;
-                  } else {
-                    e.target.value = value.slice(0, -1); // Remove last invalid character
-                  }
-                }}
-              />
-            </div>
-          ),
-        },
+      {
+  text: "Result Value",
+  dataField: "result",
+  sort: true,
+  formatter: (cellContent, list) => (
+    <div className="text-start">
+      <input
+        type="text"
+        ref={el => (this[`resultRef_${list.id}`] = el)}
+        defaultValue={
+          list.result !== null && list.result !== undefined
+            ? Number(list.result).toString()
+            : ""
+        }
+        placeholder="Enter result"
+        onChange={e => {
+          let value = e.target.value;
+          // Allow only numbers and a single decimal point
+          if (/^\d*\.?\d*$/.test(value)) {
+            e.target.value = value;
+          } else {
+            e.target.value = value.slice(0, -1);
+          }
+        }}
+      />
+    </div>
+  ),
+},
+
       ];
     } else if (schemeType === "Qualitative") {
       return [
@@ -614,42 +619,41 @@ class Results extends Component {
     }
   };
   // }
-componentDidMount() {
-  const {
-    onGetSchemeAnalyte,
-    onGetUnitsList,
-    onGetMethodsList,
-    onGetInstrumentList,
-    onGetReagents,
-    onGetResultsList,
-  } = this.props;
+  componentDidMount() {
+    const {
+      onGetSchemeAnalyte,
+      onGetUnitsList,
+      onGetMethodsList,
+      onGetInstrumentList,
+      onGetReagents,
+      onGetResultsList,
+    } = this.props;
 
-  const roundId = this.props.match.params.id;
-  const userId = this.state.user_id;
+    const roundId = this.props.match.params.id;
+    const userId = this.state.user_id;
 
-  console.log("componentDidMount — roundId:", roundId, "userId:", userId);
+    console.log("componentDidMount — roundId:", roundId, "userId:", userId);
 
-  // ✅ Only call APIs if both roundId and userId are present
-  if (userId && roundId) {
-    console.log("✅ Triggering data fetch");
+    // ✅ Only call APIs if both roundId and userId are present
+    if (userId && roundId) {
+      console.log("✅ Triggering data fetch");
 
-    onGetSchemeAnalyte(roundId);
-    onGetUnitsList(userId);
-    onGetMethodsList(userId);
-    onGetInstrumentList(userId);
-    onGetReagents(userId);
-    onGetResultsList(roundId);
-  } else {
-    console.warn("⛔ Skipped fetching — missing roundId or userId");
+      onGetSchemeAnalyte(roundId);
+      onGetUnitsList(userId);
+      onGetMethodsList(userId);
+      onGetInstrumentList(userId);
+      onGetReagents(userId);
+      onGetResultsList(roundId);
+    } else {
+      console.warn("⛔ Skipped fetching — missing roundId or userId");
+    }
+
+    // ✅ Load submittedOn from localStorage if available
+    const submittedOn = localStorage.getItem("submittedOn");
+    if (submittedOn) {
+      this.setState({ submittedOn });
+    }
   }
-
-  // ✅ Load submittedOn from localStorage if available
-  const submittedOn = localStorage.getItem("submittedOn");
-  if (submittedOn) {
-    this.setState({ submittedOn });
-  }
-}
-
 
   // Method to track fetched data after state is updated
   trackFetchedData() {

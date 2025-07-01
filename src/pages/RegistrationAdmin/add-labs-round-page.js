@@ -95,39 +95,43 @@ class RoundAddParticipant extends Component {
             );
           },
         },
-        {
-          dataField: "checkbox",
-          text: "Select",
-          headerFormatter: () => {
-            const allSelected =
-              Object.values(this.state.selectedCheckboxes).length > 0 &&
-              Object.values(this.state.selectedCheckboxes).every(Boolean);
-            return (
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="selectAllCheckbox"
-                  checked={allSelected}
-                  onChange={this.handleSelectAllChange}
-                />
-              </div>
-            );
-          },
-          formatter: (cellContent, row) => {
-            return (
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id={`checkbox${row.id}`}
-                  onChange={() => this.handleCheckboxChange(row.id)}
-                  checked={this.state.selectedCheckboxes[row.id] || false}
-                />
-              </div>
-            );
-          },
-        },
+            {
+  dataField: "checkbox",
+  text: "Select",
+  headerFormatter: () => {
+    const allSelected =
+      Object.values(this.state.selectedCheckboxes).length > 0 &&
+      Object.values(this.state.selectedCheckboxes).every(Boolean);
+
+    return (
+      <div className="form-check d-flex align-items-center">
+        <input
+          type="checkbox"
+          className="form-check-input me-1"
+          id="selectAllCheckbox"
+          checked={allSelected}
+          onChange={this.handleSelectAllChange}
+        />
+        <label className="form-check-label" htmlFor="selectAllCheckbox">
+          Select All
+        </label>
+      </div>
+    );
+  },
+  formatter: (cellContent, row) => {
+    return (
+      <div className="form-check">
+        <input
+          type="checkbox"
+          className="form-check-input"
+          id={`checkbox${row.id}`}
+          onChange={() => this.handleCheckboxChange(row.id)}
+          checked={this.state.selectedCheckboxes[row.id] || false}
+        />
+      </div>
+    );
+  },
+},
       ],
     };
   }
