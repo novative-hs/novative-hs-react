@@ -375,7 +375,7 @@ export const GET_LABS_MOF = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_LABS_C = `${API_ENDPOINT}/api/finance-officer/lab-c-list`;
 export const GET_PARTICIPANT_PAYMENT = `${API_ENDPOINT}/api/registration-admin/payment-list`;
 export const CONFIRM_PAYMENT = `${API_ENDPOINT}/api/registration-admin/payment-confirm`;
-
+export const UPDATE_RESULT= `${API_ENDPOINT}/api/registration-admin/resultupdate`;
 // CSR (COMPLAINTS)
 export const GET_UNHANDLED_COMPLAINTS = `${API_ENDPOINT}/api/complaint/unhandled-complaints`;
 export const UPDATE_UNHANDLED_COMPLAINTS = `${API_ENDPOINT}/api/complaint/unhandled-complaints`;
