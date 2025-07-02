@@ -1,21 +1,15 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import {
-  SCHEMES_ANALYTES,
-  POST_RESULT,
-  GET_RESULT,
-  GET_STATISTICS,
-  POST_SERELOGY_VALUES,
-  GET_SERELOGY_VALUES,
-  GET_ANALYTE_RESULT_PARTICIPANT,
-} from "./actionTypes";
+import { SCHEMES_ANALYTES, POST_RESULT, UPDATE_RESULT, GET_RESULT, GET_STATISTICS,POST_SERELOGY_VALUES,GET_SERELOGY_VALUES, GET_ANALYTE_RESULT_PARTICIPANT } from "./actionTypes";
 
 import {
   getSchemeAnalytesListSuccess,
   getSchemeAnalytesListFail,
   postResultSuccess,
   postResultFail,
+  updateResultSuccess,
+  updateResultFail,
   getResultsListSuccess,
   getResultsListFail,
   getStatisticsListSuccess,
@@ -25,18 +19,19 @@ import {
   getResultValuesSuccess,
   getResultValuesFail,
   getAnalyteResultParticipantSuccess,
-  getAnalyteResultParticipantFail,
+  getAnalyteResultParticipantFail
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import {
   getSchemeAnalytesList,
   postResult,
+  updateResult,
   getResultsList,
   getStatisticsList,
   addSereologyValues,
   getSereologyValues,
-  getAnalyteResultParticipantlist,
+  getAnalyteResultParticipantlist 
 } from "../../helpers/django_api_helper";
 
 function* fetchAnalytesScheme(object) {
@@ -63,6 +58,19 @@ function* onPostResult(object) {
   }
 }
 /////////////////////////
+function* onUpdateResult(object) {
+  try {
+    const response = yield call(
+      updateResult,
+      object.payload.result,
+      object.payload.id
+    );
+    yield put(updateResultSuccess(response));
+  } catch (error) {
+    yield put(updateResultFail(error));
+  }
+}
+/////////////////////////
 function* onPostValues(object) {
   try {
     const response = yield call(
@@ -79,16 +87,14 @@ function* onPostValues(object) {
 function* fetchResultList(object) {
   try {
     const response = yield call(getResultsList, object.payload);
-
+    
     if (response.data.length > 0) {
       const updated_at = response.data[0].updated_at; // Extract updated_at
 
-      yield put(
-        getResultsListSuccess({
-          results: response.data,
-          updated_at: updated_at, // Send updated_at to reducer
-        })
-      );
+      yield put(getResultsListSuccess({
+        results: response.data,
+        updated_at: updated_at // Send updated_at to reducer
+      }));
     } else {
       yield put(getResultsListFail("No results found"));
     }
@@ -124,18 +130,9 @@ function* fetchStatisticsList(object) {
 function* fetchAnalyteResultParticpant(action) {
   try {
     const { roundId, analyteId } = action.payload;
-    console.log(
-      "Fetching data for Round ID:",
-      roundId,
-      "Analyte ID:",
-      analyteId
-    );
+    console.log("Fetching data for Round ID:", roundId, "Analyte ID:", analyteId);
 
-    const response = yield call(
-      getAnalyteResultParticipantlist,
-      roundId,
-      analyteId
-    );
+    const response = yield call(getAnalyteResultParticipantlist, roundId, analyteId);
     console.log("API Response:", response.data);
 
     yield put(getAnalyteResultParticipantSuccess(response.data));
@@ -148,6 +145,7 @@ function* fetchAnalyteResultParticpant(action) {
 function* AnalyteSchemeSaga() {
   yield takeEvery(SCHEMES_ANALYTES, fetchAnalytesScheme);
   yield takeEvery(POST_RESULT, onPostResult);
+   yield takeEvery(UPDATE_RESULT, onUpdateResult);
   yield takeEvery(POST_SERELOGY_VALUES, onPostValues);
   yield takeEvery(GET_RESULT, fetchResultList);
   yield takeEvery(GET_SERELOGY_VALUES, fetchValuesList);

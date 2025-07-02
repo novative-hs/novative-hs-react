@@ -7,6 +7,10 @@ import {
   POST_RESULT_SUCCESS,
   POST_RESULT_FAIL,
 
+  UPDATE_RESULT,
+  UPDATE_RESULT_SUCCESS,
+  UPDATE_RESULT_FAIL,
+
   GET_RESULT,
   GET_RESULT_SUCCESS,
   GET_RESULT_FAIL,
@@ -81,7 +85,36 @@ export const getSchemeAnalytesList = (id) => ({
     };
   };
  
+  ////////////////////////
+ export const updateResult = (result, id) => {
+    console.log("🚀 Dispatching POST_RESULT Action:");
+    console.log("📌 Result Data:", result);
+    console.log("📌 User ID:", id);
+  
+    return {
+      type: UPDATE_RESULT,
+      payload: { result, id },
+    };
+  };
+  
+  export const updateResultSuccess = (result) => {
+    console.log("✅ UPDATE_RESULT_SUCCESS Action Dispatched:");
+    console.log("📌 Response Data:", result);
+  
+    return {
+      type: UPDATE_RESULT_SUCCESS,
+      payload: result,
+    };
+  };
+export const updateResultFail = (error) => {
+  console.error("❌ UPDATE_RESULT_FAIL Action Dispatched:");
+  console.error("📌 Error:", error);
 
+  return {
+    type: UPDATE_RESULT_FAIL,
+    payload: error,
+  };
+};
   ////////////////////////////////
   export const getResultsList = id => ({
     type: GET_RESULT,

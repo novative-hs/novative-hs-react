@@ -3,6 +3,8 @@ import {
   SCHEMES_ANALYTES_FAIL,
   POST_RESULT_SUCCESS,
   POST_RESULT_FAIL,
+  UPDATE_RESULT_SUCCESS,
+  UPDATE_RESULT_FAIL,
   GET_RESULT_SUCCESS,
   GET_RESULT_FAIL,
   GET_STATISTICS_SUCCESS,
@@ -19,6 +21,7 @@ const INIT_STATE = {
   SchemeAnalytesList: [],
   getAnalyteResultParticipant: [],
   PostResult: [],
+  updateResult: [],
   PostValues: [],
   ResultList: [],
   ValuesList: [],
@@ -67,6 +70,20 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
       };
 
     case POST_RESULT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    ////////////////
+    //UPDATE result
+    case UPDATE_RESULT_SUCCESS:
+      return {
+        ...state,
+        UPDATEResult: [...state.updateResult, action.payload.data],
+      };
+
+    case UPDATE_RESULT_FAIL:
       return {
         ...state,
         error: action.payload,

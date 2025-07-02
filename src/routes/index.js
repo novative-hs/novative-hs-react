@@ -100,6 +100,7 @@ import SereologyReport from "pages/Participant/sereologyReport";
 import UpdateParticipantsResult from "pages/RegistrationAdmin/results";
 import ResultHistory from "pages/Participant/result-history";
 import ReportParticipant from "pages/Participant/report1_view";
+import QualitativeReportParticipant from "pages/Participant/qualitative_report_view";
 // Lab Componentsss
 
 import QualityCertificatesList from "../pages/QualityCertificates/quality-certificates-list";
@@ -409,6 +410,7 @@ const participantsAuthProtectedRoutes = [
     path: "/:organization_name/:id/:id1/report1_view",
     component: ReportParticipant,
   },
+  { path: "/:organization_name/:id/:id1/qualitative_report_view", component: QualitativeReportParticipant},
 ];
 
 const registrationAdminAuthProtectedRoutes = [

@@ -2889,28 +2889,25 @@ export const deleteRound = (round) =>
 
 ///////////////////////////////
 export const addSereologyValues = (value, id) => {
-  // console.log("Adding Sereology Values", value);
   let formData = new FormData();
   formData.append("type", value.type);
   formData.append("analyte_id", value.analyte_id);
   formData.append("value", value.value);
-  formData.append("account_id", value.account_id);
+  formData.append("account_id", value.account_id); 
+
   return axios
     .post(`${url.POST_SERELOGY_VALUES}/${id}`, formData, {
       headers: {
         ...getHeader(authHeader()),
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "multipart/form-data", 
       },
     })
-    .then((response) => {
+    .then(response => {
       console.log("Sereology values added successfully:", response.data);
       return response.data;
     })
-    .catch((error) => {
-      console.error(
-        "Error adding sereology values:",
-        error.response ? error.response.data : error.message
-      );
+    .catch(error => {
+      console.error("Error adding sereology values:", error.response ? error.response.data : error.message);
       throw error;
     });
 };
