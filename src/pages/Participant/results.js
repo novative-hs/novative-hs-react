@@ -849,7 +849,6 @@ class Results extends Component {
         units:
           userResult?.units ||
           (analyte.units && analyte.units.length > 0 ? analyte.units[0] : ""),
-
         reagent_name: userResult?.reagents || null,
         method_name: userResult?.method || null,
         instrument_name: userResult?.instrument || null,
@@ -972,7 +971,6 @@ class Results extends Component {
       alert("Failed to save all results. Please try again.");
     }
   };
-
   handleSubmitAll = async () => {
     const { combinedData, Instrument, ListMethods, ReagentList } = this.state;
     const { rounds, scheme_id, round_status, schemeType } = this.props;
@@ -1006,9 +1004,9 @@ class Results extends Component {
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          instrument_name: instrument ? instrument.name : null,
-          method_name: method ? method.name : null,
-          reagent_name: reagent ? reagent.name : null,
+          instrument_name: list.instrument_name || null,
+          method_name: list.method_name || null,
+          reagent_name: list.reagent_name || null,
           result_type: list.result_type || null,
           result: this[`resultRef_${list.id}`]?.value || "",
           rounds,
@@ -1016,6 +1014,12 @@ class Results extends Component {
           round_status,
           result_status: "Submitted",
         };
+
+        // Only add units for Quantitative schemes
+        if (schemeType === "Quantitative") {
+          resultData.units =
+            list.units && !isNaN(list.units) ? parseInt(list.units) : null;
+        }
 
         // Only add units for Quantitative schemes
         if (schemeType === "Quantitative") {
