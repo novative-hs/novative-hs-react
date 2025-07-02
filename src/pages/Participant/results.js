@@ -342,35 +342,34 @@ class Results extends Component {
             </div>
           ),
         },
-      {
-  text: "Result Value",
-  dataField: "result",
-  sort: true,
-  formatter: (cellContent, list) => (
-    <div className="text-start">
-      <input
-        type="text"
-        ref={el => (this[`resultRef_${list.id}`] = el)}
-        defaultValue={
-          list.result !== null && list.result !== undefined
-            ? Number(list.result).toString()
-            : ""
-        }
-        placeholder="Enter result"
-        onChange={e => {
-          let value = e.target.value;
-          // Allow only numbers and a single decimal point
-          if (/^\d*\.?\d*$/.test(value)) {
-            e.target.value = value;
-          } else {
-            e.target.value = value.slice(0, -1);
-          }
-        }}
-      />
-    </div>
-  ),
-},
-
+        {
+          text: "Result Value",
+          dataField: "result",
+          sort: true,
+          formatter: (cellContent, list) => (
+            <div className="text-start">
+              <input
+                type="text"
+                ref={(el) => (this[`resultRef_${list.id}`] = el)}
+                defaultValue={
+                  list.result !== null && list.result !== undefined
+                    ? Number(list.result).toString()
+                    : ""
+                }
+                placeholder="Enter result"
+                onChange={(e) => {
+                  let value = e.target.value;
+                  // Allow only numbers and a single decimal point
+                  if (/^\d*\.?\d*$/.test(value)) {
+                    e.target.value = value;
+                  } else {
+                    e.target.value = value.slice(0, -1);
+                  }
+                }}
+              />
+            </div>
+          ),
+        },
       ];
     } else if (schemeType === "Qualitative") {
       return [
@@ -847,7 +846,10 @@ class Results extends Component {
         id: analyte.id || index,
         analyte_id: analyte.id,
         analyte_name: analyte.name,
-        units: userResult?.units || "",
+        units:
+          userResult?.units ||
+          (analyte.units && analyte.units.length > 0 ? analyte.units[0] : ""),
+
         reagent_name: userResult?.reagents || null,
         method_name: userResult?.method || null,
         instrument_name: userResult?.instrument || null,
@@ -972,7 +974,7 @@ class Results extends Component {
   };
 
   handleSubmitAll = async () => {
-    const { combinedData } = this.state;
+    const { combinedData, Instrument, ListMethods, ReagentList } = this.state;
     const { rounds, scheme_id, round_status, schemeType } = this.props;
     const id = this.props.match.params.id;
 
@@ -987,16 +989,27 @@ class Results extends Component {
     if (!confirmation) return;
 
     try {
-      let latestUpdatedAt = new Date().toISOString();
+      let latestUpdatedAt = new Date().toISOString(); // Default timestamp
 
       for (const list of combinedData) {
+        // 🔍 Convert selected IDs into names (for qualitative results especially)
+        const instrument = Instrument.find(
+          (instr) => instr.id.toString() === list.instrument_name
+        );
+        const method = ListMethods.find(
+          (meth) => meth.id.toString() === list.method_name
+        );
+        const reagent = ReagentList.find(
+          (reag) => reag.id.toString() === list.reagent_name
+        );
+
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
-          instrument_name: list.instrument_name || null,
-          method_name: list.method_name || null,
-          reagent_name: list.reagent_name || null,
-          result_type: list.result_type,
+          instrument_name: instrument ? instrument.name : null,
+          method_name: method ? method.name : null,
+          reagent_name: reagent ? reagent.name : null,
+          result_type: list.result_type || null,
           result: this[`resultRef_${list.id}`]?.value || "",
           rounds,
           scheme_id,
@@ -1004,10 +1017,13 @@ class Results extends Component {
           result_status: "Submitted",
         };
 
+        // Only add units for Quantitative schemes
         if (schemeType === "Quantitative") {
           resultData.units =
             list.units && !isNaN(list.units) ? parseInt(list.units) : null;
         }
+
+        console.log("🚀 Submitting Result:", resultData); // Optional: for debugging
 
         const response = await this.props.onPostResult(
           resultData,
@@ -1019,14 +1035,12 @@ class Results extends Component {
         }
       }
 
+      // ✅ Store "Submitted On" in state & localStorage
       this.setState({ submittedOn: latestUpdatedAt });
       localStorage.setItem("submittedOn", latestUpdatedAt);
 
       alert("Results submitted successfully!");
-
-      // ✅ Refresh results and recombine data
-      await this.fetchResults();
-      this.combineData();
+      window.location.reload();
     } catch (error) {
       alert("Failed to submit all results. Please try again.");
     }
