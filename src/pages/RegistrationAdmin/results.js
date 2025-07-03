@@ -682,9 +682,7 @@ class Results extends Component {
     }
 
     try {
-      const res = await axios.get(
-        `http://127.0.0.1:8000/api/registration-admin/getResultsData/${roundId}`
-      );
+      const res = await axios.get(`${API_BASE_URL}/api/registration-admin/getResultsData/${roundId}`);
 
       console.log("📦 Full API Response:", res);
       console.log("📦 API Response Data:", res.data);
