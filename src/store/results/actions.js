@@ -86,16 +86,17 @@ export const getSchemeAnalytesList = (id) => ({
   };
  
   ////////////////////////
- export const updateResult = (result, id) => {
-    console.log("🚀 Dispatching POST_RESULT Action:");
-    console.log("📌 Result Data:", result);
-    console.log("📌 User ID:", id);
-  
-    return {
-      type: UPDATE_RESULT,
-      payload: { result, id },
-    };
+ export const updateResult = (result, id, callback) => {
+  console.log("🚀 Dispatching POST_RESULT Action:");
+  console.log("📌 Result Data:", result);
+  console.log("📌 User ID:", id);
+
+  return {
+    type: UPDATE_RESULT,
+    payload: { result, id, callback }, // ✅ include callback here
   };
+};
+
   
   export const updateResultSuccess = (result) => {
     console.log("✅ UPDATE_RESULT_SUCCESS Action Dispatched:");
@@ -106,15 +107,16 @@ export const getSchemeAnalytesList = (id) => ({
       payload: result,
     };
   };
-export const updateResultFail = (error) => {
-  console.error("❌ UPDATE_RESULT_FAIL Action Dispatched:");
-  console.error("📌 Error:", error);
-
-  return {
-    type: UPDATE_RESULT_FAIL,
-    payload: error,
+  
+  export const updateResultFail = (error) => {
+    console.error("❌ UPDATE_RESULT_FAIL Action Dispatched:");
+    console.error("📌 Error:", error);
+  
+    return {
+      type: UPDATE_RESULT_FAIL,
+      payload: error,
+    };
   };
-};
   ////////////////////////////////
   export const getResultsList = id => ({
     type: GET_RESULT,

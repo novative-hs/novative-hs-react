@@ -871,29 +871,37 @@ export const postResult = (result, id) => {
     headers: getHeader(authHeader()),
   });
 };
-export const updateResult = (result, id) => {
-  let formData = new FormData();
-  formData.append("round_id", result.round_id);
-  formData.append("analyte_id", result.analyte_id);
-  formData.append("units", result.units);
-  formData.append("instrument_name", result.instrument_name);
-  formData.append("method_name", result.method_name);
-  formData.append("reagent_name", result.reagent_name);
-  formData.append("result", result.result);
-  formData.append("rounds", result.rounds);
-  formData.append("round_status", result.round_status);
-  formData.append("scheme_id", result.scheme_id);
-  formData.append("result_status", result.result_status);
-  
-  // Only append `result_type` if it is not null or undefined
-  if (result.result_type !== null && result.result_type !== undefined) {
-    formData.append("result_type", result.result_type);
-  }
+const clean = value => {
+  if (value === undefined || value === null || value === "undefined" || value === "") return null;
+  if (!isNaN(value)) return parseInt(value); // convert valid numbers
+  return value;
+};
 
-  return axios.put(`${url.UPDATE_RESULT}/${id}`, formData, {
-    headers: getHeader(authHeader()),
+export const updateResult = (result, id) => {
+  const payload = {
+    round_id: result.round_id,
+    analyte_id: result.analyte_id,
+    units: clean(result.units),
+    instrument_name: clean(result.instrument_name),
+    method_name: clean(result.method_name),
+    reagent_name: clean(result.reagent_name),
+    result: result.result,
+    rounds: result.rounds,
+    round_status: result.round_status,
+    scheme_id: result.scheme_id,
+    result_status: result.result_status,
+    result_type: result.result_type || "Not Submitted",
+  };
+
+  return axios.put(`${url.UPDATE_RESULT}/${id}`, payload, {
+    headers: {
+      ...getHeader(authHeader()),
+      "Content-Type": "application/json",
+    },
   });
 };
+
+
 // export const getSchemeAnalytesList = (id) => {
 //   return axios.get(`${url.SCHEMES_ANALYTES}/${id}`, {
 //     headers: getHeader(authHeader()), // Ensure getHeader and authHeader are correct

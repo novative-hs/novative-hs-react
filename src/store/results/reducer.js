@@ -77,6 +77,7 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
 
     ////////////////
     //UPDATE result
+
     case UPDATE_RESULT_SUCCESS:
       return {
         ...state,
