@@ -69,18 +69,33 @@ class ResultParticipantlist extends Component {
           align: "Left",
         },
 {
-  dataField: "name",
+  dataField: "edit",
   text: "Edit",
-  sort: true,
-  formatter: (cell, row) => (
-    <Link
-      to={`/${this.state.organization_name}/UpdateParticipantsResults/${this.props.match.params.id}?participantID=${row.AccountID}`}
-      title="Edit Participant Result"
-      style={{ color: "#008000", textDecoration: "none" }}
+  sort: false, // no need to sort action column
+ formatter: (cell, round) => {
+  const labId = round.lab?.id || round.lab_id || round.id; // Fallbacks
+  const labName = round.lab?.name || round.name;
+
+  return (
+    <div
+      onClick={() => {
+        console.log("🧪 Edit clicked for Lab:", labName);
+        console.log("🧪 Lab ID:", labId);
+        console.log("🧪 Full row data:", round);
+      }}
     >
-      <i className="fas fa-edit"></i> {/* or any icon */}
-    </Link>
-  ),
+      <Link
+        to={`/${this.state.organization_name}/UpdateParticipantsResults/${this.props.match.params.id}?participantID=${labId}`}
+        title="Edit Participant Result"
+        style={{ color: "#008000", textDecoration: "none" }}
+      >
+        <i className="fas fa-edit"></i>
+      </Link>
+    </div>
+  );
+}
+
+,
   headerFormatter: (column, colIndex) => (
     <>
       <div>
@@ -340,6 +355,11 @@ ResultParticipantlist.propTypes = {
   roundDetails: PropTypes.object,
   history: PropTypes.object,
   ongetsubmittedparticipants: PropTypes.func,
+  scheme_id: PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]),
+
 };
 
 const mapStateToProps = state => {
