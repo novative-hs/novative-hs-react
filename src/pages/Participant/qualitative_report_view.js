@@ -37,47 +37,56 @@ class Results extends Component {
           text: "Analyte",
           dataField: "name",
           sort: true,
+          headerClasses: "text-center", // Center header text
+          classes: "text-center", // Center cell text
           formatter: (cellContent, analyte) => (
-            <div className="text-start">{analyte.name}</div>
+            <div className="text-center">{analyte.name}</div>
           ),
         },
         {
           text: "Instrument",
           sort: true,
+          headerClasses: "text-center",
+          classes: "text-center",
           formatter: (cellContent, analyte) => (
-            <div className="text-start">{analyte.instrument}</div>
+            <div className="text-center">{analyte.instrument}</div>
           ),
         },
         {
-          text: "Count",
+          text: "No of Participants",
           sort: true,
+          headerClasses: "text-center",
+          classes: "text-center",
           formatter: (cellContent, analyte) => (
-            <div className="text-start">{analyte.lab_count}</div>
+            <div className="text-center">{analyte.lab_count}</div>
           ),
         },
         {
           text: "Your Result",
+          headerClasses: "text-center",
+          classes: "text-center",
           formatter: (cellContent, analyte) => {
             const resultText =
               analyte.result_type === "Not Submitted"
                 ? "Not Submitted"
-                : analyte.value && analyte.result_value
-                ? `${analyte.value} (${analyte.result_value})`
-                : analyte.value || analyte.result_value || "No Result";
-            return <div className="text-start">{resultText}</div>;
+                : analyte.value || "No Result";
+            return <div className="text-center">{resultText}</div>;
           },
         },
         {
           text: "Expected Result",
+          headerClasses: "text-center",
+          classes: "text-center",
           formatter: (cellContent, analyte) => (
-            <div className="text-start">{analyte.expected_result}</div>
+            <div className="text-center">{analyte.expected_type || "N/A"}</div>
           ),
         },
-
         {
           text: "Score",
+          headerClasses: "text-center",
+          classes: "text-center",
           formatter: (cellContent, analyte) => (
-            <div className="text-start">{analyte.score}</div>
+            <div className="text-center">{analyte.score}</div>
           ),
         },
       ],

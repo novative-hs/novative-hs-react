@@ -553,7 +553,7 @@ class InstrumentType extends Component {
                     ></i>
                   </Link>
                 </Tooltip>
-                {round.scheme_type === "Qualitative" &&
+                {/* {round.scheme_type === "Qualitative" &&
                   round.status === "Open" && (
                     <Tooltip title="Enter True Values">
                       <Link
@@ -569,7 +569,7 @@ class InstrumentType extends Component {
                         />
                       </Link>
                     </Tooltip>
-                  )}
+                  )} */}
                 {(round.status === "Created" || round.status === "Ready") && ( // Changed condition here
                   <Tooltip title="Delete">
                     <Link className="text-danger" to="#">

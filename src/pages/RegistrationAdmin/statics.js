@@ -127,12 +127,10 @@ class Results extends Component {
   combineData = (analytes, results) => {
     // console.log("SchemeAnalytesList:", analytes);
     // console.log("ResultSubmit:", results);
-    return analytes.map((analyte) => {
+    return analytes.map(analyte => {
       // console.log("Analyte:", analyte);
       // Find the result entry for the current analyte
-      const resultEntry = results.find(
-        (result) => result.analyte === analyte.id
-      );
+      const resultEntry = results.find(result => result.analyte === analyte.id);
       // console.log("Result Entry:", resultEntry);
       // Extract lab count, mean, and median from the result entry
       const labCount = resultEntry?.lab_count || 0;
@@ -154,10 +152,10 @@ class Results extends Component {
       };
     });
   };
-  isAllFieldsZero = (data) => {
+  isAllFieldsZero = data => {
     // Check if all the relevant fields in the data are equal to 0
     return data.every(
-      (item) =>
+      item =>
         item.lab_count === 0 &&
         item.mean_result === 0 &&
         item.median_result === 0 &&
@@ -186,7 +184,7 @@ class Results extends Component {
           buttonText: isZero ? "Calculate" : "Recalculate", // Set button text based on data
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error fetching data: ", error);
       });
   }
@@ -236,7 +234,7 @@ class Results extends Component {
     }
   }
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -248,34 +246,34 @@ class Results extends Component {
     }
   };
 
-handleCalculate = async () => {
-  const { onGetSchemeAnalyte, onGetResultSubmit, onUpdateRound } = this.props;
-  const id = this.props.match.params.id;
+  handleCalculate = async () => {
+    const { onGetSchemeAnalyte, onGetResultSubmit, onUpdateRound } = this.props;
+    const id = this.props.match.params.id;
 
-  // Step 1: Get fresh analytes and result submissions
-  await onGetSchemeAnalyte(id);
-  await onGetResultSubmit(id);
+    // Step 1: Get fresh analytes and result submissions
+    await onGetSchemeAnalyte(id);
+    await onGetResultSubmit(id);
 
-  // Step 2: Combine data for UI display
-  const combinedData = this.combineData(
-    this.props.SchemeAnalytesList,
-    this.props.ResultSubmit
-  );
-  this.setState({ combinedData });
+    // Step 2: Combine data for UI display
+    const combinedData = this.combineData(
+      this.props.SchemeAnalytesList,
+      this.props.ResultSubmit
+    );
+    this.setState({ combinedData });
 
-  // Step 3: Update round status to "Statistics Done"
-const updatedRound = {
-  status: "Statistics Done",
-  added_by: this.state.user_id,
-};
-this.props.onUpdateRound(id, updatedRound);
-  this.props.onUpdateRound(id, updatedRound);
+    // Step 3: Update round status to "Statistics Done"
+    const updatedRound = {
+      status: "Statistics Done",
+      added_by: this.state.user_id,
+    };
+    this.props.onUpdateRound(id, updatedRound);
+    this.props.onUpdateRound(id, updatedRound);
 
-  // Step 4: Show success message
-  this.displaySuccessMessage("Statistics calculated and status updated!");
-};
+    // Step 4: Show success message
+    this.displaySuccessMessage("Statistics calculated and status updated!");
+  };
 
-  handleReport = (round) => {
+  handleReport = round => {
     if (round && round.id) {
       // Update the round's status to "report available"
       const updatedRound = {
@@ -290,7 +288,7 @@ this.props.onUpdateRound(id, updatedRound);
     }
   };
   // Function to display the success message
-  displaySuccessMessage = (message) => {
+  displaySuccessMessage = message => {
     this.setState({ successMessage: message, modal: true }); // Open the modal
 
     setTimeout(() => {
@@ -336,13 +334,40 @@ this.props.onUpdateRound(id, updatedRound);
               style={{ marginLeft: "120px" }}
             >
               <Col>
-                <Button
-                  color="primary"
-                  onClick={() => this.handleCalculate()}
-                  className="me-2"
-                >
-                  {this.state.buttonText}
-                </Button>
+                <Row className="mb-3" style={{ marginLeft: "80px" }}>
+                  {/* First Button: Add Values */}
+                  <Col md={2}>
+                    <Button
+                      color="primary"
+                      onClick={() => this.handleCalculate()}
+                      className="w-100"
+                    >
+                      {this.state.buttonText}
+                    </Button>
+                  </Col>
+
+                  {/* Spacer Column */}
+                  <Col md={2}></Col>
+                  <Col md={2}></Col>
+                  <Col md={2}></Col>
+
+                  {/* Second Button: Calculate */}
+
+                  {scheme_type === "Qualitative" && (
+                    <Col md={2}>
+                      <Link
+                        to={`/${this.state.organization_name}/slectValues/${this.props.match.params.id}`}
+                      >
+                        <Button color="primary" className="w-100">
+                          Add Values
+                        </Button>
+                      </Link>
+                    </Col>
+                  )}
+
+                  <Col md={2}></Col>
+                </Row>
+
                 {/* Show the "Report" button only when the button text is "Recalculate" */}
                 {/* {this.state.buttonText === "Recalculate" && (
                   <Button
@@ -416,6 +441,19 @@ this.props.onUpdateRound(id, updatedRound);
               <Row className="mb-3">
                 <Col md={3}>
                   <div className="d-flex align-items-center">
+                    <span className="me-2">Closing Date:</span>
+                    <span>
+                      <strong>
+                        {closing_date
+                          ? moment(closing_date).format("DD MMM YYYY, h:mm A")
+                          : "N/A"}
+                      </strong>
+                    </span>
+                  </div>
+                </Col>
+
+                <Col md={3}>
+                  <div className="d-flex align-items-center">
                     <span className="me-2">Issued Date:</span>
                     <span>
                       <strong>
@@ -428,19 +466,6 @@ this.props.onUpdateRound(id, updatedRound);
                     </span>
                   </div>
                 </Col>
-                <Col md={3}>
-                  <div className="d-flex align-items-center">
-                    <span className="me-2">Closing Date:</span>
-                    <span>
-                      <strong>
-                        {closing_date
-                          ? moment(closing_date).format("DD MMM YYYY, h:mm A")
-                          : "N/A"}
-                      </strong>
-                    </span>
-                  </div>
-                </Col>
-
                 <Col md={3}>
                   <div className="d-flex align-items-center">
                     <span className="me-2">Status:</span>
@@ -469,7 +494,7 @@ this.props.onUpdateRound(id, updatedRound);
                           data={combinedData}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <div className="table-responsive">
                                 <BootstrapTable
@@ -547,10 +572,10 @@ const mapStateToProps = ({ SchemeAnalytesList, ResultSubmit }) => ({
   cycle_no: SchemeAnalytesList.cycle_no,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onGetSchemeAnalyte: (id) => dispatch(getSchemeAnalytesList(id)),
-  onGetResultSubmit: (id) => dispatch(getResultSubmit(id)),
-  onGetStatisticsList: (id) => dispatch(getStatisticsList(id)),
+const mapDispatchToProps = dispatch => ({
+  onGetSchemeAnalyte: id => dispatch(getSchemeAnalytesList(id)),
+  onGetResultSubmit: id => dispatch(getResultSubmit(id)),
+  onGetStatisticsList: id => dispatch(getStatisticsList(id)),
   onUpdateRound: (id, round) => dispatch(updateRoundList({ id, ...round })),
 });
 
