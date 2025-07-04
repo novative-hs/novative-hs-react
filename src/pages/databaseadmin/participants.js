@@ -181,7 +181,7 @@ class ParticipantListN extends Component {
           filter: textFilter(),
         },
         {
-          dataField: "email_participant",
+          dataField: "email",
           text: "Email",
           sort: true,
           headerStyle: {
@@ -203,7 +203,7 @@ class ParticipantListN extends Component {
                   overflowWrap: "break-word", // Ensures text wraps properly
                 }}
               >
-                {AllLabs.email_participant}
+                {AllLabs.email}
               </span>
             </>
           ),
