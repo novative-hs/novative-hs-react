@@ -52,6 +52,66 @@ class PendingSubmission extends Component {
           headerStyle: { width: "100px" },
           style: { width: "100px" },
         },
+         {
+          dataField: "province",
+          text: "Province",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.provinceFilter}
+                  onChange={e => this.handleFilterChange("provinceFilter", e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "center",
+        },
+        {
+          dataField: "district",
+          text: "District",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.districtFilter}
+                  onChange={e => this.handleFilterChange("districtFilter", e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "center",
+        },
+        {
+          dataField: "city",
+          text: "City",
+          sort: true,
+          headerFormatter: (column, colIndex) => (
+            <>
+              <div>
+                <input
+                  type="text"
+                  value={this.state.cityFilter}
+                  onChange={e => this.handleFilterChange("cityFilter", e)}
+                  className="form-control"
+                />
+              </div>
+              <div>{column.text}</div>
+            </>
+          ),
+          headerAlign: "center",
+          align: "center",
+        },
         {
           dataField: "name",
           text: "Participants",
@@ -139,66 +199,7 @@ class PendingSubmission extends Component {
           headerAlign: "center",
           align: "center",
         },
-        {
-          dataField: "province",
-          text: "Province",
-          sort: true,
-          headerFormatter: (column, colIndex) => (
-            <>
-              <div>
-                <input
-                  type="text"
-                  value={this.state.provinceFilter}
-                  onChange={e => this.handleFilterChange("provinceFilter", e)}
-                  className="form-control"
-                />
-              </div>
-              <div>{column.text}</div>
-            </>
-          ),
-          headerAlign: "center",
-          align: "center",
-        },
-        {
-          dataField: "district",
-          text: "District",
-          sort: true,
-          headerFormatter: (column, colIndex) => (
-            <>
-              <div>
-                <input
-                  type="text"
-                  value={this.state.districtFilter}
-                  onChange={e => this.handleFilterChange("districtFilter", e)}
-                  className="form-control"
-                />
-              </div>
-              <div>{column.text}</div>
-            </>
-          ),
-          headerAlign: "center",
-          align: "center",
-        },
-        {
-          dataField: "city",
-          text: "City",
-          sort: true,
-          headerFormatter: (column, colIndex) => (
-            <>
-              <div>
-                <input
-                  type="text"
-                  value={this.state.cityFilter}
-                  onChange={e => this.handleFilterChange("cityFilter", e)}
-                  className="form-control"
-                />
-              </div>
-              <div>{column.text}</div>
-            </>
-          ),
-          headerAlign: "center",
-          align: "center",
-        },
+       
         {
           dataField: "comments",
           text: "Comments",
