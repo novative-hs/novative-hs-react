@@ -57,11 +57,8 @@ class StaffRegister extends Component {
       ListSector: [],
       modal: false,
       usernameFieldError: null,
-      passwordFieldError: null,
       incompleteRegistrationError: null,
-      account_type: "labowner",
       submittedMessage: null,
-      emailError: null,
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
         : "",
@@ -95,14 +92,8 @@ class StaffRegister extends Component {
     onGetsectorlist(this.state.user_id);
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.emailError !== this.props.emailError) {
-      this.setState({ emailError: this.props.emailError });
-    }
     if (prevProps.usernameError != this.props.usernameError) {
       this.setState({ usernameFieldError: this.props.usernameError });
-    }
-    if (prevProps.passwordError != this.props.passwordError) {
-      this.setState({ passwordFieldError: this.props.passwordError });
     }
 
     if (
@@ -140,30 +131,6 @@ class StaffRegister extends Component {
     }
   }
 
-  togglePasswordVisibility = () => {
-    const passwordInput = document.querySelector('input[name="password"]');
-    const eyeIcon = document.getElementById("eye-icon");
-
-    if (passwordInput && passwordInput.type === "password") {
-      passwordInput.type = "text";
-      eyeIcon.className = "mdi mdi-eye-off-outline";
-    } else if (passwordInput) {
-      passwordInput.type = "password";
-      eyeIcon.className = "mdi mdi-eye-outline";
-    }
-  };
-  togglePassword1Visibility = () => {
-    const passwordInput = document.querySelector('input[name="password2"]');
-    const eyeIcon2 = document.getElementById("eye-icon1");
-
-    if (passwordInput && passwordInput.type === "password") {
-      passwordInput.type = "text";
-      eyeIcon2.className = "mdi mdi-eye-off-outline";
-    } else if (passwordInput) {
-      passwordInput.type = "password";
-      eyeIcon2.className = "mdi mdi-eye-outline";
-    }
-  };
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
@@ -185,9 +152,44 @@ class StaffRegister extends Component {
       importFile: file,
     });
   };
+  /////////////////////////////////
+  generateRandomPassword = () => {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
 
+    const randomLetters = Array.from(
+      { length: 4 },
+      () => letters[Math.floor(Math.random() * letters.length)]
+    );
+    const randomNumbers = Array.from(
+      { length: 4 },
+      () => numbers[Math.floor(Math.random() * numbers.length)]
+    );
+
+    const combined = [...randomLetters, ...randomNumbers];
+    for (let i = combined.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [combined[i], combined[j]] = [combined[j], combined[i]];
+    }
+
+    return combined.join("");
+  };
+
+  generateLabCode = () => {
+    const prefix = "LAB";
+    const suffix = Math.floor(100000 + Math.random() * 900000);
+    return `${prefix}${suffix}`;
+  };
+
+  generateLabCode = () => {
+    const prefix = "LAB";
+    const randomNumber = Math.floor(1000 + Math.random() * 9000);
+    return `${prefix}${randomNumber}`;
+  };
+
+  /////////////////////////////////
   handleImport = async () => {
-    const { importFile } = this.state;
+    const { importFile, account_type } = this.state;
     if (!importFile) {
       this.setState({
         importError: "Please select a file.",
@@ -197,54 +199,57 @@ class StaffRegister extends Component {
 
     try {
       const reader = new FileReader();
+      const self = this;
+
       reader.onload = async e => {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: "array" });
-        // Assuming your data is in the first sheet
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
-        // Convert to JSON format
         const jsonData = XLSX.utils.sheet_to_json(sheet);
 
-        // Process jsonData and save to the database
-        // Example of processing:
-        for (let i = 0; i < jsonData.length; i++) {
-          const item = jsonData[i];
-          // Dispatch an action to save item to the database
-          await this.props.registerUser({
-            name: item.name,
-            username: item.username,
-            email: item.email,
-            email_participant: item.email_participant,
-            password: item.password,
-            password2: item.password2,
-            city: item.city,
-            phone: item.phone,
-            lab_code: item.lab_code,
-            type: item.type,
-            sector: item.sector,
-            address: item.address,
-            designation: item.designation,
-            country: item.country,
-            province: item.province,
-            billing_address: item.billing_address,
-            shipping_address: item.shipping_address,
-            department: item.department,
-            district: item.district,
-            lab_staff_name: item.lab_staff_name,
-            landline_registered_by: item.landline_registered_by,
-            website: item.website,
-            account_type: this.state.account_type,
-            added_by: localStorage.getItem("authUser")
-              ? JSON.parse(localStorage.getItem("authUser")).user_id
-              : "",
-            // Add other fields as required based on your schema
-          });
-        }
+        const addedBy = localStorage.getItem("authUser")
+          ? JSON.parse(localStorage.getItem("authUser")).user_id
+          : "";
 
-        // Close the modal and show success message
-        this.toggleImportModal();
-        this.displaySuccessMessage("Data imported successfully!");
+        const registrationPromises = jsonData.map(async item => {
+          try {
+            const generatedPassword = self.generateRandomPassword();
+            const generatedLabCode = self.generateLabCode();
+
+            return await self.props.registerUser({
+              name: item.name,
+              username: item.username,
+              email_participant: item.email_participant,
+              password: generatedPassword,
+              lab_code: generatedLabCode,
+              city: item.city,
+              phone: item.phone,
+              type: item.type,
+              sector: item.sector,
+              address: item.address,
+              designation: item.designation,
+              country: item.country,
+              province: item.province,
+              billing_address: item.billing_address,
+              shipping_address: item.shipping_address,
+              department: item.department,
+              district: item.district,
+              lab_staff_name: item.lab_staff_name,
+              landline_registered_by: item.landline_registered_by,
+              website: item.website,
+              account_type: account_type || "labowner",
+              added_by: addedBy,
+            });
+          } catch (err) {
+            console.error("Failed to register user:", item.username, err);
+          }
+        });
+
+        await Promise.all(registrationPromises);
+
+        self.toggleImportModal();
+        self.displaySuccessMessage("Data imported successfully!");
       };
 
       reader.readAsArrayBuffer(importFile);
@@ -255,12 +260,14 @@ class StaffRegister extends Component {
       });
     }
   };
+
   scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth', // Adds smooth scrolling
+      behavior: "smooth", // Adds smooth scrolling
     });
   };
+
   render() {
     // console.log("Email error received:", this.props.emailError);
     const { ListType, ListSector } = this.state;
@@ -311,6 +318,41 @@ class StaffRegister extends Component {
         overflowY: "auto", // Enable vertical scrolling
         // WebkitOverflowScrolling: "touch", // Smooth scrolling for mobile devices
       }),
+    };
+
+    const generateRandomPassword = () => {
+      const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+      const numbers = "0123456789";
+
+      // Generate 4 random letters
+      const randomLetters = Array.from(
+        { length: 4 },
+        () => letters[Math.floor(Math.random() * letters.length)]
+      );
+
+      // Generate 4 random digits
+      const randomNumbers = Array.from(
+        { length: 4 },
+        () => numbers[Math.floor(Math.random() * numbers.length)]
+      );
+
+      // Combine and shuffle the characters
+      const combined = [...randomLetters, ...randomNumbers];
+
+      // Shuffle the combined characters
+      for (let i = combined.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [combined[i], combined[j]] = [combined[j], combined[i]];
+      }
+
+      return combined.join("");
+    };
+
+    // Generate Lab Code: LAB + 4 digits
+    const generateLabCode = () => {
+      const prefix = "LAB";
+      const randomNumber = Math.floor(1000 + Math.random() * 9000); // ensures 4-digit number
+      return `${prefix}${randomNumber}`;
     };
     return (
       <React.Fragment>
@@ -364,11 +406,11 @@ class StaffRegister extends Component {
                         .xml, .html, .txt, .dbf
                       </li>
                       <li>
-                        There should be a file having columns, name,username,
-                        email,email_participant, city,
-                        country, province, billing_address, shipping_address,
-                        department, district, lab_staff_name,
-                        landline_registered_by, phone, website
+                        There should be a file having columns,
+                        name,username,email_participant, city, country,
+                        province, billing_address, shipping_address, department,
+                        district, lab_staff_name, landline_registered_by, phone,
+                        website
                       </li>
                       <li>
                         If you want to get more information, contact us at{" "}
@@ -422,29 +464,33 @@ class StaffRegister extends Component {
             </Modal>
             <Row className="justify-content-center">
               <Col lg="8">
-              <div>
-              <h5 className="text-danger">Important Note:</h5>
-                <p className="text-muted text-left">
-                  When uploading the file, please ensure that each participant has a unique <strong> username </strong> and <strong> email address.</strong> 
+                <div>
+                  <h5 className="text-danger">Important Note:</h5>
+                  <p className="text-muted text-left">
+                    When uploading the file, please ensure that each participant
+                    has a unique
+                    <strong> Login email</strong>
                   </p>
-              </div>
+                </div>
                 <Card>
                   <CardBody>
-                    <div >
+                    <div>
                       {this.state.submittedMessage && (
                         <Alert color="success" style={{ marginTop: "13px" }}>
                           {this.state.submittedMessage}
                         </Alert>
                       )}
                       <Formik
-                        enableReinitialize={true}
+                        // enableReinitialize={true}
                         initialValues={{
+                          password: generateRandomPassword(),
+                          lab_code: generateLabCode(),
                           username: (this.state && this.state.username) || "",
-                          email: (this.state && this.state.email) || "",
+                          // email: (this.state && this.state.email) || "",
                           email_participant:
                             (this.state && this.state.email_participant) || "",
-                          password: (this.state && this.state.password) || "",
-                          password2: (this.state && this.state.password2) || "",
+                          // password: (this.state && this.state.password) || "",
+                          // password2: (this.state && this.state.password2) || "",
                           account_type:
                             (this.state && this.state.account_type) ||
                             "labowner",
@@ -452,6 +498,8 @@ class StaffRegister extends Component {
                           cnic: (this.state && this.state.cnic) || "",
                           city: (this.state && this.state.city) || "",
                           province: (this.state && this.state.province) || "",
+                          sameAddress: false,
+
                           country: (this.state && this.state.country) || "",
                           billing_address:
                             (this.state && this.state.billing_address) || "",
@@ -468,24 +516,13 @@ class StaffRegister extends Component {
                           landline_registered_by:
                             (this.state && this.state.landline_registered_by) ||
                             "",
-                          phone:
-                            (this.state && this.state.phone) ||
-                            "",
-                          lab_code:
-                            (this.state && this.state.lab_code) ||
-                            "",
-                          type:
-                            (this.state && this.state.type) ||
-                            "",
+                          phone: (this.state && this.state.phone) || "",
+                          // lab_code: (this.state && this.state.lab_code) || "",
+                          type: (this.state && this.state.type) || "",
                           designation:
-                            (this.state && this.state.designation) ||
-                            "",
-                          sector:
-                            (this.state && this.state.sector) ||
-                            "",
-                          address:
-                            (this.state && this.state.address) ||
-                            "",
+                            (this.state && this.state.designation) || "",
+                          sector: (this.state && this.state.sector) || "",
+                          address: (this.state && this.state.address) || "",
                           website: (this.state && this.state.website) || "",
 
                           added_by: localStorage.getItem("authUser")
@@ -502,51 +539,31 @@ class StaffRegister extends Component {
                               100,
                               "Username can't be longer than 100 characters"
                             ),
-                          password: Yup.string().required(
-                            "Please enter your password"
-                          ),
+
                           name: Yup.string()
                             .trim()
                             .required("Please enter name")
                             .min(3, "Name must be at least 3 characters")
-                            .max(100, "Name can't be longer than 100 characters"),
-
-                          email: Yup.string()
-                            .required("Please enter your email")
-                            .email("Please enter valid email"),
+                            .max(
+                              255,
+                              "Name can't be longer than 100 characters"
+                            ),
 
                           email_participant: Yup.string()
                             .required("Please enter  email")
                             .email("Please enter valid email"),
 
-                          password2: Yup.string()
-                            .required("Please Correct your password")
-                            .when("password", {
-                              is: val => (val && val.length > 0 ? true : false),
-                              then: Yup.string().oneOf(
-                                [Yup.ref("password")],
-                                "Both password need to be the same"
-                              ),
-                            }),
-                          // city: Yup.array()
-                          // .of(
-                          //   Yup.object().shape({
-                          //     value: Yup.string().required(),
-                          //     label: Yup.string().required(),
-                          //   })
-                          // )
-                          // .min(1, "At least one city is required"),
-
                           city: Yup.string().required("City is required"),
 
-                          lab_code: Yup.string()
-                            .required("Lab Code is required"),
+                          lab_code: Yup.string().required(
+                            "Lab Code is required"
+                          ),
 
                           province: Yup.string()
                             .required("province  is required")
                             .max(
-                              100,
-                              "province name can't be longer than 100 characters"
+                              50,
+                              "province name can't be longer than 50 characters"
                             ),
 
                           country: Yup.string()
@@ -556,19 +573,13 @@ class StaffRegister extends Component {
                               "Country can't be longer than 50 characters"
                             ),
 
-                          // address: Yup.string()
-                          //   .required("Address is required")
-                          //   .max(
-                          //     500,
-                          //     "Address can't be longer than 500 characters"
-                          //   ),
                           billing_address: Yup.string()
                             .required("Billing Address is required")
                             .max(
                               500,
                               "Address can't be longer than 500 characters"
                             ),
-                          
+
                           address: Yup.string()
                             .required("Address is required")
                             .max(
@@ -590,22 +601,13 @@ class StaffRegister extends Component {
                             ),
                           type: Yup.string()
                             .required("Type is required")
-                            .max(
-                              50,
-                              "Type can't be longer than 50 characters"
-                            ),
+                            .max(50, "Type can't be longer than 50 characters"),
                           designation: Yup.string()
                             .required("Designation is required")
-                            .max(
-                              50,
-                              "Type can't be longer than 50 characters"
-                            ),
+                            .max(50, "Type can't be longer than 50 characters"),
                           sector: Yup.string()
                             .required("Sector is required")
-                            .max(
-                              50,
-                              "Type can't be longer than 50 characters"
-                            ),
+                            .max(50, "Type can't be longer than 50 characters"),
                           lab_staff_name: Yup.string()
                             .required("Lab staff name is required")
                             .max(
@@ -629,24 +631,25 @@ class StaffRegister extends Component {
                           // .required("Website is required"),
                         })}
                         onSubmit={(values, { setSubmitting, resetForm }) => {
-                          // Trigger scroll to top
                           this.scrollToTop();
-                          // for multiple selection
-                          // const cityIds = values.city
-                          //   .map(city => city.value)
-                          //   .join(",");
 
-                          // const formData = {
-                          //   ...values,
-                          //   city: cityIds,
-                          // };
+                          // Create payload conditionally
+                          let payload = { ...values };
 
-                          this.props.registerUser(values);
-                          setSubmitting(false); // Ensures form is not submitting
+                          // If lab type is "Participant", include lab_code
+                          if (values.type === "Participant") {
+                            payload.lab_code = values.lab_code;
+                          } else {
+                            // If not a participant, you may optionally remove lab_code
+                            delete payload.lab_code;
+                          }
+
+                          this.props.registerUser(payload);
+                          setSubmitting(false);
+
                           setTimeout(() => {
                             if (
                               !this.state.usernameFieldError &&
-                              !this.state.passwordFieldError &&
                               !this.state.incompleteRegistrationError
                             ) {
                               this.setState({
@@ -654,11 +657,11 @@ class StaffRegister extends Component {
                                   "Participant added successfully.",
                               });
                               setTimeout(() => {
-                                this.setState({ submittedMessage: '' });
-                                resetForm(); // Reset form fields after the success message disappears
+                                this.setState({ submittedMessage: "" });
+                                resetForm();
                               }, 2000);
                             }
-                          }, 1000); // Initial 1 second delay
+                          }, 1000);
                         }}
                       >
                         {({
@@ -669,17 +672,95 @@ class StaffRegister extends Component {
                           setFieldValue,
                         }) => (
                           <Form className="form-horizontal">
+                            <Row>
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
+                                    Lab Code (Auto-generated)
+                                  </Label>
+                                  <div className="input-group">
+                                    <Field
+                                      name="lab_code"
+                                      type="text"
+                                      disabled
+                                      placeholder="Auto-generated"
+                                      value={values.lab_code}
+                                      className="form-control"
+                                    />
+
+                                    <div className="input-group-append">
+                                      <button
+                                        className="btn btn-light"
+                                        type="button"
+                                        id="labcode-addon"
+                                        disabled
+                                      >
+                                        <i className="mdi mdi-lock-outline"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Col>
+
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-3">
+                                  <Label
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
+                                    Password (Auto-generated)
+                                  </Label>
+                                  <div className="input-group">
+                                    <Field
+                                      name="password"
+                                      type="text"
+                                      disabled
+                                      placeholder="Auto-generated"
+                                      value={values.password} // ensure this is coming from Formik
+                                      className="form-control"
+                                    />
+                                    <div className="input-group-append">
+                                      <button
+                                        className="btn btn-light"
+                                        type="button"
+                                        id="password-addon"
+                                        disabled
+                                      >
+                                        <i
+                                          id="eye-icon"
+                                          className="mdi mdi-eye-outline"
+                                        ></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Col>
+                            </Row>
                             {/* Name field */}
                             <Row>
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
-                                  <Label for="name" className="form-label">
+                                  <Label
+                                    for="name"
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
                                     Name
                                   </Label>
+
                                   <Field
                                     name="name"
                                     type="text"
                                     placeholder="Enter name"
+                                    style={{
+                                      borderColor:
+                                        errors.name && touched.name
+                                          ? "red"
+                                          : "black",
+                                    }}
                                     className={
                                       "form-control" +
                                       (errors.name && touched.name
@@ -695,28 +776,48 @@ class StaffRegister extends Component {
                                 </div>
                               </Col>
                               <Col sm={6} md={6} xl={6}>
-                                {/* Organization email */}
+                                {/* Username field */}
                                 <div className="mb-3">
-                                  <Label for="email" className="form-label">
-                                    Email
+                                  <Label
+                                    for="username"
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
+                                    Login Email
                                   </Label>
                                   <Field
-                                    id="email"
-                                    name="email"
+                                    id="username"
+                                    name="username"
+                                    placeholder="Enter username"
+                                    style={{
+                                      borderColor:
+                                        errors.name && touched.name
+                                          ? "red"
+                                          : "black",
+                                    }}
                                     type="text"
-                                    placeholder="Please enter your email"
+                                    onFocus={() => {
+                                      this.setState({
+                                        usernameFieldError: null,
+                                      });
+                                    }}
                                     className={
                                       "form-control" +
-                                      (errors.email && touched.email
+                                      ((errors.username && touched.username) ||
+                                      this.state.usernameFieldError
                                         ? " is-invalid"
                                         : "")
                                     }
                                   />
                                   <ErrorMessage
-                                    name="email"
+                                    name="username"
                                     component="div"
                                     className="invalid-feedback"
                                   />
+
+                                  <div className="invalid-feedback">
+                                    {this.state.usernameFieldError}
+                                  </div>
                                 </div>
                               </Col>
                             </Row>
@@ -724,7 +825,11 @@ class StaffRegister extends Component {
                               <Col sm={6} md={6} xl={6}>
                                 {/* website */}
                                 <div className="mb-3">
-                                  <Label for="website" className="form-label">
+                                  <Label
+                                    for="website"
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
                                     Website
                                   </Label>
                                   <Field
@@ -732,6 +837,12 @@ class StaffRegister extends Component {
                                     name="website"
                                     type="text"
                                     placeholder="Please enter your website_URL"
+                                    style={{
+                                      borderColor:
+                                        errors.name && touched.name
+                                          ? "red"
+                                          : "black",
+                                    }}
                                     className={
                                       "form-control" +
                                       (errors.website && touched.website
@@ -752,6 +863,7 @@ class StaffRegister extends Component {
                                   <Label
                                     for="phone"
                                     className="form-label"
+                                    style={{ color: "blue" }}
                                   >
                                     Contact No
                                   </Label>
@@ -760,10 +872,15 @@ class StaffRegister extends Component {
                                     name="phone"
                                     type="text"
                                     placeholder="Please enter contact no."
+                                    style={{
+                                      borderColor:
+                                        errors.name && touched.name
+                                          ? "red"
+                                          : "black",
+                                    }}
                                     className={
                                       "form-control" +
-                                      (errors.phone &&
-                                      touched.phone
+                                      (errors.phone && touched.phone
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -775,17 +892,15 @@ class StaffRegister extends Component {
                                   />
                                 </div>{" "}
                               </Col>
-
                             </Row>
                             <Row>
-                            <Col sm={6} md={6} xl={6}>
-                                {/* Lab Staff Name field */}
-                                <div className="mb-3">
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="mb-6">
                                   <Label
                                     for="address"
                                     className="form-label"
+                                    style={{ color: "blue" }}
                                   >
-                                    {/* Registered by (Name) */}
                                     Address
                                   </Label>
                                   <Field
@@ -793,10 +908,15 @@ class StaffRegister extends Component {
                                     name="address"
                                     type="text"
                                     placeholder="Please enter Complete Address."
+                                    style={{
+                                      borderColor:
+                                        errors.address && touched.address
+                                          ? "red"
+                                          : "black",
+                                    }}
                                     className={
                                       "form-control" +
-                                      (errors.address &&
-                                      touched.address
+                                      (errors.address && touched.address
                                         ? " is-invalid"
                                         : "")
                                     }
@@ -807,73 +927,92 @@ class StaffRegister extends Component {
                                     className="invalid-feedback"
                                   />
                                 </div>
+
+                                {/* Checkbox - Only show if address is filled */}
+                                {values.address && (
+                                  <div className="mb-3 form-check">
+                                    <Input
+                                      type="checkbox"
+                                      id="sameAsAddress"
+                                      className="form-check-input"
+                                      onChange={e => {
+                                        const checked = e.target.checked;
+                                        if (checked) {
+                                          setFieldValue(
+                                            "billing_address",
+                                            values.address
+                                          );
+                                          setFieldValue(
+                                            "shipping_address",
+                                            values.address
+                                          );
+                                        }
+                                      }}
+                                    />
+                                    <Label
+                                      for="sameAsAddress"
+                                      className="form-check-label"
+                                    >
+                                      Check Mark if the address is same as
+                                      Shipping & Billing Address
+                                    </Label>
+                                  </div>
+                                )}
                               </Col>
                               {/* city */}
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
-                                  <Label for="city" className="form-label">
+                                  <Label
+                                    for="city"
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
                                     City
                                   </Label>
                                   <Select
-                                    name="city" // The field name in Formik
-                                    // isMulti // Enable multi-select
-                                    options={cityOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      // "form-control" +
-                                      errors.city && touched.city
-                                        ? " is-invalid"
-                                        : "" // Conditional class based on validation
-                                    }
-                                    //   onChange={
-                                    //     selectedOptions =>
-                                    //       setFieldValue("city", selectedOptions) // Update Formik state
-                                    //   }
-                                    //   value={values.city} // Set the current selected values
-                                    // />
+                                    name="city"
+                                    options={cityOptions}
+                                    classNamePrefix="react-select"
+                                    className="react-select-container border border-black"
                                     onChange={selectedOption => {
                                       setFieldValue(
                                         "city",
                                         selectedOption
                                           ? selectedOption.value
                                           : ""
-                                      ); // Update Formik state with string value
+                                      );
                                     }}
                                     value={
                                       cityOptions.find(
                                         option => option.value === values.city
                                       ) || null
-                                    } // Set the current selected value
-                                    // menuPlacement="auto"
-                                    // menuShouldScrollIntoView={false}
+                                    }
                                   />
                                   <ErrorMessage
-                                    name="city" // Error for the city field
+                                    name="city"
                                     component="div"
                                     className="invalid-feedback"
                                   />
                                 </div>
                               </Col>
-                            
-                            
                             </Row>
 
                             <Row>
                               {/* District */}
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
-                                  <Label for="district" className="form-label">
+                                  <Label
+                                    for="district"
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
                                     District
                                   </Label>
                                   <Select
                                     name="district" // The field name in Formik
-                                    options={districtOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      errors.district && touched.district
-                                        ? " is-invalid"
-                                        : ""
-                                    }
+                                    options={districtOptions}
+                                    classNamePrefix="react-select"
+                                    className="react-select-container border border-black"
                                     onChange={selectedOption => {
                                       setFieldValue(
                                         "district",
@@ -899,18 +1038,18 @@ class StaffRegister extends Component {
                               <Col sm={6} md={6} xl={6}>
                                 {/* province  */}
                                 <div className="mb-3">
-                                  <Label for="province" className="form-label">
+                                  <Label
+                                    for="province"
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
                                     Province
                                   </Label>
                                   <Select
                                     name="province" // The field name in Formik
                                     options={provinceOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      errors.province && touched.province
-                                        ? " is-invalid"
-                                        : ""
-                                    }
+                                    classNamePrefix="react-select"
+                                    className="react-select-container border border-black"
                                     onChange={selectedOption => {
                                       setFieldValue(
                                         "province",
@@ -933,25 +1072,24 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col>
-                            
                             </Row>
 
                             <Row>
-                            <Col sm={6} md={6} xl={6}>
+                              <Col sm={6} md={6} xl={6}>
                                 {/* country */}
                                 <div className="mb-3">
-                                  <Label for="country" className="form-label">
+                                  <Label
+                                    for="country"
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
                                     Country
                                   </Label>
                                   <Select
                                     name="country" // The field name in Formik
                                     options={countryOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      errors.country && touched.country
-                                        ? " is-invalid"
-                                        : ""
-                                    }
+                                    classNamePrefix="react-select"
+                                    className="react-select-container border border-black"
                                     onChange={selectedOption => {
                                       setFieldValue(
                                         "country",
@@ -974,25 +1112,21 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col>
-                              
+
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
                                   <Label
                                     for="department"
                                     className="form-label"
+                                    style={{ color: "blue" }}
                                   >
                                     Department
                                   </Label>
                                   <Select
                                     name="department" // The field name in Formik
                                     options={deptOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      // "form-control" +
-                                      errors.department && touched.department
-                                        ? " is-invalid"
-                                        : "" // Conditional class based on validation
-                                    }
+                                    classNamePrefix="react-select"
+                                    className="react-select-container border border-black"
                                     onChange={selectedOption => {
                                       setFieldValue(
                                         "department",
@@ -1020,18 +1154,18 @@ class StaffRegister extends Component {
                               {/* District */}
                               <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
-                                  <Label for="type" className="form-label">
+                                  <Label
+                                    for="type"
+                                    className="form-label"
+                                    style={{ color: "blue" }}
+                                  >
                                     Lab Type
                                   </Label>
                                   <Select
                                     name="type" // The field name in Formik
                                     options={typeOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      errors.type && touched.type
-                                        ? " is-invalid"
-                                        : ""
-                                    }
+                                    classNamePrefix="react-select"
+                                    className="react-select-container border border-black"
                                     onChange={selectedOption => {
                                       setFieldValue(
                                         "type",
@@ -1042,8 +1176,7 @@ class StaffRegister extends Component {
                                     }}
                                     value={
                                       typeOptions.find(
-                                        option =>
-                                          option.value === values.type
+                                        option => option.value === values.type
                                       ) || null
                                     } // Set the current selected value
                                   />
@@ -1059,19 +1192,15 @@ class StaffRegister extends Component {
                                   <Label
                                     for="sector"
                                     className="form-label"
+                                    style={{ color: "blue" }}
                                   >
                                     Sector
                                   </Label>
                                   <Select
                                     name="sector" // The field name in Formik
                                     options={sectorOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      // "form-control" +
-                                      errors.sector && touched.sector
-                                        ? " is-invalid"
-                                        : "" // Conditional class based on validation
-                                    }
+                                    classNamePrefix="react-select"
+                                    className="react-select-container border border-black"
                                     onChange={selectedOption => {
                                       setFieldValue(
                                         "sector",
@@ -1082,8 +1211,7 @@ class StaffRegister extends Component {
                                     }}
                                     value={
                                       sectorOptions.find(
-                                        option =>
-                                          option.value === values.sector
+                                        option => option.value === values.sector
                                       ) || null
                                     } // Set the current selected value
                                   />
@@ -1103,6 +1231,7 @@ class StaffRegister extends Component {
                                   <Label
                                     for="shipping_address"
                                     className="form-label"
+                                    style={{ color: "blue" }}
                                   >
                                     Shipping Address
                                   </Label>
@@ -1111,6 +1240,13 @@ class StaffRegister extends Component {
                                     name="shipping_address"
                                     type="text"
                                     placeholder="Please enter your Shipping address"
+                                    readOnly={values.sameAddress}
+                                    style={{
+                                      borderColor:
+                                        errors.name && touched.name
+                                          ? "red"
+                                          : "black",
+                                    }}
                                     className={
                                       "form-control" +
                                       (errors.shipping_address &&
@@ -1132,6 +1268,7 @@ class StaffRegister extends Component {
                                   <Label
                                     for="billing_address"
                                     className="form-label"
+                                    style={{ color: "blue" }}
                                   >
                                     Billing Address
                                   </Label>
@@ -1140,6 +1277,13 @@ class StaffRegister extends Component {
                                     name="billing_address"
                                     type="text"
                                     placeholder="Please enter your Billing address"
+                                    readOnly={values.sameAddress}
+                                    style={{
+                                      borderColor:
+                                        errors.name && touched.name
+                                          ? "red"
+                                          : "black",
+                                    }}
                                     className={
                                       "form-control" +
                                       (errors.billing_address &&
@@ -1193,68 +1337,86 @@ class StaffRegister extends Component {
                             {/* <div className="mb-3 mt-5">
                               <h3>Who is registering the participant</h3>
                             </div> */}
-                            <Row>
-                              <Col sm={6} md={6} xl={6}>
-                                {/* Lab Staff Name field */}
-                                <div className="mb-3">
-                                  <Label
-                                    for="lab_staff_name"
-                                    className="form-label"
-                                  >
-                                    {/* Registered by (Name) */}
-                                    Name of notification person
-                                  </Label>
-                                  <Field
-                                    id="lab_staff_name"
-                                    name="lab_staff_name"
-                                    type="text"
-                                    placeholder="Please enter the name of person registering participant"
-                                    className={
-                                      "form-control" +
-                                      (errors.lab_staff_name &&
-                                      touched.lab_staff_name
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="lab_staff_name"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                              <Col sm={6} md={6} xl={6}>
-                                {/* Landline field */}
-                                <div className="mb-3">
-                                  <Label
-                                    for="landline_registered_by"
-                                    className="form-label"
-                                  >
-                                    Contact No. of notification person
-                                  </Label>
-                                  <Field
-                                    id="landline_registered_by"
-                                    name="landline_registered_by"
-                                    type="text"
-                                    placeholder="Please enter landline no."
-                                    className={
-                                      "form-control" +
-                                      (errors.landline_registered_by &&
-                                      touched.landline_registered_by
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="landline_registered_by"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>{" "}
-                              </Col>
-                              {/* Lab Staff Designation field */}
-                              {/* <Col sm={6} md={6} xl={6}>
+                            <p className="text-primary fs-5">
+                              <strong>Information of Notifying Person</strong>
+                            </p>
+                            <div className="bg-light ">
+                              <Row>
+                                <Col sm={6} md={6} xl={6}>
+                                  {/* Lab Staff Name field */}
+                                  <div className="mb-3 pt-3">
+                                    <Label
+                                      for="lab_staff_name"
+                                      className="form-label"
+                                      style={{ color: "blue" }}
+                                    >
+                                      {/* Registered by (Name) */}
+                                      Name
+                                    </Label>
+                                    <Field
+                                      id="lab_staff_name"
+                                      name="lab_staff_name"
+                                      type="text"
+                                      placeholder="Please enter the name of person registering participant"
+                                      style={{
+                                        borderColor:
+                                          errors.name && touched.name
+                                            ? "red"
+                                            : "black",
+                                      }}
+                                      className={
+                                        "form-control" +
+                                        (errors.lab_staff_name &&
+                                        touched.lab_staff_name
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="lab_staff_name"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                                <Col sm={6} md={6} xl={6}>
+                                  {/* Landline field */}
+                                  <div className="mb-3 pt-3">
+                                    <Label
+                                      for="landline_registered_by"
+                                      className="form-label"
+                                      style={{ color: "blue" }}
+                                    >
+                                      Contact No
+                                    </Label>
+                                    <Field
+                                      id="landline_registered_by"
+                                      name="landline_registered_by"
+                                      type="text"
+                                      placeholder="Please enter landline no."
+                                      style={{
+                                        borderColor:
+                                          errors.name && touched.name
+                                            ? "red"
+                                            : "black",
+                                      }}
+                                      className={
+                                        "form-control" +
+                                        (errors.landline_registered_by &&
+                                        touched.landline_registered_by
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="landline_registered_by"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>{" "}
+                                </Col>
+                                {/* Lab Staff Designation field */}
+                                {/* <Col sm={6} md={6} xl={6}>
                                 <div className="mb-3">
                                   <Label
                                     for="lab_staff_designation"
@@ -1295,211 +1457,84 @@ class StaffRegister extends Component {
                                   />
                                 </div>
                               </Col> */}
-                            </Row>
-                            <Row>
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label className="form-label">
-                                    Email of notification person
-                                  </Label>
-                                  <Field
-                                    name="email_participant"
-                                    type="text"
-                                    placeholder="Enter email of notification person"
-                                    className={
-                                      "form-control" +
-                                      (errors.email_participant &&
-                                      touched.email_participant
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="email_participant"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-
-                                  {this.state.emailError && (
-                                    <div className="invalid-feedback d-block">
-                                      {this.state.emailError}
-                                    </div>
-                                  )}
-                                </div>
-                              </Col>
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label
-                                    for="designation"
-                                    className="form-label"
-                                  >
-                                    Designation of notification person
+                              </Row>
+                              <Row>
+                                <Col sm={6} md={6} xl={6}>
+                                  <div className="mb-3">
+                                    <Label
+                                      className="form-label"
+                                      style={{ color: "blue" }}
+                                    >
+                                      Email
                                     </Label>
-                                  <Select
-                                    name="designation" // The field name in Formik
-                                    options={designationOptions} // Options for the select
-                                    styles={customStyles}
-                                    className={
-                                      // "form-control" +
-                                      errors.designation && touched.designation
-                                        ? " is-invalid"
-                                        : "" // Conditional class based on validation
-                                    }
-                                    onChange={selectedOption => {
-                                      setFieldValue(
-                                        "designation",
-                                        selectedOption
-                                          ? selectedOption.value
-                                          : ""
-                                      ); // Update Formik state with string value
-                                    }}
-                                    value={
-                                      designationOptions.find(
-                                        option =>
-                                          option.value === values.designation
-                                      ) || null
-                                    } // Set the current selected value
-                                  />
-                                  <ErrorMessage
-                                    name="designation" // Error for the city field
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                            </Row>
+                                    <Field
+                                      name="email_participant"
+                                      type="text"
+                                      placeholder="Enter email of notification person"
+                                      style={{
+                                        borderColor:
+                                          errors.name && touched.name
+                                            ? "red"
+                                            : "black",
+                                      }}
+                                      className={
+                                        "form-control" +
+                                        (errors.email_participant &&
+                                        touched.email_participant
+                                          ? " is-invalid"
+                                          : "")
+                                      }
+                                    />
+                                    <ErrorMessage
+                                      name="email_participant"
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
 
-                            <Row>
-                              <Col sm={6} md={6} xl={6}>
-                                <div className="mb-3">
-                                  <Label for="lab_code" className="form-label">
-                                    Lab Code
-                                  </Label>
-                                  <Field
-                                    name="lab_code"
-                                    type="text"
-                                    placeholder="Enter Lab Code"
-                                    className={
-                                      "form-control" +
-                                      (errors.lab_code && touched.lab_code
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name="lab_code"
-                                    component="div"
-                                    className="invalid-feedback"
-                                  />
-                                </div>
-                              </Col>
-                             
-                            </Row>
-
-                            {/* Username field */}
-                            <div className="mb-3">
-                              <Label for="username" className="form-label">
-                                Username
-                              </Label>
-                              <Field
-                                id="username"
-                                name="username"
-                                placeholder="Enter username"
-                                type="text"
-                                onFocus={() => {
-                                  this.setState({
-                                    usernameFieldError: null,
-                                  });
-                                }}
-                                className={
-                                  "form-control" +
-                                  ((errors.username && touched.username) ||
-                                  this.state.usernameFieldError
-                                    ? " is-invalid"
-                                    : "")
-                                }
-                              />
-                              <ErrorMessage
-                                name="username"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-
-                              <div className="invalid-feedback">
-                                {this.state.usernameFieldError}
-                              </div>
-                            </div>
-                            <div className="mb-3">
-                              <Label className="form-label">Password</Label>
-                              <div className="input-group">
-                                <Field
-                                  name="password"
-                                  type="password"
-                                  placeholder="Enter password"
-                                  autoComplete="on"
-                                  className={
-                                    "form-control" +
-                                    ((errors.password && touched.password) ||
-                                    this.state.passwordFieldError
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <div className="input-group-append">
-                                  <button
-                                    className="btn btn-light"
-                                    type="button"
-                                    id="password-addon"
-                                    onClick={this.togglePasswordVisibility}
-                                  >
-                                    <i
-                                      id="eye-icon"
-                                      className="mdi mdi-eye-outline"
-                                    ></i>
-                                  </button>
-                                </div>
-                              </div>
-                              <ErrorMessage
-                                name="password"
-                                component="div"
-                                className="invalid-feedback"
-                              />
-                              <div className="invalid-feedback">
-                                {this.state.passwordFieldError}
-                              </div>
-
-                              <div className="mt-2 input-group">
-                                <Field
-                                  name="password2"
-                                  type="password"
-                                  placeholder="Re-enter password"
-                                  autoComplete="on"
-                                  className={
-                                    "form-control" +
-                                    (errors.password2 && touched.password2
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <div className="input-group-append">
-                                  <button
-                                    className="btn btn-light"
-                                    type="button"
-                                    id="password-addon"
-                                    onClick={this.togglePassword1Visibility}
-                                  >
-                                    <i
-                                      id="eye-icon1"
-                                      className="mdi mdi-eye-outline"
-                                    ></i>
-                                  </button>
-                                </div>
-                              </div>
-                              <ErrorMessage
-                                name="password2"
-                                component="div"
-                                className="invalid-feedback"
-                              />
+                                    {this.state.emailError && (
+                                      <div className="invalid-feedback d-block">
+                                        {this.state.emailError}
+                                      </div>
+                                    )}
+                                  </div>
+                                </Col>
+                                <Col sm={6} md={6} xl={6}>
+                                  <div className="mb-3">
+                                    <Label
+                                      for="designation"
+                                      className="form-label"
+                                      style={{ color: "blue" }}
+                                    >
+                                      Designation
+                                    </Label>
+                                    <Select
+                                      name="designation" // The field name in Formik
+                                      options={designationOptions} // Options for the select
+                                      classNamePrefix="react-select"
+                                      className="react-select-container border border-black"
+                                      onChange={selectedOption => {
+                                        setFieldValue(
+                                          "designation",
+                                          selectedOption
+                                            ? selectedOption.value
+                                            : ""
+                                        ); // Update Formik state with string value
+                                      }}
+                                      value={
+                                        designationOptions.find(
+                                          option =>
+                                            option.value === values.designation
+                                        ) || null
+                                      } // Set the current selected value
+                                    />
+                                    <ErrorMessage
+                                      name="designation" // Error for the city field
+                                      component="div"
+                                      className="invalid-feedback"
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
                             </div>
 
                             {/* <div className="mb-3">
@@ -1613,7 +1648,6 @@ const mapStateToProps = ({
   ListProvince: ListProvince.ListProvince,
   regParticipant: regParticipant.regParticipant,
   ListType: ListType.ListType,
-
 });
 const mapDispatchToProps = dispatch => {
   return {

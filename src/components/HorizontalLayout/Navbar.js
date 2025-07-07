@@ -329,7 +329,7 @@ class Navbar extends Component {
                             })
                           }
                         >
-                           <li>
+                          <li>
                             <NavLink
                               to={`/${organization_name}/banks`}
                               className={({ isActive }) =>
@@ -554,6 +554,16 @@ class Navbar extends Component {
                             <span className="pt-4 font-size-12">
                               Participants List
                             </span>
+                          </NavLink>
+                        </li>
+                        <li>
+                          <NavLink
+                            to={`/${organization_name}/participant-payment`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
+                            <span className="pt-4 font-size-12">Payment</span>
                           </NavLink>
                         </li>
                       </ul>

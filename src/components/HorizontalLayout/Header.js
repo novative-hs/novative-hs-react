@@ -657,6 +657,16 @@ class Header extends Component {
                             </span>
                           </NavLink>
                         </li>
+                        <li>
+                          <NavLink
+                            to={`/${organization_name}/PaymentCSR`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
+                            <span className="pt-4 font-size-12">Payment</span>
+                          </NavLink>
+                        </li>
                       </ul>
                     </Collapse>
                   </nav>

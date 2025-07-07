@@ -195,7 +195,9 @@ import RoundParticipantlist from "pages/RegistrationAdmin/round-participant-list
 import csrList from "pages/HrAdmin/csr-list";
 import organizationList from "pages/HrAdmin/organizationList";
 import RegisterParticipant from "pages/Authentication/RegisterParticipant";
-
+import ParticipantCSRPayments from "pages/Authentication/PaymentCSR";
+import PaymentCSRSchemeList from "pages/Authentication/PaymentCSR-scheme-list";
+import PendingCSRLabs from "pages/Authentication/CSRPendinglabs";
 // All general public routes will be listed here
 const publicRoutes = [
   { path: "/register/:guest_id?/:uuid?", component: Register },
@@ -482,11 +484,11 @@ const registrationAdminAuthProtectedRoutes = [
 
 //CSR
 const CSRAdminAuthProtectedRoutes = [
-  {
-    path: "/:organization_name/register-participant-CSR",
-    component: RegParticipantCSR,
-  },
+  {path: "/:organization_name/register-participant-CSR",component: RegParticipantCSR,},
   { path: "/:organization_name/all-participant2", component: AllParticipant2 },
+  { path: "/:organization_name/PaymentCSR", component: ParticipantCSRPayments},
+  { path: "/PaymentCSR-scheme-list/:id", component: PaymentCSRSchemeList},
+  { path: "/:organization_name/CSRPendinglabs", component: PendingCSRLabs },
 ];
 
 //organization dashboard
