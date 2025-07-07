@@ -359,7 +359,7 @@ class Results extends Component {
                         to={`/${this.state.organization_name}/slectValues/${this.props.match.params.id}`}
                       >
                         <Button color="primary" className="w-100">
-                          Add Values
+                          Assign Values
                         </Button>
                       </Link>
                     </Col>

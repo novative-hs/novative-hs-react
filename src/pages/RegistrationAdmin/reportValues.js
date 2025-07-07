@@ -403,7 +403,7 @@ class ReportValues extends Component {
                 <p>
                   <strong>
                     Please select the True Value for each analyte, the Score for
-                    each analyte is 5
+                    True value will be 5.
                   </strong>
                 </p>
                 <Card>
