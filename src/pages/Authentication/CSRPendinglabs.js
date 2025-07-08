@@ -231,12 +231,8 @@ class PendingCSRLabs extends Component {
     this.toggle = this.toggle.bind(this);
     this.handleApprovedEvent = this.handleApprovedEvent.bind(this);
     this.togglePatientModal = this.togglePatientModal.bind(this);
-    this.toggleMarketerModal = this.toggleMarketerModal.bind(this);
-
-    
+    this.toggleMarketerModal = this.toggleMarketerModal.bind(this); 
   }
-
-  
 
   componentDidMount() {
     const { organization_name } = this.props.match.params;
@@ -265,35 +261,36 @@ class PendingCSRLabs extends Component {
       console.warn("User ID is missing. Skipping cycle list fetch.");
     }
   }
-  
-  
 
   componentDidUpdate(prevProps) {
     if (prevProps.CycleList !== this.props.CycleList) {
       this.setState({ CycleList: this.props.CycleList });
     }
   }
-  
-  setInitialDropdownValue = () => {
-    const { pathname } = this.props.history.location;
-    const { organization_name } = this.state; // Now it's properly updated
-  
-    let selectedValue = "Pending Participant"; // Default
-  
-    if (pathname.includes(`/${organization_name}/pending-participant`)) {
-      selectedValue = "Pending Participant";
-    } else if (pathname.includes(`/${organization_name}/approved-participant`)) {
-      selectedValue = "Approved Participant";
-    } else if (pathname.includes(`/${organization_name}/unapproved-participant`)) {
-      selectedValue = "Unapproved Participant";
-    } else if (pathname.includes(`/${organization_name}/suspended-participant`)) { 
-      selectedValue = "Suspended Participant"; // New condition added
-    } else if (pathname.includes(`/${organization_name}/all-participant`)) {
-      selectedValue = "All Participant";
-    }
-  
-    this.setState({ selectedValue });
-  };
+ 
+ setInitialDropdownValue = () => {
+  const { pathname } = this.props.history.location;
+  const organization_name = this.props.match.params.organization_name;
+
+  let selectedValue = "Pending Participant"; // Default
+
+  if (pathname.includes(`/${organization_name}/CSRPendinglabs`)) {
+    selectedValue = "Pending Participant";
+  } else if (pathname.includes(`/${organization_name}/approvedCSRlabs`)) {
+    selectedValue = "Approved Participant";
+  } else if (pathname.includes(`/${organization_name}/UnapprovedCSRlabs`)) {
+    selectedValue = "Unapproved Participant";
+  } else if (pathname.includes(`/${organization_name}/suspendedCSRlabs`)) {
+    selectedValue = "Suspended Participant";
+  } else if (pathname.includes(`/${organization_name}/all-participants2`)) {
+    selectedValue = "All Participant";
+  }
+
+  this.setState({ selectedValue });
+};
+
+
+
 
   openPatientModal = (e, arg) => {
     this.setState({
@@ -398,20 +395,21 @@ class PendingCSRLabs extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-  handleFilterChange = (filterType, selectedValue) => {
-    const { organization_name } = this.state;
+ handleFilterChange = (filterType, selectedValue) => {
+  const { organization_name } = this.state;
 
-    if (!organization_name || !filterType || !selectedValue) {
-        console.error("Missing required parameters for navigation.");
-        return;
-    }
+  if (!organization_name || !filterType || !selectedValue) {
+    console.error("Missing required parameters for navigation.");
+    return;
+  }
 
-    // Construct URL with query parameters
-    const url = `/${organization_name}/all-participant?filterType=${filterType}&filterValue=${selectedValue}`;
+  // ✅ Fixed URL path
+  const url = `/${organization_name}/all-participant2?filterType=${filterType}&filterValue=${selectedValue}`;
 
-    // Navigate to All Participants page
-    this.props.history.push(url);
+
+  this.props.history.push(url);
 };
+
 
 // Example dropdown change handler
 onDropdownChange = (event) => {

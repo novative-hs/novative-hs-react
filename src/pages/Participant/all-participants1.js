@@ -93,18 +93,32 @@ class PendingLabs extends Component {
 
       pendingLabListColumns: [
         {
-          text: "id",
           dataField: "id",
+          text: "ID",
           sort: true,
-          hidden: true,
-          formatter: (cellContent, AllLabs) => <>{AllLabs.id}</>,
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
+          filter: textFilter(),
+          formatter: (cellContent, row) => <>{row.id}</>,
         },
         {
           dataField: "district",
           text: "Participant District",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
@@ -125,8 +139,14 @@ class PendingLabs extends Component {
           dataField: "city",
           text: "Participant City",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
@@ -147,8 +167,14 @@ class PendingLabs extends Component {
           dataField: "name",
           text: "Participant name",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <span
@@ -168,8 +194,14 @@ class PendingLabs extends Component {
           dataField: "lab_staff_name",
           text: "Name",
           sort: true,
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
@@ -187,11 +219,15 @@ class PendingLabs extends Component {
           filter: textFilter(),
         },
         {
-          dataField: "user_name",
+          dataField: "email",
           text: "Email",
           sort: true,
-          headerStyle: { textAlign: "center", width: "200px" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff",
+            width: "200px",
+          },
+          style: { textAlign: "center", backgroundColor: "#e0e0e0" },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
@@ -205,7 +241,7 @@ class PendingLabs extends Component {
                   overflowWrap: "break-word", // Ensures text wraps properly
                 }}
               >
-                {AllLabs.user_name}
+                {AllLabs.email}
               </span>
             </>
           ),
@@ -214,8 +250,14 @@ class PendingLabs extends Component {
         {
           dataField: "landline_registered_by",
           text: "Contact No.",
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           sort: true,
           formatter: (cellContent, AllLabs) => (
@@ -232,6 +274,42 @@ class PendingLabs extends Component {
             </>
           ),
           filter: textFilter(),
+        },
+        {
+          dataField: "lab_code",
+          text: "Lab Code",
+          sort: true,
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
+          filter: textFilter(),
+          formatter: (cellContent, AllLabs) => (
+            <>
+              <span style={{ display: "flex", justifyContent: "center" }}>
+                {AllLabs.lab_code || "N/A"}
+              </span>
+            </>
+          ),
+        },
+        {
+          dataField: "password_foradmins",
+          text: "Password",
+          sort: false,
+          filter: textFilter({ placeholder: "" }),
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
+          formatter: (cellContent, row) => row.password_foradmins || "N/A",
         },
         {
           dataField: "schemes",
@@ -251,8 +329,14 @@ class PendingLabs extends Component {
               );
             },
           }),
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           formatter: (cellContent, row) => {
             if (Array.isArray(row.schemes) && row.schemes.length > 0) {
               // Create a unique set of scheme names
@@ -277,8 +361,14 @@ class PendingLabs extends Component {
         {
           dataField: "payment_settlement",
           text: "Payment Settlement",
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           sort: true,
           formatter: (cellContent, AllLabs) => (
@@ -289,7 +379,7 @@ class PendingLabs extends Component {
                 gap: "10px",
               }}
             >
-              <Link
+              {/* <Link
                 to={`/payment-scheme-list/${AllLabs.id}`}
                 style={{ textDecoration: "underline", color: "#0000CD" }}
                 onClick={() =>
@@ -299,7 +389,7 @@ class PendingLabs extends Component {
                 }
               >
                 <i className="mdi mdi-credit-card-outline font-size-18" />
-              </Link>
+              </Link> */}
               {AllLabs.payment_settlement}
             </span>
           ),
@@ -307,8 +397,14 @@ class PendingLabs extends Component {
         {
           dataField: "payment_status",
           text: "Payment Status",
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           sort: true,
           formatter: (cellContent, AllLabs) => (
@@ -330,8 +426,14 @@ class PendingLabs extends Component {
         {
           dataField: "membership_status",
           text: "Membership Status",
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           sort: true,
           formatter: (cellContent, AllLabs) => {
@@ -365,8 +467,14 @@ class PendingLabs extends Component {
           isDummyField: true,
           editable: false,
           text: "Action",
-          headerStyle: { textAlign: "center" },
-          style: { textAlign: "center" },
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#e0e0e0", // Grayish for cells
+          },
           filter: textFilter(),
           formatter: (cellContent, AllLabs) => (
             <>
@@ -377,8 +485,7 @@ class PendingLabs extends Component {
                   gap: "10px",
                 }}
               >
-                {/* {/ Update Button /} */}
-                <Tooltip title="Update">
+                {/* <Tooltip title="Update">
                   <Link
                     className="text-success"
                     to="#"
@@ -386,10 +493,10 @@ class PendingLabs extends Component {
                   >
                     <i className="mdi mdi-pencil font-size-18"></i>
                   </Link>
-                </Tooltip>
+                </Tooltip> */}
 
                 {/* {/ Revert Status Button /} */}
-                <Tooltip title="Membership Status">
+                {/* <Tooltip title="Membership Status">
                   <Link
                     className=""
                     to="#"
@@ -397,7 +504,7 @@ class PendingLabs extends Component {
                   >
                     <i className="mdi mdi-refresh font-size-14"></i>
                   </Link>
-                </Tooltip>
+                </Tooltip> */}
                 <Tooltip title="Payment">
                   <Link
                     className=""
@@ -970,70 +1077,70 @@ class PendingLabs extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-  exportToExcel = () => {
-    const { filteredLabs, selectedScheme } = this.state;
+  // exportToExcel = () => {
+  //   const { filteredLabs, selectedScheme } = this.state;
 
-    if (!filteredLabs || filteredLabs.length === 0) {
-      console.error("No data available to export.");
-      alert("No data available to export.");
-      return;
-    }
+  //   if (!filteredLabs || filteredLabs.length === 0) {
+  //     console.error("No data available to export.");
+  //     alert("No data available to export.");
+  //     return;
+  //   }
 
-    const selectedFields = [
-      { key: "name", label: "Name" },
-      { key: "email", label: "Email" },
-      { key: "address", label: "Address" },
-      { key: "shipping_address", label: "Shipping Address" },
-      { key: "billing_address", label: "Billing Address" },
-      { key: "email_participant", label: "Email of Notification Person" },
-      { key: "district", label: "District" },
-      { key: "city", label: "City" },
-      { key: "lab_staff_name", label: "Name of Notification Person" },
-      { key: "designation", label: "Designation" },
-      {
-        key: "landline_registered_by",
-        label: "Contact No of Notification Person",
-      },
-      { key: "schemes", label: "Schemes" },
-      { key: "payment_status", label: "Payment Status" },
-      { key: "payment_settlement", label: "Payment Settlement" },
-      { key: "membership_status", label: "Membership Status" },
-    ];
+  //   const selectedFields = [
+  //     { key: "name", label: "Name" },
+  //     { key: "email", label: "Email" },
+  //     { key: "address", label: "Address" },
+  //     { key: "shipping_address", label: "Shipping Address" },
+  //     { key: "billing_address", label: "Billing Address" },
+  //     { key: "email_participant", label: "Email of Notification Person" },
+  //     { key: "district", label: "District" },
+  //     { key: "city", label: "City" },
+  //     { key: "lab_staff_name", label: "Name of Notification Person" },
+  //     { key: "designation", label: "Designation" },
+  //     {
+  //       key: "landline_registered_by",
+  //       label: "Contact No of Notification Person",
+  //     },
+  //     { key: "schemes", label: "Schemes" },
+  //     { key: "payment_status", label: "Payment Status" },
+  //     { key: "payment_settlement", label: "Payment Settlement" },
+  //     { key: "membership_status", label: "Membership Status" },
+  //   ];
 
-    const dataToExport = filteredLabs.map(item => {
-      const row = {};
-      selectedFields.forEach(({ key, label }) => {
-        if (key === "schemes") {
-          if (Array.isArray(item.schemes)) {
-            const uniqueSchemeNames = [
-              ...new Set(item.schemes.map(s => s.scheme_name)),
-            ];
-            row[label] = uniqueSchemeNames.join(", ");
-          } else {
-            row[label] = "N/A";
-          }
-        } else {
-          row[label] = item[key] || "N/A";
-        }
-      });
-      return row;
-    });
+  //   const dataToExport = filteredLabs.map(item => {
+  //     const row = {};
+  //     selectedFields.forEach(({ key, label }) => {
+  //       if (key === "schemes") {
+  //         if (Array.isArray(item.schemes)) {
+  //           const uniqueSchemeNames = [
+  //             ...new Set(item.schemes.map(s => s.scheme_name)),
+  //           ];
+  //           row[label] = uniqueSchemeNames.join(", ");
+  //         } else {
+  //           row[label] = "N/A";
+  //         }
+  //       } else {
+  //         row[label] = item[key] || "N/A";
+  //       }
+  //     });
+  //     return row;
+  //   });
 
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = { Sheets: { Participants: ws }, SheetNames: ["Participants"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
-    });
+  //   const ws = XLSX.utils.json_to_sheet(dataToExport);
+  //   const wb = { Sheets: { Participants: ws }, SheetNames: ["Participants"] };
+  //   const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  //   const data = new Blob([excelBuffer], {
+  //     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+  //   });
 
-    // 🆕 Extract scheme_id and cycle_id from selectedScheme if available
-    const [schemeId, cycleId] = (selectedScheme || "").split("-");
-    const fileName = schemeId
-      ? `Participants_Scheme_${schemeId}_Cycle_${cycleId}.xlsx`
-      : "All_Participants.xlsx";
+  //   // 🆕 Extract scheme_id and cycle_id from selectedScheme if available
+  //   const [schemeId, cycleId] = (selectedScheme || "").split("-");
+  //   const fileName = schemeId
+  //     ? `Participants_Scheme_${schemeId}_Cycle_${cycleId}.xlsx`
+  //     : "All_Participants.xlsx";
 
-    saveAs(data, fileName);
-  };
+  //   saveAs(data, fileName);
+  // };
 
   getSchemeCounts = () => {
     const { filteredLabs } = this.state;
@@ -1201,7 +1308,7 @@ class PendingLabs extends Component {
                       </div>
                     )}
 
-                    <Row className="justify-content-end">
+                    {/* <Row className="justify-content-end">
                       <Col lg="auto" className="text-end">
                         <Button
                           onClick={this.exportToExcel}
@@ -1214,7 +1321,7 @@ class PendingLabs extends Component {
                           Export to Excel
                         </Button>
                       </Col>
-                    </Row>
+                    </Row> */}
 
                     <PaginationProvider
                       pagination={paginationFactory(pageOptions)}
@@ -1334,7 +1441,7 @@ class PendingLabs extends Component {
                                         "table align-middle table-condensed table-hover"
                                       }
                                       bordered={false}
-                                      striped={false}
+                                      striped={true}
                                       headerWrapperClasses={
                                         "table-header-sky-blue"
                                       }
@@ -1574,416 +1681,7 @@ class PendingLabs extends Component {
                                         </Formik>
                                       </ModalBody>
                                     </Modal>
-                                    <Modal
-                                      isOpen={this.state.editModal}
-                                      toggle={this.toggleEditModal}
-                                      className={this.props.className}
-                                    >
-                                      <ModalHeader
-                                        toggle={this.toggleEditModal}
-                                      >
-                                        Edit Lab Details
-                                      </ModalHeader>
-                                      <ModalBody>
-                                        {this.state.successMessage && (
-                                          <div className="alert alert-success text-center">
-                                            {this.state.successMessage}
-                                          </div>
-                                        )}
-                                        <Formik
-                                          initialValues={{
-                                            id: this.state.id,
-                                            name: this.state.name,
-                                            email: this.state.email,
-                                            address: this.state.address,
-                                            district: this.state.district,
-                                            city: this.state.city,
-                                            province: this.state.province,
-                                            shipping_address:
-                                              this.state.shipping_address,
-                                            billing_address:
-                                              this.state.billing_address,
-                                            lab_staff_name:
-                                              this.state.lab_staff_name,
-                                            email_participant:
-                                              this.state.email_participant,
-                                            landline_registered_by:
-                                              this.state.landline_registered_by,
-                                            designation: this.state.designation,
-                                            payment_status:
-                                              this.state.payment_status,
-                                            payment_settlement:
-                                              this.state.payment_settlement,
-                                          }}
-                                          onSubmit={this.handleEditSubmit}
-                                        >
-                                          {({
-                                            values,
-                                            errors,
-                                            setFieldValue,
-                                            handleChange,
-                                            handleSubmit,
-                                          }) => (
-                                            <Form onSubmit={handleSubmit}>
-                                              <Row>
-                                                <Col className="col-12">
-                                                  {/* {/ Name Field /} */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Name
-                                                    </Label>
-                                                    <input
-                                                      type="text"
-                                                      value={values.name}
-                                                      name="name"
-                                                      className="form-control"
-                                                      placeholder="Enter Name"
-                                                      onChange={handleChange}
-                                                    />
-                                                  </div>
 
-                                                  {/* {/ Email Field /} */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Login Email
-                                                    </Label>
-                                                    <input
-                                                      type="email"
-                                                      value={values.email}
-                                                      name="email"
-                                                      className="form-control"
-                                                      placeholder="Enter Email"
-                                                      onChange={handleChange}
-                                                      readOnly={true}
-                                                      style={{
-                                                        backgroundColor:
-                                                          "#f0f0f0",
-                                                      }} // light grey
-                                                    />
-                                                  </div>
-
-                                                  {/* {/ Address Field /} */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Address
-                                                    </Label>
-                                                    <input
-                                                      type="text"
-                                                      value={values.address}
-                                                      name="address"
-                                                      className="form-control"
-                                                      placeholder="Enter Address"
-                                                      onChange={handleChange}
-                                                    />
-                                                  </div>
-
-                                                  {/* {/ District and City in one row /} */}
-
-                                                  {/* {/ Shipping Address Field /} */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Shipping Address
-                                                    </Label>
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        values.shipping_address
-                                                      }
-                                                      name="shipping_address"
-                                                      className="form-control"
-                                                      placeholder="Enter Shipping Address"
-                                                      onChange={handleChange}
-                                                    />
-                                                  </div>
-
-                                                  {/* / Billing Address Field / */}
-                                                  <div className="mb-3">
-                                                    <Label className="form-label">
-                                                      Billing Address
-                                                    </Label>
-                                                    <input
-                                                      type="text"
-                                                      value={
-                                                        values.billing_address
-                                                      }
-                                                      name="billing_address"
-                                                      className="form-control"
-                                                      placeholder="Enter Billing Address"
-                                                      onChange={handleChange}
-                                                    />
-                                                  </div>
-                                                  {/* {/ Email of Notification Person /} */}
-
-                                                  <Row>
-                                                    <Col sm={6} md={6} xl={6}>
-                                                      <div className="mb-3">
-                                                        <Label
-                                                          for="district"
-                                                          className="form-label"
-                                                        >
-                                                          District
-                                                        </Label>
-                                                        <Select
-                                                          name="district" // The field name in Formik
-                                                          options={
-                                                            districtOptions
-                                                          } // Options for the select
-                                                          styles={customStyles}
-                                                          className={
-                                                            errors.district &&
-                                                            touched.district
-                                                              ? " is-invalid"
-                                                              : ""
-                                                          }
-                                                          onChange={selectedOption => {
-                                                            setFieldValue(
-                                                              "district",
-                                                              selectedOption
-                                                                ? selectedOption.value
-                                                                : ""
-                                                            );
-                                                          }}
-                                                          value={
-                                                            districtOptions.find(
-                                                              option =>
-                                                                option.value ===
-                                                                values.district
-                                                            ) || null
-                                                          } // Set the current selected value
-                                                        />
-                                                        <ErrorMessage
-                                                          name="district" // Error for the city field
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
-                                                      </div>
-                                                    </Col>
-
-                                                    <Col sm={6} md={6} xl={6}>
-                                                      <div className="mb-3">
-                                                        <Label
-                                                          for="city"
-                                                          className="form-label"
-                                                        >
-                                                          City
-                                                        </Label>
-                                                        <Select
-                                                          name="city" // The field name in Formik
-                                                          // isMulti // Enable multi-select
-                                                          options={cityOptions} // Options for the select
-                                                          styles={customStyles}
-                                                          className={
-                                                            // "form-control" +
-                                                            errors.city &&
-                                                            touched.city
-                                                              ? " is-invalid"
-                                                              : "" // Conditional class based on validation
-                                                          }
-                                                          //   onChange={
-                                                          //     selectedOptions =>
-                                                          //       setFieldValue("city", selectedOptions) // Update Formik state
-                                                          //   }
-                                                          //   value={values.city} // Set the current selected values
-                                                          // />
-                                                          onChange={selectedOption => {
-                                                            setFieldValue(
-                                                              "city",
-                                                              selectedOption
-                                                                ? selectedOption.value
-                                                                : ""
-                                                            ); // Update Formik state with string value
-                                                          }}
-                                                          value={
-                                                            cityOptions.find(
-                                                              option =>
-                                                                option.value ===
-                                                                values.city
-                                                            ) || null
-                                                          } // Set the current selected value
-                                                          // menuPlacement="auto"
-                                                          // menuShouldScrollIntoView={false}
-                                                        />
-                                                        <ErrorMessage
-                                                          name="city" // Error for the city field
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
-                                                      </div>
-                                                    </Col>
-                                                  </Row>
-
-                                                  <Row>
-                                                    <Col sm={6} md={6} xl={6}>
-                                                      <div className="mb-3">
-                                                        <Label
-                                                          for="province"
-                                                          className="form-label"
-                                                        >
-                                                          Province
-                                                        </Label>
-                                                        <Select
-                                                          name="province" // The field name in Formik
-                                                          options={
-                                                            provinceOptions
-                                                          } // Options for the select
-                                                          styles={customStyles}
-                                                          className={
-                                                            errors.province &&
-                                                            touched.province
-                                                              ? " is-invalid"
-                                                              : ""
-                                                          }
-                                                          onChange={selectedOption => {
-                                                            setFieldValue(
-                                                              "province",
-                                                              selectedOption
-                                                                ? selectedOption.value
-                                                                : ""
-                                                            );
-                                                          }}
-                                                          value={
-                                                            provinceOptions.find(
-                                                              option =>
-                                                                option.value ===
-                                                                values.province
-                                                            ) || null
-                                                          } // Set the current selected value
-                                                        />
-                                                        <ErrorMessage
-                                                          name="province" // Error for the city field
-                                                          component="div"
-                                                          className="invalid-feedback"
-                                                        />
-                                                      </div>
-                                                    </Col>
-                                                  </Row>
-                                                  <div>
-                                                    <h5>
-                                                      Notification Person
-                                                      Details
-                                                    </h5>
-                                                    {/* {/ Name and Contact No of Notification Person in one row /} */}
-                                                    <Row>
-                                                      <Col md={6}>
-                                                        <div className="mb-3">
-                                                          <Label className="form-label">
-                                                            Email
-                                                          </Label>
-                                                          <input
-                                                            type="email"
-                                                            value={
-                                                              values.email_participant
-                                                            }
-                                                            name="email_participant"
-                                                            className="form-control"
-                                                            placeholder="Enter Email"
-                                                            onChange={
-                                                              handleChange
-                                                            }
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                      <Col md={6}>
-                                                        <div className="mb-3">
-                                                          <Label className="form-label">
-                                                            Name
-                                                          </Label>
-                                                          <input
-                                                            type="text"
-                                                            value={
-                                                              values.lab_staff_name
-                                                            }
-                                                            name="lab_staff_name"
-                                                            className="form-control"
-                                                            placeholder="Enter Name"
-                                                            onChange={
-                                                              handleChange
-                                                            }
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                      <Col md={6}>
-                                                        <div className="mb-3">
-                                                          <Label className="form-label">
-                                                            Contact No
-                                                          </Label>
-                                                          <input
-                                                            type="text"
-                                                            value={
-                                                              values.landline_registered_by
-                                                            }
-                                                            name="landline_registered_by"
-                                                            className="form-control"
-                                                            placeholder="Enter Contact No"
-                                                            onChange={
-                                                              handleChange
-                                                            }
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                      <Col sm={6} md={6} xl={6}>
-                                                        <div className="mb-3">
-                                                          <Label
-                                                            for="designation"
-                                                            className="form-label"
-                                                          >
-                                                            Designation
-                                                          </Label>
-                                                          <Select
-                                                            name="province" // The field name in Formik
-                                                            options={
-                                                              designationOptions
-                                                            } // Options for the select
-                                                            styles={
-                                                              customStyles
-                                                            }
-                                                            className={
-                                                              errors.designation &&
-                                                              touched.designation
-                                                                ? " is-invalid"
-                                                                : ""
-                                                            }
-                                                            onChange={selectedOption => {
-                                                              setFieldValue(
-                                                                "designation",
-                                                                selectedOption
-                                                                  ? selectedOption.value
-                                                                  : ""
-                                                              );
-                                                            }}
-                                                            value={
-                                                              designationOptions.find(
-                                                                option =>
-                                                                  option.value ===
-                                                                  values.designation
-                                                              ) || null
-                                                            } // Set the current selected value
-                                                          />
-                                                          <ErrorMessage
-                                                            name="designation" // Error for the city field
-                                                            component="div"
-                                                            className="invalid-feedback"
-                                                          />
-                                                        </div>
-                                                      </Col>
-                                                    </Row>
-                                                  </div>
-                                                  {/* {/ Submit Button /} */}
-                                                  <div className="mb-3 text-end">
-                                                    <button
-                                                      type="submit"
-                                                      className="btn btn-primary"
-                                                    >
-                                                      Save
-                                                    </button>
-                                                  </div>
-                                                </Col>
-                                              </Row>
-                                            </Form>
-                                          )}
-                                        </Formik>
-                                      </ModalBody>
-                                    </Modal>
                                     <Modal
                                       isOpen={this.state.isPaymentModalOpen}
                                       toggle={this.togglePaymentModal}
@@ -3291,7 +2989,7 @@ class PendingLabs extends Component {
                                       </ModalBody>
                                     </Modal>
 
-                                    <Modal
+                                    {/* <Modal
                                       isOpen={this.state.isMembershipModalOpen}
                                       toggle={this.toggleMembershipModal}
                                       className={this.props.className}
@@ -3487,9 +3185,9 @@ class PendingLabs extends Component {
                                           }}
                                         </Formik>
                                       </ModalBody>
-                                    </Modal>
+                                    </Modal> */}
 
-                                    <Modal
+                                    {/* <Modal
                                       isOpen={this.state.isMembershipModalOpen}
                                       toggle={this.toggleMembershipModal}
                                       className={this.props.className}
@@ -3685,7 +3383,7 @@ class PendingLabs extends Component {
                                           }}
                                         </Formik>
                                       </ModalBody>
-                                    </Modal>
+                                    </Modal> */}
                                   </div>
                                 </Col>
                               </Row>
@@ -3806,3 +3504,414 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(PendingLabs));
+
+//  <Modal
+//                                       isOpen={this.state.editModal}
+//                                       toggle={this.toggleEditModal}
+//                                       className={this.props.className}
+//                                     >
+//                                       <ModalHeader
+//                                         toggle={this.toggleEditModal}
+//                                       >
+//                                         Edit Lab Details
+//                                       </ModalHeader>
+//                                       <ModalBody>
+//                                         {this.state.successMessage && (
+//                                           <div className="alert alert-success text-center">
+//                                             {this.state.successMessage}
+//                                           </div>
+//                                         )}
+//                                         <Formik
+//                                           initialValues={{
+//                                             id: this.state.id,
+//                                             name: this.state.name,
+//                                             email: this.state.email,
+//                                             address: this.state.address,
+//                                             district: this.state.district,
+//                                             city: this.state.city,
+//                                             province: this.state.province,
+//                                             shipping_address:
+//                                               this.state.shipping_address,
+//                                             billing_address:
+//                                               this.state.billing_address,
+//                                             lab_staff_name:
+//                                               this.state.lab_staff_name,
+//                                             email_participant:
+//                                               this.state.email_participant,
+//                                             landline_registered_by:
+//                                               this.state.landline_registered_by,
+//                                             designation: this.state.designation,
+//                                             payment_status:
+//                                               this.state.payment_status,
+//                                             payment_settlement:
+//                                               this.state.payment_settlement,
+//                                           }}
+//                                           onSubmit={this.handleEditSubmit}
+//                                         >
+//                                           {({
+//                                             values,
+//                                             errors,
+//                                             setFieldValue,
+//                                             handleChange,
+//                                             handleSubmit,
+//                                           }) => (
+//                                             <Form onSubmit={handleSubmit}>
+//                                               <Row>
+//                                                 <Col className="col-12">
+//                                                   {/* {/ Name Field /} */}
+//                                                   <div className="mb-3">
+//                                                     <Label className="form-label">
+//                                                       Name
+//                                                     </Label>
+//                                                     <input
+//                                                       type="text"
+//                                                       value={values.name}
+//                                                       name="name"
+//                                                       className="form-control"
+//                                                       placeholder="Enter Name"
+//                                                       onChange={handleChange}
+//                                                     />
+//                                                   </div>
+
+//                                                   {/* {/ Email Field /} */}
+//                                                   <div className="mb-3">
+//                                                     <Label className="form-label">
+//                                                       Login Email
+//                                                     </Label>
+//                                                     <input
+//                                                       type="email"
+//                                                       value={values.email}
+//                                                       name="email"
+//                                                       className="form-control"
+//                                                       placeholder="Enter Email"
+//                                                       onChange={handleChange}
+//                                                       readOnly={true}
+//                                                       style={{
+//                                                         backgroundColor:
+//                                                           "#f0f0f0",
+//                                                       }} // light grey
+//                                                     />
+//                                                   </div>
+
+//                                                   {/* {/ Address Field /} */}
+//                                                   <div className="mb-3">
+//                                                     <Label className="form-label">
+//                                                       Address
+//                                                     </Label>
+//                                                     <input
+//                                                       type="text"
+//                                                       value={values.address}
+//                                                       name="address"
+//                                                       className="form-control"
+//                                                       placeholder="Enter Address"
+//                                                       onChange={handleChange}
+//                                                     />
+//                                                   </div>
+
+//                                                   {/* {/ District and City in one row /} */}
+
+//                                                   {/* {/ Shipping Address Field /} */}
+//                                                   <div className="mb-3">
+//                                                     <Label className="form-label">
+//                                                       Shipping Address
+//                                                     </Label>
+//                                                     <input
+//                                                       type="text"
+//                                                       value={
+//                                                         values.shipping_address
+//                                                       }
+//                                                       name="shipping_address"
+//                                                       className="form-control"
+//                                                       placeholder="Enter Shipping Address"
+//                                                       onChange={handleChange}
+//                                                     />
+//                                                   </div>
+
+//                                                   {/* / Billing Address Field / */}
+//                                                   <div className="mb-3">
+//                                                     <Label className="form-label">
+//                                                       Billing Address
+//                                                     </Label>
+//                                                     <input
+//                                                       type="text"
+//                                                       value={
+//                                                         values.billing_address
+//                                                       }
+//                                                       name="billing_address"
+//                                                       className="form-control"
+//                                                       placeholder="Enter Billing Address"
+//                                                       onChange={handleChange}
+//                                                     />
+//                                                   </div>
+//                                                   {/* {/ Email of Notification Person /} */}
+
+//                                                   <Row>
+//                                                     <Col sm={6} md={6} xl={6}>
+//                                                       <div className="mb-3">
+//                                                         <Label
+//                                                           for="district"
+//                                                           className="form-label"
+//                                                         >
+//                                                           District
+//                                                         </Label>
+//                                                         <Select
+//                                                           name="district" // The field name in Formik
+//                                                           options={
+//                                                             districtOptions
+//                                                           } // Options for the select
+//                                                           styles={customStyles}
+//                                                           className={
+//                                                             errors.district &&
+//                                                             touched.district
+//                                                               ? " is-invalid"
+//                                                               : ""
+//                                                           }
+//                                                           onChange={selectedOption => {
+//                                                             setFieldValue(
+//                                                               "district",
+//                                                               selectedOption
+//                                                                 ? selectedOption.value
+//                                                                 : ""
+//                                                             );
+//                                                           }}
+//                                                           value={
+//                                                             districtOptions.find(
+//                                                               option =>
+//                                                                 option.value ===
+//                                                                 values.district
+//                                                             ) || null
+//                                                           } // Set the current selected value
+//                                                         />
+//                                                         <ErrorMessage
+//                                                           name="district" // Error for the city field
+//                                                           component="div"
+//                                                           className="invalid-feedback"
+//                                                         />
+//                                                       </div>
+//                                                     </Col>
+
+//                                                     <Col sm={6} md={6} xl={6}>
+//                                                       <div className="mb-3">
+//                                                         <Label
+//                                                           for="city"
+//                                                           className="form-label"
+//                                                         >
+//                                                           City
+//                                                         </Label>
+//                                                         <Select
+//                                                           name="city" // The field name in Formik
+//                                                           // isMulti // Enable multi-select
+//                                                           options={cityOptions} // Options for the select
+//                                                           styles={customStyles}
+//                                                           className={
+//                                                             // "form-control" +
+//                                                             errors.city &&
+//                                                             touched.city
+//                                                               ? " is-invalid"
+//                                                               : "" // Conditional class based on validation
+//                                                           }
+//                                                           //   onChange={
+//                                                           //     selectedOptions =>
+//                                                           //       setFieldValue("city", selectedOptions) // Update Formik state
+//                                                           //   }
+//                                                           //   value={values.city} // Set the current selected values
+//                                                           // />
+//                                                           onChange={selectedOption => {
+//                                                             setFieldValue(
+//                                                               "city",
+//                                                               selectedOption
+//                                                                 ? selectedOption.value
+//                                                                 : ""
+//                                                             ); // Update Formik state with string value
+//                                                           }}
+//                                                           value={
+//                                                             cityOptions.find(
+//                                                               option =>
+//                                                                 option.value ===
+//                                                                 values.city
+//                                                             ) || null
+//                                                           } // Set the current selected value
+//                                                           // menuPlacement="auto"
+//                                                           // menuShouldScrollIntoView={false}
+//                                                         />
+//                                                         <ErrorMessage
+//                                                           name="city" // Error for the city field
+//                                                           component="div"
+//                                                           className="invalid-feedback"
+//                                                         />
+//                                                       </div>
+//                                                     </Col>
+//                                                   </Row>
+
+//                                                   <Row>
+//                                                     <Col sm={6} md={6} xl={6}>
+//                                                       <div className="mb-3">
+//                                                         <Label
+//                                                           for="province"
+//                                                           className="form-label"
+//                                                         >
+//                                                           Province
+//                                                         </Label>
+//                                                         <Select
+//                                                           name="province" // The field name in Formik
+//                                                           options={
+//                                                             provinceOptions
+//                                                           } // Options for the select
+//                                                           styles={customStyles}
+//                                                           className={
+//                                                             errors.province &&
+//                                                             touched.province
+//                                                               ? " is-invalid"
+//                                                               : ""
+//                                                           }
+//                                                           onChange={selectedOption => {
+//                                                             setFieldValue(
+//                                                               "province",
+//                                                               selectedOption
+//                                                                 ? selectedOption.value
+//                                                                 : ""
+//                                                             );
+//                                                           }}
+//                                                           value={
+//                                                             provinceOptions.find(
+//                                                               option =>
+//                                                                 option.value ===
+//                                                                 values.province
+//                                                             ) || null
+//                                                           } // Set the current selected value
+//                                                         />
+//                                                         <ErrorMessage
+//                                                           name="province" // Error for the city field
+//                                                           component="div"
+//                                                           className="invalid-feedback"
+//                                                         />
+//                                                       </div>
+//                                                     </Col>
+//                                                   </Row>
+//                                                   <div>
+//                                                     <h5>
+//                                                       Notification Person
+//                                                       Details
+//                                                     </h5>
+//                                                     {/* {/ Name and Contact No of Notification Person in one row /} */}
+//                                                     <Row>
+//                                                       <Col md={6}>
+//                                                         <div className="mb-3">
+//                                                           <Label className="form-label">
+//                                                             Email
+//                                                           </Label>
+//                                                           <input
+//                                                             type="email"
+//                                                             value={
+//                                                               values.email_participant
+//                                                             }
+//                                                             name="email_participant"
+//                                                             className="form-control"
+//                                                             placeholder="Enter Email"
+//                                                             onChange={
+//                                                               handleChange
+//                                                             }
+//                                                           />
+//                                                         </div>
+//                                                       </Col>
+//                                                       <Col md={6}>
+//                                                         <div className="mb-3">
+//                                                           <Label className="form-label">
+//                                                             Name
+//                                                           </Label>
+//                                                           <input
+//                                                             type="text"
+//                                                             value={
+//                                                               values.lab_staff_name
+//                                                             }
+//                                                             name="lab_staff_name"
+//                                                             className="form-control"
+//                                                             placeholder="Enter Name"
+//                                                             onChange={
+//                                                               handleChange
+//                                                             }
+//                                                           />
+//                                                         </div>
+//                                                       </Col>
+//                                                       <Col md={6}>
+//                                                         <div className="mb-3">
+//                                                           <Label className="form-label">
+//                                                             Contact No
+//                                                           </Label>
+//                                                           <input
+//                                                             type="text"
+//                                                             value={
+//                                                               values.landline_registered_by
+//                                                             }
+//                                                             name="landline_registered_by"
+//                                                             className="form-control"
+//                                                             placeholder="Enter Contact No"
+//                                                             onChange={
+//                                                               handleChange
+//                                                             }
+//                                                           />
+//                                                         </div>
+//                                                       </Col>
+//                                                       <Col sm={6} md={6} xl={6}>
+//                                                         <div className="mb-3">
+//                                                           <Label
+//                                                             for="designation"
+//                                                             className="form-label"
+//                                                           >
+//                                                             Designation
+//                                                           </Label>
+//                                                           <Select
+//                                                             name="province" // The field name in Formik
+//                                                             options={
+//                                                               designationOptions
+//                                                             } // Options for the select
+//                                                             styles={
+//                                                               customStyles
+//                                                             }
+//                                                             className={
+//                                                               errors.designation &&
+//                                                               touched.designation
+//                                                                 ? " is-invalid"
+//                                                                 : ""
+//                                                             }
+//                                                             onChange={selectedOption => {
+//                                                               setFieldValue(
+//                                                                 "designation",
+//                                                                 selectedOption
+//                                                                   ? selectedOption.value
+//                                                                   : ""
+//                                                               );
+//                                                             }}
+//                                                             value={
+//                                                               designationOptions.find(
+//                                                                 option =>
+//                                                                   option.value ===
+//                                                                   values.designation
+//                                                               ) || null
+//                                                             } // Set the current selected value
+//                                                           />
+//                                                           <ErrorMessage
+//                                                             name="designation" // Error for the city field
+//                                                             component="div"
+//                                                             className="invalid-feedback"
+//                                                           />
+//                                                         </div>
+//                                                       </Col>
+//                                                     </Row>
+//                                                   </div>
+//                                                   {/* {/ Submit Button /} */}
+//                                                   <div className="mb-3 text-end">
+//                                                     <button
+//                                                       type="submit"
+//                                                       className="btn btn-primary"
+//                                                     >
+//                                                       Save
+//                                                     </button>
+//                                                   </div>
+//                                                 </Col>
+//                                               </Row>
+//                                             </Form>
+//                                           )}
+//                                         </Formik>
+//                                       </ModalBody>
+//                                     </Modal>
