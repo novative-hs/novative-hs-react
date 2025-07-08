@@ -64,16 +64,23 @@ class Login extends Component {
     this.props.apiError("");
   }
 
-  togglePasswordVisibility = () => {
-    const passwordInput = document.querySelector('input[name="password"]');
-    const eyeIcon = document.getElementById("eye-icon");
+  togglePasswordVisibility = e => {
+    const button = e.currentTarget;
+    const inputGroup = button.closest(".input-group");
 
-    if (passwordInput && passwordInput.type === "password") {
-      passwordInput.type = "text";
-      eyeIcon.className = "mdi mdi-eye-off-outline";
-    } else if (passwordInput) {
-      passwordInput.type = "password";
-      eyeIcon.className = "mdi mdi-eye-outline";
+    if (!inputGroup) return;
+
+    const passwordInput = inputGroup.querySelector('input[name="password"]');
+    const eyeIcon = button.querySelector("i");
+
+    if (passwordInput && eyeIcon) {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.className = "mdi mdi-eye-off-outline";
+      } else {
+        passwordInput.type = "password";
+        eyeIcon.className = "mdi mdi-eye-outline";
+      }
     }
   };
 
@@ -276,15 +283,24 @@ class Login extends Component {
                             <Label for="password" className="form-label">
                               Password
                             </Label>
-                            <Field
-                              name="password"
-                              type="password"
-                              className={`form-control ${
-                                errors.password && touched.password
-                                  ? "is-invalid"
-                                  : ""
-                              }`}
-                            />
+                            <div className="input-group auth-pass-inputgroup">
+                              <Field
+                                name="password"
+                                type="password"
+                                className={`form-control ${
+                                  errors.password && touched.password
+                                    ? "is-invalid"
+                                    : ""
+                                }`}
+                              />
+                              <button
+                                className="btn btn-light"
+                                type="button"
+                                onClick={this.togglePasswordVisibility}
+                              >
+                                <i className="mdi mdi-eye-outline"></i>
+                              </button>
+                            </div>
                             <ErrorMessage
                               name="password"
                               component="div"
