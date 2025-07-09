@@ -57,7 +57,7 @@ class ReportValues extends Component {
           },
         },
         {
-          text: "True Value",
+          text: "",
           dataField: "positivevalue",
           formatter: (cellContent, analyte) => (
             <div className="d-flex">
@@ -81,7 +81,7 @@ class ReportValues extends Component {
           ),
         },
         {
-          text: "True Value",
+          text: "",
           dataField: "negativevalue",
           formatter: (cellContent, analyte) => (
             <div className="d-flex">
@@ -105,7 +105,7 @@ class ReportValues extends Component {
           ),
         },
         {
-          text: "True Value",
+          text: "",
           dataField: "equivocalvalue",
           formatter: (cellContent, analyte) => (
             <div className="d-flex">
@@ -213,20 +213,35 @@ class ReportValues extends Component {
       },
     }));
   };
-  handleValueChange = (analyteId, value, valueType) => {
-    const key = {
-      positive: "selectedPositiveValues",
-      negative: "selectedNegativeValues",
-      equivocal: "selectedEquivocalValues",
-    }[valueType];
+ handleValueChange = (analyteId, value, valueType) => {
+  const val = Number(value);
 
-    this.setState(prevState => ({
-      [key]: {
-        ...prevState[key],
-        [analyteId]: Number(value), // Cast to number here
-      },
-    }));
-  };
+  this.setState(prevState => {
+    const updatedState = {
+      selectedPositiveValues: { ...prevState.selectedPositiveValues },
+      selectedNegativeValues: { ...prevState.selectedNegativeValues },
+      selectedEquivocalValues: { ...prevState.selectedEquivocalValues },
+    };
+
+    // Set selected value to 5 or 0
+    if (valueType === "positive") {
+      updatedState.selectedPositiveValues[analyteId] = val;
+      updatedState.selectedNegativeValues[analyteId] = val === 5 ? 0 : prevState.selectedNegativeValues[analyteId];
+      updatedState.selectedEquivocalValues[analyteId] = val === 5 ? 0 : prevState.selectedEquivocalValues[analyteId];
+    } else if (valueType === "negative") {
+      updatedState.selectedNegativeValues[analyteId] = val;
+      updatedState.selectedPositiveValues[analyteId] = val === 5 ? 0 : prevState.selectedPositiveValues[analyteId];
+      updatedState.selectedEquivocalValues[analyteId] = val === 5 ? 0 : prevState.selectedEquivocalValues[analyteId];
+    } else if (valueType === "equivocal") {
+      updatedState.selectedEquivocalValues[analyteId] = val;
+      updatedState.selectedPositiveValues[analyteId] = val === 5 ? 0 : prevState.selectedPositiveValues[analyteId];
+      updatedState.selectedNegativeValues[analyteId] = val === 5 ? 0 : prevState.selectedNegativeValues[analyteId];
+    }
+
+    return updatedState;
+  });
+};
+
   handleSubmit = async analyte => {
     const {
       selectedPositiveValues,
@@ -294,84 +309,72 @@ class ReportValues extends Component {
       this.setState({ submissionSuccess: null });
     }, 3000);
   };
-  handleSubmitAll = async () => {
-    const {
-      selectedPositiveValues,
-      selectedNegativeValues,
-      selectedEquivocalValues,
-      user_id,
-      SchemeAnalytesList,
-    } = this.state;
+handleSubmitAll = async () => {
+  const {
+    selectedPositiveValues,
+    selectedNegativeValues,
+    selectedEquivocalValues,
+    user_id,
+    SchemeAnalytesList,
+    scheme_id,   // ✅ Get from state
+    cycle_id,    // ✅ Get from state
+  } = this.state;
 
-    const round_id = this.props.match.params.id;
-    const valuesToSubmit = [];
+  const round_id = this.props.match.params.id;
+  const valuesToSubmit = [];
 
-    SchemeAnalytesList.forEach(analyte => {
-      const analyte_id = analyte.id;
+  SchemeAnalytesList.forEach(analyte => {
+    const analyte_id = analyte.id;
+    const payload = {
+      analyte_id,
+      account_id: user_id,
+      round_id,
+      scheme_id,  // ✅ include scheme_id
+      cycle_id,   // ✅ include cycle_id
+    };
 
-      if (
-        selectedPositiveValues[analyte_id] !== undefined &&
-        selectedPositiveValues[analyte_id] !== ""
-      ) {
-        valuesToSubmit.push({
-          analyte_id,
-          account_id: user_id,
-          type: "positive",
-          value: selectedPositiveValues[analyte_id],
-        });
-      }
+   if (selectedPositiveValues[analyte_id] !== undefined && selectedPositiveValues[analyte_id] !== "") {
+  payload.positivetype = selectedPositiveValues[analyte_id];
+}
 
-      if (
-        selectedNegativeValues[analyte_id] !== undefined &&
-        selectedNegativeValues[analyte_id] !== ""
-      ) {
-        valuesToSubmit.push({
-          analyte_id,
-          account_id: user_id,
-          type: "negative",
-          value: selectedNegativeValues[analyte_id],
-        });
-      }
+if (selectedNegativeValues[analyte_id] !== undefined && selectedNegativeValues[analyte_id] !== "") {
+  payload.negativetype = selectedNegativeValues[analyte_id];
+}
 
-      if (
-        selectedEquivocalValues[analyte_id] !== undefined &&
-        selectedEquivocalValues[analyte_id] !== ""
-      ) {
-        valuesToSubmit.push({
-          analyte_id,
-          account_id: user_id,
-          type: "equivocal",
-          value: selectedEquivocalValues[analyte_id],
-        });
-      }
+if (selectedEquivocalValues[analyte_id] !== undefined && selectedEquivocalValues[analyte_id] !== "") {
+  payload.equivocaltype = selectedEquivocalValues[analyte_id];
+}
+
+
+    valuesToSubmit.push(payload);
+  });
+
+  if (valuesToSubmit.length === 0) {
+    this.setState({ submissionSuccess: false });
+    return;
+  }
+
+  try {
+    await Promise.all(
+      valuesToSubmit.map(payload =>
+        this.props.onPostValues(payload, round_id)
+      )
+    );
+
+    this.setState({
+      submissionSuccess: true,
+      selectedPositiveValues: {},
+      selectedNegativeValues: {},
+      selectedEquivocalValues: {},
     });
+  } catch (error) {
+    this.setState({ submissionSuccess: false });
+  }
 
-    if (valuesToSubmit.length === 0) {
-      this.setState({ submissionSuccess: false });
-      return;
-    }
-
-    try {
-      await Promise.all(
-        valuesToSubmit.map(payload =>
-          this.props.onPostValues(payload, round_id)
-        )
-      );
-
-      this.setState({
-        submissionSuccess: true,
-        selectedPositiveValues: {},
-        selectedNegativeValues: {},
-        selectedEquivocalValues: {},
-      });
-    } catch (error) {
-      this.setState({ submissionSuccess: false });
-    }
-
-    setTimeout(() => {
-      this.setState({ submissionSuccess: null });
-    }, 3000);
-  };
+  setTimeout(() => {
+    this.setState({ submissionSuccess: null });
+  }, 3000);
+};
 
   onPaginationPageChange = page => {
     if (
@@ -404,6 +407,11 @@ class ReportValues extends Component {
                   <strong>
                     Please select the True Value for each analyte, the Score for
                     True value will be 5.
+                  </strong>
+                </p>
+                <p>
+                  <strong>
+                    Just define the True values, by assigning Score 5 all Analytes False values will be assign Score 0 automatically.  
                   </strong>
                 </p>
                 <Card>

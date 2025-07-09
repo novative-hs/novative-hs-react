@@ -2921,9 +2921,19 @@ export const deleteRound = (round) =>
 ///////////////////////////////
 export const addSereologyValues = (value, id) => {
   let formData = new FormData();
-  formData.append("type", value.type);
   formData.append("analyte_id", value.analyte_id);
-  formData.append("value", value.value);
+  formData.append("round_id", id);
+  formData.append("cycle_id", value.cycle_id); // ✅ cycle_id
+  formData.append("scheme_id", value.scheme_id); // ✅ scheme_id
+  if (value.positivetype !== undefined) {
+    formData.append("positivetype", value.positivetype);
+  }
+  if (value.negativetype !== undefined) {
+    formData.append("negativetype", value.negativetype);
+  }
+  if (value.equivocaltype !== undefined) {
+    formData.append("equivocaltype", value.equivocaltype);
+  }
   formData.append("account_id", value.account_id); 
 
   return axios
@@ -2942,7 +2952,6 @@ export const addSereologyValues = (value, id) => {
       throw error;
     });
 };
-
 export const getSereologyValues = (id, round_id) => {
   return get(`${url.GET_SERELOGY_VALUES}/${id}`, {
     headers: getHeader(authHeader()),

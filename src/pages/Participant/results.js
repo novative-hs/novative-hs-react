@@ -664,124 +664,8 @@ class Results extends Component {
     console.log("Results List:", this.state.ResultsList);
   }
 
-componentDidUpdate(prevProps, prevState) {
-  const {
-    SchemeAnalytesList,
-    ListUnits,
-    ListMethods,
-    Instrument,
-    ReagentList,
-    ResultList,
-    round_status,
-    result_type,
-  } = this.props;
-
-  const { user_id, isDataLoaded } = this.state;
-  const prevRoundId = prevProps.match.params.id;
-  const currentRoundId = this.props.match.params.id;
-
-  // 🔁 1. Round ID changed → reset and refetch fresh data
-  if (prevRoundId !== currentRoundId) {
-    console.log("🔁 Round changed:", prevRoundId, "→", currentRoundId);
-
-    this.setState({
-      isDataLoaded: false,
-      combinedData: [],
-    });
-
-    if (user_id) {
-      this.props.onGetSchemeAnalyte(currentRoundId);
-      this.props.onGetUnitsList(user_id);
-      this.props.onGetMethodsList(user_id);
-      this.props.onGetInstrumentList(user_id);
-      this.props.onGetReagents(user_id);
-      this.props.onGetResultsList(currentRoundId);
-    }
-
-    return; // Exit to avoid running combineData too early
-  }
-
-  // 🧠 2. user_id became available after refresh
-  if (!prevState.user_id && user_id) {
-    const id = this.props.match.params.id;
-
-    console.log("✅ user_id appeared, fetching data for round", id);
-
-    this.props.onGetSchemeAnalyte(id);
-    this.props.onGetUnitsList(user_id);
-    this.props.onGetMethodsList(user_id);
-    this.props.onGetInstrumentList(user_id);
-    this.props.onGetReagents(user_id);
-    this.props.onGetResultsList(id);
-
-    return;
-  }
-
-  // 📦 3. Wait until current round's results are available
-  const validResults = ResultList?.filter(
-    (r) =>
-      r.round_id?.toString() === currentRoundId?.toString() &&
-      r.lab?.account_id === user_id &&
-      (r.result_status === "Saved" || r.result_status === "Submitted")
-  );
-
-  const allListsReady =
-    SchemeAnalytesList?.length > 0 &&
-    ListUnits?.length > 0 &&
-    ListMethods?.length > 0 &&
-    Instrument?.length > 0 &&
-    ReagentList?.length > 0 &&
-    validResults.length > 0;
-
-  // ✅ 4. All lists and valid results for this round are ready
-  if (allListsReady && !isDataLoaded) {
-    console.log("✅ All fresh data loaded for round", currentRoundId);
-
-    this.setState(
-      {
-        SchemeAnalytesList,
-        ListUnits,
-        ListMethods,
-        Instrument,
-        ReagentList,
-        ResultList,
-        round_status,
-        result_type,
-        isDataLoaded: true,
-      },
-      this.combineData
-    );
-
-    return;
-  }
-
-  // 🔁 5. If ResultList changed (after already loaded) — re-run combineData
-  if (
-    prevProps.ResultList !== ResultList &&
-    isDataLoaded &&
-    validResults.length > 0
-  ) {
-    console.log("🔁 ResultList updated — re-running combineData()");
-    this.setState({ ResultList }, this.combineData);
-  }
-
-  // 🎯 6. Round status changed
-  if (prevProps.round_status !== round_status) {
-    this.setState({ round_status });
-  }
-
-  // 🧼 7. Sync updated props into state (to keep dropdowns working)
-  const dataChanged = [
-    prevProps.SchemeAnalytesList !== SchemeAnalytesList,
-    prevProps.ListUnits !== ListUnits,
-    prevProps.ListMethods !== ListMethods,
-    prevProps.Instrument !== Instrument,
-    prevProps.ReagentList !== ReagentList,
-    prevProps.round_status !== round_status,
-  ].some(Boolean);
-
-  if (dataChanged && isDataLoaded) {
-    this.setState({
+  componentDidUpdate(prevProps, prevState) {
+    const {
       SchemeAnalytesList,
       ListUnits,
       ListMethods,
@@ -790,11 +674,83 @@ componentDidUpdate(prevProps, prevState) {
       ResultList,
       round_status,
       result_type,
-    });
+    } = this.props;
+
+    // Check if round_status changed and update state
+    if (prevProps.round_status !== round_status) {
+      this.setState({ round_status });
+      console.log("Updated round_status:", round_status); // Debugging
+    }
+
+    // ✅ When user_id becomes available (typically after refresh)
+    if (!prevState.user_id && this.state.user_id) {
+      const userId = this.state.user_id;
+      const id = this.props.match.params.id;
+
+      console.log("user_id became available. Fetching all lists...");
+      this.props.onGetSchemeAnalyte(id);
+      this.props.onGetUnitsList(userId);
+      this.props.onGetMethodsList(userId);
+      this.props.onGetInstrumentList(userId);
+      this.props.onGetReagents(userId);
+      this.props.onGetResultsList(id);
+    }
+
+    // ✅ Check if all required lists are present, then run combineData only once
+    const allListsAvailable =
+      SchemeAnalytesList?.length > 0 &&
+      ListUnits?.length > 0 &&
+      ListMethods?.length > 0 &&
+      Instrument?.length > 0 &&
+      ReagentList?.length > 0 &&
+      ResultList?.length >= 0;
+
+    if (allListsAvailable && !this.state.isDataLoaded) {
+      this.setState(
+        {
+          SchemeAnalytesList,
+          ListUnits,
+          ListMethods,
+          Instrument,
+          ReagentList,
+          ResultList,
+          round_status,
+          result_type,
+          isDataLoaded: true,
+        },
+        this.combineData
+      );
+    }
+
+    // ✅ If any prop data changed AND data is already loaded, update state (don't re-run combineData)
+    const dataChanged = [
+      prevProps.SchemeAnalytesList !== SchemeAnalytesList,
+      prevProps.ListUnits !== ListUnits,
+      prevProps.ListMethods !== ListMethods,
+      prevProps.Instrument !== Instrument,
+      prevProps.ReagentList !== ReagentList,
+      prevProps.ResultList !== ResultList,
+      prevProps.round_status !== round_status,
+    ].some(Boolean);
+
+    if (dataChanged && this.state.isDataLoaded) {
+      this.setState({
+        SchemeAnalytesList,
+        ListUnits,
+        ListMethods,
+        Instrument,
+        ReagentList,
+        ResultList,
+        round_status,
+        result_type,
+      });
+    }
+
+    if (prevProps.ResultList !== ResultList && ResultList.length >= 0) {
+      console.log("🔁 ResultList changed, updating combined data...");
+      this.combineData();
+    }
   }
-}
-
-
 
   // ✅ Add Auto-Refresh After Submit or Resubmit
   // handleSubmitAll = async () => {
@@ -861,51 +817,49 @@ componentDidUpdate(prevProps, prevState) {
     }
   };
 
- combineData = () => {
-  const {
-    SchemeAnalytesList,
-    ListUnits,
-    ListMethods,
-    Instrument,
-    ReagentList,
-    ResultList,
-  } = this.props;
+  combineData = () => {
+    const {
+      SchemeAnalytesList,
+      ListUnits,
+      ListMethods,
+      Instrument,
+      ReagentList,
+      ResultList, // ✅ Fresh from Redux props
+      rounds,
+    } = this.props;
 
-  const roundId = this.props.match.params.id;
-  const user_id = this.state.user_id;
+    const user_id = this.state.user_id;
 
-  const filteredResults = ResultList.filter(
-    (r) =>
-      r.round_id?.toString() === roundId?.toString() &&
-      r.lab?.account_id === user_id &&
-      (r.result_status === "Saved" || r.result_status === "Submitted")
-  );
+    const combinedData = SchemeAnalytesList.map((analyte, index) => {
+      const participantResults = ResultList.filter(
+        (result) => result.analyte === analyte.id
+      );
 
-  const combinedData = SchemeAnalytesList.map((analyte, index) => {
-    const userResult = filteredResults.find(
-      (r) => r.analyte === analyte.id
-    );
+      // ✅ Match by user_id only and include submitted results always
+      const userResult = participantResults.find(
+        (result) =>
+          result.lab?.account_id === user_id &&
+          result.result_status === "Submitted"
+      );
 
-    return {
-      id: analyte.id || index,
-      analyte_id: analyte.id,
-      analyte_name: analyte.name,
-      units:
-        userResult?.units ??
-        (analyte.units?.length > 0 ? analyte.units[0] : ""),
-      reagent_name: userResult?.reagents ?? null,
-      method_name: userResult?.method ?? null,
-      instrument_name: userResult?.instrument ?? null,
-      result: userResult?.result ?? "",
-      result_status: userResult?.result_status ?? null,
-      result_type: userResult?.result_type ?? null,
-    };
-  });
+      return {
+        id: analyte.id || index,
+        analyte_id: analyte.id,
+        analyte_name: analyte.name,
+        units:
+          userResult?.units ||
+          (analyte.units && analyte.units.length > 0 ? analyte.units[0] : ""),
+        reagent_name: userResult?.reagents || null,
+        method_name: userResult?.method || null,
+        instrument_name: userResult?.instrument || null,
+        result: userResult?.result || "",
+        result_status: userResult?.result_status || null,
+        result_type: userResult?.result_type || null,
+      };
+    });
 
-  console.log("📦 Final Combined Data:", combinedData);
-  this.setState({ combinedData });
-};
-
+    this.setState({ combinedData });
+  };
 
   handleUpdate = async (list) => {
     const id = this.props.match.params.id;
@@ -978,120 +932,123 @@ componentDidUpdate(prevProps, prevState) {
   };
 
   handleSaveAll = async () => {
-  const { combinedData } = this.state;
-  const { rounds, scheme_id, round_status } = this.props;
-  const id = this.props.match.params.id;
+    const { combinedData } = this.state;
+    const { rounds, scheme_id, round_status } = this.props;
+    const id = this.props.match.params.id;
 
-  if (!combinedData.length) {
-    alert("No results to save.");
-    return;
-  }
-
-  const confirmation = window.confirm(
-    "Are you sure you want to save all results?"
-  );
-  if (!confirmation) return;
-
-  try {
-    for (const list of combinedData) {
-      const resultData = {
-        round_id: id,
-        analyte_id: list.analyte_id,
-        units: list.units && !isNaN(list.units) ? parseInt(list.units) : null,
-        instrument_name: list.instrument_name || null,
-        method_name: list.method_name || null,
-        reagent_name: list.reagent_name || null,
-        result_type: list.result_type,
-        result: this[`resultRef_${list.id}`]?.value || "",
-        rounds,
-        scheme_id,
-        round_status,
-        result_status: "Saved",
-      };
-      await this.props.onPostResult(resultData, this.state.user_id);
+    if (!combinedData.length) {
+      alert("No results to save.");
+      return;
     }
 
-    // ✅ Refresh result list after saving
-    await this.fetchResults();
-    this.combineData();
+    const confirmation = window.confirm(
+      "Are you sure you want to save all results?"
+    );
+    if (!confirmation) return;
 
-    alert("All results have been saved successfully.");
-  } catch (error) {
-    alert("Failed to save all results. Please try again.");
-  }
-};
+    try {
+      for (const list of combinedData) {
+        const resultData = {
+          round_id: id,
+          analyte_id: list.analyte_id,
+          units: list.units && !isNaN(list.units) ? parseInt(list.units) : null,
 
- handleSubmitAll = async () => {
-  const { combinedData, Instrument, ListMethods, ReagentList } = this.state;
-  const { rounds, scheme_id, round_status, schemeType } = this.props;
-  const id = this.props.match.params.id;
-
-  if (!combinedData.length) {
-    alert("No results to submit.");
-    return;
-  }
-
-  const confirmation = window.confirm(
-    "Are you sure you want to submit all results?"
-  );
-  if (!confirmation) return;
-
-  try {
-    let latestUpdatedAt = new Date().toISOString(); // Default timestamp
-
-    for (const list of combinedData) {
-      const instrument = Instrument.find(
-        (instr) => instr.id.toString() === list.instrument_name
-      );
-      const method = ListMethods.find(
-        (meth) => meth.id.toString() === list.method_name
-      );
-      const reagent = ReagentList.find(
-        (reag) => reag.id.toString() === list.reagent_name
-      );
-
-      const resultData = {
-        round_id: id,
-        analyte_id: list.analyte_id,
-        instrument_name: list.instrument_name || null,
-        method_name: list.method_name || null,
-        reagent_name: list.reagent_name || null,
-        result_type: list.result_type || null,
-        result: this[`resultRef_${list.id}`]?.value || "",
-        rounds,
-        scheme_id,
-        round_status,
-        result_status: "Submitted",
-      };
-
-      if (schemeType === "Quantitative") {
-        resultData.units =
-          list.units && !isNaN(list.units) ? parseInt(list.units) : null;
+          instrument_name: list.instrument_name || null,
+          method_name: list.method_name || null,
+          reagent_name: list.reagent_name || null,
+          result_type: list.result_type,
+          result: this[`resultRef_${list.id}`]?.value || "",
+          rounds,
+          scheme_id,
+          round_status,
+          result_status: "Saved",
+        };
+        await this.props.onPostResult(resultData, this.state.user_id);
       }
 
-      const response = await this.props.onPostResult(
-        resultData,
-        this.state.user_id
-      );
+      alert("All results have been saved successfully.");
+    } catch (error) {
+      alert("Failed to save all results. Please try again.");
+    }
+  };
+  handleSubmitAll = async () => {
+    const { combinedData, Instrument, ListMethods, ReagentList } = this.state;
+    const { rounds, scheme_id, round_status, schemeType } = this.props;
+    const id = this.props.match.params.id;
 
-      if (response.type === "POST_RESULT" && response.payload?.updated_at) {
-        latestUpdatedAt = response.payload.updated_at;
-      }
+    if (!combinedData.length) {
+      alert("No results to submit.");
+      return;
     }
 
-    this.setState({ submittedOn: latestUpdatedAt });
-    localStorage.setItem("submittedOn", latestUpdatedAt);
+    const confirmation = window.confirm(
+      "Are you sure you want to submit all results?"
+    );
+    if (!confirmation) return;
 
-    alert("Results submitted successfully!");
+    try {
+      let latestUpdatedAt = new Date().toISOString(); // Default timestamp
 
-    // ✅ Refresh result list after submit
-    await this.fetchResults();
-    this.combineData();
-  } catch (error) {
-    alert("Failed to submit all results. Please try again.");
-  }
-};
+      for (const list of combinedData) {
+        // 🔍 Convert selected IDs into names (for qualitative results especially)
+        const instrument = Instrument.find(
+          (instr) => instr.id.toString() === list.instrument_name
+        );
+        const method = ListMethods.find(
+          (meth) => meth.id.toString() === list.method_name
+        );
+        const reagent = ReagentList.find(
+          (reag) => reag.id.toString() === list.reagent_name
+        );
 
+        const resultData = {
+          round_id: id,
+          analyte_id: list.analyte_id,
+          instrument_name: list.instrument_name || null,
+          method_name: list.method_name || null,
+          reagent_name: list.reagent_name || null,
+          result_type: list.result_type || null,
+          result: this[`resultRef_${list.id}`]?.value || "",
+          rounds,
+          scheme_id,
+          round_status,
+          result_status: "Submitted",
+        };
+
+        // Only add units for Quantitative schemes
+        if (schemeType === "Quantitative") {
+          resultData.units =
+            list.units && !isNaN(list.units) ? parseInt(list.units) : null;
+        }
+
+        // Only add units for Quantitative schemes
+        if (schemeType === "Quantitative") {
+          resultData.units =
+            list.units && !isNaN(list.units) ? parseInt(list.units) : null;
+        }
+
+        console.log("🚀 Submitting Result:", resultData); // Optional: for debugging
+
+        const response = await this.props.onPostResult(
+          resultData,
+          this.state.user_id
+        );
+
+        if (response.type === "POST_RESULT" && response.payload?.updated_at) {
+          latestUpdatedAt = response.payload.updated_at;
+        }
+      }
+
+      // ✅ Store "Submitted On" in state & localStorage
+      this.setState({ submittedOn: latestUpdatedAt });
+      localStorage.setItem("submittedOn", latestUpdatedAt);
+
+      alert("Results submitted successfully!");
+      window.location.reload();
+    } catch (error) {
+      alert("Failed to submit all results. Please try again.");
+    }
+  };
 
   handleResubmit = async () => {
     const { combinedData } = this.state;
