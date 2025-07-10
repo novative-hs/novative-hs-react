@@ -1485,15 +1485,8 @@ class InstrumentType extends Component {
                                                           <option value="Closed">
                                                             Closed
                                                           </option>
-                                                          {this.props.RoundList?.some(
-                                                            round =>
-                                                              round.status ===
-                                                              "Statistics Done"
-                                                          ) && (
-                                                            <option value="Report Available">
-                                                              Report Available
-                                                            </option>
-                                                          )}
+                                                         <option value="Report Available">Report Available</option>
+
                                                         </Field>
                                                         <ErrorMessage
                                                           name="status"
