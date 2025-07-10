@@ -144,6 +144,7 @@ import News from "pages/RegistrationAdmin/news";
 import Comments from "pages/RegistrationAdmin/comments";
 import Statistics from "pages/RegistrationAdmin/statics";
 import SelectValues from "pages/RegistrationAdmin/reportValues";
+import QualitativeStatistics from "pages/RegistrationAdmin/qualitativeStatic";
 import DisplayValues from "pages/RegistrationAdmin/analteTypeValues";
 import RoundsHistory from "pages/RegistrationAdmin/registrationadmin-history";
 import RegParticipant from "pages/Authentication/RegisterParticipant";
@@ -470,6 +471,7 @@ const registrationAdminAuthProtectedRoutes = [
   { path: "/:organization_name/news", component: News },
   {path: "/comments/:id", component: Comments},
   { path: "/:organization_name/statistics/:id", component: Statistics },
+  { path: "/:organization_name/qualitativeStatic/:id", component: QualitativeStatistics},
   { path: "/:organization_name/slectValues/:id", component: SelectValues },
   { path: "/:organization_name/displayValues/:id", component: DisplayValues },
   { path: "/:organization_name/rounds-history/:id", component: RoundsHistory },

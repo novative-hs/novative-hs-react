@@ -553,23 +553,30 @@ class InstrumentType extends Component {
                     ></i>
                   </Link>
                 </Tooltip>
-                {/* {round.scheme_type === "Qualitative" &&
-                  round.status === "Open" && (
-                    <Tooltip title="Enter True Values">
-                      <Link
-                        to={`/${this.state.organization_name}/slectValues/${round.id}`}
-                        style={{
-                          textDecoration: "underline",
-                          color: "#007BFF",
-                        }}
-                      >
-                        <i
-                          className="mdi mdi-file-document-outline font-size-18"
-                          style={{ color: "#007BFF" }}
-                        />
-                      </Link>
-                    </Tooltip>
-                  )} */}
+                {round.status === "Closed" && (
+  <>
+    {round.scheme_type === "Quantitative" && (
+      <Tooltip title="Statistics">
+        <Link
+          to={`/${this.state.organization_name}/statistics/${round.id}`}
+          style={{ textDecoration: "underline", color: "#008000" }}
+        >
+          <i className="mdi mdi-chart-bar font-size-18" />
+        </Link>
+      </Tooltip>
+    )}
+    {round.scheme_type === "Qualitative" && (
+      <Tooltip title="Qualitative Statistics">
+        <Link
+          to={`/${this.state.organization_name}/qualitativeStatic/${round.id}`}
+          style={{ textDecoration: "underline", color: "#007BFF" }}
+        >
+          <i className="mdi mdi-file-document-outline font-size-18" />
+        </Link>
+      </Tooltip>
+    )}
+  </>
+)} 
                 {(round.status === "Created" || round.status === "Ready") && ( // Changed condition here
                   <Tooltip title="Delete">
                     <Link className="text-danger" to="#">

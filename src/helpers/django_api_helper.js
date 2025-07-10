@@ -2952,6 +2952,7 @@ export const addSereologyValues = (value, id) => {
       throw error;
     });
 };
+
 export const getSereologyValues = (id, round_id) => {
   return get(`${url.GET_SERELOGY_VALUES}/${id}`, {
     headers: getHeader(authHeader()),
