@@ -538,7 +538,7 @@ class InstrumentType extends Component {
                             color: "#007BFF",
                           }}
                         >
-                          <i className="mdi mdi-file-document-outline font-size-18" />
+                         <i className="mdi mdi-chart-bar font-size-18" />
                         </Link>
                       </Tooltip>
                     )}
