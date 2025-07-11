@@ -65,6 +65,14 @@ class Results extends Component {
             <div className="text-center">{analyte.name}</div> // ✅ centers cell text
           ),
         },
+         {
+          text: "True Value",
+          sort: true,
+          headerAlign: "center",
+          formatter: (cellContent, analyte) => (
+            <div className="text-center">{analyte.true_value}</div>
+          ),
+        },
         {
           text: "N",
           sort: true,
@@ -80,16 +88,9 @@ class Results extends Component {
             );
           },
         },
+       
         {
-          text: "True Value",
-          sort: true,
-          headerAlign: "center",
-          formatter: (cellContent, analyte) => (
-            <div className="text-center">{analyte.true_value}</div>
-          ),
-        },
-        {
-          text: "No of labs with correct Result",
+          text: "No. of labs with correct Result",
           sort: true,
           headerAlign: "center",
           formatter: (cellContent, analyte) => (
@@ -97,7 +98,7 @@ class Results extends Component {
           ),
         },
         {
-          text: "No of labs with wrong Result",
+          text: "No. of labs with wrong Result",
           sort: true,
           headerAlign: "center",
           formatter: (cellContent, analyte) => (

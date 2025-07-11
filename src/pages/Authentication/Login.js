@@ -35,6 +35,7 @@ import bgimg from "../../../src/assets/images/b.jpg";
 import logo from "../../../src/assets/images/LogoNeqas.jpg";
 
 import { userForgetPassword } from "../../store/actions";
+import TimelineItem from "antd/es/timeline/TimelineItem";
 
 // Define validation
 const loginSchema = Yup.object().shape({
@@ -90,17 +91,71 @@ class Login extends Component {
         <MetaTags>
           <title>Login | NHS NEQAS</title>
         </MetaTags>
+
         <Container
           fluid
-          className="p-0 fw-bold d-flex align-items-center justify-content-center"
+          className="d-flex flex-column justify-content-center align-items-center "
           style={{
-            height: "100vh",
+            minHeight: "100vh",
             backgroundImage: `url(${bgimg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
           }}
         >
-          <Row className="g-0 w-75 h-85">
+          {/* Logo top-left */}
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              left: "20px",
+              zIndex: 1000,
+              color: "white",
+            }}
+          >
+            <img
+              src="https://externalqcapi.com/media/organization/nhs_logo.webp"
+              alt="NHS Logo"
+              style={{
+                width: "170px",
+                height: "70px",
+                objectFit: "contain",
+              }}
+            />
+          </div>
+
+          {/* Row for "Coming Soon" banner */}
+          <Row className="g-0 justify-content-center pb-3">
+            {" "}
+            {/* pb-4 adds bottom padding */}
+            {/* Centered "Coming Soon" text */}
+            <Col
+              xs="auto"
+              className="d-flex justify-content-center align-items-center"
+              style={{
+                height: "100%",
+              }}
+            >
+              <h1
+                style={{
+                  fontWeight: "bold",
+                  animation: "blinker 1.5s linear infinite",
+                  fontSize: "2rem",
+                  fontFamily: "Laurel Black",
+                  margin: 0,
+                  color: "white",
+                  textShadow: "0 0 10px rgba(255,255,255,0.6)",
+                }}
+              >
+                Coming Soon - Data Migration In Process
+              </h1>
+            </Col>
+          </Row>
+
+          <Row
+            className="g-0 w-100 justify-content-center"
+            style={{ maxWidth: "700px", height: "auto" }}
+          >
             <Col className="position-relative" md={6}>
               <div
                 className="h-100 w-100 position-absolute"
@@ -114,8 +169,11 @@ class Login extends Component {
               ></div>
             </Col>
             <Col className="bg-light" md={6}>
-              <div className="d-flex flex-column justify-content-center h-100 px-5 py-5">
-                <h2 className="text-center mt-3 mb-2 text-dark">Login Form</h2>
+              <div
+                className="d-flex flex-column justify-content-center px-4 py-3"
+                style={{ height: "100%" }}
+              >
+                <h3 className="text-center mt-3 mb-2 text-dark">Login Form</h3>
 
                 {this.props.error && (
                   <Alert color="danger">{this.props.error}</Alert>
@@ -385,6 +443,38 @@ class Login extends Component {
                   )}
                 </Formik>
               </div>
+            </Col>
+          </Row>
+          {/* <Row
+            className="mt-1 justify-content-center pt-1"
+            style={{ width: "700px", maxWidth: "90%" }}
+          >
+            <p></p>
+          </Row> */}
+          <Row
+            className="mt-1 justify-content-center pt-6 Laurel-font"
+            style={{ width: "700px", maxWidth: "90%" }}
+          >
+            <Col md={12} className="text-white text-start small">
+              <p className="mb-1 fw-bold fs-3 text-left">NHS - NEQAS</p>
+              <p className="mb-1 fs-6 text-left">
+                Novative Healthtech Solutions (NHS)
+              </p>
+              <p className="mb-1 fs-6 text-left">
+                Atta-ur-Rahman School of Applied Biosciences (ASAB)
+              </p>
+              <p className="mb-1 fs-6 text-left">
+                National University of Sciences & Technology (NUST)
+              </p>
+              <p className="mb-1 fs-6 text-left">
+                Office 4, Sector H-12, Islamabad, PAKISTAN
+              </p>
+              <p className="mb-0 fs-6 text-left">
+                📧{" "}
+                <a href="mailto:order@nhs-neqas.com" className="text-white">
+                  order@nhs-neqas.com
+                </a>
+              </p>
             </Col>
           </Row>
         </Container>
