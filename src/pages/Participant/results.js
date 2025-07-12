@@ -73,6 +73,7 @@ class Results extends Component {
       result: "",
       schemeName: "",
       schemeType: "",
+      comments: "",
       roundLoadedFor: null, // Add this field
       loading: true, // 🔄 Track loading status
       roundLoadedFor: null,
@@ -620,20 +621,28 @@ class Results extends Component {
     const currentId = this.props.match.params.id;
     const storedId = sessionStorage.getItem("lastRoundId");
 
-    if (storedId !== currentId) {
-      sessionStorage.setItem("lastRoundId", currentId);
-      window.location.reload();
-      return;
-    }
+    const userId = this.state.user_id;
 
     // Proceed to fetch
-    const userId = this.state.user_id;
     this.props.onGetSchemeAnalyte(currentId);
     this.props.onGetUnitsList(userId);
     this.props.onGetMethodsList(userId);
     this.props.onGetInstrumentList(userId);
     this.props.onGetReagents(userId);
     this.props.onGetResultsList(currentId);
+
+    // ✅ Safely get comment from localStorage first
+    const savedComment = localStorage.getItem("results_comments");
+    if (savedComment) {
+      this.setState({ comments: savedComment });
+    }
+
+    // ✅ Defer this logic to componentDidUpdate instead (because ResultList is async)
+    if (storedId !== currentId) {
+      sessionStorage.setItem("lastRoundId", currentId);
+      window.location.reload();
+      return;
+    }
   }
 
   // Method to track fetched data after state is updated
@@ -986,6 +995,7 @@ class Results extends Component {
           scheme_id,
           round_status,
           result_status: "Saved",
+          comment: this.state.comments || "",
         };
         await this.props.onPostResult(resultData, this.state.user_id);
       }
@@ -1041,6 +1051,7 @@ class Results extends Component {
           scheme_id,
           round_status,
           result_status: "Submitted",
+          comment: this.state.comments || "",
         };
 
         if (schemeType === "Quantitative") {
@@ -1102,6 +1113,7 @@ class Results extends Component {
           scheme_id,
           round_status,
           result_status: "Submitted",
+          comment: this.state.comments || "",
         };
 
         if (schemeType === "Quantitative") {
@@ -1522,6 +1534,79 @@ class Results extends Component {
                           </ToolkitProvider>
                         )}
                       </PaginationProvider>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+              <Row className="mt-4 justify-content-center">
+                <Col lg="10">
+                  <Card>
+                    <CardBody>
+                      <Label for="comments">
+                        <strong>Enter Comments</strong>
+                      </Label>
+                      <textarea
+                        id="comments"
+                        className="form-control mb-3"
+                        rows="4"
+                        placeholder="Write your comments here..."
+                        value={this.state.comments}
+                        onChange={e =>
+                          this.setState({ comments: e.target.value })
+                        }
+                      />
+                      <Button
+                        color="primary"
+                        onClick={async () => {
+                          const { comments, combinedData } = this.state;
+                          const { rounds, scheme_id, round_status } =
+                            this.props;
+                          const round_id = this.props.match.params.id;
+
+                          if (!combinedData.length) {
+                            alert("No result data found to attach comment.");
+                            return;
+                          }
+
+                          try {
+                            // Pick one analyte to save the comment (since it's round-level)
+                            const analyte = combinedData[0];
+
+                            const resultData = {
+                              round_id,
+                              analyte_id: analyte.analyte_id,
+                              units:
+                                analyte.units && !isNaN(analyte.units)
+                                  ? parseInt(analyte.units)
+                                  : null,
+                              instrument_name: analyte.instrument_name || null,
+                              method_name: analyte.method_name || null,
+                              reagent_name: analyte.reagent_name || null,
+                              result_type: analyte.result_type || null,
+                              result:
+                                this[`resultRef_${analyte.id}`]?.value || "",
+                              rounds,
+                              scheme_id,
+                              round_status,
+                              result_status: "Saved",
+                              comment: comments || "",
+                            };
+
+                            const response = await this.props.onPostResult(
+                              resultData,
+                              this.state.user_id
+                            );
+
+                            if (response.type === "POST_RESULT") {
+                              alert("Comment saved and sent to backend.");
+                            }
+                          } catch (error) {
+                            alert("Failed to save comment to backend.");
+                          }
+                        }}
+                      >
+                        Save Comment
+                      </Button>
                     </CardBody>
                   </Card>
                 </Col>
