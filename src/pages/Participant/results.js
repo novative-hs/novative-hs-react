@@ -992,7 +992,7 @@ class Results extends Component {
 
       // ✅ Refresh result list after saving
       await this.fetchResults();
-      this.combineData();
+      // this.combineData();
 
       alert("All results have been saved successfully.");
     } catch (error) {
