@@ -78,7 +78,7 @@ class Results extends Component {
           headerClasses: "text-center",
           classes: "text-center",
           formatter: (cellContent, analyte) => (
-            <div className="text-center">{analyte.expected_type || "N/A"}</div>
+            <div className="text-center">{analyte.true_value || "N/A"}</div>
           ),
         },
         {
@@ -134,7 +134,7 @@ class Results extends Component {
         result_value,
         value: resultEntry?.qualitative_result_type || "",
         score,
-        expected_type: expectedType,
+        true_value: expectedType,
         expected_value: expectedValue,
         expected_result: expectedResult, // ✅ This is what you'll use in your table
       };
