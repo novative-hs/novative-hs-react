@@ -65,7 +65,7 @@ class Login extends Component {
     this.props.apiError("");
   }
 
-  togglePasswordVisibility = e => {
+  togglePasswordVisibility = (e) => {
     const button = e.currentTarget;
     const inputGroup = button.closest(".input-group");
 
@@ -290,7 +290,7 @@ class Login extends Component {
                           as="select"
                           name="login_role"
                           className="form-select"
-                          onChange={e => {
+                          onChange={(e) => {
                             setFieldValue("login_role", e.target.value);
                             this.setState({ login_role: e.target.value });
                           }}
@@ -348,22 +348,40 @@ class Login extends Component {
                               Password
                             </Label>
                             <div className="input-group auth-pass-inputgroup">
-                              <Field
-                                name="password"
-                                type="password"
-                                className={`form-control ${
-                                  errors.password && touched.password
-                                    ? "is-invalid"
-                                    : ""
-                                }`}
-                              />
-                              <button
-                                className="btn btn-light"
-                                type="button"
-                                onClick={this.togglePasswordVisibility}
-                              >
-                                <i className="mdi mdi-eye-outline"></i>
-                              </button>
+                              <Field name="password">
+                                {({ field, form }) => (
+                                  <div className="input-group auth-pass-inputgroup">
+                                    <input
+                                      {...field}
+                                      type={
+                                        this.state.showPassword
+                                          ? "text"
+                                          : "password"
+                                      }
+                                      className={`form-control ${
+                                        form.errors.password &&
+                                        form.touched.password
+                                          ? "is-invalid"
+                                          : ""
+                                      }`}
+                                      onChange={(e) => {
+                                        form.setFieldValue(
+                                          "password",
+                                          e.target.value
+                                        );
+                                        form.setFieldTouched("password", true); // 👈 trigger immediate validation
+                                      }}
+                                    />
+                                    <button
+                                      className="btn btn-light"
+                                      type="button"
+                                      onClick={this.togglePasswordVisibility}
+                                    >
+                                      <i className="mdi mdi-eye-outline"></i>
+                                    </button>
+                                  </div>
+                                )}
+                              </Field>
                             </div>
                             <ErrorMessage
                               name="password"
@@ -401,26 +419,47 @@ class Login extends Component {
                               Password
                             </Label>
                             <div className="input-group auth-pass-inputgroup">
-                              <Field
-                                name="password"
-                                type="password"
-                                className={`form-control ${
-                                  errors.password && touched.password
-                                    ? "is-invalid"
-                                    : ""
-                                }`}
-                              />
-                              <button
-                                className="btn btn-light"
-                                type="button"
-                                id="password-addon"
-                                onClick={this.togglePasswordVisibility}
-                              >
-                                <i
-                                  id="eye-icon"
-                                  className="mdi mdi-eye-outline"
-                                ></i>
-                              </button>
+                              <Field name="password">
+                                {({ field, form }) => (
+                                  <div className="input-group auth-pass-inputgroup">
+                                    <input
+                                      {...field}
+                                      type={
+                                        this.state.showPassword
+                                          ? "text"
+                                          : "password"
+                                      }
+                                      className={`form-control ${
+                                        form.errors.password &&
+                                        form.touched.password
+                                          ? "is-invalid"
+                                          : ""
+                                      }`}
+                                      onChange={(e) => {
+                                        form.setFieldValue(
+                                          "password",
+                                          e.target.value
+                                        );
+
+                                        // ✅ Set touched only on first change
+                                        if (!form.touched.password) {
+                                          form.setFieldTouched(
+                                            "password",
+                                            true
+                                          );
+                                        }
+                                      }}
+                                    />
+                                    <button
+                                      className="btn btn-light"
+                                      type="button"
+                                      onClick={this.togglePasswordVisibility}
+                                    >
+                                      <i className="mdi mdi-eye-outline"></i>
+                                    </button>
+                                  </div>
+                                )}
+                              </Field>
                             </div>
                             <ErrorMessage
                               name="password"
@@ -499,7 +538,7 @@ Login.propTypes = {
   history: PropTypes.object,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log("State:", state); // Add your console.log statement here
   const { error, success } = state.Login;
   return { error, success };
