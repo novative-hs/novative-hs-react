@@ -180,6 +180,8 @@ class Login extends Component {
                 )}
 
                 <Formik
+                  validateOnChange={true}
+                  validateOnBlur={true}
                   initialValues={{
                     login_role: "NHS",
                     lab_code: "",
@@ -190,22 +192,22 @@ class Login extends Component {
                   validationSchema={Yup.object().shape({
                     login_role: Yup.string().required("Login role is required"),
                     username: Yup.string().required("Username is required"),
-                    password: Yup.string().when("login_role", {
-                      is: "NHS",
-                      then: Yup.string().required("Password is required"),
-                    }),
                     lab_code: Yup.string().when("login_role", {
                       is: "labowner",
                       then: Yup.string().required("Lab Code is required"),
                     }),
-                    password: Yup.string().when("login_role", {
-                      is: "labowner",
-                      then: Yup.string()
-                        .required("Password is required")
-                        .min(6, "Password must be at least 6 characters"),
-                    }),
+                    password: Yup.string()
+                      .required("Password is required")
+                      .matches(/^\S*$/, "Password must not contain spaces")
+                      .when("login_role", {
+                        is: "labowner",
+                        then: Yup.string()
+                          .required("Password is required")
+                          .min(6, "Password must be at least 6 characters")
+                          .matches(/^\S*$/, "Password must not contain spaces"),
+                      }),
                   })}
-                  onSubmit={async values => {
+                  onSubmit={async (values, { setErrors }) => {
                     if (this.state.isLoginInProgress) return;
                     this.setState({ isLoginInProgress: true });
 
@@ -218,6 +220,7 @@ class Login extends Component {
 
                         if (error) {
                           this.props.apiError(error.message);
+                          setErrors({ password: "Invalid login credentials" });
                           setTimeout(() => this.props.apiError(null), 240000);
                         } else {
                           const { organization_name } = success;
@@ -267,6 +270,9 @@ class Login extends Component {
                       }, 1000);
                     } catch (error) {
                       this.props.apiError(error.message);
+                      setErrors({
+                        password: "Server error or incorrect password",
+                      });
                       setTimeout(() => this.props.apiError(null), 240000);
                     } finally {
                       this.setState({ isLoginInProgress: false });
