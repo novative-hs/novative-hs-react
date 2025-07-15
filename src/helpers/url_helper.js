@@ -563,6 +563,7 @@ export const GET_LC_LIST = `${API_ENDPOINT}/api/accountstatement/corporate-accou
 
 // STAFF
 export const GET_CSR_LIST = `${API_ENDPOINT}/api/staff/csr-list`;
+export const GET_CSR_ROUND_LIST = `${API_ENDPOINT}/api/registration-admin/csrround-list`;
 export const GET_AUDITOR_LIST = `${API_ENDPOINT}/api/staff/auditor-list`;
 export const GET_FINANCE_OFFICER_LIST = `${API_ENDPOINT}/api/staff/finance-officer-list`;
 export const ADD_STAFF = `${API_ENDPOINT}/api/staff/register-staff`;
