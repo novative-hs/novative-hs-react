@@ -98,7 +98,7 @@ class Instrument extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={(e) => this.handleFilterChange("idFilter", e)}
+                    onChange={e => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -127,7 +127,7 @@ class Instrument extends Component {
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={(e) => this.handleFilterChange("nameFilter", e)}
+                    onChange={e => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -155,7 +155,7 @@ class Instrument extends Component {
                   <input
                     type="text"
                     value={this.state.countFilter}
-                    onChange={(e) => this.handleFilterChange("countFilter", e)}
+                    onChange={e => this.handleFilterChange("countFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -211,7 +211,7 @@ class Instrument extends Component {
                   <input
                     type="text"
                     value={this.state.codeFilter}
-                    onChange={(e) => this.handleFilterChange("codeFilter", e)}
+                    onChange={e => this.handleFilterChange("codeFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -240,9 +240,7 @@ class Instrument extends Component {
                   <input
                     type="text"
                     value={this.state.instypeFilter}
-                    onChange={(e) =>
-                      this.handleFilterChange("instypeFilter", e)
-                    }
+                    onChange={e => this.handleFilterChange("instypeFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -298,7 +296,7 @@ class Instrument extends Component {
                   <input
                     type="text"
                     value={this.state.manufacturerFilter}
-                    onChange={(e) =>
+                    onChange={e =>
                       this.handleFilterChange("manufacturerFilter", e)
                     }
                     className="form-control"
@@ -329,9 +327,7 @@ class Instrument extends Component {
                   <input
                     type="text"
                     value={this.state.countryFilter}
-                    onChange={(e) =>
-                      this.handleFilterChange("countryFilter", e)
-                    }
+                    onChange={e => this.handleFilterChange("countryFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -358,7 +354,7 @@ class Instrument extends Component {
                 >
                   <select
                     value={this.state.statusFilter}
-                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
+                    onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -392,7 +388,7 @@ class Instrument extends Component {
                   <input
                     type="text"
                     value={this.state.dateFilter}
-                    onChange={(e) => this.handleFilterChange("dateFilter", e)}
+                    onChange={e => this.handleFilterChange("dateFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -454,7 +450,7 @@ class Instrument extends Component {
                 <Link
                   className="fas fa-comment font-size-18"
                   to={`/${this.state.organization_name}/databaseadmin-history/${methodlist.id}?type=Instrumentlist`}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.preventDefault();
                     // Check if organization_name is valid
                     if (!this.state.organization_name) {
@@ -512,12 +508,12 @@ class Instrument extends Component {
     this.setState({ [filterName]: e.target.value });
   };
   toggleDeleteModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
 
-  onClickDelete = (methodlist) => {
+  onClickDelete = methodlist => {
     if (methodlist.analytes_count === 0) {
       this.setState({ ListUnit: methodlist });
       this.setState({ deleteModal: true });
@@ -542,7 +538,7 @@ class Instrument extends Component {
     }
   };
 
-  displaySuccessMessage = (message) => {
+  displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
     setTimeout(() => {
@@ -585,7 +581,7 @@ class Instrument extends Component {
     }
   }
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -610,7 +606,7 @@ class Instrument extends Component {
     const fieldsToExport = ["id", "name", "code", "status", "date_of_addition"];
 
     // Map each row to an object with only the desired fields
-    const dataToExport = Instrument.map((unit) => ({
+    const dataToExport = Instrument.map(unit => ({
       id: unit.id,
       equipment: unit.name,
       code: unit.code,
@@ -632,14 +628,14 @@ class Instrument extends Component {
   };
 
   toggleImportModal = () => {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       importModal: !prevState.importModal,
       importFile: null,
       importError: null,
     }));
   };
 
-  handleFileChange = (e) => {
+  handleFileChange = e => {
     const file = e.target.files[0];
     this.setState({
       importFile: file,
@@ -657,7 +653,7 @@ class Instrument extends Component {
 
     try {
       const reader = new FileReader();
-      reader.onload = async (e) => {
+      reader.onload = async e => {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: "array" });
         // Assuming your data is in the first sheet
@@ -717,11 +713,10 @@ class Instrument extends Component {
       statusFilter,
       countFilter,
       countryFilter,
-
     } = this.state;
 
     // Apply the filters to the unit list
-    const filteredUnits = Instrument.filter((entry) => {
+    const filteredUnits = Instrument.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const status = entry.status ? entry.status.toString() : "";
       const code = entry.code ? entry.code.toString() : "";
@@ -826,7 +821,7 @@ class Instrument extends Component {
                 <div className="mb-3 d-flex justify-content-center">
                   <button
                     className="btn btn-primary"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault(); // Prevent the default action
                       const downloadUrl =
                         process.env.REACT_APP_BACKENDURL +
@@ -929,7 +924,7 @@ class Instrument extends Component {
                           data={filteredUnits}
                           search
                         >
-                          {(toolkitprops) => (
+                          {toolkitprops => (
                             <React.Fragment>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -1008,7 +1003,7 @@ class Instrument extends Component {
                                           })}
                                           onSubmit={async (
                                             values,
-                                            { setSubmitting }
+                                            { setSubmitting, setFieldError }
                                           ) => {
                                             const userId = localStorage.getItem(
                                               "authUser"
@@ -1030,6 +1025,30 @@ class Instrument extends Component {
                                               manufactural: values.manufactural,
                                               // country: values.country,
                                             };
+
+                                            const duplicate =
+                                              this.props.Instrument?.find(
+                                                item =>
+                                                  item.code
+                                                    .toString()
+                                                    .trim() ===
+                                                    values.code
+                                                      .toString()
+                                                      .trim() &&
+                                                  (!this.state.isEdit ||
+                                                    item.id !==
+                                                      this.state.selectedUnit
+                                                        ?.id)
+                                              );
+
+                                            if (duplicate) {
+                                              setFieldError(
+                                                "code",
+                                                "This code already exists for another equipment."
+                                              );
+                                              setSubmitting(false);
+                                              return;
+                                            }
 
                                             try {
                                               if (this.state.isEdit) {
@@ -1059,10 +1078,20 @@ class Instrument extends Component {
                                                 }, 1000);
                                               }
                                             } catch (error) {
-                                              console.error(
-                                                "Error updating/adding method:",
-                                                error
-                                              );
+                                              const message =
+                                                error?.response?.data
+                                                  ?.message ||
+                                                "Something went wrong. Please try again.";
+
+                                              this.setState({
+                                                errorMessage: message,
+                                              });
+
+                                              setTimeout(() => {
+                                                this.setState({
+                                                  errorMessage: "",
+                                                });
+                                              }, 3000);
                                             }
 
                                             setSubmitting(false);
@@ -1116,7 +1145,7 @@ class Instrument extends Component {
                                                         Select Equipment Type
                                                       </option>
                                                       {ListUnit.map(
-                                                        (instrument_type) => (
+                                                        instrument_type => (
                                                           <option
                                                             key={
                                                               instrument_type.value
@@ -1139,7 +1168,7 @@ class Instrument extends Component {
                                                       className="text-danger"
                                                     />
                                                   </div>
-                                                
+
                                                   <div className="mb-3">
                                                     <Label className="col-form-label">
                                                       Manufacturer
@@ -1154,7 +1183,7 @@ class Instrument extends Component {
                                                         Select Manufacturer
                                                       </option>
                                                       {ManufacturalList.map(
-                                                        (manufactural) => (
+                                                        manufactural => (
                                                           <option
                                                             key={
                                                               manufactural.value
@@ -1316,17 +1345,16 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetInstrumentList: (id) => dispatch(getInstrumentlist(id)),
-  onGetManufacturalist: (id) => dispatch(getManufacturalList(id)),
-  onGetCountrylist: (id) => dispatch(getcountrylist(id)),
-  onGetInstrumentTypeList: (id) => dispatch(getinstrumenttypelist(id)),
+  onGetInstrumentList: id => dispatch(getInstrumentlist(id)),
+  onGetManufacturalist: id => dispatch(getManufacturalList(id)),
+  onGetCountrylist: id => dispatch(getcountrylist(id)),
+  onGetInstrumentTypeList: id => dispatch(getinstrumenttypelist(id)),
 
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewInstrument(createInstrumentType, id)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateInstrument({ id, ...methodlist })),
-  onDeleteInstrumentType: (methodlist) =>
-    dispatch(deleteInstrument(methodlist)),
+  onDeleteInstrumentType: methodlist => dispatch(deleteInstrument(methodlist)),
 });
 
 export default connect(

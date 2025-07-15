@@ -26,7 +26,7 @@ import {
   Button,
   FormGroup,
 } from "reactstrap";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
@@ -36,7 +36,12 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 
 //Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getmethodlist, addNewMethod, updateMethods,deleteMethod } from "store/methods/actions";
+import {
+  getmethodlist,
+  addNewMethod,
+  updateMethods,
+  deleteMethod,
+} from "store/methods/actions";
 import { isEmpty, size } from "lodash";
 import * as XLSX from "xlsx";
 import "assets/scss/table.scss";
@@ -50,18 +55,18 @@ class InstrumentType extends Component {
       importFile: null,
       importError: null,
       selectedUnit: null,
-      nameFilter: '',
-      addedbyFilter:'',
-      idFilter: '',
-      dateFilter:'',
-      countFilter:'',
-      codeFilter: '',
-      statusFilter:'',
+      nameFilter: "",
+      addedbyFilter: "",
+      idFilter: "",
+      dateFilter: "",
+      countFilter: "",
+      codeFilter: "",
+      statusFilter: "",
       isEdit: false,
       ListMethods: [],
       methodlist: "",
       organization_name: "",
-      errorMessage:"",
+      errorMessage: "",
       deleteModal: false,
       modal: false,
       user_id: localStorage.getItem("authUser")
@@ -81,7 +86,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange('idFilter', e)}
+                    onChange={e => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -89,14 +94,14 @@ class InstrumentType extends Component {
               </>
             );
           },
-          headerStyle: { width: '150px' },  // Adjust the width as needed
-  style: { width: '150px' },  // Adjust the width as needed
+          headerStyle: { width: "150px" }, // Adjust the width as needed
+          style: { width: "150px" }, // Adjust the width as needed
         },
-         {
+        {
           dataField: "name",
           text: "Method",
           sort: true,
-          style: { textAlign: 'left' },
+          style: { textAlign: "left" },
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -104,7 +109,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange('nameFilter', e)}
+                    onChange={e => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -114,8 +119,8 @@ class InstrumentType extends Component {
           },
         },
         {
-          dataField: 'analytes_count',
-          text: 'No of Analytes',
+          dataField: "analytes_count",
+          text: "No of Analytes",
           headerFormatter: (column, colIndex) => {
             return (
               <>
@@ -123,7 +128,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.countFilter}
-                    onChange={(e) => this.handleFilterChange('countFilter', e)}
+                    onChange={e => this.handleFilterChange("countFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -136,13 +141,18 @@ class InstrumentType extends Component {
               <div>
                 <Link
                   to={`/methods-analyte/${unitlist.id}`}
-                  style={{ textDecoration: 'underline', color: '#0000CD', display: 'block', marginTop: '5px' }}
+                  style={{
+                    textDecoration: "underline",
+                    color: "#0000CD",
+                    display: "block",
+                    marginTop: "5px",
+                  }}
                 >
                   {unitlist.analytes_count}
                 </Link>
               </div>
             );
-          }
+          },
         },
         {
           dataField: "code",
@@ -152,18 +162,16 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
-              
-                <input
-                  type="text"
-                  value={this.state.codeFilter}
-                  onChange={e => this.handleFilterChange('codeFilter', e)}
-                  className="form-control"
-               
-                />
-              </div>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.codeFilter}
+                    onChange={e => this.handleFilterChange("codeFilter", e)}
+                    className="form-control"
+                  />
+                </div>
                 <div>{column.text}</div>
-                </>
+              </>
             );
           },
         },
@@ -177,7 +185,7 @@ class InstrumentType extends Component {
                 <div>
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange('statusFilter', e)}
+                    onChange={e => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -198,18 +206,16 @@ class InstrumentType extends Component {
           headerFormatter: (column, colIndex) => {
             return (
               <>
-              <div>
-              
-                <input
-                  type="text"
-                  value={this.state.dateFilter}
-                  onChange={e => this.handleFilterChange('dateFilter', e)}
-                  className="form-control"
-               
-                />
-              </div>
+                <div>
+                  <input
+                    type="text"
+                    value={this.state.dateFilter}
+                    onChange={e => this.handleFilterChange("dateFilter", e)}
+                    className="form-control"
+                  />
+                </div>
                 <div>{column.text}</div>
-                </>
+              </>
             );
           },
           formatter: (cellContent, unitlist) => (
@@ -219,7 +225,7 @@ class InstrumentType extends Component {
               </span>
             </>
           ),
-      },
+        },
         {
           dataField: "menu",
           isDummyField: true,
@@ -280,7 +286,7 @@ class InstrumentType extends Component {
     if (!this.state.organization_name) {
       this.setState({ organization_name });
     }
-    
+
     const { ListMethods, onGetInstrumentTypeList } = this.props;
     onGetInstrumentTypeList(this.state.user_id);
     this.setState({ ListMethods });
@@ -288,33 +294,45 @@ class InstrumentType extends Component {
   handleFilterChange = (filterName, e) => {
     this.setState({ [filterName]: e.target.value });
   };
-    // Filter data based on filter values
-    filterData = () => {
-      const { ListMethods } = this.props;
-      const { nameFilter, addedbyFilter, dateFilter, idFilter,statusFilter, codeFilter,countFilter } = this.state;
-    
-      const filteredData = ListMethods.filter(entry => {
-        const name = entry.name ? entry.name.toString().toLowerCase() : "";
-        const addedBy = entry.added_by ? entry.added_by.toString().toLowerCase() : "";
-        const count = entry.analytes_count ? entry.analytes_count.toString() : "";
-        const status = entry.status ? entry.status.toString(): "";
-        const id = entry.id ? entry.id.toString() : "";
-        const code = entry.code ? entry.code.toString() : "";
-        const date = entry.date_of_addition ? entry.date_of_addition.toString() : "";
-    
-        return (
-          name.includes(nameFilter.toLowerCase()) &&
-          addedBy.includes(addedbyFilter.toLowerCase()) &&
-          status.includes(statusFilter) &&
-          id.includes(idFilter) &&
-          count.includes(countFilter) &&
-          code.includes(codeFilter) &&
-          date.includes(dateFilter)
-        );
-      });
-    
-      return filteredData;
-    };
+  // Filter data based on filter values
+  filterData = () => {
+    const { ListMethods } = this.props;
+    const {
+      nameFilter,
+      addedbyFilter,
+      dateFilter,
+      idFilter,
+      statusFilter,
+      codeFilter,
+      countFilter,
+    } = this.state;
+
+    const filteredData = ListMethods.filter(entry => {
+      const name = entry.name ? entry.name.toString().toLowerCase() : "";
+      const addedBy = entry.added_by
+        ? entry.added_by.toString().toLowerCase()
+        : "";
+      const count = entry.analytes_count ? entry.analytes_count.toString() : "";
+      const status = entry.status ? entry.status.toString() : "";
+      const id = entry.id ? entry.id.toString() : "";
+      const code = entry.code ? entry.code.toString() : "";
+      const date = entry.date_of_addition
+        ? entry.date_of_addition.toString()
+        : "";
+
+      return (
+        name.includes(nameFilter.toLowerCase()) &&
+        addedBy.includes(addedbyFilter.toLowerCase()) &&
+        status.includes(statusFilter) &&
+        id.includes(idFilter) &&
+        count.includes(countFilter) &&
+        code.includes(codeFilter) &&
+        date.includes(dateFilter)
+      );
+    });
+
+    return filteredData;
+  };
   displaySuccessMessage = message => {
     this.setState({ successMessage: message });
 
@@ -346,7 +364,10 @@ class InstrumentType extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { ListMethods } = this.props;
-    if (!isEmpty(ListMethods) && size(prevProps.ListMethods) !== size(ListMethods)) {
+    if (
+      !isEmpty(ListMethods) &&
+      size(prevProps.ListMethods) !== size(ListMethods)
+    ) {
       this.setState({ ListMethods: {}, isEdit: false });
     }
   }
@@ -357,7 +378,7 @@ class InstrumentType extends Component {
     }));
   };
 
-  onClickDelete = (methodlist) => {
+  onClickDelete = methodlist => {
     if (methodlist.analytes_count === 0) {
       this.setState({ ListUnit: methodlist });
       this.setState({ deleteModal: true });
@@ -365,13 +386,13 @@ class InstrumentType extends Component {
       this.setState({ errorMessage: "Cannot delete. Analytes are assigned." });
       // Clear error message after 5 seconds
       setTimeout(() => {
-        this.setState({ errorMessage: '' });
+        this.setState({ errorMessage: "" });
       }, 2000);
     }
   };
 
   handleDeleteInstrumentType = () => {
-    const { onDeleteInstrumentType} = this.props;
+    const { onDeleteInstrumentType } = this.props;
     const { ListUnit } = this.state;
     if (ListUnit.id !== undefined) {
       onDeleteInstrumentType(ListUnit);
@@ -495,23 +516,23 @@ class InstrumentType extends Component {
     const { ListMethods } = this.props;
     const { deleteModal, errorMessage } = this.state;
     const { onGetInstrumentTypeList, onUpdateType } = this.props;
-  
+
     // Use the filterData function to get the filtered data
     const filteredData = this.filterData();
-  
+
     const pageOptions = {
       sizePerPage: 50,
       totalSize: filteredData.length,
       custom: true,
     };
-  
+
     const defaultSorted = [
       {
         dataField: "id",
         order: "desc",
       },
     ];
-  
+
     return (
       <React.Fragment>
         <DeleteModal
@@ -550,9 +571,11 @@ class InstrumentType extends Component {
                 <div className="mb-3 d-flex justify-content-center">
                   <button
                     className="btn btn-primary"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault(); // Prevent the default action
-                      const downloadUrl = process.env.REACT_APP_BACKENDURL + "/media/public/Method.xlsx";
+                      const downloadUrl =
+                        process.env.REACT_APP_BACKENDURL +
+                        "/media/public/Method.xlsx";
                       saveAs(downloadUrl, "Method.xlsx"); // Use the file-saver library to trigger the download
                     }}
                   >
@@ -561,20 +584,23 @@ class InstrumentType extends Component {
                   </button>
                 </div>
 
-
                 <div className="w-100">
-                  <h4><b>Instructions to fill the excel sheet:</b></h4>
+                  <h4>
+                    <b>Instructions to fill the excel sheet:</b>
+                  </h4>
                   <div>
                     <ol>
                       <li>
-                        Create a file whose format is, .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf
+                        Create a file whose format is, .xlsx, .xls, .csv, .ods,
+                        .xml, .html, .txt, .dbf
                       </li>
                       <li>
-                        There should be a file of 3 column name, code, status (Active, Inactive)
+                        There should be a file of 3 column name, code, status
+                        (Active, Inactive)
                       </li>
                       <li>
-                        If you want to get more information, contact
-                        us at <strong>eternalqc@gmail.com</strong>
+                        If you want to get more information, contact us at{" "}
+                        <strong>eternalqc@gmail.com</strong>
                       </li>
                     </ol>
                   </div>
@@ -596,31 +622,44 @@ class InstrumentType extends Component {
                           *
                         </span>
                       </Label>
-                      <input type="file" className="form-control" onChange={this.handleFileChange} accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf" />
+                      <input
+                        type="file"
+                        className="form-control"
+                        onChange={this.handleFileChange}
+                        accept=".xlsx, .xls .xlsx, .xls, .csv, .ods, .xml, .html, .txt, .dbf"
+                      />
                     </FormGroup>
-                  </Col></div>
-
+                  </Col>
+                </div>
 
                 <Row className="mt-4">
                   <Col sm="12" className="d-flex justify-content-end">
-                    <Button color="primary" onClick={this.handleImport} className="me-2">Upload</Button>
-                    <Button color="secondary" onClick={this.toggleImportModal}>Cancel</Button>
+                    <Button
+                      color="primary"
+                      onClick={this.handleImport}
+                      className="me-2"
+                    >
+                      Upload
+                    </Button>
+                    <Button color="secondary" onClick={this.toggleImportModal}>
+                      Cancel
+                    </Button>
                   </Col>
                 </Row>
               </ModalBody>
             </Modal>
             <Row className="justify-content-center">
               <Col lg="10">
-              <p><strong>Note:</strong> Please click on the filter to sort the data in ascending (A to Z) or descending (Z to A) order.</p>
+                <p>
+                  <strong>Note:</strong> Please click on the filter to sort the
+                  data in ascending (A to Z) or descending (Z to A) order.
+                </p>
                 <Card>
                   <CardBody>
-                    
-                  <Row>
+                    <Row>
                       <Col className="pagination pagination-rounded justify-content-center mb-2">
                         {errorMessage && (
-                          <Alert color="danger">
-                            {errorMessage}
-                          </Alert>
+                          <Alert color="danger">{errorMessage}</Alert>
                         )}
                       </Col>
                     </Row>
@@ -695,7 +734,7 @@ class InstrumentType extends Component {
                                           })}
                                           onSubmit={async (
                                             values,
-                                            { setSubmitting }
+                                            { setSubmitting, setFieldError }
                                           ) => {
                                             const userId = localStorage.getItem(
                                               "authUser"
@@ -713,6 +752,26 @@ class InstrumentType extends Component {
                                               status: values.status,
                                               added_by: userId,
                                             };
+                                            // Check if code already exists (except for edit case where it's the same record)
+                                            const duplicate =
+                                              this.props.ListMethods.find(
+                                                item =>
+                                                  item.code.toString() ===
+                                                    values.code.toString() &&
+                                                  (!this.state.isEdit ||
+                                                    item.id !==
+                                                      this.state.selectedUnit
+                                                        .id)
+                                              );
+
+                                            if (duplicate) {
+                                              setFieldError(
+                                                "code",
+                                                "This code already exists for another method."
+                                              );
+                                              setSubmitting(false);
+                                              return;
+                                            }
 
                                             try {
                                               if (this.state.isEdit) {
@@ -724,7 +783,9 @@ class InstrumentType extends Component {
                                                   "Method updated successfully!"
                                                 );
                                                 setTimeout(() => {
-                                                  this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                  this.props.onGetInstrumentTypeList(
+                                                    this.state.user_id
+                                                  );
                                                 }, 1000);
                                               } else {
                                                 await this.props.onAddNewType(
@@ -734,10 +795,11 @@ class InstrumentType extends Component {
                                                   "Method added successfully!"
                                                 );
                                                 setTimeout(() => {
-                                                  this.props.onGetInstrumentTypeList(this.state.user_id);
+                                                  this.props.onGetInstrumentTypeList(
+                                                    this.state.user_id
+                                                  );
                                                 }, 1000);
                                               }
-
                                             } catch (error) {
                                               console.error(
                                                 "Error updating/adding method:",
@@ -832,40 +894,40 @@ class InstrumentType extends Component {
                                     </Modal>
                                   </Col>
                                   <div className="table-responsive">
-                                  <BootstrapTable
-                                    {...toolkitprops.baseProps}
-                                    {...paginationTableProps}
-                                    defaultSorted={defaultSorted}
-                                    classes={"table align-middle table-hover"}
-                                    bordered={false}
-                                    striped={true}
-                                    headerWrapperClasses={"table-light"}
-                                    responsive
-                                    ref={this.node}
-                                    filter={filterFactory()} // Ensure filterFactory is applied
+                                    <BootstrapTable
+                                      {...toolkitprops.baseProps}
+                                      {...paginationTableProps}
+                                      defaultSorted={defaultSorted}
+                                      classes={"table align-middle table-hover"}
+                                      bordered={false}
+                                      striped={true}
+                                      headerWrapperClasses={"table-light"}
+                                      responsive
+                                      ref={this.node}
+                                      filter={filterFactory()} // Ensure filterFactory is applied
+                                    />
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row className="align-items-md-center mt-30">
+                                <Col className="pagination pagination-rounded justify-content-end mb-2">
+                                  <PaginationListStandalone
+                                    {...paginationProps}
                                   />
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row className="align-items-md-center mt-30">
-                              <Col className="pagination pagination-rounded justify-content-end mb-2">
-                                <PaginationListStandalone
-                                  {...paginationProps}
-                                />
-                              </Col>
-                            </Row>
-                          </React.Fragment>
-                        )}
-                      </ToolkitProvider>
-                    )}
-                  </PaginationProvider>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </React.Fragment>
+                                </Col>
+                              </Row>
+                            </React.Fragment>
+                          )}
+                        </ToolkitProvider>
+                      )}
+                    </PaginationProvider>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </React.Fragment>
     );
   }
 }
@@ -891,10 +953,11 @@ const mapStateToProps = ({ ListMethods }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetInstrumentTypeList: (id) => dispatch(getmethodlist(id)),
+  onGetInstrumentTypeList: id => dispatch(getmethodlist(id)),
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewMethod(createInstrumentType, id)),
-  onUpdateType: (id, methodlist) => dispatch(updateMethods({ id, ...methodlist })),
+  onUpdateType: (id, methodlist) =>
+    dispatch(updateMethods({ id, ...methodlist })),
   onDeleteInstrumentType: methodlist => dispatch(deleteMethod(methodlist)),
 });
 
