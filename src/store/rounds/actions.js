@@ -2,6 +2,9 @@ import {
   GET_ROUND_LIST,
   GET_ROUND_LIST_SUCCESS,
   GET_ROUND_LIST_FAIL,
+  GET_CSR_ROUND_LIST,
+  GET_CSR_ROUND_LIST_SUCCESS,
+  GET_CSR_ROUND_LIST_FAIL,
   GET_ROUND_PARTICIPANT_LIST,
   GET_ROUND_PARTICIPANT_LIST_SUCCESS,
   GET_ROUND_PARTICIPANT_LIST_FAIL,
@@ -38,6 +41,23 @@ export const getroundlistSuccess = RoundList => ({
 
 export const getroundlistFail = error => ({
   type: GET_ROUND_LIST_FAIL,
+  payload: error,
+});
+
+//csrround
+// Round
+export const getcsrroundlist = id => ({
+  type: GET_CSR_ROUND_LIST,
+  payload: id,  // ✅ Must match what saga expects
+});
+
+export const getcsrroundlistSuccess = RoundList => ({
+  type: GET_CSR_ROUND_LIST_SUCCESS,
+  payload: RoundList,
+});
+
+export const getcsrroundlistFail = error => ({
+  type: GET_CSR_ROUND_LIST_FAIL,
   payload: error,
 });
 

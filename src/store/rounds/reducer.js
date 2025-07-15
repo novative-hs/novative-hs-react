@@ -1,6 +1,8 @@
 import {
   GET_ROUND_LIST_SUCCESS,
   GET_ROUND_LIST_FAIL,
+  GET_CSR_ROUND_LIST_SUCCESS,
+  GET_CSR_ROUND_LIST_FAIL,
   GET_ROUND_PARTICIPANT_LIST_SUCCESS,
   GET_ROUND_PARTICIPANT_LIST_FAIL,
   ADD_NEW_ROUND_LIST_SUCCESS,
@@ -39,6 +41,20 @@ const RoundList = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+    
+
+      //csr round
+       case GET_CSR_ROUND_LIST_SUCCESS:
+      return {
+        ...state,
+        RoundList: action.payload,
+      };
+
+    case GET_CSR_ROUND_LIST_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
 
     // ✅ Update round participant list
     case GET_ROUND_PARTICIPANT_LIST_SUCCESS:
@@ -73,7 +89,7 @@ const RoundList = (state = INIT_STATE, action) => {
     case UPDATE_NEW_ROUND_LIST_SUCCESS:
       return {
         ...state,
-        RoundList: state.RoundList.map((round) =>
+        RoundList: state.RoundList.map(round =>
           round.id.toString() === action.payload.id.toString()
             ? { ...round, ...action.payload }
             : round
@@ -86,17 +102,17 @@ const RoundList = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-    // ✅ delete participant from RoundParticipantList
+    // ✅ Remove participant from RoundParticipantList
     case DELETE_ROUND_PARTICIPANT_SUCCESS:
       return {
         ...state,
         RoundParticipantlist: state.RoundParticipantlist.filter(
-          (participant) =>
+          participant =>
             participant.id.toString() !== action.payload.id.toString()
         ),
-        // ✅ Only detele the specific participant from `ParticipantList`
+        // ✅ Only remove the specific participant from `ParticipantList`
         ParticipantList: state.ParticipantList.filter(
-          (participant) => participant.id !== action.payload.id
+          participant => participant.id !== action.payload.id
         ),
       };
 

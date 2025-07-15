@@ -2,6 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 import {
   GET_ROUND_LIST,
+  GET_CSR_ROUND_LIST,
   GET_SUBMITTED_PARTICIPANTS,
   GET_UNSUBMITTED_PARTICIPANTS,
   ADD_NEW_ROUND_LIST,
@@ -12,6 +13,8 @@ import {
 } from "./actionTypes";
 import {
   getroundlistSuccess,
+  getcsrroundlistSuccess,
+  getcsrroundlistFail,
   getroundlistFail,
   getsubmittedparticipantsSuccess,
   getsubmittedparticipantsFail,
@@ -30,6 +33,7 @@ import {
 } from "./actions";
 import {
   getRoundlist,
+  getcsrroundlist,
   getsubmittedparticipants,
   getUnsubmittedparticipants,
   getRoundParticipantlist,
@@ -49,6 +53,17 @@ function* fetchRoundList({ payload }) {
     );
   }
 }
+function* fetchCsrroundList({ payload }) {
+  try {
+    const csrId = payload;  // ✅ just ID now
+    const response = yield call(getcsrroundlist, payload);
+    yield put(getcsrroundlistSuccess(response.data));
+  } catch (error) {
+    yield put(getcsrroundlistFail(error?.response?.data || "Unknown error"));
+  }
+}
+
+
 
 function* fetchRoundParticipantlist({ payload }) {
   try {
@@ -184,6 +199,7 @@ function* fetchUnsubmittedParticipants({ payload }) {
 
 function* RoundListSaga() {
   yield takeEvery(GET_ROUND_LIST, fetchRoundList);
+  yield takeEvery(GET_CSR_ROUND_LIST, fetchCsrroundList);
   yield takeEvery(GET_ROUND_PARTICIPANT_LIST, fetchRoundParticipantlist);
   yield takeEvery(ADD_NEW_ROUND_LIST, onAddNewRound);
   yield takeEvery(UPDATE_NEW_ROUND_LIST, onUpdateround);
