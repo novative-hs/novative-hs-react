@@ -2860,10 +2860,7 @@ export const getRoundlist = (id) =>
   get(`${url.GET_ROUND_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getcsrroundlist = id =>
-  get(`${url.GET_CSR_ROUND_LIST}/${id}`, {
-    headers: getHeader(authHeader()),
-  });
+
 export const addNewRound = (createUnit, id) => {
   console.log("Adding New Round", createUnit, id);
   let formData = new FormData();
