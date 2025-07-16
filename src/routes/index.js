@@ -198,7 +198,7 @@ import organizationList from "pages/HrAdmin/organizationList";
 import RegisterParticipant from "pages/Authentication/RegisterParticipant";
 import ParticipantCSRPayments from "pages/Authentication/PaymentCSR";
 import PaymentCSRSchemeList from "pages/Authentication/PaymentCSR-scheme-list";
-import InstrumentType2 from "pages/Authentication/CSRrounds";
+// import InstrumentType2 from "pages/Authentication/CSRrounds";
 // import RoundParticipantlist2 from "pages/Authentication/CSRroundparticipants";
 // import SubmittedResults from "pages/Authentication/CSRroundsubmittedresults";
 // import PendingSubmission2 from "pages/Authentication/CSRroundpendingsubmission";
@@ -497,7 +497,7 @@ const registrationAdminAuthProtectedRoutes = [
 const CSRAdminAuthProtectedRoutes = [
   { path: "/:organization_name/register-participant-CSR", component: RegParticipantCSR},
   { path: "/:organization_name/all-participant2", component: AllParticipant2},
-  { path: "/:organization_name/CSRrounds", component: InstrumentType2},
+  // { path: "/:organization_name/CSRrounds", component: InstrumentType2},
   // { path: "/:organization_name/CSRroundparticipants/:id", component: RoundParticipantlist2 },
   // { path: "/:organization_name/CSRroundsubmittedresults/:id", component: SubmittedResults },
   // { path: "/:organization_name/CSRroundpendingsubmission/:id", component: PendingSubmission2 },
