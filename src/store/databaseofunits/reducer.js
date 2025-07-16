@@ -320,14 +320,14 @@ case GET_SAMPLE_ANALYTE_LIST_FAIL:
   };
 
     /////////////////////////////////////////////////////
-    case GET_INSTRUMENT_ANALYTE_LIST_SUCCESS:
-      console.log("Instrument Analyte List:", action.payload);
-      return {
-        ...state,
-        InstrumentAnalyteList: action.payload.analytes,
-        instrumentName: action.payload.instrumentName || "Unknown Instrument",
-      };
-    
+   case GET_INSTRUMENT_ANALYTE_LIST_SUCCESS:
+
+  return {
+    ...state,
+    InstrumentAnalyteList: action.payload.analytes,
+    instrumentName: action.payload.instrument_name || "Unknown Instrument",
+    activeSchemes: action.payload.active_schemes || [],
+  };
     case GET_INSTRUMENT_ANALYTE_LIST_FAIL:
       console.error("Error Fetching Instrument Analytes:", action.payload);
       return {

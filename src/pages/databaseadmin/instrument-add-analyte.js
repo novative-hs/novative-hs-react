@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import MetaTags from "react-meta-tags";
 import { withRouter } from "react-router-dom";
-import BootstrapTable from 'react-bootstrap-table-next';
+import BootstrapTable from "react-bootstrap-table-next";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
@@ -23,11 +23,12 @@ class InstrumentAddAnalyte extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nameFilter: '',
-      idFilter: '',
+      nameFilter: "",
+      idFilter: "",
+      checkedSchemes: {},
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
-      feedbackMessage: '',
+      feedbackMessage: "",
       feedbackListColumns: [
         {
           text: "id",
@@ -39,15 +40,15 @@ class InstrumentAddAnalyte extends Component {
                 <input
                   type="text"
                   value={this.state.idFilter}
-                  onChange={e => this.handleFilterChange('idFilter', e)}
+                  onChange={e => this.handleFilterChange("idFilter", e)}
                   className="form-control"
                 />
               </div>
               <div>{column.text}</div>
             </>
           ),
-          headerStyle: { width: '100px' },
-          style: { width: '100px' },
+          headerStyle: { width: "100px" },
+          style: { width: "100px" },
         },
         {
           dataField: "name",
@@ -59,15 +60,15 @@ class InstrumentAddAnalyte extends Component {
                 <input
                   type="text"
                   value={this.state.nameFilter}
-                  onChange={e => this.handleFilterChange('nameFilter', e)}
+                  onChange={e => this.handleFilterChange("nameFilter", e)}
                   className="form-control"
                 />
               </div>
               <div>{column.text}</div>
             </>
           ),
-          headerAlign: 'center',
-          align: 'left',
+          headerAlign: "center",
+          align: "left",
         },
         {
           dataField: "checkbox",
@@ -85,28 +86,29 @@ class InstrumentAddAnalyte extends Component {
             </div>
           ),
         },
-
-
       ],
     };
   }
 
   componentDidMount() {
     this.fetchData(); // Fetch analytes
-    const savedSelections = JSON.parse(localStorage.getItem('selectedCheckboxes'));
+    const savedSelections = JSON.parse(
+      localStorage.getItem("selectedCheckboxes")
+    );
     if (savedSelections) {
       this.setState({ selectedCheckboxes: savedSelections });
     }
     this.updateSelectedCheckboxes(); // Set selected checkboxes
   }
 
-
   componentDidUpdate(prevProps) {
-    if (prevProps.InstrumentAnalyteList !== this.props.InstrumentAnalyteList) {
+    if (
+      prevProps.InstrumentAnalyteList !== this.props.InstrumentAnalyteList ||
+      prevProps.activeSchemes !== this.props.activeSchemes
+    ) {
       this.updateSelectedCheckboxes();
     }
   }
-
 
   fetchData() {
     const { ongetAnalytelist, onGetSchemeAnalytes } = this.props;
@@ -131,30 +133,106 @@ class InstrumentAddAnalyte extends Component {
     }
   }
   updateSelectedCheckboxes() {
-    const { InstrumentAnalyteList } = this.props;
+    const { InstrumentAnalyteList, activeSchemes } = this.props;
 
     if (!InstrumentAnalyteList || InstrumentAnalyteList.length === 0) return;
 
-    // Convert list to a dictionary of selected analytes
     const selectedCheckboxes = {};
+    const checkedSchemes = {};
+
     InstrumentAnalyteList.forEach(analyte => {
       selectedCheckboxes[analyte.id] = true;
     });
 
-    this.setState({ selectedCheckboxes });
+    console.log("✅ Selected Analytes:", selectedCheckboxes);
+
+    activeSchemes?.forEach(scheme => {
+      const schemeAnalytes = scheme.analytes || [];
+      console.log(`🔍 Scheme: ${scheme.name}`);
+      console.log(
+        "→ Scheme analyte IDs:",
+        schemeAnalytes.map(a => a.id)
+      );
+
+      const hasAnyAnalyteFromInstrument = schemeAnalytes.some(
+        analyte => analyte?.id && selectedCheckboxes[analyte.id]
+      );
+
+      console.log(`→ ${scheme.name} checked?`, hasAnyAnalyteFromInstrument);
+
+      if (hasAnyAnalyteFromInstrument) {
+        checkedSchemes[scheme.id] = true;
+      }
+    });
+
+    this.setState({
+      selectedCheckboxes,
+      checkedSchemes,
+    });
   }
 
+  areAllSchemeAnalytesChecked = scheme => {
+    return !!this.state.checkedSchemes[scheme.id];
+  };
+  handleSchemeCheckboxChange = scheme => {
+    const { selectedCheckboxes, checkedSchemes } = this.state;
+    const updatedCheckboxes = { ...selectedCheckboxes };
+    const updatedCheckedSchemes = { ...checkedSchemes };
+
+    const schemeId = scheme.id;
+    const schemeAnalytes = scheme.analytes || [];
+
+    const isCurrentlyChecked = checkedSchemes[schemeId];
+
+    if (isCurrentlyChecked) {
+      // Unchecking this scheme: remove it from checkedSchemes
+      delete updatedCheckedSchemes[schemeId];
+
+      // For each analyte in the scheme
+      schemeAnalytes.forEach(analyte => {
+        const analyteId = analyte.id;
+
+        // Check if this analyte is used by any other remaining checked schemes
+        const stillUsed = Object.keys(updatedCheckedSchemes).some(checkedId => {
+          const otherScheme = this.props.activeSchemes.find(
+            s => s.id === parseInt(checkedId)
+          );
+          return otherScheme?.analytes?.some(a => a.id === analyteId);
+        });
+
+        // Only uncheck analyte if no other checked scheme uses it
+        if (!stillUsed) {
+          delete updatedCheckboxes[analyteId];
+        }
+      });
+    } else {
+      // Checking this scheme: add all analytes
+      updatedCheckedSchemes[schemeId] = true;
+
+      schemeAnalytes.forEach(analyte => {
+        updatedCheckboxes[analyte.id] = true;
+      });
+    }
+
+    this.setState({
+      selectedCheckboxes: updatedCheckboxes,
+      checkedSchemes: updatedCheckedSchemes,
+    });
+  };
 
   handleSave = () => {
     const { selectedCheckboxes } = this.state;
-    localStorage.setItem('selectedCheckboxes', JSON.stringify(selectedCheckboxes));
+    localStorage.setItem(
+      "selectedCheckboxes",
+      JSON.stringify(selectedCheckboxes)
+    );
     const {
       onUpdateSchemeAnalytes,
       onAddNewInstrumentAnalyte,
       match,
       ListUnit,
       InstrumentAnalyteList = [], // Ensure it's always an array
-      history
+      history,
     } = this.props;
 
     const schemeId = match?.params?.id;
@@ -166,7 +244,8 @@ class InstrumentAddAnalyte extends Component {
     }
 
     // Get selected analytes
-    const selectedAnalytes = ListUnit?.filter(analyte => selectedCheckboxes[analyte.id]) || [];
+    const selectedAnalytes =
+      ListUnit?.filter(analyte => selectedCheckboxes[analyte.id]) || [];
 
     if (selectedAnalytes.length === 0) {
       this.setFeedbackMessage("Please select analytes.");
@@ -182,7 +261,9 @@ class InstrumentAddAnalyte extends Component {
       : [];
 
     // Merge new analytes with existing ones, avoiding duplicates
-    const uniqueAnalyteIds = [...new Set([...existingAnalyteIds, ...selectedAnalyteIds])];
+    const uniqueAnalyteIds = [
+      ...new Set([...existingAnalyteIds, ...selectedAnalyteIds]),
+    ];
 
     const payload = {
       id: schemeId,
@@ -202,13 +283,11 @@ class InstrumentAddAnalyte extends Component {
     history.push(`/${organization_name}/equipment-list`);
   };
 
-
-
-  setFeedbackMessage = (message) => {
+  setFeedbackMessage = message => {
     this.setState({ feedbackMessage: message }, () => {
       // Optionally, clear the message after a few seconds
       setTimeout(() => {
-        this.setState({ feedbackMessage: '' });
+        this.setState({ feedbackMessage: "" });
       }, 3000); // 3 seconds
     });
   };
@@ -217,28 +296,25 @@ class InstrumentAddAnalyte extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
-  handleCheckboxChange = (id) => {
+  handleCheckboxChange = id => {
     this.setState(prevState => ({
       selectedCheckboxes: {
         ...prevState.selectedCheckboxes,
-        [id]: !prevState.selectedCheckboxes[id]
-      }
+        [id]: !prevState.selectedCheckboxes[id],
+      },
     }));
   };
 
   filterData = () => {
     const { ListUnit } = this.props;
-    console.log("data on page is ", ListUnit)
+    console.log("data on page is ", ListUnit);
     const { nameFilter, idFilter, selectedCheckboxes } = this.state;
-    console.log("data on page is ", selectedCheckboxes)
+    console.log("data on page is ", selectedCheckboxes);
     const filteredData = ListUnit.filter(entry => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const id = entry.id ? entry.id.toString() : "";
 
-      return (
-        name.includes(nameFilter.toLowerCase()) &&
-        id.includes(idFilter)
-      );
+      return name.includes(nameFilter.toLowerCase()) && id.includes(idFilter);
     }).map(entry => ({
       ...entry,
       checkbox: (
@@ -252,7 +328,7 @@ class InstrumentAddAnalyte extends Component {
             checked={selectedCheckboxes[entry.id] || false}
           />
         </div>
-      )
+      ),
     }));
 
     return filteredData;
@@ -273,13 +349,42 @@ class InstrumentAddAnalyte extends Component {
               title="List"
               breadcrumbItem={
                 <>
-                  Analytes For - 
+                  Analytes For -
                   <span style={{ color: "black", fontWeight: "bold" }}>
                     {this.props.instrumentName || "Loading..."}
                   </span>
                 </>
               }
             />
+            <Row className="mb-3">
+              <Col>
+                <h5>Select Schemes for Instrument</h5>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+                  {this.props.activeSchemes.map(scheme => (
+                    <div
+                      key={scheme.id}
+                      className="form-check"
+                      style={{ minWidth: "200px" }}
+                    >
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id={`schemeCheckbox${scheme.id}`}
+                        onChange={() => this.handleSchemeCheckboxChange(scheme)}
+                        checked={this.areAllSchemeAnalytesChecked(scheme)}
+                      />
+                      <label
+                        htmlFor={`schemeCheckbox${scheme.id}`}
+                        className="form-check-label"
+                        style={{ marginLeft: "5px" }}
+                      >
+                        {scheme.name}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </Col>
+            </Row>
 
             <Row className="justify-content-center">
               <Col lg="5">
@@ -354,21 +459,29 @@ InstrumentAddAnalyte.propTypes = {
   onAddNewInstrumentAnalyte: PropTypes.func,
   onUpdateSchemeAnalytes: PropTypes.func,
   history: PropTypes.object.isRequired,
+  activeSchemes: PropTypes.array,
 };
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   ListUnit: state.ListUnit?.ListUnit || [],
   InstrumentAnalyteList: state.ListUnit?.InstrumentAnalyteList || [],
   instrumentName: state.ListUnit?.instrumentName || "Unknown Instrument",
+  activeSchemes: state.ListUnit?.activeSchemes || [],
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onGetSchemeAnalytes: id => dispatch(getInstrumentAnalytelist(id)),
-  ongetAnalytelist: (id) => dispatch(getAnalytelist(id)),
+  ongetAnalytelist: id => dispatch(getAnalytelist(id)),
   onAddNewInstrumentAnalyte: (addInstrumentAnalyte, id) => {
-    console.log("Adding new scheme analyte:", addInstrumentAnalyte, "with ID:", id);
+    console.log(
+      "Adding new scheme analyte:",
+      addInstrumentAnalyte,
+      "with ID:",
+      id
+    );
     return dispatch(addNewInstrumentAnalytelist(addInstrumentAnalyte, id));
   },
-  onUpdateSchemeAnalytes: (schemeanalyte) => dispatch(updateInstrumentAnalytelist(schemeanalyte)),
+  onUpdateSchemeAnalytes: schemeanalyte =>
+    dispatch(updateInstrumentAnalytelist(schemeanalyte)),
 });
 export default connect(
   mapStateToProps,

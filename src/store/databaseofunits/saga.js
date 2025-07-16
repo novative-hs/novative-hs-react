@@ -68,13 +68,15 @@ function* fetchInstrumentAnalyteList(object) {
     const response = yield call(getInstrumentAnalytelist, object.payload);
     console.log("Saga - API Response:", response);
 
-    // Safely extract the data
-    const analytes = response?.analytes || []; // Ensure analytes is an array
+    // ✅ Extract all required fields from the response
+    const analytes = response?.instrument_analytes || [];
     const instrumentName = response?.instrument_name || "Unknown Instrument";
+    const activeSchemes = response?.active_schemes || [];
 
     const transformedResponse = {
       analytes,
-      instrumentName,
+       instrument_name: instrumentName,
+      active_schemes: activeSchemes, // ✅ Use this key to match reducer
     };
 
     console.log("Saga - Transformed Response:", transformedResponse);
