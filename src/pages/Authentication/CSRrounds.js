@@ -49,7 +49,7 @@ import { isEmpty, size } from "lodash";
 import DeleteModal from "components/Common/DeleteModal";
 import "assets/scss/table.scss";
 import moment from "moment";
-class InstrumentType extends Component {
+class InstrumentType2 extends Component {
   constructor(props) {
     super(props);
     this.node = React.createRef();
@@ -947,7 +947,7 @@ class InstrumentType extends Component {
   }
 }
 
-InstrumentType.propTypes = {
+InstrumentType2.propTypes = {
   match: PropTypes.object,
   RoundList: PropTypes.array,
   SchemeList: PropTypes.array,
@@ -1000,4 +1000,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(InstrumentType));
+)(withRouter(InstrumentType2));
