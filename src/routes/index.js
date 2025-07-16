@@ -198,12 +198,12 @@ import organizationList from "pages/HrAdmin/organizationList";
 import RegisterParticipant from "pages/Authentication/RegisterParticipant";
 import ParticipantCSRPayments from "pages/Authentication/PaymentCSR";
 import PaymentCSRSchemeList from "pages/Authentication/PaymentCSR-scheme-list";
-// import InstrumentType2 from "pages/Authentication/CSRrounds";
-// import RoundParticipantlist2 from "pages/Authentication/CSRroundparticipants";
-// import SubmittedResults from "pages/Authentication/CSRroundsubmittedresults";
-// import PendingSubmission2 from "pages/Authentication/CSRroundpendingsubmission";
-// import CSRroundHistory from "pages/Authentication/CSRroundHistory";
-// import Csrcomments from "pages/Authentication/csrcomments";
+import InstrumentType2 from "pages/Authentication/CSRrounds";
+import RoundParticipantlist2 from "pages/Authentication/CSRroundparticipants";
+import SubmittedResults from "pages/Authentication/CSRroundsubmittedresults";
+import PendingSubmission2 from "pages/Authentication/CSRroundpendingsubmission";
+import CSRroundHistory from "pages/Authentication/CSRroundHistory";
+import Csrcomments from "pages/Authentication/csrcomments";
 import PendingCSRLabs from "pages/Authentication/CSRPendinglabs";
 import ApprovedCSRLabs from "pages/Authentication/approvedCSRlabs";
 import UnapprovedCSRLabs from "pages/Authentication/UnapprovedCSRlabs";
@@ -497,12 +497,12 @@ const registrationAdminAuthProtectedRoutes = [
 const CSRAdminAuthProtectedRoutes = [
   { path: "/:organization_name/register-participant-CSR", component: RegParticipantCSR},
   { path: "/:organization_name/all-participant2", component: AllParticipant2},
-  // { path: "/:organization_name/CSRrounds", component: InstrumentType2},
-  // { path: "/:organization_name/CSRroundparticipants/:id", component: RoundParticipantlist2 },
-  // { path: "/:organization_name/CSRroundsubmittedresults/:id", component: SubmittedResults },
-  // { path: "/:organization_name/CSRroundpendingsubmission/:id", component: PendingSubmission2 },
-  // { path: "/:organization_name/CSRroundHistory/:id", component: CSRroundHistory },
-  // { path: "/:organization_name/csrcomments/:id", component: Csrcomments },
+  { path: "/:organization_name/CSRrounds", component: InstrumentType2},
+  { path: "/:organization_name/CSRroundparticipants/:id", component: RoundParticipantlist2 },
+  { path: "/:organization_name/CSRroundsubmittedresults/:id", component: SubmittedResults },
+  { path: "/:organization_name/CSRroundpendingsubmission/:id", component: PendingSubmission2 },
+  { path: "/:organization_name/CSRroundHistory/:id", component: CSRroundHistory },
+  { path: "/:organization_name/csrcomments/:id", component: Csrcomments },
   { path: "/:organization_name/PaymentCSR", component: ParticipantCSRPayments},
   { path: "/PaymentCSR-scheme-list/:id", component: PaymentCSRSchemeList},
   { path: "/:organization_name/CSRPendinglabs/:id", component: PendingCSRLabs },
