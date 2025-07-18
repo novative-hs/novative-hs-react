@@ -882,8 +882,9 @@ combineData = () => {
   console.log("🎯 Results for Round Only:", resultsForRound);
 
   const resultsForUser = resultsForRound.filter(
-    (r) => r.lab?.account_id === user_id
-  );
+  (r) => r.lab?.account_id?.toString() === user_id?.toString()
+);
+
   console.log("👤 Results for This User Only:", resultsForUser);
 
   const filteredResults = resultsForUser.filter(
