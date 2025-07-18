@@ -105,11 +105,13 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
 
     ////////////////////
     case GET_RESULT_SUCCESS:
-      return {
-        ...state,
-        ResultList: action.payload.results,
-        updated_at: action.payload.updated_at, // Store updated_at
-      };
+  return {
+    ...state,
+    ResultList: Array.isArray(action.payload.data) ? action.payload.data : [],
+    cycle_no: action.payload.cycle_no || null,
+    isDataLoaded: true,
+  };
+
 
     case GET_RESULT_FAIL:
       return {
