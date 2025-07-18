@@ -856,60 +856,68 @@ class Results extends Component {
     }
   };
 
-  combineData = () => {
-    const {
-      SchemeAnalytesList,
-      ListUnits,
-      ListMethods,
-      Instrument,
-      ReagentList,
-      ResultList,
-    } = this.props;
+combineData = () => {
+  const {
+    SchemeAnalytesList,
+    ListUnits,
+    ListMethods,
+    Instrument,
+    ReagentList,
+    ResultList,
+  } = this.props;
 
-    const roundId = this.props.match.params.id;
-    const user_id = this.state.user_id;
+  const roundId = this.props.match.params.id;
+  const user_id = this.state.user_id;
 
-    console.log("🧩 Combining data...");
-    console.log("➡️ Round ID:", roundId);
-    console.log("👤 User ID:", user_id);
-    console.log("📄 SchemeAnalytesList:", SchemeAnalytesList);
-    console.log("📥 Raw ResultList:", ResultList);
+  console.log("🧩 Combining data...");
+  console.log("➡️ Round ID:", roundId);
+  console.log("👤 User ID:", user_id);
+  console.log("📄 SchemeAnalytesList:", SchemeAnalytesList);
+  console.log("📥 Raw ResultList:", ResultList);
 
-    // ✅ Only load valid results (saved or submitted)
-    const filteredResults = ResultList.filter(
-      (r) =>
-        r.round_id?.toString() === roundId?.toString() &&
-        r.lab?.account_id === user_id &&
-        (r.result_status === "Saved" || r.result_status === "Submitted")
-    );
-    console.log("✅ Filtered Results (Saved/Submitted):", filteredResults);
+  // Step-by-step filtering
+  const resultsForRound = ResultList.filter(
+    (r) => r.round_id?.toString() === roundId?.toString()
+  );
+  console.log("🎯 Results for Round Only:", resultsForRound);
 
-    // ✅ Combine default values with existing results
-    const combinedData = SchemeAnalytesList.map((analyte, index) => {
-      const userResult =
-        filteredResults.find((r) => r.analyte === analyte.id) || {};
+  const resultsForUser = resultsForRound.filter(
+    (r) => r.lab?.account_id === user_id
+  );
+  console.log("👤 Results for This User Only:", resultsForUser);
 
-      return {
-        id: analyte.id || index,
-        analyte_id: analyte.id,
-        analyte_name: analyte.name,
-        units:
-          userResult.units ??
-          (analyte.units?.length > 0 ? analyte.units[0] : ""),
-        method_name: userResult.method ?? "",
-        reagent_name: userResult.reagents ?? "",
-        instrument_name:
-          userResult.instrument ??
-          (analyte.instruments?.length > 0 ? analyte.instruments[0] : null),
-        result: userResult.result ?? "",
-        result_status: userResult.result_status ?? null,
-        result_type: userResult.result_type ?? null,
-      };
-    });
+  const filteredResults = resultsForUser.filter(
+    (r) => r.result_status === "Saved" || r.result_status === "Submitted"
+  );
+  console.log("✅ Final Filtered Results (Saved/Submitted):", filteredResults);
 
-    console.log("📦 Final Combined Data:", combinedData);
-    this.setState({ combinedData, loading: false }); // ✅ Stop loading
-  };
+  // Combine data
+  const combinedData = SchemeAnalytesList.map((analyte, index) => {
+    const userResult =
+      filteredResults.find((r) => r.analyte === analyte.id) || {};
+
+    return {
+      id: analyte.id || index,
+      analyte_id: analyte.id,
+      analyte_name: analyte.name,
+      units:
+        userResult.units ??
+        (analyte.units?.length > 0 ? analyte.units[0] : ""),
+      method_name: userResult.method ?? "",
+      reagent_name: userResult.reagents ?? "",
+      instrument_name:
+        userResult.instrument ??
+        (analyte.instruments?.length > 0 ? analyte.instruments[0] : null),
+      result: userResult.result ?? "",
+      result_status: userResult.result_status ?? null,
+      result_type: userResult.result_type ?? null,
+    };
+  });
+
+  console.log("📦 Final Combined Data:", combinedData);
+  this.setState({ combinedData, loading: false });
+};
+
 
   handleUpdate = async (list) => {
     const id = this.props.match.params.id;
