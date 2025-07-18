@@ -105,33 +105,17 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
 
     ////////////////////
     case GET_RESULT_SUCCESS:
-      console.log("🟢 GET_RESULT_SUCCESS action received");
-      console.log("✅ Payload from API:", action.payload);
-
       return {
         ...state,
-        ResultList: Array.isArray(action.payload.results)
-          ? action.payload.results
-          : [],
-        results: Array.isArray(action.payload.results)
-          ? action.payload.results
-          : [],
-        cycle_no: action.payload.cycle_no || null,
-        isDataLoaded: true,
+        ResultList: action.payload.results,
+        updated_at: action.payload.updated_at, // Store updated_at
       };
 
     case GET_RESULT_FAIL:
-      console.error("🔴 GET_RESULT_FAIL:", action.payload);
       return {
         ...state,
         error: action.payload,
       };
-
-    // case GET_RESULT_FAIL:
-    //   return {
-    //     ...state,
-    //     error: action.payload,
-    //   };
     /////////////////////////
     case GET_SERELOGY_VALUES_SUCCESS:
       return {
