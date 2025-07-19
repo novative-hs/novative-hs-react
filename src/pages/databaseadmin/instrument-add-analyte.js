@@ -92,13 +92,19 @@ class InstrumentAddAnalyte extends Component {
 
   componentDidMount() {
     this.fetchData(); // Fetch analytes
-    const savedSelections = JSON.parse(
-      localStorage.getItem("selectedCheckboxes")
-    );
-    if (savedSelections) {
-      this.setState({ selectedCheckboxes: savedSelections });
-    }
-    this.updateSelectedCheckboxes(); // Set selected checkboxes
+
+    // Clear selectedCheckboxes first
+    this.setState({ selectedCheckboxes: {} }, () => {
+      const savedSelections = JSON.parse(
+        localStorage.getItem("selectedCheckboxes")
+      );
+
+      if (savedSelections) {
+        this.setState({ selectedCheckboxes: savedSelections });
+      }
+
+      this.updateSelectedCheckboxes(); // Set selected checkboxes from props
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -133,37 +139,28 @@ class InstrumentAddAnalyte extends Component {
     }
   }
   updateSelectedCheckboxes() {
-    const { InstrumentAnalyteList, activeSchemes } = this.props;
-
-    if (!InstrumentAnalyteList || InstrumentAnalyteList.length === 0) return;
+    const { InstrumentAnalyteList = [], activeSchemes = [] } = this.props;
 
     const selectedCheckboxes = {};
     const checkedSchemes = {};
 
-    InstrumentAnalyteList.forEach(analyte => {
-      selectedCheckboxes[analyte.id] = true;
-    });
+    if (InstrumentAnalyteList.length > 0) {
+      InstrumentAnalyteList.forEach(analyte => {
+        selectedCheckboxes[analyte.id] = true;
+      });
 
-    console.log("✅ Selected Analytes:", selectedCheckboxes);
+      activeSchemes.forEach(scheme => {
+        const schemeAnalytes = scheme.analytes || [];
 
-    activeSchemes?.forEach(scheme => {
-      const schemeAnalytes = scheme.analytes || [];
-      console.log(`🔍 Scheme: ${scheme.name}`);
-      console.log(
-        "→ Scheme analyte IDs:",
-        schemeAnalytes.map(a => a.id)
-      );
+        const hasAnyAnalyteFromInstrument = schemeAnalytes.some(
+          analyte => analyte?.id && selectedCheckboxes[analyte.id]
+        );
 
-      const hasAnyAnalyteFromInstrument = schemeAnalytes.some(
-        analyte => analyte?.id && selectedCheckboxes[analyte.id]
-      );
-
-      console.log(`→ ${scheme.name} checked?`, hasAnyAnalyteFromInstrument);
-
-      if (hasAnyAnalyteFromInstrument) {
-        checkedSchemes[scheme.id] = true;
-      }
-    });
+        if (hasAnyAnalyteFromInstrument) {
+          checkedSchemes[scheme.id] = true;
+        }
+      });
+    }
 
     this.setState({
       selectedCheckboxes,
