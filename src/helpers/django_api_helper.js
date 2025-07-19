@@ -816,10 +816,14 @@ export const updateScheme = (unit) => {
   });
 };
 //Get result list
-export const getResultsList = (id) =>
-  get(`${url.GET_RESULT}/${id}`, {
+export const getResultsList = (id) => {
+  const user = JSON.parse(localStorage.getItem("authUser"));
+  const labId = user?.user_id;
+
+  return get(`${url.GET_RESULT}/${id}?lab_id=${labId}`, {
     headers: getHeader(authHeader()),
   });
+};
 //Get STATISTICS list
 export const getStatisticsList = (id) =>
   get(`${url.GET_STATISTICS}/${id}`, {
