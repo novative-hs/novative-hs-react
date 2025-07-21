@@ -751,11 +751,7 @@ class Results extends Component {
       return;
     }
 
-    if (
-      prevProps.ResultList !== ResultList &&
-      isDataLoaded &&
-      validResults.length > 0
-    ) {
+    if (prevProps.ResultList !== ResultList) {
       this.setState({ ResultList }, this.combineData);
     }
 
@@ -868,10 +864,18 @@ class Results extends Component {
         (r.result_status === "Saved" || r.result_status === "Submitted")
     );
 
+    // ✅ If no saved/submitted results, fallback to all for this round
+    const fallbackResults =
+      filteredResults.length > 0
+        ? filteredResults
+        : ResultList.filter(
+            r => r.round_id?.toString() === roundId?.toString()
+          );
+
     // ✅ Combine default values with existing results
     const combinedData = SchemeAnalytesList.map((analyte, index) => {
       const userResult =
-        filteredResults.find(r => r.analyte === analyte.id) || {};
+        fallbackResults.find(r => r.analyte === analyte.id) || {};
 
       return {
         id: analyte.id || index,
@@ -964,7 +968,6 @@ class Results extends Component {
     } finally {
     }
   };
-
   handleSaveAll = async () => {
     const { combinedData } = this.state;
     const { rounds, scheme_id, round_status } = this.props;
@@ -1000,11 +1003,10 @@ class Results extends Component {
         await this.props.onPostResult(resultData, this.state.user_id);
       }
 
-      // ✅ Refresh result list after saving
-      await this.fetchResults();
-      // this.combineData();
-
       alert("All results have been saved successfully.");
+
+      // ✅ Force reload the page to get updated data from backend
+      window.location.reload(); // <- Add this line here
     } catch (error) {
       alert("Failed to save all results. Please try again.");
     }
