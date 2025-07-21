@@ -638,11 +638,11 @@ class Results extends Component {
     }
 
     // ✅ Defer this logic to componentDidUpdate instead (because ResultList is async)
-    if (storedId !== currentId) {
-      sessionStorage.setItem("lastRoundId", currentId);
-      window.location.reload();
-      return;
-    }
+   if (storedId !== currentId) {
+  sessionStorage.setItem("lastRoundId", currentId);
+  this.props.onGetResultsList(currentId); // Just fetch data again
+  return;
+}
   }
 
   // Method to track fetched data after state is updated
@@ -655,117 +655,68 @@ class Results extends Component {
     console.log("Results List:", this.state.ResultsList);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const {
-      SchemeAnalytesList,
-      ListUnits,
-      ListMethods,
-      Instrument,
-      ReagentList,
-      ResultList,
-      round_status,
-      result_type,
-    } = this.props;
+componentDidUpdate(prevProps, prevState) {
+  const {
+    SchemeAnalytesList,
+    ListUnits,
+    ListMethods,
+    Instrument,
+    ReagentList,
+    ResultList,
+    round_status,
+    result_type,
+  } = this.props;
 
-    const { user_id, isDataLoaded, roundLoadedFor } = this.state;
+  const { user_id, isDataLoaded, roundLoadedFor } = this.state;
 
-    const prevRoundId = prevProps.match.params.id;
-    const currentRoundId = this.props.match.params.id;
-    const roundChanged = currentRoundId !== roundLoadedFor;
+  const prevRoundId = prevProps.match.params.id;
+  const currentRoundId = this.props.match.params.id;
+  const roundChanged = currentRoundId !== roundLoadedFor;
 
-    if (prevRoundId !== currentRoundId) {
-      console.log("🔁 Round ID changed:", prevRoundId, "→", currentRoundId);
+  // ✅ When round ID changes
+  if (prevRoundId !== currentRoundId) {
+    console.log("🔁 Round ID changed:", prevRoundId, "→", currentRoundId);
 
-      this.props.clearResultsState();
-      this.props.clearAnalyteState();
+    this.props.clearResultsState();
+    this.props.clearAnalyteState();
 
-      this.setState({
-        isDataLoaded: false,
-        combinedData: [],
-        roundLoadedFor: null,
-        loading: true, // ✅ Show loading spinner
-        SchemeAnalytesList: [],
-        ListUnits: [],
-        ListMethods: [],
-        Instrument: [],
-        ReagentList: [],
-        ResultList: [],
-        round_status: null,
-      });
+    this.setState({
+      isDataLoaded: false,
+      combinedData: [],
+      roundLoadedFor: null,
+      loading: true,
+      SchemeAnalytesList: [],
+      ListUnits: [],
+      ListMethods: [],
+      Instrument: [],
+      ReagentList: [],
+      ResultList: [],
+      round_status: null,
+    });
 
-      Object.keys(this)
-        .filter(k => k.startsWith("resultRef_"))
-        .forEach(k => delete this[k]);
+    // 🚫 Let componentDidMount handle re-fetching — don't repeat API calls here.
+    return;
+  }
 
-      if (user_id) {
-        this.props.onGetSchemeAnalyte(currentRoundId);
-        this.props.onGetUnitsList(user_id);
-        this.props.onGetMethodsList(user_id);
-        this.props.onGetInstrumentList(user_id);
-        this.props.onGetReagents(user_id);
-        this.props.onGetResultsList(currentRoundId);
-      }
-      return;
-    }
+  // ✅ When user ID becomes available (first load)
+  if (!prevState.user_id && user_id) {
+    console.log("🔑 User ID detected — triggering initial load.");
+    this.componentDidMount(); // Trigger the same logic you used there
+    return;
+  }
 
-    if (!prevState.user_id && user_id) {
-      const id = this.props.match.params.id;
-      this.props.onGetSchemeAnalyte(id);
-      this.props.onGetUnitsList(user_id);
-      this.props.onGetMethodsList(user_id);
-      this.props.onGetInstrumentList(user_id);
-      this.props.onGetReagents(user_id);
-      this.props.onGetResultsList(id);
-      return;
-    }
+  // ✅ Wait for all lists to be ready before combining
+  const allListsReady =
+    SchemeAnalytesList?.length &&
+    ListUnits?.length &&
+    ListMethods?.length &&
+    Instrument?.length &&
+    ReagentList?.length;
 
-    const validResults = ResultList?.filter(
-      r =>
-        r.round_id?.toString() === currentRoundId?.toString() &&
-        r.lab?.account_id === user_id
-    );
-
-    const allListsReady =
-      SchemeAnalytesList?.length > 0 &&
-      ListUnits?.length > 0 &&
-      ListMethods?.length > 0 &&
-      Instrument?.length > 0 &&
-      ReagentList?.length > 0;
-
-    if (allListsReady && (!isDataLoaded || roundChanged)) {
-      this.setState(
-        {
-          SchemeAnalytesList,
-          ListUnits,
-          ListMethods,
-          Instrument,
-          ReagentList,
-          ResultList,
-          round_status,
-          result_type,
-          isDataLoaded: true,
-          roundLoadedFor: currentRoundId,
-        },
-        this.combineData
-      );
-      return;
-    }
-
-    if (prevProps.ResultList !== ResultList) {
-      this.setState({ ResultList }, this.combineData);
-    }
-
-    const dataChanged = [
-      prevProps.SchemeAnalytesList !== SchemeAnalytesList,
-      prevProps.ListUnits !== ListUnits,
-      prevProps.ListMethods !== ListMethods,
-      prevProps.Instrument !== Instrument,
-      prevProps.ReagentList !== ReagentList,
-      prevProps.round_status !== round_status,
-    ].some(Boolean);
-
-    if (dataChanged && isDataLoaded) {
-      this.setState({
+  if (allListsReady && (!isDataLoaded || roundChanged)) {
+    console.log("📦 All data ready. Setting state and combining...");
+    this.setState(
+      {
         SchemeAnalytesList,
         ListUnits,
         ListMethods,
@@ -774,9 +725,21 @@ class Results extends Component {
         ResultList,
         round_status,
         result_type,
-      });
-    }
+        isDataLoaded: true,
+        roundLoadedFor: currentRoundId,
+        loading: false, // 🟢 Stop loader
+      },
+      this.combineData
+    );
+    return;
   }
+
+  // ✅ If just ResultList changes (e.g., after submit/save)
+  if (prevProps.ResultList !== ResultList) {
+    this.setState({ ResultList }, this.combineData);
+    return;
+  }
+}
 
   // ✅ Add Auto-Refresh After Submit or Resubmit
   // handleSubmitAll = async () => {
