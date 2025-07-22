@@ -737,7 +737,7 @@ class Header extends Component {
                               <span className="pt-4 font-size-12">Rounds</span>
                             </NavLink>
                           </li>
-                          <li className="nav-item">
+                          {/* <li className="nav-item">
                             <NavLink
                               to={`/${organization_name}/performance`}
                               className="dropdown-item"
@@ -746,7 +746,7 @@ class Header extends Component {
                                 Performance
                               </span>
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li className="nav-item">
                             <NavLink
                               to={`/${organization_name}/newspage`}
