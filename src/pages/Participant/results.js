@@ -640,7 +640,7 @@ class Results extends Component {
     // ✅ Defer this logic to componentDidUpdate instead (because ResultList is async)
     if (storedId !== currentId) {
       sessionStorage.setItem("lastRoundId", currentId);
-      this.props.onGetResultsList(currentId); // Just fetch data again
+      window.location.reload();
       return;
     }
   }
@@ -656,15 +656,23 @@ class Results extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { user_id, roundLoadedFor } = this.state;
+    const {
+      SchemeAnalytesList,
+      ListUnits,
+      ListMethods,
+      Instrument,
+      ReagentList,
+      ResultList,
+      round_status,
+      result_type,
+    } = this.props;
+
+    const { user_id, isDataLoaded, roundLoadedFor } = this.state;
+
     const prevRoundId = prevProps.match.params.id;
     const currentRoundId = this.props.match.params.id;
-
     const roundChanged = currentRoundId !== roundLoadedFor;
-    const userNowAvailable = !prevState.user_id && user_id;
-    const resultListChanged = prevProps.ResultList !== this.props.ResultList;
 
-    // 🔁 Round change
     if (prevRoundId !== currentRoundId) {
       console.log("🔁 Round ID changed:", prevRoundId, "→", currentRoundId);
 
@@ -675,7 +683,7 @@ class Results extends Component {
         isDataLoaded: false,
         combinedData: [],
         roundLoadedFor: null,
-        loading: true,
+        loading: true, // ✅ Show loading spinner
         SchemeAnalytesList: [],
         ListUnits: [],
         ListMethods: [],
@@ -685,54 +693,46 @@ class Results extends Component {
         round_status: null,
       });
 
-      if (user_id) this.loadData(currentRoundId, user_id);
+      Object.keys(this)
+        .filter(k => k.startsWith("resultRef_"))
+        .forEach(k => delete this[k]);
+
+      if (user_id) {
+        this.props.onGetSchemeAnalyte(currentRoundId);
+        this.props.onGetUnitsList(user_id);
+        this.props.onGetMethodsList(user_id);
+        this.props.onGetInstrumentList(user_id);
+        this.props.onGetReagents(user_id);
+        this.props.onGetResultsList(currentRoundId);
+      }
       return;
     }
 
-    // 🧠 User becomes available
-    if (userNowAvailable) {
-      this.loadData(currentRoundId, user_id);
+    if (!prevState.user_id && user_id) {
+      const id = this.props.match.params.id;
+      this.props.onGetSchemeAnalyte(id);
+      this.props.onGetUnitsList(user_id);
+      this.props.onGetMethodsList(user_id);
+      this.props.onGetInstrumentList(user_id);
+      this.props.onGetReagents(user_id);
+      this.props.onGetResultsList(id);
       return;
     }
 
-    // 🔁 Only results changed
-    if (resultListChanged) {
-      this.setState({ ResultList: this.props.ResultList }, this.combineData);
-    }
-  }
+    const validResults = ResultList?.filter(
+      r =>
+        r.round_id?.toString() === currentRoundId?.toString() &&
+        r.lab?.account_id === user_id
+    );
 
-  ////////////
-  loadData = async (roundId, userId) => {
-    this.setState({ loading: true });
+    const allListsReady =
+      SchemeAnalytesList?.length > 0 &&
+      ListUnits?.length > 0 &&
+      ListMethods?.length > 0 &&
+      Instrument?.length > 0 &&
+      ReagentList?.length > 0;
 
-    try {
-      const [
-        analytesRes,
-        unitsRes,
-        methodsRes,
-        instrumentsRes,
-        reagentsRes,
-        resultsRes,
-      ] = await Promise.all([
-        this.props.onGetSchemeAnalyte(roundId),
-        this.props.onGetUnitsList(userId),
-        this.props.onGetMethodsList(userId),
-        this.props.onGetInstrumentList(userId),
-        this.props.onGetReagents(userId),
-        this.props.onGetResultsList(roundId),
-      ]);
-
-      const {
-        SchemeAnalytesList,
-        ListUnits,
-        ListMethods,
-        Instrument,
-        ReagentList,
-        ResultList,
-        round_status,
-        result_type,
-      } = this.props;
-
+    if (allListsReady && (!isDataLoaded || roundChanged)) {
       this.setState(
         {
           SchemeAnalytesList,
@@ -743,17 +743,40 @@ class Results extends Component {
           ResultList,
           round_status,
           result_type,
-          roundLoadedFor: roundId,
           isDataLoaded: true,
-          loading: false,
+          roundLoadedFor: currentRoundId,
         },
         this.combineData
       );
-    } catch (error) {
-      console.error("❌ Failed to load data", error);
-      this.setState({ loading: false });
+      return;
     }
-  };
+
+    if (prevProps.ResultList !== ResultList) {
+      this.setState({ ResultList }, this.combineData);
+    }
+
+    const dataChanged = [
+      prevProps.SchemeAnalytesList !== SchemeAnalytesList,
+      prevProps.ListUnits !== ListUnits,
+      prevProps.ListMethods !== ListMethods,
+      prevProps.Instrument !== Instrument,
+      prevProps.ReagentList !== ReagentList,
+      prevProps.round_status !== round_status,
+    ].some(Boolean);
+
+    if (dataChanged && isDataLoaded) {
+      this.setState({
+        SchemeAnalytesList,
+        ListUnits,
+        ListMethods,
+        Instrument,
+        ReagentList,
+        ResultList,
+        round_status,
+        result_type,
+      });
+    }
+  }
 
   // ✅ Add Auto-Refresh After Submit or Resubmit
   // handleSubmitAll = async () => {
@@ -833,37 +856,47 @@ class Results extends Component {
     const roundId = this.props.match.params.id;
     const user_id = this.state.user_id;
 
-    const validResults = ResultList.filter(
+    // ✅ Only load valid results (saved or submitted)
+    const filteredResults = ResultList.filter(
       r =>
-        String(r.round_id) === String(roundId) &&
+        r.round_id?.toString() === roundId?.toString() &&
         r.lab?.account_id === user_id &&
-        ["Saved", "Submitted"].includes(r.result_status)
+        (r.result_status === "Saved" || r.result_status === "Submitted")
     );
 
-    const fallbackResults = validResults.length
-      ? validResults
-      : ResultList.filter(r => String(r.round_id) === String(roundId));
+    // ✅ If no saved/submitted results, fallback to all for this round
+    const fallbackResults =
+      filteredResults.length > 0
+        ? filteredResults
+        : ResultList.filter(
+            r => r.round_id?.toString() === roundId?.toString()
+          );
 
-    const combinedData = SchemeAnalytesList.map(analyte => {
+    // ✅ Combine default values with existing results
+    const combinedData = SchemeAnalytesList.map((analyte, index) => {
       const userResult =
         fallbackResults.find(r => r.analyte === analyte.id) || {};
 
       return {
-        id: analyte.id,
+        id: analyte.id || index,
         analyte_id: analyte.id,
         analyte_name: analyte.name,
-        units: userResult.units ?? analyte.units?.[0] ?? "",
+        units:
+          userResult.units ??
+          (analyte.units?.length > 0 ? analyte.units[0] : ""),
         method_name: userResult.method ?? "",
         reagent_name: userResult.reagents ?? "",
         instrument_name:
-          userResult.instrument ?? analyte.instruments?.[0] ?? null,
+          userResult.instrument ??
+          (analyte.instruments?.length > 0 ? analyte.instruments[0] : null),
         result: userResult.result ?? "",
         result_status: userResult.result_status ?? null,
         result_type: userResult.result_type ?? null,
       };
     });
 
-    this.setState({ combinedData });
+    console.log("📦 Final Combined Data:", combinedData);
+    this.setState({ combinedData, loading: false }); // ✅ Stop loading
   };
 
   handleUpdate = async list => {
