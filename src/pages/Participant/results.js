@@ -617,33 +617,34 @@ class Results extends Component {
     }
   };
   // }
-  componentDidMount() {
-    const currentId = this.props.match.params.id;
-    const storedId = sessionStorage.getItem("lastRoundId");
+async componentDidMount() {
+  const roundId = this.props.match.params.id;
+  const userId = this.state.user_id;
 
-    const userId = this.state.user_id;
+  await this.props.onGetResultsList(roundId);
+  this.setState({ ResultList: this.props.ResultList });
 
-    // Proceed to fetch
-    this.props.onGetSchemeAnalyte(currentId);
-    this.props.onGetUnitsList(userId);
-    this.props.onGetMethodsList(userId);
-    this.props.onGetInstrumentList(userId);
-    this.props.onGetReagents(userId);
-    this.props.onGetResultsList(currentId);
+  Promise.all([
+    this.props.onGetSchemeAnalyte(roundId),
+    this.props.onGetUnitsList(userId),
+    this.props.onGetMethodsList(userId),
+    this.props.onGetInstrumentList(userId),
+    this.props.onGetReagents(userId),
+  ]).then(() => {
+    this.setState({
+      ListUnits: this.props.ListUnits,
+      ListMethods: this.props.ListMethods,
+      Instrument: this.props.Instrument,
+      ReagentList: this.props.ReagentList,
+      SchemeAnalytesList: this.props.SchemeAnalytesList,
+      round_status: this.props.round_status,
+      schemeType: this.props.schemeType,
+      isDataLoaded: true,
+      loading: false,
+    }, this.combineData);
+  });
+}
 
-    // ✅ Safely get comment from localStorage first
-    const savedComment = localStorage.getItem("results_comments");
-    if (savedComment) {
-      this.setState({ comments: savedComment });
-    }
-
-    // ✅ Defer this logic to componentDidUpdate instead (because ResultList is async)
-    if (storedId !== currentId) {
-      sessionStorage.setItem("lastRoundId", currentId);
-      window.location.reload();
-      return;
-    }
-  }
 
   // Method to track fetched data after state is updated
   trackFetchedData() {
