@@ -116,6 +116,12 @@ class Results extends Component {
           text: "Analyte",
           dataField: "analyte_name",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            backgroundColor: "#a6d4ff", // Grayish for cells
+          },
           formatter: (cellContent, list) => (
             <div className="text-start">{list.analyte_name}</div>
           ),
@@ -124,6 +130,14 @@ class Results extends Component {
           text: "Unit",
           dataField: "units",
           sort: true,
+          headerStyle: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            textAlign: "center",
+            backgroundColor: "#a6d4ff", // Grayish for cells
+          },
           formatter: (cellContent, list) => {
             // Find the analyte that matches the current row's analyte_id
             const filteredUnits = this.state.ListUnits.filter(unit =>
@@ -617,34 +631,36 @@ class Results extends Component {
     }
   };
   // }
-async componentDidMount() {
-  const roundId = this.props.match.params.id;
-  const userId = this.state.user_id;
+  async componentDidMount() {
+    const roundId = this.props.match.params.id;
+    const userId = this.state.user_id;
 
-  await this.props.onGetResultsList(roundId);
-  this.setState({ ResultList: this.props.ResultList });
+    await this.props.onGetResultsList(roundId);
+    this.setState({ ResultList: this.props.ResultList });
 
-  Promise.all([
-    this.props.onGetSchemeAnalyte(roundId),
-    this.props.onGetUnitsList(userId),
-    this.props.onGetMethodsList(userId),
-    this.props.onGetInstrumentList(userId),
-    this.props.onGetReagents(userId),
-  ]).then(() => {
-    this.setState({
-      ListUnits: this.props.ListUnits,
-      ListMethods: this.props.ListMethods,
-      Instrument: this.props.Instrument,
-      ReagentList: this.props.ReagentList,
-      SchemeAnalytesList: this.props.SchemeAnalytesList,
-      round_status: this.props.round_status,
-      schemeType: this.props.schemeType,
-      isDataLoaded: true,
-      loading: false,
-    }, this.combineData);
-  });
-}
-
+    Promise.all([
+      this.props.onGetSchemeAnalyte(roundId),
+      this.props.onGetUnitsList(userId),
+      this.props.onGetMethodsList(userId),
+      this.props.onGetInstrumentList(userId),
+      this.props.onGetReagents(userId),
+    ]).then(() => {
+      this.setState(
+        {
+          ListUnits: this.props.ListUnits,
+          ListMethods: this.props.ListMethods,
+          Instrument: this.props.Instrument,
+          ReagentList: this.props.ReagentList,
+          SchemeAnalytesList: this.props.SchemeAnalytesList,
+          round_status: this.props.round_status,
+          schemeType: this.props.schemeType,
+          isDataLoaded: true,
+          loading: false,
+        },
+        this.combineData
+      );
+    });
+  }
 
   // Method to track fetched data after state is updated
   trackFetchedData() {
@@ -1380,28 +1396,27 @@ async componentDidMount() {
                       <span>{participant_id}</span>
                     </div>
                     <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
-                      <span className="me-2">Scheme: </span>
-                      <span>{schemeName}</span>
+                      <span className="me-2">Scheme - Cycle: </span>
+                      <span>
+                        {schemeName} - {cycle_no}
+                      </span>
+                      {/* <span>{cycle_no}</span> */}
                     </div>
-                    <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
+                    {/* <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
                       <span className="me-2">Cycle No: </span>
                       <span>{cycle_no}</span>
-                    </div>
+                    </div> */}
                     <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
                       <span className="me-2">Round No: </span>
                       <span>{rounds}</span>
                     </div>
                     <div className="d-flex flex-column flex-md-row align-items-start mb-2 mb-md-0 p-2">
                       <span className="me-2">Issue Date:</span>
-                      <span>
-                        {moment(issue_date).format("DD MMM YYYY, h:mm A")}
-                      </span>
+                      <span>{moment(issue_date).format("DD MMM YY")}</span>
                     </div>
                     <div className="d-flex flex-column flex-md-row align-items-start p-2">
                       <span className="me-2">Closing Date: </span>
-                      <span>
-                        {moment(closing_date).format("DD MMM YYYY, h:mm A")}
-                      </span>
+                      <span>{moment(closing_date).format("DD MMM YY")}</span>
                     </div>
                   </Col>
                 </strong>
@@ -1521,7 +1536,7 @@ async componentDidMount() {
                                     bordered={false}
                                     striped={false}
                                     defaultSorted={defaultSorted}
-                                    classes={"table table-bordered table-hover"}
+                                    classes={"table table-bordered "}
                                     {...toolkitprops.baseProps}
                                     {...paginationTableProps}
                                   />

@@ -43,54 +43,72 @@ class Roundural extends Component {
           hidden: true,
         },
         {
-          dataField: "scheme_name",
-          text: "Scheme Name",
-          sort: true,
-          formatter: (cellContent, round) => {
-            return round.scheme_name; // Display only the scheme name without a link
+          dataField: "scheme_cycle_info", // dummy field
+          text: "Scheme - Cycle",
+          sort: false,
+          formatter: (cellContent, row) => {
+            const isOpen = row.status?.toLowerCase() === "open";
+            const className = isOpen ? "text-primary font-weight-bold" : "";
+
+            return (
+              <span className={className}>
+                {`${row.scheme_name || "N/A"} - ${row.cycle_no || "N/A"}`}
+              </span>
+            );
           },
         },
         {
-          dataField: "cycle_no",
-          text: "Cycle No (Status)",
+          dataField: "rounds",
+          text: "Round",
           sort: true,
-          formatter: (cellContent, row) => {
-            return `${row.cycle_no || "N/A"} (${
-              row.cycle_status || "Unknown"
-            })`; // ✅ Now includes cycle_status
+          formatter: (cellContent, round) => {
+            const isOpen = round.status?.toLowerCase() === "open";
+            const className = isOpen ? "text-primary font-weight-bold" : "";
+
+            return <span className={className}>{round.rounds}</span>;
           },
         },
 
         {
-          dataField: "rounds",
-          text: "Rounds",
-          sort: true,
-          formatter: (cellContent, round) => <>{round.rounds}</>,
-        },
-        {
           dataField: "issueDate",
           text: "Issue Date",
           sort: true,
-          formatter: (cellContent, round) => (
-            <>
-              <span>
-                {moment(round.issue_date).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
+          formatter: (cellContent, round) => {
+            const issueDate = moment(round.issue_date);
+            const today = moment();
+            const daysDiff = issueDate.diff(today, "days");
+
+            const isNear = daysDiff >= 0 && daysDiff <= 2;
+            const className = isNear ? "text-danger font-weight-bold" : "";
+
+            return (
+              <span className={className}>{issueDate.format("DD MMM YY")}</span>
+            );
+          },
         },
+
         {
           dataField: "closingDate",
           text: "Closing Date",
           sort: true,
-          formatter: (cellContent, round) => (
-            <>
-              <span>
-                {moment(round.closing_date).format("DD MMM YYYY, h:mm A")}
+          formatter: (cellContent, round) => {
+            const closingDate = moment(round.closing_date);
+            const today = moment();
+            const daysDiff = closingDate.diff(today, "days");
+
+            const isNearDeadline = daysDiff >= 0 && daysDiff <= 2; // within 2 days before deadline
+            const colorClass = isNearDeadline
+              ? "text-danger font-weight-bold"
+              : "";
+
+            return (
+              <span className={colorClass}>
+                {closingDate.format("DD MMM YY")}
               </span>
-            </>
-          ),
+            );
+          },
         },
+
         {
           dataField: "result_status",
           text: "Result Status",
@@ -208,9 +226,24 @@ class Roundural extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { SelectedSchemeList, CycleList } = this.props;
+    const { SelectedSchemeList, CycleList, match } = this.props;
 
-    // ✅ Ensure SelectedSchemeList updates when new data comes in
+    // 🔁 Refresh data when organization_name route param changes
+    const prevOrg = prevProps.match.params.organization_name;
+    const currentOrg = match.params.organization_name;
+
+    if (prevOrg !== currentOrg) {
+      console.log("🔄 Organization changed. Refreshing data...");
+      this.setState({ organization_name: currentOrg }, () => {
+        const user_id = this.state.user_id;
+        if (user_id) {
+          this.props.onGetRoundList(user_id);
+          this.props.onGetCycleList(user_id);
+        }
+      });
+    }
+
+    // ✅ Sync SelectedSchemeList when it updates
     if (
       SelectedSchemeList !== prevProps.SelectedSchemeList &&
       Array.isArray(SelectedSchemeList) &&
@@ -227,7 +260,7 @@ class Roundural extends Component {
       });
     }
 
-    // ✅ Ensure CycleList updates correctly
+    // ✅ Sync CycleList
     if (
       CycleList !== prevProps.CycleList &&
       Array.isArray(CycleList) &&
@@ -293,7 +326,16 @@ class Roundural extends Component {
   render() {
     const { SearchBar } = Search;
     const { nameOptions, selectedName, selectedCycle } = this.state;
-
+    if (
+      !this.state.SelectedSchemeList ||
+      this.state.SelectedSchemeList.length === 0
+    ) {
+      return (
+        <div className="text-center mt-5">
+          <h5>Loading available rounds...</h5>
+        </div>
+      );
+    }
     const pageOptions = {
       sizePerPage: 10,
       totalSize: this.state.SelectedSchemeList.length,

@@ -63,6 +63,21 @@ class Manufactural extends Component {
           formatter: (cellContent, newvar) => <>{newvar.id}</>,
           // filter: textFilter(),
         },
+
+        {
+          text: "Date of Addition",
+          dataField: "date_of_addition",
+          sort: true,
+          hidden: false,
+          formatter: (cellContent, newvar) => (
+            <>
+              <span>
+                {moment(newvar.date_of_addition).format("DD MMM YYYY, h:mm A")}
+              </span>
+            </>
+          ),
+          // filter: textFilter(),
+        },
         {
           text: "Title",
           dataField: "title",
@@ -106,20 +121,6 @@ class Manufactural extends Component {
           ),
         },
         {
-          text: "Date of Addition",
-          dataField: "date_of_addition",
-          sort: true,
-          hidden: false,
-          formatter: (cellContent, newvar) => (
-            <>
-              <span>
-                {moment(newvar.date_of_addition).format("DD MMM YYYY, h:mm A")}
-              </span>
-            </>
-          ),
-          // filter: textFilter(),
-        },
-        {
           text: "News Description",
           dataField: "description",
           sort: true,
@@ -127,7 +128,7 @@ class Manufactural extends Component {
           filter: textFilter(),
         },
         {
-          text: "Image",
+          text: "Document",
           dataField: "picture",
           sort: true,
           formatter: (cellContent, newvar) => (
@@ -323,7 +324,7 @@ const mapStateToProps = ({ news }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onGetNews: (id) => dispatch(getNews(id)),
+  onGetNews: id => dispatch(getNews(id)),
 });
 
 export default connect(
