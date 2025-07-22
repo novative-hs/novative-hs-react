@@ -2284,7 +2284,7 @@ export const updateLabProfile = (labProfile, id) => {
   formData.append("billing_address", labProfile.billing_address);
   formData.append("landline_registered_by", labProfile.landline_registered_by);
 
-  formData.append("email_participant", labProfile.email_participant);
+  formData.append("email", labProfile.email);
   formData.append("name", labProfile.name);
   formData.append("lab_staff_name", labProfile.lab_staff_name);
   return axios.put(`${url.UPDATE_LAB_PROFILE}/${id}`, formData, {

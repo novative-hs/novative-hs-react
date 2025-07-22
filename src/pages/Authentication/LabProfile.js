@@ -38,9 +38,9 @@ class LabProfile extends Component {
     super(props);
     this.state = {
       name: "",
-      email_participant: "",
-      lab_staff_name:"",
-      landline_registered_by:"",
+      email: "",
+      lab_staff_name: "",
+      landline_registered_by: "",
       shipping_address: "",
       billing_address: "",
       user_id: localStorage.getItem("authUser")
@@ -58,12 +58,11 @@ class LabProfile extends Component {
     setTimeout(() => {
       this.setState({
         name: this.props.success.name,
-        email_participant: this.props.success.email_participant,
+        email: this.props.success.email,
         landline_registered_by: this.props.success.landline_registered_by,
         shipping_address: this.props.success.shipping_address,
         billing_address: this.props.success.billing_address,
         lab_staff_name: this.props.success.lab_staff_name,
-      
       });
     }, 1500);
   }
@@ -96,16 +95,16 @@ class LabProfile extends Component {
                       enableReinitialize={true}
                       initialValues={{
                         name: (this.state && this.state.name) || "",
-                        email_participant: (this.state && this.state.email_participant) || "",
+                        email: (this.state && this.state.email) || "",
                         lab_staff_name:
                           (this.state && this.state.lab_staff_name) || "",
                         landline_registered_by:
-                          (this.state && this.state.landline_registered_by) || "",
+                          (this.state && this.state.landline_registered_by) ||
+                          "",
                         shipping_address:
                           (this.state && this.state.shipping_address) || "",
                         billing_address:
                           (this.state && this.state.billing_address) || "",
-                       
                       }}
                       validationSchema={Yup.object().shape({
                         name: Yup.string()
@@ -120,14 +119,19 @@ class LabProfile extends Component {
                           .min(3, "Please enter at least 3 characters")
                           .max(255, "Please enter maximum 255 characters"),
 
-                          email_participant: Yup.string()
+                        email: Yup.string()
                           .required("Please enter  email")
                           .email("Please enter valid email")
                           .max(255, "Please enter maximum 255 characters"),
 
                         landline_registered_by: Yup.string()
                           .required("Please enter your landline_registered_by")
-                          .max(255, "Please enter maximum 255 characters"),
+                          .max(255, "Please enter maximum 255 characters")
+                          .matches(
+                            /^03\d{9}$/,
+                            "Please enter a valid number like 03164567893"
+                          ),
+
                         billing_address: Yup.string()
                           .required("Please enter your billing_address")
                           .max(255, "Please enter maximum 255 characters"),
@@ -135,7 +139,6 @@ class LabProfile extends Component {
                           .trim()
                           .required("Please enter your shipping_address")
                           .max(255, "Please enter maximum 255 characters"),
-                       
                       })}
                       onSubmit={values => {
                         // console.log("ssssssssssss",emailFieldError )
@@ -166,10 +169,10 @@ class LabProfile extends Component {
                         <Form className="form-horizontal mb-3">
                           {/* Name field */}
                           <Row>
-                            <Col sm={6} md={6} xl={6}>
-                              <div className="mb-3">
+                            <Col xs={12}>
+                              <div className="m-3">
                                 <Label for="name" className="form-label">
-                                  Lab name
+                                  Participant Name
                                 </Label>
                                 <Field
                                   id="name"
@@ -189,148 +192,172 @@ class LabProfile extends Component {
                                 />
                               </div>
                             </Col>
-                            <Col sm={6} md={6} xl={6}>
-                              {/* Name of notifying person */}
-                              <div className="mb-3">
-                                <Label
-                                  for="lab_staff_name"
-                                  className="form-label"
-                                >
-                                  {/* Registered by (Name) */}
-                                  Name of notification person
-                                </Label>
-                                <Field
-                                  id="lab_staff_name"
-                                  name="lab_staff_name"
-                                  type="text"
-                                  placeholder="Please enter the name of person registering participant"
-                                  className={
-                                    "form-control" +
-                                    (errors.lab_staff_name &&
-                                    touched.lab_staff_name
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="lab_staff_name"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col sm={6} md={6} xl={6}>
-                              <div className="mb-3">
-                                <Label className="form-label">
-                                  Email of notification person
-                                </Label>
-                                <Field
-                                  name="email_participant"
-                                  type="text"
-                                  placeholder="Enter email"
-                                  className={
-                                    "form-control" +
-                                    (errors.email_participant && touched.email_participant
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="email_participant"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
+                            {/* shipping field */}
 
-                                {this.state.emailError && (
-                                  <div className="invalid-feedback d-block">
-                                    {this.state.emailError}
-                                  </div>
-                                )}
-                              </div>
-                            </Col>
+                            <Row>
+                              <Col md={6}>
+                                <div className="m-3">
+                                  <Label
+                                    for="shipping_address"
+                                    className="form-label"
+                                  >
+                                    Shipping Address
+                                  </Label>
+                                  <Field
+                                    id="shipping_address"
+                                    name="shipping_address"
+                                    type="text"
+                                    className={
+                                      "form-control" +
+                                      (errors.shipping_address &&
+                                      touched.shipping_address
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="shipping_address"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
 
-                            <Col sm={6} md={6} xl={6}>
-                              {/* Landline field */}
-                              <div className="mb-3">
-                                <Label
-                                  for="landline_registered_by"
-                                  className="form-label"
-                                >
-                                  Contact No. of notification person
-                                </Label>
-                                <Field
-                                  id="landline_registered_by"
-                                  name="landline_registered_by"
-                                  type="text"
-                                  placeholder="Please enter landline no."
-                                  className={
-                                    "form-control" +
-                                    (errors.landline_registered_by &&
-                                    touched.landline_registered_by
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                />
-                                <ErrorMessage
-                                  name="landline_registered_by"
-                                  component="div"
-                                  className="invalid-feedback"
-                                />
-                              </div>
-                            </Col>
-                          </Row>
+                              <Col md={6}>
+                                <div className="m-3">
+                                  <Label
+                                    for="billing_address"
+                                    className="form-label"
+                                  >
+                                    Billing Address
+                                  </Label>
+                                  <Field
+                                    id="billing_address"
+                                    name="billing_address"
+                                    type="text"
+                                    className={
+                                      "form-control" +
+                                      (errors.billing_address &&
+                                      touched.billing_address
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="billing_address"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                            </Row>
 
-                          {/* shipping field */}
-                          <div className="mb-3">
-                            <Label
-                              for="shipping_address"
-                              className="form-label"
+                            <Row
+                              style={{
+                                backgroundColor: "#7db4f0ff",
+                                color: "#000000ff",
+                              }}
+                              className="py-3 m-0"
                             >
-                              Shipping Address
-                            </Label>
-                            <Field
-                              id="shipping_address"
-                              name="shipping_address"
-                              type="text"
-                              className={
-                                "form-control" +
-                                (errors.shipping_address &&
-                                touched.shipping_address
-                                  ? " is-invalid"
-                                  : "")
-                              }
-                            />
-                            <ErrorMessage
-                              name="shipping_address"
-                              component="div"
-                              className="invalid-feedback"
-                            />
-                          </div>
-                          {/* billing_address */}
-                          <div className="mb-3">
-                            <Label for="billing_address" className="form-label">
-                              Billingh Address
-                            </Label>
-                            <Field
-                              id="billing_address"
-                              name="billing_address"
-                              type="text"
-                              className={
-                                "form-control" +
-                                (errors.billing_address &&
-                                touched.billing_address
-                                  ? " is-invalid"
-                                  : "")
-                              }
-                            />
-                            <ErrorMessage
-                              name="billing_address"
-                              component="div"
-                              className="invalid-feedback"
-                            />
-                          </div>
+                              <strong
+                                className="text-start"
+                                style={{
+                                  fontFamily: "calibri",
+                                  fontSize: "18px",
+                                }}
+                              >
+                                Notification for Round and Reports Alerts
+                              </strong>
+                              <Col xs={12}>
+                                {/* Name of notifying person */}
+                                <div className="m-2">
+                                  <Label
+                                    for="lab_staff_name"
+                                    className="form-label"
+                                  >
+                                    {/* Registered by (Name) */}
+                                    Name
+                                  </Label>
+                                  <Field
+                                    id="lab_staff_name"
+                                    name="lab_staff_name"
+                                    type="text"
+                                    placeholder="Please enter the name of person registering participant"
+                                    className={
+                                      "form-control" +
+                                      (errors.lab_staff_name &&
+                                      touched.lab_staff_name
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="lab_staff_name"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+
+                              <Col sm={6} md={6} xl={6}>
+                                <div className="m-2">
+                                  <Label className="form-label">Email</Label>
+                                  <Field
+                                    name="email"
+                                    type="text"
+                                    placeholder="Enter email"
+                                    className={
+                                      "form-control" +
+                                      (errors.email && touched.email
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="email"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+
+                                  {this.state.emailError && (
+                                    <div className="invalid-feedback d-block">
+                                      {this.state.emailError}
+                                    </div>
+                                  )}
+                                </div>
+                              </Col>
+
+                              <Col sm={6} md={6} xl={6}>
+                                {/* Landline field */}
+                                <div className="m-2">
+                                  <Label
+                                    for="landline_registered_by"
+                                    className="form-label"
+                                  >
+                                    Contact No.
+                                  </Label>
+                                  <Field
+                                    id="landline_registered_by"
+                                    name="landline_registered_by"
+                                    type="text"
+                                    placeholder="Please enter landline no."
+                                    className={
+                                      "form-control" +
+                                      (errors.landline_registered_by &&
+                                      touched.landline_registered_by
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                  />
+                                  <ErrorMessage
+                                    name="landline_registered_by"
+                                    component="div"
+                                    className="invalid-feedback"
+                                  />
+                                </div>
+                              </Col>
+                            </Row>
+                          </Row>
 
                           <div className="text-end mt-4">
                             <Button
