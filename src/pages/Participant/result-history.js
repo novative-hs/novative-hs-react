@@ -9,7 +9,7 @@ import moment from "moment";
 
 // Import Breadcrumb
 import Breadcrumbs from "components/Common/Breadcrumb";
-import { getResultHistory } from "store/registrationdmin-history/actions";
+import { getActivityLogRounds } from "store/registrationdmin-history/actions";
 import { isEmpty, size } from "lodash";
 import "assets/scss/table.scss";
 
@@ -18,7 +18,7 @@ class MsgsList extends Component {
     super(props);
     this.node = React.createRef();
     this.state = {
-      activitylogResults: [],
+      activitylogRounds: [],
       modal: false,
       deleteModal: false,
       user_id: localStorage.getItem("authUser")
@@ -29,20 +29,13 @@ class MsgsList extends Component {
   }
 
   componentDidMount() {
-    const { onGetActivityLogResults } = this.props;
+    const { onGetActivityLogRounds } = this.props;
     // Get 'id' from route params
     const id = this.props.match.params.id;
 
-    const queryParams = new URLSearchParams(this.props.location.search);
-    const participantId = queryParams.get('participantId'); // Extract participantId from query params
-    const scheme_id = queryParams.get('scheme_id'); 
-    
-  console.log("participantIddd",id, participantId, scheme_id)
-
-    if (id && participantId && scheme_id) {
+    if (id) {
       // Pass both id and type to the action
-      onGetActivityLogResults(id, participantId, scheme_id);
-      
+      onGetActivityLogRounds(id);
     } else {
       console.error("ID  missing in the request.");
     }
@@ -55,13 +48,12 @@ class MsgsList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { activitylogResults } = this.props;
-    console.log("activitylogResults ARRAY", activitylogResults)
+    const { activitylogRounds } = this.props;
     if (
-      !isEmpty(activitylogResults) &&
-      size(prevProps.activitylogResults) !== size(activitylogResults)
+      !isEmpty(activitylogRounds) &&
+      size(prevProps.activitylogRounds) !== size(activitylogRounds)
     ) {
-      this.setState({ activitylogResults: {}, isEdit: false });
+      this.setState({ activitylogRounds: {}, isEdit: false });
     }
   }
 
@@ -77,13 +69,73 @@ class MsgsList extends Component {
     }
   };
 
+  formatFieldName(name) {
+    if (!name) return "";
+    return name.replace(/_/g, " ").replace(/\b\w/g, char => char.toUpperCase());
+  }
+  formatReadableValue = value => {
+    try {
+      const parsed = JSON.parse(value);
+
+      if (typeof parsed === "object" && parsed !== null) {
+        const {
+          analyte,
+          units,
+          instrument,
+          method,
+          reagents,
+          result,
+          round_name,
+          round_status,
+          result_status,
+          result_type,
+        } = parsed;
+
+        const readableParts = [];
+
+        if (analyte)
+          readableParts.push(
+            `Analyte: ${this.props.analyteMap?.[analyte] || analyte}`
+          );
+        if (units)
+          readableParts.push(`Units: ${this.props.unitMap?.[units] || units}`);
+        if (instrument)
+          readableParts.push(
+            `Instrument: ${
+              this.props.instrumentMap?.[instrument] || instrument
+            }`
+          );
+        if (method)
+          readableParts.push(
+            `Method: ${this.props.methodMap?.[method] || method}`
+          );
+        if (reagents)
+          readableParts.push(
+            `Reagents: ${this.props.reagentsMap?.[reagents] || reagents}`
+          );
+        if (result) readableParts.push(`Result: ${result}`);
+        if (round_status) readableParts.push(`Round Status: ${round_status}`);
+        if (result_status)
+          readableParts.push(`Result Status: ${result_status}`);
+        if (result_type) readableParts.push(`Result Type: ${result_type}`);
+        if (round_name) readableParts.push(`Round: ${round_name}`);
+
+        return readableParts.join(", ");
+      }
+
+      return value;
+    } catch (e) {
+      return value;
+    }
+  };
+
   render() {
     const { SearchBar } = Search;
-    const { activitylogResults } = this.props;
+    const { activitylogRounds } = this.props;
     const { isEdit, deleteModal } = this.state;
     const pageOptions = {
       sizePerPage: 10,
-      totalSize: activitylogResults ? activitylogResults.length : 0,
+      totalSize: activitylogRounds ? activitylogRounds.length : 0,
       custom: true,
     };
     const defaultSorted = [
@@ -93,9 +145,13 @@ class MsgsList extends Component {
       },
     ];
     const statusColors = {
-      'Created': 'green',
-      'Submitted': 'red',
+      Created: "blue",
+      Ready: "orange",
+      Open: "green",
+      Closed: "red",
+      "Report Available": "purple",
     };
+
     return (
       <React.Fragment>
         <div className="page-content">
@@ -109,74 +165,110 @@ class MsgsList extends Component {
               <Col lg="8" className="offset-lg-2">
                 <Card className="mb-2 d-flex justify-content-center">
                   <CardBody>
-                    {!isEmpty(this.props.activitylogResults) &&
-                      this.props.activitylogResults.map(
-                        (activitylogResults, key) => {
+                    {!isEmpty(this.props.activitylogRounds) &&
+                      this.props.activitylogRounds
+                        .filter(activitylogRounds => {
+                          const allowedResultStatuses = [
+                            "saved",
+                            "submit",
+                            "resubmit",
+                          ];
+                          const allowedRoundStatus = "report available";
+
+                          const status =
+                            activitylogRounds.status?.toLowerCase() || "";
+                          const newVal =
+                            activitylogRounds.new_value?.toLowerCase() || "";
+                          const oldVal =
+                            activitylogRounds.old_value?.toLowerCase() || "";
+
+                          const isResultStatusChange =
+                            allowedResultStatuses.includes(status) ||
+                            allowedResultStatuses.some(s =>
+                              newVal.includes(s)
+                            ) ||
+                            allowedResultStatuses.some(s =>
+                              oldVal.includes(s)
+                            ) ||
+                            status === allowedRoundStatus ||
+                            newVal.includes("report available") ||
+                            oldVal.includes("report available");
+
+                          // ✅ Only include if status changed TO "report available"
+                          const isRoundStatusToReportAvailable =
+                            newVal.includes("status: report available") &&
+                            !oldVal.includes("status: report available");
+                          return (
+                            isResultStatusChange ||
+                            isRoundStatusToReportAvailable
+                          );
+                        })
+
+                        .map((activitylogRounds, key) => {
                           // Determine the status color
                           const statusColor =
-                            statusColors[activitylogResults.status] || "gray"; // Default color
+                            statusColors[activitylogRounds.status] || "gray"; // Default color
 
-                            return (
-                              <Card
-                                key={"_card_" + key}
-                                className="mb-2"
-                                style={{
-                                  backgroundColor: "#f2f2f2",
-                                  borderLeft: `5px solid ${statusColor}`,
-                                }}
-                              >
-                                <CardBody className="p-3">
-                                  <div style={{ marginBottom: "10px" }}>
-                                    <span style={{ fontWeight: "bold" }}>
-                                      {activitylogResults.actions === "Updated" ? "Update" : "Addition"}
-                                    </span>
-                                    </div>
-                                    <div>
-                                      <span>Status:</span>
-                                    <span
-                                      style={{
-                                        color: statusColor,
-                                        marginLeft: "5px",
-                                      }}
-                                    >
-                                      {activitylogResults.status}
-                                    </span>
+                          return (
+                            <Card
+                              key={"_card_" + key}
+                              className="mb-2"
+                              style={{
+                                backgroundColor: "#f2f2f2",
+                                borderLeft: `5px solid ${statusColor}`,
+                              }}
+                            >
+                              <CardBody className="p-3">
+                                <div style={{ marginBottom: "10px" }}>
+                                  <span style={{ fontWeight: "bold" }}>
+                                    {activitylogRounds.actions === "Updated"
+                                      ? "Update"
+                                      : "Result Status"}
+                                    :
+                                  </span>
+                                  <span
+                                    style={{
+                                      color: statusColor,
+                                      marginLeft: "10px",
+                                    }}
+                                  >
+                                    {activitylogRounds.status}
+                                  </span>
+                                </div>
+                                {activitylogRounds.actions === "Updated" && (
+                                  <div
+                                    key={key}
+                                    style={{ marginBottom: "10px" }}
+                                  >
+                                    <b>{activitylogRounds.added_by}</b> made a
+                                    change on{" "}
+                                    <b>
+                                      {moment(
+                                        activitylogRounds.date_of_updation
+                                      ).format("DD MMM YYYY, h:mm A")}
+                                    </b>
+                                    .
                                   </div>
-                            
-                                  <div style={{ marginBottom: "10px" }}>
-                                    <span >Analyte: </span>
-                                    <span className="text-info">{activitylogResults.analyte_id}</span>
-                                  </div>
-                            
-                                  {activitylogResults.actions === "Updated" && (
-                                    <div>
-                                      <b>{`${activitylogResults.added_by}`}</b> Updated from{" "}
-                                      <b>{activitylogResults.old_value}</b> to{" "}
-                                      <b>{activitylogResults.new_value}</b> at{" "}
-                                      {moment(activitylogResults.date_of_updation).format(
-                                        "DD MMM YYYY, h:mm A"
-                                      )}{" "}
-                                      with Round ID <b>{activitylogResults.round_id}</b>
-                                    </div>
-                                  )}
-                            
-                                  {activitylogResults.actions === "Added" && (
-                                    <div>
-                                      <b>{`${activitylogResults.added_by}`}</b> Added result{" "}
-                                      <b>{activitylogResults.new_value}</b> at{" "}
-                                      {moment(activitylogResults.date_of_addition).format(
-                                        "DD MMM YYYY, h:mm A"
-                                      )}{" "}
-                                      with Round ID <b>{activitylogResults.round_id}</b>.
-                                    </div>
-                                  )}
-                                </CardBody>
-                              </Card>
-                            );
-                        }
-                      )}
+                                )}
 
-                    {isEmpty(this.props.activitylogResults) && (
+                                {/* {activitylogRounds.actions === "Added" && (
+                                  <div>
+                                    <b>{`${activitylogRounds.added_by}`}</b>{" "}
+                                    Added a Round{" "}
+                                    <b>{activitylogRounds.new_value}</b> at{" "}
+                                    {moment(
+                                      activitylogRounds.date_of_addition
+                                    ).format("DD MMM YYYY, h:mm A")}{" "}
+                                    with Round ID{" "}
+                                    <b>{activitylogRounds.round_id}</b>.
+                                  </div>
+                                )} */}
+                              </CardBody>
+                            </Card>
+                          );
+                        })}
+
+                    {isEmpty(this.props.activitylogRounds) && (
                       <Row>
                         <Col lg="12">
                           <div className=" mb-5">
@@ -200,21 +292,27 @@ class MsgsList extends Component {
 
 MsgsList.propTypes = {
   match: PropTypes.object,
-  activitylogResults: PropTypes.array,
+  activitylogRounds: PropTypes.array,
   className: PropTypes.any,
-  onGetActivityLogResults: PropTypes.func,
+  onGetActivityLogRounds: PropTypes.func,
   location: PropTypes.object,
+  analyteMap: PropTypes.object,
+  unitMap: PropTypes.object,
+  instrumentMap: PropTypes.object,
+  methodMap: PropTypes.object,
+  reagentsMap: PropTypes.object,
 };
 
 const mapStateToProps = ({ activitylogRounds }) => ({
-  activitylogResults: activitylogRounds.activitylogResults,
+  activitylogRounds: activitylogRounds.activitylogRounds,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onGetActivityLogResults: (id, participantId, scheme_id) => dispatch(getResultHistory(id, participantId, scheme_id)), // Pass id and type here
+  onGetActivityLogRounds: id => dispatch(getActivityLogRounds(id)), // Pass id and type here
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(MsgsList));
+

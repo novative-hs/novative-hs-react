@@ -217,7 +217,7 @@ class Roundural extends Component {
                         console.error("Invalid organization name");
                         return;
                       }
-                      const url = `/${organization_name}/rounds-history/participant/${round.id}`;
+                      const url = `/${organization_name}/result-history/participant/${round.id}`;
                       console.log("Navigating to:", url);
                       this.props.history.push(url);
                     }}

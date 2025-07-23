@@ -417,7 +417,7 @@ const participantsAuthProtectedRoutes = [
     path: "/:organization_name/rounds-history/participant/:id",
     component: RoundsHistory,
   },
-  { path: "/:organization_name/result-history/:id", component: ResultHistory },
+  { path: "/:organization_name/result-history/participant/:id", component: ResultHistory },
   {
     path: "/:organization_name/:id/:id1/report1_view",
     component: ReportParticipant,
