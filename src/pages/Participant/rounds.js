@@ -47,39 +47,60 @@ class Roundural extends Component {
           text: "Scheme - Cycle",
           sort: false,
           formatter: (cellContent, row) => {
-            const isOpen = row.status?.toLowerCase() === "open";
-            const className = isOpen ? "text-primary font-weight-bold" : "";
+            const resultStatus = row.result_status?.toLowerCase().trim();
 
+            const isOpen = row?.status?.toLowerCase() === "open";
+            const isNotSubmitted =
+              resultStatus === "not entered" || resultStatus === "saved";
+
+            const className =
+              isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
             return (
               <span className={className}>
                 {`${row.scheme_name || "N/A"} - ${row.cycle_no || "N/A"}`}
               </span>
             );
           },
+          headerStyle: { width: "100px" },
+          style: { width: "25%", textAlign: "left" },
         },
         {
           dataField: "rounds",
           text: "Round",
           sort: true,
           formatter: (cellContent, round) => {
-            const isOpen = round.status?.toLowerCase() === "open";
-            const className = isOpen ? "text-primary font-weight-bold" : "";
+            // const round = round.rounds;
+            const resultStatus = round.result_status?.toLowerCase().trim();
+
+            const isOpen = round?.status?.toLowerCase() === "open";
+            const isNotSubmitted =
+              resultStatus === "not entered" || resultStatus === "saved";
+
+            const className =
+              isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
 
             return <span className={className}>{round.rounds}</span>;
           },
+          headerStyle: { width: "100px" },
+          style: { width: "10%", textAlign: "center" },
         },
-
         {
           dataField: "issueDate",
           text: "Issue Date",
           sort: true,
           formatter: (cellContent, round) => {
+            const resultStatus = round.result_status?.toLowerCase().trim();
             const issueDate = moment(round.issue_date);
-            const today = moment();
-            const daysDiff = issueDate.diff(today, "days");
+            
+            const isOpen = round?.status?.toLowerCase() === "open";
+            const isNotSubmitted =
+              resultStatus === "not entered" || resultStatus === "saved";
+         
+            const className =
+              isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
 
-            const isNear = daysDiff >= 0 && daysDiff <= 2;
-            const className = isNear ? "text-danger font-weight-bold" : "";
+            
+            // const className = isNear ? "text-danger font-weight-bold" : "";
 
             return (
               <span className={className}>{issueDate.format("DD MMM YY")}</span>
@@ -100,9 +121,17 @@ class Roundural extends Component {
             const colorClass = isNearDeadline
               ? "text-danger font-weight-bold"
               : "";
+             const resultStatus = round.result_status?.toLowerCase().trim();
+              const isOpen = round?.status?.toLowerCase() === "open";
+            const isNotSubmitted =
+              resultStatus === "not entered" || resultStatus === "saved";
+         
+            const className =
+              isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
+
 
             return (
-              <span className={colorClass}>
+              <span className={`${colorClass} ${className}`}>
                 {closingDate.format("DD MMM YY")}
               </span>
             );
@@ -113,11 +142,41 @@ class Roundural extends Component {
           dataField: "result_status",
           text: "Result Status",
           sort: true,
+           formatter: (cellContent, round) => {
+            // const round = round.rounds;
+            const resultStatus = round.result_status?.toLowerCase().trim();
+
+            const isOpen = round?.status?.toLowerCase() === "open";
+            const isNotSubmitted =
+              resultStatus === "not entered" || resultStatus === "saved";
+
+            const className =
+              isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
+            
+              return (
+               <span className={className}>{round.result_status}</span>
+            );
+          },
         },
         {
           dataField: "status",
           text: "Status",
           sort: true,
+          formatter: (cellContent, round) => {
+            // const round = round.rounds;
+            const resultStatus = round.result_status?.toLowerCase().trim();
+
+            const isOpen = round?.status?.toLowerCase() === "open";
+            const isNotSubmitted =
+              resultStatus === "not entered" || resultStatus === "saved";
+
+            const className =
+              isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
+            
+              return (
+               <span className={className}>{round.status}</span>
+            );
+          },
         },
         {
           dataField: "menu",
@@ -337,7 +396,7 @@ class Roundural extends Component {
       );
     }
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: this.state.SelectedSchemeList.length,
       custom: true,
     };
@@ -381,7 +440,7 @@ class Roundural extends Component {
             <title>Rounds</title>
           </MetaTags>
           <Container fluid>
-            <Row>
+            <Row className="justify-content-center">
               <Col lg="12">
                 <Card>
                   <CardBody>
