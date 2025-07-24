@@ -91,15 +91,14 @@ class Roundural extends Component {
           formatter: (cellContent, round) => {
             const resultStatus = round.result_status?.toLowerCase().trim();
             const issueDate = moment(round.issue_date);
-            
+
             const isOpen = round?.status?.toLowerCase() === "open";
             const isNotSubmitted =
               resultStatus === "not entered" || resultStatus === "saved";
-         
+
             const className =
               isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
 
-            
             // const className = isNear ? "text-danger font-weight-bold" : "";
 
             return (
@@ -121,14 +120,13 @@ class Roundural extends Component {
             const colorClass = isNearDeadline
               ? "text-danger font-weight-bold"
               : "";
-             const resultStatus = round.result_status?.toLowerCase().trim();
-              const isOpen = round?.status?.toLowerCase() === "open";
+            const resultStatus = round.result_status?.toLowerCase().trim();
+            const isOpen = round?.status?.toLowerCase() === "open";
             const isNotSubmitted =
               resultStatus === "not entered" || resultStatus === "saved";
-         
+
             const className =
               isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
-
 
             return (
               <span className={`${colorClass} ${className}`}>
@@ -142,7 +140,7 @@ class Roundural extends Component {
           dataField: "result_status",
           text: "Result Status",
           sort: true,
-           formatter: (cellContent, round) => {
+          formatter: (cellContent, round) => {
             // const round = round.rounds;
             const resultStatus = round.result_status?.toLowerCase().trim();
 
@@ -152,10 +150,8 @@ class Roundural extends Component {
 
             const className =
               isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
-            
-              return (
-               <span className={className}>{round.result_status}</span>
-            );
+
+            return <span className={className}>{round.result_status}</span>;
           },
         },
         {
@@ -172,10 +168,8 @@ class Roundural extends Component {
 
             const className =
               isOpen && isNotSubmitted ? "text-primary font-weight-bold" : "";
-            
-              return (
-               <span className={className}>{round.status}</span>
-            );
+
+            return <span className={className}>{round.status}</span>;
           },
         },
         {
@@ -189,29 +183,31 @@ class Roundural extends Component {
             return (
               <div className="d-flex justify-content-center gap-3 ml-3">
                 {/* Results Icon */}
-                <Tooltip title="Results">
-                  <Link
-                    className="fas fa-file-alt font-size-18 text-success"
-                    to={`/${organization_name}/${round.id}/${round.participant_id}/participantsResults`}
-                    onClick={e => {
-                      e.preventDefault();
-                      if (!organization_name) {
-                        console.error("Invalid organization name");
-                        return;
-                      }
-                      const url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
-                      console.log("Navigating to:", url);
-                      this.props.history.push(url);
-                    }}
-                  ></Link>
-                </Tooltip>
+                {round.status !== "Report Available" && (
+                  <Tooltip title="Results">
+                    <Link
+                      className="fas fa-file-alt font-size-18 text-success"
+                      to={`/${organization_name}/${round.id}/${round.participant_id}/participantsResults`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (!organization_name) {
+                          console.error("Invalid organization name");
+                          return;
+                        }
+                        const url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
+                        console.log("Navigating to:", url);
+                        this.props.history.push(url);
+                      }}
+                    ></Link>
+                  </Tooltip>
+                )}
 
                 {/* History Icon */}
                 <Tooltip title="History">
                   <Link
                     className="fas fa-comment font-size-18"
                     to={`/${organization_name}/rounds-history/${round.id}`}
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault();
                       if (!organization_name) {
                         console.error("Invalid organization name");
@@ -314,7 +310,7 @@ class Roundural extends Component {
         SelectedSchemeList,
         nameOptions: [
           "All",
-          ...uniq(SelectedSchemeList.map(item => item.scheme_name)),
+          ...uniq(SelectedSchemeList.map((item) => item.scheme_name)),
         ],
       });
     }
@@ -350,7 +346,7 @@ class Roundural extends Component {
     );
   }
 
-  handleCycleStatusChange = selectedOption => {
+  handleCycleStatusChange = (selectedOption) => {
     this.setState(
       { selectedCycleStatus: selectedOption ? selectedOption.value : "Active" },
       () =>
@@ -370,7 +366,7 @@ class Roundural extends Component {
       return [];
     }
 
-    return SelectedSchemeList.filter(entry => {
+    return SelectedSchemeList.filter((entry) => {
       const schemeMatch =
         selectedScheme === "All" || entry.scheme_name === selectedScheme;
       const cycleMatch =
@@ -402,7 +398,7 @@ class Roundural extends Component {
     };
 
     const filteredRoundList = this.filterData();
-    const schemeName = nameOptions.map(name => {
+    const schemeName = nameOptions.map((name) => {
       console.log("Scheme name:", name); // Logs each name inside the map function
       return {
         value: name,
@@ -410,7 +406,7 @@ class Roundural extends Component {
       };
     });
     const filteredCycles = this.filterData();
-    const cycle_no = nameOptions.map(cycle_no => {
+    const cycle_no = nameOptions.map((cycle_no) => {
       console.log("Cycle name:", CycleList);
       return {
         value: cycle_no,
@@ -426,7 +422,7 @@ class Roundural extends Component {
       { value: "Active", label: "Active" },
       { value: "inactive", label: "inactive" },
       ...(Array.isArray(this.props.CycleList)
-        ? this.props.CycleList.map(cycle => ({
+        ? this.props.CycleList.map((cycle) => ({
             value: cycle.cycle_no, // ✅ Use cycle number instead of ID
             label: cycle.cycle_no,
           }))
@@ -457,7 +453,7 @@ class Roundural extends Component {
                           data={filteredRoundList}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-2">
                                 {/* Select Scheme */}
@@ -470,7 +466,7 @@ class Roundural extends Component {
                                     <Select
                                       onChange={this.handleNameFilterChange}
                                       options={this.state.nameOptions.map(
-                                        name => ({ value: name, label: name })
+                                        (name) => ({ value: name, label: name })
                                       )}
                                       placeholder="Select Scheme..."
                                       isClearable={true}
@@ -493,7 +489,7 @@ class Roundural extends Component {
                                       Select Cycle
                                     </label>
                                     <Select
-                                      onChange={selectedOption =>
+                                      onChange={(selectedOption) =>
                                         this.setState({
                                           selectedCycle: selectedOption
                                             ? selectedOption.value
@@ -508,10 +504,12 @@ class Roundural extends Component {
                                           label: "inactive",
                                         },
                                         ...(Array.isArray(this.props.CycleList)
-                                          ? this.props.CycleList.map(cycle => ({
-                                              value: cycle.cycle_no, // ✅ Use cycle_no for filtering
-                                              label: `${cycle.cycle_no} (${cycle.status})`, // ✅ Show status next to cycle_no
-                                            }))
+                                          ? this.props.CycleList.map(
+                                              (cycle) => ({
+                                                value: cycle.cycle_no, // ✅ Use cycle_no for filtering
+                                                label: `${cycle.cycle_no} (${cycle.status})`, // ✅ Show status next to cycle_no
+                                              })
+                                            )
                                           : []),
                                       ]}
                                       placeholder="Select Cycle..."
@@ -587,7 +585,7 @@ Roundural.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log("🟢 Redux State:", state); // ✅ Debug full Redux state
   console.log(
     "🔵 SelectedSchemeList from Redux:",
@@ -597,7 +595,7 @@ const mapStateToProps = state => {
 
   return {
     SelectedSchemeList:
-      state.SelectedSchemeList?.SelectedSchemeList?.map(item => ({
+      state.SelectedSchemeList?.SelectedSchemeList?.map((item) => ({
         ...item,
         cycle_status: item.cycle_status || "Unknown", // ✅ Ensure cycle_status is always available
       })) || [],
@@ -607,9 +605,9 @@ const mapStateToProps = state => {
 
 console.log("CycleList:", CycleList);
 
-const mapDispatchToProps = dispatch => ({
-  onGetRoundList: id => dispatch(getSelectedSchemesList(id)),
-  onGetCycleList: id => dispatch(getcyclelist(id)), // ✅ Correct name
+const mapDispatchToProps = (dispatch) => ({
+  onGetRoundList: (id) => dispatch(getSelectedSchemesList(id)),
+  onGetCycleList: (id) => dispatch(getcyclelist(id)), // ✅ Correct name
 });
 
 export default connect(

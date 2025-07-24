@@ -15,6 +15,7 @@ import {
   FormGroup,
   Button,
 } from "reactstrap";
+import axios from "axios";
 import MetaTags from "react-meta-tags";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -56,6 +57,7 @@ class StaffRegister extends Component {
       regParticipant: [],
       ListSector: [],
       modal: false,
+      nextLabCode: "",
       usernameFieldError: null,
       incompleteRegistrationError: null,
       submittedMessage: null,
@@ -64,33 +66,41 @@ class StaffRegister extends Component {
         : "",
     };
   }
-
   componentDidMount() {
-    const { onGetCityList } = this.props;
+    // Existing calls
+    const {
+      onGetCityList,
+      onGetDepartmentList,
+      onGetDistrictList,
+      onGetdesignationlist,
+      onGetCountryList,
+      onGetProvinceList,
+      onGettypelist,
+      onGetsectorlist,
+    } = this.props;
+
     onGetCityList(this.state.user_id);
-    // console.log("city listttt", this.props.ListCity);
-
-    const { onGetDepartmentList } = this.props;
     onGetDepartmentList(this.state.user_id);
-
-    const { onGetDistrictList } = this.props;
     onGetDistrictList(this.state.user_id);
-
-    const { onGetdesignationlist } = this.props;
     onGetdesignationlist(this.state.user_id);
-
-    const { onGetCountryList } = this.props;
     onGetCountryList(this.state.user_id);
-
-    const { onGetProvinceList } = this.props;
     onGetProvinceList(this.state.user_id);
-
-    const { onGettypelist } = this.props;
     onGettypelist(this.state.user_id);
-
-    const { onGetsectorlist } = this.props;
     onGetsectorlist(this.state.user_id);
+
+    // 💡 New: fetch next lab code
+    axios
+      .get("http://localhost:8000/api/account/get-lab-code/")
+
+      .then(response => {
+        this.setState({ nextLabCode: response.data.lab_code }); // ✅ Correct key
+      })
+      .catch(error => {
+        console.error("Error fetching next lab code", error);
+        this.setState({ nextLabCode: "54" }); // Fallback
+      });
   }
+
   componentDidUpdate(prevProps) {
     if (prevProps.usernameError != this.props.usernameError) {
       this.setState({ usernameFieldError: this.props.usernameError });
@@ -139,13 +149,26 @@ class StaffRegister extends Component {
     }, 3000);
   };
 
-  toggleImportModal = () => {
+  toggleImportModal = async () => {
+    const newModalState = !this.state.importModal;
+
+    if (newModalState) {
+      try {
+        const res = await axios.get("/api/get-lab-code/");
+        const nextLabCode = res.data.lab_code;
+        this.setState({ nextLabCode });
+      } catch (error) {
+        console.error("Failed to fetch lab code", error);
+      }
+    }
+
     this.setState(prevState => ({
-      importModal: !prevState.importModal,
+      importModal: newModalState,
       importFile: null,
       importError: null,
     }));
   };
+
   handleFileChange = e => {
     const file = e.target.files[0];
     this.setState({
@@ -175,17 +198,17 @@ class StaffRegister extends Component {
     return combined.join("");
   };
 
-  generateLabCode = () => {
-    const prefix = "LAB";
-    const suffix = Math.floor(100000 + Math.random() * 900000);
-    return `${prefix}${suffix}`;
-  };
+  // generateLabCode = () => {
+  //   const prefix = "LAB";
+  //   const suffix = Math.floor(100000 + Math.random() * 900000);
+  //   return `${prefix}${suffix}`;
+  // };
 
-  generateLabCode = () => {
-    const prefix = "LAB";
-    const randomNumber = Math.floor(1000 + Math.random() * 9000);
-    return `${prefix}${randomNumber}`;
-  };
+  // generateLabCode = () => {
+  //   const prefix = "LAB";
+  //   const randomNumber = Math.floor(1000 + Math.random() * 9000);
+  //   return `${prefix}${randomNumber}`;
+  // };
 
   /////////////////////////////////
   handleImport = async () => {
@@ -215,14 +238,14 @@ class StaffRegister extends Component {
         const registrationPromises = jsonData.map(async item => {
           try {
             const generatedPassword = self.generateRandomPassword();
-            const generatedLabCode = self.generateLabCode();
+            // const generatedLabCode = self.generateLabCode();
 
             return await self.props.registerUser({
               name: item.name,
               username: item.username,
               email_participant: item.email_participant,
               password: generatedPassword,
-              lab_code: generatedLabCode,
+              lab_code: self.state.nextLabCode,
               city: item.city,
               phone: item.phone,
               type: item.type,
@@ -267,7 +290,11 @@ class StaffRegister extends Component {
       behavior: "smooth", // Adds smooth scrolling
     });
   };
-
+  generateNextLabCode = async () => {
+    const res = await await axios.get("/api/get-lab-code/"); // Your custom API
+    const nextLabCode = res.data.next_lab_code; // e.g. "LAB100"
+    this.setState({ nextLabCode });
+  };
   render() {
     // console.log("Email error received:", this.props.emailError);
     const { ListType, ListSector } = this.state;
@@ -348,12 +375,6 @@ class StaffRegister extends Component {
       return combined.join("");
     };
 
-    // Generate Lab Code: LAB + 4 digits
-    const generateLabCode = () => {
-      const prefix = "LAB";
-      const randomNumber = Math.floor(1000 + Math.random() * 9000); // ensures 4-digit number
-      return `${prefix}${randomNumber}`;
-    };
     return (
       <React.Fragment>
         <div className="page-content">
@@ -481,10 +502,10 @@ class StaffRegister extends Component {
                         </Alert>
                       )}
                       <Formik
-                        // enableReinitialize={true}
+                        enableReinitialize={true}
                         initialValues={{
                           password: generateRandomPassword(),
-                          lab_code: generateLabCode(),
+                          lab_code: this.state.nextLabCode || "",
                           username: (this.state && this.state.username) || "",
                           // email: (this.state && this.state.email) || "",
                           email_participant:
@@ -630,21 +651,30 @@ class StaffRegister extends Component {
                           // website: Yup.string().url("Invalid URL"),
                           // .required("Website is required"),
                         })}
-                        onSubmit={(values, { setSubmitting, resetForm }) => {
+                        onSubmit={(
+                          values,
+                          { setSubmitting, resetForm, setFieldValue }
+                        ) => {
                           this.scrollToTop();
 
-                          // Create payload conditionally
                           let payload = { ...values };
 
-                          // If lab type is "Participant", include lab_code
                           if (values.type === "Participant") {
                             payload.lab_code = values.lab_code;
                           } else {
-                            // If not a participant, you may optionally remove lab_code
                             delete payload.lab_code;
                           }
+                          this.props.registerUser(payload).then(response => {
+                            console.log(
+                              "🧪 Response from registerUser:",
+                              response
+                            ); // ✅ Add this
 
-                          this.props.registerUser(payload);
+                            if (response && response.lab_code) {
+                              setFieldValue("lab_code", response.lab_code);
+                            }
+                          });
+
                           setSubmitting(false);
 
                           setTimeout(() => {
@@ -686,11 +716,9 @@ class StaffRegister extends Component {
                                       name="lab_code"
                                       type="text"
                                       disabled
-                                      placeholder="Auto-generated"
-                                      value={values.lab_code}
                                       className="form-control"
+                                      value={values.lab_code || ""}
                                     />
-
                                     <div className="input-group-append">
                                       <button
                                         className="btn btn-light"

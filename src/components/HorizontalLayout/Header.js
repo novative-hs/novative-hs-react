@@ -21,6 +21,7 @@ import {
 import { withTranslation } from "react-i18next";
 // Redux Store
 import { toggleRightSidebar } from "../../store/actions";
+
 import NotificationDropdown from "components/CommonForBoth/TopbarDropdown/NotificationDropdown";
 import Navbar from "./Navbar";
 import RegAdminNotificationDropdown from "components/CommonForBoth/TopbarDropdown/RegAdminNotificationDropdown";
@@ -30,8 +31,10 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
       isSearch: false,
       open: false,
+      user_name: "", // <== include this
       isOpen: false,
       dropdownOpen: false,
       isSmallScreen: false,
@@ -49,6 +52,7 @@ class Header extends Component {
         databaseReviewDropdownOpen: false,
       },
     };
+    console.log("Header constructor - User ID:", this.state.user_id); // ✅ Log added here
 
     this.toggleMenu = this.toggleMenu.bind(this);
     this.toggleDropdown = this.toggleDropdown.bind(this);
@@ -91,12 +95,24 @@ class Header extends Component {
   };
 
   componentDidMount() {
-    this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const userId = authUser?.user_id;
 
-    // Initially check for screen size greater than 800px
-    if (window.innerWidth > 800) {
-      this.setState({ isNavbarOpen: true });
+    if (userId) {
+      fetch(`http://127.0.0.1:8000/api/lab/user-name/${userId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("API response:", data); // Log the whole response
+          if (data.status === 200 && data.data?.name) {
+            console.log("Fetched name:", data.data.name); // Log the name field
+            this.setState({ user_name: data.data.name });
+          } else {
+            console.warn("Name not found in API response.");
+          }
+        })
+        .catch((err) => console.error("Failed to load user name", err));
+    } else {
+      console.warn("No userId found in localStorage.");
     }
   }
 
@@ -151,18 +167,25 @@ class Header extends Component {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box" style={{ background: "white" }}>
-                  {/* Logo based on account type */}
-                  {/* Logo based on account type */}
-    {["nhs", "database-admin", "registration-admin", "organization", "CSR", "labowner"].includes(this.state.account_type) && (
-      <span className="logo-sm">
-        <img
-          src="https://externalqcapi.com/media/organization/nhs_logo.webp"
-          alt="Logo"
-          height="60"
-        />
-      </span>
-    )}
-                </div>
+                {/* Logo based on account type */}
+                {/* Logo based on account type */}
+                {[
+                  "nhs",
+                  "database-admin",
+                  "registration-admin",
+                  "organization",
+                  "CSR",
+                  "labowner",
+                ].includes(this.state.account_type) && (
+                  <span className="logo-sm">
+                    <img
+                      src="https://externalqcapi.com/media/organization/nhs_logo.webp"
+                      alt="Logo"
+                      height="60"
+                    />
+                  </span>
+                )}
+              </div>
 
               {/* Menu icon */}
               <button
@@ -175,19 +198,39 @@ class Header extends Component {
             </div>
 
             {/* Full screen button and profile menu */}
-            <div className="d-flex">
-              <div className="dropdown d-none d-lg-inline-block ms-1">
-                <Tooltip title="Full Screen">
-                  <button
-                    type="button"
-                    onClick={this.toggleFullscreen}
-                    className="btn header-item noti-icon"
-                    data-toggle="fullscreen"
-                  >
-                    <i className="bx bx-fullscreen"></i>
-                  </button>
-                </Tooltip>
+            <div className="d-flex align-items-center">
+              {/* <div className="dropdown d-none d-lg-inline-block me-3">
+      <Tooltip title="Full Screen">
+        <button
+          type="button"
+          onClick={this.toggleFullscreen}
+          className="btn header-item noti-icon"
+          data-toggle="fullscreen"
+        >
+          <i className="bx bx-fullscreen"></i>
+        </button>
+      </Tooltip>
+    </div> */}
+
+              <div
+                className="me-3 fw-semibold fs-4"
+                style={{ fontFamily: "Times New Roman, Times, serif" }}
+              >
+                {this.state.user_name ? (
+                  <>
+                    {/* <span className="text-dark">Welcome: </span> */}
+                    <span className="text-dark">{this.state.user_name}</span>
+                  </>
+                ) : this.state.user_id ? (
+                  <>
+                    {/* <span className="text-dark">Welcome: </span> */}
+                    <span className="text-dark">{this.state.user_id}</span>
+                  </>
+                ) : (
+                  <span className="text-dark"></span>
+                )}
               </div>
+
               <ProfileMenu />
             </div>
           </div>
@@ -605,6 +648,16 @@ class Header extends Component {
                               </span>
                             </NavLink>
                           </li>
+                          <li>
+                            <NavLink
+                              to={`/${organization_name}/PaymentCSR`}
+                              className={({ isActive }) =>
+                                `dropdown-item ${isActive ? "active-link" : ""}`
+                              }
+                            >
+                              <span className="pt-4 font-size-12">Payment</span>
+                            </NavLink>
+                          </li>
                         </ul>
                       </Collapse>
                     </nav>
@@ -650,55 +703,45 @@ class Header extends Component {
                             <span className="pt-4 font-size-12">Payment</span>
                           </NavLink>
                         </li>
-                        <li>
-                          <NavLink
-                            to={`/${organization_name}/CSRrounds`}
-                            className={({ isActive }) =>
-                              `dropdown-item ${isActive ? "active-link" : ""}`
-                            }
-                          >
-                            <span className="pt-4 font-size-12">Rounds</span>
-                          </NavLink>
-                        </li>
                       </ul>
                     </Collapse>
                   </nav>
                 )}
                 {/* {this.state.account_type && this.state.account_type === "CSR" && (
-                  <nav
-                    className="navbar navbar-light navbar-expand-lg"
-                    id="navigation"
-                  >
-                    <Collapse
-                      isOpen={isNavbarOpen}
-                      className="navbar-collapse"
-                      id="topnav-menu-content"
+                    <nav
+                      className="navbar navbar-light navbar-expand-lg"
+                      id="navigation"
                     >
-                      <ul className="navbar-nav">
-                        <li className="nav-item">
-                          <NavLink
-                            to={`/${organization_name}/register-participant-CSR`}
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">
-                              Add Participant
-                            </span>
-                          </NavLink>
-                        </li>
-                        <li className="nav-item">
-                          <NavLink
-                            to={`/${organization_name}/all-participant2`}
-                            className="dropdown-item"
-                          >
-                            <span className="pt-4 font-size-12">
-                              Participants List
-                            </span>
-                          </NavLink>
-                        </li>
-                      </ul>
-                    </Collapse>
-                  </nav>
-                )} */}
+                      <Collapse
+                        isOpen={isNavbarOpen}
+                        className="navbar-collapse"
+                        id="topnav-menu-content"
+                      >
+                        <ul className="navbar-nav">
+                          <li className="nav-item">
+                            <NavLink
+                              to={`/${organization_name}/register-participant-CSR`}
+                              className="dropdown-item"
+                            >
+                              <span className="pt-4 font-size-12">
+                                Add Participant
+                              </span>
+                            </NavLink>
+                          </li>
+                          <li className="nav-item">
+                            <NavLink
+                              to={`/${organization_name}/all-participant2`}
+                              className="dropdown-item"
+                            >
+                              <span className="pt-4 font-size-12">
+                                Participants List
+                              </span>
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </Collapse>
+                    </nav>
+                  )} */}
                 {this.state.account_type &&
                   this.state.account_type === "labowner" && (
                     <nav
@@ -731,15 +774,15 @@ class Header extends Component {
                             </NavLink>
                           </li>
                           {/* <li className="nav-item">
-                            <NavLink
-                              to={`/${organization_name}/performance`}
-                              className="dropdown-item"
-                            >
-                              <span className="pt-4 font-size-12">
-                                Performance
-                              </span>
-                            </NavLink>
-                          </li> */}
+                              <NavLink
+                                to={`/${organization_name}/performance`}
+                                className="dropdown-item"
+                              >
+                                <span className="pt-4 font-size-12">
+                                  Performance
+                                </span>
+                              </NavLink>
+                            </li> */}
                           <li className="nav-item">
                             <NavLink
                               to={`/${organization_name}/newspage`}
@@ -794,6 +837,13 @@ Header.propTypes = {
       organization_name: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  getusername: PropTypes.func,
+  name: PropTypes.string,
+  success: PropTypes.any,
+  usernameData: PropTypes.shape({
+    user_name: PropTypes.string,
+    user_id: PropTypes.string,
+  }),
 };
 
 const mapStatetoProps = (state) => {
