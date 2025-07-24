@@ -151,35 +151,18 @@ class Header extends Component {
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box" style={{ background: "white" }}>
-                {/* Logo based on account type */}
-                {this.state.account_type === "nhs" ? (
-                  <span className="logo-sm">
-                    <img
-                      src="https://externalqcapi.com/media/organization/nhs_logo.webp"
-                      alt="NHS Logo"
-                      height="60"
-                    />
-                  </span>
-                ) : this.state.account_type === "database-admin" ? (
-                  <span className="logo-sm">
-                    <img
-                      src="https://externalqcapi.com/media/organization/nhs_logo.webp"
-                      alt="Database Admin Logo"
-                      height="60"
-                    />
-                  </span>
-                ) : this.state.account_type === "registration-admin" ||
-                  this.state.account_type === "organization" ||
-                  this.state.account_type === "CSR" ? (
-                  <span className="logo-sm">
-                    <img
-                      src="https://externalqcapi.com/media/organization/nhs_logo.webp"
-                      alt="Staff Logo"
-                      height="60"
-                    />
-                  </span>
-                ) : null}
-              </div>
+                  {/* Logo based on account type */}
+                  {/* Logo based on account type */}
+    {["nhs", "database-admin", "registration-admin", "organization", "CSR", "labowner"].includes(this.state.account_type) && (
+      <span className="logo-sm">
+        <img
+          src="https://externalqcapi.com/media/organization/nhs_logo.webp"
+          alt="Logo"
+          height="60"
+        />
+      </span>
+    )}
+                </div>
 
               {/* Menu icon */}
               <button
