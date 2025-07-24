@@ -391,6 +391,12 @@ class Results extends Component {
           text: "Analyte",
           dataField: "analyte_name",
           sort: true,
+          headerStyle: {
+            backgroundColor: "#a6d4ff", // Light pink for header
+          },
+          style: {
+            backgroundColor: "#a6d4ff", // Grayish for cells
+          },
           formatter: (cellContent, list) => (
             <div className="text-start">{list.analyte_name}</div>
           ),
