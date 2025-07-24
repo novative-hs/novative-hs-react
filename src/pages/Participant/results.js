@@ -991,7 +991,7 @@ class Results extends Component {
     } finally {
     }
   };
-  handleSaveAll = async () => {
+handleSaveAll = async () => {
     const { combinedData } = this.state;
     const { rounds, scheme_id, round_status } = this.props;
     const id = this.props.match.params.id;
@@ -1008,19 +1008,6 @@ class Results extends Component {
 
     try {
       for (const list of combinedData) {
-        const resultValue = this[`resultRef_${list.id}`]?.value?.trim();
-
-        // Validation: If result is entered, check instrument, method, reagent
-        if (
-          resultValue &&
-          (!list.instrument_name || !list.method_name || !list.reagent_name)
-        ) {
-          alert(
-            `Please select Instrument, Method, and Reagent for analyte: ${list.analyte_name}`
-          );
-          return;
-        }
-
         const resultData = {
           round_id: id,
           analyte_id: list.analyte_id,
@@ -1029,19 +1016,20 @@ class Results extends Component {
           method_name: list.method_name || null,
           reagent_name: list.reagent_name || null,
           result_type: list.result_type,
-          result: resultValue || "",
+          result: this[`resultRef_${list.id}`]?.value || "",
           rounds,
           scheme_id,
           round_status,
           result_status: "Saved",
           comment: this.state.comments || "",
         };
-
         await this.props.onPostResult(resultData, this.state.user_id);
       }
 
       alert("All results have been saved successfully.");
-      window.location.reload();
+
+      // ✅ Force reload the page to get updated data from backend
+      window.location.reload(); // <- Add this line here
     } catch (error) {
       alert("Failed to save all results. Please try again.");
     }
