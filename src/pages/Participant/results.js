@@ -370,15 +370,10 @@ class Results extends Component {
               <input
                 type="text"
                 ref={(el) => (this[`resultRef_${list.id}`] = el)}
-                defaultValue={
-                  list.result !== null && list.result !== undefined
-                    ? Number(list.result).toString()
-                    : ""
-                }
+                defaultValue={list.result ?? ""}
                 placeholder="Enter result"
                 onChange={(e) => {
                   let value = e.target.value;
-                  // Allow only numbers and a single decimal point
                   if (/^\d*\.?\d*$/.test(value)) {
                     e.target.value = value;
                   } else {
@@ -991,7 +986,7 @@ class Results extends Component {
     } finally {
     }
   };
-handleSaveAll = async () => {
+  handleSaveAll = async () => {
     const { combinedData } = this.state;
     const { rounds, scheme_id, round_status } = this.props;
     const id = this.props.match.params.id;
