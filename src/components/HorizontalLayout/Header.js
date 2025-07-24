@@ -99,7 +99,7 @@ class Header extends Component {
     const userId = authUser?.user_id;
 
     if (userId) {
-      fetch(`http://127.0.0.1:8000/api/lab/user-name/${userId}`)
+     fetch(`https://api.externalqc.com/api/lab/user-name/${userId}`)
         .then((res) => res.json())
         .then((data) => {
           console.log("API response:", data); // Log the whole response
