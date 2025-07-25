@@ -89,8 +89,7 @@ class StaffRegister extends Component {
     onGetsectorlist(this.state.user_id);
 
     // 💡 New: fetch next lab code
-    axios
-      .get("http://externalqcapi.com/api/account/get-lab-code/")
+      axios.get("https://externalqcapi.com/api/account/get-lab-code/")
 
       .then(response => {
         this.setState({ nextLabCode: response.data.lab_code }); // ✅ Correct key
