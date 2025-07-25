@@ -90,7 +90,7 @@ class StaffRegister extends Component {
 
     // 💡 New: fetch next lab code
     axios
-      .get("http://localhost:8000/api/account/get-lab-code/")
+      .get("http://externalqcapi.com/api/account/get-lab-code/")
 
       .then(response => {
         this.setState({ nextLabCode: response.data.lab_code }); // ✅ Correct key
