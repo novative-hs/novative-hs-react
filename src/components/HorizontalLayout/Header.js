@@ -61,7 +61,7 @@ class Header extends Component {
   }
 
   toggleDropdown() {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       dropdownOpen: !prevState.dropdownOpen,
     }));
     this.props.openLeftMenuCallBack();
@@ -69,7 +69,7 @@ class Header extends Component {
 
   toggleNavbar() {
     console.log("Menu icon clicked. Toggling navbar state.");
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isNavbarOpen: !prevState.isNavbarOpen, // Toggle navbar open/close state
     }));
   }
@@ -78,7 +78,7 @@ class Header extends Component {
     this.props.openLeftMenuCallBack();
   }
   toggleDropdown(dropdownName) {
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       dropdowns: {
         ...prevState.dropdowns,
         [dropdownName]: !prevState.dropdowns[dropdownName],
@@ -115,14 +115,13 @@ class Header extends Component {
       console.warn("No userId found in localStorage.");
     }
   }
-
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions);
   }
 
   toggleNavbar() {
     console.log("Menu icon clicked. Toggling navbar state.");
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       isNavbarOpen: !prevState.isNavbarOpen, // Toggle navbar open/close state
       isOpen: !prevState.isOpen, // Sync with the Collapse component
     }));
@@ -157,7 +156,7 @@ class Header extends Component {
   render() {
     const { isNavbarOpen } = this.state;
     const isSmallScreen = window.innerWidth < 800;
-    const shouldShowNavbar = isNavbarOpen && !isSmallScreen;
+    const shouldShowNavbar = isSmallScreen ? isNavbarOpen : true;
 
     const { isOpen, dropdownOpen, dropdowns } = this.state;
     const { organization_name } = this.props.match.params;
@@ -175,6 +174,7 @@ class Header extends Component {
                   "registration-admin",
                   "organization",
                   "CSR",
+                  "csr",
                   "labowner",
                 ].includes(this.state.account_type) && (
                   <span className="logo-sm">
@@ -658,6 +658,8 @@ class Header extends Component {
                               <span className="pt-4 font-size-12">Payment</span>
                             </NavLink>
                           </li>
+                          
+                           
                         </ul>
                       </Collapse>
                     </nav>
@@ -701,6 +703,16 @@ class Header extends Component {
                             }
                           >
                             <span className="pt-4 font-size-12">Payment</span>
+                          </NavLink>
+                        </li>
+                         <li>
+                          <NavLink
+                            to={`/${organization_name}/CSRrounds`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
+                            <span className="pt-4 font-size-12">Rounds</span>
                           </NavLink>
                         </li>
                       </ul>
@@ -846,7 +858,7 @@ Header.propTypes = {
   }),
 };
 
-const mapStatetoProps = (state) => {
+const mapStatetoProps = state => {
   const { layoutType, showRightSidebar } = state.Layout;
   return { layoutType, showRightSidebar };
 };
