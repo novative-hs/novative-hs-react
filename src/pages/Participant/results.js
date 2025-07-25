@@ -638,39 +638,36 @@ class Results extends Component {
     }
   };
   // }
-async componentDidMount() {
-  const roundId = this.props.match.params.id;
-  const userId = this.state.user_id;
+  async componentDidMount() {
+    const roundId = this.props.match.params.id;
+    const userId = this.state.user_id;
 
-  if (!userId) return;
+    await this.props.onGetResultsList(roundId);
+    this.setState({ ResultList: this.props.ResultList });
 
-  await this.props.onGetResultsList(roundId);
-
-  Promise.all([
-    this.props.onGetSchemeAnalyte(roundId),
-    this.props.onGetUnitsList(userId),
-    this.props.onGetMethodsList(userId),
-    this.props.onGetInstrumentList(userId),
-    this.props.onGetReagents(userId),
-  ]).then(() => {
-    this.setState(
-      {
-        ListUnits: this.props.ListUnits,
-        ListMethods: this.props.ListMethods,
-        Instrument: this.props.Instrument,
-        ReagentList: this.props.ReagentList,
-        SchemeAnalytesList: this.props.SchemeAnalytesList,
-        round_status: this.props.round_status,
-        schemeType: this.props.schemeType,
-        ResultList: this.props.ResultList,
-        isDataLoaded: true,
-        loading: false,
-        roundLoadedFor: roundId,
-      },
-      this.combineData
-    );
-  });
-}
+    Promise.all([
+      this.props.onGetSchemeAnalyte(roundId),
+      this.props.onGetUnitsList(userId),
+      this.props.onGetMethodsList(userId),
+      this.props.onGetInstrumentList(userId),
+      this.props.onGetReagents(userId),
+    ]).then(() => {
+      this.setState(
+        {
+          ListUnits: this.props.ListUnits,
+          ListMethods: this.props.ListMethods,
+          Instrument: this.props.Instrument,
+          ReagentList: this.props.ReagentList,
+          SchemeAnalytesList: this.props.SchemeAnalytesList,
+          round_status: this.props.round_status,
+          schemeType: this.props.schemeType,
+          isDataLoaded: true,
+          loading: false,
+        },
+        this.combineData
+      );
+    });
+  }
 
   // Method to track fetched data after state is updated
   trackFetchedData() {
