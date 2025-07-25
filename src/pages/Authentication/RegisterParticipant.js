@@ -502,6 +502,7 @@ class StaffRegister extends Component {
                         </Alert>
                       )}
                       <Formik
+                        key={this.state.nextLabCode}
                         enableReinitialize={true}
                         initialValues={{
                           password: generateRandomPassword(),
@@ -659,11 +660,7 @@ class StaffRegister extends Component {
 
                           let payload = { ...values };
 
-                          if (values.type === "Participant") {
-                            payload.lab_code = values.lab_code;
-                          } else {
-                            delete payload.lab_code;
-                          }
+                          payload.lab_code = values.lab_code;
                           this.props.registerUser(payload).then(response => {
                             console.log(
                               "🧪 Response from registerUser:",
