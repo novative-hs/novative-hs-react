@@ -90,29 +90,15 @@ class ReagentAddAnalyte extends Component {
     };
   }
 
-  componentDidMount() {
-    this.fetchData(); // Fetch analytes
+ componentDidMount() {
+  this.fetchData(); // Fetch analytes
+}
 
-    // Clear selectedCheckboxes first
-    this.setState({ selectedCheckboxes: {} }, () => {
-      const savedSelections = JSON.parse(
-        localStorage.getItem("selectedCheckboxes")
-      );
-
-      if (savedSelections) {
-        this.setState({ selectedCheckboxes: savedSelections });
-      }
-
-      this.updateSelectedCheckboxes(); // Set selected checkboxes from props
-    });
-  }
 componentDidUpdate(prevProps) {
   if (
     prevProps.ReagentAnalyteList !== this.props.ReagentAnalyteList ||
     prevProps.activeSchemes !== this.props.activeSchemes
   ) {
-    console.log("📥 Updating selected checkboxes...");
-    console.log("✅ ReagentAnalyteList:", this.props.ReagentAnalyteList);
     this.updateSelectedCheckboxes();
   }
 }
@@ -143,8 +129,10 @@ componentDidUpdate(prevProps) {
 updateSelectedCheckboxes() {
   const { ReagentAnalyteList = [], activeSchemes = [] } = this.props;
 
-  // Don't update if data is empty
-  if (!ReagentAnalyteList.length) return;
+  if (!ReagentAnalyteList.length) {
+    this.setState({ selectedCheckboxes: {}, checkedSchemes: {} });
+    return;
+  }
 
   const selectedCheckboxes = {};
   const checkedSchemes = {};
@@ -164,10 +152,7 @@ updateSelectedCheckboxes() {
     }
   });
 
-  this.setState({
-    selectedCheckboxes,
-    checkedSchemes,
-  });
+  this.setState({ selectedCheckboxes, checkedSchemes });
 }
 
   areAllSchemeAnalytesChecked = scheme => {
