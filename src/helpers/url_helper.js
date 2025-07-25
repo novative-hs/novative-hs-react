@@ -139,7 +139,10 @@ export const GET_ANALYTESINSTRUMENTS = `${API_ENDPOINT}/api/database-admin/analy
 export const GET_INSTRUMENTSINTYPE = `${API_ENDPOINT}/api/database-admin/instrument-instrumenttype`;
 export const GET_INSTRUMENTSINMANUFACTURER = `${API_ENDPOINT}/api/database-admin/instrument-manufacturer`;
 export const GET_REAGENTSINMANUFACTURER = `${API_ENDPOINT}/api/database-admin/reagent-manufacturer`;
-
+/////////////////////
+export const GET_REAGENT_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/reagent-analyte-list`;
+export const ADD_REAGENT_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/reagent-add-analyte`;
+export const UPDATE_REAGENT_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/reagent-update-analyte`;
 ////participant
 export const GET_CITY_LIST = `${API_ENDPOINT}/api/database-admin/city_list`;
 export const ADD_NEW_CITY = `${API_ENDPOINT}/api/database-admin/city_create`;

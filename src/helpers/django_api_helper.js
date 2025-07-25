@@ -4195,3 +4195,32 @@ export const updateNewPayment = (payment) => {
     }
   );
 };
+///////////////////////////////////////
+export const getReagentAnalytelist = (id) =>
+  get(`${url.GET_REAGENT_ANALYTE_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+ export const addNewReagentAnalytelist = (addReagentAnalyte, id) => {
+    let formData = new FormData();
+    formData.append("id", addReagentAnalyte.id);
+    formData.append("analytes", addReagentAnalyte.analytes);
+    
+    return axios.post(
+      `${url.ADD_REAGENT_ANALYTE_LIST}/${id}`,  // <-- Add ID to the URL
+      formData, 
+      { headers: getHeader(authHeader()) }
+    );
+  };
+  
+
+export const updateReagentAnalytelist = schemeanalyte => {
+  let formData = new FormData();
+  formData.append("analytes", schemeanalyte.analytes);
+  return axios.put(
+    `${url.UPDATE_REAGENT_ANALYTE_LIST}/${schemeanalyte.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};

@@ -50,12 +50,20 @@ import {
   GET_ANALYTESSAMPLE_FAIL,
   GET_INSTRUMENT_DETAIL_SUCCESS,
   GET_INSTRUMENT_DETAIL_FAIL,
-
+  GET_REAGENT_ANALYTE_LIST_SUCCESS,
+  GET_REAGENT_ANALYTE_LIST_FAIL,
+  ADD_NEW_REAGENT_ANALYTE_SUCCESS,
+  ADD_NEW_REAGENT_ANALYTE_FAIL,
+  UPDATE_REAGENT_ANALYTE_SUCCESS,
+  UPDATE_REAGENT_ANALYTE_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
   SchemeAnalyteList: [],
   AddSchemeAnalyte: [],
+  AddReagentAnalyte: [],
+  ReagentAnalyteList: [],
+  AddInstrumentAnalyte: [],
   schemeanalyte: [],
   SampleAnalyteList: [],
   InstrumentAnalyteList: [],
@@ -318,7 +326,63 @@ case GET_SAMPLE_ANALYTE_LIST_FAIL:
     SampleName: "Unknown Sample", // Reset SampleName on failure
     error: action.payload,
   };
+//////////////////////////////////////////////////////
+    case GET_REAGENT_ANALYTE_LIST_SUCCESS:
+  console.log("✅ REagnt Analyte List:", action.payload.analytes);
+  console.log("✅ reagnet Name:", action.payload.reagent_name);
+  console.log("✅ Active Schemes Received:", action.payload.active_schemes);
 
+  return {
+    ...state,
+    ReagentAnalyteList: action.payload.analytes,
+    reagentName: action.payload.reagent_name || "Unknown Reagent",
+    activeSchemes: action.payload.active_schemes || [],
+  };
+
+    case GET_REAGENT_ANALYTE_LIST_FAIL:
+      console.error("Error Fetching ReagentAnalyteList Analytes:", action.payload);
+      return {
+        ...state,
+        ReagentAnalyteList: [],
+        reagentName: "Unknown Reagent",
+        error: action.payload,
+      };
+   case ADD_NEW_REAGENT_ANALYTE_SUCCESS:
+  return {
+    ...state,
+    ReagentAnalyteList: [
+      ...state.ReagentAnalyteList,
+      ...(Array.isArray(action.payload.data)
+        ? action.payload.data
+        : [action.payload.data]),
+    ],
+    AddReagentAnalyte: [
+      ...state.AddReagentAnalyte,
+      action.payload.data,
+    ],
+  };
+
+
+    case ADD_NEW_REAGENT_ANALYTE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case UPDATE_REAGENT_ANALYTE_SUCCESS:
+      return {
+        ...state,
+        ReagentAnalyteList: state.ReagentAnalyteList.map(schemeanalyte =>
+          schemeanalyte.id.toString() === action.payload.id.toString()
+            ? { schemeanalyte, ...action.payload }
+            : schemeanalyte
+        ),
+      };
+
+    case UPDATE_REAGENT_ANALYTE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     /////////////////////////////////////////////////////
    case GET_INSTRUMENT_ANALYTE_LIST_SUCCESS:
 

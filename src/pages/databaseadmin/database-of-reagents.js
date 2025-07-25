@@ -140,7 +140,7 @@ class ReagentList extends Component {
           },
         },
         {
-          dataField: "analytes_count",
+          dataField: "analyte_count",
           text: "No of Analytes",
           headerFormatter: (column, colIndex) => {
             return (
@@ -187,7 +187,7 @@ class ReagentList extends Component {
                     marginTop: "5px",
                   }}
                 >
-                  {unitlist.analytes_count}
+                  {unitlist.analyte_count}
                 </Link>
               </div>
             );
@@ -364,6 +364,17 @@ class ReagentList extends Component {
               className="d-flex gap-3 ml-3"
               style={{ display: "flex", justifyContent: "center", gap: "10px" }}
             >
+             <Tooltip title="Add Analytes">
+                <Link
+                  to={`/reagent-add-analyte/${reagent.id}`}
+                  style={{ textDecoration: "underline", color: "#008000" }}
+                >
+                  <i
+                    className="mdi mdi-test-tube font-size-18"
+                    id="analyteIcon"
+                  ></i>
+                </Link>
+              </Tooltip>
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
@@ -438,7 +449,7 @@ class ReagentList extends Component {
   };
 
   onClickDelete = reagent => {
-    if (reagent.analytes_count === 0) {
+    if (reagent.analyte_count === 0) {
       this.setState({ ListUnit: reagent });
       this.setState({ deleteModal: true });
     } else {
@@ -642,7 +653,7 @@ class ReagentList extends Component {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const status = entry.status ? entry.status.toString() : "";
       const code = entry.code ? entry.code.toString() : "";
-      const count = entry.analytes_count ? entry.analytes_count.toString() : "";
+      const count = entry.analyte_count ? entry.analyte_count.toString() : "";
       const manufactural = entry.manufactural
         ? entry.manufactural.toString().toLowerCase()
         : "";
