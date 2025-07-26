@@ -205,8 +205,9 @@ updateSelectedCheckboxes() {
   };
 handleSave = () => {
   const { selectedCheckboxes } = this.state;
-  const { onAddNewReagentAnalyte, onUpdateReagentAnalytes, match, ListUnit, ReagentAnalyteList } = this.props;
+  const { onAddNewReagentAnalyte, onUpdateReagentAnalytes, match, ListUnit, ReagentAnalyteList, history } = this.props;
   const reagentId = match.params.id;
+  const organizationName = match.params.organization_name;
 
   const selectedReagents = ListUnit.filter(reagent => selectedCheckboxes[reagent.id]);
 
@@ -230,6 +231,11 @@ handleSave = () => {
     onAddNewReagentAnalyte(payload, reagentId);
     this.setFeedbackMessage("Analytes added successfully.");
   }
+
+  // Redirect after small delay
+  setTimeout(() => {
+    history.push(`/${organizationName}/database-of-reagents`);
+  }, 500);  // 0.5 second delay to allow for feedback message
 };
 
 
