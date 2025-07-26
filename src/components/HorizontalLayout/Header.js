@@ -214,17 +214,17 @@ class Header extends Component {
 
               <div
                 className="me-3 fw-semibold fs-4"
-                style={{ fontFamily: "Times New Roman, Times, serif" }}
+                style={{ fontFamily: "Tahoma " }}
               >
                 {this.state.user_name ? (
                   <>
                     {/* <span className="text-dark">Welcome: </span> */}
-                    <span className="text-dark">{this.state.user_name}</span>
+                    <span className="text-primary">{this.state.user_name}</span>
                   </>
                 ) : this.state.user_id ? (
                   <>
                     {/* <span className="text-dark">Welcome: </span> */}
-                    <span className="text-dark">{this.state.user_id}</span>
+                    <span className="text-primary">{this.state.user_id}</span>
                   </>
                 ) : (
                   <span className="text-dark"></span>
