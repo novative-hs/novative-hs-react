@@ -4224,3 +4224,33 @@ export const updateReagentAnalytelist = schemeanalyte => {
     }
   );
 };
+
+
+export const getMethodAnalytelist = (id) =>
+  get(`${url.GET_METHOD_ANALYTE_LIST}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+ export const addNewMethodAnalytelist = (AddMethodAnalyte, id) => {
+    let formData = new FormData();
+    formData.append("id", AddMethodAnalyte.id);
+    formData.append("analytes", AddMethodAnalyte.analytes);
+    
+    return axios.post(
+      `${url.ADD_METHOD_ANALYTE_LIST}/${id}`,  // <-- Add ID to the URL
+      formData, 
+      { headers: getHeader(authHeader()) }
+    );
+  };
+  
+
+export const updateMethodAnalytelist = schemeanalyte => {
+  let formData = new FormData();
+  formData.append("analytes", schemeanalyte.analytes);
+  return axios.put(
+    `${url.UPDATE_METHOD_ANALYTE_LIST}/${schemeanalyte.id}`,
+    formData,
+    {
+      headers: getHeader(authHeader()),
+    }
+  );
+};

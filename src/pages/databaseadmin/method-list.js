@@ -86,7 +86,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange("idFilter", e)}
+                    onChange={(e) => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -109,7 +109,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange("nameFilter", e)}
+                    onChange={(e) => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -128,7 +128,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.countFilter}
-                    onChange={e => this.handleFilterChange("countFilter", e)}
+                    onChange={(e) => this.handleFilterChange("countFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -166,7 +166,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.codeFilter}
-                    onChange={e => this.handleFilterChange("codeFilter", e)}
+                    onChange={(e) => this.handleFilterChange("codeFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -185,7 +185,7 @@ class InstrumentType extends Component {
                 <div>
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange("statusFilter", e)}
+                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                   >
                     <option value="">All</option>
@@ -210,7 +210,7 @@ class InstrumentType extends Component {
                   <input
                     type="text"
                     value={this.state.dateFilter}
-                    onChange={e => this.handleFilterChange("dateFilter", e)}
+                    onChange={(e) => this.handleFilterChange("dateFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -233,6 +233,17 @@ class InstrumentType extends Component {
           text: "Action",
           formatter: (cellContent, methodlist) => (
             <div>
+              <Tooltip title="Add Analytes">
+                <Link
+                  to={`/method-add-analytes/${methodlist.id}`}
+                  style={{ textDecoration: "underline", color: "#008000" }}
+                >
+                  <i
+                    className="mdi mdi-test-tube font-size-18"
+                    id="analyteIcon"
+                  ></i>
+                </Link>
+              </Tooltip>
               <Tooltip title="Update">
                 <Link className="text-success" to="#">
                   <i
@@ -248,7 +259,7 @@ class InstrumentType extends Component {
                 <Link
                   className="fas fa-comment font-size-18"
                   to={`/${this.state.organization_name}/databaseadmin-history/${methodlist.id}?type=Method`}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
                     // Check if organization_name is valid
                     if (!this.state.organization_name) {
@@ -307,7 +318,7 @@ class InstrumentType extends Component {
       countFilter,
     } = this.state;
 
-    const filteredData = ListMethods.filter(entry => {
+    const filteredData = ListMethods.filter((entry) => {
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
       const addedBy = entry.added_by
         ? entry.added_by.toString().toLowerCase()
@@ -333,7 +344,7 @@ class InstrumentType extends Component {
 
     return filteredData;
   };
-  displaySuccessMessage = message => {
+  displaySuccessMessage = (message) => {
     this.setState({ successMessage: message });
 
     setTimeout(() => {
@@ -373,12 +384,12 @@ class InstrumentType extends Component {
   }
 
   toggleDeleteModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
 
-  onClickDelete = methodlist => {
+  onClickDelete = (methodlist) => {
     if (methodlist.analytes_count === 0) {
       this.setState({ ListUnit: methodlist });
       this.setState({ deleteModal: true });
@@ -403,7 +414,7 @@ class InstrumentType extends Component {
     }
   };
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -427,7 +438,7 @@ class InstrumentType extends Component {
     const fieldsToExport = ["id", "name", "code", "status", "date_of_addition"];
 
     // Map each row to an object with only the desired fields
-    const dataToExport = ListMethods.map(unit => ({
+    const dataToExport = ListMethods.map((unit) => ({
       id: unit.id,
       name: unit.name,
       code: unit.code,
@@ -446,14 +457,14 @@ class InstrumentType extends Component {
     saveAs(data, fileName);
   };
   toggleImportModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       importModal: !prevState.importModal,
       importFile: null,
       importError: null,
     }));
   };
 
-  handleFileChange = e => {
+  handleFileChange = (e) => {
     const file = e.target.files[0];
     this.setState({
       importFile: file,
@@ -471,7 +482,7 @@ class InstrumentType extends Component {
 
     try {
       const reader = new FileReader();
-      reader.onload = async e => {
+      reader.onload = async (e) => {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: "array" });
         // Assuming your data is in the first sheet
@@ -571,7 +582,7 @@ class InstrumentType extends Component {
                 <div className="mb-3 d-flex justify-content-center">
                   <button
                     className="btn btn-primary"
-                    onClick={e => {
+                    onClick={(e) => {
                       e.preventDefault(); // Prevent the default action
                       const downloadUrl =
                         process.env.REACT_APP_BACKENDURL +
@@ -676,7 +687,7 @@ class InstrumentType extends Component {
                           data={filteredData} // Use filteredData here
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -755,7 +766,7 @@ class InstrumentType extends Component {
                                             // Check if code already exists (except for edit case where it's the same record)
                                             const duplicate =
                                               this.props.ListMethods.find(
-                                                item =>
+                                                (item) =>
                                                   item.code.toString() ===
                                                     values.code.toString() &&
                                                   (!this.state.isEdit ||
@@ -953,12 +964,12 @@ const mapStateToProps = ({ ListMethods }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetInstrumentTypeList: id => dispatch(getmethodlist(id)),
+  onGetInstrumentTypeList: (id) => dispatch(getmethodlist(id)),
   onAddNewType: (createInstrumentType, id) =>
     dispatch(addNewMethod(createInstrumentType, id)),
   onUpdateType: (id, methodlist) =>
     dispatch(updateMethods({ id, ...methodlist })),
-  onDeleteInstrumentType: methodlist => dispatch(deleteMethod(methodlist)),
+  onDeleteInstrumentType: (methodlist) => dispatch(deleteMethod(methodlist)),
 });
 
 export default connect(

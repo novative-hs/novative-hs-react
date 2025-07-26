@@ -86,7 +86,16 @@ import {
   GET_INSTRUMENT_DETAIL,
   GET_INSTRUMENT_DETAIL_SUCCESS,
   GET_INSTRUMENT_DETAIL_FAIL,
-
+//////////////////////////
+ GET_METHOD_ANALYTE_LIST,
+  GET_METHOD_ANALYTE_LIST_SUCCESS,
+  GET_METHOD_ANALYTE_LIST_FAIL,
+  ADD_NEW_METHOD_ANALYTE,
+  ADD_NEW_METHOD_ANALYTE_SUCCESS,
+  ADD_NEW_METHOD_ANALYTE_FAIL,
+  UPDATE_METHOD_ANALYTE,
+  UPDATE_METHOD_ANALYTE_SUCCESS,
+  UPDATE_METHOD_ANALYTE_FAIL
 } from "./actionTypes";
 
 
@@ -419,6 +428,72 @@ export const updateReagentAnalytelistSuccess = schemeanalyte => ({
 
 export const updateReagentAnalytelistFail = error => ({
   type: UPDATE_REAGENT_ANALYTE_FAIL,
+  payload: error,
+});
+//////////////////////////////////////////////
+export const getMethodAnalytelist = (id)=> ({
+  type: GET_METHOD_ANALYTE_LIST,
+  payload: id,
+});
+
+export const getMethodAnalytelistSuccess = MethodAnalyteList => (
+  console.log("data IN sUCCESS ", MethodAnalyteList ),
+  {
+  type: GET_METHOD_ANALYTE_LIST_SUCCESS,
+  payload: MethodAnalyteList,
+});
+
+export const getMethodAnalytelistFail = error => (
+  console.log("data IN sUCCESS ", error ),
+  {
+  type: GET_METHOD_ANALYTE_LIST_FAIL,
+  payload: error,
+});
+export const addNewMethodAnalytelist = (addMethodAnalyte, id) => {
+  console.log("📦 Action Triggered - ADD_NEW_REAGENT_ANALYTE:");
+  console.log("🧪 Payload (Analyte IDs):", addMethodAnalyte.analytes);
+  console.log("🔗 Reagent ID:", id);
+
+  return {
+    type: ADD_NEW_METHOD_ANALYTE,
+    payload: { addMethodAnalyte, id },
+  };
+};
+
+export const addNewMethodAnalytelistSuccess = response => {
+  const analyteData = response.analytes || response.data || []; // handle different possible keys
+  return {
+    type: ADD_NEW_METHOD_ANALYTE_SUCCESS,
+    payload: {
+      data: analyteData,  // ✅ ensure `.data` exists in reducer
+    },
+  };
+};
+
+
+export const addNewMethodAnalytelistFail = error => {
+  console.error("❌ ADD_NEW_REAGENT_ANALYTE_FAIL:", error);
+  return {
+    type: ADD_NEW_METHOD_ANALYTE_FAIL,
+    payload: error,
+  };
+};
+
+//Update  Sample Analyte
+export const updateMethodAnalytelist = schemeanalyte => {
+  console.log('action creator called with schemeanalyte:', schemeanalyte);
+  return {
+    type: UPDATE_METHOD_ANALYTE,
+    payload: schemeanalyte,
+  };
+};
+export const updateMethodAnalytelistSuccess = schemeanalyte => ({
+  type: UPDATE_METHOD_ANALYTE_SUCCESS,
+  payload: schemeanalyte,
+});
+
+export const updateMethodAnalytelistFail = error => ({
+  type: UPDATE_METHOD_ANALYTE_FAIL,
   payload: error,
 });
 ////////////////////////////////////////////

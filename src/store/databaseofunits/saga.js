@@ -1,15 +1,15 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Crypto Redux States
-import { DELETE_ANALYTE,DELETE_INSTRUMENT_TYPE,GET_INSTRUMENT_TYPE_LIST, ADD_NEW_INSTRUMENT_TYPE, UPDATE_NEW_INSTRUMENT_TYPE, GET_ANALYTE_LIST, GET_ANALYTEFORSCHEME_LIST, ADD_NEW_ANALYTE_LIST,  UPDATE_NEW_ANALYTE_LIST, GET_SCHEMEANALYTE_LIST,ADD_NEW_SCHEMEANALYTE,UPDATE_SCHEMEANALYTE, GET_ANALYTESCYCLES, GET_SAMPLE_ANALYTE_LIST,ADD_NEW_SAMPLE_ANALYTE,UPDATE_SAMPLE_ANALYTE, ADD_EQUIPMENTTYPE_FILE, GET_ANALYTESSAMPLE, GET_INSTRUMENT_ANALYTE_LIST, ADD_NEW_INSTRUMENT_ANALYTE, UPDATE_INSTRUMENT_ANALYTE, GET_INSTRUMENT_DETAIL, GET_REAGENT_ANALYTE_LIST, ADD_NEW_REAGENT_ANALYTE, UPDATE_REAGENT_ANALYTE
+import { DELETE_ANALYTE,DELETE_INSTRUMENT_TYPE,GET_INSTRUMENT_TYPE_LIST, ADD_NEW_INSTRUMENT_TYPE, UPDATE_NEW_INSTRUMENT_TYPE, GET_ANALYTE_LIST, GET_ANALYTEFORSCHEME_LIST, ADD_NEW_ANALYTE_LIST,  UPDATE_NEW_ANALYTE_LIST, GET_SCHEMEANALYTE_LIST,ADD_NEW_SCHEMEANALYTE,UPDATE_SCHEMEANALYTE, GET_ANALYTESCYCLES, GET_SAMPLE_ANALYTE_LIST,ADD_NEW_SAMPLE_ANALYTE,UPDATE_SAMPLE_ANALYTE, ADD_EQUIPMENTTYPE_FILE, GET_ANALYTESSAMPLE, GET_INSTRUMENT_ANALYTE_LIST, ADD_NEW_INSTRUMENT_ANALYTE, UPDATE_INSTRUMENT_ANALYTE, GET_INSTRUMENT_DETAIL, GET_REAGENT_ANALYTE_LIST, ADD_NEW_REAGENT_ANALYTE, UPDATE_REAGENT_ANALYTE,   GET_METHOD_ANALYTE_LIST, ADD_NEW_METHOD_ANALYTE, UPDATE_METHOD_ANALYTE,
 } from "./actionTypes";
 
 import { deleteAnalyteSuccess,deleteAnalyteFail,getinstrumenttypelistSuccess, getinstrumenttypelistFail,addNewInstrumentTypeSuccess,addNewInstrumentTypeFail ,updateNewInstrumentTypeSuccess,updateNewInstrumentTypeFail, addNewAnalyteListFail, addNewAnalyteListSuccess, updateAnalyteListSuccess,updateAnalyteListFail,getAnalytelistFail, getAnalyteforSchemelistSuccess, getAnalyteforSchemelistFail, getAnalytelistSuccess,deleteInstrumentTypeSuccess,deleteInstrumentTypeFail, getSchemeAnalytelistSuccess,getSchemeAnalytelistFail,addNewSchemeAnalytelistSuccess,addNewSchemeAnalytelistFail,updateSchemeAnalytelistSuccess,updateSchemeAnalytelistFail, getAnalyteCycleFail,getAnalyteCycleSuccess, getSampleAnalytelistSuccess,getSampleAnalytelistFail,addNewSampleAnalytelistSuccess,addNewSampleAnalytelistFail,updateSampleAnalytelistSuccess,updateSampleAnalytelistFail,addEquipmentTypefileFail, getAnalyteSampleFail, getAnalyteSampleSuccess, getInstrumentDetailSuccess, getInstrumentDetailFail, 
-  addNewInstrumentAnalytelistSuccess, addNewInstrumentAnalytelistFail,getInstrumentAnalytelistFail, updateInstrumentAnalytelistSuccess, updateInstrumentAnalytelistFail, getInstrumentAnalytelistSuccess, getReagentAnalytelistSuccess, getReagentAnalytelistFail, addNewReagentAnalytelistSuccess, addNewReagentAnalytelistFail,updateReagentAnalytelistFail, updateReagentAnalytelistSuccess
+  addNewInstrumentAnalytelistSuccess, addNewInstrumentAnalytelistFail,getInstrumentAnalytelistFail, updateInstrumentAnalytelistSuccess, updateInstrumentAnalytelistFail, getInstrumentAnalytelistSuccess, getReagentAnalytelistSuccess, getReagentAnalytelistFail, addNewReagentAnalytelistSuccess, addNewReagentAnalytelistFail,updateReagentAnalytelistFail, updateReagentAnalytelistSuccess, getMethodAnalytelistSuccess, getMethodAnalytelistFail, addNewMethodAnalytelistSuccess, addNewMethodAnalytelistFail, updateMethodAnalytelistSuccess, updateMethodAnalytelistFail, 
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import { deleteAnalyte,deleteInstrumentType,getInstrumenttypelist ,addNewInstrumentType,updateNewInstrumentType, getAnalytelist, updateAnalyte , addNewAnalyte, getSchemeAnalytelist, getAnalyteforSchemelist, addNewSchemeAnalytelist,updateSchemeAnalytelist, getAnalyteCycle,  addEquipmentTypefile, getSampleAnalytelist,addNewSampleAnalytelist,updateSampleAnalytelist, getAnalyteSampleList, getInstrumentAnalytelist, addNewInstrumentAnalytelist, updateInstrumentAnalytelist, getInstrumentDetail,getReagentAnalytelist, addNewReagentAnalytelist, updateReagentAnalytelist  } from "../../helpers/django_api_helper";
+import { deleteAnalyte,deleteInstrumentType,getInstrumenttypelist ,addNewInstrumentType,updateNewInstrumentType, getAnalytelist, updateAnalyte , addNewAnalyte, getSchemeAnalytelist, getAnalyteforSchemelist, addNewSchemeAnalytelist,updateSchemeAnalytelist, getAnalyteCycle,  addEquipmentTypefile, getSampleAnalytelist,addNewSampleAnalytelist,updateSampleAnalytelist, getAnalyteSampleList, getInstrumentAnalytelist, addNewInstrumentAnalytelist, updateInstrumentAnalytelist, getInstrumentDetail,getReagentAnalytelist, addNewReagentAnalytelist, updateReagentAnalytelist , getMethodAnalytelist, addNewMethodAnalytelist, updateMethodAnalytelist } from "../../helpers/django_api_helper";
 
 // ADD EQUIPMENT TYPE FILE
 
@@ -385,7 +385,57 @@ function* onUpdateReagentAnalyte({ payload: schemeanalyte }) {
     yield put(updateReagentAnalytelistFail (error));
   }
 }
+///////////////
+function* fetchMethodAnalyteList(object) {
+  try {
+    console.log("Saga - Payload for Reagent API Call:", object.payload);
 
+    const response = yield call(getMethodAnalytelist, object.payload);
+    console.log("Saga - API Response for Reagent:", response);
+
+    // ✅ Extract and transform data
+    const analytes = response?.method_analytes || [];
+    const methodName = response?.method_name || "Unknown Reagent";
+    const activeSchemes = response?.active_schemes || [];
+
+    const transformedResponse = {
+      analytes,
+      method_name: methodName,
+      active_schemes: activeSchemes,
+    };
+
+    console.log("Saga - Transformed Reagent Response:", transformedResponse);
+
+    yield put(getMethodAnalytelistSuccess(transformedResponse));
+  } catch (error) {
+    console.error("Saga - Error Fetching Reagent Analytes:", error.message, error.stack);
+    yield put(getMethodAnalytelistFail(error));
+  }
+}
+function* onAddNewMethodAnalyte(object) {
+  try {
+    const response = yield call(
+      addNewMethodAnalytelist, // <- this is API call, not action
+      object.payload.addMethodAnalyte,
+      object.payload.id
+    );
+    console.log("📤 Saga Response:", response);
+    yield put(addNewMethodAnalytelistSuccess(response));
+  } catch (error) {
+    console.error("❌ Saga Error:", error);
+    yield put(addNewMethodAnalytelistFail(error));
+  }
+}
+
+
+function* onUpdateMethodAnalyte({ payload: schemeanalyte }) {
+  try {
+    const response = yield call(updateMethodAnalytelist, schemeanalyte);
+    yield put(updateMethodAnalytelistSuccess(response));
+  } catch (error) {
+    yield put(updateMethodAnalytelistFail (error));
+  }
+}
 function* InstrumentTypeListSaga() {
   yield takeEvery(GET_INSTRUMENT_TYPE_LIST, fetchInstrumentTypeList);
   yield takeEvery(ADD_NEW_INSTRUMENT_TYPE, onAddNewInstrumentType);
@@ -415,6 +465,9 @@ function* InstrumentTypeListSaga() {
   yield takeEvery(ADD_NEW_REAGENT_ANALYTE, onAddNewReagentAnalyte);
   yield takeEvery(UPDATE_REAGENT_ANALYTE, onUpdateReagentAnalyte);
   yield takeEvery(GET_INSTRUMENT_DETAIL, fetchInstrumentDetail);
+  yield takeEvery(GET_METHOD_ANALYTE_LIST, fetchMethodAnalyteList);
+  yield takeEvery(ADD_NEW_METHOD_ANALYTE, onAddNewMethodAnalyte);
+  yield takeEvery(UPDATE_METHOD_ANALYTE, onUpdateMethodAnalyte);
 }
 
 export default InstrumentTypeListSaga;

@@ -143,6 +143,10 @@ export const GET_REAGENTSINMANUFACTURER = `${API_ENDPOINT}/api/database-admin/re
 export const GET_REAGENT_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/reagent-analyte-list`;
 export const ADD_REAGENT_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/reagent-add-analyte`;
 export const UPDATE_REAGENT_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/reagent-update-analyte`;
+///////////////
+export const GET_METHOD_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/method-analyte-list`;
+export const ADD_METHOD_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/method-add-analyte`;
+export const UPDATE_METHOD_ANALYTE_LIST = `${API_ENDPOINT}/api/database-admin/method-update-analyte`;
 ////participant
 export const GET_CITY_LIST = `${API_ENDPOINT}/api/database-admin/city_list`;
 export const ADD_NEW_CITY = `${API_ENDPOINT}/api/database-admin/city_create`;
