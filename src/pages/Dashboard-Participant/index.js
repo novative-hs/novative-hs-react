@@ -18,7 +18,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
+// import backgroundImage from "../../assets/images/participant-Background.jpg";
 //import Charts
 // import StackedColumnChart from "./StackedColumnChart";
 
@@ -87,20 +87,9 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <div className="page-content">
-          {/* <MetaTags>
-            <title>Dashboard | Finance Admin</title>
-          </MetaTags> */}
-          {/* <Container fluid> */}
-            {/* Render Breadcrumb */}
-            {/* <Breadcrumbs
-              title={this.props.t("Dashboards")}
-              breadcrumbItem={this.props.t("Dashboard")}
-            /> */}
             <Row>
               <StaffSummary />
-
             </Row>
-          {/* </Container> */}
         </div>
       </React.Fragment>
     );

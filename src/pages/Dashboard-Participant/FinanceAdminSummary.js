@@ -6,9 +6,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 
-import backgroundImage from "../../assets/images/participant-Background.jpg.jpg";
-
-// actions
+import backgroundImage from "../../assets/images/participant-Background-min.jpg";
 import { getLabProfile } from "store/auth/labprofile/actions";
 
 class LabSummary extends Component {
@@ -47,6 +45,7 @@ class LabSummary extends Component {
   handleProfileClick = () => {
     this.props.history.push("/lab-profile");
   };
+
   render() {
     const styles = {
       pageWrapper: {
@@ -55,26 +54,25 @@ class LabSummary extends Component {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center",
         height: "100vh",
+        width: "100vw",
+        overflow: "auto",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        padding: "20px",
+        padding: 0,
+        margin: 0,
         position: "relative",
       },
       cardContainer: {
         maxWidth: "600px",
+        maxHeight: "90vh",
+        overflowY: "auto",
         borderRadius: "12px",
+        minHeight: "300px",
         padding: "30px 20px",
         backgroundColor: "#0055e9",
         opacity: 0.95,
-      },
-      heading: {
-        color: "#ffffff",
-        fontWeight: "bold",
-        fontSize: "38px",
-        marginBottom: "20px",
-        textTransform: "uppercase",
       },
       paragraph: {
         color: "#cbd6e6",
@@ -102,13 +100,22 @@ class LabSummary extends Component {
         left: "50%",
         transform: "translateX(-50%)",
       },
+      globalCss: `
+        html, body, #root {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          overflow: hidden;
+        }
+      `,
     };
 
     return (
       <React.Fragment>
+        <style>{styles.globalCss}</style>
         <div style={styles.pageWrapper}>
-          <Row className="justify-content-center">
-            <Col>
+          <Row className="justify-content-center m-0">
+            <Col className="p-0">
               <Card style={styles.cardContainer}>
                 <CardBody className="text-white">
                   <h3>
