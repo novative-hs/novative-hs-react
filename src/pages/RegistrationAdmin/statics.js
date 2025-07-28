@@ -309,7 +309,7 @@ class Results extends Component {
 
     const { combinedData } = this.state; // Use the combined data
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: combinedData.length, // Adjust totalSize for combined data
       custom: true,
     };
