@@ -130,8 +130,7 @@ class Results extends Component {
     return analytes.map(analyte => {
       // console.log("Analyte:", analyte);
       // Find the result entry for the current analyte
-      const resultEntry = results.find(result => result.analyte === analyte.id);
-      // console.log("Result Entry:", resultEntry);
+     const resultEntry = results?.find(result => result.analyte === analyte.id);      // console.log("Result Entry:", resultEntry);
       // Extract lab count, mean, and median from the result entry
       const labCount = resultEntry?.lab_count || 0;
       const meanResult = resultEntry?.mean_result || 0;
