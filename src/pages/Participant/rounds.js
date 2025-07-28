@@ -187,7 +187,7 @@ class Roundural extends Component {
                   <Tooltip title="Results">
                     <Link
                       className="fas fa-file-alt font-size-18 text-success"
-                      to={`/${organization_name}/${round.id}/${round.participant_id}/participantsResults`}
+                      to="#"
                       onClick={(e) => {
                         e.preventDefault();
                         if (!organization_name) {
@@ -195,8 +195,7 @@ class Roundural extends Component {
                           return;
                         }
                         const url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
-                        console.log("Navigating to:", url);
-                        this.props.history.push(url);
+                        window.location.href = url; // ✅ This forces a hard reload
                       }}
                     ></Link>
                   </Tooltip>
