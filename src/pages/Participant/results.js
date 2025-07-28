@@ -639,6 +639,11 @@ class Results extends Component {
   };
   // }
   async componentDidMount() {
+     if (!window.location.hash.includes('#loaded')) {
+    window.location.href = window.location.href + '#loaded';
+    window.location.reload();
+    return;
+  }
     const roundId = this.props.match.params.id;
     const userId = this.state.user_id;
 
