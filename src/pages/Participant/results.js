@@ -638,41 +638,43 @@ class Results extends Component {
     }
   };
   // }
-  async componentDidMount() {
-     if (!window.location.hash.includes('#loaded')) {
+async componentDidMount() {
+  if (!window.location.hash.includes('#loaded')) {
     window.location.href = window.location.href + '#loaded';
     window.location.reload();
     return;
   }
-    const roundId = this.props.match.params.id;
-    const userId = this.state.user_id;
 
-    await this.props.onGetResultsList(roundId);
-    this.setState({ ResultList: this.props.ResultList });
+  const roundId = this.props.match.params.id;
+  const userId = this.state.user_id;
 
-    Promise.all([
-      this.props.onGetSchemeAnalyte(roundId),
-      this.props.onGetUnitsList(userId),
-      this.props.onGetMethodsList(userId),
-      this.props.onGetInstrumentList(userId),
-      this.props.onGetReagents(userId),
-    ]).then(() => {
-      this.setState(
-        {
-          ListUnits: this.props.ListUnits,
-          ListMethods: this.props.ListMethods,
-          Instrument: this.props.Instrument,
-          ReagentList: this.props.ReagentList,
-          SchemeAnalytesList: this.props.SchemeAnalytesList,
-          round_status: this.props.round_status,
-          schemeType: this.props.schemeType,
-          isDataLoaded: true,
-          loading: false,
-        },
-        this.combineData
-      );
-    });
-  }
+  // ✅ Load everything in parallel
+  Promise.all([
+    this.props.onGetResultsList(roundId),
+    this.props.onGetSchemeAnalyte(roundId),
+    this.props.onGetUnitsList(userId),
+    this.props.onGetMethodsList(userId),
+    this.props.onGetInstrumentList(userId),
+    this.props.onGetReagents(userId),
+  ]).then(() => {
+    this.setState(
+      {
+        ResultList: this.props.ResultList,
+        ListUnits: this.props.ListUnits,
+        ListMethods: this.props.ListMethods,
+        Instrument: this.props.Instrument,
+        ReagentList: this.props.ReagentList,
+        SchemeAnalytesList: this.props.SchemeAnalytesList,
+        round_status: this.props.round_status,
+        schemeType: this.props.schemeType,
+        isDataLoaded: true,
+        loading: false,
+      },
+      this.combineData
+    );
+  });
+}
+
 
   // Method to track fetched data after state is updated
   trackFetchedData() {
