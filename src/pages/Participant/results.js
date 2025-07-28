@@ -639,24 +639,34 @@ class Results extends Component {
   };
   // }
 async componentDidMount() {
-  if (!window.location.hash.includes('#loaded')) {
-    window.location.href = window.location.href + '#loaded';
-    window.location.reload();
-    return;
-  }
+  console.log("componentDidMount called");
 
   const roundId = this.props.match.params.id;
   const userId = this.state.user_id;
 
-  // ✅ Load everything in parallel
-  Promise.all([
-    this.props.onGetResultsList(roundId),
-    this.props.onGetSchemeAnalyte(roundId),
-    this.props.onGetUnitsList(userId),
-    this.props.onGetMethodsList(userId),
-    this.props.onGetInstrumentList(userId),
-    this.props.onGetReagents(userId),
-  ]).then(() => {
+  // One-time reload logic
+  const alreadyRefreshed = sessionStorage.getItem('result_page_loaded');
+  if (!alreadyRefreshed) {
+    sessionStorage.setItem('result_page_loaded', 'true');
+    this.forceUpdate(); // Triggers re-render once
+    return;
+  }
+
+  if (!userId || this.state.isDataLoaded) return;
+
+  this.setState({ loading: true });
+
+  try {
+    // Parallel API requests
+    await Promise.all([
+      this.props.onGetResultsList(roundId),
+      this.props.onGetSchemeAnalyte(roundId),
+      this.props.onGetUnitsList(userId),
+      this.props.onGetMethodsList(userId),
+      this.props.onGetInstrumentList(userId),
+      this.props.onGetReagents(userId),
+    ]);
+
     this.setState(
       {
         ResultList: this.props.ResultList,
@@ -669,10 +679,14 @@ async componentDidMount() {
         schemeType: this.props.schemeType,
         isDataLoaded: true,
         loading: false,
+        roundLoadedFor: roundId,
       },
       this.combineData
     );
-  });
+  } catch (error) {
+    console.error("Data load error", error);
+    this.setState({ loading: false });
+  }
 }
 
 
