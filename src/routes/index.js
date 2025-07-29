@@ -91,6 +91,7 @@ import DatabaseadminList from "pages/HrAdmin/databaseadmin-list";
 import DashboardPartcipant from "pages/Dashboard-Participant";
 import Rounds from "pages/Participant/rounds";
 import Performance from "pages/Participant/performance";
+import Home from "pages/Participant/home";
 import NewsPage from "pages/Participant/news-paritcipant";
 import Email from "pages/Participant/email";
 import AllParticipant from "pages/Participant/all-participants";
@@ -406,6 +407,7 @@ const participantsAuthProtectedRoutes = [
   },
   { path: "/:organization_name/rounds-participant", component: Rounds },
   { path: "/:organization_name/performance", component: Performance },
+  { path: "/:organization_name/home", component: Home },
   { path: "/:organization_name/newspage", component: NewsPage },
   { path: "/email", component: Email },
   {

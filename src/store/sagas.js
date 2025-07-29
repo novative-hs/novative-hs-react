@@ -74,6 +74,7 @@ import RegistrationAdminSaga from "./registration-admin/saga";
 import FinanceAdminSaga from "./finance-admin/saga";
 import InstrumentTypeListSaga from "./databaseofunits/saga";
 import NewsSaga from "./news/saga";
+import HomeSaga from "./home/saga";
 import MethodsListSaga from "./methods/sagas";
 
 import CityListSaga from "./participantcity/sagas";
@@ -91,6 +92,7 @@ import QualitativeTypeListSaga from "./qualitativetype/sagas";
 import SelectedSchemeListSaga from "./selected-scheme/saga";
 import AnalyteSchemeSaga from "./results/saga";
 import ResultSubmitSaga from "./resultsSubmit/saga";
+import HomeSaga from "./home/saga";
 
 export  default function* rootSaga() {
   yield all([
@@ -109,6 +111,7 @@ export  default function* rootSaga() {
     fork(SampleSaga),
     fork(organizationaccountSaga),
     fork(NewsSaga),
+    fork(HomeSaga),
     fork(MethodsListSaga),
     fork(InstrumentListSaga),
     fork(ReagentsListSaga),

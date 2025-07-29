@@ -108,6 +108,7 @@ import financeAdmin from "./finance-admin/reducer";
 //Manufactural
 
 import news from "./news/reducer";
+import home from "./home/reducer"
 import ListMethods from "./methods/reducers";
 
 //REG
@@ -155,6 +156,7 @@ const rootReducer = combineReducers({
   regParticipant,
   ListMethods,
   news,
+  home,
   organizationaccount,
   Dashboard,
   referrelFeeLabs,

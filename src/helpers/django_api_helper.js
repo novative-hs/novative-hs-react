@@ -4254,3 +4254,8 @@ export const updateMethodAnalytelist = schemeanalyte => {
     }
   );
 };
+
+export const gethomedata = (id) =>
+  get(`${url.GET_HOME_DATA}/${id}`, {
+    headers: getHeader(authHeader()),
+  });

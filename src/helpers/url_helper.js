@@ -220,6 +220,7 @@ export const UPDATE_ORGANIZATION_LIST = `${API_ENDPOINT}/api/organizationdata/up
 export const GET_LABS = `${API_ENDPOINT}/api/finance-officer/lab-MOF-list`;
 export const GET_ALL_LABS_LIST = `${API_ENDPOINT}/api/finance-officer/labs-list`;
 export const GET_MAIN_LABS = `${API_ENDPOINT}/api/lab/lab-list`;
+export const GET_HOME_DATA = `${API_ENDPOINT}/api/lab/home-data`;
 
 export const GET_PARTICIPANT_SCHEME_LIST = `${API_ENDPOINT}/api/registration-admin/payment-scheme-list`;
 // TEST

@@ -767,15 +767,17 @@ class Header extends Component {
                       >
                         <ul className="navbar-nav">
                           <li className="nav-item">
-                            <NavLink
-                              to={`/${organization_name}/dashboard-participant`}
-                              className={({ isActive }) =>
-                                `dropdown-item ${isActive ? "active-link" : ""}`
-                              }
-                            >
-                              <span className="pt-4 font-size-12">Home</span>
-                            </NavLink>
-                          </li>
+                          <NavLink
+                            to={`/${organization_name}/home`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
+                            <span className="pt-4 font-size-12">
+                              Home
+                            </span>
+                          </NavLink>
+                        </li> 
                           <li className="nav-item">
                             {/* <NavLink to={"/rounds-participant"} className="dropdown-item"> */}
                             <NavLink
