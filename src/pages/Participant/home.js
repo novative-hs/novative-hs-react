@@ -84,9 +84,9 @@ class Home extends Component {
   formatDate = (dateStr) => {
     const date = new Date(dateStr);
     const day = String(date.getDate()).padStart(2, "0");
-    const month = date.toLocaleString("default", { month: "long" }); // e.g., "July"
+    const month = date.toLocaleString("default", { month: "short" }); // e.g., "July"
     const year = String(date.getFullYear()).slice(-2); // Last 2 digits of year
-    return `${day}/${month}/${year}`;
+    return `${day}-${month}-${year}`;
   };
 
   render() {
@@ -257,95 +257,78 @@ class Home extends Component {
                   {/* Second Row */}
                   <Row className="mt-5 align-items-stretch">
                     <Col>
-                      <div
-                        className="p-4 bg-light shadow-lg rounded-4 h-100 d-flex flex-column"
-                        style={{ maxHeight: "200px", overflowY: "auto" }}
-                      >
-                        <h5
-                          className="mb-3 text-primary"
-                          style={{ fontWeight: "bold" }}
-                        >
-                          Reports
-                        </h5>
-                        <table className="table table-sm table-bordered table-striped mb-0">
-                          <thead className="table-light">
-                            <tr>
-                              <th className="text-start">Scheme Name</th>
-                              <th className="text-start">Round Code</th>
-                              <th className="text-start">View Report</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {(() => {
-                              const rounds = this.state.report_available_rounds;
-                              const purchased = this.state.purchased_schemes; // from API
+  <div
+    className="p-4 bg-light shadow-lg rounded-4 h-100 d-flex flex-column"
+    style={{ maxHeight: "200px", overflowY: "auto" }}
+  >
+    <h5 className="mb-3 text-primary" style={{ fontWeight: "bold" }}>
+      Reports
+    </h5>
+    <table className="table table-sm table-bordered table-striped mb-0">
+      <thead className="table-light">
+        <tr>
+          <th className="text-start">Scheme Name</th>
+          <th className="text-start">Round Code</th>
+          <th className="text-start">View Report</th>
+        </tr>
+      </thead>
+      <tbody>
+        {(() => {
+          const rounds = this.state.report_available_rounds;
+          const purchased = this.state.purchased_schemes; // from API
 
-                              if (!rounds || rounds.length === 0 || !purchased)
-                                return null;
+          if (!rounds || rounds.length === 0 || !purchased) return null;
 
-                              // Create a set of purchased (scheme_id + cycle_no)
-                              const purchasedSet = new Set(
-                                purchased.map(
-                                  (p) => `${p.scheme_id}-${p.cycle_no}`
-                                )
-                              );
+          // Create a set of purchased (scheme_id + cycle_no)
+          const purchasedSet = new Set(
+            purchased.map((p) => `${p.scheme_id}-${p.cycle_no}`)
+          );
 
-                              // Filter rounds that match purchased
-                              const filteredRounds = rounds.filter((round) =>
-                                purchasedSet.has(
-                                  `${round.scheme}-${round.cycle_no}`
-                                )
-                              );
+          // Filter rounds that match purchased
+          const filteredRounds = rounds.filter((round) =>
+            purchasedSet.has(`${round.scheme}-${round.cycle_no}`)
+          );
 
-                              // Group by latest closing_date per scheme
-                              const latestPerScheme = {};
-                              filteredRounds.forEach((round) => {
-                                if (
-                                  !latestPerScheme[round.scheme] ||
-                                  new Date(round.closing_date) >
-                                    new Date(
-                                      latestPerScheme[round.scheme].closing_date
-                                    )
-                                ) {
-                                  latestPerScheme[round.scheme] = round;
-                                }
-                              });
+          // Get the latest round overall based on closing_date
+          let latestRound = null;
+          filteredRounds.forEach((round) => {
+            if (
+              !latestRound ||
+              new Date(round.closing_date) > new Date(latestRound.closing_date)
+            ) {
+              latestRound = round;
+            }
+          });
 
-                              return Object.values(latestPerScheme).map(
-                                (round, index) => (
-                                  <tr key={index}>
-                                    <td className="text-start">
-                                      {round.scheme_name}
-                                    </td>
-                                    <td className="text-start">
-                                      {round.rounds}
-                                    </td>
-                                    <td className="text-start">
-                                      {round.status === "Report Available" && (
-                                        <Tooltip title="View Report">
-                                          {round.scheme_type ===
-                                          "Quantitative" ? (
-                                            <Link
-                                              to={`/${organization_name}/${round.id}/${round.participant_id}/report1_view`}
-                                              className="fas fa-file-alt text-primary font-size-18"
-                                            />
-                                          ) : (
-                                            <Link
-                                              to={`/${organization_name}/${round.id}/${round.participant_id}/qualitative_report_view`}
-                                              className="fas fa-file-alt text-success font-size-18"
-                                            />
-                                          )}
-                                        </Tooltip>
-                                      )}
-                                    </td>
-                                  </tr>
-                                )
-                              );
-                            })()}
-                          </tbody>
-                        </table>
-                      </div>
-                    </Col>
+          return latestRound ? (
+            <tr>
+              <td className="text-start">{latestRound.scheme_name}</td>
+              <td className="text-start">{latestRound.rounds}</td>
+              <td className="text-start">
+                {latestRound.status === "Report Available" && (
+                  <Tooltip title="View Report">
+                    {latestRound.scheme_type === "Quantitative" ? (
+                      <Link
+                        to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/report1_view`}
+                        className="fas fa-file-alt text-primary font-size-18"
+                      />
+                    ) : (
+                      <Link
+                        to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/qualitative_report_view`}
+                        className="fas fa-file-alt text-success font-size-18"
+                      />
+                    )}
+                  </Tooltip>
+                )}
+              </td>
+            </tr>
+          ) : null;
+        })()}
+      </tbody>
+    </table>
+  </div>
+</Col>
+
 
                     <Col>
                       <div
