@@ -281,43 +281,49 @@ class Home extends Component {
 
                               if (!rounds || rounds.length === 0) return null;
 
-                              // Get the latest round by closing_date (assuming ISO format YYYY-MM-DD)
-                              const latestRound = rounds.reduce(
-                                (latest, current) =>
-                                  new Date(current.closing_date) >
-                                  new Date(latest.closing_date)
-                                    ? current
-                                    : latest
-                              );
+                              // Group and filter to get latest round per scheme
+                              const latestPerScheme = {};
+                              rounds.forEach(round => {
+                                if (
+                                  !latestPerScheme[round.scheme] ||
+                                  new Date(round.closing_date) >
+                                    new Date(
+                                      latestPerScheme[round.scheme].closing_date
+                                    )
+                                ) {
+                                  latestPerScheme[round.scheme] = round;
+                                }
+                              });
 
-                              return (
-                                <tr>
-                                  <td className="text-start">
-                                    {latestRound.scheme_name}
-                                  </td>
-                                  <td className="text-start">
-                                    {latestRound.rounds}
-                                  </td>
-                                  <td className="text-start">
-                                    {latestRound.status ===
-                                      "Report Available" && (
-                                      <Tooltip title="View Report">
-                                        {latestRound.scheme_type ===
-                                        "Quantitative" ? (
-                                          <Link
-                                            to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/report1_view`}
-                                            className="fas fa-file-alt text-primary font-size-18"
-                                          />
-                                        ) : (
-                                          <Link
-                                            to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/qualitative_report_view`}
-                                            className="fas fa-file-alt text-success font-size-18"
-                                          />
-                                        )}
-                                      </Tooltip>
-                                    )}
-                                  </td>
-                                </tr>
+                              return Object.values(latestPerScheme).map(
+                                (round, index) => (
+                                  <tr key={index}>
+                                    <td className="text-start">
+                                      {round.scheme_name}
+                                    </td>
+                                    <td className="text-start">
+                                      {round.rounds}
+                                    </td>
+                                    <td className="text-start">
+                                      {round.status === "Report Available" && (
+                                        <Tooltip title="View Report">
+                                          {round.scheme_type ===
+                                          "Quantitative" ? (
+                                            <Link
+                                              to={`/${organization_name}/${round.id}/${round.participant_id}/report1_view`}
+                                              className="fas fa-file-alt text-primary font-size-18"
+                                            />
+                                          ) : (
+                                            <Link
+                                              to={`/${organization_name}/${round.id}/${round.participant_id}/qualitative_report_view`}
+                                              className="fas fa-file-alt text-success font-size-18"
+                                            />
+                                          )}
+                                        </Tooltip>
+                                      )}
+                                    </td>
+                                  </tr>
+                                )
                               );
                             })()}
                           </tbody>
