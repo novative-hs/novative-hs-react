@@ -76,12 +76,12 @@ class Home extends Component {
       });
     }
   }
-  handleEnroll = schemeId => {
+  handleEnroll = (schemeId) => {
     // Example: Save selected scheme ID, or do nothing if not needed
     console.log("Enrolling in scheme ID:", schemeId);
     // Optionally store in localStorage or Redux if needed in the Pay page
   };
-  formatDate = dateStr => {
+  formatDate = (dateStr) => {
     const date = new Date(dateStr);
     const day = String(date.getDate()).padStart(2, "0");
     const month = date.toLocaleString("default", { month: "long" }); // e.g., "July"
@@ -180,7 +180,7 @@ class Home extends Component {
                             {this.state.schemes.map((scheme, index) => {
                               const isPurchased =
                                 this.state.purchased_schemes.some(
-                                  ps =>
+                                  (ps) =>
                                     ps.id === scheme.id ||
                                     ps.scheme_id === scheme.id
                                 );
@@ -237,7 +237,7 @@ class Home extends Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {this.state.open_rounds.map(round => (
+                            {this.state.open_rounds.map((round) => (
                               <tr key={round.id}>
                                 <td className="text-start">
                                   {round.rounds} - {round.scheme_name}
@@ -278,12 +278,28 @@ class Home extends Component {
                           <tbody>
                             {(() => {
                               const rounds = this.state.report_available_rounds;
+                              const purchased = this.state.purchased_schemes; // from API
 
-                              if (!rounds || rounds.length === 0) return null;
+                              if (!rounds || rounds.length === 0 || !purchased)
+                                return null;
 
-                              // Group and filter to get latest round per scheme
+                              // Create a set of purchased (scheme_id + cycle_no)
+                              const purchasedSet = new Set(
+                                purchased.map(
+                                  (p) => `${p.scheme_id}-${p.cycle_no}`
+                                )
+                              );
+
+                              // Filter rounds that match purchased
+                              const filteredRounds = rounds.filter((round) =>
+                                purchasedSet.has(
+                                  `${round.scheme}-${round.cycle_no}`
+                                )
+                              );
+
+                              // Group by latest closing_date per scheme
                               const latestPerScheme = {};
-                              rounds.forEach(round => {
+                              filteredRounds.forEach((round) => {
                                 if (
                                   !latestPerScheme[round.scheme] ||
                                   new Date(round.closing_date) >
@@ -433,13 +449,13 @@ Home.propTypes = {
   home: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   home: state.home.home,
   // organization_name: state.auth.organization_name,
 });
 
-const mapDispatchToProps = dispatch => ({
-  gethomedata: id => dispatch(gethomedata(id)),
+const mapDispatchToProps = (dispatch) => ({
+  gethomedata: (id) => dispatch(gethomedata(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));
