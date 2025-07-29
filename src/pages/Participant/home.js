@@ -63,6 +63,7 @@ class Home extends Component {
         open_rounds,
         report_available_rounds,
         news,
+        participant_id, // ✅ Extract participant_id
       } = this.props.home;
 
       this.setState({
@@ -73,15 +74,17 @@ class Home extends Component {
         report_available_rounds: report_available_rounds || [],
         notifications: news || [],
         lab_name: name || "",
+        participant_id: participant_id || null, // ✅ Set it in state
       });
     }
   }
-  handleEnroll = (schemeId) => {
+
+  handleEnroll = schemeId => {
     // Example: Save selected scheme ID, or do nothing if not needed
     console.log("Enrolling in scheme ID:", schemeId);
     // Optionally store in localStorage or Redux if needed in the Pay page
   };
-  formatDate = (dateStr) => {
+  formatDate = dateStr => {
     const date = new Date(dateStr);
     const day = String(date.getDate()).padStart(2, "0");
     const month = date.toLocaleString("default", { month: "short" }); // e.g., "July"
@@ -93,6 +96,23 @@ class Home extends Component {
     const { schemes } = this.state;
     const organization_name =
       localStorage.getItem("organization_name") || "default-org";
+    const participantId = Number(this.state.participant_id);
+    const allRounds = this.state.report_available_rounds || [];
+
+    // Step 1: Filter rounds for "Report Available" and correct participant
+    const availableRounds = allRounds.filter(
+      round =>
+        round.status === "Report Available" &&
+        Number(round.participant_id) === participantId
+    );
+
+    // Step 2: Sort by updated date descending (assuming `updated_at` field is present)
+    const sortedRounds = availableRounds.sort(
+      (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+    );
+
+    // Step 3: Pick the latest one
+    const latestRound = sortedRounds[0];
 
     return (
       <React.Fragment>
@@ -180,7 +200,7 @@ class Home extends Component {
                             {this.state.schemes.map((scheme, index) => {
                               const isPurchased =
                                 this.state.purchased_schemes.some(
-                                  (ps) =>
+                                  ps =>
                                     ps.id === scheme.id ||
                                     ps.scheme_id === scheme.id
                                 );
@@ -233,11 +253,11 @@ class Home extends Component {
                             <tr>
                               <th className="text-start">Round</th>
                               {/* <th className="text-start">Start Date</th> */}
-                              <th className="text-start">Closing Date</th>
+                              <th className="text-start">Closing date</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {this.state.open_rounds.map((round) => (
+                            {this.state.open_rounds.map(round => (
                               <tr key={round.id}>
                                 <td className="text-start">
                                   {round.rounds} - {round.scheme_name}
@@ -257,78 +277,83 @@ class Home extends Component {
                   {/* Second Row */}
                   <Row className="mt-5 align-items-stretch">
                     <Col>
-  <div
-    className="p-4 bg-light shadow-lg rounded-4 h-100 d-flex flex-column"
-    style={{ maxHeight: "200px", overflowY: "auto" }}
-  >
-    <h5 className="mb-3 text-primary" style={{ fontWeight: "bold" }}>
-      Reports
-    </h5>
-    <table className="table table-sm table-bordered table-striped mb-0">
-      <thead className="table-light">
-        <tr>
-          <th className="text-start">Scheme Name</th>
-          <th className="text-start">Round Code</th>
-          <th className="text-start">View Report</th>
-        </tr>
-      </thead>
-      <tbody>
-        {(() => {
-          const rounds = this.state.report_available_rounds;
-          const purchased = this.state.purchased_schemes; // from API
+                      <div
+                        className="p-4 bg-light shadow-lg rounded-4 h-100 d-flex flex-column"
+                        style={{ maxHeight: "200px", overflowY: "auto" }}
+                      >
+                        <h5
+                          className="mb-3 text-primary"
+                          style={{ fontWeight: "bold" }}
+                        >
+                          Reports
+                        </h5>
+                        <table className="table table-sm table-bordered table-striped mb-0">
+                          <thead className="table-light">
+                            <tr>
+                              <th className="text-start">Scheme Name</th>
 
-          if (!rounds || rounds.length === 0 || !purchased) return null;
+                              <th className="text-start">View Report</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {(() => {
+                              const rounds = this.state.report_available_rounds;
+                              const participantId = this.state.participant_id;
 
-          // Create a set of purchased (scheme_id + cycle_no)
-          const purchasedSet = new Set(
-            purchased.map((p) => `${p.scheme_id}-${p.cycle_no}`)
-          );
+                              if (!rounds || rounds.length === 0) return null;
 
-          // Filter rounds that match purchased
-          const filteredRounds = rounds.filter((round) =>
-            purchasedSet.has(`${round.scheme}-${round.cycle_no}`)
-          );
+                              // 🔍 Filter only report-available rounds for this lab
+                              const filteredRounds = rounds.filter(
+                                round =>
+                                  round.status === "Report Available" &&
+                                  round.participant_id === participantId
+                              );
 
-          // Get the latest round overall based on closing_date
-          let latestRound = null;
-          filteredRounds.forEach((round) => {
-            if (
-              !latestRound ||
-              new Date(round.closing_date) > new Date(latestRound.closing_date)
-            ) {
-              latestRound = round;
-            }
-          });
+                              // ✅ Get the most recently updated round (based on closing_date)
+                              const latestRound = filteredRounds.reduce(
+                                (latest, current) => {
+                                  return !latest ||
+                                    new Date(current.closing_date) >
+                                      new Date(latest.closing_date)
+                                    ? current
+                                    : latest;
+                                },
+                                null
+                              );
 
-          return latestRound ? (
-            <tr>
-              <td className="text-start">{latestRound.scheme_name}</td>
-              <td className="text-start">{latestRound.rounds}</td>
-              <td className="text-start">
-                {latestRound.status === "Report Available" && (
-                  <Tooltip title="View Report">
-                    {latestRound.scheme_type === "Quantitative" ? (
-                      <Link
-                        to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/report1_view`}
-                        className="fas fa-file-alt text-primary font-size-18"
-                      />
-                    ) : (
-                      <Link
-                        to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/qualitative_report_view`}
-                        className="fas fa-file-alt text-success font-size-18"
-                      />
-                    )}
-                  </Tooltip>
-                )}
-              </td>
-            </tr>
-          ) : null;
-        })()}
-      </tbody>
-    </table>
-  </div>
-</Col>
+                              // 🛑 Return nothing if no round matches
+                              if (!latestRound) return null;
 
+                              // ✅ Return the single latest row
+                              return (
+                                <tr>
+                                  <td className="text-start">
+                                    {latestRound.scheme_name}
+                                  </td>
+
+                                  <td className="text-start">
+                                    <Tooltip title="View Report">
+                                      {latestRound.scheme_type ===
+                                      "Quantitative" ? (
+                                        <Link
+                                          to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/report1_view`}
+                                          className="fas fa-file-alt text-primary font-size-18"
+                                        />
+                                      ) : (
+                                        <Link
+                                          to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/qualitative_report_view`}
+                                          className="fas fa-file-alt text-success font-size-18"
+                                        />
+                                      )}
+                                    </Tooltip>
+                                  </td>
+                                </tr>
+                              );
+                            })()}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Col>
 
                     <Col>
                       <div
@@ -432,13 +457,13 @@ Home.propTypes = {
   home: PropTypes.array,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   home: state.home.home,
   // organization_name: state.auth.organization_name,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  gethomedata: (id) => dispatch(gethomedata(id)),
+const mapDispatchToProps = dispatch => ({
+  gethomedata: id => dispatch(gethomedata(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));
