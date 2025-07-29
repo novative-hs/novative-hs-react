@@ -233,7 +233,7 @@ class Home extends Component {
                             <tr>
                               <th className="text-start">Round</th>
                               {/* <th className="text-start">Start Date</th> */}
-                              <th className="text-start">View Report</th>
+                              <th className="text-start">Closing Date</th>
                             </tr>
                           </thead>
                           <tbody>
