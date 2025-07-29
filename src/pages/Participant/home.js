@@ -272,7 +272,7 @@ class Home extends Component {
                             <tr>
                               <th className="text-start">Scheme Name</th>
                               <th className="text-start">Round Code</th>
-                              <th className="text-start">Closing Date</th>
+                              <th className="text-start">View Report</th>
                             </tr>
                           </thead>
                           <tbody>
