@@ -705,18 +705,16 @@ class Navbar extends Component {
                       id="topnav-menu-content"
                     >
                       <ul className="navbar-nav">
-                         <li className="nav-item">
+                        <li className="nav-item">
                           <NavLink
-                            to={`/${organization_name}/home`}
+                            to={`/${organization_name}/dashboard-participant`}
                             className={({ isActive }) =>
                               `dropdown-item ${isActive ? "active-link" : ""}`
                             }
                           >
-                            <span className="pt-4 font-size-12">
-                              Home
-                            </span>
+                            <span className="pt-4 font-size-12">Home</span>
                           </NavLink>
-                        </li> 
+                        </li>
                         <li className="nav-item">
                           {/* <NavLink to={"/rounds-participant"} className={({ isActive }) => `dropdown-item ${isActive ? "active-link" : ""}`}> */}
                           <NavLink

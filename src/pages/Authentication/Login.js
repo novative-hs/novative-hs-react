@@ -229,7 +229,7 @@ class Login extends Component {
                               this.props.history.push(
                                 `/${encodeURIComponent(
                                   organization_name
-                                )}/home`
+                                )}/dashboard-participant`
                               );
                               break;
                             case "registration-admin":
