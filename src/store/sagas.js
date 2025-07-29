@@ -92,7 +92,7 @@ import QualitativeTypeListSaga from "./qualitativetype/sagas";
 import SelectedSchemeListSaga from "./selected-scheme/saga";
 import AnalyteSchemeSaga from "./results/saga";
 import ResultSubmitSaga from "./resultsSubmit/saga";
-import HomeSaga from "./home/saga";
+// import HomeSaga from "./home/saga";
 
 export  default function* rootSaga() {
   yield all([
