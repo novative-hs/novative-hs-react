@@ -36,12 +36,13 @@ class Home extends Component {
       lab_name: "", // if you want to show lab name
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
-        : "",
+        : null, // ✅ Default to null instead of empty string
     };
     console.log("USER ID from localStorage:", this.state.user_id);
   }
 
   componentDidMount() {
+    const { organization_name } = this.props.match.params;
     const { user_id } = this.state;
     if (user_id) {
       this.props.gethomedata(user_id); // ✅ Dispatch Redux action
@@ -170,10 +171,7 @@ class Home extends Component {
                               >
                                 Scheme Name
                               </th>
-                              <th
-                                className="text-center"
-                                style={{ fontWeight: "bold" }}
-                              >
+                              <th style={{ fontWeight: "bold" }}>
                                 Enrollement
                               </th>
                             </tr>
@@ -189,16 +187,24 @@ class Home extends Component {
 
                               return (
                                 <tr key={scheme.id || index}>
-                                  <td style={{ fontWeight: 500 }}>
+                                  <td
+                                    style={{
+                                      fontWeight: 500,
+                                    }}
+                                  >
                                     {scheme.name}
                                   </td>
-                                  <td className="text-center">
+                                  <td>
                                     {isPurchased ? (
                                       <span className="text-primary">
                                         Enrolled
                                       </span>
                                     ) : (
-                                      <span className="text-danger">
+                                      <span
+                                        // to={`/${this.state.organization_name}/pay`}
+                                        className="text-danger "
+                                        // onClick={() => this.handleEnroll(scheme.id)}
+                                      >
                                         Pending
                                       </span>
                                     )}
@@ -227,7 +233,7 @@ class Home extends Component {
                             <tr>
                               <th className="text-start">Round</th>
                               {/* <th className="text-start">Start Date</th> */}
-                              <th className="text-start">Closing Date</th>
+                              <th className="text-start">View Report</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -270,34 +276,50 @@ class Home extends Component {
                             </tr>
                           </thead>
                           <tbody>
-                            {this.state.report_available_rounds.map(
-                              (round, index) => (
-                                <tr key={index}>
+                            {(() => {
+                              const rounds = this.state.report_available_rounds;
+
+                              if (!rounds || rounds.length === 0) return null;
+
+                              // Get the latest round by closing_date (assuming ISO format YYYY-MM-DD)
+                              const latestRound = rounds.reduce(
+                                (latest, current) =>
+                                  new Date(current.closing_date) >
+                                  new Date(latest.closing_date)
+                                    ? current
+                                    : latest
+                              );
+
+                              return (
+                                <tr>
                                   <td className="text-start">
-                                    {round.scheme_name}
+                                    {latestRound.scheme_name}
                                   </td>
-                                  <td className="text-start">{round.rounds}</td>
-                                  {/* <td className="text-start">
-                                    {round.status === "Report Available" && (
+                                  <td className="text-start">
+                                    {latestRound.rounds}
+                                  </td>
+                                  <td className="text-start">
+                                    {latestRound.status ===
+                                      "Report Available" && (
                                       <Tooltip title="View Report">
-                                        {round.scheme_type ===
+                                        {latestRound.scheme_type ===
                                         "Quantitative" ? (
                                           <Link
-                                            to={`/${organization_name}/${round.id}/${round.lab_id}/report1_view`}
+                                            to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/report1_view`}
                                             className="fas fa-file-alt text-primary font-size-18"
                                           />
                                         ) : (
                                           <Link
-                                            to={`/${organization_name}/${round.id}/${round.lab_id}/qualitative_report_view`}
+                                            to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/qualitative_report_view`}
                                             className="fas fa-file-alt text-success font-size-18"
                                           />
                                         )}
                                       </Tooltip>
                                     )}
-                                  </td> */}
+                                  </td>
                                 </tr>
-                              )
-                            )}
+                              );
+                            })()}
                           </tbody>
                         </table>
                       </div>
@@ -381,7 +403,7 @@ class Home extends Component {
                     </ul>
                     <div className="mt-auto pt-2 border-top text-end">
                       <Link
-                        to={`/${this.state.organization_name}/newspage`}
+                        to={`/${organization_name}/newspage`}
                         className="text-primary text-decoration-none"
                       >
                         View All
