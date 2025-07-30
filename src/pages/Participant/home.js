@@ -34,7 +34,9 @@ class Home extends Component {
       notifications: [], // your actual notification data
       hoveredIndex: null,
       report_available_rounds: [],
-      notifications: [],
+      // your data
+      hoveredIndex: null, // for hover effect
+      expandedIndex: null, // for toggling full description,
       lab_name: "", // if you want to show lab name
       user_id: localStorage.getItem("authUser")
         ? JSON.parse(localStorage.getItem("authUser")).user_id
@@ -422,7 +424,10 @@ class Home extends Component {
                     >
                       Notifications
                     </h5>
-                    <ul className="list-unstyled flex-grow-1">
+                    <ul
+                      className="list-unstyled flex-grow-1"
+                      
+                    >
                       {this.state.notifications.slice(0, 5).map((item, idx) => {
                         const dateObj = new Date(item.date_of_addition);
                         const day = String(dateObj.getDate()).padStart(2, "0");
@@ -441,6 +446,12 @@ class Home extends Component {
                         );
 
                         const isHovered = this.state.hoveredIndex === idx;
+                        const isExpanded = this.state.expandedIndex === idx;
+
+                        const shortDescription =
+                          item.description.length > 50
+                            ? item.description.slice(0, 50)
+                            : item.description;
 
                         return (
                           <li
@@ -451,6 +462,11 @@ class Home extends Component {
                             }
                             onMouseLeave={() =>
                               this.setState({ hoveredIndex: null })
+                            }
+                            onClick={() =>
+                              this.setState({
+                                expandedIndex: isExpanded ? null : idx,
+                              })
                             }
                           >
                             <div
@@ -465,7 +481,7 @@ class Home extends Component {
                                 cursor: "pointer",
                                 wordWrap: "break-word",
                                 whiteSpace: "normal",
-                                overflow: "visible", // <-- Ensures nothing is clipped or scrolled
+                                // overflow: "visible",
                               }}
                             >
                               <div className="mb-1 text-primary small fw-semibold">
@@ -474,20 +490,27 @@ class Home extends Component {
                               </div>
 
                               <strong
-                                className="d-block text-primary mb-1"
+                                className="d-block text-dark mb-1"
                                 style={{ fontSize: "1rem" }}
                               >
                                 {item.title}
                               </strong>
 
-                              <div
-                                className="text-dark"
-                                style={{
-                                  wordWrap: "break-word",
-                                  whiteSpace: "normal",
-                                }}
-                              >
-                                {item.description}
+                              <div className="text-dark">
+                                {isExpanded
+                                  ? item.description
+                                  : shortDescription}
+                                {!isExpanded && item.description.length > 50 && (
+                                  <span
+                                    className="ms-1 text-primary"
+                                    style={{
+                                      textDecoration: "underline",
+                                      fontSize: "0.75rem",
+                                    }}
+                                  >
+                                    Read more
+                                  </span>
+                                )}
                               </div>
                             </div>
                           </li>
