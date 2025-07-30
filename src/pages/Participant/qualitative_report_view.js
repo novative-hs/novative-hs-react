@@ -198,7 +198,7 @@ class Results extends Component {
     const defaultSorted = [
       {
         dataField: "analyte_name",
-        order: "desc",
+        order: "asc",
       },
     ];
 

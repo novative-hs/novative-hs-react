@@ -158,11 +158,12 @@ class Home extends Component {
                     }}
                   >
                     <h4
-                      className="text-primary"
+                      // className="text-primary"
                       style={{
                         fontWeight: "bold",
-                        fontFamily: "tahoma",
+                        fontFamily: "Segoe UI",
                         margin: 0,
+                        color: "#1042adff",
                       }}
                     >
                       Welcome! {this.state.lab_name}

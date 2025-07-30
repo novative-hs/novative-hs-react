@@ -14,3 +14,13 @@
     font-weight: bold;
     color: white !important;
   }
+  
+.navbar-nav .dropdown-item.active-link,
+.navbar-nav .dropdown-item.active,
+.navbar-nav .dropdown-item:hover {
+  background-color: rgb(220, 246, 255) !important; /* NEQAS background */
+  color: rgb(38, 19, 207) !important;
+  font-weight: bold;
+  border-radius: 6px !important;
+  width: 50px;
+}
