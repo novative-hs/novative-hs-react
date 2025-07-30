@@ -31,6 +31,8 @@ class Home extends Component {
       purchased_schemes: [],
       payments: [],
       open_rounds: [],
+      notifications: [], // your actual notification data
+      hoveredIndex: null,
       report_available_rounds: [],
       notifications: [],
       lab_name: "", // if you want to show lab name
@@ -286,7 +288,7 @@ class Home extends Component {
                           className="mb-3 text-primary"
                           style={{ fontWeight: "bold" }}
                         >
-                          Reports
+                          Last Round Report
                         </h5>
                         <table className="table table-sm table-bordered table-striped mb-0">
                           <thead className="table-light">
@@ -420,18 +422,79 @@ class Home extends Component {
                     >
                       Notifications
                     </h5>
-                    <ul
-                      className="list-unstyled flex-grow-1"
-                      style={{ overflowY: "auto" }}
-                    >
-                      {this.state.notifications.slice(0, 5).map((item, idx) => (
-                        <li key={idx} className="mb-2">
-                          <strong>{item.title}</strong>
-                          <br />
-                          <small>{item.date}</small>
-                        </li>
-                      ))}
+                    <ul className="list-unstyled flex-grow-1">
+                      {this.state.notifications.slice(0, 5).map((item, idx) => {
+                        const dateObj = new Date(item.date_of_addition);
+                        const day = String(dateObj.getDate()).padStart(2, "0");
+                        const month = dateObj.toLocaleString("en-US", {
+                          month: "short",
+                        });
+                        const year = String(dateObj.getFullYear()).slice(-2);
+                        const formattedDate = `${day}-${month}-${year}`;
+                        const formattedTime = dateObj.toLocaleTimeString(
+                          "en-IN",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          }
+                        );
+
+                        const isHovered = this.state.hoveredIndex === idx;
+
+                        return (
+                          <li
+                            key={idx}
+                            className="mb-3"
+                            onMouseEnter={() =>
+                              this.setState({ hoveredIndex: idx })
+                            }
+                            onMouseLeave={() =>
+                              this.setState({ hoveredIndex: null })
+                            }
+                          >
+                            <div
+                              className="p-3 rounded shadow-sm"
+                              style={{
+                                backgroundColor: "#f0f5ff",
+                                fontSize: "0.9rem",
+                                transform: isHovered
+                                  ? "scale(1.02)"
+                                  : "scale(1)",
+                                transition: "transform 0.2s ease-in-out",
+                                cursor: "pointer",
+                                wordWrap: "break-word",
+                                whiteSpace: "normal",
+                                overflow: "visible", // <-- Ensures nothing is clipped or scrolled
+                              }}
+                            >
+                              <div className="mb-1 text-primary small fw-semibold">
+                                {formattedDate} <span className="mx-1">/</span>{" "}
+                                {formattedTime}
+                              </div>
+
+                              <strong
+                                className="d-block text-primary mb-1"
+                                style={{ fontSize: "1rem" }}
+                              >
+                                {item.title}
+                              </strong>
+
+                              <div
+                                className="text-dark"
+                                style={{
+                                  wordWrap: "break-word",
+                                  whiteSpace: "normal",
+                                }}
+                              >
+                                {item.description}
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })}
                     </ul>
+
                     <div className="mt-auto pt-2 border-top text-end">
                       <Link
                         to={`/${organization_name}/newspage`}
