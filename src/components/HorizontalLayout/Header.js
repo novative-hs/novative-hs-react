@@ -768,7 +768,7 @@ class Header extends Component {
                         <ul className="navbar-nav">
                           <li className="nav-item">
                             <NavLink
-                              to={`/${organization_name}/dashboard-participant`}
+                              to={`/${organization_name}/home`}
                               className={({ isActive }) =>
                                 `dropdown-item ${isActive ? "active-link" : ""}`
                               }
