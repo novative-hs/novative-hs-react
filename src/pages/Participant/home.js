@@ -319,15 +319,15 @@ class Home extends Component {
                               const groupedByScheme = {};
 
                               filteredRounds.forEach(round => {
-                                const existing =
-                                  groupedByScheme[round.scheme_id];
+                                const existing = groupedByScheme[round.scheme];
 
                                 if (
                                   !existing ||
                                   new Date(round.closing_date) >
                                     new Date(existing.closing_date)
                                 ) {
-                                  groupedByScheme[round.scheme_id] = round;
+                                  groupedByScheme[round.scheme] = round;
+
                                 }
                               });
 
