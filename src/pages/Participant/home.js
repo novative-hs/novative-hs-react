@@ -33,6 +33,7 @@ class Home extends Component {
       open_rounds: [],
       notifications: [], // your actual notification data
       hoveredIndex: null,
+      searchTerm: "",
       report_available_rounds: [],
       // your data
       hoveredIndex: null, // for hover effect
@@ -307,53 +308,55 @@ class Home extends Component {
 
                               if (!rounds || rounds.length === 0) return null;
 
-                              // 🔍 Filter only report-available rounds for this lab
+                              // 🔍 Filter rounds for this participant and status = "Report Available"
                               const filteredRounds = rounds.filter(
                                 round =>
                                   round.status === "Report Available" &&
                                   round.participant_id === participantId
                               );
 
-                              // ✅ Get the most recently updated round (based on closing_date)
-                              const latestRound = filteredRounds.reduce(
-                                (latest, current) => {
-                                  return !latest ||
-                                    new Date(current.closing_date) >
-                                      new Date(latest.closing_date)
-                                    ? current
-                                    : latest;
-                                },
-                                null
-                              );
+                              // ✅ Group by scheme_id and get the most recent round per scheme
+                              const groupedByScheme = {};
 
-                              // 🛑 Return nothing if no round matches
-                              if (!latestRound) return null;
+                              filteredRounds.forEach(round => {
+                                const existing =
+                                  groupedByScheme[round.scheme_id];
 
-                              // ✅ Return the single latest row
-                              return (
-                                <tr>
+                                if (
+                                  !existing ||
+                                  new Date(round.closing_date) >
+                                    new Date(existing.closing_date)
+                                ) {
+                                  groupedByScheme[round.scheme_id] = round;
+                                }
+                              });
+
+                              const latestRoundsPerScheme =
+                                Object.values(groupedByScheme);
+
+                              // ✅ Show a row per latest round of each scheme
+                              return latestRoundsPerScheme.map((round, idx) => (
+                                <tr key={idx}>
                                   <td className="text-start">
-                                    {latestRound.scheme_name}
+                                    {round.scheme_name}
                                   </td>
-
                                   <td className="text-start">
                                     <Tooltip title="View Report">
-                                      {latestRound.scheme_type ===
-                                      "Quantitative" ? (
+                                      {round.scheme_type === "Quantitative" ? (
                                         <Link
-                                          to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/report1_view`}
+                                          to={`/${organization_name}/${round.id}/${round.participant_id}/report1_view`}
                                           className="fas fa-file-alt text-primary font-size-18"
                                         />
                                       ) : (
                                         <Link
-                                          to={`/${organization_name}/${latestRound.id}/${latestRound.participant_id}/qualitative_report_view`}
+                                          to={`/${organization_name}/${round.id}/${round.participant_id}/qualitative_report_view`}
                                           className="fas fa-file-alt text-success font-size-18"
                                         />
                                       )}
                                     </Tooltip>
                                   </td>
                                 </tr>
-                              );
+                              ));
                             })()}
                           </tbody>
                         </table>
@@ -424,10 +427,7 @@ class Home extends Component {
                     >
                       Notifications
                     </h5>
-                    <ul
-                      className="list-unstyled flex-grow-1"
-                      
-                    >
+                    <ul className="list-unstyled flex-grow-1">
                       {this.state.notifications.slice(0, 5).map((item, idx) => {
                         const dateObj = new Date(item.date_of_addition);
                         const day = String(dateObj.getDate()).padStart(2, "0");
