@@ -147,7 +147,7 @@ class Login extends Component {
                   textShadow: "0 0 10px rgba(255,255,255,0.6)",
                 }}
               >
-                Coming Soon - Data Migration In Process
+                Welcome! We are excited to have you on board. Lets improve quality together
               </h1>
             </Col>
           </Row>
