@@ -1,6 +1,8 @@
 import {
   GET_HISTORY_LIST_ROUND_SUCCESS,
   GET_HISTORY_LIST_ROUND_FAIL,
+  GET_HISTORY_LIST_CSR_SUCCESS,
+  GET_HISTORY_LIST_CSR_FAIL,
   GET_RESULT_HISTORY_SUCCESS,
   GET_RESULT_HISTORY_FAIL
 } from "./actionTypes";
@@ -8,6 +10,7 @@ import {
 const INIT_STATE = {
   activitylogRounds: [],
   activitylogResults: [],
+   activitylogCsr: [],
   error: {},
 };
 
@@ -30,6 +33,19 @@ const activitylogRounds = (state = INIT_STATE, action) => {
       };
 
     //////////// 
+     case GET_HISTORY_LIST_CSR_SUCCESS:
+  console.log("[Reducer] CSR History Fetch Success. Data:", action.payload);
+  return {
+    ...state,
+    activitylogCsr: action.payload.data,
+  };
+
+case GET_HISTORY_LIST_CSR_FAIL:
+  console.error("[Reducer] CSR History Fetch Failed. Error:", action.payload);
+  return {
+    ...state,
+    error: action.payload,
+  };
     
     case GET_RESULT_HISTORY_SUCCESS:
       // console.log("Data received in reducer:", action.payload); // Log the full payload

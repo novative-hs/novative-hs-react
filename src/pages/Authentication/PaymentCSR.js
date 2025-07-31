@@ -834,7 +834,7 @@ class ParticipantCSRPayments extends Component {
       selectedReconcileStatus: "",
     });
   };
-  handleReconcileSubmit = () => {
+handleReconcileSubmit = () => {
     const {
       selectedReconcileStatus,
       selectedAccountNumber,
@@ -853,6 +853,7 @@ class ParticipantCSRPayments extends Component {
       status: selectedReconcileStatus,
       account_number: selectedAccountNumber || null,
       bank_name: selectedBankName || null,
+      user_id: this.state.user_id, // ✅ Add this
     };
 
     console.log("Dispatching payload to saga:", payload);

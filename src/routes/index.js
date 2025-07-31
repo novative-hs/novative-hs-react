@@ -205,7 +205,7 @@ import InstrumentType2 from "pages/Authentication/CSRrounds";
 import RoundParticipantlist2 from "pages/Authentication/CSRroundparticipants";
 import SubmittedResults from "pages/Authentication/CSRroundsubmittedresults";
 import PendingSubmission2 from "pages/Authentication/CSRroundpendingsubmission";
-import CSRroundHistory from "pages/Authentication/CSRroundHistory";
+import CSRroundHistory from "pages/Authentication/CSRhistory";
 import Csrcomments from "pages/Authentication/csrcomments";
 import PendingCSRLabs from "pages/Authentication/CSRPendinglabs";
 import ApprovedCSRLabs from "pages/Authentication/approvedCSRlabs";

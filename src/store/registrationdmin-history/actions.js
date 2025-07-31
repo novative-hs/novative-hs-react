@@ -2,6 +2,9 @@ import {
   GET_HISTORY_LIST_ROUND,
   GET_HISTORY_LIST_ROUND_SUCCESS,
   GET_HISTORY_LIST_ROUND_FAIL,
+  GET_HISTORY_LIST_CSR,
+  GET_HISTORY_LIST_CSR_SUCCESS,
+  GET_HISTORY_LIST_CSR_FAIL,
 
   GET_RESULT_HISTORY,
   GET_RESULT_HISTORY_SUCCESS,
@@ -28,7 +31,26 @@ export const getActivityLogRoundsFail = error => ({
   type: GET_HISTORY_LIST_ROUND_FAIL,
   payload: error,
 });
+/////////////////
+export const getActivityLogCsr = (id) => {
+  // console.log("ID passed to getActivityLogRounds:", id); // Log both id and type
+  return {
+    type: GET_HISTORY_LIST_CSR,
+    payload: {id}, // Pass both id and type as payload
+  };
+};
 
+export const getActivityLogCsrSuccess = activitylogCsr => {
+  return {
+    type: GET_HISTORY_LIST_CSR_SUCCESS,
+    payload: activitylogCsr,
+  };
+};
+
+export const getActivityLogCsrFail = error => ({
+  type: GET_HISTORY_LIST_CSR_FAIL,
+  payload: error,
+});
 ////////////////////////////
 export const getResultHistory = (id, participantId, scheme_id) => {
   // console.log("getResultHistory Actions:", id, participantId, scheme_id); // Log both id and type

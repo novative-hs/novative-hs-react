@@ -103,6 +103,7 @@ export const GET_RESULT_SUBMIT= `${API_ENDPOINT}/api/registration-admin/getAnaly
 export const GET_REPORT= `${API_ENDPOINT}/api/registration-admin/getReport`;
 export const GET_HISTORY_LIST_ROUND = `${API_ENDPOINT}/api/registration-admin/history_list`;
 export const GET_RESULT_HISTORY = `${API_ENDPOINT}/api/registration-admin/result-history_list`;
+export const GET_HISTORY_LIST_CSR = `${API_ENDPOINT}/api/registration-admin/csr-history-list`;
 export const GET_SUBMITTED_PARTICIPANTS = `${API_ENDPOINT}/api/registration-admin/submitted-participants`;
 export const GET_ANALYTE_RESULT_PARTICIPANT = `${API_ENDPOINT}/api/registration-admin/analyte-submiited-resultParticipant`;
 

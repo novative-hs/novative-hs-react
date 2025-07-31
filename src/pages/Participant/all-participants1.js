@@ -92,21 +92,21 @@ class PendingLabs extends Component {
         : "",
 
       pendingLabListColumns: [
-        {
-          dataField: "id",
-          text: "ID",
-          sort: true,
-          headerStyle: {
-            textAlign: "center",
-            backgroundColor: "#a6d4ff", // Light pink for header
-          },
-          style: {
-            textAlign: "center",
-            backgroundColor: "#e0e0e0", // Grayish for cells
-          },
-          filter: textFilter(),
-          formatter: (cellContent, row) => <>{row.id}</>,
-        },
+        // {
+        //   dataField: "id",
+        //   text: "ID",
+        //   sort: true,
+        //   headerStyle: {
+        //     textAlign: "center",
+        //     backgroundColor: "#a6d4ff", // Light pink for header
+        //   },
+        //   style: {
+        //     textAlign: "center",
+        //     backgroundColor: "#e0e0e0", // Grayish for cells
+        //   },
+        //   filter: textFilter(),
+        //   formatter: (cellContent, row) => <>{row.id}</>,
+        // },
         {
           dataField: "district",
           text: "Participant District",

@@ -26,14 +26,7 @@ function* fetchNews(object) {
     yield put(getNewsFail(error));
   }
 }
-function* onAddNews(object) {
-  try {
-    const response = yield call(addNews, object.payload);
-    yield put(addNewsSuccess(response.data));
-  } catch (error) {
-    yield put(addNewsFail(error));
-  }
-}
+
 function* onAddNews(object) {
   try {
     const response = yield call(addNews, object.payload);

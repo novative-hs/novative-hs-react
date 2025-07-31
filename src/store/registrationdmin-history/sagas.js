@@ -1,13 +1,13 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 
 // Redux action types
-import { GET_HISTORY_LIST_ROUND, GET_RESULT_HISTORY } from "./actionTypes";
+import { GET_HISTORY_LIST_ROUND, GET_RESULT_HISTORY, GET_HISTORY_LIST_CSR } from "./actionTypes";
 
 // Action creators
-import { getActivityLogRoundsSuccess, getActivityLogRoundsFail, getResultHistorySuccess, getResultHistoryFail } from "./actions";
+import { getActivityLogRoundsSuccess, getActivityLogRoundsFail, getResultHistorySuccess, getResultHistoryFail, getActivityLogCsrSuccess, getActivityLogCsrFail, } from "./actions";
 
 // Helper API call
-import { getHistoryRounds, getResultHistory } from "../../helpers/django_api_helper";
+import { getHistoryRounds, getResultHistory, getHistoryCsr } from "../../helpers/django_api_helper";
 
 function* fetchActivityLogRounds(action) {
   try {
@@ -19,6 +19,22 @@ function* fetchActivityLogRounds(action) {
     yield put(getActivityLogRoundsFail(error));  // Dispatch failure if error occurs
   }
 }
+
+ function* fetchActivityLogCsr(action) {
+    try {
+      const { id } = action.payload;
+      console.log("[Saga] Fetching CSR Activity Log for User ID:", id);
+
+      const response = yield call(getHistoryCsr, id);
+
+      console.log("[Saga] API Response received:", response);
+
+      yield put(getActivityLogCsrSuccess(response));
+    } catch (error) {
+      console.error("[Saga] Error fetching CSR Activity Log:", error);
+      yield put(getActivityLogCsrFail(error));
+    }
+  }
 function* fetchActivityLogResult(action) {
   try {
     const { id, participantId, scheme_id} = action.payload;  // Destructure id and type from payload
@@ -33,6 +49,7 @@ function* fetchActivityLogResult(action) {
 function* RoundsHistorySaga() {
   yield takeEvery(GET_HISTORY_LIST_ROUND, fetchActivityLogRounds);  // Watch for GET_HISTORY_LIST action
   yield takeEvery(GET_RESULT_HISTORY, fetchActivityLogResult);  
+   yield takeEvery(GET_HISTORY_LIST_CSR, fetchActivityLogCsr);
 }
 
 export default RoundsHistorySaga;

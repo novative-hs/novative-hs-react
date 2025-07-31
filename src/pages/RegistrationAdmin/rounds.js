@@ -1060,9 +1060,9 @@ class InstrumentType extends Component {
                                             closing_date: Yup.string().required(
                                               "Closing date is required"
                                             ),
-                                            note: Yup.string().required(
-                                              "Note is required"
-                                            ),
+                                            // note: Yup.string().required(
+                                            //   "Note is required"
+                                            // ),
                                             sample: this.state.isEdit
                                               ? Yup.string().required(
                                                   "Sample is required"

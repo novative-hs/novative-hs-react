@@ -676,7 +676,12 @@ export const getResultHistory = (id, participantId, scheme_id) => {
     params: { participantId, scheme_id },
   });
 };
-
+export const getHistoryCsr = (id) => {
+  console.log("[Helper] Sending GET request for CSR History with ID:", id);
+  return get(`${url.GET_HISTORY_LIST_CSR}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+};
 // Sample
 export const getSamplelist = (id) =>
   get(`${url.GET_SAMPLE_LIST}/${id}`, {
@@ -1402,25 +1407,33 @@ export const addNewPayment = (payment, id) => {
     },
   });
 };
+
 export const confirmpayment = (payload) => {
-  const { id, status, account_number } = payload;
+  const { id, status, account_number, user_id, bank_name } = payload;
 
   const formData = new FormData();
   formData.append("status", status);
   if (account_number) {
-    formData.append("account_number", account_number); // Add account_number
+    formData.append("account_number", account_number);
+  }
+  if (bank_name) {
+    formData.append("bank_name", bank_name);  // ✅ append bank_name here
+  }
+  if (user_id) {
+    formData.append("user_id", user_id);
   }
 
   console.log("✅ Sending to:", `${url.CONFIRM_PAYMENT}/${id}/`);
-  console.log("✅ Payload:", { status, account_number });
+  console.log("✅ Payload:", { status, account_number, bank_name, user_id });
 
   return axios.post(`${url.CONFIRM_PAYMENT}/${id}/`, formData, {
     headers: {
       ...getHeader(authHeader()),
-      "Content-Type": "multipart/form-data", // ⬅️ important for FormData
+      "Content-Type": "multipart/form-data",
     },
   });
 };
+
 export const deletePayment = (payment) =>
   del(`${url.DELETE_NEW_PAYMENT}/${payment.id}`, {
     headers: getHeader(authHeader()),
