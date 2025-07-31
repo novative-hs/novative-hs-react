@@ -1,10 +1,13 @@
 
-
 import {
   GET_NEWS_SUCCESS,
   GET_NEWS_FAIL,
   ADD_NEWS_SUCCESS,
   ADD_NEWS_FAIL,
+  UPDATE_NEWS_SUCCESS,
+  UPDATE_NEWS_FAIL,
+  DELETE_NEWS_SUCCESS,
+  DELETE_NEWS_FAIL,
   GET_COMMENTS_SUCCESS,
   GET_COMMENTS_FAIL,
   ADD_COMMENTS_SUCCESS,
@@ -44,6 +47,32 @@ case GET_NEWS_FAIL:
       ...state,
       error: action.payload,
     };
+      case UPDATE_NEWS_SUCCESS:
+      return {
+        ...state,
+        news: state.news.map(newsItem =>
+          newsItem.id === action.payload.data.id
+            ? action.payload.data
+            : newsItem
+        ),
+      };
+
+    case UPDATE_NEWS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case DELETE_NEWS_SUCCESS:
+      return {
+        ...state,
+        news: state.news.filter(newsItem => newsItem.id !== action.payload),
+      };
+
+    case DELETE_NEWS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
  case GET_COMMENTS_SUCCESS:
   console.log("Data received in success action:", action.payload); // Log the action.payload
   return {

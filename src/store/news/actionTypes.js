@@ -8,7 +8,17 @@ export const GET_NEWS_FAIL = "GET_NEWS_FAIL";
 export const ADD_NEWS = "ADD_NEWS";
 export const ADD_NEWS_SUCCESS = "ADD_NEWS_SUCCESS";
 export const ADD_NEWS_FAIL = "ADD_NEWS_FAIL";
+//updating News
 
+export const UPDATE_NEWS = "UPDATE_NEWS";
+export const UPDATE_NEWS_SUCCESS = "UPDATE_NEWS_SUCCESS";
+export const UPDATE_NEWS_FAIL = "UPDATE_NEWS_FAIL";
+
+//deleting News
+
+export const DELETE_NEWS = "DELETE_NEWS";
+export const DELETE_NEWS_SUCCESS = "DELETE_NEWS_SUCCESS";
+export const DELETE_NEWS_FAIL = "DELETE_NEWS_FAIL";
 ///comments
 export const GET_COMMENTS = "GET_COMMENTS";
 export const GET_COMMENTS_SUCCESS ="GET_COMMENTS_SUCCESS";

@@ -190,7 +190,8 @@ export const REGISTER_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/register-parti
 
 export const GET_NEWS = `${API_ENDPOINT}/api/database-admin/news-list`;
 export const ADD_NEWS = `${API_ENDPOINT}/api/database-admin/news-add`;
-
+export const UPDATE_NEWS = `${API_ENDPOINT}/api/database-admin/update-news`;
+export const DELETE_NEWS = `${API_ENDPOINT}/api/database-admin/delete-news`;
 export const GET_COMMENTS = `${API_ENDPOINT}/api/registration-admin/comments-list`;
 export const ADD_COMMENTS = `${API_ENDPOINT}/api/registration-admin/comments-add`;
 

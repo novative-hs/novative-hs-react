@@ -376,7 +376,7 @@ export const postCorporateInformation = (id, corporate) => {
 
 // Login Method
 // Login Method
-export const postLogin = user => {
+export const postLogin = (user) => {
   let formData = new FormData();
 
   console.log("django api", user);
@@ -439,6 +439,25 @@ export const addNews = (news) => {
     headers: getHeader(authHeader()),
   });
 };
+export const updateNews = (news) => {
+  if (!news.id) {
+    console.error("No ID provided for update:", news);
+  }
+
+  let formData = new FormData();
+  formData.append("title", news.title);
+  formData.append("description", news.description);
+  formData.append("added_by", news.added_by);
+
+  return axios.put(`${url.UPDATE_NEWS}/${news.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const deleteNews = (id) =>
+  del(`${url.DELETE_NEWS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 // export const addNews = (news) => {
 //   console.log("Calling addNews function with data:", news); // Add console log to check if function is called
 
@@ -476,7 +495,7 @@ export const addComments = (comment) => {
   console.log("Calling addComments function with data:", comment);
   let formData = new FormData();
 
-  formData.append("text", comment.text);         // required
+  formData.append("text", comment.text); // required
   formData.append("added_by", comment.added_by); // required
   formData.append("participant", comment.participant); // ✅ ADD THIS LINE
 
@@ -679,7 +698,7 @@ export const addNewSampleList = (sample) => {
   });
 };
 //////////////////////////////////////
-export const updateSampleList = sample => {
+export const updateSampleList = (sample) => {
   let formData = new FormData();
   formData.append("samplename", sample.samplename);
   formData.append("sampleno", sample.sampleno);
@@ -689,25 +708,17 @@ export const updateSampleList = sample => {
   formData.append("detail", sample.detail);
   formData.append("notes", sample.notes);
   formData.append("added_by", sample.added_by);
-  // formData.append("analytetype", sample.analytetype); 
-  
-  return axios.put(
-    `${url.UPDATE_SAMPLE_LIST}/${sample.id}`,
-      formData,
-      {
-          headers: getHeader(authHeader()),
-      }
-  );
+  // formData.append("analytetype", sample.analytetype);
+
+  return axios.put(`${url.UPDATE_SAMPLE_LIST}/${sample.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 ///////////////////////////////////
-export const updateNewSampleList = (id, sample) => async dispatch => {
-return axios.put(
-  `${url.UPDATE_NEW_SAMPLE_LIST}/${sample.id}`,
-    formData,
-    {
-        headers: getHeader(authHeader()),
-    }
-);
+export const updateNewSampleList = (id, sample) => async (dispatch) => {
+  return axios.put(`${url.UPDATE_NEW_SAMPLE_LIST}/${sample.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 ///////////////////////
 export const deleteSampleList = (sample) =>
@@ -866,7 +877,7 @@ export const postResult = (result, id) => {
   formData.append("scheme_id", result.scheme_id);
   formData.append("result_status", result.result_status);
   formData.append("comment", result.comment);
-  
+
   // Only append `result_type` if it is not null or undefined
   if (result.result_type !== null && result.result_type !== undefined) {
     formData.append("result_type", result.result_type);
@@ -876,8 +887,14 @@ export const postResult = (result, id) => {
     headers: getHeader(authHeader()),
   });
 };
-const clean = value => {
-  if (value === undefined || value === null || value === "undefined" || value === "") return null;
+const clean = (value) => {
+  if (
+    value === undefined ||
+    value === null ||
+    value === "undefined" ||
+    value === ""
+  )
+    return null;
   if (!isNaN(value)) return parseInt(value); // convert valid numbers
   return value;
 };
@@ -905,7 +922,6 @@ export const updateResult = (result, id) => {
     },
   });
 };
-
 
 // export const getSchemeAnalytesList = (id) => {
 //   return axios.get(`${url.SCHEMES_ANALYTES}/${id}`, {
@@ -1373,7 +1389,10 @@ export const addNewPayment = (payment, id) => {
   formData.append("part_payment_amount", payment.part_payment_amount);
   formData.append("priceBeforeDiscount", payment.priceBeforeDiscount);
   formData.append("purchase_order_copy", payment.purchase_order_copy);
-  if (payment.remaining_amount !== undefined && payment.remaining_amount !== null) {
+  if (
+    payment.remaining_amount !== undefined &&
+    payment.remaining_amount !== null
+  ) {
     formData.append("remaining_amount", payment.remaining_amount);
   }
   return axios.post(`${url.ADD_NEW_PAYMENT}`, formData, {
@@ -1402,10 +1421,10 @@ export const confirmpayment = (payload) => {
     },
   });
 };
-export const  deletePayment = payment =>
-    del(`${url.DELETE_NEW_PAYMENT}/${payment.id}`, {
-      headers: getHeader(authHeader()),
-    });
+export const deletePayment = (payment) =>
+  del(`${url.DELETE_NEW_PAYMENT}/${payment.id}`, {
+    headers: getHeader(authHeader()),
+  });
 // ---------------Scheme add Analytes-------
 export const getSchemeAnalytelist = (id) =>
   get(`${url.GET_SCHEME_ANALYTE}/${id}`, {
@@ -2864,7 +2883,7 @@ export const getRoundlist = (id) =>
   get(`${url.GET_ROUND_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getcsrroundlist = id =>
+export const getcsrroundlist = (id) =>
   get(`${url.GET_CSR_ROUND_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -2901,7 +2920,7 @@ export const addNewRound = (createUnit, id) => {
     });
 };
 
-export const updateRound = unit => {
+export const updateRound = (unit) => {
   let formData = new FormData();
   formData.append("rounds", unit.rounds);
   formData.append("scheme", unit.scheme);
@@ -2912,13 +2931,9 @@ export const updateRound = unit => {
   formData.append("note", unit.note);
   formData.append("status", unit.status);
   formData.append("added_by", unit.added_by);
-  return axios.put(
-    `${url.UPDATE_ROUND}/${unit.id}`,
-    formData,
-    {
-      headers: getHeader(authHeader()),
-    }
-  );
+  return axios.put(`${url.UPDATE_ROUND}/${unit.id}`, formData, {
+    headers: getHeader(authHeader()),
+  });
 };
 
 export const deleteRound = (round) =>
@@ -2942,21 +2957,24 @@ export const addSereologyValues = (value, id) => {
   if (value.equivocaltype !== undefined) {
     formData.append("equivocaltype", value.equivocaltype);
   }
-  formData.append("account_id", value.account_id); 
+  formData.append("account_id", value.account_id);
 
   return axios
     .post(`${url.POST_SERELOGY_VALUES}/${id}`, formData, {
       headers: {
         ...getHeader(authHeader()),
-        "Content-Type": "multipart/form-data", 
+        "Content-Type": "multipart/form-data",
       },
     })
-    .then(response => {
+    .then((response) => {
       console.log("Sereology values added successfully:", response.data);
       return response.data;
     })
-    .catch(error => {
-      console.error("Error adding sereology values:", error.response ? error.response.data : error.message);
+    .catch((error) => {
+      console.error(
+        "Error adding sereology values:",
+        error.response ? error.response.data : error.message
+      );
       throw error;
     });
 };
@@ -3026,10 +3044,10 @@ export const getUnapprovedLabs = (id) =>
   get(`${url.GET_UNAPPROVED_LABS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getSuspendedLabs = id =>
-    get(`${url.GET_SUSPENDED_LABS}/${id}`, {
-      headers: getHeader(authHeader()),
-    });
+export const getSuspendedLabs = (id) =>
+  get(`${url.GET_SUSPENDED_LABS}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
 export const approveUnapproveCorporate = (data) => {
   let formData = new FormData();
   formData.append("corporate_id", data.corporate_id);
@@ -4102,12 +4120,12 @@ export const updateInstrumentAnalytelist = (schemeanalyte) => {
     }
   );
 };
-export const getParticipantSchemelist = id => {
+export const getParticipantSchemelist = (id) => {
   console.log("Calling API:", `${url.GET_PARTICIPANT_SCHEME_LIST}/${id}`);
   return get(`${url.GET_PARTICIPANT_SCHEME_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
-};  //django helper
+}; //django helper
 export const getRoundParticipantlist = (id) => {
   console.log("API Helper - Fetching Round Participant List for ID:", id);
   return axios.get(`${url.GET_ROUND_PARTICIPANT_LIST}/${id}`, {
@@ -4117,9 +4135,13 @@ export const getRoundParticipantlist = (id) => {
 
 export const deleteRoundParticipant = async (round_id, participant_id) => {
   console.log("API CALL: Deleting participant", round_id, participant_id);
-  return axios.delete(`${url.DELETE_PARTICIPANT}/${round_id}/${participant_id}/`, {  // ✅ Fixed
-    headers: getHeader(authHeader()),
-  });
+  return axios.delete(
+    `${url.DELETE_PARTICIPANT}/${round_id}/${participant_id}/`,
+    {
+      // ✅ Fixed
+      headers: getHeader(authHeader()),
+    }
+  );
 };
 
 //  submitted result//
@@ -4128,23 +4150,24 @@ export const getsubmittedparticipants = (id) =>
     headers: getHeader(authHeader()),
   });
 
+export const getAnalyteResultParticipantlist = (id, roundId) => {
+  console.log(
+    "API Helper - Fetching Round Participant List for ID:",
+    id,
+    roundId
+  );
+  return axios.get(`${url.GET_ANALYTE_RESULT_PARTICIPANT}/${(id, roundId)}`, {
+    headers: getHeader(authHeader()),
+  });
+};
 
-  export const getAnalyteResultParticipantlist = (id, roundId) => {
-    console.log("API Helper - Fetching Round Participant List for ID:", id, roundId);
-    return axios.get(`${url.GET_ANALYTE_RESULT_PARTICIPANT}/${id, roundId}`, {
-      headers: getHeader(authHeader()),
-    });
-  };
-
-  export const getCycleRoundlist = id =>
+export const getCycleRoundlist = (id) =>
   get(`${url.GET_CYCLE_ROUND_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
 
-
-
 export const deleteCycleRound = (id) => {
-  console.log("deleteCycleRound called with id:", id);  // ✅ Debug log
+  console.log("deleteCycleRound called with id:", id); // ✅ Debug log
   return del(`${url.DELETE_CYCLE_ROUND_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
@@ -4157,7 +4180,7 @@ export const deleteParticipant = (id) =>
   del(`${url.GET_DELETE_PARTICIPANTS}/${id}`, {
     headers: getHeader(authHeader()),
   });
-  
+
 export const updateNewPayment = (payment) => {
   console.log("Data in Django API Helper:", payment);
 
@@ -4179,7 +4202,10 @@ export const updateNewPayment = (payment) => {
   formData.append("taxDeduction", payment.taxDeduction);
   formData.append("part_payment_amount", payment.part_payment_amount);
   formData.append("priceBeforeDiscount", payment.priceBeforeDiscount);
-  if (payment.remaining_amount !== undefined && payment.remaining_amount !== null) {
+  if (
+    payment.remaining_amount !== undefined &&
+    payment.remaining_amount !== null
+  ) {
     formData.append("remaining_amount", payment.remaining_amount);
   }
 
@@ -4200,20 +4226,19 @@ export const getReagentAnalytelist = (id) =>
   get(`${url.GET_REAGENT_ANALYTE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
- export const addNewReagentAnalytelist = (addReagentAnalyte, id) => {
-    let formData = new FormData();
-    formData.append("id", addReagentAnalyte.id);
-    formData.append("analytes", addReagentAnalyte.analytes);
-    
-    return axios.post(
-      `${url.ADD_REAGENT_ANALYTE_LIST}/${id}`,  // <-- Add ID to the URL
-      formData, 
-      { headers: getHeader(authHeader()) }
-    );
-  };
-  
+export const addNewReagentAnalytelist = (addReagentAnalyte, id) => {
+  let formData = new FormData();
+  formData.append("id", addReagentAnalyte.id);
+  formData.append("analytes", addReagentAnalyte.analytes);
 
-export const updateReagentAnalytelist = schemeanalyte => {
+  return axios.post(
+    `${url.ADD_REAGENT_ANALYTE_LIST}/${id}`, // <-- Add ID to the URL
+    formData,
+    { headers: getHeader(authHeader()) }
+  );
+};
+
+export const updateReagentAnalytelist = (schemeanalyte) => {
   let formData = new FormData();
   formData.append("analytes", schemeanalyte.analytes);
   return axios.put(
@@ -4225,25 +4250,23 @@ export const updateReagentAnalytelist = schemeanalyte => {
   );
 };
 
-
 export const getMethodAnalytelist = (id) =>
   get(`${url.GET_METHOD_ANALYTE_LIST}/${id}`, {
     headers: getHeader(authHeader()),
   });
- export const addNewMethodAnalytelist = (AddMethodAnalyte, id) => {
-    let formData = new FormData();
-    formData.append("id", AddMethodAnalyte.id);
-    formData.append("analytes", AddMethodAnalyte.analytes);
-    
-    return axios.post(
-      `${url.ADD_METHOD_ANALYTE_LIST}/${id}`,  // <-- Add ID to the URL
-      formData, 
-      { headers: getHeader(authHeader()) }
-    );
-  };
-  
+export const addNewMethodAnalytelist = (AddMethodAnalyte, id) => {
+  let formData = new FormData();
+  formData.append("id", AddMethodAnalyte.id);
+  formData.append("analytes", AddMethodAnalyte.analytes);
 
-export const updateMethodAnalytelist = schemeanalyte => {
+  return axios.post(
+    `${url.ADD_METHOD_ANALYTE_LIST}/${id}`, // <-- Add ID to the URL
+    formData,
+    { headers: getHeader(authHeader()) }
+  );
+};
+
+export const updateMethodAnalytelist = (schemeanalyte) => {
   let formData = new FormData();
   formData.append("analytes", schemeanalyte.analytes);
   return axios.put(
