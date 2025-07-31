@@ -125,9 +125,7 @@ class Home extends Component {
           <MetaTags>
             <title>Home Page | NEQAS</title>
           </MetaTags>
-          <Container
-            fluid
-            className="d-flex justify-content-center align-items-center p-5 mt-5"
+          <div
             style={{
               position: "fixed",
               top: 0,
@@ -138,8 +136,18 @@ class Home extends Component {
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              overflow: "hidden",
-              zIndex: "-1", // pushes background behind content
+              zIndex: -1, // ✅ only background is behind
+            }}
+          />
+
+          <Container
+            fluid
+            className="d-flex justify-content-center align-items-center p-5 mt-5"
+            style={{
+              position: "relative", // ✅ must be relative or default
+              zIndex: 1, // ✅ above background
+              width: "100%",
+              height: "100%",
             }}
           >
             {/* Transparent white overlay around content */}
@@ -266,7 +274,7 @@ class Home extends Component {
                             {this.state.open_rounds.map(round => (
                               <tr key={round.id}>
                                 <td className="text-start">
-                                  {round.rounds} - {round.scheme_name}
+                                  {round.scheme_name}
                                 </td>
 
                                 <td className="text-start">
@@ -327,7 +335,6 @@ class Home extends Component {
                                     new Date(existing.closing_date)
                                 ) {
                                   groupedByScheme[round.scheme] = round;
-
                                 }
                               });
 
@@ -387,24 +394,31 @@ class Home extends Component {
                             {this.state.payments.map((payment, idx) => (
                               <tr key={idx}>
                                 <td className="text-start">
-                                  {this.formatDate(payment.paydate) || "—"}
+                                  {payment.paydate
+                                    ? this.formatDate(payment.paydate)
+                                    : "—"}
                                 </td>
+
                                 <td className="text-center">
                                   {payment.payment_settlement || "—"}
                                 </td>
                                 <td className="text-end">
-                                  {payment.price
-                                    ? `${parseInt(
+                                  {Number(payment.price) === 0 ||
+                                  Number(payment.price) === 0.0
+                                    ? "--"
+                                    : `${parseInt(
                                         payment.price
                                           .toString()
                                           .replace(/,/g, ""),
                                         10
-                                      ).toLocaleString()}`
-                                    : "-"}
+                                      ).toLocaleString()}`}
                                 </td>
 
                                 <td className="text-end">
-                                  {payment.remaining_amount ?? "-"}
+                                  {Number(payment.remaining_amount) === 0 ||
+                                  Number(payment.remaining_amount) === 0.0
+                                    ? "--"
+                                    : payment.remaining_amount}
                                 </td>
                               </tr>
                             ))}
