@@ -89,7 +89,7 @@ class StaffRegister extends Component {
     onGetsectorlist(this.state.user_id);
 
     // 💡 New: fetch next lab code
-      axios.get("https://externalqcapi.com/api/account/get-lab-code/")
+    axios.get("https://externalqcapi.com/api/account/get-lab-code/")
 
       .then(response => {
         this.setState({ nextLabCode: response.data.lab_code }); // ✅ Correct key
@@ -501,7 +501,7 @@ class StaffRegister extends Component {
                         </Alert>
                       )}
                       <Formik
-                        key={this.state.nextLabCode}
+                        // key={this.state.nextLabCode}
                         enableReinitialize={true}
                         initialValues={{
                           password: generateRandomPassword(),
@@ -821,9 +821,11 @@ class StaffRegister extends Component {
                                     }}
                                     type="text"
                                     onFocus={() => {
-                                      this.setState({
-                                        usernameFieldError: null,
-                                      });
+                                      if (this.state.usernameFieldError) {
+                                        this.setState({
+                                          usernameFieldError: null,
+                                        });
+                                      }
                                     }}
                                     className={
                                       "form-control" +
