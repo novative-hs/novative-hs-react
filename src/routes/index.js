@@ -507,7 +507,7 @@ const CSRAdminAuthProtectedRoutes = [
   { path: "/:organization_name/CSRroundparticipants/:id", component: RoundParticipantlist2 },
   { path: "/:organization_name/CSRroundsubmittedresults/:id", component: SubmittedResults },
   { path: "/:organization_name/CSRroundpendingsubmission/:id", component: PendingSubmission2 },
-  { path: "/:organization_name/CSRhistory/:id", component: CSRHistory },
+  { path: "/:organization_name/CSRhistory", component: CSRHistory },
   { path: "/:organization_name/csrcomments/:id", component: Csrcomments },
   { path: "/:organization_name/PaymentCSR", component: ParticipantCSRPayments},
   { path: "/PaymentCSR-scheme-list/:id", component: PaymentCSRSchemeList},
