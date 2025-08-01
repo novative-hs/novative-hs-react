@@ -715,6 +715,16 @@ class Header extends Component {
                             <span className="pt-4 font-size-12">Rounds</span>
                           </NavLink>
                         </li>
+                        <li>
+                          <NavLink
+                            to={`/${organization_name}/CSRhistory`}
+                            className={({ isActive }) =>
+                              `dropdown-item ${isActive ? "active-link" : ""}`
+                            }
+                          >
+                            <span className="pt-4 font-size-12">History</span>
+                          </NavLink>
+                        </li>
                       </ul>
                     </Collapse>
                   </nav>
