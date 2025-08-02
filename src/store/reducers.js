@@ -22,7 +22,6 @@ import StaffProfile from "./auth/staffprofile/reducer";
 import LabSettings from "./auth/labsettings/reducer";
 import Payments from "./auth/payments/reducer";
 
-
 // Database Admin
 import ListUnits from "./units/reducers";
 import ListUnit from "./databaseofunits/reducer";
@@ -42,7 +41,7 @@ import ParticipantList from "./participant-list/reducers";
 import regParticipant from "./registerParticipantFile/reducer";
 
 // organization
-import organizationaccount from "./organization/reducer"
+import organizationaccount from "./organization/reducer";
 //LabMarket
 import LabMarket from "./labmarket/reducer";
 import activitylog from "./activtylog/reducer";
@@ -108,11 +107,11 @@ import financeAdmin from "./finance-admin/reducer";
 //Manufactural
 
 import news from "./news/reducer";
-import home from "./home/reducer"
+import home from "./home/reducer";
 import ListMethods from "./methods/reducers";
 
 //REG
-import activitylogRounds from "./registrationdmin-history/reducers"
+import activitylogRounds from "./registrationdmin-history/reducers";
 
 //participant
 import ListCity from "./participantcity/reducers";
@@ -127,10 +126,10 @@ import ListSector from "./participantsector/reducers";
 import ListQualitativeType from "./qualitativetype/reducers";
 
 //SelectedSchemes
-import SelectedSchemeList from "./selected-scheme/reducer"
-import SchemeAnalytesList from "./results/reducer"
-import ResultSubmit from "./resultsSubmit/reducer"
-
+import SelectedSchemeList from "./selected-scheme/reducer";
+import SchemeAnalytesList from "./results/reducer";
+import ResultSubmit from "./resultsSubmit/reducer";
+import ListOrganism from "./organism-antibiotics/reducers";
 
 const rootReducer = combineReducers({
   // public
@@ -145,6 +144,7 @@ const rootReducer = combineReducers({
   ListProvince,
   ListSector,
   ListCountry,
+  ListOrganism,
   ListType,
   ListDepartment,
   ListDesignation,
@@ -165,7 +165,7 @@ const rootReducer = combineReducers({
 
   Login,
   Account,
-  
+
   ManufacturalList,
   Login,
   Account,
@@ -205,7 +205,6 @@ const rootReducer = combineReducers({
   ListUnits,
   activitylogUnits,
 
-
   discountLabHazirs,
   labsList,
   labslisttt,
@@ -228,7 +227,6 @@ const rootReducer = combineReducers({
   staff,
 
   registrationAdmin,
-  
 });
 
 export default rootReducer;

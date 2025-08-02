@@ -38,7 +38,7 @@ import CycleListSaga from "./cycle/saga";
 import RoundListSaga from "./rounds/saga";
 import SampleSaga from "./sample/saga";
 import PaymentSaga from "./Payment/saga";
-
+import OrganismListSaga from "./organism-antibiotics/sagas";
 //Participant
 import participantListSaga from "./participant-list/sagas";
 import regParticipantSaga from "./registerParticipantFile/saga";
@@ -94,7 +94,7 @@ import AnalyteSchemeSaga from "./results/saga";
 import ResultSubmitSaga from "./resultsSubmit/saga";
 // import HomeSaga from "./home/saga";
 
-export  default function* rootSaga() {
+export default function* rootSaga() {
   yield all([
     //public
     fork(QualitativeTypeListSaga),
@@ -136,7 +136,7 @@ export  default function* rootSaga() {
     fork(msgsSaga),
 
     fork(LabMarketSaga),
-
+    fork(OrganismListSaga),
     fork(FinanceAdminSaga),
     fork(ForgetSaga),
     fork(ConfirmSaga),

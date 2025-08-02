@@ -4295,3 +4295,59 @@ export const gethomedata = (id) =>
   get(`${url.GET_HOME_DATA}/${id}`, {
     headers: getHeader(authHeader()),
   });
+
+  export const getOrganismlist = (id) => {
+  const finalUrl = `${url.GET_ORGANISM_LIST}/${id}`;
+  const headers = getHeader(authHeader());
+
+  console.log("➡️ [getOrganismlist] Called with user ID:", id);
+  console.log("🔗 [getOrganismlist] Final URL:", finalUrl);
+  console.log("🧾 [getOrganismlist] Headers:", headers);
+
+  return get(finalUrl, { headers });
+};
+
+export const addOrganismlist = (OrganinismList) => {
+  let formData = new FormData();
+  formData.append("name", OrganinismList.name);
+  formData.append("added_by", OrganinismList.added_by);
+  formData.append("code", OrganinismList.code);
+  formData.append("status", OrganinismList.status);
+
+  // ✅ Debug log
+  console.log("📦 Sending to Django:", {
+    name: OrganinismList.name,
+    added_by: OrganinismList.added_by,
+    code: OrganinismList.code,
+    status: OrganinismList.status,
+  });
+
+  return axios.post(`${url.ADD_ORGANISM_LIST}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const updateorganism = (OrganinismList) => {
+  let formData = new FormData();
+  formData.append("name", OrganinismList.name);
+  formData.append("added_by", OrganinismList.added_by);
+  formData.append("code", OrganinismList.code);
+  formData.append("status", OrganinismList.status);
+
+  const urlWithId = `${url.UPDATE_ORGANISM_LIST}/${OrganinismList.id}`;
+
+  console.log("📦 Sending to Django:", {
+    name: OrganinismList.name,
+    added_by: OrganinismList.added_by,
+    code: OrganinismList.code,
+    status: OrganinismList.status,
+    url: urlWithId,
+  });
+
+  return axios.put(urlWithId, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const deleteorganism = (OrganinismList) =>
+  del(`${url.DELETE_ORGANISM_LIST}/${OrganinismList.id}`, {
+    headers: getHeader(authHeader()),
+  });
