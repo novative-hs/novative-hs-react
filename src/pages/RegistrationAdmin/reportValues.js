@@ -391,7 +391,7 @@ if (selectedEquivocalValues[analyte_id] !== undefined && selectedEquivocalValues
   render() {
     const { SchemeAnalytesList, submissionSuccess } = this.state;
     const pageOptions = {
-      sizePerPage: 10,
+      sizePerPage: 50,
       totalSize: SchemeAnalytesList.length, // Use correct list length
       custom: true,
     };
