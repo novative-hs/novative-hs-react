@@ -84,6 +84,11 @@ export const GET_ORGANISM_LIST = `${API_ENDPOINT}/api/database-admin/organism-li
 export const ADD_ORGANISM_LIST = `${API_ENDPOINT}/api/database-admin/add-organism`;
 export const UPDATE_ORGANISM_LIST = `${API_ENDPOINT}/api/database-admin/organism-update-list`;
 export const DELETE_ORGANISM_LIST = `${API_ENDPOINT}/api/database-admin/del-organism`;
+
+export const GET_ANTIBIOTIC_LIST = `${API_ENDPOINT}/api/database-admin/antibiotic-list`;
+export const ADD_ANTIBIOTIC_LIST = `${API_ENDPOINT}/api/database-admin/add-antibiotic`;
+export const UPDATE_ANTIBIOTIC_LIST = `${API_ENDPOINT}/api/database-admin/antibiotic-update-list`;
+export const DELETE_ANTIBIOTIC_LIST = `${API_ENDPOINT}/api/database-admin/del-antibiotic`;
 //Participant
 export const GET_PARTICIPANT_LIST = `${API_ENDPOINT}/api/lab/participant-information`;
 

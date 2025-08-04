@@ -4351,3 +4351,59 @@ export const deleteorganism = (OrganinismList) =>
   del(`${url.DELETE_ORGANISM_LIST}/${OrganinismList.id}`, {
     headers: getHeader(authHeader()),
   });
+
+export const getAntibioticlist = (id) => {
+  const finalUrl = `${url.GET_ANTIBIOTIC_LIST}/${id}`;
+  const headers = getHeader(authHeader());
+
+  console.log("➡️ [getAntibioticlist] Called with user ID:", id);
+  console.log("🔗 [getAntibioticlist] Final URL:", finalUrl);
+  console.log("🧾 [getAntibioticlist] Headers:", headers);
+
+  return get(finalUrl, { headers });
+};
+
+export const addAntibioticlist = (AntibioticList) => {
+  let formData = new FormData();
+  formData.append("name", AntibioticList.name);
+  formData.append("added_by", AntibioticList.added_by);
+  formData.append("code", AntibioticList.code);
+  formData.append("status", AntibioticList.status);
+
+  // ✅ Debug log
+  console.log("📦 Sending to Django:", {
+    name: AntibioticList.name,
+    added_by: AntibioticList.added_by,
+    code: AntibioticList.code,
+    status: AntibioticList.status,
+  });
+
+  return axios.post(`${url.ADD_ANTIBIOTIC_LIST}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const updateantibiotic = (AntibioticList) => {
+  let formData = new FormData();
+  formData.append("name", AntibioticList.name);
+  formData.append("added_by", AntibioticList.added_by);
+  formData.append("code", AntibioticList.code);
+  formData.append("status", AntibioticList.status);
+
+  const urlWithId = `${url.UPDATE_ANTIBIOTIC_LIST}/${AntibioticList.id}`;
+
+  console.log("📦 Sending to Django:", {
+    name: AntibioticList.name,
+    added_by: AntibioticList.added_by,
+    code: AntibioticList.code,
+    status: AntibioticList.status,
+    url: urlWithId,
+  });
+
+  return axios.put(urlWithId, formData, {
+    headers: getHeader(authHeader()),
+  });
+};
+export const deleteantibiotic = (AntibioticList) =>
+  del(`${url.DELETE_ANTIBIOTIC_LIST}/${AntibioticList.id}`, {
+    headers: getHeader(authHeader()),
+  });
