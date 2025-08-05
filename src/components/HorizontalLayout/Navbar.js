@@ -235,6 +235,14 @@ class Navbar extends Component {
                                 Database of Antibiotics
                               </NavLink>
                             </li>
+                             <li>
+                              <NavLink
+                                to={`/${organization_name}/database-of-micro`}
+                                className="dropdown-item"
+                              >
+                                Database of Micro EQA
+                              </NavLink>
+                            </li>
                         </ul>
                       </li>
                       <li className="nav-item">
