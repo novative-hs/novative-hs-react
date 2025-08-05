@@ -48,14 +48,14 @@ import {
   UPDATE_REAGENT_ANALYTE_SUCCESS,
   UPDATE_REAGENT_ANALYTE_FAIL,
 
-//Cycle Analyte
+  //Cycle Analyte
   GET_ANALYTESCYCLES,
   GET_ANALYTESCYCLES_SUCCESS,
   GET_ANALYTESCYCLES_FAIL,
 
-///Get Analytes Associated With Cycle
+  ///Get Analytes Associated With Cycle
 
-// Sample Analyte
+  // Sample Analyte
   GET_SAMPLE_ANALYTE_LIST,
   GET_SAMPLE_ANALYTE_LIST_SUCCESS,
   GET_SAMPLE_ANALYTE_LIST_FAIL,
@@ -76,18 +76,16 @@ import {
   UPDATE_SAMPLE_ANALYTE,
   UPDATE_SAMPLE_ANALYTE_SUCCESS,
   UPDATE_SAMPLE_ANALYTE_FAIL,
-
   GET_ANALYTESSAMPLE,
   GET_ANALYTESSAMPLE_SUCCESS,
   GET_ANALYTESSAMPLE_FAIL,
 
   ///////////////////////
-  
   GET_INSTRUMENT_DETAIL,
   GET_INSTRUMENT_DETAIL_SUCCESS,
   GET_INSTRUMENT_DETAIL_FAIL,
-//////////////////////////
- GET_METHOD_ANALYTE_LIST,
+  //////////////////////////
+  GET_METHOD_ANALYTE_LIST,
   GET_METHOD_ANALYTE_LIST_SUCCESS,
   GET_METHOD_ANALYTE_LIST_FAIL,
   ADD_NEW_METHOD_ANALYTE,
@@ -95,25 +93,30 @@ import {
   ADD_NEW_METHOD_ANALYTE_FAIL,
   UPDATE_METHOD_ANALYTE,
   UPDATE_METHOD_ANALYTE_SUCCESS,
-  UPDATE_METHOD_ANALYTE_FAIL
+  UPDATE_METHOD_ANALYTE_FAIL,
+  GET_MICROBIOLOGY_DATA,
+  GET_MICROBIOLOGY_DATA_SUCCESS,
+  GET_MICROBIOLOGY_DATA_FAIL,
+  ADD_MICROBIOLOGY_DATA,
+  ADD_MICROBIOLOGY_DATA_SUCCESS,
+  ADD_MICROBIOLOGY_DATA_FAIL,
 } from "./actionTypes";
-
 
 // equipment type file upload
 export const addEquipmentTypefile = (EquipmentData, id) => (
   console.log("data file", EquipmentData),
   {
-  type: ADD_EQUIPMENTTYPE_FILE,
-  payload: { EquipmentData, id},
-});
+    type: ADD_EQUIPMENTTYPE_FILE,
+    payload: { EquipmentData, id },
+  }
+);
 
-export const addEquipmentTypefileSuccess = EquipmentData => ({
+export const addEquipmentTypefileSuccess = (EquipmentData) => ({
   type: ADD_EQUIPMENTTYPE_FILE_SUCCESS,
   payload: EquipmentData,
 });
 
-export const addEquipmentTypefileFail = error => (
-  {
+export const addEquipmentTypefileFail = (error) => ({
   type: ADD_EQUIPMENTTYPE_FILE_FAIL,
   payload: error,
 });
@@ -125,7 +128,7 @@ export const getAnalyteforSchemelist = (id) => ({
 });
 
 export const getAnalyteforSchemelistSuccess = (AnalyteList) => {
-  console.log("Analyte response in success action:", AnalyteList); 
+  console.log("Analyte response in success action:", AnalyteList);
   return {
     type: GET_ANALYTEFORSCHEME_LIST_SUCCESS,
     payload: AnalyteList,
@@ -133,13 +136,12 @@ export const getAnalyteforSchemelistSuccess = (AnalyteList) => {
 };
 
 export const getAnalyteforSchemelistFail = (error) => {
-  console.log("Error response in fail action:", error); 
+  console.log("Error response in fail action:", error);
   return {
     type: GET_ANALYTEFORSCHEME_LIST_FAIL,
     payload: error,
   };
 };
-
 
 //////////////Analyte////////////
 export const getAnalytelist = (id) => ({
@@ -148,7 +150,7 @@ export const getAnalytelist = (id) => ({
 });
 
 export const getAnalytelistSuccess = (AnalyteList) => {
-  console.log("Analyte response in success action:", AnalyteList); 
+  console.log("Analyte response in success action:", AnalyteList);
   return {
     type: GET_ANALYTE_LIST_SUCCESS,
     payload: AnalyteList,
@@ -156,56 +158,55 @@ export const getAnalytelistSuccess = (AnalyteList) => {
 };
 
 export const getAnalytelistFail = (error) => {
-  console.log("Error response in fail action:", error); 
+  console.log("Error response in fail action:", error);
   return {
     type: GET_ANALYTE_LIST_FAIL,
     payload: error,
   };
 };
 
-
 export const addNewAnalyteList = (createUnit, id) => ({
   type: ADD_NEW_ANALYTE_LIST,
   payload: { createUnit, id },
 });
 
-export const addNewAnalyteListSuccess = createUnit => ({
+export const addNewAnalyteListSuccess = (createUnit) => ({
   type: ADD_NEW_ANALYTE_LIST_SUCCESS,
   payload: createUnit,
 });
 
-export const addNewAnalyteListFail = error => ({
+export const addNewAnalyteListFail = (error) => ({
   type: ADD_NEW_ANALYTE_LIST_FAIL,
   payload: error,
 });
 
-export const updateAnalyteList = unit => ({
+export const updateAnalyteList = (unit) => ({
   type: UPDATE_NEW_ANALYTE_LIST,
   payload: unit,
 });
 
-export const updateAnalyteListSuccess = unit => ({
+export const updateAnalyteListSuccess = (unit) => ({
   type: UPDATE_NEW_ANALYTE_LIST_SUCCESS,
   payload: unit,
 });
 
-export const updateAnalyteListFail = error => ({
+export const updateAnalyteListFail = (error) => ({
   type: UPDATE_NEW_ANALYTE_LIST_FAIL,
   payload: error,
 });
 
 //delete analyte Action
-export const deleteAnalyte = Analyte => ({
+export const deleteAnalyte = (Analyte) => ({
   type: DELETE_ANALYTE,
   payload: Analyte,
 });
 
-export const deleteAnalyteSuccess = Analyte => ({
+export const deleteAnalyteSuccess = (Analyte) => ({
   type: DELETE_ANALYTE_SUCCESS,
   payload: Analyte,
 });
 
-export const deleteAnalyteFail = error => ({
+export const deleteAnalyteFail = (error) => ({
   type: DELETE_ANALYTE_FAIL,
   payload: error,
 });
@@ -231,52 +232,49 @@ export const getinstrumenttypelistFail = (error) => {
   };
 };
 
-
 export const addNewInstrumentType = (createUnit, id) => ({
   type: ADD_NEW_INSTRUMENT_TYPE,
   payload: { createUnit, id },
 });
 
-export const addNewInstrumentTypeSuccess = createUnit => ({
+export const addNewInstrumentTypeSuccess = (createUnit) => ({
   type: ADD_NEW_INSTRUMENT_TYPE_SUCCESS,
   payload: createUnit,
 });
 
-export const addNewInstrumentTypeFail = error => ({
+export const addNewInstrumentTypeFail = (error) => ({
   type: ADD_NEW_INSTRUMENT_TYPE_FAIL,
   payload: error,
 });
 
-export const updateNewInstrumentType = unit => ({
+export const updateNewInstrumentType = (unit) => ({
   type: UPDATE_NEW_INSTRUMENT_TYPE,
   payload: unit,
 });
 
-export const updateNewInstrumentTypeSuccess = unit => ({
+export const updateNewInstrumentTypeSuccess = (unit) => ({
   type: UPDATE_NEW_INSTRUMENT_TYPE_SUCCESS,
   payload: unit,
 });
 
-export const updateNewInstrumentTypeFail = error => ({
+export const updateNewInstrumentTypeFail = (error) => ({
   type: UPDATE_NEW_INSTRUMENT_TYPE_FAIL,
   payload: error,
 });
-export const deleteInstrumentType = InstrumentType => ({
+export const deleteInstrumentType = (InstrumentType) => ({
   type: DELETE_INSTRUMENT_TYPE,
   payload: InstrumentType,
 });
 
-export const deleteInstrumentTypeSuccess = InstrumentType => ({
+export const deleteInstrumentTypeSuccess = (InstrumentType) => ({
   type: DELETE_INSTRUMENT_TYPE_SUCCESS,
   payload: InstrumentType,
 });
 
-export const deleteInstrumentTypeFail = error => ({
+export const deleteInstrumentTypeFail = (error) => ({
   type: DELETE_INSTRUMENT_TYPE_FAIL,
   payload: error,
 });
-
-
 
 // Get Scheme Analytes
 export const getSchemeAnalytelist = (id) => ({
@@ -284,12 +282,12 @@ export const getSchemeAnalytelist = (id) => ({
   payload: id,
 });
 
-export const getSchemeAnalytelistSuccess = SchemeAnalyteList => ({
+export const getSchemeAnalytelistSuccess = (SchemeAnalyteList) => ({
   type: GET_SCHEMEANALYTE_LIST_SUCCESS,
   payload: SchemeAnalyteList,
 });
 
-export const getSchemeAnalytelistFail = error => ({
+export const getSchemeAnalytelistFail = (error) => ({
   type: GET_SCHEMEANALYTE_LIST_FAIL,
   payload: error,
 });
@@ -299,34 +297,32 @@ export const addNewSchemeAnalytelist = (createSchemeAnalyte, id) => ({
   payload: { createSchemeAnalyte, id },
 });
 
-export const addNewSchemeAnalytelistSuccess = createSchemeAnalyte => ({
+export const addNewSchemeAnalytelistSuccess = (createSchemeAnalyte) => ({
   type: ADD_NEW_SCHEMEANALYTE_SUCCESS,
   payload: createSchemeAnalyte,
 });
 
-export const addNewSchemeAnalytelistFail = error => ({
+export const addNewSchemeAnalytelistFail = (error) => ({
   type: ADD_NEW_SCHEMEANALYTE_FAIL,
   payload: error,
 });
 //Update  Scheme Analytes
-export const updateSchemeAnalytelist = schemeanalyte => {
-  console.log('action creator called with schemeanalyte:', schemeanalyte);
+export const updateSchemeAnalytelist = (schemeanalyte) => {
+  console.log("action creator called with schemeanalyte:", schemeanalyte);
   return {
     type: UPDATE_SCHEMEANALYTE,
     payload: schemeanalyte,
   };
 };
-export const updateSchemeAnalytelistSuccess = schemeanalyte => ({
+export const updateSchemeAnalytelistSuccess = (schemeanalyte) => ({
   type: UPDATE_SCHEMEANALYTE_SUCCESS,
   payload: schemeanalyte,
 });
 
-export const updateSchemeAnalytelistFail = error => ({
+export const updateSchemeAnalytelistFail = (error) => ({
   type: UPDATE_SCHEMEANALYTE_FAIL,
   payload: error,
 });
-
-
 
 ///Get Analytes Associated With Cycle
 export const getAnalyteCycle = (id) => ({
@@ -334,16 +330,15 @@ export const getAnalyteCycle = (id) => ({
   payload: id,
 });
 
-export const getAnalyteCycleSuccess = CycleAnalyte => ({
+export const getAnalyteCycleSuccess = (CycleAnalyte) => ({
   type: GET_ANALYTESCYCLES_SUCCESS,
   payload: CycleAnalyte,
 });
 
-export const getAnalyteCycleFail = error => ({
+export const getAnalyteCycleFail = (error) => ({
   type: GET_ANALYTESCYCLES_FAIL,
   payload: error,
 });
-
 
 // Get Sample Analyte
 export const getSampleAnalytelist = (id) => ({
@@ -351,38 +346,42 @@ export const getSampleAnalytelist = (id) => ({
   payload: id,
 });
 
-export const getSampleAnalytelistSuccess = SampleAnalyteList => (
-  console.log("data in actionsffffffffffffffffff", SampleAnalyteList ),
+export const getSampleAnalytelistSuccess = (SampleAnalyteList) => (
+  console.log("data in actionsffffffffffffffffff", SampleAnalyteList),
   {
-  type: GET_SAMPLE_ANALYTE_LIST_SUCCESS,
-  payload: SampleAnalyteList,
-});
+    type: GET_SAMPLE_ANALYTE_LIST_SUCCESS,
+    payload: SampleAnalyteList,
+  }
+);
 
-export const getSampleAnalytelistFail = error => (
-  console.log("data in actionsffffffffffffffffff", error ),
+export const getSampleAnalytelistFail = (error) => (
+  console.log("data in actionsffffffffffffffffff", error),
   {
-  type: GET_SAMPLE_ANALYTE_LIST_FAIL,
-  payload: error,
-});
+    type: GET_SAMPLE_ANALYTE_LIST_FAIL,
+    payload: error,
+  }
+);
 ///////////////////////////////////////
-export const getReagentAnalytelist = (id)=> ({
+export const getReagentAnalytelist = (id) => ({
   type: GET_REAGENT_ANALYTE_LIST,
   payload: id,
 });
 
-export const getReagentAnalytelistSuccess = ReagentAnalyteList => (
-  console.log("data IN sUCCESS ", ReagentAnalyteList ),
+export const getReagentAnalytelistSuccess = (ReagentAnalyteList) => (
+  console.log("data IN sUCCESS ", ReagentAnalyteList),
   {
-  type: GET_REAGENT_ANALYTE_LIST_SUCCESS,
-  payload: ReagentAnalyteList,
-});
+    type: GET_REAGENT_ANALYTE_LIST_SUCCESS,
+    payload: ReagentAnalyteList,
+  }
+);
 
-export const getReagentAnalytelistFail = error => (
-  console.log("data IN sUCCESS ", error ),
+export const getReagentAnalytelistFail = (error) => (
+  console.log("data IN sUCCESS ", error),
   {
-  type: GET_REAGENT_ANALYTE_LIST_FAIL,
-  payload: error,
-});
+    type: GET_REAGENT_ANALYTE_LIST_FAIL,
+    payload: error,
+  }
+);
 export const addNewReagentAnalytelist = (addReagentAnalyte, id) => {
   console.log("📦 Action Triggered - ADD_NEW_REAGENT_ANALYTE:");
   console.log("🧪 Payload (Analyte IDs):", addReagentAnalyte.analytes);
@@ -394,18 +393,17 @@ export const addNewReagentAnalytelist = (addReagentAnalyte, id) => {
   };
 };
 
-export const addNewReagentAnalytelistSuccess = response => {
+export const addNewReagentAnalytelistSuccess = (response) => {
   const analyteData = response.analytes || response.data || []; // handle different possible keys
   return {
     type: ADD_NEW_REAGENT_ANALYTE_SUCCESS,
     payload: {
-      data: analyteData,  // ✅ ensure `.data` exists in reducer
+      data: analyteData, // ✅ ensure `.data` exists in reducer
     },
   };
 };
 
-
-export const addNewReagentAnalytelistFail = error => {
+export const addNewReagentAnalytelistFail = (error) => {
   console.error("❌ ADD_NEW_REAGENT_ANALYTE_FAIL:", error);
   return {
     type: ADD_NEW_REAGENT_ANALYTE_FAIL,
@@ -414,41 +412,43 @@ export const addNewReagentAnalytelistFail = error => {
 };
 
 //Update  Sample Analyte
-export const updateReagentAnalytelist = schemeanalyte => {
-  console.log('action creator called with schemeanalyte:', schemeanalyte);
+export const updateReagentAnalytelist = (schemeanalyte) => {
+  console.log("action creator called with schemeanalyte:", schemeanalyte);
   return {
     type: UPDATE_REAGENT_ANALYTE,
     payload: schemeanalyte,
   };
 };
-export const updateReagentAnalytelistSuccess = schemeanalyte => ({
+export const updateReagentAnalytelistSuccess = (schemeanalyte) => ({
   type: UPDATE_REAGENT_ANALYTE_SUCCESS,
   payload: schemeanalyte,
 });
 
-export const updateReagentAnalytelistFail = error => ({
+export const updateReagentAnalytelistFail = (error) => ({
   type: UPDATE_REAGENT_ANALYTE_FAIL,
   payload: error,
 });
 //////////////////////////////////////////////
-export const getMethodAnalytelist = (id)=> ({
+export const getMethodAnalytelist = (id) => ({
   type: GET_METHOD_ANALYTE_LIST,
   payload: id,
 });
 
-export const getMethodAnalytelistSuccess = MethodAnalyteList => (
-  console.log("data IN sUCCESS ", MethodAnalyteList ),
+export const getMethodAnalytelistSuccess = (MethodAnalyteList) => (
+  console.log("data IN sUCCESS ", MethodAnalyteList),
   {
-  type: GET_METHOD_ANALYTE_LIST_SUCCESS,
-  payload: MethodAnalyteList,
-});
+    type: GET_METHOD_ANALYTE_LIST_SUCCESS,
+    payload: MethodAnalyteList,
+  }
+);
 
-export const getMethodAnalytelistFail = error => (
-  console.log("data IN sUCCESS ", error ),
+export const getMethodAnalytelistFail = (error) => (
+  console.log("data IN sUCCESS ", error),
   {
-  type: GET_METHOD_ANALYTE_LIST_FAIL,
-  payload: error,
-});
+    type: GET_METHOD_ANALYTE_LIST_FAIL,
+    payload: error,
+  }
+);
 export const addNewMethodAnalytelist = (addMethodAnalyte, id) => {
   console.log("📦 Action Triggered - ADD_NEW_REAGENT_ANALYTE:");
   console.log("🧪 Payload (Analyte IDs):", addMethodAnalyte.analytes);
@@ -460,18 +460,17 @@ export const addNewMethodAnalytelist = (addMethodAnalyte, id) => {
   };
 };
 
-export const addNewMethodAnalytelistSuccess = response => {
+export const addNewMethodAnalytelistSuccess = (response) => {
   const analyteData = response.analytes || response.data || []; // handle different possible keys
   return {
     type: ADD_NEW_METHOD_ANALYTE_SUCCESS,
     payload: {
-      data: analyteData,  // ✅ ensure `.data` exists in reducer
+      data: analyteData, // ✅ ensure `.data` exists in reducer
     },
   };
 };
 
-
-export const addNewMethodAnalytelistFail = error => {
+export const addNewMethodAnalytelistFail = (error) => {
   console.error("❌ ADD_NEW_REAGENT_ANALYTE_FAIL:", error);
   return {
     type: ADD_NEW_METHOD_ANALYTE_FAIL,
@@ -480,72 +479,75 @@ export const addNewMethodAnalytelistFail = error => {
 };
 
 //Update  Sample Analyte
-export const updateMethodAnalytelist = schemeanalyte => {
-  console.log('action creator called with schemeanalyte:', schemeanalyte);
+export const updateMethodAnalytelist = (schemeanalyte) => {
+  console.log("action creator called with schemeanalyte:", schemeanalyte);
   return {
     type: UPDATE_METHOD_ANALYTE,
     payload: schemeanalyte,
   };
 };
-export const updateMethodAnalytelistSuccess = schemeanalyte => ({
+export const updateMethodAnalytelistSuccess = (schemeanalyte) => ({
   type: UPDATE_METHOD_ANALYTE_SUCCESS,
   payload: schemeanalyte,
 });
 
-export const updateMethodAnalytelistFail = error => ({
+export const updateMethodAnalytelistFail = (error) => ({
   type: UPDATE_METHOD_ANALYTE_FAIL,
   payload: error,
 });
 ////////////////////////////////////////////
-export const getInstrumentAnalytelist = (id)=> ({
+export const getInstrumentAnalytelist = (id) => ({
   type: GET_INSTRUMENT_ANALYTE_LIST,
   payload: id,
 });
 
-export const getInstrumentAnalytelistSuccess = InstrumentAnalyteList => (
-  console.log("data IN sUCCESS ", InstrumentAnalyteList ),
+export const getInstrumentAnalytelistSuccess = (InstrumentAnalyteList) => (
+  console.log("data IN sUCCESS ", InstrumentAnalyteList),
   {
-  type: GET_INSTRUMENT_ANALYTE_LIST_SUCCESS,
-  payload: InstrumentAnalyteList,
-});
+    type: GET_INSTRUMENT_ANALYTE_LIST_SUCCESS,
+    payload: InstrumentAnalyteList,
+  }
+);
 
-export const getInstrumentAnalytelistFail = error => (
-  console.log("data IN sUCCESS ", error ),
+export const getInstrumentAnalytelistFail = (error) => (
+  console.log("data IN sUCCESS ", error),
   {
-  type: GET_INSTRUMENT_ANALYTE_LIST_FAIL,
-  payload: error,
-});
+    type: GET_INSTRUMENT_ANALYTE_LIST_FAIL,
+    payload: error,
+  }
+);
 
 export const addNewInstrumentAnalytelist = (addInstrumentAnalyte, id) => (
-  console.log("data IN addInstrumentAnalyte ", addInstrumentAnalyte ),
+  console.log("data IN addInstrumentAnalyte ", addInstrumentAnalyte),
   {
-  type: ADD_NEW_INSTRUMENT_ANALYTE,
-  payload: { addInstrumentAnalyte, id },
-});
+    type: ADD_NEW_INSTRUMENT_ANALYTE,
+    payload: { addInstrumentAnalyte, id },
+  }
+);
 
-export const addNewInstrumentAnalytelistSuccess = addInstrumentAnalyte => ({
+export const addNewInstrumentAnalytelistSuccess = (addInstrumentAnalyte) => ({
   type: ADD_NEW_INSTRUMENT_ANALYTE_SUCCESS,
   payload: addInstrumentAnalyte,
 });
 
-export const addNewInstrumentAnalytelistFail = error => ({
+export const addNewInstrumentAnalytelistFail = (error) => ({
   type: ADD_NEW_INSTRUMENT_ANALYTE_FAIL,
   payload: error,
 });
 //Update  Sample Analyte
-export const updateInstrumentAnalytelist = schemeanalyte => {
-  console.log('action creator called with schemeanalyte:', schemeanalyte);
+export const updateInstrumentAnalytelist = (schemeanalyte) => {
+  console.log("action creator called with schemeanalyte:", schemeanalyte);
   return {
     type: UPDATE_INSTRUMENT_ANALYTE,
     payload: schemeanalyte,
   };
 };
-export const updateInstrumentAnalytelistSuccess = schemeanalyte => ({
+export const updateInstrumentAnalytelistSuccess = (schemeanalyte) => ({
   type: UPDATE_INSTRUMENT_ANALYTE_SUCCESS,
   payload: schemeanalyte,
 });
 
-export const updateInstrumentAnalytelistFail = error => ({
+export const updateInstrumentAnalytelistFail = (error) => ({
   type: UPDATE_INSTRUMENT_ANALYTE_FAIL,
   payload: error,
 });
@@ -557,29 +559,29 @@ export const addNewSampleAnalytelist = (createSampleAnalyte, id) => ({
   payload: { createSampleAnalyte, id },
 });
 
-export const addNewSampleAnalytelistSuccess = createSampleAnalyte => ({
+export const addNewSampleAnalytelistSuccess = (createSampleAnalyte) => ({
   type: ADD_NEW_SAMPLE_ANALYTE_SUCCESS,
   payload: createSampleAnalyte,
 });
 
-export const addNewSampleAnalytelistFail = error => ({
+export const addNewSampleAnalytelistFail = (error) => ({
   type: ADD_NEW_SAMPLE_ANALYTE_FAIL,
   payload: error,
 });
 //Update  Sample Analyte
-export const updateSampleAnalytelist = schemeanalyte => {
-  console.log('action creator called with schemeanalyte:', schemeanalyte);
+export const updateSampleAnalytelist = (schemeanalyte) => {
+  console.log("action creator called with schemeanalyte:", schemeanalyte);
   return {
     type: UPDATE_SAMPLE_ANALYTE,
     payload: schemeanalyte,
   };
 };
-export const updateSampleAnalytelistSuccess = schemeanalyte => ({
+export const updateSampleAnalytelistSuccess = (schemeanalyte) => ({
   type: UPDATE_SAMPLE_ANALYTE_SUCCESS,
   payload: schemeanalyte,
 });
 
-export const updateSampleAnalytelistFail = error => ({
+export const updateSampleAnalytelistFail = (error) => ({
   type: UPDATE_SAMPLE_ANALYTE_FAIL,
   payload: error,
 });
@@ -589,26 +591,79 @@ export const getAnalyteSampleList = (id) => ({
   payload: id,
 });
 
-export const getAnalyteSampleSuccess = SampleListAnalyte => ({
+export const getAnalyteSampleSuccess = (SampleListAnalyte) => ({
   type: GET_ANALYTESSAMPLE_SUCCESS,
   payload: SampleListAnalyte,
 });
 
-export const getAnalyteSampleFail = error => ({
+export const getAnalyteSampleFail = (error) => ({
   type: GET_ANALYTESSAMPLE_FAIL,
   payload: error,
 });
-export const getInstrumentDetail= (id) => ({
+export const getInstrumentDetail = (id) => ({
   type: GET_INSTRUMENT_DETAIL,
   payload: id,
 });
 
-export const getInstrumentDetailSuccess = InstrumentDetail => ({
+export const getInstrumentDetailSuccess = (InstrumentDetail) => ({
   type: GET_INSTRUMENT_DETAIL_SUCCESS,
   payload: InstrumentDetail,
 });
 
-export const getInstrumentDetailFail = error => ({
+export const getInstrumentDetailFail = (error) => ({
   type: GET_INSTRUMENT_DETAIL_FAIL,
   payload: error,
 });
+
+export const getMicroData = (id) => {
+  console.log("📦 Action: Dispatching GET_MICROBIOLOGY_DATA with ID:", id);
+  return {
+    type: GET_MICROBIOLOGY_DATA,
+    payload: id,
+  };
+};
+
+export const getMicroDataSuccess = (payload) => {
+  console.log(
+    "✅ Action: GET_MICROBIOLOGY_DATA_SUCCESS with payload:",
+    payload
+  );
+  return {
+    type: GET_MICROBIOLOGY_DATA_SUCCESS,
+    payload,
+  };
+};
+
+export const getMicroDataFail = (error) => {
+  console.error("❌ Action: GET_MICROBIOLOGY_DATA_FAIL with error:", error);
+  return {
+    type: GET_MICROBIOLOGY_DATA_FAIL,
+    payload: error,
+  };
+};
+export const addMicroData = (data) => {
+  console.log("📥 Action: Dispatching ADD_MICROBIOLOGY_DATA with data:", data);
+  return {
+    type: ADD_MICROBIOLOGY_DATA,
+    payload: data,
+  };
+};
+
+export const addMicroDataSuccess = (payload) => {
+  console.log(
+    "✅ Action: ADD_MICROBIOLOGY_DATA_SUCCESS with payload:",
+    payload
+  );
+  return {
+    type: ADD_MICROBIOLOGY_DATA_SUCCESS,
+    payload,
+  };
+};
+
+export const addMicroDataFail = (error) => {
+  console.error("❌ Action: ADD_MICROBIOLOGY_DATA_FAIL with error:", error);
+  return {
+    type: ADD_MICROBIOLOGY_DATA_FAIL,
+    payload: error,
+  };
+};

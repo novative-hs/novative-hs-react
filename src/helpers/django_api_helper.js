@@ -4407,3 +4407,31 @@ export const deleteantibiotic = (AntibioticList) =>
   del(`${url.DELETE_ANTIBIOTIC_LIST}/${AntibioticList.id}`, {
     headers: getHeader(authHeader()),
   });
+
+ export const getMicroData = (id)=>
+  get(`${url.GET_MICROBIOLOGY_DATA}/${id}`, {
+    headers: getHeader(authHeader()),
+  });
+export const addMicrobiologyData = ({ equipment = [], reagent = [] }) => {
+  let formData = new FormData();
+
+  // Append equipment
+  equipment.forEach((item, index) => {
+    formData.append(`equipment[${index}][id]`, item.id);
+    formData.append(`equipment[${index}][name]`, item.name);
+  });
+
+  // Append reagents
+  reagent.forEach((item, index) => {
+    formData.append(`reagent[${index}][id]`, item.id);
+    formData.append(`reagent[${index}][name]`, item.name);
+  });
+
+  for (let pair of formData.entries()) {
+    console.log(`📝 FormData - ${pair[0]}: ${pair[1]}`);
+  }
+
+  return axios.post(`${url.ADD_MICROBIOLOGY_DATA}`, formData, {
+    headers: getHeader(authHeader()),
+  });
+};

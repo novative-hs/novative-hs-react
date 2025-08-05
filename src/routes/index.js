@@ -79,7 +79,7 @@ import ReagentsInManufacturer from "pages/databaseadmin/reagentsinmanufacturer";
 
 import MethodsAnalytes from "pages/databaseadmin/methods-analyte";
 import InstrumentsAnalytes from "pages/databaseadmin/instruments-analyte";
-
+import databaseOfMicro from "pages/databaseadmin/database-of-micro";
 import ReagentsAnalytes from "pages/databaseadmin/reagent-analyte";
 import SchemeRoundList from "pages/databaseadmin/round-list";
 import Membershipstatusreport from "pages/databaseadmin/participantreport";
@@ -340,6 +340,7 @@ const databaseAdminAuthProtectedRoutes = [
     path: "/:organization_name/analyte-add-units/:id",
     component: AnalyteAddUnits,
   },
+  { path: "/:organization_name/database-of-micro", component: databaseOfMicro },  
   {
     path: "/analyte-add-qualitative-units/:id",
     component: AnalyteAddQualitativeUnits,

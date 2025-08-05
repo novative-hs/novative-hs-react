@@ -62,6 +62,10 @@ import {
   ADD_NEW_METHOD_ANALYTE_FAIL,
   UPDATE_METHOD_ANALYTE_SUCCESS,
   UPDATE_METHOD_ANALYTE_FAIL,
+  GET_MICROBIOLOGY_DATA_SUCCESS,
+  GET_MICROBIOLOGY_DATA_FAIL,
+  ADD_MICROBIOLOGY_DATA_SUCCESS,
+  ADD_MICROBIOLOGY_DATA_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -559,7 +563,41 @@ const ListUnit = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+    case GET_MICROBIOLOGY_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        equipmentList: action.payload.equipment || [],
+        reagentList: action.payload.reagent || [],
+        addedMicrobiology: action.payload.added || [],
+      };
 
+    case GET_MICROBIOLOGY_DATA_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    // ADD MICRO DATA
+
+    case ADD_MICROBIOLOGY_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        // Optional: append new data to list (if needed)
+        equipmentList: [
+          ...state.equipmentList,
+          ...(action.payload.equipment || []),
+        ],
+        reagentList: [...state.reagentList, ...(action.payload.reagent || [])],
+      };
+
+    case ADD_MICROBIOLOGY_DATA_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }
