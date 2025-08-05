@@ -61,7 +61,7 @@ class Header extends Component {
   }
 
   toggleDropdown() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       dropdownOpen: !prevState.dropdownOpen,
     }));
     this.props.openLeftMenuCallBack();
@@ -69,7 +69,7 @@ class Header extends Component {
 
   toggleNavbar() {
     console.log("Menu icon clicked. Toggling navbar state.");
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isNavbarOpen: !prevState.isNavbarOpen, // Toggle navbar open/close state
     }));
   }
@@ -77,14 +77,15 @@ class Header extends Component {
   toggleMenu() {
     this.props.openLeftMenuCallBack();
   }
-  toggleDropdown(dropdownName) {
-    this.setState(prevState => ({
-      dropdowns: {
-        ...prevState.dropdowns,
-        [dropdownName]: !prevState.dropdowns[dropdownName],
-      },
-    }));
-  }
+ toggleDropdown(dropdownName) {
+  this.setState(prevState => ({
+    dropdowns: {
+      databaseDropdownOpen: dropdownName === "databaseDropdownOpen" ? !prevState.dropdowns.databaseDropdownOpen : false,
+      participantDataDropdownOpen: dropdownName === "participantDataDropdownOpen" ? !prevState.dropdowns.participantDataDropdownOpen : false,
+      databaseReviewDropdownOpen: dropdownName === "databaseReviewDropdownOpen" ? !prevState.dropdowns.databaseReviewDropdownOpen : false,
+    },
+  }));
+}
 
   toggleRightbar() {
     this.props.toggleRightSidebar();
@@ -99,7 +100,7 @@ class Header extends Component {
     const userId = authUser?.user_id;
 
     if (userId) {
-     fetch(`https://externalqcapi.com/api/lab/user-name/${userId}`)
+      fetch(`https://externalqcapi.com/api/lab/user-name/${userId}`)
         .then((res) => res.json())
         .then((data) => {
           console.log("API response:", data); // Log the whole response
@@ -121,7 +122,7 @@ class Header extends Component {
 
   toggleNavbar() {
     console.log("Menu icon clicked. Toggling navbar state.");
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       isNavbarOpen: !prevState.isNavbarOpen, // Toggle navbar open/close state
       isOpen: !prevState.isOpen, // Sync with the Collapse component
     }));
@@ -256,7 +257,7 @@ class Header extends Component {
                         <li className="nav-item">
                           <span
                             className="dropdown-item database-dropdown"
-                            onMouseEnter={() =>
+                            onClick={() =>
                               this.toggleDropdown("databaseDropdownOpen")
                             }
                           >
@@ -277,14 +278,7 @@ class Header extends Component {
                                 },
                               })
                             }
-                            onMouseLeave={() =>
-                              this.setState({
-                                dropdowns: {
-                                  ...dropdowns,
-                                  databaseDropdownOpen: false,
-                                },
-                              })
-                            }
+                            
                           >
                             <li>
                               <NavLink
@@ -351,7 +345,7 @@ class Header extends Component {
                                 Database of Organism
                               </NavLink>
                             </li>
-                             <li>
+                            <li>
                               <NavLink
                                 to={`/${organization_name}/database-of-antibiotics`}
                                 className="dropdown-item"
@@ -359,7 +353,7 @@ class Header extends Component {
                                 Database of Antibiotics
                               </NavLink>
                             </li>
-                             <li>
+                            <li>
                               <NavLink
                                 to={`/${organization_name}/database-of-micro`}
                                 className="dropdown-item"
@@ -372,7 +366,7 @@ class Header extends Component {
                         <li className="nav-item">
                           <span
                             className="dropdown-item database-dropdown"
-                            onMouseEnter={() =>
+                            onClick={() =>
                               this.toggleDropdown("databaseReviewDropdownOpen")
                             }
                           >
@@ -395,14 +389,7 @@ class Header extends Component {
                                 },
                               })
                             }
-                            onMouseLeave={() =>
-                              this.setState({
-                                dropdowns: {
-                                  ...dropdowns,
-                                  databaseReviewDropdownOpen: false,
-                                },
-                              })
-                            }
+                           
                           >
                             <li>
                               <NavLink
@@ -460,7 +447,7 @@ class Header extends Component {
                                 : "dropdown-menu"
                             }
                             style={{ backgroundColor: "#0000CD" }}
-                            onMouseEnter={() =>
+                            onClick={() =>
                               this.setState({
                                 dropdowns: {
                                   ...dropdowns,
@@ -468,14 +455,7 @@ class Header extends Component {
                                 },
                               })
                             }
-                            onMouseLeave={() =>
-                              this.setState({
-                                dropdowns: {
-                                  ...dropdowns,
-                                  participantDataDropdownOpen: false,
-                                },
-                              })
-                            }
+                          
                           >
                             <li>
                               <NavLink
@@ -682,8 +662,6 @@ class Header extends Component {
                               <span className="pt-4 font-size-12">Payment</span>
                             </NavLink>
                           </li>
-                          
-                           
                         </ul>
                       </Collapse>
                     </nav>
@@ -729,7 +707,7 @@ class Header extends Component {
                             <span className="pt-4 font-size-12">Payment</span>
                           </NavLink>
                         </li>
-                         <li>
+                        <li>
                           <NavLink
                             to={`/${organization_name}/CSRrounds`}
                             className={({ isActive }) =>
@@ -740,10 +718,13 @@ class Header extends Component {
                           </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink to={`/${organization_name}/CSRhistory`} className="dropdown-item">
-                              <span className="pt-4 font-size-12">History</span>
-                            </NavLink>
-                          </li>
+                          <NavLink
+                            to={`/${organization_name}/CSRhistory`}
+                            className="dropdown-item"
+                          >
+                            <span className="pt-4 font-size-12">History</span>
+                          </NavLink>
+                        </li>
                       </ul>
                     </Collapse>
                   </nav>
@@ -887,7 +868,7 @@ Header.propTypes = {
   }),
 };
 
-const mapStatetoProps = state => {
+const mapStatetoProps = (state) => {
   const { layoutType, showRightSidebar } = state.Layout;
   return { layoutType, showRightSidebar };
 };
