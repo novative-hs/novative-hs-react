@@ -88,7 +88,7 @@ class ReagentsList extends Component {
                   <input
                     type="text"
                     value={this.state.idFilter}
-                    onChange={e => this.handleFilterChange("idFilter", e)}
+                    onChange={(e) => this.handleFilterChange("idFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -119,7 +119,7 @@ class ReagentsList extends Component {
                   <input
                     type="text"
                     value={this.state.nameFilter}
-                    onChange={e => this.handleFilterChange("nameFilter", e)}
+                    onChange={(e) => this.handleFilterChange("nameFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -149,7 +149,7 @@ class ReagentsList extends Component {
                   <input
                     type="text"
                     value={this.state.priceFilter}
-                    onChange={e => this.handleFilterChange("priceFilter", e)}
+                    onChange={(e) => this.handleFilterChange("priceFilter", e)}
                     className="form-control"
                   />
                 </div>
@@ -181,7 +181,7 @@ class ReagentsList extends Component {
                   <input
                     type="text"
                     value={this.state.noofanalytesFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("noofanalytesFilter", e)
                     }
                     className="form-control"
@@ -234,7 +234,7 @@ class ReagentsList extends Component {
                 >
                   <select
                     value={this.state.analytetypeFilter}
-                    onChange={e =>
+                    onChange={(e) =>
                       this.handleFilterChange("analytetypeFilter", e)
                     }
                     className="form-control"
@@ -245,6 +245,7 @@ class ReagentsList extends Component {
                   >
                     <option value="">All</option>
                     <option value="Qualitative">Qualitative</option>
+                    <option value="Identification">Identification</option>
                     <option value="Quantitative">Quantitative</option>
                   </select>
                 </div>
@@ -272,7 +273,7 @@ class ReagentsList extends Component {
                 >
                   <select
                     value={this.state.statusFilter}
-                    onChange={e => this.handleFilterChange("statusFilter", e)}
+                    onChange={(e) => this.handleFilterChange("statusFilter", e)}
                     className="form-control"
                     style={{
                       textAlign: "center",
@@ -313,17 +314,16 @@ class ReagentsList extends Component {
                     <i
                       className="mdi mdi-pencil font-size-18"
                       onClick={(e) => this.handleReagentsClick(e, scheme)}
-
                     ></i>
                   </Link>
                 </Tooltip>
                 <Tooltip title="History">
-                <Link
-                  className="fas fa-comment font-size-18"
-                  to={`/${this.state.organization_name}/databaseadmin-history/${scheme.id}?type=Scheme`}
-                ></Link>
-              </Tooltip>
-              
+                  <Link
+                    className="fas fa-comment font-size-18"
+                    to={`/${this.state.organization_name}/databaseadmin-history/${scheme.id}?type=Scheme`}
+                  ></Link>
+                </Tooltip>
+
                 {!scheme.is_part_of_active_cycle ? ( // Show delete button if not part of an active cycle
                   <Tooltip title="Delete">
                     <Link className="text-danger" to="#">
@@ -370,7 +370,7 @@ class ReagentsList extends Component {
   }
 
   toggleDeleteModal = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       deleteModal: !prevState.deleteModal,
     }));
   };
@@ -409,7 +409,7 @@ class ReagentsList extends Component {
     }
   };
 
-  onClickDelete = SchemeList => {
+  onClickDelete = (SchemeList) => {
     this.setState({ SchemeList: SchemeList });
     this.setState({ deleteModal: true });
   };
@@ -419,7 +419,7 @@ class ReagentsList extends Component {
   };
 
   toggle() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       modal: !prevState.modal,
     }));
   }
@@ -440,7 +440,7 @@ class ReagentsList extends Component {
     }
   }
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -452,11 +452,11 @@ class ReagentsList extends Component {
     }
   };
 
-  toDataURL = url =>
+  toDataURL = (url) =>
     fetch(url)
-      .then(response => response.blob())
+      .then((response) => response.blob())
       .then(
-        blob =>
+        (blob) =>
           new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onloadend = () => resolve(reader.result);
@@ -524,7 +524,7 @@ class ReagentsList extends Component {
       feedbackMessage,
     } = this.state;
 
-    const filteredData = SchemeList.filter(entry => {
+    const filteredData = SchemeList.filter((entry) => {
       // Modify accordingly for each filter condition
       const id = entry.id ? entry.id.toString() : "";
       const name = entry.name ? entry.name.toString().toLowerCase() : "";
@@ -622,7 +622,7 @@ class ReagentsList extends Component {
                           data={filteredData}
                           search
                         >
-                          {toolkitprops => (
+                          {(toolkitprops) => (
                             <React.Fragment>
                               <Row className="mb-4">
                                 <Col xl="12">
@@ -709,7 +709,7 @@ class ReagentsList extends Component {
                                                 "Please select the Status from dropdown"
                                               ),
                                           })}
-                                          onSubmit={values => {
+                                          onSubmit={(values) => {
                                             if (isEdit) {
                                               {
                                                 const updateSchemeList = {
@@ -789,7 +789,7 @@ class ReagentsList extends Component {
                                                       value={
                                                         this.state.analyte.name
                                                       }
-                                                      onChange={e =>
+                                                      onChange={(e) =>
                                                         this.setState({
                                                           analyte: {
                                                             id: analyte.id,
@@ -827,7 +827,7 @@ class ReagentsList extends Component {
                                                       value={
                                                         this.state.analyte.price
                                                       }
-                                                      onChange={e => {
+                                                      onChange={(e) => {
                                                         const rawValue =
                                                           e.target.value.replace(
                                                             /,/g,
@@ -882,6 +882,9 @@ class ReagentsList extends Component {
                                                       </option>
                                                       <option value="Qualitative">
                                                         Qualitative
+                                                      </option>
+                                                      <option value="Identification">
+                                                        Identification
                                                       </option>
                                                       <option value="Quantitative">
                                                         Quantitative
@@ -993,11 +996,11 @@ const mapStateToProps = ({ SchemeList }) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onGetScheme: id => dispatch(getSchemelist(id)),
+  onGetScheme: (id) => dispatch(getSchemelist(id)),
   onAddNewScheme: (createInstrumentType, id) =>
     dispatch(addNewSchemeList(createInstrumentType, id)),
-  onUpdateScheme: analyte => dispatch(updateSchemeList(analyte)),
-  onDeleteScheme: id => dispatch(deleteScheme(id)),
+  onUpdateScheme: (analyte) => dispatch(updateSchemeList(analyte)),
+  onDeleteScheme: (id) => dispatch(deleteScheme(id)),
 });
 
 export default connect(
