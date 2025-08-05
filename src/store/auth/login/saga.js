@@ -9,39 +9,40 @@ import { postLogin } from "../../../helpers/django_api_helper";
 
 function* loginUser({ payload: { user, history } }) {
   try {
-    const response = yield call(postLogin, {
-      username: user.username,
-      password: user.password,
-      guest_id: user.guest_id,
+    const response = yield call(postLogin, user); // user has username, password, guest_id
 
-    });
-
-    // If there is data in response then execute this block
-    // Otherwise there must be some error so execute else block
-    if (response.data.data) {
+    if (response.data && response.data.data) {
       const data = response.data.data;
 
+      // Save to local storage
       localStorage.setItem("authUser", JSON.stringify(data));
+
+      // Dispatch success
       yield put(loginSuccess(data));
 
-      // if (data.account_type == "patient") {
-      //   history.push("/nearby-labs");
-      // }
-      // else if (data.account_type == "labowner") {
-      //   history.push("/dashboard-lab");
-      // }
-      // else if (data.account_type == "b2bclient") {
-      //   history.push("/dashboard-b2bclient");
-      // }
-      // else {
-      //   history.push("/dashboard-corporate/" + data.user_id);
+      // ✅ Redirect based on account_type
+      // switch (data.account_type) {
+      //   case "labowner":
+      //     history.push("/dashboard-lab");
+      //     break;
+      //   case "nhs":
+      //     history.push("/dashboard-nhs");
+      //     break;
+      //   case "b2bclient":
+      //     history.push("/dashboard-b2bclient");
+      //     break;
+      //   default:
+      //     history.push("/dashboard");
       // }
     } else {
-      const message = response.data.message;
+      const message = response.data.message || "Login failed";
       yield put(apiError(message));
     }
   } catch (error) {
-    yield put(apiError("Sorry! You have provided invalid Password."));
+    const message =
+      error?.response?.data?.message ||
+      "Sorry! You have provided invalid credentials.";
+    yield put(apiError(message));
   }
 }
 

@@ -379,15 +379,18 @@ export const postCorporateInformation = (id, corporate) => {
 export const postLogin = (user) => {
   let formData = new FormData();
 
-  console.log("django api", user);
+  console.log("Sending login data", user);
 
   if (user.account_type === "labowner") {
     formData.append("lab_code", user.lab_code);
     formData.append("username", user.username);
     formData.append("password", user.password);
+    formData.append("account_type", user.account_type);
   } else {
     formData.append("username", user.username);
     formData.append("password", user.password);
+    formData.append("account_type", user.account_type);
+    formData.append("lab_code", user.lab_code);
     if (user.guest_id) {
       formData.append("guest_id", user.guest_id);
     }
@@ -397,7 +400,6 @@ export const postLogin = (user) => {
     headers: getHeader(authHeader()),
   });
 };
-
 //////////////////////////
 export const getNews = (id) =>
   get(`${url.GET_NEWS}/${id}`, {

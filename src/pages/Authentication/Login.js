@@ -48,7 +48,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      login_role: "NHS", // Default role
+      login_role: "nhs", // Default role
       isLoginInProgress: false,
     };
   }
@@ -59,13 +59,13 @@ class Login extends Component {
       elem.removeAttribute(elem.attributes[0].name);
     }
 
-    if (localStorage.getItem("authUser")) {
-      this.props.history.push("/logout");
-    }
+    // if (localStorage.getItem("authUser")) {
+    //   this.props.history.push("/logout");
+    // }
     this.props.apiError("");
   }
 
-  togglePasswordVisibility = (e) => {
+  togglePasswordVisibility = e => {
     const button = e.currentTarget;
     const inputGroup = button.closest(".input-group");
 
@@ -113,9 +113,19 @@ class Login extends Component {
               color: "white",
             }}
           >
+            {/* <img
+              src="https://externalqcapi.com/media/organization/nhs_logo.webp"
+              alt="NHS Logo"
+              style={{
+                width: "170px",
+                height: "70px",
+                objectFit: "contain",
+              }}
+            /> */}
             <img
               src="https://externalqcapi.com/media/organization/nhs_logo.webp"
               alt="NHS Logo"
+              className="img-fluid"
               style={{
                 width: "170px",
                 height: "70px",
@@ -131,23 +141,25 @@ class Login extends Component {
             {/* Centered "Coming Soon" text */}
             <Col
               xs="auto"
-              className="d-flex justify-content-center align-items-center"
+              className="d-flex justify-content-center align-items-center text-center px-3"
               style={{
                 height: "100%",
               }}
             >
               <h1
+                className="fw-bold fs-5 fs-md-4 fs-lg-3 text-white m-0"
                 style={{
                   fontWeight: "bold",
                   animation: "blinker 1.5s linear infinite",
-                  fontSize: "2rem",
+                  fontSize: "5rem",
                   fontFamily: "Laurel Black",
                   margin: 0,
                   color: "white",
                   textShadow: "0 0 10px rgba(255,255,255,0.6)",
                 }}
               >
-                Welcome! We are excited to have you on board. Lets improve quality together
+                Welcome! We are excited to have you on board. Lets improve
+                quality together
               </h1>
             </Col>
           </Row>
@@ -156,7 +168,7 @@ class Login extends Component {
             className="g-0 w-100 justify-content-center"
             style={{ maxWidth: "700px", height: "auto" }}
           >
-            <Col className="position-relative" md={6}>
+            <Col className="position-relative" xs={12} md={6}>
               <div
                 className="h-100 w-100 position-absolute"
                 style={{
@@ -168,7 +180,7 @@ class Login extends Component {
                 }}
               ></div>
             </Col>
-            <Col className="bg-light" md={6}>
+            <Col className="bg-light" xs={12} md={6}>
               <div
                 className="d-flex flex-column justify-content-center px-4 py-3"
                 style={{ height: "100%" }}
@@ -183,7 +195,7 @@ class Login extends Component {
                   validateOnChange={true}
                   validateOnBlur={true}
                   initialValues={{
-                    login_role: "NHS",
+                    login_role: "nhs",
                     lab_code: "",
                     username: "",
                     email: "",
@@ -212,7 +224,21 @@ class Login extends Component {
                     this.setState({ isLoginInProgress: true });
 
                     try {
-                      await this.props.loginUser(values, this.props.history);
+                      const payload =
+                        values.login_role === "labowner"
+                          ? {
+                              account_type: "labowner", // map Participant to labowner if needed
+                              lab_code: values.lab_code,
+                              username: values.username,
+                              password: values.password,
+                            }
+                          : {
+                              account_type: values.login_role,
+                              username: values.username,
+                              password: values.password,
+                            };
+
+                      await this.props.loginUser(payload, this.props.history);
 
                       setTimeout(() => {
                         const success = this.props.success;
@@ -220,16 +246,14 @@ class Login extends Component {
 
                         if (error) {
                           this.props.apiError(error.message);
-                          setErrors({ password: "Invalid login credentials" });
+                          // setErrors({ password: "Invalid login credentials" });
                           setTimeout(() => this.props.apiError(null), 240000);
                         } else {
                           const { organization_name } = success;
                           switch (success.account_type) {
                             case "labowner":
                               this.props.history.push(
-                                `/${encodeURIComponent(
-                                  organization_name
-                                )}/home`
+                                `/${encodeURIComponent(organization_name)}/home`
                               );
                               break;
                             case "registration-admin":
@@ -270,9 +294,7 @@ class Login extends Component {
                       }, 1000);
                     } catch (error) {
                       this.props.apiError(error.message);
-                      setErrors({
-                        password: "Server error or incorrect password",
-                      });
+                      // setErrors({ password: "Server error or incorrect password" });
                       setTimeout(() => this.props.apiError(null), 240000);
                     } finally {
                       this.setState({ isLoginInProgress: false });
@@ -290,13 +312,14 @@ class Login extends Component {
                           as="select"
                           name="login_role"
                           className="form-select"
-                          onChange={(e) => {
+                          onChange={e => {
                             setFieldValue("login_role", e.target.value);
                             this.setState({ login_role: e.target.value });
                           }}
                         >
-                          <option value="NHS">NHS</option>
+                          {/* <option value="">Login As</option> */}
                           <option value="labowner">Participant</option>
+                          <option value="nhs">NHS</option>
                         </Field>
                       </div>
 
@@ -364,7 +387,7 @@ class Login extends Component {
                                           ? "is-invalid"
                                           : ""
                                       }`}
-                                      onChange={(e) => {
+                                      onChange={e => {
                                         form.setFieldValue(
                                           "password",
                                           e.target.value
@@ -392,7 +415,7 @@ class Login extends Component {
                         </>
                       )}
 
-                      {values.login_role === "NHS" && (
+                      {values.login_role === "nhs" && (
                         <>
                           <div className="mb-3">
                             <Label for="username" className="form-label">
@@ -435,7 +458,7 @@ class Login extends Component {
                                           ? "is-invalid"
                                           : ""
                                       }`}
-                                      onChange={(e) => {
+                                      onChange={e => {
                                         form.setFieldValue(
                                           "password",
                                           e.target.value
@@ -538,7 +561,7 @@ Login.propTypes = {
   history: PropTypes.object,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   console.log("State:", state); // Add your console.log statement here
   const { error, success } = state.Login;
   return { error, success };
