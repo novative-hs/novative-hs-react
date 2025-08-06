@@ -2297,6 +2297,7 @@ export const postConfirmPwd = (user, token) => {
 
 export const postChangePwd = (user) => {
   let formData = new FormData();
+  formData.append("user_id", user.user_id); // ✅ Add user_id here
   formData.append("old_password", user.old_password);
   formData.append("new_password", user.new_password);
 

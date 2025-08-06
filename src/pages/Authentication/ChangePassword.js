@@ -42,8 +42,14 @@ class ChangePassword extends Component {
     };
   }
   componentDidMount() {
-    this.props.userChangePasswordError("");
+    const user = JSON.parse(localStorage.getItem("authUser"));
+    if (user) {
+      this.setState({ userId: user.user_id }); // <-- Store the user_id
+    }
+
+    this.props.userChangePasswordError(""); // clear errors
   }
+
   togglePasswordVisibility = () => {
     const passwordInput = document.querySelector('input[name="new_password"]');
     const eyeIcon = document.getElementById("eye-icon");
@@ -84,7 +90,7 @@ class ChangePassword extends Component {
 
   render() {
     // Define a custom validation function
-    const checkOldPassword = value => {
+    const checkOldPassword = (value) => {
       // Replace this with your actual logic to check if the old password is correct
       const isOldPasswordCorrect = checkOldPasswordFunction(value);
 
@@ -104,7 +110,7 @@ class ChangePassword extends Component {
       new_password2: Yup.string()
         .required("Please re-enter your new password")
         .when("new_password", {
-          is: val => val && val.length > 0,
+          is: (val) => val && val.length > 0,
           then: Yup.string().oneOf(
             [Yup.ref("new_password")],
             "Passwords must match"
@@ -151,7 +157,10 @@ class ChangePassword extends Component {
 
             <Row className=" align-items-center justify-content-center g-0 mt-5">
               <Col sm={10} md={10} lg={8} xl={8} className="  ">
-                <div className="d-flex flex-column justify-content-center p-5 mb-4" style={{ backgroundColor: "#E8E7E7" }}>
+                <div
+                  className="d-flex flex-column justify-content-center p-5 mb-4"
+                  style={{ backgroundColor: "#E8E7E7" }}
+                >
                   <Formik
                     enableReinitialize={true}
                     initialValues={{
@@ -172,20 +181,22 @@ class ChangePassword extends Component {
                       new_password2: Yup.string()
                         .required("Please re-enter your new password")
                         .when("new_password", {
-                          is: val => (val && val.length > 0 ? true : false),
+                          is: (val) => (val && val.length > 0 ? true : false),
                           then: Yup.string().oneOf(
                             [Yup.ref("new_password")],
                             "Both password need to be the same"
                           ),
                         }),
                     })}
-                    onSubmit={values => {
-                      this.props.userChangePassword(values);
-                      window.scrollTo({
-                        top: 0,
-                        left: 0,
-                        behavior: "smooth",
-                      });
+                    onSubmit={(values) => {
+                      const payload = {
+                        ...values,
+                        user_id: this.state.userId, // <- include user_id
+                      };
+
+                      this.props.userChangePassword(payload);
+
+                      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 
                       setTimeout(() => {
                         this.setState({
@@ -371,7 +382,7 @@ ChangePassword.propTypes = {
   userChangePasswordError: PropTypes.any,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { changeError, changeSuccessMsg } = state.ChangePassword;
   return { changeError, changeSuccessMsg };
 };
