@@ -26,6 +26,9 @@ class ReportParticipant extends Component {
       reportDetails: {},
       selectedAnalyte: null, // Add selectedAnalyte here
       analyteData: [],
+      user_id: localStorage.getItem("authUser")
+        ? JSON.parse(localStorage.getItem("authUser")).user_id
+        : null, // ✅ Default to null instead of empty string
     };
   }
 
@@ -44,12 +47,12 @@ class ReportParticipant extends Component {
       console.log("Looking for participantId:", participantId);
 
       const participantResults = reportData.participants_results.filter(
-        (result) => result.participant_id == participantId
+        result => result.participant_id == participantId
       );
 
       const zScoreChartData = reportData.participants_results
-        .filter((result) => result.analyte_name === selectedAnalyte)
-        .map((result) => ({
+        .filter(result => result.analyte_name === selectedAnalyte)
+        .map(result => ({
           name: `Participant ${result.participant_id}`,
           ZScore: result.z_score ? parseFloat(result.z_score) : null,
         }));
@@ -59,7 +62,7 @@ class ReportParticipant extends Component {
       // Get analyte summaries to retrieve accepted result count
       const analyteSummaries = reportData.analyte_result_summary || [];
 
-      const analyteData = participantResults.map((result) => {
+      const analyteData = participantResults.map(result => {
         const isNotSubmitted = result.evaluation === "Not Submitted";
 
         return {
@@ -113,12 +116,12 @@ class ReportParticipant extends Component {
     }
   }
 
-  handleAnalyteSelection = (analyteName) => {
+  handleAnalyteSelection = analyteName => {
     this.setState({ selectedAnalyte: analyteName });
   };
 
   // Utility function to group Z-scores into bins
-  groupZScores = (zScores) => {
+  groupZScores = zScores => {
     const bins = [
       { range: "< -3.0", count: 0 },
       { range: "-3.0 to -2.0", count: 0 },
@@ -130,7 +133,7 @@ class ReportParticipant extends Component {
       { range: "> 3.0", count: 0 },
     ];
 
-    zScores.forEach((score) => {
+    zScores.forEach(score => {
       if (score < -3) {
         bins[0].count++;
       } else if (score >= -3 && score < -2) {
@@ -159,28 +162,28 @@ class ReportParticipant extends Component {
     // Step 3: Filter out invalid Z-scores
     // Make sure to declare this only once
     const filteredZScoreData = analyteData
-      .filter((analyte) =>
+      .filter(analyte =>
         selectedAnalyte
           ? analyte.analyteName.toLowerCase().trim() ===
             selectedAnalyte.toLowerCase().trim()
           : true
       )
-      .flatMap((analyte) =>
+      .flatMap(analyte =>
         this.props.reportData.participants_results
-          .filter((result) => result.analyte_name === analyte.analyteName)
-          .map((result) => ({
+          .filter(result => result.analyte_name === analyte.analyteName)
+          .map(result => ({
             name: `Participant ${result.participant_id}`,
             analyteName: analyte.analyteName,
             ZScore: result.z_score ? parseFloat(result.z_score) : null,
           }))
       )
       .filter(
-        (data) =>
+        data =>
           data.ZScore !== null &&
           data.ZScore !== undefined &&
           !isNaN(data.ZScore)
       );
-    const zScores = filteredZScoreData.map((data) => data.ZScore);
+    const zScores = filteredZScoreData.map(data => data.ZScore);
     const groupedZScoreBins = this.groupZScores(zScores);
 
     if (!analyteData.length) {
@@ -199,22 +202,31 @@ class ReportParticipant extends Component {
         </Container>
       );
     }
+
     const defaultSorted = [
       {
         dataField: "analyte_name", // or scheme_name, name, etc.
         order: "asc", // A to Z
       },
     ];
+
     return (
       <Container
         fluid
         style={{
-          paddingTop: "80px", // Adjust for header height
-          paddingBottom: "80px", // Adjust for footer height
-          paddingLeft: "80px", // Add padding to the left side
-          paddingRight: "80px", // Add padding to the right side
+          paddingTop: "10%", // Adjust for header height
+          paddingBottom: "10%", // Adjust for footer height
+          paddingLeft: "10%", // Add padding to the left side
+          paddingRight: "10%", // Add padding to the right side
         }}
       >
+        {/* <div className="d-flex justify-content-end mb-3">
+ <button onClick={() => window.print()} className="btn btn-primary no-print">
+  🖨️ Print Report
+</button>
+
+</div> */}
+
         <style>
           {`
     @media print {
@@ -259,25 +271,18 @@ class ReportParticipant extends Component {
   `}
         </style>
 
-        <Breadcrumbs
-          title="Report"
-          breadcrumbItem="Participant Report"
-          className="header"
-        />
-
-        {/* Add Print Button
-      <button onClick={() => window.print()} className="btn btn-primary mb-4">
-        Print Report
-      </button> */}
-
         {/* Report Header */}
         <div className="report-header my-4">
-          <h4
-            className="text-center "
-            style={{ fontWeight: "bold", color: "blue" }}
-          >
-            NHS - National External Quality Assessment Scheme
-          </h4>
+          <div className="text-center mb-3">
+            <img
+              src="https://externalqcapi.com/media/organization/nhs_logo.webp"
+              alt="Logo"
+              style={{ height: "60px", marginBottom: "10px" }}
+            />
+            <h4 style={{ fontWeight: "bold", color: "blue" }}>
+              NHS - National External Quality Assessment Scheme
+            </h4>
+          </div>
           <Row>
             <Row>
               {/* Left Column */}
@@ -477,7 +482,7 @@ class ReportParticipant extends Component {
         {/* Analyte Details: Dynamically rendered */}
 
         {analyteData
-          .filter((analyte) => analyte.result !== "--" && analyte.result !== "") // Filter out analytes without results
+          .filter(analyte => analyte.result !== "--" && analyte.result !== "") // Filter out analytes without results
           .map((analyte, index) => (
             <div key={index} style={{ marginBottom: "40px" }}>
               {/* Analyte Name - Displayed Outside of the .analyte-box container */}
@@ -751,27 +756,27 @@ class ReportParticipant extends Component {
                     const allZScores =
                       this.props.reportData.participants_results
                         .filter(
-                          (result) =>
+                          result =>
                             result.analyte_name === analyte.analyteName &&
                             result.z_score !== null &&
                             !isNaN(result.z_score)
                         )
                         .slice(0, analyte.count)
-                        .map((result) => ({
+                        .map(result => ({
                           name: ` ${result.participant_id}`,
                           id: result.participant_id,
                           ZScore: parseFloat(result.z_score),
                         }));
 
-                    const zScores = allZScores.map((data) => data.ZScore);
+                    const zScores = allZScores.map(data => data.ZScore);
                     const groupedZScoreBins = this.groupZScores(zScores);
 
                     const currentZScore = allZScores.find(
-                      (p) => p.id == participantId
+                      p => p.id == participantId
                     )?.ZScore;
 
                     // Find the bin label where the current z-score falls
-                    const currentBin = groupedZScoreBins.find((bin) => {
+                    const currentBin = groupedZScoreBins.find(bin => {
                       const [min, max] = bin.range.split(" to ").map(Number);
                       return currentZScore >= min && currentZScore < max;
                     })?.range;
@@ -786,7 +791,7 @@ class ReportParticipant extends Component {
 
                           <XAxis
                             dataKey="range"
-                            tickFormatter={(tick) => {
+                            tickFormatter={tick => {
                               if (
                                 tick === "< -3.0" ||
                                 tick === "> 3.0" ||
@@ -863,8 +868,8 @@ const mapStateToProps = ({ ResultSubmit }) => ({
   reportData: ResultSubmit.Report || {},
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onGetReport: (id) => dispatch(getReport(id)),
+const mapDispatchToProps = dispatch => ({
+  onGetReport: id => dispatch(getReport(id)),
 });
 
 export default connect(
