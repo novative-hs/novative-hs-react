@@ -31,6 +31,7 @@ import {
   getResultValuesFail,
   getAnalyteResultParticipantSuccess,
   getAnalyteResultParticipantFail,
+  getmicroresultdataSuccess,
   getmicroresultdataFail,
   postMicroResultSuccess,
   postMicroResultFail,
