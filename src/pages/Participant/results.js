@@ -574,7 +574,7 @@ class Results extends Component {
           ),
         },
 
-       {
+        {
           text: "Result Type",
           dataField: "result_type",
           sort: true,
@@ -586,9 +586,7 @@ class Results extends Component {
                   value={list.result_type || ""}
                   onChange={(e) => this.handleResultTypeChange(e, list)}
                 >
-                  <option value="" disabled hidden>
-                    Select Result Type
-                  </option>
+                  <option value="">Select Result Type</option>
                   {["Positive", "Negative", "Equivocal"].map((type, index) => (
                     <option
                       key={index}
@@ -1446,7 +1444,7 @@ class Results extends Component {
                 >
                   Download Results
                 </Button>
-               
+
                 <Link
                   to={`/${organization_name}/result-history/${id}?participantId=${this.state.user_id}&scheme_id=${scheme_id}`}
                 >
