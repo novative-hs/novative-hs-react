@@ -451,6 +451,7 @@ const participantsAuthProtectedRoutes = [
     path: "/:organization_name/:id/:id1/qualitative_report_view",
     component: QualitativeReportParticipant,
   },
+  { path: "/:organization_name/:id/:id1/microResult", component: MicroResults },
 ];
 
 const registrationAdminAuthProtectedRoutes = [
@@ -522,7 +523,7 @@ const registrationAdminAuthProtectedRoutes = [
     component: StatisticParticipant,
   },
   { path: "/pending-submission/:id", component: PendingSubmission },
-  { path: "/:organization_name/:id/:id1/microResult", component: MicroResults },
+  
 ];
 
 //CSR
