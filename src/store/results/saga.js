@@ -10,6 +10,8 @@ import {
   POST_SERELOGY_VALUES,
   GET_SERELOGY_VALUES,
   GET_ANALYTE_RESULT_PARTICIPANT,
+  GET_MICRO_RESULT_DATA,
+  POST_MICRO_RESULT,
 } from "./actionTypes";
 
 import {
@@ -29,6 +31,9 @@ import {
   getResultValuesFail,
   getAnalyteResultParticipantSuccess,
   getAnalyteResultParticipantFail,
+  getmicroresultdataFail,
+  postMicroResultSuccess,
+  postMicroResultFail,
 } from "./actions";
 
 //Include Both Helper File with needed methods
@@ -41,6 +46,8 @@ import {
   addSereologyValues,
   getSereologyValues,
   getAnalyteResultParticipantlist,
+  getmicroresultdatalist,
+  postMicroResult,
 } from "../../helpers/django_api_helper";
 
 function* fetchAnalytesScheme(object) {
@@ -172,7 +179,40 @@ function* fetchAnalyteResultParticpant(action) {
     yield put(getAnalyteResultParticipantFail(error));
   }
 }
+function* fetchMicroResultList(action) {
+  try {
+    const response = yield call(getmicroresultdatalist, action.payload);
 
+    console.log("✅ API Raw Response:", response);
+
+    yield put(
+      getmicroresultdataSuccess({
+        instruments: response.instruments,
+        reagents: response.reagents,
+        organisms: response.organisms,
+        antibiotics: response.antibiotics,
+        results: response.results, // ✅ from API response
+      })
+    );
+  } catch (error) {
+    console.error("❌ Error in saga:", error);
+    yield put(getmicroresultdataFail(error?.response?.data || error.message));
+  }
+}
+
+/////////////
+function* onPostMicroResult(object) {
+  try {
+    const response = yield call(
+      postMicroResult,
+      object.payload.result,
+      object.payload.id
+    );
+    yield put(postMicroResultSuccess(response));
+  } catch (error) {
+    yield put(postMicroResultFail(error));
+  }
+}
 function* AnalyteSchemeSaga() {
   yield takeEvery(SCHEMES_ANALYTES, fetchAnalytesScheme);
   yield takeEvery(POST_RESULT, onPostResult);
@@ -182,6 +222,8 @@ function* AnalyteSchemeSaga() {
   yield takeEvery(GET_SERELOGY_VALUES, fetchValuesList);
   yield takeEvery(GET_STATISTICS, fetchStatisticsList);
   yield takeEvery(GET_ANALYTE_RESULT_PARTICIPANT, fetchAnalyteResultParticpant);
+  yield takeEvery(GET_MICRO_RESULT_DATA, fetchMicroResultList);
+  yield takeEvery(POST_MICRO_RESULT, onPostMicroResult);
 }
 
 export default AnalyteSchemeSaga;

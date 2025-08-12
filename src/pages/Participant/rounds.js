@@ -190,12 +190,22 @@ class Roundural extends Component {
                       to="#"
                       onClick={(e) => {
                         e.preventDefault();
+                        const { organization_name } = this.props.match.params; // ✅ fixed here
+                        const schemeType = round?.scheme_type?.toLowerCase();
+
                         if (!organization_name) {
                           console.error("Invalid organization name");
                           return;
                         }
-                        const url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
-                        window.location.href = url; // ✅ This forces a hard reload
+
+                        let url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
+
+                        if (schemeType === "identification") {
+                          url = `/${organization_name}/${round.id}/${round.participant_id}/microresult`;
+                        }
+
+                        console.log("Navigating to:", url);
+                        this.props.history.push(url);
                       }}
                     ></Link>
                   </Tooltip>

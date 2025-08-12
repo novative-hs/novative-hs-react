@@ -296,7 +296,8 @@ export const GET_QUALITY_CERTIFICATES = `${API_ENDPOINT}/api/lab/quality-certifi
 export const ADD_NEW_QUALITY_CERTIFICATE = `${API_ENDPOINT}/api/lab/quality-certificate`;
 export const UPDATE_QUALITY_CERTIFICATE = `${API_ENDPOINT}/api/lab/quality-certificate`;
 export const DELETE_QUALITY_CERTIFICATE = `${API_ENDPOINT}/api/lab/quality-certificate`;
-
+export const GET_MICRO_RESULT_DATA = `${API_ENDPOINT}/api/lab/micro-result`;
+export const POST_MICRO_RESULT= `${API_ENDPOINT}/api/lab/post-microResult`;
 // ADVERTISEMENTS
 export const GET_ADVERTISEMENTS = `${API_ENDPOINT}/api/marketer-admin/advertisement-list`;
 export const ADD_NEW_ADVERTISEMENT = `${API_ENDPOINT}/api/marketer-admin/advertisement`;

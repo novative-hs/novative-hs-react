@@ -15,13 +15,19 @@ import {
   GET_SERELOGY_VALUES_FAIL,
   GET_ANALYTE_RESULT_PARTICIPANT_SUCCESS,
   GET_ANALYTE_RESULT_PARTICIPANT_FAIL,
+  GET_MICRO_RESULT_DATA_SUCCESS,
+  GET_MICRO_RESULT_DATA_FAIL,
+  POST_MICRO_RESULT_SUCCESS,
+  POST_MICRO_RESULT_FAIL,
 } from "./actionTypes";
 
 const INIT_STATE = {
   SchemeAnalytesList: [],
   getAnalyteResultParticipant: [],
   PostResult: [],
+  PostMicroResult: [],
   updateResult: [],
+  updateMicroResult: [],
   PostValues: [],
   ResultList: [],
   ValuesList: [],
@@ -34,6 +40,12 @@ const INIT_STATE = {
   scheme_id: "",
   schemeType: "",
   round_id: "",
+  MicroResultList: {
+    ListOrganism: [],
+    ListAntibiotic: [],
+    ReagentList: [],
+    Instrument: [],
+  },
 };
 
 const SchemeAnalytesList = (state = INIT_STATE, action) => {
@@ -153,6 +165,42 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
         "GET_ANALYTE_RESULT_PARTICIPANT_FAIL error:",
         action.payload
       );
+
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case GET_MICRO_RESULT_DATA_SUCCESS:
+      console.log("GET_MICRO_RESULT_DATA_SUCCESS payload:", action.payload);
+      return {
+        ...state,
+        ListOrganism: action.payload.organisms,
+        ListAntibiotic: action.payload.antibiotics,
+        ReagentList: action.payload.reagents,
+        Instrument: action.payload.instruments,
+        ResultList: action.payload.results || [], // ✅
+        MicroResultList: action.payload,
+        error: null,
+      };
+
+    case GET_MICRO_RESULT_DATA_FAIL:
+      console.error("GET_MICRO_RESULT_DATA_FAIL error:", action.payload);
+      return {
+        ...state,
+        MicroResultList: null,
+        ListOrganism: [],
+        ListAntibiotic: [],
+        ReagentList: [],
+        Instrument: [],
+        error: action.payload,
+      };
+    case POST_MICRO_RESULT_SUCCESS:
+      return {
+        ...state,
+        PostMicroResult: [...state.PostMicroResult, action.payload.data],
+      };
+
+    case POST_MICRO_RESULT_FAIL:
       return {
         ...state,
         error: action.payload,

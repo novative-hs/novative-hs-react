@@ -4438,3 +4438,29 @@ export const addMicrobiologyData = ({ equipment = [], reagent = [] }) => {
     headers: getHeader(authHeader()),
   });
 };
+export const getmicroresultdatalist = (id, scheme, roundName) => {
+  const user = JSON.parse(localStorage.getItem("authUser"));
+  const labId = user?.user_id;
+
+  const params = new URLSearchParams();
+  params.append("lab_id", labId);
+
+  if (scheme) params.append("scheme", scheme);
+  if (roundName) params.append("round_name", roundName);
+
+  const fullUrl = `${url.GET_MICRO_RESULT_DATA}/${id}?${params.toString()}`;
+  console.log("🚀 Hitting API:", fullUrl);
+
+  return get(fullUrl, {
+    headers: getHeader(authHeader()),
+  });
+};
+
+export const postMicroResult = (formData, id) => {
+  return axios.post(`${url.POST_MICRO_RESULT}/${id}`, formData, {
+    headers: {
+      ...getHeader(authHeader()),
+      // "Content-Type": "multipart/form-data", // ✅ This is required to send files
+    },
+  });
+};
