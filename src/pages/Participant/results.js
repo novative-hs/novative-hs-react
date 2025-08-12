@@ -574,7 +574,7 @@ class Results extends Component {
           ),
         },
 
-        {
+       {
           text: "Result Type",
           dataField: "result_type",
           sort: true,
@@ -609,7 +609,6 @@ class Results extends Component {
             </div>
           ),
         },
-
         {
           text: "Result Value",
           dataField: "result",
