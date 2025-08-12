@@ -201,7 +201,7 @@ class Roundural extends Component {
                         let url = `/${organization_name}/${round.id}/${round.participant_id}/participantsResults`;
 
                         if (schemeType === "identification") {
-                          url = `/${organization_name}/${round.id}/${round.participant_id}/microresult`;
+                          url = `/${organization_name}/${round.id}/${round.participant_id}/microResult`;
                         }
 
                         console.log("Navigating to:", url);
