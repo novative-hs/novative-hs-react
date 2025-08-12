@@ -78,7 +78,7 @@ const AppRoute = ({
         return (
           <Redirect
             to={{
-              pathname: "/dashboard-lab",
+              pathname: "/login",
               state: { from: props.location },
             }}
           />
