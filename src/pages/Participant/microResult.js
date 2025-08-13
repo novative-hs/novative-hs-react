@@ -475,148 +475,133 @@ class MicroResults extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-  handleSaveAll = async () => {
-    const { combinedData, comments, selectedOrganism, selectedFile, user_id } =
-      this.state;
+handleSaveAll = async () => {
+  const { combinedData, comments, selectedOrganism, selectedFile, user_id } =
+    this.state;
 
-    if (!combinedData.length) {
-      alert("No results to save.");
-      return;
-    }
-    if (!selectedOrganism) {
-      alert("Please select an organism before saving results.");
-      return;
-    }
+  if (!combinedData.length) {
+    alert("No results to save.");
+    return;
+  }
+  // ✅ Validate organism selection
+  const organismName =
+    this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
+      ?.name || "";
 
-    const organismName =
-      this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
-        ?.name || "";
+  if (!selectedOrganism || !organismName) {
+    alert("Please select an organism before saving results.");
+    return;
+  }
 
-    const confirmSave = window.confirm(
-      "Are you sure you want to save all results?"
-    );
-    if (!confirmSave) return;
+  const confirmSave = window.confirm(
+    "Are you sure you want to save all results?"
+  );
+  if (!confirmSave) return;
 
-    try {
-      for (const row of combinedData) {
-        const resultData = new FormData();
-        resultData.append("scheme", this.props.schemeName || "");
-        resultData.append("round_name", this.props.rounds || "");
-        resultData.append("organism", this.state.selectedOrganismName);
-        resultData.append("organism_id", this.state.selectedOrganism);
-        resultData.append("antibiotic_name", row.antibiotic_name || "");
-        resultData.append("resistance", row.resistance ? "true" : "false");
-        resultData.append("intermediate", row.intermediate ? "true" : "false");
-        resultData.append("sensitive", row.sensitive ? "true" : "false");
-        resultData.append("not_tested", row.notTested ? "true" : "false");
-        resultData.append("reagent_name", this.state.selectedReagent || "");
-        resultData.append(
-          "ast_reagent_name",
-          this.state.selectedReagentAST || ""
-        ); // new field
-        resultData.append(
-          "instrument_name",
-          this.state.selectedInstrument || ""
-        );
+  try {
+    for (const row of combinedData) {
+      const resultData = new FormData();
+      resultData.append("scheme", this.props.schemeName || "");
+      resultData.append("round_name", this.props.rounds || "");
+      resultData.append("organism", organismName); // ✅ fixed
+      resultData.append("organism_id", selectedOrganism);
+      resultData.append("antibiotic_name", row.antibiotic_name || "");
+      resultData.append("resistance", row.resistance ? "true" : "false");
+      resultData.append("intermediate", row.intermediate ? "true" : "false");
+      resultData.append("sensitive", row.sensitive ? "true" : "false");
+      resultData.append("not_tested", row.notTested ? "true" : "false");
+      resultData.append("reagent_name", this.state.selectedReagent || "");
+      resultData.append("ast_reagent_name", this.state.selectedReagentAST || "");
+      resultData.append("instrument_name", this.state.selectedInstrument || "");
+      resultData.append("result_status", "Saved");
+      resultData.append("comment", comments || "");
 
-        // ✅ This is where "Saved" must be a string, not an array
-        resultData.append("result_status", "Saved");
-
-        resultData.append("comment", comments || "");
-
-        if (selectedFile instanceof File) {
-          resultData.append("result_sheet", selectedFile, selectedFile.name);
-        }
-
-        await this.props.onPostMicroResult(resultData, user_id);
+      if (selectedFile instanceof File) {
+        resultData.append("result_sheet", selectedFile, selectedFile.name);
       }
 
-      alert("All microbiology results have been saved successfully.");
-    } catch (error) {
-      console.error("❌ Save error:", error);
-      alert("Failed to save results. Please try again.");
-    }
-  };
-  handleSubmitAll = async () => {
-    const { combinedData, user_id, comments, selectedOrganism, selectedFile } =
-      this.state;
-
-    if (!combinedData.length) {
-      alert("No results to submit.");
-      return;
+      await this.props.onPostMicroResult(resultData, user_id);
     }
 
-    if (!selectedOrganism) {
-      alert("Please select an organism before submitting results.");
-      return;
-    }
+    alert("All microbiology results have been saved successfully.");
+  } catch (error) {
+    console.error("❌ Save error:", error);
+    alert("Failed to save results. Please try again.");
+  }
+};
 
-    const organismName =
-      this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
-        ?.name || "";
+handleSubmitAll = async () => {
+  const { combinedData, user_id, comments, selectedOrganism, selectedFile } = this.state;
 
-    const confirmation = window.confirm(
-      "Are you sure you want to submit all results?"
-    );
-    if (!confirmation) return;
+  if (!combinedData.length) {
+    alert("No results to submit.");
+    return;
+  }
 
-    try {
-      let latestUpdatedAt = new Date().toISOString();
+  // ✅ Get organism name from ListOrganism
+  const organismName =
+    this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
+      ?.name || "";
 
-      for (const row of combinedData) {
-        const resultData = new FormData();
-        resultData.append("scheme", this.props.schemeName || "");
-        resultData.append("round_name", this.props.rounds || "");
-        resultData.append("participant_id", parseInt(user_id, 10));
-        resultData.append("organism", this.state.selectedOrganismName);
-        resultData.append("organism_id", this.state.selectedOrganism);
-        resultData.append("antibiotic_name", row.antibiotic_name || "");
-        resultData.append("resistance", row.resistance ? "true" : "false");
-        resultData.append("intermediate", row.intermediate ? "true" : "false");
-        resultData.append("sensitive", row.sensitive ? "true" : "false");
-        resultData.append("not_tested", row.notTested ? "true" : "false");
-        resultData.append("reagent_name", this.state.selectedReagent || "");
-        resultData.append(
-          "instrument_name",
-          this.state.selectedInstrument || ""
-        );
-        resultData.append(
-          "ast_reagent_name",
-          this.state.selectedReagentAST || ""
-        ); // new field
-        resultData.append("result_status", "Submitted");
-        resultData.append("comment", comments || "");
-        if (selectedFile instanceof File) {
-          resultData.append("result_sheet", selectedFile, selectedFile.name);
-        }
+  if (!selectedOrganism || !organismName) {
+    alert("Please select an organism before submitting results.");
+    return;
+  }
 
-        const response = await this.props.onPostMicroResult(
-          resultData,
-          user_id
-        );
+  const confirmation = window.confirm(
+    "Are you sure you want to submit all results?"
+  );
+  if (!confirmation) return;
 
-        if (response.type === "POST_RESULT" && response.payload?.updated_at) {
-          latestUpdatedAt = response.payload.updated_at;
-        }
+  try {
+    let latestUpdatedAt = new Date().toISOString();
+
+    for (const row of combinedData) {
+      const resultData = new FormData();
+      resultData.append("scheme", this.props.schemeName || "");
+      resultData.append("round_name", this.props.rounds || "");
+      resultData.append("participant_id", parseInt(user_id, 10));
+      resultData.append("organism", organismName); // ✅ fixed
+      resultData.append("organism_id", selectedOrganism);
+      resultData.append("antibiotic_name", row.antibiotic_name || "");
+      resultData.append("resistance", row.resistance ? "true" : "false");
+      resultData.append("intermediate", row.intermediate ? "true" : "false");
+      resultData.append("sensitive", row.sensitive ? "true" : "false");
+      resultData.append("not_tested", row.notTested ? "true" : "false");
+      resultData.append("reagent_name", this.state.selectedReagent || "");
+      resultData.append("instrument_name", this.state.selectedInstrument || "");
+      resultData.append("ast_reagent_name", this.state.selectedReagentAST || "");
+      resultData.append("result_status", "Submitted");
+      resultData.append("comment", comments || "");
+      if (selectedFile instanceof File) {
+        resultData.append("result_sheet", selectedFile, selectedFile.name);
       }
 
-      // Update state to reflect submission
-      this.setState(prevState => ({
-        combinedData: prevState.combinedData.map(data => ({
-          ...data,
-          result_status: "Submitted",
-        })),
-        submittedOn: latestUpdatedAt,
-      }));
+      const response = await this.props.onPostMicroResult(resultData, user_id);
 
-      localStorage.setItem("submittedOn", latestUpdatedAt);
-
-      alert("All microbiology results have been submitted successfully.");
-    } catch (error) {
-      console.error("❌ Submit error:", error);
-      alert("Failed to submit results. Please try again.");
+      if (response.type === "POST_RESULT" && response.payload?.updated_at) {
+        latestUpdatedAt = response.payload.updated_at;
+      }
     }
-  };
+
+    // ✅ Update state after submission
+    this.setState(prevState => ({
+      combinedData: prevState.combinedData.map(data => ({
+        ...data,
+        result_status: "Submitted",
+      })),
+      submittedOn: latestUpdatedAt,
+    }));
+
+    localStorage.setItem("submittedOn", latestUpdatedAt);
+
+    alert("All microbiology results have been submitted successfully.");
+  } catch (error) {
+    console.error("❌ Submit error:", error);
+    alert("Failed to submit results. Please try again.");
+  }
+};
+
   handleResubmit = async () => {
     const { combinedData, user_id, comments, selectedOrganism, selectedFile } =
       this.state;
