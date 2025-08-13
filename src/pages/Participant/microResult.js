@@ -117,7 +117,7 @@ class MicroResults extends Component {
             backgroundColor: "#a6d4ff",
             textAlign: "center",
           },
-
+          align: "left",
           formatter: (cell, row) => <span>{row.antibiotic_name}</span>,
         },
 
@@ -215,7 +215,7 @@ class MicroResults extends Component {
       ];
     }
   };
-  handleFileUpload = event => {
+  handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       console.log("📂 Selected file:", file, file instanceof File); // should log true
@@ -355,7 +355,7 @@ class MicroResults extends Component {
 
   handleAntibioticChange = (e, row) => {
     const value = e.target.value;
-    const updatedData = this.state.combinedData.map(item =>
+    const updatedData = this.state.combinedData.map((item) =>
       item.id === row.id ? { ...item, antibiotic_id: value } : item
     );
     this.setState({ combinedData: updatedData });
@@ -367,7 +367,7 @@ class MicroResults extends Component {
 
       // ✅ Find the matching organism object from ListOrganism
       const matchedOrg = this.props.ListOrganism.find(
-        o => o.name === firstResult.organism
+        (o) => o.name === firstResult.organism
       );
 
       this.setState({
@@ -412,11 +412,11 @@ class MicroResults extends Component {
 
   handleInstrumentChange = (event, list) => {
     const { value } = event.target;
-    this.setState(prevState => {
-      const updatedData = prevState.combinedData.map(item => {
+    this.setState((prevState) => {
+      const updatedData = prevState.combinedData.map((item) => {
         if (item.id === list.id) {
           const selectedInstrument = prevState.Instrument.find(
-            instr => instr.id.toString() === value
+            (instr) => instr.id.toString() === value
           );
           return {
             ...item,
@@ -433,7 +433,7 @@ class MicroResults extends Component {
   };
 
   handleCheckboxToggle = (item, field) => {
-    const updatedData = this.state.combinedData.map(row => {
+    const updatedData = this.state.combinedData.map((row) => {
       if (row.id === item.id) {
         return {
           ...row,
@@ -454,7 +454,7 @@ class MicroResults extends Component {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map(item => {
+    const updatedData = combinedData.map((item) => {
       if (item.id === list.id) {
         return { ...item, reagent_name: value };
       }
@@ -464,7 +464,7 @@ class MicroResults extends Component {
     this.setState({ combinedData: updatedData });
   };
 
-  onPaginationPageChange = page => {
+  onPaginationPageChange = (page) => {
     if (
       this.node &&
       this.node.current &&
@@ -475,132 +475,148 @@ class MicroResults extends Component {
       this.node.current.props.pagination.options.onPageChange(page);
     }
   };
-handleSaveAll = async () => {
-  const { combinedData, comments, selectedOrganism, selectedFile, user_id } =
-    this.state;
+  handleSaveAll = async () => {
+    const { combinedData, comments, selectedOrganism, selectedFile, user_id } =
+      this.state;
 
-  if (!combinedData.length) {
-    alert("No results to save.");
-    return;
-  }
-  // ✅ Validate organism selection
-  const organismName =
-    this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
-      ?.name || "";
+    if (!combinedData.length) {
+      alert("No results to save.");
+      return;
+    }
+    // ✅ Validate organism selection
+    const organismName =
+      this.props.ListOrganism.find((o) => o.id.toString() === selectedOrganism)
+        ?.name || "";
 
-  if (!selectedOrganism || !organismName) {
-    alert("Please select an organism before saving results.");
-    return;
-  }
-
-  const confirmSave = window.confirm(
-    "Are you sure you want to save all results?"
-  );
-  if (!confirmSave) return;
-
-  try {
-    for (const row of combinedData) {
-      const resultData = new FormData();
-      resultData.append("scheme", this.props.schemeName || "");
-      resultData.append("round_name", this.props.rounds || "");
-      resultData.append("organism", organismName); // ✅ fixed
-      resultData.append("organism_id", selectedOrganism);
-      resultData.append("antibiotic_name", row.antibiotic_name || "");
-      resultData.append("resistance", row.resistance ? "true" : "false");
-      resultData.append("intermediate", row.intermediate ? "true" : "false");
-      resultData.append("sensitive", row.sensitive ? "true" : "false");
-      resultData.append("not_tested", row.notTested ? "true" : "false");
-      resultData.append("reagent_name", this.state.selectedReagent || "");
-      resultData.append("ast_reagent_name", this.state.selectedReagentAST || "");
-      resultData.append("instrument_name", this.state.selectedInstrument || "");
-      resultData.append("result_status", "Saved");
-      resultData.append("comment", comments || "");
-
-      if (selectedFile instanceof File) {
-        resultData.append("result_sheet", selectedFile, selectedFile.name);
-      }
-
-      await this.props.onPostMicroResult(resultData, user_id);
+    if (!selectedOrganism || !organismName) {
+      alert("Please select an organism before saving results.");
+      return;
     }
 
-    alert("All microbiology results have been saved successfully.");
-  } catch (error) {
-    console.error("❌ Save error:", error);
-    alert("Failed to save results. Please try again.");
-  }
-};
+    const confirmSave = window.confirm(
+      "Are you sure you want to save all results?"
+    );
+    if (!confirmSave) return;
 
-handleSubmitAll = async () => {
-  const { combinedData, user_id, comments, selectedOrganism, selectedFile } = this.state;
+    try {
+      for (const row of combinedData) {
+        const resultData = new FormData();
+        resultData.append("scheme", this.props.schemeName || "");
+        resultData.append("round_name", this.props.rounds || "");
+        resultData.append("organism", organismName); // ✅ fixed
+        resultData.append("organism_id", selectedOrganism);
+        resultData.append("antibiotic_name", row.antibiotic_name || "");
+        resultData.append("resistance", row.resistance ? "true" : "false");
+        resultData.append("intermediate", row.intermediate ? "true" : "false");
+        resultData.append("sensitive", row.sensitive ? "true" : "false");
+        resultData.append("not_tested", row.notTested ? "true" : "false");
+        resultData.append("reagent_name", this.state.selectedReagent || "");
+        resultData.append(
+          "ast_reagent_name",
+          this.state.selectedReagentAST || ""
+        );
+        resultData.append(
+          "instrument_name",
+          this.state.selectedInstrument || ""
+        );
+        resultData.append("result_status", "Saved");
+        resultData.append("comment", comments || "");
 
-  if (!combinedData.length) {
-    alert("No results to submit.");
-    return;
-  }
+        if (selectedFile instanceof File) {
+          resultData.append("result_sheet", selectedFile, selectedFile.name);
+        }
 
-  // ✅ Get organism name from ListOrganism
-  const organismName =
-    this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
-      ?.name || "";
-
-  if (!selectedOrganism || !organismName) {
-    alert("Please select an organism before submitting results.");
-    return;
-  }
-
-  const confirmation = window.confirm(
-    "Are you sure you want to submit all results?"
-  );
-  if (!confirmation) return;
-
-  try {
-    let latestUpdatedAt = new Date().toISOString();
-
-    for (const row of combinedData) {
-      const resultData = new FormData();
-      resultData.append("scheme", this.props.schemeName || "");
-      resultData.append("round_name", this.props.rounds || "");
-      resultData.append("participant_id", parseInt(user_id, 10));
-      resultData.append("organism", organismName); // ✅ fixed
-      resultData.append("organism_id", selectedOrganism);
-      resultData.append("antibiotic_name", row.antibiotic_name || "");
-      resultData.append("resistance", row.resistance ? "true" : "false");
-      resultData.append("intermediate", row.intermediate ? "true" : "false");
-      resultData.append("sensitive", row.sensitive ? "true" : "false");
-      resultData.append("not_tested", row.notTested ? "true" : "false");
-      resultData.append("reagent_name", this.state.selectedReagent || "");
-      resultData.append("instrument_name", this.state.selectedInstrument || "");
-      resultData.append("ast_reagent_name", this.state.selectedReagentAST || "");
-      resultData.append("result_status", "Submitted");
-      resultData.append("comment", comments || "");
-      if (selectedFile instanceof File) {
-        resultData.append("result_sheet", selectedFile, selectedFile.name);
+        await this.props.onPostMicroResult(resultData, user_id);
       }
 
-      const response = await this.props.onPostMicroResult(resultData, user_id);
+      alert("All microbiology results have been saved successfully.");
+    } catch (error) {
+      console.error("❌ Save error:", error);
+      alert("Failed to save results. Please try again.");
+    }
+  };
 
-      if (response.type === "POST_RESULT" && response.payload?.updated_at) {
-        latestUpdatedAt = response.payload.updated_at;
-      }
+  handleSubmitAll = async () => {
+    const { combinedData, user_id, comments, selectedOrganism, selectedFile } =
+      this.state;
+
+    if (!combinedData.length) {
+      alert("No results to submit.");
+      return;
     }
 
-    // ✅ Update state after submission
-    this.setState(prevState => ({
-      combinedData: prevState.combinedData.map(data => ({
-        ...data,
-        result_status: "Submitted",
-      })),
-      submittedOn: latestUpdatedAt,
-    }));
+    // ✅ Get organism name from ListOrganism
+    const organismName =
+      this.props.ListOrganism.find((o) => o.id.toString() === selectedOrganism)
+        ?.name || "";
 
-    localStorage.setItem("submittedOn", latestUpdatedAt);
+    if (!selectedOrganism || !organismName) {
+      alert("Please select an organism before submitting results.");
+      return;
+    }
 
-    alert("All microbiology results have been submitted successfully.");
-  } catch (error) {
-    console.error("❌ Submit error:", error);
-    alert("Failed to submit results. Please try again.");
-  }
-};
+    const confirmation = window.confirm(
+      "Are you sure you want to submit all results?"
+    );
+    if (!confirmation) return;
+
+    try {
+      let latestUpdatedAt = new Date().toISOString();
+
+      for (const row of combinedData) {
+        const resultData = new FormData();
+        resultData.append("scheme", this.props.schemeName || "");
+        resultData.append("round_name", this.props.rounds || "");
+        resultData.append("participant_id", parseInt(user_id, 10));
+        resultData.append("organism", organismName); // ✅ fixed
+        resultData.append("organism_id", selectedOrganism);
+        resultData.append("antibiotic_name", row.antibiotic_name || "");
+        resultData.append("resistance", row.resistance ? "true" : "false");
+        resultData.append("intermediate", row.intermediate ? "true" : "false");
+        resultData.append("sensitive", row.sensitive ? "true" : "false");
+        resultData.append("not_tested", row.notTested ? "true" : "false");
+        resultData.append("reagent_name", this.state.selectedReagent || "");
+        resultData.append(
+          "instrument_name",
+          this.state.selectedInstrument || ""
+        );
+        resultData.append(
+          "ast_reagent_name",
+          this.state.selectedReagentAST || ""
+        );
+        resultData.append("result_status", "Submitted");
+        resultData.append("comment", comments || "");
+        if (selectedFile instanceof File) {
+          resultData.append("result_sheet", selectedFile, selectedFile.name);
+        }
+
+        const response = await this.props.onPostMicroResult(
+          resultData,
+          user_id
+        );
+
+        if (response.type === "POST_RESULT" && response.payload?.updated_at) {
+          latestUpdatedAt = response.payload.updated_at;
+        }
+      }
+
+      // ✅ Update state after submission
+      this.setState((prevState) => ({
+        combinedData: prevState.combinedData.map((data) => ({
+          ...data,
+          result_status: "Submitted",
+        })),
+        submittedOn: latestUpdatedAt,
+      }));
+
+      localStorage.setItem("submittedOn", latestUpdatedAt);
+
+      alert("All microbiology results have been submitted successfully.");
+    } catch (error) {
+      console.error("❌ Submit error:", error);
+      alert("Failed to submit results. Please try again.");
+    }
+  };
 
   handleResubmit = async () => {
     const { combinedData, user_id, comments, selectedOrganism, selectedFile } =
@@ -617,7 +633,7 @@ handleSubmitAll = async () => {
     }
 
     const organismName =
-      this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
+      this.props.ListOrganism.find((o) => o.id.toString() === selectedOrganism)
         ?.name || "";
 
     const confirmation = window.confirm(
@@ -665,10 +681,10 @@ handleSubmitAll = async () => {
         }
       }
 
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         submittedOn: latestUpdatedAt,
         comments: "",
-        combinedData: prevState.combinedData.map(row => ({
+        combinedData: prevState.combinedData.map((row) => ({
           ...row,
           result_status: "Submitted",
         })),
@@ -789,7 +805,7 @@ handleSubmitAll = async () => {
                   <input
                     type="file"
                     accept=".xlsx, .xls, .csv"
-                    ref={ref => (this.fileInput = ref)}
+                    ref={(ref) => (this.fileInput = ref)}
                     style={{ display: "none" }}
                     onChange={this.handleFileUpload}
                   />
@@ -808,7 +824,7 @@ handleSubmitAll = async () => {
                     const allSubmitted =
                       this.state.combinedData.length > 0 &&
                       this.state.combinedData.every(
-                        data => data.result_status === "Submitted"
+                        (data) => data.result_status === "Submitted"
                       );
 
                     if (this.props.round_status === "Closed") {
@@ -863,13 +879,13 @@ handleSubmitAll = async () => {
                       <select
                         className="form-control"
                         value={this.state.selectedOrganism}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({ selectedOrganism: e.target.value })
                         }
                         style={{ maxWidth: "250px" }}
                       >
                         <option value="">Select Organism</option>
-                        {this.props.ListOrganism?.map(org => (
+                        {this.props.ListOrganism?.map((org) => (
                           <option key={org.id} value={org.id}>
                             {org.name} ({org.code})
                           </option>
@@ -893,13 +909,13 @@ handleSubmitAll = async () => {
                       <select
                         className="form-control"
                         value={this.state.selectedReagent}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({ selectedReagent: e.target.value })
                         }
                         style={{ maxWidth: "250px" }}
                       >
                         <option value="">Select Reagent</option>
-                        {this.state.ReagentList?.map(reag => (
+                        {this.state.ReagentList?.map((reag) => (
                           <option key={reag.id} value={reag.name}>
                             {reag.name}
                           </option>
@@ -921,13 +937,13 @@ handleSubmitAll = async () => {
                       <select
                         className="form-control"
                         value={this.state.selectedReagentAST}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({ selectedReagentAST: e.target.value })
                         }
                         style={{ maxWidth: "250px" }}
                       >
                         <option value="">Select Reagent</option>
-                        {this.state.ReagentList?.map(reag => (
+                        {this.state.ReagentList?.map((reag) => (
                           <option key={reag.id} value={reag.name}>
                             {reag.name}
                           </option>
@@ -949,13 +965,13 @@ handleSubmitAll = async () => {
                       <select
                         className="form-control"
                         value={this.state.selectedInstrument}
-                        onChange={e =>
+                        onChange={(e) =>
                           this.setState({ selectedInstrument: e.target.value })
                         }
                         style={{ maxWidth: "250px" }}
                       >
                         <option value="">Select Instrument for AST</option>
-                        {this.state.Instrument?.map(inst => (
+                        {this.state.Instrument?.map((inst) => (
                           <option key={inst.id} value={inst.name}>
                             {inst.name}
                           </option>
@@ -985,7 +1001,7 @@ handleSubmitAll = async () => {
                             data={combinedData}
                             search
                           >
-                            {toolkitprops => (
+                            {(toolkitprops) => (
                               <React.Fragment>
                                 <div className="table-responsive">
                                   <BootstrapTable
@@ -1055,7 +1071,7 @@ MicroResults.propTypes = {
   scheme: PropTypes.object, // or more specific if you know the shape
   round_name: PropTypes.string,
 };
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const schemeState = state.SchemeAnalytesList || {};
   const antibiotics = schemeState.ListAntibiotic || [];
 
@@ -1082,8 +1098,8 @@ const mapStateToProps = state => {
     Instrument: schemeState.Instrument || [],
   };
 };
-const mapDispatchToProps = dispatch => ({
-  onGetSchemeAnalyte: id => dispatch(getSchemeAnalytesList(id)),
+const mapDispatchToProps = (dispatch) => ({
+  onGetSchemeAnalyte: (id) => dispatch(getSchemeAnalytesList(id)),
   onPostMicroResult: (formData, id) => dispatch(postMicroResult(formData, id)),
   onGetMicroresult: (userId, scheme, round_name) =>
     dispatch(getmicroresultdata(userId, scheme, round_name)),
