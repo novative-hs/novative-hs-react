@@ -683,7 +683,7 @@ class Results extends Component {
 
     try {
       const res = await axios.get(
-        `https://externalqcapi.com/api/registration-admin/getResultsData/${roundId}`
+        `https://externalqcapi.com/api/registration-admin/getResultsData/${roundId}?lab_id=${participantID}`
       );
 
       console.log("📦 Full API Response:", res);
