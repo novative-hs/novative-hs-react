@@ -727,7 +727,7 @@ class MicroResults extends Component {
     }
 
     const pageOptions = {
-      sizePerPage: 30,
+      sizePerPage: 50,
       totalSize: combinedData.length > 0 ? combinedData.length : " ",
       custom: true,
     };
