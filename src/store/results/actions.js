@@ -2,7 +2,7 @@ import {
   SCHEMES_ANALYTES,
   SCHEMES_ANALYTES_SUCCESS,
   SCHEMES_ANALYTES_FAIL,
-  
+
   POST_RESULT,
   POST_RESULT_SUCCESS,
   POST_RESULT_FAIL,
@@ -41,24 +41,24 @@ import {
 } from "./actionTypes";
 
 export const getSchemeAnalytesList = (id) => ({
-  type: SCHEMES_ANALYTES,
-  payload: id,
-});
-
-export const getSchemeAnalytesListSuccess = (SchemeAnalytesList) => {
-  // console.log(" response in success action:", SchemeAnalytesList);
-  return {
-    type: SCHEMES_ANALYTES_SUCCESS,
-    payload: SchemeAnalytesList,
+    type: SCHEMES_ANALYTES,
+    payload: id,
+  });
+ 
+  export const getSchemeAnalytesListSuccess = SchemeAnalytesList => {
+    // console.log(" response in success action:", SchemeAnalytesList);
+    return {
+      type: SCHEMES_ANALYTES_SUCCESS,
+      payload: SchemeAnalytesList,
+    };
   };
-};
-export const getSchemeAnalytesListFail = (error) => {
-  // console.log("Error response in fail action:", error);
-  return {
-    type: SCHEMES_ANALYTES_FAIL,
-    payload: error,
+  export const getSchemeAnalytesListFail = (error) => {
+    // console.log("Error response in fail action:", error);
+    return {
+      type: SCHEMES_ANALYTES_FAIL,
+      payload: error,
+    };
   };
-};
 
 export const postResult = (result, id) => {
   console.log("🚀 Dispatching POST_RESULT Action:");

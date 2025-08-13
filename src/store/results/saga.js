@@ -51,13 +51,24 @@ import {
   postMicroResult,
 } from "../../helpers/django_api_helper";
 
-function* fetchAnalytesScheme(object) {
+function* fetchAnalytesScheme(action) {
   try {
-    const response = yield call(getSchemeAnalytesList, object.payload);
-    // console.log("ResponseSaga :", response.data);
+    const response = yield call(getSchemeAnalytesList, action.payload);
+
+    if (!response || !response.data) {
+      throw new Error(
+        "Empty response or data field from getSchemeAnalytesList"
+      );
+    }
+
     yield put(getSchemeAnalytesListSuccess(response.data));
   } catch (error) {
-    yield put(getSchemeAnalytesListFail(error));
+    console.error("fetchAnalytesScheme error:", error); // log full error
+    const errorPayload =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Unknown error occurred";
+    yield put(getSchemeAnalytesListFail(errorPayload));
   }
 }
 
