@@ -85,6 +85,7 @@ class MicroResults extends Component {
       cycle_no: "",
       isResubmitted: false,
       PostResult: [],
+      fileMissing: false,
       currentRoundId: props.match.params.id,
       ResultList: [],
       isDataLoaded: false,
@@ -117,10 +118,10 @@ class MicroResults extends Component {
             backgroundColor: "#a6d4ff",
             textAlign: "center",
           },
+          style: { backgroundColor: "#f8f9fa" }, // 🔹 Light grey background
           align: "left",
           formatter: (cell, row) => <span>{row.antibiotic_name}</span>,
         },
-
         {
           text: "Resistant (R) ",
           dataField: "resistance",
@@ -130,7 +131,8 @@ class MicroResults extends Component {
             backgroundColor: "#a6d4ff",
             textAlign: "center",
           },
-          align: "center", // center the checkbox in the cell
+          style: { backgroundColor: "#fff3f3" }, // 🔹 Light red shade
+          align: "center",
           formatter: (cellContent, list, rowIndex) => (
             <div className="form-check d-flex justify-content-center">
               <input
@@ -143,7 +145,6 @@ class MicroResults extends Component {
             </div>
           ),
         },
-
         {
           text: "Intermediate (I)",
           dataField: "intermediate",
@@ -153,6 +154,7 @@ class MicroResults extends Component {
             backgroundColor: "#a6d4ff",
             textAlign: "center",
           },
+          style: { backgroundColor: "#fffbea" }, // 🔹 Light yellow shade
           align: "center",
           formatter: (cellContent, list, rowIndex) => (
             <div className="form-check d-flex justify-content-center">
@@ -166,7 +168,6 @@ class MicroResults extends Component {
             </div>
           ),
         },
-
         {
           text: "Sensitive (S)",
           dataField: "sensitive",
@@ -176,6 +177,7 @@ class MicroResults extends Component {
             backgroundColor: "#a6d4ff",
             textAlign: "center",
           },
+          style: { backgroundColor: "#eafaf1" }, // 🔹 Light green shade
           align: "center",
           formatter: (cellContent, list, rowIndex) => (
             <div className="form-check d-flex justify-content-center">
@@ -189,7 +191,6 @@ class MicroResults extends Component {
             </div>
           ),
         },
-
         {
           text: "Not Tested",
           dataField: "notTested",
@@ -199,6 +200,7 @@ class MicroResults extends Component {
             backgroundColor: "#a6d4ff",
             textAlign: "center",
           },
+          style: { backgroundColor: "#f0f0f0" }, // 🔹 Light grey shade
           align: "center",
           formatter: (cellContent, list, rowIndex) => (
             <div className="form-check d-flex justify-content-center">
@@ -215,13 +217,14 @@ class MicroResults extends Component {
       ];
     }
   };
-  handleFileUpload = (event) => {
+  handleFileUpload = event => {
     const file = event.target.files[0];
     if (file) {
       console.log("📂 Selected file:", file, file instanceof File); // should log true
       this.setState({
         selectedFile: file,
         selectedFileName: file.name,
+        fileMissing: false,
       });
     }
   };
@@ -355,7 +358,7 @@ class MicroResults extends Component {
 
   handleAntibioticChange = (e, row) => {
     const value = e.target.value;
-    const updatedData = this.state.combinedData.map((item) =>
+    const updatedData = this.state.combinedData.map(item =>
       item.id === row.id ? { ...item, antibiotic_id: value } : item
     );
     this.setState({ combinedData: updatedData });
@@ -367,7 +370,7 @@ class MicroResults extends Component {
 
       // ✅ Find the matching organism object from ListOrganism
       const matchedOrg = this.props.ListOrganism.find(
-        (o) => o.name === firstResult.organism
+        o => o.name === firstResult.organism
       );
 
       this.setState({
@@ -412,11 +415,11 @@ class MicroResults extends Component {
 
   handleInstrumentChange = (event, list) => {
     const { value } = event.target;
-    this.setState((prevState) => {
-      const updatedData = prevState.combinedData.map((item) => {
+    this.setState(prevState => {
+      const updatedData = prevState.combinedData.map(item => {
         if (item.id === list.id) {
           const selectedInstrument = prevState.Instrument.find(
-            (instr) => instr.id.toString() === value
+            instr => instr.id.toString() === value
           );
           return {
             ...item,
@@ -433,7 +436,7 @@ class MicroResults extends Component {
   };
 
   handleCheckboxToggle = (item, field) => {
-    const updatedData = this.state.combinedData.map((row) => {
+    const updatedData = this.state.combinedData.map(row => {
       if (row.id === item.id) {
         return {
           ...row,
@@ -454,7 +457,7 @@ class MicroResults extends Component {
     const { value } = event.target;
     const { combinedData } = this.state;
 
-    const updatedData = combinedData.map((item) => {
+    const updatedData = combinedData.map(item => {
       if (item.id === list.id) {
         return { ...item, reagent_name: value };
       }
@@ -464,7 +467,7 @@ class MicroResults extends Component {
     this.setState({ combinedData: updatedData });
   };
 
-  onPaginationPageChange = (page) => {
+  onPaginationPageChange = page => {
     if (
       this.node &&
       this.node.current &&
@@ -483,9 +486,16 @@ class MicroResults extends Component {
       alert("No results to save.");
       return;
     }
+
+    if (!(selectedFile instanceof File)) {
+      this.setState({ fileMissing: true }); // 🔴 show red text
+      return;
+    } else {
+      this.setState({ fileMissing: false }); // ✅ clear red text
+    }
     // ✅ Validate organism selection
     const organismName =
-      this.props.ListOrganism.find((o) => o.id.toString() === selectedOrganism)
+      this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
         ?.name || "";
 
     if (!selectedOrganism || !organismName) {
@@ -544,10 +554,16 @@ class MicroResults extends Component {
       alert("No results to submit.");
       return;
     }
+    if (!(selectedFile instanceof File)) {
+      this.setState({ fileMissing: true }); // 🔴 triggers red text
+      return;
+    } else {
+      this.setState({ fileMissing: false }); // ✅ clears red text
+    }
 
     // ✅ Get organism name from ListOrganism
     const organismName =
-      this.props.ListOrganism.find((o) => o.id.toString() === selectedOrganism)
+      this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
         ?.name || "";
 
     if (!selectedOrganism || !organismName) {
@@ -601,8 +617,8 @@ class MicroResults extends Component {
       }
 
       // ✅ Update state after submission
-      this.setState((prevState) => ({
-        combinedData: prevState.combinedData.map((data) => ({
+      this.setState(prevState => ({
+        combinedData: prevState.combinedData.map(data => ({
           ...data,
           result_status: "Submitted",
         })),
@@ -631,9 +647,14 @@ class MicroResults extends Component {
       alert("Please select an organism before resubmitting results.");
       return;
     }
-
+    if (!(selectedFile instanceof File)) {
+      this.setState({ fileMissing: true }); // 🔴 triggers red text
+      return;
+    } else {
+      this.setState({ fileMissing: false }); // ✅ clears red text
+    }
     const organismName =
-      this.props.ListOrganism.find((o) => o.id.toString() === selectedOrganism)
+      this.props.ListOrganism.find(o => o.id.toString() === selectedOrganism)
         ?.name || "";
 
     const confirmation = window.confirm(
@@ -681,10 +702,10 @@ class MicroResults extends Component {
         }
       }
 
-      this.setState((prevState) => ({
+      this.setState(prevState => ({
         submittedOn: latestUpdatedAt,
         comments: "",
-        combinedData: prevState.combinedData.map((row) => ({
+        combinedData: prevState.combinedData.map(row => ({
           ...row,
           result_status: "Submitted",
         })),
@@ -805,15 +826,21 @@ class MicroResults extends Component {
                   <input
                     type="file"
                     accept=".xlsx, .xls, .csv"
-                    ref={(ref) => (this.fileInput = ref)}
+                    ref={ref => (this.fileInput = ref)}
                     style={{ display: "none" }}
                     onChange={this.handleFileUpload}
                   />
 
-                  {/* Show file name if selected */}
                   {this.state.selectedFileName && (
                     <span className="ms-3 text-dark fw-bold">
                       {this.state.selectedFileName}
+                    </span>
+                  )}
+
+                  {/* 🔴 Show warning if missing */}
+                  {this.state.fileMissing && !this.state.selectedFileName && (
+                    <span className="ms-3 text-danger fw-bold">
+                      * Please upload the result sheet
                     </span>
                   )}
                 </Col>
@@ -824,7 +851,7 @@ class MicroResults extends Component {
                     const allSubmitted =
                       this.state.combinedData.length > 0 &&
                       this.state.combinedData.every(
-                        (data) => data.result_status === "Submitted"
+                        data => data.result_status === "Submitted"
                       );
 
                     if (this.props.round_status === "Closed") {
@@ -879,13 +906,13 @@ class MicroResults extends Component {
                       <select
                         className="form-control"
                         value={this.state.selectedOrganism}
-                        onChange={(e) =>
+                        onChange={e =>
                           this.setState({ selectedOrganism: e.target.value })
                         }
                         style={{ maxWidth: "250px" }}
                       >
                         <option value="">Select Organism</option>
-                        {this.props.ListOrganism?.map((org) => (
+                        {this.props.ListOrganism?.map(org => (
                           <option key={org.id} value={org.id}>
                             {org.name} ({org.code})
                           </option>
@@ -909,13 +936,13 @@ class MicroResults extends Component {
                       <select
                         className="form-control"
                         value={this.state.selectedReagent}
-                        onChange={(e) =>
+                        onChange={e =>
                           this.setState({ selectedReagent: e.target.value })
                         }
                         style={{ maxWidth: "250px" }}
                       >
                         <option value="">Select Reagent</option>
-                        {this.state.ReagentList?.map((reag) => (
+                        {this.state.ReagentList?.map(reag => (
                           <option key={reag.id} value={reag.name}>
                             {reag.name}
                           </option>
@@ -937,13 +964,13 @@ class MicroResults extends Component {
                       <select
                         className="form-control"
                         value={this.state.selectedReagentAST}
-                        onChange={(e) =>
+                        onChange={e =>
                           this.setState({ selectedReagentAST: e.target.value })
                         }
                         style={{ maxWidth: "250px" }}
                       >
                         <option value="">Select Reagent</option>
-                        {this.state.ReagentList?.map((reag) => (
+                        {this.state.ReagentList?.map(reag => (
                           <option key={reag.id} value={reag.name}>
                             {reag.name}
                           </option>
@@ -965,13 +992,13 @@ class MicroResults extends Component {
                       <select
                         className="form-control"
                         value={this.state.selectedInstrument}
-                        onChange={(e) =>
+                        onChange={e =>
                           this.setState({ selectedInstrument: e.target.value })
                         }
                         style={{ maxWidth: "250px" }}
                       >
                         <option value="">Select Instrument for AST</option>
-                        {this.state.Instrument?.map((inst) => (
+                        {this.state.Instrument?.map(inst => (
                           <option key={inst.id} value={inst.name}>
                             {inst.name}
                           </option>
@@ -1001,7 +1028,7 @@ class MicroResults extends Component {
                             data={combinedData}
                             search
                           >
-                            {(toolkitprops) => (
+                            {toolkitprops => (
                               <React.Fragment>
                                 <div className="table-responsive">
                                   <BootstrapTable
@@ -1071,7 +1098,7 @@ MicroResults.propTypes = {
   scheme: PropTypes.object, // or more specific if you know the shape
   round_name: PropTypes.string,
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const schemeState = state.SchemeAnalytesList || {};
   const antibiotics = schemeState.ListAntibiotic || [];
 
@@ -1098,8 +1125,8 @@ const mapStateToProps = (state) => {
     Instrument: schemeState.Instrument || [],
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  onGetSchemeAnalyte: (id) => dispatch(getSchemeAnalytesList(id)),
+const mapDispatchToProps = dispatch => ({
+  onGetSchemeAnalyte: id => dispatch(getSchemeAnalytesList(id)),
   onPostMicroResult: (formData, id) => dispatch(postMicroResult(formData, id)),
   onGetMicroresult: (userId, scheme, round_name) =>
     dispatch(getmicroresultdata(userId, scheme, round_name)),
