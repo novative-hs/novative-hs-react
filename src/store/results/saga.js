@@ -51,6 +51,7 @@ import {
   postMicroResult,
 } from "../../helpers/django_api_helper";
 
+
 function* fetchAnalytesScheme(action) {
   try {
     const response = yield call(getSchemeAnalytesList, action.payload);

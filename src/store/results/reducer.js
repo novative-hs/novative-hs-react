@@ -74,6 +74,11 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       };
+    case SCHEMES_ANALYTES_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
     //post result
     case POST_RESULT_SUCCESS:
       return {
