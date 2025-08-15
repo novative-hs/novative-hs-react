@@ -336,7 +336,7 @@ filterData = () => {
                                   striped={true}
                                   headerWrapperClasses={"table-light"}
                                   responsive
-                                  data={RoundParticipantlist} // Use Redux data directly
+                                  data={this.filterData()} // Use Redux data directly
                                   columns={this.state.feedbackListColumns}
                                 />
                               </div>
