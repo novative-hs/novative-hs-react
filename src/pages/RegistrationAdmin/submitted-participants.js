@@ -20,6 +20,7 @@ class ResultParticipantlist extends Component {
     this.state = {
       nameFilter: "",
       idFilter: "",
+      editFilter: "",
       selectedCheckboxes: {}, // Track checked checkboxes
       tableKey: 0,
       RoundParticipantlist: [],
@@ -101,8 +102,8 @@ class ResultParticipantlist extends Component {
       <div>
         <input
           type="text"
-          value={this.state.nameFilter}
-          onChange={(e) => this.handleFilterChange("nameFilter", e)}
+          value={this.state.editFilter}
+          onChange={(e) => this.handleFilterChange("editFilter", e)}
           className="form-control"
         />
       </div>
@@ -176,22 +177,28 @@ class ResultParticipantlist extends Component {
     this.setState({ [filterName]: e.target.value });
   };
 
-  filterData = () => {
-    const { RoundParticipantlist } = this.state;
-    const { nameFilter, idFilter } = this.state;
+filterData = () => {
+  const { RoundParticipantlist, nameFilter, idFilter, editFilter } = this.state;
 
-    if (!Array.isArray(RoundParticipantlist)) {
-      return []; // Return empty array if not an array
-    }
+  if (!Array.isArray(RoundParticipantlist)) {
+    return [];
+  }
 
-    return RoundParticipantlist.filter(entry => {
-      const name =
-        typeof entry.name === "string" ? entry.name.toLowerCase() : "";
-      const id = entry.id ? entry.id.toString() : "";
+  return RoundParticipantlist.filter(entry => {
+    const name =
+      typeof entry.name === "string" ? entry.name.toLowerCase() : "";
+    const id = entry.id ? entry.id.toString() : "";
+    const editValue =
+      typeof entry.edit === "string" ? entry.edit.toLowerCase() : "";
 
-      return name.includes(nameFilter.toLowerCase()) && id.includes(idFilter);
-    });
-  };
+    return (
+      name.includes(nameFilter.toLowerCase()) &&
+      id.includes(idFilter) &&
+      editValue.includes(editFilter.toLowerCase())
+    );
+  });
+};
+
 
   render() {
     const { RoundParticipantlist, roundDetails } = this.props;
@@ -312,7 +319,7 @@ class ResultParticipantlist extends Component {
                     <ToolkitProvider
                       keyField="id"
                       columns={this.state.feedbackListColumns}
-                      data={RoundParticipantlist}
+                      data={this.filterData()}
                       search
                     >
                       {toolkitprops => (
