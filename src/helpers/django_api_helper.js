@@ -853,17 +853,17 @@ export const getResultSubmit = (id) =>
   get(`${url.GET_RESULT_SUBMIT}/${id}`, {
     headers: getHeader(authHeader()),
   });
-export const getReport = (id) =>
-  get(`${url.GET_REPORT}/${id}`, {
+export const getReport = (roundId, participantId) =>
+  get(`${url.GET_REPORT}/${roundId}/${participantId}/`, {
     headers: getHeader(authHeader()),
   })
     .then((response) => {
-      // console.log("API Raw Response:", response); // Log the raw response
-      return response; // Ensure response is being returned correctly
+      return response;
     })
     .catch((error) => {
       console.error("Error in API Call:", error);
     });
+
 ////////
 export const getSereologyResult = (id) =>
   get(`${url.GET_SERELOGY_RESULT}/${id}`, {
