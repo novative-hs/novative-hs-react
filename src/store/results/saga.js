@@ -57,14 +57,15 @@ function* fetchAnalytesScheme(action) {
     const response = yield call(getSchemeAnalytesList, action.payload);
 
     if (!response || !response.data) {
-      throw new Error(
-        "Empty response or data field from getSchemeAnalytesList"
-      );
+      throw new Error("Empty response from getSchemeAnalytesList");
     }
 
-    yield put(getSchemeAnalytesListSuccess(response.data));
+    // Use results if paginated
+    const payload = response.data.results || response.data;
+
+    yield put(getSchemeAnalytesListSuccess(payload));
   } catch (error) {
-    console.error("fetchAnalytesScheme error:", error); // log full error
+    console.error("fetchAnalytesScheme error:", error);
     const errorPayload =
       error?.response?.data?.message ||
       error?.message ||
