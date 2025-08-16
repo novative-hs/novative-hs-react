@@ -60,7 +60,7 @@ function* fetchAnalytesScheme(action) {
       throw new Error("Empty response from getSchemeAnalytesList");
     }
 
-    // Use results if paginated
+    // ✅ Extract response correctly (handle paginated vs non-paginated)
     const payload = response.data.results || response.data;
 
     yield put(getSchemeAnalytesListSuccess(payload));
@@ -73,6 +73,7 @@ function* fetchAnalytesScheme(action) {
     yield put(getSchemeAnalytesListFail(errorPayload));
   }
 }
+
 
 // POST RESULT
 function* onPostResult(object) {

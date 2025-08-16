@@ -52,22 +52,24 @@ const SchemeAnalytesList = (state = INIT_STATE, action) => {
   switch (action.type) {
     //get schemeAnalyte
     case SCHEMES_ANALYTES_SUCCESS:
-      // console.log("Data received in reducerrrr:", action.payload.rounds); // Log the action.payload
-      return {
-        ...state,
-        SchemeAnalytesList: action.payload.analytes,
-        rounds: action.payload.round_no,
-        sample: action.payload.rounds.sample,
-        round_id: action.payload.rounds.id,
-        issue_date: action.payload.round_issuedate,
-        closing_date: action.payload.round_closingdate,
-        schemeName: action.payload.scheme_name,
-        schemeType: action.payload.scheme_type,
-        round_status: action.payload.round_status,
-        result_type: action.payload.result_type,
-        scheme_id: action.payload.scheme_id,
-        cycle_no: action.payload.cycle_no,
-      };
+  return {
+    ...state,
+    SchemeAnalytesList: action.payload.analytes || [],
+    rounds: action.payload.round_no,
+    round_id: action.payload.rounds,   // ✅ just the id (integer)
+    issue_date: action.payload.round_issuedate,
+    closing_date: action.payload.round_closingdate,
+    schemeName: action.payload.scheme_name,
+    schemeType: action.payload.scheme_type,
+    round_status: action.payload.round_status,
+    result_type: action.payload.result_type,
+    scheme_id: action.payload.scheme_id,
+    cycle_no: action.payload.cycle_no,
+    units: action.payload.units || [],
+    methods: action.payload.methods || [],
+    instruments: action.payload.instruments || [],
+    reagents: action.payload.reagents || [],
+  };
 
     case SCHEMES_ANALYTES_FAIL:
       return {
