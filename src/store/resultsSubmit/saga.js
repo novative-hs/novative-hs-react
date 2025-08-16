@@ -33,17 +33,14 @@ function* fetchResultList(object) {
     yield put(getResultSubmitFail(error));
   }
 }
-function* fetchReport(action) {
+function* fetchReport(object) {
   try {
-    // destructure both values
-    const { roundId, participantId } = action.payload;
+    const response = yield call(getReport, object.payload);
+    console.log("API Response:", response); // Log the full response
 
-    // pass both to API helper
-    const response = yield call(getReport, roundId, participantId);
-
-    console.log("API Response:", response);
-
+    // Ensure response contains the required fields
     if (response && response.participants_results) {
+      // Prepare the data to include all necessary details
       const reportData = {
         participants_results: response.participants_results,
         analyte_result_summary: response.analyte_result_summary,
@@ -51,15 +48,16 @@ function* fetchReport(action) {
         scheme_name: response.scheme_name,
         issue_date: response.issue_date,
         closing_date: response.closing_date,
-        cycle_no: response.cycle_no,
-        sample: response.sample,
-        matrix: response.matrix || "N/A",
-        robust_mean: response.robust_mean,
+        cycle_no: response.cycle_no, // ✅ Add this
+        sample: response.sample, // ✅ And this
+        matrix: response.matrix || "N/A", // ✅ Optional: include if needed
+        robust_mean: response.robust_mean, // ✅ Optional: if required
       };
 
-      console.log("Prepared report data:", reportData);
-      yield put(getReportSuccess(reportData));
+      console.log("Prepared report data:", reportData); // Debug log
+      yield put(getReportSuccess(reportData)); // Dispatch success action with complete data
     } else {
+      console.log("No participants data found in the response");
       yield put(getReportFail("No participants data"));
     }
   } catch (error) {
@@ -67,7 +65,6 @@ function* fetchReport(action) {
     yield put(getReportFail(error));
   }
 }
-
 function* fetchSerologReport(object) {
   try {
     const response = yield call(getSereologyResult, object.payload);
