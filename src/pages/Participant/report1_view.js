@@ -32,10 +32,11 @@ class ReportParticipant extends Component {
     };
   }
 
-  componentDidMount() {
-    const { id } = this.props.match.params;
-    this.props.onGetReport(id);
-  }
+componentDidMount() {
+  const { id, id1 } = this.props.match.params; // round_id and participant_id
+  this.props.onGetReport({ roundId: id, participantId: id1 }); // send both
+}
+
 
   componentDidUpdate(prevProps) {
     const { reportData } = this.props;
@@ -869,8 +870,9 @@ const mapStateToProps = ({ ResultSubmit }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onGetReport: id => dispatch(getReport(id)),
+  onGetReport: payload => dispatch(getReport(payload)),
 });
+;
 
 export default connect(
   mapStateToProps,
